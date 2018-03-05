@@ -844,6 +844,39 @@ Use case ends.
 +
 Use case resumes at step 2.
 
+[discrete]
+=== Use case: Add person
+
+*MSS*
+
+1.  User requests to list persons
+2.  AddressBook shows a list of persons
+3.  User requests to add a person to the list
+4.  AddressBook adds the person
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The syntax of the add command is invalid.
++
+[none]
+** 2a1. AddressBook shows an error message
++
+Use case resumes at step 2.
+
+[discrete]
+=== Use case: Help
+
+*MSS*
+
+1.  User requests help
+2.  AddressBook shows usage instructions
++
+Use case ends.
+
+
 _{More to be added}_
 
 [appendix]
