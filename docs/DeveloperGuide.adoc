@@ -800,7 +800,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a/an ... |I want to ... |So that I can...
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |<<Exco member>> |add a new <<member>> to the <<club>> | begin assigning groups and tasks to the member
+|`* * *` |<<Exco member>> |add a new member to the club | begin assigning groups and tasks to the member
 
 |`* * *` |Exco member |delete a member from the club |remove entries that the club no longer needs
 
