@@ -909,8 +909,19 @@ _{More to be added}_
 [appendix]
 == Glossary
 
+[[club]] Club::
+
+[[entry]] Entry::
+
+[[exco-member]] Exco member::
+A member who is part of the Executive committee of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+
+[[field]] Field::
+
 [[mainstream-os]] Mainstream OS::
 Windows, Linux, Unix, OS-X
+
+[[member]] Member::
 
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
