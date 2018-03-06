@@ -1011,7 +1011,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to undo previous command.
-2.  AddressBook undo previous command.
+2.  AddressBook undoes previous command.
 +
 Use case ends.
 
