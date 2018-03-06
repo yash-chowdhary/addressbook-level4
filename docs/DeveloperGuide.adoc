@@ -862,7 +862,27 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |forgetful user |have suggestions for commands |correct myself easily when I make a mistake
 
+|`*` |Exco member|view anonymous feedback |see members' opinions of how the club can be improved
+
 |`*` |user with many persons in the address book |sort members by name |locate a member easily
+
+|`*` |user|choose fields that should be displayed in the members list |view only those attributes that I want
+
+|`*` |user|submit anonymous feedback |give my opinions to improve the club system and facilities
+
+|`*` |user|create a group chat |broadcast messages
+
+|`*` |user|chat with other members |communicate with them
+
+|`*` |user|know who is online |I can chat with members in real time.
+
+|`*` |user|see a list of my frequently viewed members |I can quickly access them
+
+|`*` |user|email <<profile,profiles>> of members to others |I can share the information easily
+
+|`*` |user|print profiles of selected members |view the information in the absence of a computer
+
+|`*` |socially active user|link my social media |I can directly post things that I do in the club
 |=======================================================================
 
 _{More to be added}_
