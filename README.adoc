@@ -16,13 +16,9 @@ image::images/Ui.png[width="600"]
 endif::[]
 
 * EXCOntact is a desktop application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
-* EXCOntact is targeted to Student Organizations like clubs and societies characterized by a
-well-established hierarchy.
-* Student Organizations require a one-stop destination for all their managerial needs when it comes to
-enrollment, delegating tasks, preparing for events, and opening polls and feedback systems.
-* Student organizations can have hundreds of members which are further divided into sub-committees that have
-narrower focuses. These subcommittee members are often assigned individual tasks. With time, it will get very difficult to keep
-track of everything.
+* EXCOntact is targeted to Student Organizations like clubs and societies characterized by a well-established hierarchy.
+* Student Organizations require a one-stop destination for all their managerial needs when it comes to enrollment, delegating tasks, preparing for events, and opening polls and feedback systems.
+* Student organizations can have hundreds of members which are further divided into sub-committees that have narrower focuses. These subcommittee members are often assigned individual tasks. With time, it will get very difficult to keep track of everything.
 * EXCOntact is the solution to this problem as it aims to help organizations organize better.
 
 == Site Map
