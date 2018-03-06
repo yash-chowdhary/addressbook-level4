@@ -870,7 +870,7 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `member`, unless specified otherwise)
+(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
 === Use case: Delete member
@@ -878,11 +878,13 @@ _{More to be added}_
 
 *Actor* : Exco member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Exco member requests to list members.
+1.  User requests to list members.
 2.  AddressBook shows a list of members.
-3.  Exco member requests to delete a specific member in the list.
+3.  User requests to delete a specific member in the list.
 4.  AddressBook deletes the member.
 +
 Use case ends.
@@ -890,7 +892,7 @@ Use case ends.
 *Extensions*
 
 [none]
-* 2a. The list only contains the Exco member.
+* 2a. The list only contains the User.
 +
 Use case ends.
 
@@ -908,11 +910,13 @@ Use case resumes at step 2.
 
 *Actor* : Exco member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Exco member requests to list members.
+1.  User requests to list members.
 2.  AddressBook shows a list of members.
-3.  Exco member requests to add a member to the list.
+3.  User requests to add a member to the list.
 4.  AddressBook adds the member.
 +
 Use case ends.
@@ -926,8 +930,8 @@ Use case ends.
 +
 Use case resumes at step 2.
 
-* 2b. The matric number of member already exist in AddressBook.
-** 2a1. AddressBook shows an error message.
+* 3a. The matric number of member already exists in AddressBook.
+** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
 
@@ -938,9 +942,11 @@ Use case resumes at step 2.
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests help.
+1.  User requests help.
 2.  AddressBook shows usage instructions.
 +
 Use case ends.
@@ -953,10 +959,12 @@ Use case ends.
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests to sort by specified field.
-2.  AddressBook sorts according to specified field.
+1.  User requests to sort by specified field.
+2.  AddressBook sorts members according to specified field.
 3.  AddressBook shows list of members in the requested sorted order.
 +
 Use case ends.
@@ -969,6 +977,11 @@ Use case ends.
 ** 1a2. AddressBook displays all possible valid fields.
 +
 Use case resumes at step 1.
+* 1b. No field specified.
+** 1b1. AddressBook sorts members according to name.
+** 1b2. AddressBook shows list of members sorted by name.
++
+Use case ends.
 
 [discrete]
 === Use case: Exit
@@ -977,19 +990,12 @@ Use case resumes at step 1.
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests to exit AddressBook.
-2.  AddressBook asks for confirmation.
-3.  Member confirms intent to exit.
-4.  AddressBook exits.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 2a. Member cancels intent to exit.
+1.  User requests to exit AddressBook.
+2.  AddressBook exits.
 +
 Use case ends.
 
@@ -1000,9 +1006,11 @@ Use case ends.
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests to undo previous command.
+1.  User requests to undo previous command.
 2.  AddressBook undo previous command.
 +
 Use case ends.
@@ -1011,7 +1019,7 @@ Use case ends.
 
 [none]
 * 1a. Previous command is undoable.
-** 1a1. AddressBook undo latest undoable command.
+** 1a1. AddressBook undoes latest undoable command.
 +
 Use case ends.
 
@@ -1020,23 +1028,25 @@ Use case ends.
 Use case ends.
 
 [discrete]
-=== Use case: Redo
+=== Use case: Redo command
 
 *System* : AddressBook
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests to redo.
-2.  AddressBook redo the change made by previous undo command.
+1.  User requests to redo.
+2.  AddressBook redoes the change made by previous undo command.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 1a. There are no redoable command.
+* 1a. There are no redoable commands.
 +
 Use case ends.
 
@@ -1047,10 +1057,12 @@ Use case ends.
 
 *Actor* : Member
 
+*Precondition* : User is logged out.
+
 *MSS*
 
-1.  AddressBook shows empty username and password fields.
-2.  Member enters username and password.
+1.  AddressBook shows login screen.
+2.  User enters username and password.
 3.  AddressBook login as member with given username and password.
 +
 Use case ends.
@@ -1070,11 +1082,13 @@ Use case resumes at step 1.
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests to logout.
+1.  User requests to logout.
 2.  AddressBook logout.
-3.  AddressBook shows empty username and password fields.
+3.  AddressBook shows login screen.
 +
 Use case ends.
 
@@ -1085,9 +1099,11 @@ Use case ends.
 
 *Actor* : Member
 
+*Precondition* : User is logged in.
+
 *MSS*
 
-1.  Member requests to find member by specified field using keyword.
+1.  User requests to find member by specified field using keyword.
 2.  AddressBook shows a list of persons containing keyword in specified field.
 +
 Use case ends.
