@@ -20,7 +20,7 @@ public class Group {
     public final String groupName;
 
     /**
-     * Constructs a {@code Name}.
+     * Constructs a {@code Group}.
      *
      * @param group A valid group.
      */

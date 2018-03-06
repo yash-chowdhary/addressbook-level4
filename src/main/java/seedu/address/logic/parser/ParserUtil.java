@@ -132,6 +132,15 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code Optional<String> email} into an {@code Optional<Email>} if {@code email} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Email> parseEmail(Optional<String> email) throws IllegalValueException {
+        requireNonNull(email);
+        return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
+    }
+
+    /**
      * Parses a {@code String group} into a {@code Group}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -147,12 +156,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> email} into an {@code Optional<Email>} if {@code email} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
+     * Parses a {@code Optional<String> group} into a {@code Optional<Group>} if {@code group} is present.
      */
-    public static Optional<Email> parseEmail(Optional<String> email) throws IllegalValueException {
-        requireNonNull(email);
-        return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
+    public static Optional<Group> parseGroup(Optional<String> group) throws  IllegalValueException {
+        requireNonNull(group);
+        return group.isPresent() ? Optional.of(parseGroup(group.get())) : Optional.empty();
     }
 
     /**
