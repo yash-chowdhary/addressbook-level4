@@ -931,6 +931,9 @@ Note: An Exco member is also regarded as a member.
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
 
+[[profile]] Profile::
+Visual display of the information (attributes and entries) of a member.
+
 [appendix]
 == Product Survey
 
