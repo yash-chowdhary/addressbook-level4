@@ -1154,6 +1154,17 @@ Use case ends.
 .  Should work on 32- and 64- bit environments.
 .  Should be easy to use for a first-time user.
 .  Should be able to handle any sort of input, i.e. should recover from invalid input.
+.  Should have friendly user guides and developer guides 
+.  Should allow certain data to be private.
+.  Should have command names that concisely describe their function.
+.  Should be open-source. 
+.  Development should not cost money. 
+.  Should be able to work offline.
+.  Should take up as little memory on the hard disk.
+.  Should be compatible with all Operating System, i.e Windows and Macintosh. 
+.  Should save the state of the addressbook regularly 
+.  Current versions must be backward compatible with older versions to support un-do. 
+
 
 _{More to be added}_
 
