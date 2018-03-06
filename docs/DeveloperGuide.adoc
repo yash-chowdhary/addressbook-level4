@@ -870,24 +870,27 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `member`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Delete member
+*System* : AddressBook
+
+*Actor* : Exco member
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  Exco member requests to list members
+2.  AddressBook shows a list of members
+3.  Exco member requests to delete a specific member in the list
+4.  AddressBook deletes the member
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
+* 2a. The list only contains the Exco member.
 +
 Use case ends.
 
@@ -899,39 +902,204 @@ Use case ends.
 Use case resumes at step 2.
 
 [discrete]
-=== Use case: Add person
+=== Use case: Add member
+
+*System* : AddressBook
+
+*Actor* : Exco member
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to add a person to the list
-4.  AddressBook adds the person
+1.  Exco member requests to list members
+2.  AddressBook shows a list of members
+3.  Exco member requests to add a member to the list
+4.  AddressBook adds the member
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The syntax of the add command is invalid.
+* 3a. The syntax of the add command is invalid.
+** 3a1. AddressBook shows an error message.
+** 3a1. AddressBook shows correct format for add command.
 +
-[none]
-** 2a1. AddressBook shows an error message
+Use case resumes at step 2.
+
+* 2b. The matric number of member already exist in addressbook.
+** 2a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
-=== Use case: Help
+=== Use case: Show Help
+
+*System* : AddressBook
+
+*Actor* : Member
 
 *MSS*
 
-1.  User requests help
+1.  Member requests help
 2.  AddressBook shows usage instructions
 +
 Use case ends.
 
+[discrete]
 
-_{More to be added}_
+=== Use case: Sort members
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  Member requests to sort by specified field
+2.  AddressBook sorts according to specified field
+3.  AddressBook shows list of members in the requested sorted order
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Invalid field specified
+** 1a1. AddressBook shows an error message
+** 1a2. AddressBook displays all possible valid fields
++
+Use case resumes at step 1.
+
+[discrete]
+=== Use case: Exit
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  Member requests to exit AddressBook
+2.  AddressBook asks for confirmation
+3.  Member confirms intent to exit
+4.  AddressBook exits
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. Member cancels intent to exit.
++
+Use case ends.
+
+[discrete]
+=== Use case: Undo command
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  Member requests to undo previous command
+2.  AddressBook undo previous command
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Previous command is undoable
+** 1a1. AddressBook undo latest undoable command
++
+Use case ends.
+
+* 1b. No previous commands given
++
+Use case ends
+
+[discrete]
+=== Use case: Redo
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  Member request to redo
+2.  AddressBook redo the change made by previous undo command
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. There are no redoable command
++
+Use case ends.
+
+[discrete]
+=== Use case: Login
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  AddressBook shows empty username and password fields
+2.  Member enters username and password
+3.  AddressBook login as member with given username and password
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Username and password combination invalid.
+** 1a1. AddressBook shows an error message.
++
+Use case resumes at step 1.
+
+[discrete]
+=== Use case: Logout
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  Member request to logout
+2.  AddressBook logout
+3.  AddressBook shows empty username and password fields
++
+Use case ends.
+
+[discrete]
+=== Use case: Find person
+
+*System* : AddressBook
+
+*Actor* : Member
+
+*MSS*
+
+1.  Member requests to find member by specified field using keyword
+2.  AddressBook shows a list of persons containing keyword in specified field
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Invalid field specified
+** 1a1. AddressBook shows an error message
+** 1a2. AddressBook displays all possible valid fields
++
+Use case resumes at step 1.
 
 [appendix]
 == Non Functional Requirements
