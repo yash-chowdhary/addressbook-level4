@@ -949,11 +949,30 @@ _{More to be added}_
 [appendix]
 == Glossary
 
+[[attribute]] Attribute::
+An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, address and so on.
+
+[[club]] Club::
+A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+
+[[entry]] Entry::
+A value added to a member's attribute.
+
+[[exco-member]] Exco member::
+A member who is part of the Executive committee of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+
 [[mainstream-os]] Mainstream OS::
 Windows, Linux, Unix, OS-X
 
+[[member]] Member::
+One of the persons who compose a group organization. They are the target users of our application.
+Note: An Exco member is also regarded as a member.
+
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
+
+[[profile]] Profile::
+Visual display of the information (attributes and entries) of a member.
 
 [appendix]
 == Product Survey
