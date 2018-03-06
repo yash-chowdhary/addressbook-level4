@@ -24,10 +24,6 @@ enrollment, delegating tasks, preparing for events, and opening polls and feedba
 narrower focuses. These subcommittee members are often assigned individual tasks. With time, it will get very difficult to keep
 track of everything.
 * EXCOntact is the solution to this problem as it aims to help organizations organize better.
-* What's different from https://github.com/se-edu/addressbook-level3[level 3]:
-** A more sophisticated GUI that includes a list  panel and an in-built Browser.
-** More test cases, including automated GUI testing.
-** Support for _Build Automation_ using Gradle and for _Continuous Integration_ using Travis CI.
 
 == Site Map
 
