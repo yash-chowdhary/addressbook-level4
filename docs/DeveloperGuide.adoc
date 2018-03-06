@@ -926,7 +926,7 @@ Use case ends.
 +
 Use case resumes at step 2.
 
-* 2b. The matric number of member already exist in addressbook.
+* 2b. The matric number of member already exist in AddressBook.
 ** 2a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
