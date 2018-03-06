@@ -33,7 +33,7 @@ public class Group {
     /**
      * Returns true if given string is a valid person group.
      */
-    private Boolean isValidGroup(String test) {
+    public static Boolean isValidGroup(String test) {
         return test.matches(GROUP_VALIDATION_REGEX);
     }
 
