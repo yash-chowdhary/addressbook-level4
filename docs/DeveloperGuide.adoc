@@ -940,7 +940,7 @@ Use case resumes at step 2.
 
 *MSS*
 
-1.  Member request help.
+1.  Member requests help.
 2.  AddressBook shows usage instructions.
 +
 Use case ends.
@@ -1028,7 +1028,7 @@ Use case ends.
 
 *MSS*
 
-1.  Member request to redo.
+1.  Member requests to redo.
 2.  AddressBook redo the change made by previous undo command.
 +
 Use case ends.
@@ -1072,7 +1072,7 @@ Use case resumes at step 1.
 
 *MSS*
 
-1.  Member request to logout.
+1.  Member requests to logout.
 2.  AddressBook logout.
 3.  AddressBook shows empty username and password fields.
 +
