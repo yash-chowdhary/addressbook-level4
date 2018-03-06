@@ -782,7 +782,7 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 *Target user profile*:
 
-* <<member>> of a <<club>>
+* <<member,member>> of a <<club,club>>
 * has a need to manage a significant number of members
 * prefer desktop apps over other types
 * can type fast
@@ -790,7 +790,7 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 * is reasonably comfortable using CLI apps
 * has a need to communicate or notify members
 
-*Value proposition*: efficiently manage members faster than a typical mouse/GUI driven app
+*Value proposition*: members can efficiently manage the club and its members faster than a typical mouse/GUI driven app
 
 [appendix]
 == User Stories
