@@ -800,29 +800,69 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a/an ... |I want to ... |So that I can...
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |Exco member |add a new person to the club | begin assigning groups and tasks to the person
+|`* * *` |<<Exco member>> |add a new member to the club | begin assigning groups and tasks to the member
 
-|`* * *` |Exco member |delete a person from the club |remove entries that the club no longer needs
+|`* * *` |Exco member |delete a member from the club |remove entries that the club no longer needs
 
 |`* * *` |Exco member |divide members into groups using tags |manage the committee members more efficiently
 
-|`* * *` |Exco member |remove a particular tag/group | remove redundancies
+|`* * *` |Exco member |remove a particular tag/group | remove redundancies or remove irrelevant tags
 
-|`* * *` |Exco member |remove a person from a particular group | keep the App up-to-date, and also take into account students that opt-out or graduate
+|`* * *` |Exco member |remove a member from a particular group | keep the App up-to-date, and also take into account students that opt-out or graduate
+
+|`* * *` |Exco member |add a task for certain members | assign members to do a task
+
+|`* * *` |Exco member |view the status of a task | see the progress made towards completing the task
+
+|`* * *` |Exco member |remove a task | delete tasks that have been completed
+
+|`* * *` |Exco member |create a poll | get the opinions of the club members
+
+|`* * *` |Exco member who created a poll |view results of the poll | see the opinions of the members
 
 |`* * *` |user |edit my contact details |keep my contact information updated
 
-|`* * *` |user |undo and redo my commands |reverse any undesirable commands or mistakes
+|`* * *` |user |undo my command |reverse any undesirable commands or mistakes
 
-|`* * *` |user |select a user |view the user's details
+|`* * *` |user |redo a command |return to the state before I undid a command
 
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
+|`* * *` |user |select a member |view the member's details
 
-|`* * *` |user |find a person by specified field |locate details of persons without having to go through the entire list
+|`* * *` |user |find a member by name |locate details of persons without having to go through the entire list
+
+|`* * *` |user |find members by a specified field |locate details of members without having to go through the entire list
+
+|`* * *` |user |get notifications for new tasks |be aware of new tasks assigned to me
+
+|`* * *` |user |add a display picture |be identified by others
+
+|`* * *` |user |add multiple <<entries>> for <<fields>> |provide all alternative contact details to others
+
+|`* * *` |user |logout of the application |maintain integrity of my data and actions
+
+|`* * *` |user |login to my account |access my data
+
+|`* * *` |user |vote in a poll |provide my opinions
+
+|`* * *` |user |remove a task assigned to me |focus on the yet to be done tasks
+
+|`* * *` |busy user |be able to directly email members using my default mail client |save time and reduce errors by not needing to add recipients myself
 
 |`* *` |user |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* *` |user |be notified on members' birthdays |wish them on time
+
+|`* *` |user |compress the display of members |browse through the list of members with less distractions
+
+|`* *` |efficient user |use shortcuts for commands |enter commands quickly
+
+|`* *` |forgetful user |use multiple names for commands |use the right command by using any intuitive name
+
+|`* *` |forgetful user |add an alternative name for a command |use names that I am used to
+
+|`* *` |forgetful user |have suggestions for commands |correct myself easily when I make a mistake
+
+|`*` |user with many persons in the address book |sort members by name |locate a member easily
 |=======================================================================
 
 _{More to be added}_
