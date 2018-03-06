@@ -880,10 +880,10 @@ _{More to be added}_
 
 *MSS*
 
-1.  Exco member requests to list members
-2.  AddressBook shows a list of members
-3.  Exco member requests to delete a specific member in the list
-4.  AddressBook deletes the member
+1.  Exco member requests to list members.
+2.  AddressBook shows a list of members.
+3.  Exco member requests to delete a specific member in the list.
+4.  AddressBook deletes the member.
 +
 Use case ends.
 
@@ -910,10 +910,10 @@ Use case resumes at step 2.
 
 *MSS*
 
-1.  Exco member requests to list members
-2.  AddressBook shows a list of members
-3.  Exco member requests to add a member to the list
-4.  AddressBook adds the member
+1.  Exco member requests to list members.
+2.  AddressBook shows a list of members.
+3.  Exco member requests to add a member to the list.
+4.  AddressBook adds the member.
 +
 Use case ends.
 
@@ -940,8 +940,8 @@ Use case resumes at step 2.
 
 *MSS*
 
-1.  Member requests help
-2.  AddressBook shows usage instructions
+1.  Member request help.
+2.  AddressBook shows usage instructions.
 +
 Use case ends.
 
@@ -955,18 +955,18 @@ Use case ends.
 
 *MSS*
 
-1.  Member requests to sort by specified field
-2.  AddressBook sorts according to specified field
-3.  AddressBook shows list of members in the requested sorted order
+1.  Member requests to sort by specified field.
+2.  AddressBook sorts according to specified field.
+3.  AddressBook shows list of members in the requested sorted order.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 1a. Invalid field specified
-** 1a1. AddressBook shows an error message
-** 1a2. AddressBook displays all possible valid fields
+* 1a. Invalid field specified.
+** 1a1. AddressBook shows an error message.
+** 1a2. AddressBook displays all possible valid fields.
 +
 Use case resumes at step 1.
 
@@ -979,10 +979,10 @@ Use case resumes at step 1.
 
 *MSS*
 
-1.  Member requests to exit AddressBook
-2.  AddressBook asks for confirmation
-3.  Member confirms intent to exit
-4.  AddressBook exits
+1.  Member requests to exit AddressBook.
+2.  AddressBook asks for confirmation.
+3.  Member confirms intent to exit.
+4.  AddressBook exits.
 +
 Use case ends.
 
@@ -1002,22 +1002,22 @@ Use case ends.
 
 *MSS*
 
-1.  Member requests to undo previous command
-2.  AddressBook undo previous command
+1.  Member requests to undo previous command.
+2.  AddressBook undo previous command.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 1a. Previous command is undoable
-** 1a1. AddressBook undo latest undoable command
+* 1a. Previous command is undoable.
+** 1a1. AddressBook undo latest undoable command.
 +
 Use case ends.
 
-* 1b. No previous commands given
+* 1b. No previous commands given.
 +
-Use case ends
+Use case ends.
 
 [discrete]
 === Use case: Redo
@@ -1028,15 +1028,15 @@ Use case ends
 
 *MSS*
 
-1.  Member request to redo
-2.  AddressBook redo the change made by previous undo command
+1.  Member request to redo.
+2.  AddressBook redo the change made by previous undo command.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 1a. There are no redoable command
+* 1a. There are no redoable command.
 +
 Use case ends.
 
@@ -1049,9 +1049,9 @@ Use case ends.
 
 *MSS*
 
-1.  AddressBook shows empty username and password fields
-2.  Member enters username and password
-3.  AddressBook login as member with given username and password
+1.  AddressBook shows empty username and password fields.
+2.  Member enters username and password.
+3.  AddressBook login as member with given username and password.
 +
 Use case ends.
 
@@ -1072,9 +1072,9 @@ Use case resumes at step 1.
 
 *MSS*
 
-1.  Member request to logout
-2.  AddressBook logout
-3.  AddressBook shows empty username and password fields
+1.  Member request to logout.
+2.  AddressBook logout.
+3.  AddressBook shows empty username and password fields.
 +
 Use case ends.
 
@@ -1087,19 +1087,24 @@ Use case ends.
 
 *MSS*
 
-1.  Member requests to find member by specified field using keyword
-2.  AddressBook shows a list of persons containing keyword in specified field
+1.  Member requests to find member by specified field using keyword.
+2.  AddressBook shows a list of persons containing keyword in specified field.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 1a. Invalid field specified
-** 1a1. AddressBook shows an error message
-** 1a2. AddressBook displays all possible valid fields
+* 1a. Invalid field specified.
+** 1a1. AddressBook shows an error message.
+** 1a2. AddressBook displays all possible valid fields.
 +
 Use case resumes at step 1.
+* 1b. No field specified.
+** 1b1. AddressBook finds member using all valid fields.
+** 1b2. AddressBook shows a list of persons containing keyword in any possible field.
++
+Use case ends.
 
 [appendix]
 == Non Functional Requirements
