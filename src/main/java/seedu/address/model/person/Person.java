@@ -21,7 +21,7 @@ public class Person {
     private final Email email;
     private final Address address;
 
-    private Group group = new Group("Member");
+    private Group group;
     private final UniqueTagList tags;
 
     /**

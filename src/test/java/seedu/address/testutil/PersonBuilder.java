@@ -3,9 +3,9 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.group.Group;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
-import seedu.address.model.group.Group;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -97,6 +97,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withGroup(String group) {
         this.group = new Group(group);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Group} of the {@code Person} that we are building to the default group - "member".
+     */
+    public PersonBuilder withGroup() {
+        this.group = new Group(Group.DEFAULT_GROUP);
         return this;
     }
 
