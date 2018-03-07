@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= EXCOntact - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -787,7 +787,7 @@ EXCOntact provides student organisations with a one-stop shop for all their mana
 
 *Target user profile*:
 
-* Leader of a <<club,Club>>
+* <<exco-member,Exco member>> of a <<club,Club>>
 * <<member,Member>> of a club
 
 *Value proposition*: clubs can efficiently manage its activities and members faster than a typical mouse/GUI driven application
@@ -1185,7 +1185,7 @@ An example of CLI would be MS-DOS.
 A value added to a member's attribute.
 
 [[exco-member]] Exco member::
-A member who is part of the Executive committee of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+A member who is part of the Executive committee of the club. Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
 
 [[gui]] GUI::
 Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
