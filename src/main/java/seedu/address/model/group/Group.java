@@ -17,6 +17,8 @@ public class Group {
      */
     public static final String GROUP_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
 
+    public static final String DEFAULT_GROUP = "member";
+
     public final String groupName;
 
     /**
