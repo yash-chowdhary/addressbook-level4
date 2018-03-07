@@ -780,16 +780,17 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 [appendix]
 == Product Scope
 
-EXCOntact is targeted at Student Organizations like clubs and societies characterized by a well-established hierarchy.
-Student Organizations require a one-stop destination for all their managerial needs when it comes to enrollment, delegating tasks, preparing for events, and opening polls and feedback systems.
-Student organizations can have hundreds of members which are further divided into sub-committees that have narrower focuses. These subcommittee members are often assigned individual tasks. With time, it will get very difficult to keep track of everything.
-EXCOntact is the solution to this problem as it aims to help organizations organize better.
+EXCOntact is targeted at Student Organizations, such as clubs and societies, that are characterized by a well-established hierarchy.
+Student organizations can have hundreds of members, who are divided into sub-committees that have narrower focuses. These subcommittee members are often assigned individual and group tasks. With time, it becomes very difficult to keep track of everything manually.
+This is why these organizations require a system for enrolling members, delegating tasks, organising events, and opening polls and getting feedback.
+EXCOntact provides student organisations with a one-stop shop for all their managerial and organisation needs.
 
 *Target user profile*:
 
-* <<member,Member>> of a <<club,Club>>
+* Leader of a <<club,Club>>
+* <<member,Member>> of a club
 
-*Value proposition*: members can efficiently manage club activities and its members faster than a typical mouse/GUI driven app
+*Value proposition*: clubs can efficiently manage its activities and members faster than a typical mouse/GUI driven application
 
 [appendix]
 == User Stories
@@ -1165,11 +1166,19 @@ An attribute is a type of detail of a member. For example, an attribute of a mem
 [[club]] Club::
 A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
 
+[[cli]] CLI::
+Acronym for Command Line Inerface. It is a purely text-based interface for software. User respond to visual prompts by typing single commands into the interface and receive results as text as well.
+An example of CLI would be MS-DOS.
+
 [[entry]] Entry::
 A value added to a member's attribute.
 
 [[exco-member]] Exco member::
 A member who is part of the Executive committee of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+
+[[gui]] GUI::
+Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
+For example, all Windows operating systems have a GUI.
 
 [[mainstream-os]] Mainstream OS::
 Windows, Linux, Unix, OS-X
