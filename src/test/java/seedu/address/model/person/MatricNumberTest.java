@@ -30,8 +30,8 @@ public class MatricNumberTest {
         assertFalse(MatricNumber.isValidMatricNumber(" ")); // spaces only
 
         // valid addresses
-        assertTrue(MatricNumber.isValidMatricNumber("Blk 456, Den Road, #01-355"));
-        assertTrue(MatricNumber.isValidMatricNumber("-")); // one character
-        assertTrue(MatricNumber.isValidMatricNumber("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long address
+        assertTrue(MatricNumber.isValidMatricNumber("E1152241G"));
+        assertTrue(MatricNumber.isValidMatricNumber("G0152640A")); // one character
+        assertTrue(MatricNumber.isValidMatricNumber("H1022206A")); // long address
     }
 }

@@ -18,8 +18,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -28,13 +28,13 @@ import seedu.address.testutil.Assert;
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
-    private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
+    private static final String INVALID_MATRIC_NUMBER = "1234567";
     private static final String INVALID_TAG = "#friend";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
-    private static final String VALID_MATRIC_NUMBER = "123 Main Street #0505";
+    private static final String VALID_MATRIC_NUMBER = "E1234567Y";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
@@ -138,8 +138,9 @@ public class ParserUtilTest {
 
     @Test
     public void parseAddress_invalidValue_throwsIllegalValueException() {
-        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseMatricNumber(INVALID_ADDRESS));
-        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseMatricNumber(Optional.of(INVALID_ADDRESS)));
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseMatricNumber(INVALID_MATRIC_NUMBER));
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil
+                .parseMatricNumber(Optional.of(INVALID_MATRIC_NUMBER)));
     }
 
     @Test
@@ -159,7 +160,8 @@ public class ParserUtilTest {
         String addressWithWhitespace = WHITESPACE + VALID_MATRIC_NUMBER + WHITESPACE;
         MatricNumber expectedMatricNumber = new MatricNumber(VALID_MATRIC_NUMBER);
         assertEquals(expectedMatricNumber, ParserUtil.parseMatricNumber(addressWithWhitespace));
-        assertEquals(Optional.of(expectedMatricNumber), ParserUtil.parseMatricNumber(Optional.of(addressWithWhitespace)));
+        assertEquals(Optional.of(expectedMatricNumber), ParserUtil
+                .parseMatricNumber(Optional.of(addressWithWhitespace)));
     }
 
     @Test

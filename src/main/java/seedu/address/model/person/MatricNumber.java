@@ -16,7 +16,7 @@ public class MatricNumber {
      * The first character of the matric number must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String MATRIC_NUMBER_VALIDATION_REGEX = "[a-zA-Z][\\d+][a-zA-Z]";
+    public static final String MATRIC_NUMBER_VALIDATION_REGEX = "^[a-zA-Z][\\d]+[a-zA-Z]$";
 
     public final String value;
 

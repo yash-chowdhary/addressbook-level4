@@ -106,7 +106,8 @@ public class XmlAdaptedPerson {
         final Email email = new Email(this.email);
 
         if (this.matricNumber == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, MatricNumber.class.getSimpleName()));
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    MatricNumber.class.getSimpleName()));
         }
         if (!MatricNumber.isValidMatricNumber(this.matricNumber)) {
             throw new IllegalValueException(MatricNumber.MATRIC_NUMBER_CONSTRAINTS);

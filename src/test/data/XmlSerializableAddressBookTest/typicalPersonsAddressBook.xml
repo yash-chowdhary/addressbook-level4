@@ -6,14 +6,14 @@
         <name>Alice Pauline</name>
         <phone>85355255</phone>
         <email>alice@example.com</email>
-        <matricNumber>123, Jurong West Ave 6, #08-111</matricNumber>
+        <matricNumber>A9210701B</matricNumber>
         <tagged>friends</tagged>
     </persons>
     <persons>
         <name>Benson Meier</name>
         <phone>98765432</phone>
         <email>johnd@example.com</email>
-        <matricNumber>311, Clementi Ave 2, #02-25</matricNumber>
+        <matricNumber>A8389539B</matricNumber>
         <tagged>owesMoney</tagged>
         <tagged>friends</tagged>
     </persons>
@@ -21,31 +21,31 @@
         <name>Carl Kurz</name>
         <phone>95352563</phone>
         <email>heinz@example.com</email>
-        <matricNumber>wall street</matricNumber>
+        <matricNumber>E6076201A</matricNumber>
     </persons>
     <persons>
         <name>Daniel Meier</name>
         <phone>87652533</phone>
         <email>cornelia@example.com</email>
-        <matricNumber>10th street</matricNumber>
+        <matricNumber>E2719059H</matricNumber>
     </persons>
     <persons>
         <name>Elle Meyer</name>
         <phone>9482224</phone>
         <email>werner@example.com</email>
-        <matricNumber>michegan ave</matricNumber>
+        <matricNumber>E1932279G</matricNumber>
     </persons>
     <persons>
         <name>Fiona Kunz</name>
         <phone>9482427</phone>
         <email>lydia@example.com</email>
-        <matricNumber>little tokyo</matricNumber>
+        <matricNumber>E9662042H</matricNumber>
     </persons>
     <persons>
         <name>George Best</name>
         <phone>9482442</phone>
         <email>anna@example.com</email>
-        <matricNumber>4th street</matricNumber>
+        <matricNumber>E2836750A</matricNumber>
     </persons>
     <tags>friends</tags>
     <tags>owesMoney</tags>

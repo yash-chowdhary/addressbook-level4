@@ -107,7 +107,8 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> matricNumber} into an {@code Optional<MatricNumber>} if {@code matricNumber} is present.
+     * Parses a {@code Optional<String> matricNumber} into an {@code Optional<MatricNumber>}
+     * if {@code matricNumber} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
     public static Optional<MatricNumber> parseMatricNumber(Optional<String> matricNumber) throws IllegalValueException {
