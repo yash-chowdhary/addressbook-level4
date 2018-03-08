@@ -1,4 +1,4 @@
-= Address Book (Level 4)
+= Club Connect
 ifdef::env-github,env-browser[:relfileprefix: docs/]
 
 https://travis-ci.org/CS2103JAN2018-W15-B4/main[image:https://travis-ci.org/CS2103JAN2018-W15-B4/main.svg?branch=master[Build Status]]
@@ -15,13 +15,17 @@ ifndef::env-github[]
 image::images/Ui.png[width="600"]
 endif::[]
 
-* This is a desktop Address Book application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
-* It is a Java sample application intended for students learning Software Engineering while using Java as the main programming language.
-* It is *written in OOP fashion*. It provides a *reasonably well-written* code example that is *significantly bigger* (around 6 KLoC)than what students usually write in beginner-level SE modules.
-* What's different from https://github.com/se-edu/addressbook-level3[level 3]:
-** A more sophisticated GUI that includes a list  panel and an in-built Browser.
-** More test cases, including automated GUI testing.
-** Support for _Build Automation_ using Gradle and for _Continuous Integration_ using Travis CI.
+* Club Connect is a desktop application. It has a <<DeveloperGuide#gui,GUI>> but most of the user interactions happen using a <<DeveloperGuide#cli,CLI>>.
+* Club Connect is targeted at student organizations (such as clubs and societies) that are characterized by a well-established hierarchy.
+* Student organizations require a one-stop destination for all their managerial needs when it comes to enrollment, delegating tasks, preparing for events, and opening polls and feedback systems.
+* Student organizations can have hundreds of members which are further divided into sub-committees that have narrower focuses. These subcommittee members are often assigned individual tasks. With time, it will get very difficult to keep track of everything.
+* Club Connect is the solution to this problem as it helps <<DeveloperGuide#club,clubs>> manage and organize their activities and members efficiently and effectively.
+* Club Connect has the following features:
+** <<DeveloperGuide#exco-member,Exco Members>> can manage the member roster
+** Exco Members can delegate tasks to Sub-Committee Members
+** Exco Members can set up polls and feedback surveys
+** <<DeveloperGuide#member,Members>> can send e-mails to any other members
+** Members can keep track of upcoming events and deadlines for tasks
 
 == Site Map
 
