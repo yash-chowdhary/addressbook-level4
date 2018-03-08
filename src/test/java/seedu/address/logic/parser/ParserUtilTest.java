@@ -34,7 +34,7 @@ public class ParserUtilTest {
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
-    private static final String VALID_ADDRESS = "123 Main Street #0505";
+    private static final String VALID_MATRIC_NUMBER = "123 Main Street #0505";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
@@ -132,34 +132,34 @@ public class ParserUtilTest {
 
     @Test
     public void parseAddress_null_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
-        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((Optional<String>) null));
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseMatricNumber((String) null));
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseMatricNumber((Optional<String>) null));
     }
 
     @Test
     public void parseAddress_invalidValue_throwsIllegalValueException() {
-        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseAddress(INVALID_ADDRESS));
-        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseAddress(Optional.of(INVALID_ADDRESS)));
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseMatricNumber(INVALID_ADDRESS));
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseMatricNumber(Optional.of(INVALID_ADDRESS)));
     }
 
     @Test
     public void parseAddress_optionalEmpty_returnsOptionalEmpty() throws Exception {
-        assertFalse(ParserUtil.parseAddress(Optional.empty()).isPresent());
+        assertFalse(ParserUtil.parseMatricNumber(Optional.empty()).isPresent());
     }
 
     @Test
     public void parseAddress_validValueWithoutWhitespace_returnsAddress() throws Exception {
-        MatricNumber expectedMatricNumber = new MatricNumber(VALID_ADDRESS);
-        assertEquals(expectedMatricNumber, ParserUtil.parseAddress(VALID_ADDRESS));
-        assertEquals(Optional.of(expectedMatricNumber), ParserUtil.parseAddress(Optional.of(VALID_ADDRESS)));
+        MatricNumber expectedMatricNumber = new MatricNumber(VALID_MATRIC_NUMBER);
+        assertEquals(expectedMatricNumber, ParserUtil.parseMatricNumber(VALID_MATRIC_NUMBER));
+        assertEquals(Optional.of(expectedMatricNumber), ParserUtil.parseMatricNumber(Optional.of(VALID_MATRIC_NUMBER)));
     }
 
     @Test
     public void parseAddress_validValueWithWhitespace_returnsTrimmedAddress() throws Exception {
-        String addressWithWhitespace = WHITESPACE + VALID_ADDRESS + WHITESPACE;
-        MatricNumber expectedMatricNumber = new MatricNumber(VALID_ADDRESS);
-        assertEquals(expectedMatricNumber, ParserUtil.parseAddress(addressWithWhitespace));
-        assertEquals(Optional.of(expectedMatricNumber), ParserUtil.parseAddress(Optional.of(addressWithWhitespace)));
+        String addressWithWhitespace = WHITESPACE + VALID_MATRIC_NUMBER + WHITESPACE;
+        MatricNumber expectedMatricNumber = new MatricNumber(VALID_MATRIC_NUMBER);
+        assertEquals(expectedMatricNumber, ParserUtil.parseMatricNumber(addressWithWhitespace));
+        assertEquals(Optional.of(expectedMatricNumber), ParserUtil.parseMatricNumber(Optional.of(addressWithWhitespace)));
     }
 
     @Test

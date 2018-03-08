@@ -87,7 +87,7 @@ public class XmlAdaptedPersonTest {
     public void toModelType_invalidAddress_throwsIllegalValueException() {
         XmlAdaptedPerson person =
                 new XmlAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, INVALID_MATRIC_NUMBER, VALID_TAGS);
-        String expectedMessage = MatricNumber.MATRIC_NUMBER_ADDRESS_CONSTRAINTS;
+        String expectedMessage = MatricNumber.MATRIC_NUMBER_CONSTRAINTS;
         Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 

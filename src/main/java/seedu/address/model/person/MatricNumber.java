@@ -4,31 +4,31 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's address in the address book.
+ * Represents a Person's matric number in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidMatricNumber(String)}
  */
 public class MatricNumber {
 
-    public static final String MATRIC_NUMBER_ADDRESS_CONSTRAINTS =
-            "Person addresses can take any values, and it should not be blank";
+    public static final String MATRIC_NUMBER_CONSTRAINTS =
+            "Person matric number must begin with one letter, digits in the middle and a letter at the end";
 
     /*
-     * The first character of the address must not be a whitespace,
+     * The first character of the matric number must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String MATRIC_NUMBER_VALIDATION_REGEX = "[^\\s].*";
+    public static final String MATRIC_NUMBER_VALIDATION_REGEX = "[a-zA-Z][\\d+][a-zA-Z]";
 
     public final String value;
 
     /**
-     * Constructs an {@code MatricNumber}.
+     * Constructs a {@code MatricNumber}.
      *
-     * @param address A valid address.
+     * @param matricNumber A valid matric number.
      */
-    public MatricNumber(String address) {
-        requireNonNull(address);
-        checkArgument(isValidMatricNumber(address), MATRIC_NUMBER_ADDRESS_CONSTRAINTS);
-        this.value = address;
+    public MatricNumber(String matricNumber) {
+        requireNonNull(matricNumber);
+        checkArgument(isValidMatricNumber(matricNumber), MATRIC_NUMBER_CONSTRAINTS);
+        this.value = matricNumber;
     }
 
     /**

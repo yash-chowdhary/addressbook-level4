@@ -19,7 +19,7 @@ public class PersonBuilder {
     public static final String DEFAULT_NAME = "Alice Pauline";
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_MATRIC_NUMBER = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_TAGS = "friends";
 
     private Name name;
@@ -32,7 +32,7 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        matricNumber = new MatricNumber(DEFAULT_ADDRESS);
+        matricNumber = new MatricNumber(DEFAULT_MATRIC_NUMBER);
         tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
     }
 
@@ -66,8 +66,8 @@ public class PersonBuilder {
     /**
      * Sets the {@code MatricNumber} of the {@code Person} that we are building.
      */
-    public PersonBuilder withAddress(String address) {
-        this.matricNumber = new MatricNumber(address);
+    public PersonBuilder withMatricNumber(String matricNumber) {
+        this.matricNumber = new MatricNumber(matricNumber);
         return this;
     }
 

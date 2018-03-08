@@ -9,8 +9,8 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -109,7 +109,7 @@ public class XmlAdaptedPerson {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, MatricNumber.class.getSimpleName()));
         }
         if (!MatricNumber.isValidMatricNumber(this.matricNumber)) {
-            throw new IllegalValueException(MatricNumber.MATRIC_NUMBER_ADDRESS_CONSTRAINTS);
+            throw new IllegalValueException(MatricNumber.MATRIC_NUMBER_CONSTRAINTS);
         }
         final MatricNumber matricNumber = new MatricNumber(this.matricNumber);
 
