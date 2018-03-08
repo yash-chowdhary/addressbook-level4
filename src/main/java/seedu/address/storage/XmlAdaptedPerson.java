@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.group.Group;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -33,6 +34,8 @@ public class XmlAdaptedPerson {
     private String address;
 
     @XmlElement
+    private String group;
+    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     /**
@@ -44,11 +47,13 @@ public class XmlAdaptedPerson {
     /**
      * Constructs an {@code XmlAdaptedPerson} with the given person details.
      */
-    public XmlAdaptedPerson(String name, String phone, String email, String address, List<XmlAdaptedTag> tagged) {
+    public XmlAdaptedPerson(String name, String phone, String email, String address, String group,
+                            List<XmlAdaptedTag> tagged) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.group = group;
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -64,6 +69,7 @@ public class XmlAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
+        group = source.getGroup().groupName;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -113,8 +119,13 @@ public class XmlAdaptedPerson {
         }
         final Address address = new Address(this.address);
 
+        if (!Group.isValidGroup(this.group)) {
+            throw new IllegalValueException(Group.MESSAGE_GROUP_CONSTRAINTS);
+        }
+        final Group group = new Group(this.group);
+
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name, phone, email, address, tags);
+        return new Person(name, phone, email, address, group, tags);
     }
 
     @Override
@@ -132,6 +143,7 @@ public class XmlAdaptedPerson {
                 && Objects.equals(phone, otherPerson.phone)
                 && Objects.equals(email, otherPerson.email)
                 && Objects.equals(address, otherPerson.address)
+                && Objects.equals(group, otherPerson.group)
                 && tagged.equals(otherPerson.tagged);
     }
 }
