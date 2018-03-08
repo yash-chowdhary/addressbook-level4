@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Address;
+import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -30,7 +30,7 @@ public class XmlAdaptedPerson {
     @XmlElement(required = true)
     private String email;
     @XmlElement(required = true)
-    private String address;
+    private String matricNumber;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -44,11 +44,11 @@ public class XmlAdaptedPerson {
     /**
      * Constructs an {@code XmlAdaptedPerson} with the given person details.
      */
-    public XmlAdaptedPerson(String name, String phone, String email, String address, List<XmlAdaptedTag> tagged) {
+    public XmlAdaptedPerson(String name, String phone, String email, String matricNumber, List<XmlAdaptedTag> tagged) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.address = address;
+        this.matricNumber = matricNumber;
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -63,7 +63,7 @@ public class XmlAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
-        address = source.getAddress().value;
+        matricNumber = source.getMatricNumber().value;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -105,16 +105,16 @@ public class XmlAdaptedPerson {
         }
         final Email email = new Email(this.email);
 
-        if (this.address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
+        if (this.matricNumber == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, MatricNumber.class.getSimpleName()));
         }
-        if (!Address.isValidAddress(this.address)) {
-            throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
+        if (!MatricNumber.isValidMatricNumber(this.matricNumber)) {
+            throw new IllegalValueException(MatricNumber.MATRIC_NUMBER_ADDRESS_CONSTRAINTS);
         }
-        final Address address = new Address(this.address);
+        final MatricNumber matricNumber = new MatricNumber(this.matricNumber);
 
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name, phone, email, address, tags);
+        return new Person(name, phone, email, matricNumber, tags);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class XmlAdaptedPerson {
         return Objects.equals(name, otherPerson.name)
                 && Objects.equals(phone, otherPerson.phone)
                 && Objects.equals(email, otherPerson.email)
-                && Objects.equals(address, otherPerson.address)
+                && Objects.equals(matricNumber, otherPerson.matricNumber)
                 && tagged.equals(otherPerson.tagged);
     }
 }
