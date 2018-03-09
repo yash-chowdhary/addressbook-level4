@@ -166,10 +166,16 @@ public class AddressBook implements ReadOnlyAddressBook {
         if (toRemove.equals(notToBeDeleted)) {
             throw new GroupCannotBeRemovedException();
         }
-        Boolean isPresent = new Boolean(false);
+        Boolean isPresent = false;
+
+        for (Person person : persons) {
+            if (person.getGroup().equals(toRemove)) {
+                isPresent = true;
+            }
+        }
         try {
             for (Person person : persons) {
-                removeGroupFromPerson(toRemove, person, isPresent);
+                removeGroupFromPerson(toRemove, person);
             }
         } catch (PersonNotFoundException pnfe) {
             throw new AssertionError("Impossible: original person is obtained from the address book.");
@@ -181,15 +187,13 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Removes the Group {@code toRemove} from the {@code person} if the person's group matches the one to be removed.
-     * @throws GroupNotFoundException
      */
-    private void removeGroupFromPerson(Group toRemove, Person person, Boolean isPresent)
+    private void removeGroupFromPerson(Group toRemove, Person person)
             throws PersonNotFoundException {
-        if (!person.getGroup().equals(toRemove)) {
+        if (!person.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
             return;
         }
 
-        isPresent = true;
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Person newPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
                 defaultGroup, person.getTags());
