@@ -22,48 +22,62 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 
 /**
- * A utility class containing a list of {@code Person} objects to be used in tests.
+ * A utility class containing a list of {@code Person} object
+ *
+ *
+ * s to be used in tests.
  */
 public class TypicalPersons {
 
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
-            .withMatricNumber("A9210701B").withEmail("alice@example.com")
+            .withMatricNumber("A9210701B")
+            .withEmail("alice@example.com")
             .withPhone("85355255")
             .withGroup("logistics")
             .withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withMatricNumber("A8389539B")
-            .withEmail("johnd@example.com").withPhone("98765432")
+            .withEmail("johnd@example.com")
+            .withPhone("98765432")
             .withGroup("pr")
             .withTags("owesMoney", "friends").build();
-    public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withEmail("heinz@example.com").withMatricNumber("wall street")
-            .withGroup("marketing")
-            .build();
-    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withMatricNumber("10th street")
-            .withGroup("publicity")
-            .build();
-    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
-            .withEmail("werner@example.com").withMatricNumber("michegan ave")
-            .withGroup("marketing")
-            .build();
-    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
-            .withEmail("lydia@example.com").withMatricNumber("little tokyo")
-            .withGroup("operations")
-            .build();
-    public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
-            .withEmail("anna@example.com").withMatricNumber("4th street")
-            .withGroup("legal")
-            .build();
+    public static final Person CARL = new PersonBuilder().withName("Carl Kurz")
+            .withPhone("95352563")
+            .withEmail("heinz@example.com")
+            .withMatricNumber("E6076201A")
+            .withGroup("marketing").build();
+    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
+            .withPhone("87652533")
+            .withEmail("cornelia@example.com")
+            .withMatricNumber("E2719059H")
+            .withGroup("publicity").build();
+    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer")
+            .withPhone("9482224")
+            .withEmail("werner@example.com")
+            .withMatricNumber("E1932279G")
+            .withGroup("marketing").build();
+    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz")
+            .withPhone("9482427")
+            .withEmail("lydia@example.com")
+            .withMatricNumber("E9662042H")
+            .withGroup("operations").build();
+    public static final Person GEORGE = new PersonBuilder().withName("George Best")
+            .withPhone("9482442")
+            .withEmail("anna@example.com")
+            .withMatricNumber("E2836750A")
+            .withGroup("legal").build();
 
     // Manually added
-    public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
-            .withEmail("stefan@example.com").withMatricNumber("little india")
+    public static final Person HOON = new PersonBuilder().withName("Hoon Meier")
+            .withPhone("8482424")
+            .withEmail("stefan@example.com")
+            .withMatricNumber("U9123096J")
             .withGroup("publicity")
             .build();
-    public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
-            .withEmail("hans@example.com").withMatricNumber("chicago ave")
+    public static final Person IDA = new PersonBuilder().withName("Ida Mueller")
+            .withPhone("8482131")
+            .withEmail("hans@example.com")
+            .withMatricNumber("E92394836F")
             .withGroup("logistics")
             .build();
 

@@ -7,7 +7,6 @@
         <phone>85355255</phone>
         <email>alice@example.com</email>
         <matricNumber>A9210701B</matricNumber>
-        <matricNumber>A9210701B</matricNumber>
         <group>logistics</group>
         <tagged>friends</tagged>
     </persons>
@@ -15,7 +14,6 @@
         <name>Benson Meier</name>
         <phone>98765432</phone>
         <email>johnd@example.com</email>
-        <matricNumber>A8389539B</matricNumber>
         <matricNumber>A8389539B</matricNumber>
         <group>pr</group>
         <tagged>owesMoney</tagged>
@@ -32,7 +30,6 @@
         <name>Daniel Meier</name>
         <phone>87652533</phone>
         <email>cornelia@example.com</email>
-        <matricNumber>E2719059H</matricNumber>
         <matricNumber>E2719059H</matricNumber>
         <group>publicity</group>
     </persons>
@@ -54,7 +51,6 @@
         <name>George Best</name>
         <phone>9482442</phone>
         <email>anna@example.com</email>
-        <matricNumber>E2836750A</matricNumber>
         <matricNumber>E2836750A</matricNumber>
         <group>legal</group>
     </persons>
