@@ -11,9 +11,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.group.Group;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.person.exceptions.GroupNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -49,8 +52,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         resetData(toBeCopied);
     }
 
-    //// list overwrite operations
 
+    //// list overwrite operations
     public void setPersons(List<Person> persons) throws DuplicatePersonException {
         this.persons.setPersons(persons);
     }
@@ -76,8 +79,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
     }
 
-    //// person-level operations
 
+    //// person-level operations
     /**
      * Adds a person to the address book.
      * Also checks the new person's tags and updates {@link #tags} with any new tags found,
@@ -148,10 +151,55 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
     }
 
-    //// tag-level operations
 
+    //// tag-level operations
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
+    }
+
+    /**
+     * Removes the Group {@code toRemove} from the Club Book. Every member who was once a part of {@code toRemove}
+     * will be assigned the default group - "member".
+     */
+    public void removeGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+        Group notToBeDeleted = new Group("member");
+        if (toRemove.equals(notToBeDeleted)) {
+            throw new GroupCannotBeRemovedException();
+        }
+        Boolean isPresent = new Boolean(false);
+        try {
+            for (Person person : persons) {
+                removeGroupFromPerson(toRemove, person, isPresent);
+            }
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("Impossible: original person is obtained from the address book.");
+        }
+        if (!isPresent) {
+            throw new GroupNotFoundException();
+        }
+    }
+
+    /**
+     * Removes the Group {@code toRemove} from the {@code person} if the person's group matches the one to be removed.
+     * @throws GroupNotFoundException
+     */
+    private void removeGroupFromPerson(Group toRemove, Person person, Boolean isPresent)
+            throws PersonNotFoundException {
+        if (!person.getGroup().equals(toRemove)) {
+            return;
+        }
+
+        isPresent = true;
+        Group defaultGroup = new Group(Group.DEFAULT_GROUP);
+        Person newPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                defaultGroup, person.getTags());
+
+        try {
+            updatePerson(person, newPerson);
+        } catch (DuplicatePersonException dpe) {
+            throw new AssertionError("Deleting a person's group only should not result in a duplicate. "
+            + "See Person#equals(Object).");
+        }
     }
 
     //// util methods
@@ -179,6 +227,7 @@ public class AddressBook implements ReadOnlyAddressBook {
                 && this.persons.equals(((AddressBook) other).persons)
                 && this.tags.equalsOrderInsensitive(((AddressBook) other).tags));
     }
+
 
     @Override
     public int hashCode() {
