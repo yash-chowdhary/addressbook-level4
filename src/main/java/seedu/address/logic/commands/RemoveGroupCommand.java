@@ -20,8 +20,8 @@ public class RemoveGroupCommand extends UndoableCommand {
             + PREFIX_GROUP + "GROUP";
 
     public static final String MESSAGE_SUCCESS = "Group deleted from Club Book: %1$s";
-    private static final String MESSAGE_INVALID_GROUP = "This group does not exist in the Club Book";
-    private static final String MESSAGE_MANDATORY_GROUP = "This group cannot be deleted as it is a mandatory group.";
+    public static final String MESSAGE_INVALID_GROUP = "This group does not exist in the Club Book";
+    public static final String MESSAGE_MANDATORY_GROUP = "This group cannot be deleted as it is a mandatory group.";
 
     private final Group toRemove;
 
