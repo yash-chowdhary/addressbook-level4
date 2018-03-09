@@ -36,9 +36,9 @@ public class RemoveGroupCommandParserTest {
 
     @Test
     public void parse_invalidGroupFormat_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE);
+        String expectedMessage = Group.MESSAGE_GROUP_CONSTRAINTS;
         assertParseFailure(parser, INVALID_GROUP_DESC, Group.MESSAGE_GROUP_CONSTRAINTS);
-        assertParseFailure(parser, " " + PREFIX_GROUP.toString() + " ", Group.MESSAGE_GROUP_CONSTRAINTS);
+        assertParseFailure(parser, " " + PREFIX_GROUP.toString() + " ", expectedMessage);
     }
 
     @Test

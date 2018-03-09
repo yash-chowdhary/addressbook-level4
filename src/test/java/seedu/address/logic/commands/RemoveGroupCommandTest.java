@@ -42,7 +42,7 @@ public class RemoveGroupCommandTest {
     }
 
     @Test
-    public void execute_nonExistentGroup_throwsCommandException() throws Exception {
+    public void execute_nonExistentGroup_throwsCommandException() {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
@@ -50,7 +50,7 @@ public class RemoveGroupCommandTest {
     }
 
     @Test
-    public void execute_mandatoryGroup_throwsCommandException() throws Exception {
+    public void execute_mandatoryGroup_throwsCommandException() {
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
 
@@ -80,7 +80,7 @@ public class RemoveGroupCommandTest {
     }
 
     @Test
-    public void executeUndoRedo_nonExistentGroup_failure() throws Exception {
+    public void executeUndoRedo_nonExistentGroup_failure() {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -97,7 +97,7 @@ public class RemoveGroupCommandTest {
     }
 
     @Test
-    public void executeUndoRedo_mandatoryGroup_failure() throws Exception {
+    public void executeUndoRedo_mandatoryGroup_failure() {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -136,7 +136,7 @@ public class RemoveGroupCommandTest {
     }
 
     @Test
-    public void equals() throws Exception {
+    public void equals() {
         RemoveGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
         RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_BOB));
 
