@@ -2,6 +2,8 @@ package seedu.address.testutil;
 
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
@@ -27,33 +29,52 @@ public class TypicalPersons {
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withMatricNumber("A9210701B").withEmail("alice@example.com")
             .withPhone("85355255")
+            .withGroup("logistics")
             .withTags("friends").build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withMatricNumber("A8389539B")
             .withEmail("johnd@example.com").withPhone("98765432")
+            .withGroup("pr")
             .withTags("owesMoney", "friends").build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withEmail("heinz@example.com").withMatricNumber("E6076201A").build();
+            .withEmail("heinz@example.com").withMatricNumber("wall street")
+            .withGroup("marketing")
+            .build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withMatricNumber("E2719059H").build();
-    public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
-            .withEmail("anna@example.com").withMatricNumber("E2836750A").build();
+            .withEmail("cornelia@example.com").withMatricNumber("10th street")
+            .withGroup("publicity")
+            .build();
     public static final Person ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
-            .withEmail("werner@example.com").withMatricNumber("E1932279G").build();
+            .withEmail("werner@example.com").withMatricNumber("michegan ave")
+            .withGroup("marketing")
+            .build();
     public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
-            .withEmail("lydia@example.com").withMatricNumber("E9662042H").build();
+            .withEmail("lydia@example.com").withMatricNumber("little tokyo")
+            .withGroup("operations")
+            .build();
+    public static final Person GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
+            .withEmail("anna@example.com").withMatricNumber("4th street")
+            .withGroup("legal")
+            .build();
 
     // Manually added
     public static final Person HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
-            .withEmail("stefan@example.com").withMatricNumber("E8925920A").build();
+            .withEmail("stefan@example.com").withMatricNumber("little india")
+            .withGroup("publicity")
+            .build();
     public static final Person IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
-            .withEmail("hans@example.com").withMatricNumber("E8801996A").build();
+            .withEmail("hans@example.com").withMatricNumber("chicago ave")
+            .withGroup("logistics")
+            .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
     public static final Person AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
-            .withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY).withTags(VALID_TAG_FRIEND).build();
+            .withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY)
+            .withGroup(VALID_GROUP_AMY)
+            .withTags(VALID_TAG_FRIEND).build();
     public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
             .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
+            .withGroup(VALID_GROUP_BOB)
             .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .build();
 

@@ -10,6 +10,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
@@ -101,7 +102,7 @@ public class ParserUtil {
         requireNonNull(matricNumber);
         String trimmedMatricNumber = matricNumber.trim();
         if (!MatricNumber.isValidMatricNumber(trimmedMatricNumber)) {
-            throw new IllegalValueException(MatricNumber.MATRIC_NUMBER_CONSTRAINTS);
+            throw new IllegalValueException(MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
         }
         return new MatricNumber(trimmedMatricNumber);
     }
@@ -138,6 +139,29 @@ public class ParserUtil {
     public static Optional<Email> parseEmail(Optional<String> email) throws IllegalValueException {
         requireNonNull(email);
         return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String group} into a {@code Group}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code group} is invalid.
+     */
+    public static Group parseGroup(String group) throws IllegalValueException {
+        requireNonNull(group);
+        String trimmedGroup = group.trim();
+        if (!Group.isValidGroup(trimmedGroup)) {
+            throw new IllegalValueException(Group.MESSAGE_GROUP_CONSTRAINTS);
+        }
+        return new Group(trimmedGroup);
+    }
+
+    /**
+     * Parses a {@code Optional<String> group} into a {@code Optional<Group>} if {@code group} is present.
+     */
+    public static Optional<Group> parseGroup(Optional<String> group) throws  IllegalValueException {
+        requireNonNull(group);
+        return group.isPresent() ? Optional.of(parseGroup(group.get())) : Optional.empty();
     }
 
     /**

@@ -5,13 +5,24 @@
         <name>Hans Muster</name>
         <phone isPrivate="false">9482424</phone>
         <email isPrivate="false">hans@example.com</email>
+<<<<<<< HEAD
         <matricNumber isPrivate="false">4th street</matricNumber>
+=======
+        <address isPrivate="false">4th street</address>
+        <group isPrivate="false">logistics</group>
+>>>>>>> master
     </persons>
     <!-- Person with invalid phone field -->
     <persons>
         <name>Hans Muster</name>
-        <phone isPrivate="false">948asdf2424</phone>
+        <phone isPrivate="false"
+        >948asdf2424</phone>
         <email isPrivate="false">hans@example.com</email>
+<<<<<<< HEAD
         <matricNumber isPrivate="false">4th street</matricNumber>
+=======
+        <address isPrivate="false">4th street</address>
+        <group isPrivate="false">publicity</group>
+>>>>>>> master
     </persons>
 </addressbook>

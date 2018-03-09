@@ -5,6 +5,7 @@ import java.util.Set;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
@@ -20,23 +21,23 @@ public class SampleDataUtil {
     public static Person[] getSamplePersons() {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("E5215090A"),
-                getTagSet("friends")),
+                    new MatricNumber("E5215090A"), new Group("logistics"),
+                    getTagSet("friends")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                new MatricNumber("E0632713Q"),
-                getTagSet("colleagues", "friends")),
+                    new MatricNumber("E0632713Q"), new Group("production"),
+                    getTagSet("colleagues", "friends")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                new MatricNumber("E1010027G"),
-                getTagSet("neighbours")),
+                    new MatricNumber("E1010027G"), new Group("exco"),
+                    getTagSet("neighbours")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                new MatricNumber("A7251856A"),
-                getTagSet("family")),
+                    new MatricNumber("A7251856A"), new Group("marketing"),
+                    getTagSet("family")),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                new MatricNumber("A4960627S"),
-                getTagSet("classmates")),
+                    new MatricNumber("A4960627S"), new Group("pr"),
+                    getTagSet("classmates")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                new MatricNumber("A2488865L"),
-                getTagSet("colleagues"))
+                    new MatricNumber("A2488865L"), new Group("legal"),
+                    getTagSet("colleagues"))
         };
     }
 

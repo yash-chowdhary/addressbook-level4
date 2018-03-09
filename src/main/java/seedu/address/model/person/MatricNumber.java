@@ -9,7 +9,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class MatricNumber {
 
-    public static final String MATRIC_NUMBER_CONSTRAINTS =
+    public static final String MESSAGE_MATRIC_NUMBER_CONSTRAINTS =
             "Person matric number must begin with one letter, digits in the middle and a letter at the end";
 
     public static final String MATRIC_NUMBER_VALIDATION_REGEX = "^[a-zA-Z][\\d]+[a-zA-Z]$";
@@ -23,7 +23,7 @@ public class MatricNumber {
      */
     public MatricNumber(String matricNumber) {
         requireNonNull(matricNumber);
-        checkArgument(isValidMatricNumber(matricNumber), MATRIC_NUMBER_CONSTRAINTS);
+        checkArgument(isValidMatricNumber(matricNumber), MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
         this.value = matricNumber;
     }
 

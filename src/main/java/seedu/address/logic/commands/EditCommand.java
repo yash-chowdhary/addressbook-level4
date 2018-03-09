@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -19,6 +20,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
@@ -42,7 +44,8 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
-            + "[" + PREFIX_MATRIC_NUMBER + "ADDRESS] "
+            + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
+            + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -107,9 +110,10 @@ public class EditCommand extends UndoableCommand {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         MatricNumber updatedMatricNumber = editPersonDescriptor.getMatricNumber()
                 .orElse(personToEdit.getMatricNumber());
+        Group updatedGroup = editPersonDescriptor.getGroup().orElse(personToEdit.getGroup());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup, updatedTags);
     }
 
     @Override
@@ -140,6 +144,7 @@ public class EditCommand extends UndoableCommand {
         private Phone phone;
         private Email email;
         private MatricNumber matricNumber;
+        private Group group;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -153,6 +158,7 @@ public class EditCommand extends UndoableCommand {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setMatricNumber(toCopy.matricNumber);
+            setGroup(toCopy.group);
             setTags(toCopy.tags);
         }
 
@@ -160,7 +166,8 @@ public class EditCommand extends UndoableCommand {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.matricNumber, this.tags);
+            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email,
+                    this.matricNumber, this.group, this.tags);
         }
 
         public void setName(Name name) {
@@ -193,6 +200,14 @@ public class EditCommand extends UndoableCommand {
 
         public Optional<MatricNumber> getMatricNumber() {
             return Optional.ofNullable(matricNumber);
+        }
+
+        public Optional<Group> getGroup() {
+            return Optional.ofNullable(group);
+        }
+
+        public void setGroup(Group group) {
+            this.group = group;
         }
 
         /**

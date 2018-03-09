@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.model.group.Group;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -20,17 +21,19 @@ public class Person {
     private final Email email;
     private final MatricNumber matricNumber;
 
+    private Group group;
     private final UniqueTagList tags;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, matricNumber, tags);
+    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.matricNumber = matricNumber;
+        this.group = group;
         // protect internal tags from changes in the arg list
         this.tags = new UniqueTagList(tags);
     }
@@ -49,6 +52,10 @@ public class Person {
 
     public MatricNumber getMatricNumber() {
         return matricNumber;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 
     /**
@@ -79,7 +86,7 @@ public class Person {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, matricNumber, tags);
+        return Objects.hash(name, phone, email, matricNumber, group, tags);
     }
 
     @Override
@@ -92,6 +99,8 @@ public class Person {
                 .append(getEmail())
                 .append(" MatricNumber: ")
                 .append(getMatricNumber())
+                .append(" Group: ")
+                .append(getGroup())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
