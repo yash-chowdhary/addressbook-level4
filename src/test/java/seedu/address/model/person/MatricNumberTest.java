@@ -22,16 +22,22 @@ public class MatricNumberTest {
 
     @Test
     public void isValidMatricNumber() {
-        // null address
+        // null matric number
         Assert.assertThrows(NullPointerException.class, () -> MatricNumber.isValidMatricNumber(null));
 
-        // invalid addresses
+        // invalid matric numbers
         assertFalse(MatricNumber.isValidMatricNumber("")); // empty string
         assertFalse(MatricNumber.isValidMatricNumber(" ")); // spaces only
+        assertFalse(MatricNumber.isValidMatricNumber("A1234567"));
+        assertFalse(MatricNumber.isValidMatricNumber("1234567A"));
+        assertFalse(MatricNumber.isValidMatricNumber("987645321"));
 
-        // valid addresses
+
+        // valid matric numbers
         assertTrue(MatricNumber.isValidMatricNumber("E1152241G"));
-        assertTrue(MatricNumber.isValidMatricNumber("G0152640A")); // one character
-        assertTrue(MatricNumber.isValidMatricNumber("H1022206A")); // long address
+        assertTrue(MatricNumber.isValidMatricNumber("G0152640A"));
+        assertTrue(MatricNumber.isValidMatricNumber("P1902205L"));
+        assertTrue(MatricNumber.isValidMatricNumber("U1024509A"));
+        assertTrue(MatricNumber.isValidMatricNumber("E1122206M"));
     }
 }

@@ -50,7 +50,7 @@ public class PersonCardHandle extends NodeHandle<Node> {
         return nameLabel.getText();
     }
 
-    public String getAddress() {
+    public String getMatricNumber() {
         return matricNumberLabel.getText();
     }
 

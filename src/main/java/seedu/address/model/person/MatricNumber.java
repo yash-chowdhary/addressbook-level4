@@ -12,10 +12,6 @@ public class MatricNumber {
     public static final String MATRIC_NUMBER_CONSTRAINTS =
             "Person matric number must begin with one letter, digits in the middle and a letter at the end";
 
-    /*
-     * The first character of the matric number must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     */
     public static final String MATRIC_NUMBER_VALIDATION_REGEX = "^[a-zA-Z][\\d]+[a-zA-Z]$";
 
     public final String value;
