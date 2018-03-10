@@ -3,9 +3,8 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -15,7 +14,6 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -79,44 +77,52 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
-    /**
-     * Updates the
-     * @param tagsToCheck
-
-    private void updateTagList(Set<Tag> tagsToCheck) {
-        Iterator itr = tagsToCheck.iterator();
-
-        while (itr.hasNext()) {
-            Tag tag = (Tag) itr.next();
-
-            if(!addressBook.containsTag(tag)) {
-                try {
-                    addressBook.addTag(tag);
-                } catch (IllegalValueException ive) {
-                    throw new IllegalArgumentException("tagName is expected to be valid.");
-                }
-            }
-        }
-    }*/
-
     @Override
     public void updatePerson(Person target, Person editedPerson)
             throws DuplicatePersonException, PersonNotFoundException {
         requireAllNonNull(target, editedPerson);
 
         addressBook.updatePerson(target, editedPerson);
+        removeUnusedTags();
         indicateAddressBookChanged();
     }
 
     @Override
-    public void removeTag(Tag tag) throws TagNotFoundException {
+    public void removeTag(Tag tag) {
         try {
             addressBook.removeTag(tag);
+            updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             indicateAddressBookChanged();
         } catch (TagNotFoundException tnfe) {
             throw new AssertionError("The target tag cannot be missing");
         }
+    }
 
+    /**
+     * Removes those tags from the master tag list that no persons in the address book are tagged with.
+     */
+    private void removeUnusedTags() {
+        List<Tag> tags = new ArrayList<>(addressBook.getTagList());
+
+        for (Tag tag: tags) {
+            if (isNotTaggedInPersons(tag)) {
+                removeTag(tag);
+            }
+        }
+    }
+
+    /**
+     * Returns true is no person in the address book is tagged with {@code tag}.
+     */
+    private boolean isNotTaggedInPersons(Tag tag) {
+        List<Person> persons = new ArrayList<>(addressBook.getPersonList());
+
+        for (Person person: persons) {
+            if (person.getTags().contains(tag)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //=========== Filtered Person List Accessors =============================================================

@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -108,17 +109,34 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void updatePerson(Person target, Person editedPerson)
             throws DuplicatePersonException, PersonNotFoundException {
         requireNonNull(editedPerson);
-        try {
-            removePersonTags(target);
-        } catch (TagNotFoundException tnfe) {
-            throw new AssertionError("The target tag cannot be missing");
-        }
+
+        removePersonTags(target);
 
         Person syncedEditedPerson = syncWithMasterTagList(editedPerson);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
-        persons.setPerson(target, syncedEditedPerson);
+        try {
+            persons.setPerson(target, syncedEditedPerson);
+        } catch (DuplicatePersonException dpe) {
+            addTargetPersonTags(target);
+            throw new DuplicatePersonException();
+        }
+    }
+
+    
+
+    /**
+     * Adds back the tags of {@code target} that were removed from {@code tags}.
+     */
+    private void addTargetPersonTags(Person target) {
+        Set<Tag> allTags = new HashSet<Tag>(tags.asObservableList());
+
+        for (Tag tag: target.getTags()){
+            allTags.add(tag);
+        }
+
+        tags.setTags(allTags);
     }
 
     /**
@@ -148,11 +166,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @throws PersonNotFoundException if the {@code key} is not in this {@code AddressBook}.
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
-        try {
-            removePersonTags(key);
-        } catch (TagNotFoundException tnfe) {
-            throw new AssertionError("The target tag cannot be missing");
-        }
+        removePersonTags(key);
 
         if (persons.remove(key)) {
             return true;
@@ -164,11 +178,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Removes tags from master tag list {@code tags} that are unique to person {@code person}.
      */
-    private void removePersonTags(Person person) throws TagNotFoundException {
+    private void removePersonTags(Person person) {
         List<Tag> tagsToCheck = tags.asObservableList().stream().collect(Collectors.toList());
-        Set<Tag> newTags = tagsToCheck.stream().
-                filter(t -> !isTagUniqueToPerson(t, person)).
-                collect(Collectors.toSet());
+        Set<Tag> newTags = tagsToCheck.stream()
+                .filter(t -> !isTagUniqueToPerson(t, person))
+                .collect(Collectors.toSet());
         tags.setTags(newTags);
         /*
         Iterator<Tag> itr = tagsToCheck.iterator();
@@ -185,7 +199,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     private boolean isTagUniqueToPerson(Tag tag, Person key) {
         for (Person person : persons) {
-            if (person.hasTag(tag) && !person.equals(key)){
+            if (person.hasTag(tag) && !person.equals(key)) {
                 return false;
             }
         }
@@ -198,27 +212,20 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags.add(t);
     }
 
-   /* @Override
-    public boolean containsTag(Tag tagToSearch) {
-        boolean found = false;
-        tags.forEach(tag -> {
-            if (tag.equals(tagToSearch)) {
-                found = true;
-            }
-        });
-        return found;
-    }*/
-
     /**
      * Removes {@code tag} for all persons in this {@code AddressBook}.
      * @param tag Tag to be removed
      */
     public void removeTag(Tag tag) throws TagNotFoundException {
-        setTags(getListWithoutTag(tag));
+        List<Tag> tags = new ArrayList<Tag>(getTagList());
+        if (!tags.contains(tag)) {
+            return;
+        }
 
+        setTags(getListWithoutTag(tag));
         try {
             for (Person person : persons) {
-                if (person.hasTag(tag)){
+                if (person.hasTag(tag)) {
                     removeTagFromPerson(tag, person);
                 }
             }
@@ -238,7 +245,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         while (itr.hasNext()) {
             Tag tag = itr.next();
-            if(!tag.equals(tagToRemove)) {
+            if (!tag.equals(tagToRemove)) {
                 newTagsList.add(tag);
             }
         }
