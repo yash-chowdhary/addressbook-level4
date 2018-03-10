@@ -19,7 +19,7 @@ public class RemoveTagCommandParser implements Parser<RemoveTagCommand> {
      */
     public RemoveTagCommand parse(String args) throws ParseException {
         try {
-            Tag tag = ParserUtil.parseTagName(args);
+            Tag tag = ParserUtil.parseTag(args);
             return new RemoveTagCommand(tag);
         } catch (IllegalValueException ive) {
             throw new ParseException(
