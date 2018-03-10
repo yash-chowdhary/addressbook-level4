@@ -45,6 +45,21 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String name} into a {@code Tag}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code name} is invalid.
+     */
+    public static Tag parseTagName(String TagName) throws IllegalValueException {
+        requireNonNull(TagName);
+        String trimmedTagName = TagName.trim();
+        if (!Name.isValidName(trimmedTagName)) {
+            throw new IllegalValueException(Name.MESSAGE_NAME_CONSTRAINTS);
+        }
+        return new Tag(trimmedTagName);
+    }
+
+    /**
      * Parses a {@code String name} into a {@code Name}.
      * Leading and trailing whitespaces will be trimmed.
      *
