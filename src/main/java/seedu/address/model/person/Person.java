@@ -3,12 +3,14 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.model.group.Group;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
 
 /**
  * Represents a Person in the address book.
@@ -22,7 +24,7 @@ public class Person {
     private final Address address;
 
     private Group group;
-    private final UniqueTagList tags;
+    private final HashMap<String, Tag> tags;
 
     /**
      * Every field must be present and not null.
@@ -34,8 +36,8 @@ public class Person {
         this.email = email;
         this.address = address;
         this.group = group;
-        // protect internal tags from changes in the arg list
-        this.tags = new UniqueTagList(tags);
+        this.tags = new HashMap<String, Tag>();
+        setTags(tags);
     }
 
     public Name getName() {
@@ -58,12 +60,35 @@ public class Person {
         return group;
     }
 
+    private void setTags(Set<Tag> tagsToAdd) {
+        Iterator itr = tagsToAdd.iterator();
+
+        while (itr.hasNext()) {
+            Tag tag = (Tag) itr.next();
+            tags.put(tag.tagName, tag);
+        }
+    }
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags.toSet());
+        Set<Tag> personTags = new HashSet<Tag>();
+
+        Set<String> tagNames = tags.keySet();
+        Iterator itr = tagNames.iterator();
+
+        while (itr.hasNext()) {
+            String key = (String) itr.next();
+            personTags.add(tags.get(key));
+        }
+
+        return Collections.unmodifiableSet(personTags);
+    }
+
+    public void removeTag(Tag toRemove) {
+
     }
 
     @Override
