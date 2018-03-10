@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -126,12 +127,12 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         // Create map with values = tag object references in the master list
         // used for checking person tag references
-        final Map<Tag, Tag> masterTagObjects = new HashMap<>();
-        tags.forEach(tag -> masterTagObjects.put(tag, tag));
+        final Map<String, Tag> masterTagObjects = new HashMap<>();
+        tags.forEach(tag -> masterTagObjects.put(tag.tagName, tag));
 
         // Rebuild the list of person tags to point to the relevant tags in the master tag list.
         final Set<Tag> correctTagReferences = new HashSet<>();
-        personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag)));
+        personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Person(
                 person.getName(), person.getPhone(), person.getEmail(), person.getAddress(), person.getGroup(),
                     correctTagReferences);
@@ -155,18 +156,50 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags.add(t);
     }
 
+   /* @Override
+    public boolean containsTag(Tag tagToSearch) {
+        boolean found = false;
+        tags.forEach(tag -> {
+            if (tag.equals(tagToSearch)) {
+                found = true;
+            }
+        });
+        return found;
+    }*/
+
     /**
      * Removes {@code tag} for all persons in this {@code AddressBook}.
-     * @param tag
+     * @param tag Tag to be removed
      */
     public void removeTag(Tag tag) throws TagNotFoundException {
-        try{
+        setTags(getListWithoutTag(tag));
+
+        try {
             for (Person person : persons) {
                 removeTagFromPerson(tag, person);
             }
         } catch (PersonNotFoundException pnfe) {
             throw new AssertionError("Impossible: original person is obtained from the address book.");
         }
+    }
+
+    /**
+     * Returns a list of tags which does not contain {@code tagToRemove}.
+     * @param tagToRemove Tag which should not be included in the tagToRemove list
+     */
+    private Set<Tag> getListWithoutTag(Tag tagToRemove) {
+        Set<Tag> newTagsList = new HashSet<>();
+
+        Iterator<Tag> itr = tags.iterator();
+
+        while (itr.hasNext()) {
+            Tag tag = itr.next();
+            if(!tag.equals(tagToRemove)) {
+                newTagsList.add(tag);
+            }
+        }
+
+        return newTagsList;
     }
 
     /**
