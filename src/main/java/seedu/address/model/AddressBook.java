@@ -17,6 +17,7 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.tag.exceptions.TagNotFoundException;
 
 /**
  * Wraps all data at the address-book level
@@ -152,6 +153,44 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
+    }
+
+    /**
+     * Removes {@code tag} for all persons in this {@code AddressBook}.
+     * @param tag
+     */
+    public void removeTag(Tag tag) throws TagNotFoundException {
+        try{
+            for (Person person : persons) {
+                removeTagFromPerson(tag, person);
+            }
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("Impossible: original person is obtained from the address book.");
+        }
+    }
+
+    /**
+     * Removes {@code tag} from {@code person} in this {@code AddressBook}.
+     * @throws PersonNotFoundException if the {@code person} is not in this {@code AddressBook}.
+     */
+    private void removeTagFromPerson(Tag tag, Person person) throws PersonNotFoundException {
+        Set<Tag> personTags = new HashSet<>(person.getTags());
+
+        if (!personTags.remove(tag)) {
+            return;
+        }
+
+        Person newPerson =
+                new Person(person.getName(), person.getPhone(),
+                        person.getEmail(), person.getAddress(),
+                        person.getGroup(), personTags);
+
+        try {
+            updatePerson(person, newPerson);
+        } catch (DuplicatePersonException dpe) {
+            throw new AssertionError("Modifying a person's tags only should not result in a duplicate. "
+                    + "See Person#equals(Object).");
+        }
     }
 
     //// util methods
