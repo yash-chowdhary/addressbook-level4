@@ -108,6 +108,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void updatePerson(Person target, Person editedPerson)
             throws DuplicatePersonException, PersonNotFoundException {
         requireNonNull(editedPerson);
+        try {
+            removePersonTags(target);
+        } catch (TagNotFoundException tnfe) {
+            throw new AssertionError("The target tag cannot be missing");
+        }
 
         Person syncedEditedPerson = syncWithMasterTagList(editedPerson);
         // TODO: the tags master list will be updated even though the below line fails.
@@ -143,11 +148,48 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @throws PersonNotFoundException if the {@code key} is not in this {@code AddressBook}.
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
+        try {
+            removePersonTags(key);
+        } catch (TagNotFoundException tnfe) {
+            throw new AssertionError("The target tag cannot be missing");
+        }
+
         if (persons.remove(key)) {
             return true;
         } else {
             throw new PersonNotFoundException();
         }
+    }
+
+    /**
+     * Removes tags from master tag list {@code tags} that are unique to person {@code person}.
+     */
+    private void removePersonTags(Person person) throws TagNotFoundException {
+        List<Tag> tagsToCheck = tags.asObservableList().stream().collect(Collectors.toList());
+        Set<Tag> newTags = tagsToCheck.stream().
+                filter(t -> !isTagUniqueToPerson(t, person)).
+                collect(Collectors.toSet());
+        tags.setTags(newTags);
+        /*
+        Iterator<Tag> itr = tagsToCheck.iterator();
+        while (itr.hasNext()) {
+            Tag tag = itr.next();
+            if (isTagUniqueToPerson(tag, person)) {
+                removeTag(tag);
+            }
+        }*/
+    }
+
+    /**
+     * Returns true if only {@code key} is tagged with {@code tag}.
+     */
+    private boolean isTagUniqueToPerson(Tag tag, Person key) {
+        for (Person person : persons) {
+            if (person.hasTag(tag) && !person.equals(key)){
+                return false;
+            }
+        }
+        return true;
     }
 
     //// tag-level operations
@@ -176,7 +218,9 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         try {
             for (Person person : persons) {
-                removeTagFromPerson(tag, person);
+                if (person.hasTag(tag)){
+                    removeTagFromPerson(tag, person);
+                }
             }
         } catch (PersonNotFoundException pnfe) {
             throw new AssertionError("Impossible: original person is obtained from the address book.");
@@ -213,10 +257,9 @@ public class AddressBook implements ReadOnlyAddressBook {
             return;
         }
 
-        Person newPerson =
-                new Person(person.getName(), person.getPhone(),
-                        person.getEmail(), person.getAddress(),
-                        person.getGroup(), personTags);
+        Person newPerson = new Person(person.getName(), person.getPhone(),
+                person.getEmail(), person.getAddress(),
+                person.getGroup(), personTags);
 
         try {
             updatePerson(person, newPerson);

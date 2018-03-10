@@ -110,8 +110,13 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void removeTag(Tag tag) throws TagNotFoundException {
-        addressBook.removeTag(tag);
-        indicateAddressBookChanged();
+        try {
+            addressBook.removeTag(tag);
+            indicateAddressBookChanged();
+        } catch (TagNotFoundException tnfe) {
+            throw new AssertionError("The target tag cannot be missing");
+        }
+
     }
 
     //=========== Filtered Person List Accessors =============================================================
