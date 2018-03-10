@@ -87,8 +87,8 @@ public class Person {
         return Collections.unmodifiableSet(personTags);
     }
 
-    public void removeTag(Tag toRemove) {
-
+    public boolean hasTag(Tag tag) {
+        return getTags().contains(tag);
     }
 
     @Override
