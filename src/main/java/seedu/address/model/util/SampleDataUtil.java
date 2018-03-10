@@ -21,13 +21,13 @@ public class SampleDataUtil {
     public static Person[] getSamplePersons() {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                    new MatricNumber("E5215090A"), new Group("logistics"),
+                    new MatricNumber("A5215090A"), new Group("logistics"),
                     getTagSet("friends")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                    new MatricNumber("E0632713Q"), new Group("production"),
+                    new MatricNumber("A0632713Q"), new Group("production"),
                     getTagSet("colleagues", "friends")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                    new MatricNumber("E1010027G"), new Group("exco"),
+                    new MatricNumber("A1010027G"), new Group("exco"),
                     getTagSet("neighbours")),
             new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                     new MatricNumber("A7251856A"), new Group("marketing"),
