@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -71,10 +73,31 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void addPerson(Person person) throws DuplicatePersonException {
+        //updateTagList(person.getTags());
         addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
     }
+
+    /**
+     * Updates the
+     * @param tagsToCheck
+
+    private void updateTagList(Set<Tag> tagsToCheck) {
+        Iterator itr = tagsToCheck.iterator();
+
+        while (itr.hasNext()) {
+            Tag tag = (Tag) itr.next();
+
+            if(!addressBook.containsTag(tag)) {
+                try {
+                    addressBook.addTag(tag);
+                } catch (IllegalValueException ive) {
+                    throw new IllegalArgumentException("tagName is expected to be valid.");
+                }
+            }
+        }
+    }*/
 
     @Override
     public void updatePerson(Person target, Person editedPerson)

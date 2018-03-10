@@ -60,8 +60,8 @@ public class Person {
         return group;
     }
 
-    private void setTags(Set<Tag> tagsToAdd) {
-        Iterator itr = tagsToAdd.iterator();
+    private void setTags(Set<Tag> personTags) {
+        Iterator itr = personTags.iterator();
 
         while (itr.hasNext()) {
             Tag tag = (Tag) itr.next();
