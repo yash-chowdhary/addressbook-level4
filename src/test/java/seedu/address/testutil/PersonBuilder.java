@@ -21,7 +21,7 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_MATRIC_NUMBER = "E1234567H";
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
-    public static final String DEFAULT_GROUP = "logistics";
+    public static final String DEFAULT_GROUP = "exco";
     public static final String DEFAULT_TAGS = "friends";
 
     private Name name;
