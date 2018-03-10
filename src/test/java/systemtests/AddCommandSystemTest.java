@@ -107,7 +107,9 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a person with all fields same as another person in the address book except address -> added */
+        /* Case: add a person with all fields same as another person in the address book
+         * except matric number -> added
+         */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
@@ -165,7 +167,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
-        /* Case: missing address -> rejected */
+        /* Case: missing matric number -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
@@ -188,7 +190,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 + INVALID_EMAIL_DESC + MATRIC_NUMBER_DESC_AMY;
         assertCommandFailure(command, Email.MESSAGE_EMAIL_CONSTRAINTS);
 
-        /* Case: invalid address -> rejected */
+        /* Case: invalid matric number -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + EMAIL_DESC_AMY + INVALID_MATRIC_NUMBER_DESC;
         assertCommandFailure(command, MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
