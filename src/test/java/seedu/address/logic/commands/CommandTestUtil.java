@@ -23,7 +23,6 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.model.tag.exceptions.TagNotFoundException;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 /**
