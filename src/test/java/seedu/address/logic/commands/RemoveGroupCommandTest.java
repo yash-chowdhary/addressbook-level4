@@ -46,7 +46,7 @@ public class RemoveGroupCommandTest {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
-        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_INVALID_GROUP);
+        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class RemoveGroupCommandTest {
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_INVALID_GROUP);
+        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
