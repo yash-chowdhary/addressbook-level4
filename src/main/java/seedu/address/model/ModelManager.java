@@ -3,6 +3,8 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -18,6 +20,8 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.GroupCannotBeRemovedException;
 import seedu.address.model.person.exceptions.GroupNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.exceptions.TagNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -28,6 +32,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final AddressBook addressBook;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Tag> filteredTags;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -40,6 +45,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredTags = new FilteredList<>(this.addressBook.getTagList());
     }
 
     public ModelManager() {
@@ -70,6 +76,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void addPerson(Person person) throws DuplicatePersonException {
+        //updateTagList(person.getTags());
         addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
@@ -81,6 +88,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireAllNonNull(target, editedPerson);
 
         addressBook.updatePerson(target, editedPerson);
+        removeUnusedTags();
         indicateAddressBookChanged();
     }
 
@@ -90,6 +98,44 @@ public class ModelManager extends ComponentManager implements Model {
 
         addressBook.removeGroup(toRemove);
         indicateAddressBookChanged();
+    }
+
+    @Override
+    public void removeTag(Tag tag) {
+        try {
+            addressBook.removeTag(tag);
+            updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            indicateAddressBookChanged();
+        } catch (TagNotFoundException tnfe) {
+            throw new AssertionError("The target tag cannot be missing");
+        }
+    }
+
+    /**
+     * Removes those tags from the master tag list that no persons in the address book are tagged with.
+     */
+    private void removeUnusedTags() {
+        List<Tag> tags = new ArrayList<>(addressBook.getTagList());
+
+        for (Tag tag: tags) {
+            if (isNotTaggedInPersons(tag)) {
+                removeTag(tag);
+            }
+        }
+    }
+
+    /**
+     * Returns true is no person in the address book is tagged with {@code tag}.
+     */
+    private boolean isNotTaggedInPersons(Tag tag) {
+        List<Person> persons = new ArrayList<>(addressBook.getPersonList());
+
+        for (Person person: persons) {
+            if (person.getTags().contains(tag)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -125,6 +171,23 @@ public class ModelManager extends ComponentManager implements Model {
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
                 && filteredPersons.equals(other.filteredPersons);
+    }
+
+    //=========== Filtered Tag List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Tag} backed by the internal list of
+     * {@code addressBook}
+     */
+    @Override
+    public ObservableList<Tag> getFilteredTagList() {
+        return FXCollections.unmodifiableObservableList(filteredTags);
+    }
+
+    @Override
+    public void updateFilteredTagList(Predicate<Tag> predicate) {
+        requireNonNull(predicate);
+        filteredTags.setPredicate(predicate);
     }
 
 }

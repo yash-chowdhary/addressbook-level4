@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static seedu.address.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.address.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BOB;
@@ -120,6 +123,37 @@ public class AddressBookTest {
     public void getTagList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
         addressBook.getTagList().remove(0);
+    }
+
+    @Test
+    public void updatePerson_detailsChanged_personsAndTagsListUpdated() throws Exception {
+        AddressBook addressBookUpdatedToAmy = new AddressBookBuilder().withPerson(BOB).build();
+        addressBookUpdatedToAmy.updatePerson(BOB, AMY);
+
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(AMY).build();
+
+        assertEquals(expectedAddressBook, addressBookUpdatedToAmy);
+    }
+
+    @Test
+    public void removeTag_nonExistentTag_addressBookUnchanged() throws Exception {
+        addressBookWithBobAndAmy.removeTag(new Tag(VALID_TAG_UNUSED));
+
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).withPerson(AMY).build();
+
+        assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+    }
+
+    @Test
+    public void removeTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+        addressBookWithBobAndAmy.removeTag(new Tag(VALID_TAG_FRIEND));
+
+        Person amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
+        Person bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(bobWithoutFriendTag)
+                .withPerson(amyWithoutFriendTag).build();
+
+        assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
     }
 
     /**

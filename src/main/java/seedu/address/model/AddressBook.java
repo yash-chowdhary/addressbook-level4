@@ -2,8 +2,10 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,6 +22,7 @@ import seedu.address.model.person.exceptions.GroupNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.tag.exceptions.TagNotFoundException;
 
 /**
  * Wraps all data at the address-book level
@@ -110,11 +113,31 @@ public class AddressBook implements ReadOnlyAddressBook {
             throws DuplicatePersonException, PersonNotFoundException {
         requireNonNull(editedPerson);
 
+        removePersonTags(target);
+
         Person syncedEditedPerson = syncWithMasterTagList(editedPerson);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
-        persons.setPerson(target, syncedEditedPerson);
+        try {
+            persons.setPerson(target, syncedEditedPerson);
+        } catch (DuplicatePersonException dpe) {
+            addTargetPersonTags(target);
+            throw new DuplicatePersonException();
+        }
+    }
+
+    /**
+     * Re-adds the tags of {@code target} that were removed from {@code tags}.
+     */
+    private void addTargetPersonTags(Person target) {
+        Set<Tag> allTags = new HashSet<>(tags.asObservableList());
+
+        for (Tag tag: target.getTags()) {
+            allTags.add(tag);
+        }
+
+        tags.setTags(allTags);
     }
 
     /**
@@ -128,14 +151,14 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         // Create map with values = tag object references in the master list
         // used for checking person tag references
-        final Map<Tag, Tag> masterTagObjects = new HashMap<>();
-        tags.forEach(tag -> masterTagObjects.put(tag, tag));
+        final Map<String, Tag> masterTagObjects = new HashMap<>();
+        tags.forEach(tag -> masterTagObjects.put(tag.tagName, tag));
 
         // Rebuild the list of person tags to point to the relevant tags in the master tag list.
         final Set<Tag> correctTagReferences = new HashSet<>();
-        personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag)));
+        personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Person(
-                person.getName(), person.getPhone(), person.getEmail(), person.getAddress(), person.getGroup(),
+                person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(), person.getGroup(),
                     correctTagReferences);
     }
 
@@ -144,11 +167,44 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @throws PersonNotFoundException if the {@code key} is not in this {@code AddressBook}.
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
+        removePersonTags(key);
+
         if (persons.remove(key)) {
             return true;
         } else {
             throw new PersonNotFoundException();
         }
+    }
+
+    /**
+     * Removes tags from master tag list {@code tags} that are unique to person {@code person}.
+     */
+    private void removePersonTags(Person person) {
+        List<Tag> tagsToCheck = tags.asObservableList().stream().collect(Collectors.toList());
+        Set<Tag> newTags = tagsToCheck.stream()
+                .filter(t -> !isTagUniqueToPerson(t, person))
+                .collect(Collectors.toSet());
+        tags.setTags(newTags);
+        /*
+        Iterator<Tag> itr = tagsToCheck.iterator();
+        while (itr.hasNext()) {
+            Tag tag = itr.next();
+            if (isTagUniqueToPerson(tag, person)) {
+                removeTag(tag);
+            }
+        }*/
+    }
+
+    /**
+     * Returns true if only {@code key} is tagged with {@code tag}.
+     */
+    private boolean isTagUniqueToPerson(Tag tag, Person key) {
+        for (Person person : persons) {
+            if (person.hasTag(tag) && !person.equals(key)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -203,6 +259,70 @@ public class AddressBook implements ReadOnlyAddressBook {
         } catch (DuplicatePersonException dpe) {
             throw new AssertionError("Deleting a person's group only should not result in a duplicate. "
             + "See Person#equals(Object).");
+        }
+    }
+
+    /**
+     * Removes {@code tag} for all persons in this {@code AddressBook}.
+     * @param tag Tag to be removed
+     */
+    public void removeTag(Tag tag) throws TagNotFoundException {
+        List<Tag> tags = new ArrayList<Tag>(getTagList());
+        if (!tags.contains(tag)) {
+            return;
+        }
+
+        setTags(getListWithoutTag(tag));
+        try {
+            for (Person person : persons) {
+                if (person.hasTag(tag)) {
+                    removeTagFromPerson(tag, person);
+                }
+            }
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("Impossible: original person is obtained from the address book.");
+        }
+    }
+
+    /**
+     * Returns a list of tags which does not contain {@code tagToRemove}.
+     * @param tagToRemove Tag which should not be included in the tagToRemove list
+     */
+    private Set<Tag> getListWithoutTag(Tag tagToRemove) {
+        Set<Tag> newTagsList = new HashSet<>();
+
+        Iterator<Tag> itr = tags.iterator();
+
+        while (itr.hasNext()) {
+            Tag tag = itr.next();
+            if (!tag.equals(tagToRemove)) {
+                newTagsList.add(tag);
+            }
+        }
+
+        return newTagsList;
+    }
+
+    /**
+     * Removes {@code tag} from {@code person} in this {@code AddressBook}.
+     * @throws PersonNotFoundException if the {@code person} is not in this {@code AddressBook}.
+     */
+    private void removeTagFromPerson(Tag tag, Person person) throws PersonNotFoundException {
+        Set<Tag> personTags = new HashSet<>(person.getTags());
+
+        if (!personTags.remove(tag)) {
+            return;
+        }
+
+        Person newPerson = new Person(person.getName(), person.getPhone(),
+                person.getEmail(), person.getMatricNumber(),
+                person.getGroup(), personTags);
+
+        try {
+            updatePerson(person, newPerson);
+        } catch (DuplicatePersonException dpe) {
+            throw new AssertionError("Modifying a person's tags only should not result in a duplicate. "
+                    + "See Person#equals(Object).");
         }
     }
 

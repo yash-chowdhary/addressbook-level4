@@ -1172,7 +1172,7 @@ _{More to be added}_
 == Glossary
 
 [[attribute]] Attribute::
-An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, address and so on.
+An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matricNumber and so on.
 
 [[club]] Club::
 A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
