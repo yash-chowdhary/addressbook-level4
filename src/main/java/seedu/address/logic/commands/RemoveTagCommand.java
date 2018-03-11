@@ -44,11 +44,14 @@ public class RemoveTagCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Tag> lastShownList = model.getFilteredTagList();
 
         if (!getMasterTagList().contains(tagToRemove)) {
             throw new CommandException(Messages.MESSAGE_INVALID_TAG);
         }
+
+        int targetIndex = lastShownList.indexOf(tagToRemove);
+        tagToRemove = lastShownList.get(targetIndex);
     }
 
     private List<Tag> getMasterTagList() {

@@ -128,9 +128,9 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Adds back the tags of {@code target} that were removed from {@code tags}.
      */
     private void addTargetPersonTags(Person target) {
-        Set<Tag> allTags = new HashSet<Tag>(tags.asObservableList());
+        Set<Tag> allTags = new HashSet<>(tags.asObservableList());
 
-        for (Tag tag: target.getTags()){
+        for (Tag tag: target.getTags()) {
             allTags.add(tag);
         }
 
@@ -263,7 +263,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         Person newPerson = new Person(person.getName(), person.getPhone(),
-                person.getEmail(), person.getAddress(),
+                person.getEmail(), person.getMatricNumber(),
                 person.getGroup(), personTags);
 
         try {
