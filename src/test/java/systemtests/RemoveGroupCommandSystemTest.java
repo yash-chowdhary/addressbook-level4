@@ -20,8 +20,8 @@ import seedu.address.logic.commands.RemoveGroupCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
 import seedu.address.model.group.Group;
-import seedu.address.model.person.exceptions.GroupCannotBeRemovedException;
-import seedu.address.model.person.exceptions.GroupNotFoundException;
+import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.group.exceptions.GroupNotFoundException;
 
 public class RemoveGroupCommandSystemTest extends AddressBookSystemTest {
 

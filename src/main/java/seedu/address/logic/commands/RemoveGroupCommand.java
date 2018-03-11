@@ -5,8 +5,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_GROUP;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.group.Group;
-import seedu.address.model.person.exceptions.GroupCannotBeRemovedException;
-import seedu.address.model.person.exceptions.GroupNotFoundException;
+import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.group.exceptions.GroupNotFoundException;
 
 /**
  * Removes a group from the Club Book

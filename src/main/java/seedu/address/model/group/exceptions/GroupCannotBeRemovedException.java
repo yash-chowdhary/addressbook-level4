@@ -1,4 +1,4 @@
-package seedu.address.model.person.exceptions;
+package seedu.address.model.group.exceptions;
 
 /**
  * Signals that the desired Group cannot be removed as it is a mandatory one.

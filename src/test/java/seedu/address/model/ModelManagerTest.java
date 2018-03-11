@@ -22,10 +22,10 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.model.group.Group;
+import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.group.exceptions.GroupNotFoundException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.exceptions.GroupCannotBeRemovedException;
-import seedu.address.model.person.exceptions.GroupNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.PersonBuilder;
