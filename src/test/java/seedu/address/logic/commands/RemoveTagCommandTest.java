@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
@@ -156,7 +155,8 @@ public class RemoveTagCommandTest {
     public void equals() throws Exception {
         RemoveTagCommand removeFirstTagCommand = prepareCommand(model.getFilteredTagList()
                 .get(INDEX_FIRST_TAG.getZeroBased()));
-        RemoveTagCommand removeSecondTagCommand = prepareCommand(model.getFilteredTagList().get(INDEX_SECOND_TAG.getZeroBased()));
+        RemoveTagCommand removeSecondTagCommand = prepareCommand(model.getFilteredTagList()
+                .get(INDEX_SECOND_TAG.getZeroBased()));
 
         // same object -> returns true
         assertTrue(removeFirstTagCommand.equals(removeFirstTagCommand));

@@ -123,7 +123,7 @@ public class AddressBook implements ReadOnlyAddressBook {
             throw new DuplicatePersonException();
         }
     }
-    
+
     /**
      * Re-adds the tags of {@code target} that were removed from {@code tags}.
      */
