@@ -138,6 +138,24 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
+=== Deleting a group : `removegroup`
+
+Deletes the specified group from the address book. +
+Format: `removegroup g/GROUP`
+
+****
+* Deletes the specified group from the addressbook.
+* Once the group is deleted, all members who were part of the group will be assigned to the default group `member`.
+* The group must not be a mandatory group (`member`) as that is the default group.
+* The group must exist in the addressbok.
+* The group must be in valid format (i.e. no white-spaces and non-empty).
+****
+
+Examples:
+
+* `removegroup g/logistics` +
+Deletes the `logistics` group in the address book.
+
 === Selecting a person : `select`
 
 Selects the person identified by the index number used in the last person listing. +
