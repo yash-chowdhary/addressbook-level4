@@ -125,7 +125,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
     
     /**
-     * Adds back the tags of {@code target} that were removed from {@code tags}.
+     * Re-adds the tags of {@code target} that were removed from {@code tags}.
      */
     private void addTargetPersonTags(Person target) {
         Set<Tag> allTags = new HashSet<>(tags.asObservableList());
