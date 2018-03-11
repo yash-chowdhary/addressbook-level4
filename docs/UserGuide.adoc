@@ -63,15 +63,20 @@ Format: `help`
 === Adding a person: `add`
 
 Adds a person to the address book +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS g/GROUP [t/TAG]...`
 
 [TIP]
 A person can have any number of tags (including 0)
+[TIP]
+The `group` attribute is an optional attribute.
+A person will be assigned to the default group `member` if no group is specified in the command
+[TIP]
+A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/Betsy Crowe t/head e/betsycrowe@example.com a/#07-25, 19 Prince George's Park p/1234567 g/logistics`
 
 === Listing all persons : `list`
 
@@ -81,12 +86,14 @@ Format: `list`
 === Editing a person : `edit`
 
 Edits an existing person in the address book. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [g/GROUP] [t/TAG]...`
 
 ****
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* You can remove a person from a group by editing the person's group to `member` as it is the default group in the addressbook.
+* You cannot remove a person from a group by typing `g/` without specifying any group after it as a group must comply with the requirements of a valid group
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person's tags by typing `t/` without specifying any tags after it.
 ****
@@ -97,6 +104,8 @@ Examples:
 Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `edit 3 g/finance` +
+Edits the group of the 3rd person to be `finance`.
 
 === Locating persons by name: `find`
 
@@ -271,6 +280,8 @@ e.g. `add n/James Jerome p/22224444 e/jamesjerome@example.com a/123, Clementi Rd
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
+* *Delete Group* : `removegroup g/GROUP` +
+e.g. `removegroup g/publicity`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
 * *List* : `list`
