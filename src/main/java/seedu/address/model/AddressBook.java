@@ -251,7 +251,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
-        Person newPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+        Person newPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(),
                 defaultGroup, person.getTags());
 
         try {

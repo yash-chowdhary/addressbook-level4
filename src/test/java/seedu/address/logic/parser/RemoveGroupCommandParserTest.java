@@ -1,10 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.GROUP_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
@@ -31,7 +31,7 @@ public class RemoveGroupCommandParserTest {
     public void parse_incorrectField_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE);
         assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
-        assertParseFailure(parser, ADDRESS_DESC_AMY, expectedMessage);
+        assertParseFailure(parser, MATRIC_NUMBER_DESC_AMY, expectedMessage);
     }
 
     @Test
