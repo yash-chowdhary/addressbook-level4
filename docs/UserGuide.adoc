@@ -1,4 +1,4 @@
-= EXCOntact - User Guide
+= Club Connect - User Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
