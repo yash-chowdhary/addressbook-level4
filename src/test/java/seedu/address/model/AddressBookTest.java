@@ -1,7 +1,15 @@
 package seedu.address.model;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.address.logic.commands.CommandTestUtil.MANDATORY_GROUP;
+import static seedu.address.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.AMY;
+import static seedu.address.testutil.TypicalPersons.BOB;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.ArrayList;
@@ -16,8 +24,13 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.group.Group;
+import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.group.exceptions.GroupNotFoundException;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
+import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class AddressBookTest {
 
@@ -25,11 +38,55 @@ public class AddressBookTest {
     public ExpectedException thrown = ExpectedException.none();
 
     private final AddressBook addressBook = new AddressBook();
+    private final AddressBook addressBookWithBobAndAmy = new AddressBookBuilder().withPerson(BOB).withPerson(AMY)
+            .build();
 
     @Test
     public void constructor() {
         assertEquals(Collections.emptyList(), addressBook.getPersonList());
         assertEquals(Collections.emptyList(), addressBook.getTagList());
+    }
+
+    @Test
+    public void removeGroup_nonExistentGroup_unchangedAddressBook() throws Exception {
+        try {
+            addressBookWithBobAndAmy.removeGroup(new Group(NON_EXISTENT_GROUP));
+        } catch (GroupNotFoundException gnfe) {
+            AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).withPerson(AMY).build();
+            assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+        }
+    }
+
+    @Test
+    public void removeGroup_mandatoryGroup_unchangedAddressBook() throws Exception {
+        try {
+            addressBookWithBobAndAmy.removeGroup(new Group(MANDATORY_GROUP));
+        } catch (GroupCannotBeRemovedException e) {
+            AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).withPerson(AMY).build();
+            assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+        }
+    }
+
+    @Test
+    public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
+        addressBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
+
+        Person bobNotInLogistics = new PersonBuilder(BOB).withGroup().build();
+        Person amyNotInLogistics = new PersonBuilder(AMY).build();
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(bobNotInLogistics)
+                .withPerson(amyNotInLogistics).build();
+
+        assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+    }
+
+    @Test
+    public void updatePerson_detailsChanged_personUpdated() throws Exception {
+        AddressBook updatedToBob = new AddressBookBuilder().withPerson(AMY).build();
+        updatedToBob.updatePerson(AMY, BOB);
+
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).build();
+
+        assertEquals(expectedAddressBook, updatedToBob);
     }
 
     @Test
@@ -66,6 +123,37 @@ public class AddressBookTest {
     public void getTagList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
         addressBook.getTagList().remove(0);
+    }
+
+    @Test
+    public void updatePerson_detailsChanged_personsAndTagsListUpdated() throws Exception {
+        AddressBook addressBookUpdatedToAmy = new AddressBookBuilder().withPerson(BOB).build();
+        addressBookUpdatedToAmy.updatePerson(BOB, AMY);
+
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(AMY).build();
+
+        assertEquals(expectedAddressBook, addressBookUpdatedToAmy);
+    }
+
+    @Test
+    public void removeTag_nonExistentTag_addressBookUnchanged() throws Exception {
+        addressBookWithBobAndAmy.removeTag(new Tag(VALID_TAG_UNUSED));
+
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).withPerson(AMY).build();
+
+        assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+    }
+
+    @Test
+    public void removeTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+        addressBookWithBobAndAmy.removeTag(new Tag(VALID_TAG_FRIEND));
+
+        Person amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
+        Person bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(bobWithoutFriendTag)
+                .withPerson(amyWithoutFriendTag).build();
+
+        assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
     }
 
     /**

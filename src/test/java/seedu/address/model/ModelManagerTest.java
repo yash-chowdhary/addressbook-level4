@@ -1,10 +1,19 @@
 package seedu.address.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.MANDATORY_GROUP;
+import static seedu.address.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.BOB;
 
 import java.util.Arrays;
 
@@ -12,8 +21,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.model.group.Group;
+import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.group.exceptions.GroupNotFoundException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.tag.Tag;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ModelManagerTest {
     @Rule
@@ -24,6 +39,76 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager();
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getFilteredPersonList().remove(0);
+    }
+
+    @Test
+    public void removeGroup_nonExistentGroup_modelUnchanged() throws Exception {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(addressBook, userPrefs);
+        try {
+            modelManager.removeGroup(new Group(NON_EXISTENT_GROUP));
+        } catch (GroupNotFoundException gnfe) {
+            assertEquals(new ModelManager(addressBook, userPrefs), modelManager);
+        }
+    }
+
+    @Test
+    public void removeGroup_mandatoryGroup_modelUnchanged() throws Exception {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(addressBook, userPrefs);
+        try {
+            modelManager.removeGroup(new Group(MANDATORY_GROUP));
+        } catch (GroupCannotBeRemovedException e) {
+            assertEquals(new ModelManager(addressBook, userPrefs), modelManager);
+        }
+    }
+
+    @Test
+    public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(addressBook, userPrefs);
+        modelManager.removeGroup(new Group(VALID_GROUP_AMY));
+
+        Person amyNotInPublicity = new PersonBuilder(AMY).withGroup().build();
+        Person bobNotInPublicity = new PersonBuilder(BOB).build();
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(amyNotInPublicity)
+                .withPerson(bobNotInPublicity).build();
+
+        assertEquals(new ModelManager(expectedAddressBook, userPrefs), modelManager);
+
+    }
+
+    @Test
+    public void removeTag_nonExistentTag_modelUnchanged() throws Exception {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(addressBook, userPrefs);
+        modelManager.removeTag(new Tag(VALID_TAG_UNUSED));
+
+        assertEquals(new ModelManager(addressBook, userPrefs), modelManager);
+    }
+
+    @Test
+    public void removeTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(addressBook, userPrefs);
+        modelManager.removeTag(new Tag(VALID_TAG_FRIEND));
+
+        Person amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
+        Person bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
+        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(amyWithoutFriendTag)
+                .withPerson(bobWithoutFriendTag).build();
+
+        assertEquals(new ModelManager(expectedAddressBook, userPrefs), modelManager);
     }
 
     @Test

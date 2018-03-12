@@ -5,7 +5,7 @@
         <name>Ha!ns Mu@ster</name>
         <phone isPrivate="false">9482424</phone>
         <email isPrivate="false">hans@example.com</email>
-        <address isPrivate="false">4th street</address>
+        <matricNumber isPrivate="false">4th street</matricNumber>
         <group isPrivate="false">logistics</group>
     </persons>
 </addressbook>

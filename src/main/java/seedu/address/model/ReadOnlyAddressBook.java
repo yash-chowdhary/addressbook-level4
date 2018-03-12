@@ -21,4 +21,8 @@ public interface ReadOnlyAddressBook {
      */
     ObservableList<Tag> getTagList();
 
+    /**
+     * Returns true if tag is present in the tags list.
+     */
+    //boolean containsTag(Tag tag);
 }
