@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.StringUtil;
 
@@ -10,17 +11,17 @@ import seedu.address.commons.util.StringUtil;
  */
 public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
-    private final String fieldValue;
+    private final String fieldType;
 
-    public FieldContainsKeywordsPredicate(List<String> keywords, String fieldValue) {
-        this.fieldValue = fieldValue;
+    public FieldContainsKeywordsPredicate(List<String> keywords, String fieldType) {
+        this.fieldType = fieldType;
         this.keywords = keywords;
     }
 
     @Override
     public boolean test(Person person) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(fieldValue, keyword));
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(getFieldValue(person), keyword));
     }
 
     @Override
@@ -28,5 +29,23 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
         return other == this // short circuit if same object
                 || (other instanceof FieldContainsKeywordsPredicate // instanceof handles nulls
                 && this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords)); // state check
+    }
+
+    private String getFieldValue(Person person) {
+        switch (fieldType) {
+            case "name":
+                return person.getName().toString();
+            case "email":
+                return person.getEmail().toString();
+            case "phone":
+                return person.getEmail().toString();
+            case "matric":
+                return person.getMatricNumber().toString();
+            case "tag":
+                return person.getTags().stream().map(tag->tag.toString()).collect(Collectors.joining(" "));
+            default:
+                //TODO
+                return null;
+        }
     }
 }
