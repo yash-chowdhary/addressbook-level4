@@ -29,17 +29,17 @@ public class FindByCommandParser implements Parser<FindByCommand> {
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
 
-        if(nameKeywords.length < 2) {
+        if (nameKeywords.length < 2) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindByCommand.MESSAGE_USAGE));
         }
 
         String fieldType = nameKeywords[0].toLowerCase();
-        if(!Arrays.asList(fieldTypes).contains(fieldType)) {
+        if (!Arrays.asList(fieldTypes).contains(fieldType)) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindByCommand.MESSAGE_USAGE));
         }
 
-        return new FindByCommand(new FieldContainsKeywordsPredicate(Arrays.asList(nameKeywords), fieldType);
+        return new FindByCommand(new FieldContainsKeywordsPredicate(Arrays.asList(nameKeywords), fieldType));
     }
 }

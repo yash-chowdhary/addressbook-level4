@@ -14,8 +14,8 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     private final String fieldType;
 
     public FieldContainsKeywordsPredicate(List<String> keywords, String fieldType) {
-        this.fieldType = fieldType;
         this.keywords = keywords;
+        this.fieldType = fieldType;
     }
 
     @Override
@@ -33,19 +33,19 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
 
     private String getFieldValue(Person person) {
         switch (fieldType) {
-            case "name":
-                return person.getName().toString();
-            case "email":
-                return person.getEmail().toString();
-            case "phone":
-                return person.getEmail().toString();
-            case "matric":
-                return person.getMatricNumber().toString();
-            case "tag":
-                return person.getTags().stream().map(tag->tag.toString()).collect(Collectors.joining(" "));
-            default:
-                //TODO
-                return null;
+        case "name":
+            return person.getName().toString();
+        case "email":
+            return person.getEmail().toString();
+        case "phone":
+            return person.getEmail().toString();
+        case "matric":
+            return person.getMatricNumber().toString();
+        case "tag":
+            return person.getTags().stream().map(tag->tag.toString()).collect(Collectors.joining(" "));
+        default:
+            //TODO
+            return null;
         }
     }
 }
