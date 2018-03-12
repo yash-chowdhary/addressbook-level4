@@ -21,7 +21,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(getFieldValue(person), keyword));
+                .anyMatch(keyword -> StringUtil.partiallyContainsWordIgnoreCase(getFieldValue(person), keyword));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
         case "email":
             return person.getEmail().toString();
         case "phone":
-            return person.getEmail().toString();
+            return person.getPhone().toString();
         case "matric":
             return person.getMatricNumber().toString();
         case "tag":
