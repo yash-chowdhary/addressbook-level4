@@ -61,8 +61,14 @@ public class CommandTestUtil {
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_MATRIC_NUMBER_DESC = " " + PREFIX_MATRIC_NUMBER; // must follow format
-    public static final String INVALID_GROUP_DESC = " " + PREFIX_GROUP + "public relations"; // no spaces allowed
+    public static final String INVALID_GROUP = "public relations"; // no spaces allowed
+    public static final String INVALID_GROUP_DESC = " " + PREFIX_GROUP + INVALID_GROUP; // no spaces allowed
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+
+    public static final String NON_EXISTENT_GROUP = "broadcasting";
+    public static final String NON_EXISTENT_GROUP_DESC = PREFIX_GROUP + NON_EXISTENT_GROUP;
+    public static final String MANDATORY_GROUP = "member";
+    public static final String MANDATORY_GROUP_DESC = PREFIX_GROUP + MANDATORY_GROUP;
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

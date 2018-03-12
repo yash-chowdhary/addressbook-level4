@@ -3,6 +3,9 @@ package seedu.address.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.group.Group;
+import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.address.model.group.exceptions.GroupNotFoundException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -59,4 +62,5 @@ public interface Model {
      */
     void updateFilteredTagList(Predicate<Tag> predicate);
 
+    void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 }
