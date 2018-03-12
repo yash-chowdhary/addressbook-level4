@@ -892,11 +892,11 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is the `ClubConnect` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
 === Use case: Delete member
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Exco member
 
@@ -905,9 +905,9 @@ _{More to be added}_
 *MSS*
 
 1.  User requests to list members.
-2.  AddressBook shows a list of members.
+2.  ClubConnect shows a list of members.
 3.  User requests to delete a specific member in the list.
-4.  AddressBook deletes the member.
+4.  ClubConnect deletes the member.
 +
 Use case ends.
 
@@ -921,14 +921,14 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. ClubConnect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
 === Use case: Add member
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Exco member
 
@@ -937,9 +937,9 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests to list members.
-2.  AddressBook shows a list of members.
+2.  ClubConnect shows a list of members.
 3.  User requests to add a member to the list.
-4.  AddressBook adds the member.
+4.  ClubConnect adds the member.
 +
 Use case ends.
 
@@ -947,20 +947,20 @@ Use case ends.
 
 [none]
 * 3a. The syntax of the add command is invalid.
-** 3a1. AddressBook shows an error message.
-** 3a1. AddressBook shows correct format for add command.
+** 3a1. ClubConnect shows an error message.
+** 3a1. ClubConnect shows correct format for add command.
 +
 Use case resumes at step 2.
 
-* 3a. The matric number of member already exists in AddressBook.
-** 3a1. AddressBook shows an error message.
+* 3a. The matric number of member already exists in ClubConnect.
+** 3a1. ClubConnect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
 === Use case: Show Help
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -969,7 +969,7 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests help.
-2.  AddressBook shows usage instructions.
+2.  ClubConnect shows usage instructions.
 +
 Use case ends.
 
@@ -977,7 +977,7 @@ Use case ends.
 
 === Use case: Sort members
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -986,8 +986,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to sort by specified field.
-2.  AddressBook sorts members according to specified field.
-3.  AddressBook shows list of members in the requested sorted order.
+2.  ClubConnect lists members sorted according to specified field.
 +
 Use case ends.
 
@@ -995,20 +994,18 @@ Use case ends.
 
 [none]
 * 1a. Invalid field specified.
-** 1a1. AddressBook shows an error message.
-** 1a2. AddressBook displays all possible valid fields.
+** 1a1. ClubConnect shows an error message and displays all possible valid fields.
 +
 Use case resumes at step 1.
 * 1b. No field specified.
-** 1b1. AddressBook sorts members according to name.
-** 1b2. AddressBook shows list of members sorted by name.
+** 1b2. ClubConnect shows list of members sorted by name.
 +
 Use case ends.
 
 [discrete]
 === Use case: Exit
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1016,15 +1013,15 @@ Use case ends.
 
 *MSS*
 
-1.  User requests to exit AddressBook.
-2.  AddressBook exits.
+1.  User requests to exit ClubConnect.
+2.  ClubConnect exits.
 +
 Use case ends.
 
 [discrete]
 === Use case: Undo command
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1033,7 +1030,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to undo previous command.
-2.  AddressBook undoes previous command.
+2.  ClubConnect undoes previous command.
 +
 Use case ends.
 
@@ -1041,7 +1038,7 @@ Use case ends.
 
 [none]
 * 1a. Previous command is undoable.
-** 1a1. AddressBook undoes latest undoable command.
+** 1a1. ClubConnect undoes latest undoable command.
 +
 Use case ends.
 
@@ -1052,7 +1049,7 @@ Use case ends.
 [discrete]
 === Use case: Redo command
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1061,7 +1058,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to redo.
-2.  AddressBook redoes the change made by previous undo command.
+2.  ClubConnect redoes the change made by previous undo command.
 +
 Use case ends.
 
@@ -1075,7 +1072,7 @@ Use case ends.
 [discrete]
 === Use case: Login
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1083,9 +1080,9 @@ Use case ends.
 
 *MSS*
 
-1.  AddressBook shows login screen.
+1.  ClubConnect shows login screen.
 2.  User enters username and password.
-3.  AddressBook login as member with given username and password.
+3.  ClubConnect login as member with given username and password.
 +
 Use case ends.
 
@@ -1093,14 +1090,14 @@ Use case ends.
 
 [none]
 * 1a. Username and password combination invalid.
-** 1a1. AddressBook shows an error message.
+** 1a1. ClubConnect shows an error message.
 +
 Use case resumes at step 1.
 
 [discrete]
 === Use case: Logout
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1109,15 +1106,14 @@ Use case resumes at step 1.
 *MSS*
 
 1.  User requests to logout.
-2.  AddressBook logout.
-3.  AddressBook shows login screen.
+2.  ClubConnect logouts to login screen.
 +
 Use case ends.
 
 [discrete]
 === Use case: Find person
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1126,7 +1122,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to find member by specified field using keyword.
-2.  AddressBook shows a list of persons containing keyword in specified field.
+2.  ClubConnect shows a list of persons containing keyword in specified field.
 +
 Use case ends.
 
@@ -1134,13 +1130,11 @@ Use case ends.
 
 [none]
 * 1a. Invalid field specified.
-** 1a1. AddressBook shows an error message.
-** 1a2. AddressBook displays all possible valid fields.
+** 1a1. ClubConnect shows an error message and displays all possible valid fields.
 +
 Use case resumes at step 1.
 * 1b. No field specified.
-** 1b1. AddressBook finds member using all valid fields.
-** 1b2. AddressBook shows a list of persons containing keyword in any possible field.
+** 1b2. ClubConnect shows a list of persons containing keyword in any possible field.
 +
 Use case ends.
 
