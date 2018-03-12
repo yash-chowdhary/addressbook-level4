@@ -41,6 +41,8 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
             return person.getPhone().toString();
         case "matric":
             return person.getMatricNumber().toString();
+        case "group":
+            return person.getGroup().toString();
         case "tag":
             return person.getTags().stream().map(tag->tag.toString()).collect(Collectors.joining(" "));
         default:

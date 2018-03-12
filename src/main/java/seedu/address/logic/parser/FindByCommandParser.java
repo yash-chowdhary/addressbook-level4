@@ -13,7 +13,7 @@ import seedu.address.model.person.FieldContainsKeywordsPredicate;
  */
 public class FindByCommandParser implements Parser<FindByCommand> {
 
-    private static String[] fieldTypes = {"name", "email", "phone", "matric", "tag"};
+    private static final String[] fieldTypes = {"name", "email", "phone", "matric", "tag", "group"};
 
     /**
      * Parses the given {@code String} of arguments in the context of the FindByCommand
