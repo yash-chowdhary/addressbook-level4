@@ -48,7 +48,7 @@ public class Group {
     public boolean equals(Object other) {
         return other == this    // short circuit if same object
                 || (other instanceof Group  // instanceof handles nulls
-                && this.groupName.equals(((Group) other).groupName));   // state check
+                && this.groupName.equalsIgnoreCase(((Group) other).groupName));   // state check
     }
 
     @Override
