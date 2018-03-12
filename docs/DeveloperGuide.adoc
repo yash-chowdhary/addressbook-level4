@@ -1156,7 +1156,7 @@ Use case ends.
 .  Should be able to work offline.
 .  Should take up as little memory on the hard disk.
 .  Should be compatible with all Operating System, i.e Windows and Macintosh.
-.  Should save the state of the addressbook regularly.
+.  Should save data regularly.
 .  Current versions must be backward compatible with older versions to support undo.
 
 
