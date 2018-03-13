@@ -40,6 +40,7 @@ public class FindByCommandParser implements Parser<FindByCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindByCommand.MESSAGE_USAGE));
         }
 
-        return new FindByCommand(new FieldContainsKeywordsPredicate(Arrays.asList(nameKeywords), fieldType));
+        return new FindByCommand(new FieldContainsKeywordsPredicate(
+                Arrays.asList(nameKeywords).subList(1, nameKeywords.length), fieldType));
     }
 }

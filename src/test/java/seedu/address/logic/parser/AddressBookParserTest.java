@@ -91,7 +91,9 @@ public class AddressBookParserTest {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         String fieldType = "name";
         FindByCommand command = (FindByCommand) parser.parseCommand(
-                FindByCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")) + fieldType);
+                FindByCommand.COMMAND_WORD + " " + fieldType + " "
+                        + keywords.stream().collect(Collectors.joining(" ")));
+        FindByCommand c = new FindByCommand(new FieldContainsKeywordsPredicate(keywords, fieldType));
         assertEquals(new FindByCommand(new FieldContainsKeywordsPredicate(keywords, fieldType)), command);
     }
 
