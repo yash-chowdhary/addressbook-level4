@@ -165,12 +165,12 @@ public class StringUtilTest {
 
     @Test
     public void partiallyContainsWordIgnoreCase_nullWord_throwsNullPointerException() {
-        partiallyContainsWordIgnoreCase_assertExceptionThrown(NullPointerException.class, "typical sentence",
+        assertExceptionThrown_partiallyContainsWordIgnoreCase(NullPointerException.class, "typical sentence",
                 null, Optional.empty());
     }
 
-    private void partiallyContainsWordIgnoreCase_assertExceptionThrown(Class<? extends Throwable> exceptionClass,
-        String sentence, String word, Optional<String> errorMessage) {
+    private void assertExceptionThrown_partiallyContainsWordIgnoreCase(
+            Class<? extends Throwable> exceptionClass, String sentence, String word, Optional<String> errorMessage) {
         thrown.expect(exceptionClass);
         errorMessage.ifPresent(message -> thrown.expectMessage(message));
         StringUtil.partiallyContainsWordIgnoreCase(sentence, word);
@@ -178,20 +178,20 @@ public class StringUtilTest {
 
     @Test
     public void partiallyContainsWordIgnoreCase_emptyWord_throwsIllegalArgumentException() {
-        partiallyContainsWordIgnoreCase_assertExceptionThrown(IllegalArgumentException.class, "typical sentence", "  ",
+        assertExceptionThrown_partiallyContainsWordIgnoreCase(IllegalArgumentException.class, "typical sentence", "  ",
                 Optional.of("Word parameter cannot be empty"));
     }
 
     @Test
     public void partiallyContainsWordIgnoreCase_multipleWords_throwsIllegalArgumentException() {
-        partiallyContainsWordIgnoreCase_assertExceptionThrown(IllegalArgumentException.class,
+        assertExceptionThrown_partiallyContainsWordIgnoreCase(IllegalArgumentException.class,
                 "typical sentence", "aaa BBB",
                 Optional.of("Word parameter should be a single word"));
     }
 
     @Test
     public void partiallyContainsWordIgnoreCase_nullSentence_throwsNullPointerException() {
-        partiallyContainsWordIgnoreCase_assertExceptionThrown(NullPointerException.class,
+        assertExceptionThrown_partiallyContainsWordIgnoreCase(NullPointerException.class,
                 null, "abc", Optional.empty());
     }
 
