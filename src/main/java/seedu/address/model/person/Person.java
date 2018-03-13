@@ -19,18 +19,24 @@ public class Person {
     private final Phone phone;
     private final Email email;
     private final Address address;
+    private final Password password;
+    private final Username username;
+    private boolean isLogIn = false;
 
     private final UniqueTagList tags;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Username username, Password password) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.username = username;
+        this.password = password;
+
         // protect internal tags from changes in the arg list
         this.tags = new UniqueTagList(tags);
     }
@@ -49,6 +55,18 @@ public class Person {
 
     public Address getAddress() {
         return address;
+    }
+
+    public Username getUsername() {
+        return username;
+    }
+
+    public Password getPassword() {
+        return password;
+    }
+
+    public boolean isLogIn() {
+        return isLogIn;
     }
 
     /**
@@ -97,4 +115,15 @@ public class Person {
         return builder.toString();
     }
 
+    /**
+     * change the status of the person loggin in
+     */
+
+    public void changeLogInStatus(){
+        if(isLogIn == false)
+            isLogIn = true;
+        else
+            isLogIn = false;
+
+    }
 }
