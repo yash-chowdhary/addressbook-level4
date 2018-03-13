@@ -148,23 +148,38 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
-=== Deleting a group : `removegroup`
+=== Deleting a group : `deletegroup`
 
 Deletes the specified group from the address book. +
-Format: `removegroup g/GROUP`
+Format: `deletegroup g/GROUP`
 
 ****
 * Deletes the specified group from the addressbook.
 * Once the group is deleted, all members who were part of the group will be assigned to the default group `member`.
 * The group must not be a mandatory group (`member`) as that is the default group.
-* The group must exist in the addressbok.
+* The group must exist in the addressbook.
 * The group must be in valid format (i.e. no white-spaces and non-empty).
 ****
 
 Examples:
 
-* `removegroup g/logistics` +
+* `deletegroup g/logistics` +
 Deletes the `logistics` group in the address book.
+
+=== Deleting a tag : `deletetag`
+
+Deletes the specified tag for all persons in the address book. +
+Format: `deletetag t/TAG`
+
+****
+* Deletes the specified tag from the addressbook.
+* Deletes the specified tag for all persons tagged with it in the addressbook.
+****
+
+Examples:
+
+* `deletetag t/subcommittee` +
+Deletes the `subcommittee` tag for all persons tagged with `subcommittee` in the address book.
 
 === Selecting a person : `select`
 
@@ -281,8 +296,10 @@ e.g. `add n/James Jerome p/22224444 e/jamesjerome@example.com m/A1234567H g/publ
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Delete Group* : `removegroup g/GROUP` +
-e.g. `removegroup g/publicity`
+* *Delete Group* : `deletegroup g/GROUP` +
+e.g. `deletegroup g/publicity`
+* *Delete Tag* : `deletetag t/TAG` +
+e.g. `deletetag t/president`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
 * *List* : `list`
