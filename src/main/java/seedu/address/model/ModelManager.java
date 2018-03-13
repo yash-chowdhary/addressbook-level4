@@ -103,7 +103,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void removeTag(Tag tag) {
         try {
-            addressBook.removeTag(tag);
+            addressBook.deleteTag(tag);
             updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
             indicateAddressBookChanged();
         } catch (TagNotFoundException tnfe) {

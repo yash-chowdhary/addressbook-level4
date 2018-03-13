@@ -13,46 +13,46 @@ import seedu.address.model.tag.exceptions.TagNotFoundException;
 /**
  * Removes a tag from all persons in the address book.
  */
-public class RemoveTagCommand extends UndoableCommand {
+public class DeleteTagCommand extends UndoableCommand {
 
-    public static final String COMMAND_WORD = "removetag";
+    public static final String COMMAND_WORD = "deletetag";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes the tag from all persons.\n"
             + "Parameters: TAG (must be an existing tag)\n"
             + "Example: " + COMMAND_WORD + " subcommittee";
 
-    public static final String MESSAGE_REMOVE_TAG_SUCCESS = "Tag Removed: %1$s";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Tag Removed: %1$s";
 
-    private Tag tagToRemove;
+    private Tag tagToDelete;
 
-    public RemoveTagCommand(Tag tagToRemove) {
-        this.tagToRemove = tagToRemove;
+    public DeleteTagCommand(Tag tagToDelete) {
+        this.tagToDelete = tagToDelete;
     }
 
     @Override
     public CommandResult executeUndoableCommand() {
-        requireNonNull(tagToRemove);
+        requireNonNull(tagToDelete);
 
         try {
-            model.removeTag(tagToRemove);
+            model.removeTag(tagToDelete);
         } catch (TagNotFoundException tnfe) {
             throw new AssertionError("The tag to be deleted cannot be missing");
         }
 
-        return new CommandResult((String.format(MESSAGE_REMOVE_TAG_SUCCESS, tagToRemove)));
+        return new CommandResult((String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete)));
     }
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
         List<Tag> lastShownList = model.getFilteredTagList();
 
-        if (!getMasterTagList().contains(tagToRemove)) {
+        if (!getMasterTagList().contains(tagToDelete)) {
             throw new CommandException(Messages.MESSAGE_INVALID_TAG);
         }
 
-        int targetIndex = lastShownList.indexOf(tagToRemove);
-        tagToRemove = lastShownList.get(targetIndex);
+        int targetIndex = lastShownList.indexOf(tagToDelete);
+        tagToDelete = lastShownList.get(targetIndex);
     }
 
     private List<Tag> getMasterTagList() {
@@ -62,7 +62,7 @@ public class RemoveTagCommand extends UndoableCommand {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof RemoveTagCommand // instanceof handles nulls
-                && this.tagToRemove.equals(((RemoveTagCommand) other).tagToRemove));
+                || (other instanceof DeleteTagCommand // instanceof handles nulls
+                && this.tagToDelete.equals(((DeleteTagCommand) other).tagToDelete));
     }
 }

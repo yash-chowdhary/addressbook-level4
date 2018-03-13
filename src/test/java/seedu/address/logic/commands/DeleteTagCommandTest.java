@@ -27,9 +27,9 @@ import seedu.address.model.tag.Tag;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
- * {@code RemoveTagCommand}.
+ * {@code DeleteTagCommand}.
  */
-public class RemoveTagCommandTest {
+public class DeleteTagCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
@@ -37,22 +37,22 @@ public class RemoveTagCommandTest {
     public void execute_validTagUnfilteredList_success() throws Exception {
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
 
-        RemoveTagCommand removeTagCommand = prepareCommand(tagToRemove);
+        DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
 
-        String expectedMessage = String.format(RemoveTagCommand.MESSAGE_REMOVE_TAG_SUCCESS, tagToRemove);
+        String expectedMessage = String.format(DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.removeTag(tagToRemove);
 
-        assertCommandSuccess(removeTagCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteTagCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidTagUnfilteredList_throwsCommandException() throws Exception {
         Tag nonExistentTag = new Tag(VALID_TAG_UNUSED);
-        RemoveTagCommand removeTagCommand = prepareCommand(nonExistentTag);
+        DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
-        assertCommandFailure(removeTagCommand, model, Messages.MESSAGE_INVALID_TAG);
+        assertCommandFailure(deleteTagCommand, model, Messages.MESSAGE_INVALID_TAG);
     }
 
     @Test
@@ -61,15 +61,15 @@ public class RemoveTagCommandTest {
 
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
 
-        RemoveTagCommand removeTagCommand = prepareCommand(tagToRemove);
+        DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
 
-        String expectedMessage = String.format(RemoveTagCommand.MESSAGE_REMOVE_TAG_SUCCESS, tagToRemove);
+        String expectedMessage = String.format(DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.removeTag(tagToRemove);
         showNoTag(expectedModel);
 
-        assertCommandSuccess(removeTagCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteTagCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -80,9 +80,9 @@ public class RemoveTagCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(!model.getAddressBook().getTagList().contains(nonExistentTag));
 
-        RemoveTagCommand removeTagCommand = prepareCommand(nonExistentTag);
+        DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
-        assertCommandFailure(removeTagCommand, model, Messages.MESSAGE_INVALID_TAG);
+        assertCommandFailure(deleteTagCommand, model, Messages.MESSAGE_INVALID_TAG);
     }
 
     @Test
@@ -91,12 +91,12 @@ public class RemoveTagCommandTest {
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
-        RemoveTagCommand removeTagCommand = prepareCommand(tagToRemove);
+        DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
 
         // delete -> first tag removed
-        removeTagCommand.execute();
-        undoRedoStack.push(removeTagCommand);
+        deleteTagCommand.execute();
+        undoRedoStack.push(deleteTagCommand);
 
         // undo -> reverts addressbook back to previous state and filtered tag list to show all tags
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
@@ -112,10 +112,10 @@ public class RemoveTagCommandTest {
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Tag nonExistentTag = new Tag(VALID_TAG_UNUSED);
-        RemoveTagCommand removeTagCommand = prepareCommand(nonExistentTag);
+        DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
-        // execution failed -> removeTagCommand not pushed into undoRedoStack
-        assertCommandFailure(removeTagCommand, model, Messages.MESSAGE_INVALID_TAG);
+        // execution failed -> deleteTagCommand not pushed into undoRedoStack
+        assertCommandFailure(deleteTagCommand, model, Messages.MESSAGE_INVALID_TAG);
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
@@ -135,13 +135,13 @@ public class RemoveTagCommandTest {
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
-        RemoveTagCommand removeTagCommand = prepareCommand(tagToRemove);
+        DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
 
         showPersonAtIndex(model, INDEX_SECOND_PERSON);
         // remove tag -> removes first tag in unfiltered tag list / filtered tag list
-        removeTagCommand.execute();
-        undoRedoStack.push(removeTagCommand);
+        deleteTagCommand.execute();
+        undoRedoStack.push(deleteTagCommand);
 
         // undo -> reverts addressbook back to previous state and filtered tag list to show all tags
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
@@ -153,16 +153,16 @@ public class RemoveTagCommandTest {
 
     @Test
     public void equals() throws Exception {
-        RemoveTagCommand removeFirstTagCommand = prepareCommand(model.getFilteredTagList()
+        DeleteTagCommand removeFirstTagCommand = prepareCommand(model.getFilteredTagList()
                 .get(INDEX_FIRST_TAG.getZeroBased()));
-        RemoveTagCommand removeSecondTagCommand = prepareCommand(model.getFilteredTagList()
+        DeleteTagCommand removeSecondTagCommand = prepareCommand(model.getFilteredTagList()
                 .get(INDEX_SECOND_TAG.getZeroBased()));
 
         // same object -> returns true
         assertTrue(removeFirstTagCommand.equals(removeFirstTagCommand));
 
         // same values -> returns true
-        RemoveTagCommand removeFirstTagCommandCopy = prepareCommand(model.getFilteredTagList()
+        DeleteTagCommand removeFirstTagCommandCopy = prepareCommand(model.getFilteredTagList()
                 .get(INDEX_FIRST_TAG.getZeroBased()));
         assertTrue(removeFirstTagCommand.equals(removeFirstTagCommandCopy));
 
@@ -179,12 +179,12 @@ public class RemoveTagCommandTest {
     }
 
     /**
-     * Returns a {@code RemoveTagCommand} with the parameter {@code tag}.
+     * Returns a {@code DeleteTagCommand} with the parameter {@code tag}.
      */
-    private RemoveTagCommand prepareCommand(Tag tag) {
-        RemoveTagCommand removeTagCommand = new RemoveTagCommand(tag);
-        removeTagCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return removeTagCommand;
+    private DeleteTagCommand prepareCommand(Tag tag) {
+        DeleteTagCommand deleteTagCommand = new DeleteTagCommand(tag);
+        deleteTagCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return deleteTagCommand;
     }
 
     /**
