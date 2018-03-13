@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -116,5 +117,32 @@ public class UniquePersonList implements Iterable<Person> {
     @Override
     public int hashCode() {
         return internalList.hashCode();
+    }
+
+    public boolean logInMemberSuccessful(String username, String password){
+        if(!areThereAnyMemberLogedIn()){
+            for(int i=0;i<internalList.size();i++){
+                if(internalList.get(i).getUsername().toString().equals(username)){
+                    if(internalList.get(i).getPassword().toString().equals(password)){
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check that whether there are anyone being log in currently.
+     */
+    public boolean areThereAnyMemberLogedIn(){
+        for(int i=0;i<internalList.size();i++){
+            if(internalList.get(i).isLogIn()){
+                return true;
+            }
+        }
+        return false;
     }
 }

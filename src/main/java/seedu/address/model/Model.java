@@ -45,4 +45,9 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    /**
+     * Logs In a Member in the club
+     */
+    boolean logInMemberSuccessful(String username,String password);
+
 }

@@ -132,7 +132,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         final Set<Tag> correctTagReferences = new HashSet<>();
         personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag)));
         return new Person(
-                person.getName(), person.getPhone(), person.getEmail(), person.getAddress(), correctTagReferences);
+                person.getName(), person.getPhone(), person.getEmail(), person.getAddress(), correctTagReferences, person.getUsername(),person.getPassword());
     }
 
     /**
@@ -145,6 +145,15 @@ public class AddressBook implements ReadOnlyAddressBook {
         } else {
             throw new PersonNotFoundException();
         }
+    }
+
+    /**
+     * Logs in a member
+     */
+
+    public boolean logInMember(String username,String password){
+
+        return persons.logInMemberSuccessful(username,password);
     }
 
     //// tag-level operations
