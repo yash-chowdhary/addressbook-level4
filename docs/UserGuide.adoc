@@ -312,8 +312,8 @@ e.g.`select 2`
 
 == Coming in v2.0
 
-* Encrypting data files
+* Encrypt data files
 * Group Chats
-* Submitting anonymous feedback
+* Submit anonymous feedback
 * Chat with any member
 * Know who is online
