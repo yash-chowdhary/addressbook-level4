@@ -29,6 +29,7 @@ import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.address.model.group.exceptions.GroupNotFoundException;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.exceptions.TagNotFoundException;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.PersonBuilder;
 
@@ -136,16 +137,17 @@ public class AddressBookTest {
     }
 
     @Test
-    public void removeTag_nonExistentTag_addressBookUnchanged() throws Exception {
-        addressBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_UNUSED));
-
-        AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).withPerson(AMY).build();
-
-        assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+    public void deleteTag_nonExistentTag_addressBookUnchanged() {
+        try {
+            addressBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_UNUSED));
+        } catch (TagNotFoundException tnfe) {
+            AddressBook expectedAddressBook = new AddressBookBuilder().withPerson(BOB).withPerson(AMY).build();
+            assertEquals(expectedAddressBook, addressBookWithBobAndAmy);
+        }
     }
 
     @Test
-    public void removeTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+    public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
         addressBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_FRIEND));
 
         Person amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();

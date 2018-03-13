@@ -22,7 +22,7 @@ public class DeleteTagCommandParserTest {
     private DeleteTagCommandParser parser = new DeleteTagCommandParser();
 
     @Test
-    public void parse_validArgs_returnsRemoveTagCommand() {
+    public void parse_validArgs_returnsDeleteTagCommand() {
         assertParseSuccess(parser, " t/friends", new DeleteTagCommand(new Tag(VALID_TAG_FRIEND)));
     }
 

@@ -27,6 +27,7 @@ import seedu.address.model.group.exceptions.GroupNotFoundException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.exceptions.TagNotFoundException;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.PersonBuilder;
 
@@ -85,18 +86,20 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void removeTag_nonExistentTag_modelUnchanged() throws Exception {
+    public void deleteTag_nonExistentTag_modelUnchanged() throws Exception {
         AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(addressBook, userPrefs);
-        modelManager.deleteTag(new Tag(VALID_TAG_UNUSED));
-
-        assertEquals(new ModelManager(addressBook, userPrefs), modelManager);
+        try {
+            modelManager.deleteTag(new Tag(VALID_TAG_UNUSED));
+        } catch (TagNotFoundException tnfe) {
+            assertEquals(new ModelManager(addressBook, userPrefs), modelManager);
+        }
     }
 
     @Test
-    public void removeTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+    public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
         AddressBook addressBook = new AddressBookBuilder().withPerson(AMY).withPerson(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
