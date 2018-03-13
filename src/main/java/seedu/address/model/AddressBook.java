@@ -273,12 +273,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         setTags(getListWithoutTag(tagToDelete));
-        boolean isTagFound = false;
         try {
             for (Person person : persons) {
                 if (person.hasTag(tagToDelete)) {
                     deleteTagFromPerson(tagToDelete, person);
-                    isTagFound = true;
                 }
             }
         } catch (PersonNotFoundException pnfe) {

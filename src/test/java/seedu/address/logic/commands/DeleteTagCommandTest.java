@@ -78,8 +78,8 @@ public class DeleteTagCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Tag nonExistentTag = new Tag(VALID_TAG_UNUSED);
-        // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(!model.getAddressBook().getTagList().contains(nonExistentTag));
+
+        assertFalse(model.getAddressBook().getTagList().contains(nonExistentTag));
 
         DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
