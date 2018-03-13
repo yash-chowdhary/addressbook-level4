@@ -127,6 +127,26 @@ Returns `john` and `John Doe`
 * `find Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
 
+=== Locating persons by any field: `findby`
+
+Finds persons whose field contain any of the given keywords. +
+Format: `findby FIELD KEYWORD [MORE_KEYWORDS]`
+
+****
+* FIELD can be name, phone, email, matric(matric number), group or tag and is case insensitive
+* The search is case insensitive. e.g `hans` will match `Hans`
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* Partial matches will be matched e.g. `Han` will match `Hans`
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+****
+
+Examples:
+
+* `findby phone 123` +
+Returns any person having phone number containing 123
+* `findby matric A654` +
+Returns any person having matric number containing A654
+
 === Deleting a person : `delete`
 
 Deletes the specified person from the address book. +
@@ -284,6 +304,8 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 e.g. `removegroup g/publicity`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
+* *Find* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
+e.g. `findby phone 123`
 * *List* : `list`
 * *Help* : `help`
 * *Select* : `select INDEX` +
