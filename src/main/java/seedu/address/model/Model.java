@@ -51,7 +51,7 @@ public interface Model {
     void updateFilteredPersonList(Predicate<Person> predicate);
 
     /** Removes the given tag {@code tag} for all persons in the club book. */
-    void removeTag(Tag tag) throws TagNotFoundException;
+    void deleteTag(Tag tag) throws TagNotFoundException;
 
     /** Returns an unmodifiable view of the filtered tag list */
     ObservableList<Tag> getFilteredTagList();

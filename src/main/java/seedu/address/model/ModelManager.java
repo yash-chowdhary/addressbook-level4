@@ -101,7 +101,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void removeTag(Tag tag) {
+    public void deleteTag(Tag tag) {
         try {
             addressBook.deleteTag(tag);
             updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -119,7 +119,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         for (Tag tag: tags) {
             if (isNotTaggedInPersons(tag)) {
-                removeTag(tag);
+                deleteTag(tag);
             }
         }
     }

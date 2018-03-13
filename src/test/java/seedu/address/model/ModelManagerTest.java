@@ -90,7 +90,7 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(addressBook, userPrefs);
-        modelManager.removeTag(new Tag(VALID_TAG_UNUSED));
+        modelManager.deleteTag(new Tag(VALID_TAG_UNUSED));
 
         assertEquals(new ModelManager(addressBook, userPrefs), modelManager);
     }
@@ -101,7 +101,7 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(addressBook, userPrefs);
-        modelManager.removeTag(new Tag(VALID_TAG_FRIEND));
+        modelManager.deleteTag(new Tag(VALID_TAG_FRIEND));
 
         Person amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
         Person bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();

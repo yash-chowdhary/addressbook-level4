@@ -134,7 +134,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void removeTag(Tag tag) throws TagNotFoundException {
+        public void deleteTag(Tag tag) throws TagNotFoundException {
             fail("This method should not be called.");
         }
 

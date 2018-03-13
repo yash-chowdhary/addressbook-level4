@@ -35,7 +35,7 @@ public class DeleteTagCommand extends UndoableCommand {
         requireNonNull(tagToDelete);
 
         try {
-            model.removeTag(tagToDelete);
+            model.deleteTag(tagToDelete);
         } catch (TagNotFoundException tnfe) {
             throw new AssertionError("The tag to be deleted cannot be missing");
         }

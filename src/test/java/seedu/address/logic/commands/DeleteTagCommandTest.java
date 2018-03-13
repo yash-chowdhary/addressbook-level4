@@ -42,7 +42,7 @@ public class DeleteTagCommandTest {
         String expectedMessage = String.format(DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.removeTag(tagToRemove);
+        expectedModel.deleteTag(tagToRemove);
 
         assertCommandSuccess(deleteTagCommand, model, expectedMessage, expectedModel);
     }
@@ -66,7 +66,7 @@ public class DeleteTagCommandTest {
         String expectedMessage = String.format(DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.removeTag(tagToRemove);
+        expectedModel.deleteTag(tagToRemove);
         showNoTag(expectedModel);
 
         assertCommandSuccess(deleteTagCommand, model, expectedMessage, expectedModel);
@@ -102,7 +102,7 @@ public class DeleteTagCommandTest {
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // redo -> same first tag removed again
-        expectedModel.removeTag(tagToRemove);
+        expectedModel.deleteTag(tagToRemove);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -146,7 +146,7 @@ public class DeleteTagCommandTest {
         // undo -> reverts addressbook back to previous state and filtered tag list to show all tags
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        expectedModel.removeTag(tagToRemove);
+        expectedModel.deleteTag(tagToRemove);
         // redo -> removes same tag in unfiltered tag list
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
