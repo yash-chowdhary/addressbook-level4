@@ -6,7 +6,7 @@ import seedu.address.model.person.FieldContainsKeywordsPredicate;
  * Finds and lists all persons in address book whose field contains any of the argument keywords.
  * Keyword matching is case sensitive.
  */
-public class FindByCommand<Field> extends Command {
+public class FindByCommand extends Command {
 
     public static final String COMMAND_WORD = "findby";
 

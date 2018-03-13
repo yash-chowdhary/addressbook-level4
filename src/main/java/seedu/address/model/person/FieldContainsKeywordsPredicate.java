@@ -28,7 +28,8 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof FieldContainsKeywordsPredicate // instanceof handles nulls
-                && this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords)); // state check
+                && this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords) // state check
+                && this.fieldType.equals(((FieldContainsKeywordsPredicate) other).fieldType));
     }
 
     private String getFieldValue(Person person) {
