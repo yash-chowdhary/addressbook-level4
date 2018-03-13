@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.exceptions.TagNotFoundException;
@@ -20,9 +19,10 @@ public class DeleteTagCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes the tag from all persons.\n"
             + "Parameters: TAG (must be an existing tag)\n"
-            + "Example: " + COMMAND_WORD + " subcommittee";
+            + "Example: " + COMMAND_WORD + " t/treasurer";
 
     public static final String MESSAGE_DELETE_TAG_SUCCESS = "Tag Removed: %1$s";
+    public static final String MESSAGE_NON_EXISTENT_TAG = "The tag name provided does not exist";
 
     private Tag tagToDelete;
 
@@ -31,16 +31,15 @@ public class DeleteTagCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(tagToDelete);
 
         try {
             model.deleteTag(tagToDelete);
+            return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
-            throw new AssertionError("The tag to be deleted cannot be missing");
+            throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
         }
-
-        return new CommandResult((String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete)));
     }
 
     @Override
@@ -48,7 +47,7 @@ public class DeleteTagCommand extends UndoableCommand {
         List<Tag> lastShownList = model.getFilteredTagList();
 
         if (!getMasterTagList().contains(tagToDelete)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TAG);
+            throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
         }
 
         int targetIndex = lastShownList.indexOf(tagToDelete);

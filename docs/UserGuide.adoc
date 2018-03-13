@@ -148,10 +148,10 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
-=== Deleting a group : `deletegroup`
+=== Deleting a group : `removegroup`
 
 Deletes the specified group from the address book. +
-Format: `deletegroup g/GROUP`
+Format: `removegroup g/GROUP`
 
 ****
 * Deletes the specified group from the addressbook.
@@ -163,7 +163,7 @@ Format: `deletegroup g/GROUP`
 
 Examples:
 
-* `deletegroup g/logistics` +
+* `removegroup g/logistics` +
 Deletes the `logistics` group in the address book.
 
 === Deleting a tag : `deletetag`
@@ -296,8 +296,8 @@ e.g. `add n/James Jerome p/22224444 e/jamesjerome@example.com m/A1234567H g/publ
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Delete Group* : `deletegroup g/GROUP` +
-e.g. `deletegroup g/publicity`
+* *Delete Group* : `removegroup g/GROUP` +
+e.g. `removegroup g/publicity`
 * *Delete Tag* : `deletetag t/TAG` +
 e.g. `deletetag t/president`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +

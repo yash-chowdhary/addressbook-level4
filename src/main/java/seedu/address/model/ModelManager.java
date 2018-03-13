@@ -88,7 +88,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireAllNonNull(target, editedPerson);
 
         addressBook.updatePerson(target, editedPerson);
-        removeUnusedTags();
+        deleteUnusedTags();
         indicateAddressBookChanged();
     }
 
@@ -101,25 +101,34 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void deleteTag(Tag tag) {
-        try {
-            addressBook.deleteTag(tag);
-            updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-            indicateAddressBookChanged();
-        } catch (TagNotFoundException tnfe) {
-            throw new AssertionError("The target tag cannot be missing");
-        }
+    public void deleteTag(Tag tag) throws TagNotFoundException {
+        addressBook.deleteTag(tag);
+        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        indicateAddressBookChanged();
     }
 
     /**
      * Removes those tags from the master tag list that no persons in the address book are tagged with.
      */
-    private void removeUnusedTags() {
+    private void deleteUnusedTags() {
         List<Tag> tags = new ArrayList<>(addressBook.getTagList());
 
         for (Tag tag: tags) {
-            if (isNotTaggedInPersons(tag)) {
+            deleteTagIfUnused(tag);
+        }
+    }
+
+    /**
+     * Removes {@code tag} from the master tag list if no persons in the address book are tagged with it.
+     *
+     * @param tag Tag to remove if no persons are tagged with it
+     */
+    private void deleteTagIfUnused(Tag tag) {
+        if (isNotTaggedInPersons(tag)) {
+            try {
                 deleteTag(tag);
+            } catch (TagNotFoundException tnfe) {
+                throw new AssertionError("The tag cannot be missing.");
             }
         }
     }

@@ -263,20 +263,22 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code tag} for all persons in this {@code AddressBook}.
-     * @param tag Tag to be removed
+     * Removes {@code tagToDelete} for all persons in this {@code AddressBook}.
+     * @param tagToDelete Tag to be removed
      */
-    public void deleteTag(Tag tag) throws TagNotFoundException {
+    public void deleteTag(Tag tagToDelete) throws TagNotFoundException {
         List<Tag> tags = new ArrayList<Tag>(getTagList());
-        if (!tags.contains(tag)) {
-            return;
+        if (!tags.contains(tagToDelete)) {
+            throw new TagNotFoundException();
         }
 
-        setTags(getListWithoutTag(tag));
+        setTags(getListWithoutTag(tagToDelete));
+        boolean isTagFound = false;
         try {
             for (Person person : persons) {
-                if (person.hasTag(tag)) {
-                    deleteTagFromPerson(tag, person);
+                if (person.hasTag(tagToDelete)) {
+                    deleteTagFromPerson(tagToDelete, person);
+                    isTagFound = true;
                 }
             }
         } catch (PersonNotFoundException pnfe) {

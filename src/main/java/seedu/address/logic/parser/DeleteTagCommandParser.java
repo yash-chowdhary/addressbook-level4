@@ -1,6 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
+
+import java.util.stream.Stream;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.DeleteTagCommand;
@@ -18,13 +22,28 @@ public class DeleteTagCommandParser implements Parser<DeleteTagCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public DeleteTagCommand parse(String args) throws ParseException {
+        ArgumentMultimap argumentMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_TAG);
+
+        if (!arePrefixesPresent(argumentMultimap, PREFIX_TAG)
+                || !argumentMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteTagCommand.MESSAGE_USAGE));
+        }
+
         try {
-            Tag tag = ParserUtil.parseTag(args);
+            Tag tag = ParserUtil.parseTag(argumentMultimap.getValue(PREFIX_TAG).get());
             return new DeleteTagCommand(tag);
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteTagCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_TAG_CONSTRAINTS, DeleteTagCommand.MESSAGE_USAGE));
         }
     }
 
+    /**
+     * Returns true if none of the prefixes contains empty values in the given
+     * {@code ArgumentMultimap}
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
 }

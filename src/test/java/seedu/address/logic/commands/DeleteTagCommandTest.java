@@ -9,6 +9,8 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.address.logic.commands.CommandTestUtil.prepareUndoCommand;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.logic.commands.DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS;
+import static seedu.address.logic.commands.DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_TAG;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
@@ -17,7 +19,6 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Test;
 
-import seedu.address.commons.core.Messages;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.Model;
@@ -39,7 +40,7 @@ public class DeleteTagCommandTest {
 
         DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
 
-        String expectedMessage = String.format(DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
+        String expectedMessage = String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deleteTag(tagToRemove);
@@ -52,7 +53,7 @@ public class DeleteTagCommandTest {
         Tag nonExistentTag = new Tag(VALID_TAG_UNUSED);
         DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
-        assertCommandFailure(deleteTagCommand, model, Messages.MESSAGE_INVALID_TAG);
+        assertCommandFailure(deleteTagCommand, model, MESSAGE_NON_EXISTENT_TAG);
     }
 
     @Test
@@ -63,7 +64,7 @@ public class DeleteTagCommandTest {
 
         DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
 
-        String expectedMessage = String.format(DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
+        String expectedMessage = String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deleteTag(tagToRemove);
@@ -82,7 +83,7 @@ public class DeleteTagCommandTest {
 
         DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
-        assertCommandFailure(deleteTagCommand, model, Messages.MESSAGE_INVALID_TAG);
+        assertCommandFailure(deleteTagCommand, model, MESSAGE_NON_EXISTENT_TAG);
     }
 
     @Test
@@ -115,7 +116,7 @@ public class DeleteTagCommandTest {
         DeleteTagCommand deleteTagCommand = prepareCommand(nonExistentTag);
 
         // execution failed -> deleteTagCommand not pushed into undoRedoStack
-        assertCommandFailure(deleteTagCommand, model, Messages.MESSAGE_INVALID_TAG);
+        assertCommandFailure(deleteTagCommand, model, MESSAGE_NON_EXISTENT_TAG);
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);

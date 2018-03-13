@@ -41,8 +41,9 @@ public class CommandTestUtil {
     public static final String VALID_MATRIC_NUMBER_AMY = "A9210701B";
     public static final String VALID_MATRIC_NUMBER_BOB = "A8389539B";
     public static final String VALID_TAG_HUSBAND = "husband";
-    public static final String VALID_TAG_FRIEND = "friend";
+    public static final String VALID_TAG_FRIEND = "friends";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a person
+    public static final String VALID_TAG_UNUSED_DESC = " " + PREFIX_TAG + VALID_TAG_UNUSED;
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -63,7 +64,8 @@ public class CommandTestUtil {
     public static final String INVALID_MATRIC_NUMBER_DESC = " " + PREFIX_MATRIC_NUMBER; // must follow format
     public static final String INVALID_GROUP = "public relations"; // no spaces allowed
     public static final String INVALID_GROUP_DESC = " " + PREFIX_GROUP + INVALID_GROUP; // no spaces allowed
-    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_TAG = "hubby*";
+    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + INVALID_TAG; // '*' not allowed in tags
 
     public static final String NON_EXISTENT_GROUP = "broadcasting";
     public static final String NON_EXISTENT_GROUP_DESC = PREFIX_GROUP + NON_EXISTENT_GROUP;
