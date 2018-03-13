@@ -178,8 +178,8 @@ Format: `deletetag t/TAG`
 
 Examples:
 
-* `deletetag t/subcommittee` +
-Deletes the `subcommittee` tag for all persons tagged with `subcommittee` in the address book.
+* `deletetag t/treasurer` +
+Deletes the `treasurer` tag for all persons tagged with `treasurer` in the address book.
 
 === Selecting a person : `select`
 
