@@ -157,7 +157,7 @@ Format: `removegroup g/GROUP`
 * Deletes the specified group from the addressbook.
 * Once the group is deleted, all members who were part of the group will be assigned to the default group `member`.
 * The group must not be a mandatory group (`member`) as that is the default group.
-* The group must exist in the addressbok.
+* The group must exist in the addressbook.
 * The group must be in valid format (i.e. no white-spaces and non-empty).
 ****
 
@@ -165,6 +165,21 @@ Examples:
 
 * `removegroup g/logistics` +
 Deletes the `logistics` group in the address book.
+
+=== Deleting a tag : `deletetag`
+
+Deletes the specified tag for all persons in the address book. +
+Format: `deletetag t/TAG`
+
+****
+* Deletes the specified tag from the addressbook.
+* Deletes the specified tag for all persons tagged with it in the addressbook.
+****
+
+Examples:
+
+* `deletetag t/treasurer` +
+Deletes the `treasurer` tag for all persons tagged with `treasurer` in the address book.
 
 === Selecting a person : `select`
 
@@ -283,6 +298,8 @@ e.g. `delete 3`
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Delete Group* : `removegroup g/GROUP` +
 e.g. `removegroup g/publicity`
+* *Delete Tag* : `deletetag t/TAG` +
+e.g. `deletetag t/president`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
 * *List* : `list`

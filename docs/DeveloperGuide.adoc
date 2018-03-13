@@ -1190,7 +1190,9 @@ Windows, Linux, Unix, OS-X
 
 [[member]] Member::
 One of the persons who compose a group organization. They are the target users of our application.
-Note: An Exco member is also regarded as a member.
+
+[NOTE]
+An Exco member is also regarded as a member.
 
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
