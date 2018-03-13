@@ -8,7 +8,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
 
 /**
- * Tests that a {@code Person}'s field value matches any of the keywords given.
+ * Tests that a {@code Person}'s matches any of the keywords given according to the {@code fieldType}.
  */
 public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> keywords;
