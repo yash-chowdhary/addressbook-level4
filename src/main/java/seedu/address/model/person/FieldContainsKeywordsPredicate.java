@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.util.StringUtil;
+import seedu.address.model.tag.Tag;
 
 /**
  * Tests that a {@code Person}'s field value matches any of the keywords given.
@@ -32,10 +33,12 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
                 && this.fieldType.equals(((FieldContainsKeywordsPredicate) other).fieldType));
     }
 
+    /**
+     * Get relevant field value of person according to fieldType
+     *
+     */
     private String getFieldValue(Person person) {
         switch (fieldType) {
-        case "name":
-            return person.getName().toString();
         case "email":
             return person.getEmail().toString();
         case "phone":
@@ -45,10 +48,9 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
         case "group":
             return person.getGroup().toString();
         case "tag":
-            return person.getTags().stream().map(tag->tag.toString()).collect(Collectors.joining(" "));
+            return person.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
         default:
-            //TODO
-            return null;
+            return person.getName().toString();
         }
     }
 }

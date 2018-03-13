@@ -4,9 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
+import static seedu.address.testutil.TypicalPersons.GEORGE;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
@@ -200,15 +204,16 @@ public class FindByCommandTest {
         String[] fieldTypes = {"name", "email", "phone", "matric", "tag", "group"};
         FindByCommand[] commands = new FindByCommand[fieldTypes.length];
 
-        for( int index = 0; index < fieldTypes.length; index++) {
+        for (int index = 0; index < fieldTypes.length; index++) {
             commands[index] =
-                    new FindByCommand(new FieldContainsKeywordsPredicate(Collections.singletonList("first"), fieldTypes[index]));
+                    new FindByCommand(
+                            new FieldContainsKeywordsPredicate(Collections.singletonList("first"), fieldTypes[index]));
         }
 
         // Check across all pairs
-        for( int i = 0; i < commands.length; i++) {
-            for( int j = 0; j < commands.length; j++) {
-                if( i != j) {
+        for (int i = 0; i < commands.length; i++) {
+            for (int j = 0; j < commands.length; j++) {
+                if (i != j) {
                     assertFalse(commands[i].equals(commands[j]));
                 }
             }
@@ -229,6 +234,23 @@ public class FindByCommandTest {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         FindByCommand command = prepareCommand("Kurz Elle Kunz", "name");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+
+        command = prepareCommand("95352563 9482224 9482427", "phone");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+
+        command = prepareCommand("heinz@example.com werner@example.com lydia@example.com", "email");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+
+        command = prepareCommand("A6076201A A1932279G A9662042H", "matric");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+
+        command = prepareCommand("marketing operations", "group");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+
+        expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 7);
+        command = prepareCommand("friend friends owesMoney", "tag");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON, CARL,
+                DANIEL, ELLE, FIONA, GEORGE));
     }
 
     /**
