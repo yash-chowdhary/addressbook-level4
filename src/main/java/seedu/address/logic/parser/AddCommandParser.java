@@ -7,8 +7,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
+
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -22,8 +23,8 @@ import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Username;
 import seedu.address.model.person.Password;
+import seedu.address.model.person.Username;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -39,7 +40,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                        PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG, PREFIX_USERNAME,PREFIX_PASSWORD);
+                        PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG, PREFIX_USERNAME, PREFIX_PASSWORD);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_MATRIC_NUMBER, PREFIX_PHONE, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -57,7 +58,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             Username username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME)).get();
             Password password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_USERNAME)).get();
 
-            Person person = new Person(name, phone, email, matricNumber, group, tagList,username,password);
+            Person person = new Person(name, phone, email, matricNumber, group, tagList, username, password);
 
             return new AddCommand(person);
         } catch (IllegalValueException ive) {

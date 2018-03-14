@@ -159,7 +159,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Person(
                 person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(), person.getGroup(),
-                    correctTagReferences,person.getUsername(),person.getPassword());
+                    correctTagReferences, person.getUsername(), person.getPassword());
     }
 
     /**
@@ -180,8 +180,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Logs in a member
      */
 
-    public boolean logInMember(String username,String password){
-
+    public boolean logInMember(String username, String password) {
         return persons.logInMemberSuccessful(username,password);
     }
 
@@ -325,7 +324,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         Person newPerson = new Person(person.getName(), person.getPhone(),
                 person.getEmail(), person.getMatricNumber(),
-                person.getGroup(), personTags,person.getUsername(),person.getPassword());
+                person.getGroup(), personTags, person.getUsername(), person.getPassword());
 
         try {
             updatePerson(person, newPerson);

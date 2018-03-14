@@ -33,7 +33,8 @@ public class Person {
      */
 
     public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags, Username username, Password password) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags,username,password);
+        requireAllNonNull(name, phone, email, matricNumber, group, tags,
+                username, password);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -152,11 +153,12 @@ public class Person {
      * change the status of the person loggin in
      */
 
-    public void changeLogInStatus(){
-        if(isLogIn == false)
+    public void changeLogInStatus() {
+        if(isLogIn == false) {
             isLogIn = true;
-        else
+        }
+        else {
             isLogIn = false;
-
+        }
     }
 }

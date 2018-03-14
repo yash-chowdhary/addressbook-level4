@@ -16,8 +16,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Username;
 import seedu.address.model.person.Password;
+import seedu.address.model.person.Username;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -136,11 +136,20 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code Optional<String> email} into an {@code Optional<Email>} if {@code email} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Email> parseEmail(Optional<String> email) throws IllegalValueException {
+        requireNonNull(email);
+        return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
+    }
+
+    /**
      * Parses a {@code String username} into an {@code Username}.
      * Leading and trailing whitespaces will be trimmed.
      *
      */
-    public static Username parseUsername(String username){
+    public static Username parseUsername(String username) {
         requireNonNull(username);
         String trimmedUsername = username.trim();
         return new Username(trimmedUsername);
@@ -155,14 +164,12 @@ public class ParserUtil {
         return  username.isPresent() ? Optional.of(parseUsername(username.get())) : Optional.empty();
     }
 
-
-
     /**
      * Parses a {@code String password} into an {@code Password}.
      * Leading and trailing whitespaces will be trimmed.
      *
      */
-    public static Password parsePassword(String password){
+    public static Password parsePassword(String password) {
         requireNonNull(password);
         String trimmedPassword = password.trim();
         return new Password(trimmedPassword);
@@ -172,18 +179,10 @@ public class ParserUtil {
      * Parses a {@code Optional<String> password} into an {@code Optional<Passowrd>} if {@code password} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
-    public static Optional<Password> parsePassword(Optional<String> password){
+    public static Optional<Password> parsePassword(Optional<String> password) {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
 
-    /**
-     * Parses a {@code Optional<String> email} into an {@code Optional<Email>} if {@code email} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<Email> parseEmail(Optional<String> email) throws IllegalValueException {
-        requireNonNull(email);
-        return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
-    }
 
     /**
      * Parses a {@code String group} into a {@code Group}.

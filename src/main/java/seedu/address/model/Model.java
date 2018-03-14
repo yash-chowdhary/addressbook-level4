@@ -53,7 +53,7 @@ public interface Model {
     /**
      * Logs In a Member in the club
      */
-    boolean logInMemberSuccessful(String username,String password);
+    boolean logInMemberSuccessful(String username, String password);
 
 
     /** Removes the given tag {@code tag} for all persons in the club book. */

@@ -56,7 +56,7 @@ public class XmlAdaptedPerson {
      */
 
     public XmlAdaptedPerson(String name, String phone, String email, String matricNumber, String group,
-                            List<XmlAdaptedTag> tagged,String username,String password) {
+                            List<XmlAdaptedTag> tagged, String username, String password) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -142,7 +142,7 @@ public class XmlAdaptedPerson {
 
         final Set<Tag> tags = new HashSet<>(personTags);
 
-        return new Person(name, phone, email, matricNumber, group, tags,username,password);
+        return new Person(name, phone, email, matricNumber, group, tags, username, password);
     }
 
     @Override

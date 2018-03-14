@@ -26,8 +26,8 @@ import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Username;
 import seedu.address.model.person.Password;
+import seedu.address.model.person.Username;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -117,7 +117,8 @@ public class EditCommand extends UndoableCommand {
         Username updatedUsername = editPersonDescriptor.getUsername().orElse(personToEdit.getUsername());
         Password updatedPassword = editPersonDescriptor.getPassword().orElse(personToEdit.getPassword());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup, updatedTags, updatedUsername,updatedPassword);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
+                updatedTags, updatedUsername, updatedPassword);
     }
 
     @Override
@@ -219,19 +220,19 @@ public class EditCommand extends UndoableCommand {
             this.group = group;
         }
 
-        public void setUsername(Username usernme){
+        public void setUsername(Username username) {
             this.username = username;
         }
 
-        public Optional<Username> getUsername(){
+        public Optional<Username> getUsername() {
             return Optional.ofNullable(username);
         }
 
-        public void setPassword(Password password){
+        public void setPassword(Password password) {
             this.password = password;
         }
 
-        public Optional<Password> getPassword(){
+        public Optional<Password> getPassword() {
             return Optional.ofNullable(password);
         }
 

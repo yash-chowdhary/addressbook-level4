@@ -119,15 +119,22 @@ public class UniquePersonList implements Iterable<Person> {
         return internalList.hashCode();
     }
 
-    public boolean logInMemberSuccessful(String username, String password){
-        if(!areThereAnyMemberLogedIn()){
-            for(int i=0;i<internalList.size();i++){
-                if(internalList.get(i).getUsername().toString().equals(username)){
-                    if(internalList.get(i).getPassword().toString().equals(password)){
+    /**
+     * Logs in a member successfully and return a true value
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean logInMemberSuccessful(String username, String password) {
+        if(!areThereAnyMemberLogedIn()) {
+            for (int i = 0; i < internalList.size(); i++) {
+                if (internalList.get(i).getUsername().toString().equals(username)) {
+                    if(internalList.get(i).getPassword().toString().equals(password)) {
                         return true;
                     }
-                    else
+                    else {
                         return false;
+                    }
                 }
             }
         }
@@ -137,9 +144,9 @@ public class UniquePersonList implements Iterable<Person> {
     /**
      * Check that whether there are anyone being log in currently.
      */
-    public boolean areThereAnyMemberLogedIn(){
-        for(int i=0;i<internalList.size();i++){
-            if(internalList.get(i).isLogIn()){
+    public boolean areThereAnyMemberLogedIn() {
+        for (int i = 0;i < internalList.size(); i++) {
+            if(internalList.get(i).isLogIn()) {
                 return true;
             }
         }

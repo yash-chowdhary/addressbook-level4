@@ -6,7 +6,7 @@ package seedu.address.model.person;
 public class Username {
     public final String value;
 
-    public Username(String name){
+    public Username(String name) {
         this.value = name;
     }
 

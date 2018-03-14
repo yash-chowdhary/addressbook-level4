@@ -1,26 +1,31 @@
 package seedu.address.logic.parser;
+import java.util.stream.Stream;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.LogInCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.*;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Password;
+import seedu.address.model.person.Username;
 
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.*;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
-
+/**
+ * Parses input arguments and creates a new LogInCommand object
+ */
 public class LoginCommandParser {
-
+    /**
+     * Parses the given {@code String} of arguments in the context of the LogInCommand
+     * and returns an LogInCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
     public LogInCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_USERNAME,PREFIX_PASSWORD);
+                ArgumentTokenizer.tokenize(args, PREFIX_USERNAME, PREFIX_PASSWORD);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_USERNAME,PREFIX_PASSWORD)
+        if (!arePrefixesPresent(argMultimap, PREFIX_USERNAME, PREFIX_PASSWORD)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -29,7 +34,7 @@ public class LoginCommandParser {
             Username username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME)).get();
             Password password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_PASSWORD)).get();
 
-            return new LogInCommand(username,password);
+            return new LogInCommand(username, password);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
