@@ -3,6 +3,8 @@
     <name>Hans Muster</name>
     <phone>9482424</phone>
     <email>hans@example</email>
-    <address>4th street</address>
+    <matricNumber>A1234567H</matricNumber>
+    <group isPrivate="false">logistics</group>
+>>>>>>> master
     <tagged>friends</tagged>
 </person>

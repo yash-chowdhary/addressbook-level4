@@ -43,7 +43,7 @@ public class UniqueTagList implements Iterable<Tag> {
      * Returns all tags in this list as a Set.
      * This set is mutable and change-insulated against the internal list.
      */
-    public Set<Tag> toSet() {
+    private Set<Tag> toSet() {
         assert CollectionUtil.elementsAreUnique(internalList);
         return new HashSet<>(internalList);
     }

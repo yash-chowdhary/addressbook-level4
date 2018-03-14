@@ -3,11 +3,14 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.model.group.Group;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
 
 /**
  * Represents a Person in the address book.
@@ -18,27 +21,28 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
-    private final Address address;
     private final Password password;
     private final Username username;
     private boolean isLogIn = false;
-
-    private final UniqueTagList tags;
+    private final MatricNumber matricNumber;
+    private Group group;
+    private final HashMap<String, Tag> tags;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Username username, Password password) {
-        requireAllNonNull(name, phone, email, address, tags);
+
+    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags, Username username, Password password) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags,username,password);
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.address = address;
+        this.matricNumber = matricNumber;
+        this.group = group;
+        this.tags = new HashMap<String, Tag>();
         this.username = username;
         this.password = password;
-
-        // protect internal tags from changes in the arg list
-        this.tags = new UniqueTagList(tags);
+        setTags(tags);
     }
 
     public Name getName() {
@@ -53,8 +57,21 @@ public class Person {
         return email;
     }
 
-    public Address getAddress() {
-        return address;
+    public MatricNumber getMatricNumber() {
+        return matricNumber;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    private void setTags(Set<Tag> personTags) {
+        Iterator itr = personTags.iterator();
+
+        while (itr.hasNext()) {
+            Tag tag = (Tag) itr.next();
+            tags.put(tag.tagName, tag);
+        }
     }
 
     public Username getUsername() {
@@ -74,7 +91,21 @@ public class Person {
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags.toSet());
+        Set<Tag> personTags = new HashSet<Tag>();
+
+        Set<String> tagNames = tags.keySet();
+        Iterator itr = tagNames.iterator();
+
+        while (itr.hasNext()) {
+            String key = (String) itr.next();
+            personTags.add(tags.get(key));
+        }
+
+        return Collections.unmodifiableSet(personTags);
+    }
+
+    public boolean hasTag(Tag tag) {
+        return getTags().contains(tag);
     }
 
     @Override
@@ -91,13 +122,13 @@ public class Person {
         return otherPerson.getName().equals(this.getName())
                 && otherPerson.getPhone().equals(this.getPhone())
                 && otherPerson.getEmail().equals(this.getEmail())
-                && otherPerson.getAddress().equals(this.getAddress());
+                && otherPerson.getMatricNumber().equals(this.getMatricNumber());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, matricNumber, group, tags);
     }
 
     @Override
@@ -108,8 +139,10 @@ public class Person {
                 .append(getPhone())
                 .append(" Email: ")
                 .append(getEmail())
-                .append(" Address: ")
-                .append(getAddress())
+                .append(" MatricNumber: ")
+                .append(getMatricNumber())
+                .append(" Group: ")
+                .append(getGroup())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();

@@ -3,7 +3,14 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.address.model.person.*;
+import seedu.address.model.group.Group;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.MatricNumber;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Username;
+import seedu.address.model.person.Password;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -14,8 +21,9 @@ public class PersonBuilder {
 
     public static final String DEFAULT_NAME = "Alice Pauline";
     public static final String DEFAULT_PHONE = "85355255";
+    public static final String DEFAULT_MATRIC_NUMBER = "A1234567H";
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_GROUP = "exco";
     public static final String DEFAULT_TAGS = "friends";
     public static final String DEFAULT_USERNAME = "alice@gmail.com";
     public static final String DEFAULT_PASSWORD = "Alice8535";
@@ -23,7 +31,8 @@ public class PersonBuilder {
     private Name name;
     private Phone phone;
     private Email email;
-    private Address address;
+    private MatricNumber matricNumber;
+    private Group group;
     private Set<Tag> tags;
     private Username username;
     private Password password;
@@ -32,7 +41,8 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        address = new Address(DEFAULT_ADDRESS);
+        matricNumber = new MatricNumber(DEFAULT_MATRIC_NUMBER);
+        group = new Group(DEFAULT_GROUP);
         tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
         username = new Username(DEFAULT_USERNAME);
         password = new Password(DEFAULT_PASSWORD);
@@ -46,7 +56,8 @@ public class PersonBuilder {
         name = personToCopy.getName();
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
-        address = personToCopy.getAddress();
+        matricNumber = personToCopy.getMatricNumber();
+        group = personToCopy.getGroup();
         tags = new HashSet<>(personToCopy.getTags());
         username = personToCopy.getUsername();
         password = personToCopy.getPassword();
@@ -69,10 +80,10 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the {@code Address} of the {@code Person} that we are building.
+     * Sets the {@code MatricNumber} of the {@code Person} that we are building.
      */
-    public PersonBuilder withAddress(String address) {
-        this.address = new Address(address);
+    public PersonBuilder withMatricNumber(String matricNumber) {
+        this.matricNumber = new MatricNumber(matricNumber);
         return this;
     }
 
@@ -95,8 +106,15 @@ public class PersonBuilder {
     /**
      * Sets the {@code Username} of the {@code Person} that we are building
      */
-    public PersonBuilder withUsername(String username){
+    public PersonBuilder withUsername(String username) {
         this.username = new Username(username);
+        return this;
+    }
+    /**
+     * Sets the {@code Group} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withGroup(String group) {
+        this.group = new Group(group);
         return this;
     }
 
@@ -104,13 +122,20 @@ public class PersonBuilder {
      * Sets the {@Password} of the {@code Person} that we are building
      * @return
      */
-    public PersonBuilder withPassword(String password){
+    public PersonBuilder withPassword(String password) {
         this.password = new Password(password);
+        return this;
+    }
+    /**
+     * Sets the {@code Group} of the {@code Person} that we are building to the default group - "member".
+     */
+    public PersonBuilder withGroup() {
+        this.group = new Group(Group.DEFAULT_GROUP);
         return this;
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, tags,username,password);
+        return new Person(name, phone, email, matricNumber, group, tags,username,password);
     }
 
 }

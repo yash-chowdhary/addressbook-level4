@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= Club Connect - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -780,15 +780,17 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 [appendix]
 == Product Scope
 
+Club Connect is targeted at Student Organizations, such as clubs and societies, that are characterized by a well-established hierarchy.
+Student organizations can have hundreds of members, who are divided into sub-committees that have narrower focuses. These subcommittee members are often assigned individual and group tasks. With time, it becomes very difficult to keep track of everything manually.
+This is why these organizations require a system for enrolling members, delegating tasks, organising events, and opening polls and getting feedback.
+Club Connect provides student organisations with a one-stop shop for all their managerial and organisation needs.
+
 *Target user profile*:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing over mouse input
-* is reasonably comfortable using CLI apps
+* <<exco-member,Exco member>> of a <<club,Club>>
+* <<member,Member>> of a club
 
-*Value proposition*: manage contacts faster than a typical mouse/GUI driven app
+*Value proposition*: clubs can efficiently manage its activities and members faster than a typical mouse/GUI driven application
 
 [appendix]
 == User Stories
@@ -798,31 +800,91 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a/an ... |I want to ... |So that I can...
-|`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
+|`* * *` |New member |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |Exco member |add a new person to the club | begin assigning groups and tasks to the person
+|`* * *` |<<exco-member,Exco member>> |add a new member to the club | begin assigning groups and tasks to the member
 
-|`* * *` |Exco member |delete a person from the club |remove entries that the club no longer needs
+|`* * *` |Exco member |delete a member from the club |remove entries that the club no longer needs
 
 |`* * *` |Exco member |divide members into groups using tags |manage the committee members more efficiently
 
-|`* * *` |Exco member |remove a particular tag/group | remove redundancies
+|`* * *` |Exco member |remove a particular tag/group | remove redundancies or remove irrelevant tags
 
-|`* * *` |Exco member |remove a person from a particular group | keep the App up-to-date, and also take into account students that opt-out or graduate
+|`* * *` |Exco member |remove a member from a particular group | keep the App up-to-date, and also take into account students that opt-out or graduate
 
-|`* * *` |user |edit my contact details |keep my contact information updated
+|`* * *` |Exco member |add a task for certain members | assign members to do a task
 
-|`* * *` |user |undo and redo my commands |reverse any undesirable commands or mistakes
+|`* * *` |Exco member |view the status of a task | see the progress made towards completing the task
 
-|`* * *` |user |select a user |view the user's details
+|`* * *` |Exco member |remove a task | delete tasks that have been completed
 
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
+|`* * *` |Exco member |create a poll | get the opinions of the club members
 
-|`* * *` |user |find a person by specified field |locate details of persons without having to go through the entire list
+|`* * *` |Exco member who created a poll |view results of the poll | see the opinions of the members
 
-|`* *` |user |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
+|`* * *` |Member |edit my contact details |keep my contact information updated
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* * *` |Member |undo my command |reverse any undesirable commands or mistakes
+
+|`* * *` |Member |redo a command |return to the state before I undid a command
+
+|`* * *` |Member |select a member |view the member's details
+
+|`* * *` |Member |find a member by name |locate details of persons without having to go through the entire list
+
+|`* * *` |Member |find members by a specified field |locate details of members without having to go through the entire list
+
+|`* * *` |Member |get notifications for new tasks |be aware of new tasks assigned to me
+
+|`* * *` |Member |add a display picture |be identified by others
+
+|`* * *` |Member |add multiple <<entry,entries>> for <<attribute,attributes>> |provide all alternative contact details to others
+
+|`* * *` |Member |logout of the application |maintain integrity of my data and actions
+
+|`* * *` |Member |login to my account |access my data
+
+|`* * *` |Member |vote in a poll |provide my opinions
+
+|`* * *` |Member |remove a task assigned to me |focus on the yet to be done tasks
+
+|`* * *` |Busy member |be able to directly email members using my default mail client |save time and reduce errors by not needing to add recipients myself
+
+|`* *` |Member |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
+
+|`* *` |Member |be notified on members' birthdays |wish them on time
+
+|`* *` |Member |compress the display of members |browse through the list of members with less distractions
+
+|`* *` |Efficient member |use shortcuts for commands |enter commands quickly
+
+|`* *` |Forgetful member |use multiple names for commands |use the right command by using any intuitive name
+
+|`* *` |Forgetful member |add an alternative name for a command |use names that I am used to
+
+|`* *` |Forgetful member |have suggestions for commands |correct myself easily when I make a mistake
+
+|`*` |Exco member |view anonymous feedback |see members' opinions of how the club can be improved
+
+|`*` |Member with many persons in the address book |sort members by name |locate a member easily
+
+|`*` |Member |choose fields that should be displayed in the members list |view only those attributes that I want
+
+|`*` |Member |submit anonymous feedback |give my opinions to improve the club system and facilities
+
+|`*` |Member |create a group chat |broadcast messages
+
+|`*` |Member |chat with other members |communicate with them
+
+|`*` |Member |know who is online |I can chat with members in real time.
+
+|`*` |Member |see a list of my frequently viewed members |I can quickly access them
+
+|`*` |Member |email <<profile,profiles>> of members to others |I can share the information easily
+
+|`*` |Member |print profiles of selected members |view the information in the absence of a computer
+
+|`*` |Socially active member|link my social media |I can directly post things that I do in the club
 |=======================================================================
 
 _{More to be added}_
@@ -830,68 +892,251 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is the `ClubConnect` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Delete member
+*System* : ClubConnect
+
+*Actor* : Exco member
+
+*Precondition* : User is logged in.
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User requests to list members.
+2.  ClubConnect shows a list of members.
+3.  User requests to delete a specific member in the list.
+4.  ClubConnect deletes the member.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
+* 2a. The list only contains the User.
 +
 Use case ends.
 
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. ClubConnect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
-=== Use case: Add person
+=== Use case: Add member
+
+*System* : ClubConnect
+
+*Actor* : Exco member
+
+*Precondition* : User is logged in.
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to add a person to the list
-4.  AddressBook adds the person
+1.  User requests to list members.
+2.  ClubConnect shows a list of members.
+3.  User requests to add a member to the list.
+4.  ClubConnect adds the member.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The syntax of the add command is invalid.
+* 3a. The syntax of the add command is invalid.
+** 3a1. ClubConnect shows an error message.
+** 3a1. ClubConnect shows correct format for add command.
 +
-[none]
-** 2a1. AddressBook shows an error message
+Use case resumes at step 2.
+
+* 3a. The matric number of member already exists in ClubConnect.
+** 3a1. ClubConnect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
-=== Use case: Help
+=== Use case: Show Help
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
 
 *MSS*
 
-1.  User requests help
-2.  AddressBook shows usage instructions
+1.  User requests help.
+2.  ClubConnect shows usage instructions.
 +
 Use case ends.
 
+[discrete]
 
-_{More to be added}_
+=== Use case: Sort members
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
+
+*MSS*
+
+1.  User requests to sort by specified field.
+2.  ClubConnect lists members sorted according to specified field.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Invalid field specified.
+** 1a1. ClubConnect shows an error message and displays all possible valid fields.
++
+Use case resumes at step 1.
+* 1b. No field specified.
+** 1b2. ClubConnect shows list of members sorted by name.
++
+Use case ends.
+
+[discrete]
+=== Use case: Exit
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
+
+*MSS*
+
+1.  User requests to exit ClubConnect.
+2.  ClubConnect exits.
++
+Use case ends.
+
+[discrete]
+=== Use case: Undo command
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
+
+*MSS*
+
+1.  User requests to undo previous command.
+2.  ClubConnect undoes previous command.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Previous command is undoable.
+** 1a1. ClubConnect undoes latest undoable command.
++
+Use case ends.
+
+* 1b. No previous commands given.
++
+Use case ends.
+
+[discrete]
+=== Use case: Redo command
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
+
+*MSS*
+
+1.  User requests to redo.
+2.  ClubConnect redoes the change made by previous undo command.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. There are no redoable commands.
++
+Use case ends.
+
+[discrete]
+=== Use case: Login
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged out.
+
+*MSS*
+
+1.  ClubConnect shows login screen.
+2.  User enters username and password.
+3.  ClubConnect login as member with given username and password.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Username and password combination invalid.
+** 1a1. ClubConnect shows an error message.
++
+Use case resumes at step 1.
+
+[discrete]
+=== Use case: Logout
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
+
+*MSS*
+
+1.  User requests to logout.
+2.  ClubConnect logouts to login screen.
++
+Use case ends.
+
+[discrete]
+=== Use case: Find person
+
+*System* : ClubConnect
+
+*Actor* : Member
+
+*Precondition* : User is logged in.
+
+*MSS*
+
+1.  User requests to find member by specified field using keyword.
+2.  ClubConnect shows a list of persons containing keyword in specified field.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Invalid field specified.
+** 1a1. ClubConnect shows an error message and displays all possible valid fields.
++
+Use case resumes at step 1.
+* 1b. No field specified.
+** 1b2. ClubConnect shows a list of persons containing keyword in any possible field.
++
+Use case ends.
 
 [appendix]
 == Non Functional Requirements
@@ -903,17 +1148,57 @@ _{More to be added}_
 .  Should work on 32- and 64- bit environments.
 .  Should be easy to use for a first-time user.
 .  Should be able to handle any sort of input, i.e. should recover from invalid input.
+.  Should have friendly user guides and developer guides.
+.  Should allow certain data to be private.
+.  Should have command names that concisely describe their function.
+.  Should be open-source.
+.  Development should not cost money.
+.  Should be able to work offline.
+.  Should take up as little memory on the hard disk.
+.  Should be compatible with all Operating System, i.e Windows and Macintosh.
+.  Should save data regularly.
+.  Current versions must be backward compatible with older versions to support undo.
+
 
 _{More to be added}_
 
 [appendix]
 == Glossary
 
+[[attribute]] Attribute::
+An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matric number and so on.
+
+[[club]] Club::
+A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+
+[[cli]] CLI::
+Acronym for Command Line Inerface. It is a purely text-based interface for software. User respond to visual prompts by typing single commands into the interface and receive results as text as well.
+An example of CLI would be MS-DOS.
+
+[[entry]] Entry::
+A value added to a member's attribute.
+
+[[exco-member]] Exco member::
+A member who is part of the Executive committee of the club. Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+
+[[gui]] GUI::
+Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
+For example, all Windows operating systems have a GUI.
+
 [[mainstream-os]] Mainstream OS::
 Windows, Linux, Unix, OS-X
 
+[[member]] Member::
+One of the persons who compose a group organization. They are the target users of our application.
+
+[NOTE]
+An Exco member is also regarded as a member.
+
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
+
+[[profile]] Profile::
+Visual display of the information (attributes and entries) of a member.
 
 [appendix]
 == Product Survey
