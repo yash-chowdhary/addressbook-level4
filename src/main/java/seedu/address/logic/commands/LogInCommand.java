@@ -1,6 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
+
+
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Password;
@@ -16,7 +20,13 @@ public class LogInCommand extends Command {
     public static final String COMMAND_WORD = "login";
     public static final String MESSAGE_SUCCESS = "login successful!";
     public static final String MESSAGE_FAILURE = "login unsuccessful!";
-
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Logs in a member to ClubConnect. "
+            + "Parameters: "
+            + PREFIX_USERNAME + "username "
+            + PREFIX_PASSWORD + "password\n"
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_USERNAME + "JohnDoe" + " "
+            + PREFIX_PASSWORD + "password";
     private final Username username;
     private final Password password;
 
