@@ -55,7 +55,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     .orElse(new Group(Group.DEFAULT_GROUP));
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             Username username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME)).get();
-            Password password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_USERNAME)).get();
+            Password password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_PASSWORD)).get();
 
             Person person = new Person(name, phone, email, matricNumber, group, tagList, username, password);
 
