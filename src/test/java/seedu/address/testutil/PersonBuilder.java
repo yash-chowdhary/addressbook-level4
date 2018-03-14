@@ -7,10 +7,10 @@ import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Password;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Username;
-import seedu.address.model.person.Password;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -117,7 +117,13 @@ public class PersonBuilder {
         this.group = new Group(group);
         return this;
     }
-
+    /**
+     * Sets the {@code Group} of the {@code Person} that we are building to the default group - "member".
+     */
+    public PersonBuilder withGroup() {
+        this.group = new Group(Group.DEFAULT_GROUP);
+        return this;
+    }
     /**
      * Sets the {@Password} of the {@code Person} that we are building
      * @return
@@ -126,16 +132,7 @@ public class PersonBuilder {
         this.password = new Password(password);
         return this;
     }
-    /**
-     * Sets the {@code Group} of the {@code Person} that we are building to the default group - "member".
-     */
-    public PersonBuilder withGroup() {
-        this.group = new Group(Group.DEFAULT_GROUP);
-        return this;
-    }
-
     public Person build() {
-        return new Person(name, phone, email, matricNumber, group, tags,username,password);
+        return new Person(name, phone, email, matricNumber, group, tags, username, password);
     }
-
 }
