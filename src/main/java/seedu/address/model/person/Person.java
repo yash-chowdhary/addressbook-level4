@@ -155,7 +155,7 @@ public class Person {
      */
 
     public void changeLogInStatus() {
-        if (isLogIn == false) {
+        if (!isLogIn) {
             isLogIn = true;
         } else {
             isLogIn = false;

@@ -129,11 +129,7 @@ public class UniquePersonList implements Iterable<Person> {
         if (!areThereAnyMemberLogedIn()) {
             for (int i = 0; i < internalList.size(); i++) {
                 if (internalList.get(i).getUsername().toString().equals(username)) {
-                    if (internalList.get(i).getPassword().toString().equals(password)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return internalList.get(i).getPassword().toString().equals(password);
                 }
             }
         }

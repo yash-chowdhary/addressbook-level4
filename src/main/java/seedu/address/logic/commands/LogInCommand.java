@@ -4,13 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
 
-
-
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Password;
 import seedu.address.model.person.Username;
-
-
 
 /**
  * Logs in a Member to ClubConnect

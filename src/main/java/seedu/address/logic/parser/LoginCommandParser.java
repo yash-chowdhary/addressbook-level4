@@ -1,9 +1,10 @@
 package seedu.address.logic.parser;
-import java.util.stream.Stream;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
+
+import java.util.stream.Stream;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.LogInCommand;
