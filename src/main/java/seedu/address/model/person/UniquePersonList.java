@@ -126,13 +126,12 @@ public class UniquePersonList implements Iterable<Person> {
      * @return
      */
     public boolean logInMemberSuccessful(String username, String password) {
-        if(!areThereAnyMemberLogedIn()) {
+        if (!areThereAnyMemberLogedIn()) {
             for (int i = 0; i < internalList.size(); i++) {
                 if (internalList.get(i).getUsername().toString().equals(username)) {
-                    if(internalList.get(i).getPassword().toString().equals(password)) {
+                    if (internalList.get(i).getPassword().toString().equals(password)) {
                         return true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
@@ -145,8 +144,8 @@ public class UniquePersonList implements Iterable<Person> {
      * Check that whether there are anyone being log in currently.
      */
     public boolean areThereAnyMemberLogedIn() {
-        for (int i = 0;i < internalList.size(); i++) {
-            if(internalList.get(i).isLogIn()) {
+        for (int i = 0; i < internalList.size(); i++) {
+            if (internalList.get(i).isLogIn()) {
                 return true;
             }
         }

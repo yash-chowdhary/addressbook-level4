@@ -15,8 +15,8 @@ import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
 import seedu.address.model.person.Password;
+import seedu.address.model.person.Phone;
 import seedu.address.model.person.Username;
 import seedu.address.model.tag.Tag;
 

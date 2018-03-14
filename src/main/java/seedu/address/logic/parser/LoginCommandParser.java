@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.LogInCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Password;

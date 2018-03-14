@@ -99,6 +99,7 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook.logInMember(username, password);
     }
 
+    @Override
     public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
 

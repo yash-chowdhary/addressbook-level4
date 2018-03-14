@@ -32,7 +32,8 @@ public class Person {
      * Every field must be present and not null.
      */
 
-    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags, Username username, Password password) {
+    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+                  Username username, Password password) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags,
                 username, password);
         this.name = name;
@@ -154,10 +155,9 @@ public class Person {
      */
 
     public void changeLogInStatus() {
-        if(isLogIn == false) {
+        if (isLogIn == false) {
             isLogIn = true;
-        }
-        else {
+        } else {
             isLogIn = false;
         }
     }

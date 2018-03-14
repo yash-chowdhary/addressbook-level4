@@ -6,7 +6,7 @@ package seedu.address.model.person;
 public class Password {
     public final String value;
 
-    public Password(String password){
+    public Password(String password) {
         this.value = password;
     }
 

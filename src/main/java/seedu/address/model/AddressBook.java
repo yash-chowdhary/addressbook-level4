@@ -181,7 +181,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
 
     public boolean logInMember(String username, String password) {
-        return persons.logInMemberSuccessful(username,password);
+        return persons.logInMemberSuccessful(username, password);
     }
 
     /** tag-level operation
