@@ -7,8 +7,10 @@ import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Password;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Username;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -23,6 +25,8 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_GROUP = "exco";
     public static final String DEFAULT_TAGS = "friends";
+    public static final String DEFAULT_USERNAME = "alice@gmail.com";
+    public static final String DEFAULT_PASSWORD = "Alice8535";
 
     private Name name;
     private Phone phone;
@@ -30,6 +34,8 @@ public class PersonBuilder {
     private MatricNumber matricNumber;
     private Group group;
     private Set<Tag> tags;
+    private Username username;
+    private Password password;
 
     public PersonBuilder() {
         name = new Name(DEFAULT_NAME);
@@ -38,6 +44,9 @@ public class PersonBuilder {
         matricNumber = new MatricNumber(DEFAULT_MATRIC_NUMBER);
         group = new Group(DEFAULT_GROUP);
         tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
+        username = new Username(DEFAULT_USERNAME);
+        password = new Password(DEFAULT_PASSWORD);
+
     }
 
     /**
@@ -50,6 +59,8 @@ public class PersonBuilder {
         matricNumber = personToCopy.getMatricNumber();
         group = personToCopy.getGroup();
         tags = new HashSet<>(personToCopy.getTags());
+        username = personToCopy.getUsername();
+        password = personToCopy.getPassword();
     }
 
     /**
@@ -93,13 +104,19 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code Username} of the {@code Person} that we are building
+     */
+    public PersonBuilder withUsername(String username) {
+        this.username = new Username(username);
+        return this;
+    }
+    /**
      * Sets the {@code Group} of the {@code Person} that we are building.
      */
     public PersonBuilder withGroup(String group) {
         this.group = new Group(group);
         return this;
     }
-
     /**
      * Sets the {@code Group} of the {@code Person} that we are building to the default group - "member".
      */
@@ -107,9 +124,15 @@ public class PersonBuilder {
         this.group = new Group(Group.DEFAULT_GROUP);
         return this;
     }
-
-    public Person build() {
-        return new Person(name, phone, email, matricNumber, group, tags);
+    /**
+     * Sets the {@Password} of the {@code Person} that we are building
+     * @return
+     */
+    public PersonBuilder withPassword(String password) {
+        this.password = new Password(password);
+        return this;
     }
-
+    public Person build() {
+        return new Person(name, phone, email, matricNumber, group, tags, username, password);
+    }
 }

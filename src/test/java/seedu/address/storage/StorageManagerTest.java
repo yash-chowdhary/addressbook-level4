@@ -28,6 +28,7 @@ public class StorageManagerTest {
 
     private StorageManager storageManager;
 
+
     @Before
     public void setUp() {
         XmlAddressBookStorage addressBookStorage = new XmlAddressBookStorage(getTempFilePath("ab"));
