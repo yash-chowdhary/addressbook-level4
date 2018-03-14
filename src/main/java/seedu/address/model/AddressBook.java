@@ -113,7 +113,7 @@ public class AddressBook implements ReadOnlyAddressBook {
             throws DuplicatePersonException, PersonNotFoundException {
         requireNonNull(editedPerson);
 
-        removePersonTags(target);
+        deletePersonTags(target);
 
         Person syncedEditedPerson = syncWithMasterTagList(editedPerson);
         // TODO: the tags master list will be updated even though the below line fails.
@@ -167,7 +167,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @throws PersonNotFoundException if the {@code key} is not in this {@code AddressBook}.
      */
     public boolean removePerson(Person key) throws PersonNotFoundException {
-        removePersonTags(key);
+        deletePersonTags(key);
 
         if (persons.remove(key)) {
             return true;
@@ -179,7 +179,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Removes tags from master tag list {@code tags} that are unique to person {@code person}.
      */
-    private void removePersonTags(Person person) {
+    private void deletePersonTags(Person person) {
         List<Tag> tagsToCheck = tags.asObservableList().stream().collect(Collectors.toList());
         Set<Tag> newTags = tagsToCheck.stream()
                 .filter(t -> !isTagUniqueToPerson(t, person))
@@ -190,7 +190,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         while (itr.hasNext()) {
             Tag tag = itr.next();
             if (isTagUniqueToPerson(tag, person)) {
-                removeTag(tag);
+                deleteTag(tag);
             }
         }*/
     }
@@ -263,20 +263,20 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code tag} for all persons in this {@code AddressBook}.
-     * @param tag Tag to be removed
+     * Removes {@code tagToDelete} for all persons in this {@code AddressBook}.
+     * @param tagToDelete Tag to be removed
      */
-    public void removeTag(Tag tag) throws TagNotFoundException {
+    public void deleteTag(Tag tagToDelete) throws TagNotFoundException {
         List<Tag> tags = new ArrayList<Tag>(getTagList());
-        if (!tags.contains(tag)) {
-            return;
+        if (!tags.contains(tagToDelete)) {
+            throw new TagNotFoundException();
         }
 
-        setTags(getListWithoutTag(tag));
+        setTags(getListWithoutTag(tagToDelete));
         try {
             for (Person person : persons) {
-                if (person.hasTag(tag)) {
-                    removeTagFromPerson(tag, person);
+                if (person.hasTag(tagToDelete)) {
+                    deleteTagFromPerson(tagToDelete, person);
                 }
             }
         } catch (PersonNotFoundException pnfe) {
@@ -307,7 +307,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Removes {@code tag} from {@code person} in this {@code AddressBook}.
      * @throws PersonNotFoundException if the {@code person} is not in this {@code AddressBook}.
      */
-    private void removeTagFromPerson(Tag tag, Person person) throws PersonNotFoundException {
+    private void deleteTagFromPerson(Tag tag, Person person) throws PersonNotFoundException {
         Set<Tag> personTags = new HashSet<>(person.getTags());
 
         if (!personTags.remove(tag)) {

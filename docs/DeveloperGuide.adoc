@@ -800,7 +800,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a/an ... |I want to ... |So that I can...
-|`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
+|`* * *` |New member |see usage instructions |refer to instructions when I forget how to use the App
 
 |`* * *` |<<exco-member,Exco member>> |add a new member to the club | begin assigning groups and tasks to the member
 
@@ -822,69 +822,69 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |Exco member who created a poll |view results of the poll | see the opinions of the members
 
-|`* * *` |user |edit my contact details |keep my contact information updated
+|`* * *` |Member |edit my contact details |keep my contact information updated
 
-|`* * *` |user |undo my command |reverse any undesirable commands or mistakes
+|`* * *` |Member |undo my command |reverse any undesirable commands or mistakes
 
-|`* * *` |user |redo a command |return to the state before I undid a command
+|`* * *` |Member |redo a command |return to the state before I undid a command
 
-|`* * *` |user |select a member |view the member's details
+|`* * *` |Member |select a member |view the member's details
 
-|`* * *` |user |find a member by name |locate details of persons without having to go through the entire list
+|`* * *` |Member |find a member by name |locate details of persons without having to go through the entire list
 
-|`* * *` |user |find members by a specified field |locate details of members without having to go through the entire list
+|`* * *` |Member |find members by a specified field |locate details of members without having to go through the entire list
 
-|`* * *` |user |get notifications for new tasks |be aware of new tasks assigned to me
+|`* * *` |Member |get notifications for new tasks |be aware of new tasks assigned to me
 
-|`* * *` |user |add a display picture |be identified by others
+|`* * *` |Member |add a display picture |be identified by others
 
-|`* * *` |user |add multiple <<entry,entries>> for <<attribute,attributes>> |provide all alternative contact details to others
+|`* * *` |Member |add multiple <<entry,entries>> for <<attribute,attributes>> |provide all alternative contact details to others
 
-|`* * *` |user |logout of the application |maintain integrity of my data and actions
+|`* * *` |Member |logout of the application |maintain integrity of my data and actions
 
-|`* * *` |user |login to my account |access my data
+|`* * *` |Member |login to my account |access my data
 
-|`* * *` |user |vote in a poll |provide my opinions
+|`* * *` |Member |vote in a poll |provide my opinions
 
-|`* * *` |user |remove a task assigned to me |focus on the yet to be done tasks
+|`* * *` |Member |remove a task assigned to me |focus on the yet to be done tasks
 
-|`* * *` |busy user |be able to directly email members using my default mail client |save time and reduce errors by not needing to add recipients myself
+|`* * *` |Busy member |be able to directly email members using my default mail client |save time and reduce errors by not needing to add recipients myself
 
-|`* *` |user |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
+|`* *` |Member |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
 
-|`* *` |user |be notified on members' birthdays |wish them on time
+|`* *` |Member |be notified on members' birthdays |wish them on time
 
-|`* *` |user |compress the display of members |browse through the list of members with less distractions
+|`* *` |Member |compress the display of members |browse through the list of members with less distractions
 
-|`* *` |efficient user |use shortcuts for commands |enter commands quickly
+|`* *` |Efficient member |use shortcuts for commands |enter commands quickly
 
-|`* *` |forgetful user |use multiple names for commands |use the right command by using any intuitive name
+|`* *` |Forgetful member |use multiple names for commands |use the right command by using any intuitive name
 
-|`* *` |forgetful user |add an alternative name for a command |use names that I am used to
+|`* *` |Forgetful member |add an alternative name for a command |use names that I am used to
 
-|`* *` |forgetful user |have suggestions for commands |correct myself easily when I make a mistake
+|`* *` |Forgetful member |have suggestions for commands |correct myself easily when I make a mistake
 
-|`*` |Exco member|view anonymous feedback |see members' opinions of how the club can be improved
+|`*` |Exco member |view anonymous feedback |see members' opinions of how the club can be improved
 
-|`*` |user with many persons in the address book |sort members by name |locate a member easily
+|`*` |Member with many persons in the address book |sort members by name |locate a member easily
 
-|`*` |user|choose fields that should be displayed in the members list |view only those attributes that I want
+|`*` |Member |choose fields that should be displayed in the members list |view only those attributes that I want
 
-|`*` |user|submit anonymous feedback |give my opinions to improve the club system and facilities
+|`*` |Member |submit anonymous feedback |give my opinions to improve the club system and facilities
 
-|`*` |user|create a group chat |broadcast messages
+|`*` |Member |create a group chat |broadcast messages
 
-|`*` |user|chat with other members |communicate with them
+|`*` |Member |chat with other members |communicate with them
 
-|`*` |user|know who is online |I can chat with members in real time.
+|`*` |Member |know who is online |I can chat with members in real time.
 
-|`*` |user|see a list of my frequently viewed members |I can quickly access them
+|`*` |Member |see a list of my frequently viewed members |I can quickly access them
 
-|`*` |user|email <<profile,profiles>> of members to others |I can share the information easily
+|`*` |Member |email <<profile,profiles>> of members to others |I can share the information easily
 
-|`*` |user|print profiles of selected members |view the information in the absence of a computer
+|`*` |Member |print profiles of selected members |view the information in the absence of a computer
 
-|`*` |socially active user|link my social media |I can directly post things that I do in the club
+|`*` |Socially active member|link my social media |I can directly post things that I do in the club
 |=======================================================================
 
 _{More to be added}_
@@ -892,11 +892,11 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is the `ClubConnect` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
 === Use case: Delete member
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Exco member
 
@@ -905,9 +905,9 @@ _{More to be added}_
 *MSS*
 
 1.  User requests to list members.
-2.  AddressBook shows a list of members.
+2.  ClubConnect shows a list of members.
 3.  User requests to delete a specific member in the list.
-4.  AddressBook deletes the member.
+4.  ClubConnect deletes the member.
 +
 Use case ends.
 
@@ -921,14 +921,14 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. ClubConnect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
 === Use case: Add member
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Exco member
 
@@ -937,9 +937,9 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests to list members.
-2.  AddressBook shows a list of members.
+2.  ClubConnect shows a list of members.
 3.  User requests to add a member to the list.
-4.  AddressBook adds the member.
+4.  ClubConnect adds the member.
 +
 Use case ends.
 
@@ -947,20 +947,20 @@ Use case ends.
 
 [none]
 * 3a. The syntax of the add command is invalid.
-** 3a1. AddressBook shows an error message.
-** 3a1. AddressBook shows correct format for add command.
+** 3a1. ClubConnect shows an error message.
+** 3a1. ClubConnect shows correct format for add command.
 +
 Use case resumes at step 2.
 
-* 3a. The matric number of member already exists in AddressBook.
-** 3a1. AddressBook shows an error message.
+* 3a. The matric number of member already exists in ClubConnect.
+** 3a1. ClubConnect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
 === Use case: Show Help
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -969,7 +969,7 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests help.
-2.  AddressBook shows usage instructions.
+2.  ClubConnect shows usage instructions.
 +
 Use case ends.
 
@@ -977,7 +977,7 @@ Use case ends.
 
 === Use case: Sort members
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -986,8 +986,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to sort by specified field.
-2.  AddressBook sorts members according to specified field.
-3.  AddressBook shows list of members in the requested sorted order.
+2.  ClubConnect lists members sorted according to specified field.
 +
 Use case ends.
 
@@ -995,20 +994,18 @@ Use case ends.
 
 [none]
 * 1a. Invalid field specified.
-** 1a1. AddressBook shows an error message.
-** 1a2. AddressBook displays all possible valid fields.
+** 1a1. ClubConnect shows an error message and displays all possible valid fields.
 +
 Use case resumes at step 1.
 * 1b. No field specified.
-** 1b1. AddressBook sorts members according to name.
-** 1b2. AddressBook shows list of members sorted by name.
+** 1b2. ClubConnect shows list of members sorted by name.
 +
 Use case ends.
 
 [discrete]
 === Use case: Exit
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1016,15 +1013,15 @@ Use case ends.
 
 *MSS*
 
-1.  User requests to exit AddressBook.
-2.  AddressBook exits.
+1.  User requests to exit ClubConnect.
+2.  ClubConnect exits.
 +
 Use case ends.
 
 [discrete]
 === Use case: Undo command
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1033,7 +1030,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to undo previous command.
-2.  AddressBook undoes previous command.
+2.  ClubConnect undoes previous command.
 +
 Use case ends.
 
@@ -1041,7 +1038,7 @@ Use case ends.
 
 [none]
 * 1a. Previous command is undoable.
-** 1a1. AddressBook undoes latest undoable command.
+** 1a1. ClubConnect undoes latest undoable command.
 +
 Use case ends.
 
@@ -1052,7 +1049,7 @@ Use case ends.
 [discrete]
 === Use case: Redo command
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1061,7 +1058,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to redo.
-2.  AddressBook redoes the change made by previous undo command.
+2.  ClubConnect redoes the change made by previous undo command.
 +
 Use case ends.
 
@@ -1075,7 +1072,7 @@ Use case ends.
 [discrete]
 === Use case: Login
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1083,9 +1080,9 @@ Use case ends.
 
 *MSS*
 
-1.  AddressBook shows login screen.
+1.  ClubConnect shows login screen.
 2.  User enters username and password.
-3.  AddressBook login as member with given username and password.
+3.  ClubConnect login as member with given username and password.
 +
 Use case ends.
 
@@ -1093,14 +1090,14 @@ Use case ends.
 
 [none]
 * 1a. Username and password combination invalid.
-** 1a1. AddressBook shows an error message.
+** 1a1. ClubConnect shows an error message.
 +
 Use case resumes at step 1.
 
 [discrete]
 === Use case: Logout
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1109,15 +1106,14 @@ Use case resumes at step 1.
 *MSS*
 
 1.  User requests to logout.
-2.  AddressBook logout.
-3.  AddressBook shows login screen.
+2.  ClubConnect logouts to login screen.
 +
 Use case ends.
 
 [discrete]
 === Use case: Find person
 
-*System* : AddressBook
+*System* : ClubConnect
 
 *Actor* : Member
 
@@ -1126,7 +1122,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to find member by specified field using keyword.
-2.  AddressBook shows a list of persons containing keyword in specified field.
+2.  ClubConnect shows a list of persons containing keyword in specified field.
 +
 Use case ends.
 
@@ -1134,13 +1130,11 @@ Use case ends.
 
 [none]
 * 1a. Invalid field specified.
-** 1a1. AddressBook shows an error message.
-** 1a2. AddressBook displays all possible valid fields.
+** 1a1. ClubConnect shows an error message and displays all possible valid fields.
 +
 Use case resumes at step 1.
 * 1b. No field specified.
-** 1b1. AddressBook finds member using all valid fields.
-** 1b2. AddressBook shows a list of persons containing keyword in any possible field.
+** 1b2. ClubConnect shows a list of persons containing keyword in any possible field.
 +
 Use case ends.
 
@@ -1162,7 +1156,7 @@ Use case ends.
 .  Should be able to work offline.
 .  Should take up as little memory on the hard disk.
 .  Should be compatible with all Operating System, i.e Windows and Macintosh.
-.  Should save the state of the addressbook regularly.
+.  Should save data regularly.
 .  Current versions must be backward compatible with older versions to support undo.
 
 
@@ -1172,7 +1166,7 @@ _{More to be added}_
 == Glossary
 
 [[attribute]] Attribute::
-An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matricNumber and so on.
+An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matric number and so on.
 
 [[club]] Club::
 A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
@@ -1196,7 +1190,9 @@ Windows, Linux, Unix, OS-X
 
 [[member]] Member::
 One of the persons who compose a group organization. They are the target users of our application.
-Note: An Exco member is also regarded as a member.
+
+[NOTE]
+An Exco member is also regarded as a member.
 
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
