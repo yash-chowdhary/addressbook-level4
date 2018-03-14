@@ -9,12 +9,15 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+
 import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Password;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Username;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -30,6 +33,10 @@ public class XmlAdaptedPerson {
     private String phone;
     @XmlElement(required = true)
     private String email;
+    @XmlElement(required = true)
+    private String username;
+    @XmlElement(required = true)
+    private String password;
     @XmlElement(required = true)
     private String matricNumber;
 
@@ -47,13 +54,16 @@ public class XmlAdaptedPerson {
     /**
      * Constructs an {@code XmlAdaptedPerson} with the given person details.
      */
+
     public XmlAdaptedPerson(String name, String phone, String email, String matricNumber, String group,
-                            List<XmlAdaptedTag> tagged) {
+                            List<XmlAdaptedTag> tagged, String username, String password) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.matricNumber = matricNumber;
         this.group = group;
+        this.username = username;
+        this.password = password;
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -70,6 +80,8 @@ public class XmlAdaptedPerson {
         email = source.getEmail().value;
         matricNumber = source.getMatricNumber().value;
         group = source.getGroup().groupName;
+        username = source.getUsername().value;
+        password = source.getPassword().value;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -125,8 +137,12 @@ public class XmlAdaptedPerson {
         }
         final Group group = new Group(this.group);
 
+        final Username username = new Username(this.username);
+        final Password password = new Password(this.password);
+
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name, phone, email, matricNumber, group, tags);
+
+        return new Person(name, phone, email, matricNumber, group, tags, username, password);
     }
 
     @Override

@@ -60,6 +60,14 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
+=== Logging in a member: `login`
+Logs in a member to ClubConnect
+Format: `login u/USERNAME pw/PASSWORD
+
+Examples:
+
+* `login u/JohnDoe pw/password`
+
 === Adding a person: `add`
 
 Adds a person to the address book +

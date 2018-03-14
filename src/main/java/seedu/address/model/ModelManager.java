@@ -93,6 +93,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public boolean logInMemberSuccessful(String username, String password) {
+        requireAllNonNull(username, password);
+
+        return addressBook.logInMember(username, password);
+    }
+
+    @Override
     public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
 

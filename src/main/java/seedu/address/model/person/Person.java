@@ -21,22 +21,29 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final Password password;
+    private final Username username;
+    private boolean isLogIn = false;
     private final MatricNumber matricNumber;
-
     private Group group;
     private final HashMap<String, Tag> tags;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags);
+
+    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+                  Username username, Password password) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags,
+                username, password);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.matricNumber = matricNumber;
         this.group = group;
         this.tags = new HashMap<String, Tag>();
+        this.username = username;
+        this.password = password;
         setTags(tags);
     }
 
@@ -67,6 +74,18 @@ public class Person {
             Tag tag = (Tag) itr.next();
             tags.put(tag.tagName, tag);
         }
+    }
+
+    public Username getUsername() {
+        return username;
+    }
+
+    public Password getPassword() {
+        return password;
+    }
+
+    public boolean isLogIn() {
+        return isLogIn;
     }
 
     /**
@@ -131,4 +150,15 @@ public class Person {
         return builder.toString();
     }
 
+    /**
+     * change the status of the person loggin in
+     */
+
+    public void changeLogInStatus() {
+        if (!isLogIn) {
+            isLogIn = true;
+        } else {
+            isLogIn = false;
+        }
+    }
 }

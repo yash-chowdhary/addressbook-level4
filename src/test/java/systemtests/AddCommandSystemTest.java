@@ -14,10 +14,13 @@ import static seedu.address.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_AM
 import static seedu.address.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.PASSWORD_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.USERNAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.USERNAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
@@ -69,7 +72,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         Person toAdd = AMY;
         String command = "   " + AddCommand.COMMAND_WORD + "  " + NAME_DESC_AMY + "  " + PHONE_DESC_AMY + " "
                 + EMAIL_DESC_AMY + "   " + MATRIC_NUMBER_DESC_AMY + "   "
-                + GROUP_DESC_AMY + "   " + TAG_DESC_FRIEND + " ";
+                + GROUP_DESC_AMY + "   " + TAG_DESC_FRIEND + " " + " " + USERNAME_DESC_AMY + " " + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
         /* Case: undo adding Amy to the list -> Amy deleted */
@@ -88,7 +91,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
-                + GROUP_DESC_AMY + TAG_DESC_FRIEND;
+                + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_BOB + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book except phone -> added */
@@ -96,7 +99,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
-                + GROUP_DESC_AMY + TAG_DESC_FRIEND;
+                + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book except email -> added */
@@ -104,7 +107,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_AMY
-                + GROUP_DESC_AMY + TAG_DESC_FRIEND;
+                + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book
@@ -114,7 +117,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 .withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_BOB
-                + GROUP_DESC_AMY + TAG_DESC_FRIEND;
+                + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add to empty address book -> added */
@@ -124,7 +127,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         /* Case: add a person with tags, command with parameters in random order -> added */
         toAdd = BOB;
         command = AddCommand.COMMAND_WORD + TAG_DESC_FRIEND + PHONE_DESC_BOB + MATRIC_NUMBER_DESC_BOB + NAME_DESC_BOB
-                + GROUP_DESC_BOB + TAG_DESC_HUSBAND + EMAIL_DESC_BOB;
+                + GROUP_DESC_BOB + TAG_DESC_HUSBAND + EMAIL_DESC_BOB + USERNAME_DESC_BOB + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person, missing tags -> added */

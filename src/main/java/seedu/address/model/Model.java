@@ -50,6 +50,12 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
 
+    /**
+     * Logs In a Member in the club
+     */
+    boolean logInMemberSuccessful(String username, String password);
+
+
     /** Removes the given tag {@code tag} for all persons in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;
 
@@ -63,4 +69,5 @@ public interface Model {
     void updateFilteredTagList(Predicate<Tag> predicate);
 
     void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
+
 }

@@ -24,8 +24,10 @@ import seedu.address.model.group.Group;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.MatricNumber;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Password;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Username;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -112,8 +114,11 @@ public class EditCommand extends UndoableCommand {
                 .orElse(personToEdit.getMatricNumber());
         Group updatedGroup = editPersonDescriptor.getGroup().orElse(personToEdit.getGroup());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Username updatedUsername = editPersonDescriptor.getUsername().orElse(personToEdit.getUsername());
+        Password updatedPassword = editPersonDescriptor.getPassword().orElse(personToEdit.getPassword());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
+                updatedTags, updatedUsername, updatedPassword);
     }
 
     @Override
@@ -146,6 +151,8 @@ public class EditCommand extends UndoableCommand {
         private MatricNumber matricNumber;
         private Group group;
         private Set<Tag> tags;
+        private Username username;
+        private Password password;
 
         public EditPersonDescriptor() {}
 
@@ -160,6 +167,9 @@ public class EditCommand extends UndoableCommand {
             setMatricNumber(toCopy.matricNumber);
             setGroup(toCopy.group);
             setTags(toCopy.tags);
+            setUsername(toCopy.username);
+            setPassword(toCopy.password);
+
         }
 
         /**
@@ -210,6 +220,22 @@ public class EditCommand extends UndoableCommand {
             this.group = group;
         }
 
+        public void setUsername(Username username) {
+            this.username = username;
+        }
+
+        public Optional<Username> getUsername() {
+            return Optional.ofNullable(username);
+        }
+
+        public void setPassword(Password password) {
+            this.password = password;
+        }
+
+        public Optional<Password> getPassword() {
+            return Optional.ofNullable(password);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -246,7 +272,9 @@ public class EditCommand extends UndoableCommand {
                     && getPhone().equals(e.getPhone())
                     && getEmail().equals(e.getEmail())
                     && getMatricNumber().equals(e.getMatricNumber())
-                    && getTags().equals(e.getTags());
+                    && getTags().equals(e.getTags())
+                    && getUsername().equals(e.getUsername())
+                    && getPassword().equals(e.getPassword());
         }
     }
 }

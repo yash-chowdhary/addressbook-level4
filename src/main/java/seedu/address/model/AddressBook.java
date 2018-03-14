@@ -159,7 +159,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Person(
                 person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(), person.getGroup(),
-                    correctTagReferences);
+                    correctTagReferences, person.getUsername(), person.getPassword());
     }
 
     /**
@@ -177,6 +177,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Logs in a member
+     */
+
+    public boolean logInMember(String username, String password) {
+        return persons.logInMemberSuccessful(username, password);
+    }
+
+    /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to person {@code person}.
      */
     private void deletePersonTags(Person person) {
@@ -252,7 +260,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Person newPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(),
-                defaultGroup, person.getTags());
+                defaultGroup, person.getTags(), person.getUsername(), person.getPassword());
 
         try {
             updatePerson(person, newPerson);
@@ -316,7 +324,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         Person newPerson = new Person(person.getName(), person.getPhone(),
                 person.getEmail(), person.getMatricNumber(),
-                person.getGroup(), personTags);
+                person.getGroup(), personTags, person.getUsername(), person.getPassword());
 
         try {
             updatePerson(person, newPerson);

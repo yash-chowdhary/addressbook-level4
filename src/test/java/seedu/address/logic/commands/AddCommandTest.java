@@ -150,6 +150,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean logInMemberSuccessful(String username, String password) {
+            fail("This method should not be called.");
+            return false;
+        }
+
         public void updateFilteredTagList(Predicate<Tag> predicate) {
             fail("This method should not be called.");
         }
