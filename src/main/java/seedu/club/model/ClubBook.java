@@ -13,13 +13,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
+import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.UniquePersonList;
-import seedu.club.model.person.exceptions.DuplicatePersonException;
-import seedu.club.model.person.exceptions.PersonNotFoundException;
+import seedu.club.model.Member.UniquePersonList;
+import seedu.club.model.Member.exceptions.DuplicatePersonException;
+import seedu.club.model.Member.exceptions.PersonNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -57,8 +57,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
 
     //// list overwrite operations
-    public void setPersons(List<Person> persons) throws DuplicatePersonException {
-        this.persons.setPersons(persons);
+    public void setPersons(List<Member> members) throws DuplicatePersonException {
+        this.persons.setPersons(members);
     }
 
     public void setTags(Set<Tag> tags) {
@@ -71,56 +71,56 @@ public class ClubBook implements ReadOnlyClubBook {
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
-        List<Person> syncedPersonList = newData.getPersonList().stream()
+        List<Member> syncedMemberList = newData.getPersonList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
 
         try {
-            setPersons(syncedPersonList);
+            setPersons(syncedMemberList);
         } catch (DuplicatePersonException e) {
             throw new AssertionError("AddressBooks should not have duplicate persons");
         }
     }
 
 
-    //// person-level operations
+    //// Member-level operations
     /**
-     * Adds a person to the club book.
-     * Also checks the new person's tags and updates {@link #tags} with any new tags found,
-     * and updates the Tag objects in the person to point to those in {@link #tags}.
+     * Adds a Member to the club book.
+     * Also checks the new Member's tags and updates {@link #tags} with any new tags found,
+     * and updates the Tag objects in the Member to point to those in {@link #tags}.
      *
-     * @throws DuplicatePersonException if an equivalent person already exists.
+     * @throws DuplicatePersonException if an equivalent Member already exists.
      */
-    public void addPerson(Person p) throws DuplicatePersonException {
-        Person person = syncWithMasterTagList(p);
+    public void addPerson(Member p) throws DuplicatePersonException {
+        Member member = syncWithMasterTagList(p);
         // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any person
-        // in the person list.
-        persons.add(person);
+        // This can cause the tags master list to have additional tags that are not tagged to any Member
+        // in the Member list.
+        persons.add(member);
     }
 
     /**
-     * Replaces the given person {@code target} in the list with {@code editedPerson}.
-     * {@code ClubBook}'s tag list will be updated with the tags of {@code editedPerson}.
+     * Replaces the given Member {@code target} in the list with {@code editedMember}.
+     * {@code ClubBook}'s tag list will be updated with the tags of {@code editedMember}.
      *
-     * @throws DuplicatePersonException if updating the person's details causes the person to be equivalent to
-     *      another existing person in the list.
+     * @throws DuplicatePersonException if updating the Member's details causes the Member to be equivalent to
+     *      another existing Member in the list.
      * @throws PersonNotFoundException if {@code target} could not be found in the list.
      *
-     * @see #syncWithMasterTagList(Person)
+     * @see #syncWithMasterTagList(Member)
      */
-    public void updatePerson(Person target, Person editedPerson)
+    public void updatePerson(Member target, Member editedMember)
             throws DuplicatePersonException, PersonNotFoundException {
-        requireNonNull(editedPerson);
+        requireNonNull(editedMember);
 
         deletePersonTags(target);
 
-        Person syncedEditedPerson = syncWithMasterTagList(editedPerson);
+        Member syncedEditedMember = syncWithMasterTagList(editedMember);
         // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any person
-        // in the person list.
+        // This can cause the tags master list to have additional tags that are not tagged to any Member
+        // in the Member list.
         try {
-            persons.setPerson(target, syncedEditedPerson);
+            persons.setPerson(target, syncedEditedMember);
         } catch (DuplicatePersonException dpe) {
             addTargetPersonTags(target);
             throw new DuplicatePersonException();
@@ -130,7 +130,7 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Re-adds the tags of {@code target} that were removed from {@code tags}.
      */
-    private void addTargetPersonTags(Person target) {
+    private void addTargetPersonTags(Member target) {
         Set<Tag> allTags = new HashSet<>(tags.asObservableList());
 
         for (Tag tag: target.getTags()) {
@@ -141,32 +141,32 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     *  Updates the master tag list to include tags in {@code person} that are not in the list.
-     *  @return a copy of this {@code person} such that every tag in this person points to a Tag object in the master
+     *  Updates the master tag list to include tags in {@code Member} that are not in the list.
+     *  @return a copy of this {@code Member} such that every tag in this Member points to a Tag object in the master
      *  list.
      */
-    private Person syncWithMasterTagList(Person person) {
-        final UniqueTagList personTags = new UniqueTagList(person.getTags());
+    private Member syncWithMasterTagList(Member member) {
+        final UniqueTagList personTags = new UniqueTagList(member.getTags());
         tags.mergeFrom(personTags);
 
         // Create map with values = tag object references in the master list
-        // used for checking person tag references
+        // used for checking Member tag references
         final Map<String, Tag> masterTagObjects = new HashMap<>();
         tags.forEach(tag -> masterTagObjects.put(tag.tagName, tag));
 
-        // Rebuild the list of person tags to point to the relevant tags in the master tag list.
+        // Rebuild the list of Member tags to point to the relevant tags in the master tag list.
         final Set<Tag> correctTagReferences = new HashSet<>();
         personTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
-        return new Person(
-                person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(), person.getGroup(),
-                    correctTagReferences, person.getUsername(), person.getPassword());
+        return new Member(
+                member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
+                    correctTagReferences, member.getUsername(), member.getPassword());
     }
 
     /**
      * Removes {@code key} from this {@code ClubBook}.
      * @throws PersonNotFoundException if the {@code key} is not in this {@code ClubBook}.
      */
-    public boolean removePerson(Person key) throws PersonNotFoundException {
+    public boolean removePerson(Member key) throws PersonNotFoundException {
         deletePersonTags(key);
 
         if (persons.remove(key)) {
@@ -185,19 +185,19 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /** tag-level operation
-     * Removes tags from master tag list {@code tags} that are unique to person {@code person}.
+     * Removes tags from master tag list {@code tags} that are unique to Member {@code Member}.
      */
-    private void deletePersonTags(Person person) {
+    private void deletePersonTags(Member member) {
         List<Tag> tagsToCheck = tags.asObservableList().stream().collect(Collectors.toList());
         Set<Tag> newTags = tagsToCheck.stream()
-                .filter(t -> !isTagUniqueToPerson(t, person))
+                .filter(t -> !isTagUniqueToPerson(t, member))
                 .collect(Collectors.toSet());
         tags.setTags(newTags);
         /*
         Iterator<Tag> itr = tagsToCheck.iterator();
         while (itr.hasNext()) {
             Tag tag = itr.next();
-            if (isTagUniqueToPerson(tag, person)) {
+            if (isTagUniqueToPerson(tag, Member)) {
                 deleteTag(tag);
             }
         }*/
@@ -206,9 +206,9 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Returns true if only {@code key} is tagged with {@code tag}.
      */
-    private boolean isTagUniqueToPerson(Tag tag, Person key) {
-        for (Person person : persons) {
-            if (person.hasTag(tag) && !person.equals(key)) {
+    private boolean isTagUniqueToPerson(Tag tag, Member key) {
+        for (Member member : persons) {
+            if (member.hasTag(tag) && !member.equals(key)) {
                 return false;
             }
         }
@@ -232,17 +232,17 @@ public class ClubBook implements ReadOnlyClubBook {
         }
         Boolean isPresent = false;
 
-        for (Person person : persons) {
-            if (person.getGroup().equals(toRemove)) {
+        for (Member member : persons) {
+            if (member.getGroup().equals(toRemove)) {
                 isPresent = true;
             }
         }
         try {
-            for (Person person : persons) {
-                removeGroupFromPerson(toRemove, person);
+            for (Member member : persons) {
+                removeGroupFromPerson(toRemove, member);
             }
         } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("Impossible: original person is obtained from the club book.");
+            throw new AssertionError("Impossible: original Member is obtained from the club book.");
         }
         if (!isPresent) {
             throw new GroupNotFoundException();
@@ -250,23 +250,23 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     * Removes the Group {@code toRemove} from the {@code person} if the person's group matches the one to be removed.
+     * Removes the Group {@code toRemove} from the {@code Member} if the Member's group matches the one to be removed.
      */
-    private void removeGroupFromPerson(Group toRemove, Person person)
+    private void removeGroupFromPerson(Group toRemove, Member member)
             throws PersonNotFoundException {
-        if (!person.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
+        if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
             return;
         }
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
-        Person newPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getMatricNumber(),
-                defaultGroup, person.getTags(), person.getUsername(), person.getPassword());
+        Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
+                defaultGroup, member.getTags(), member.getUsername(), member.getPassword());
 
         try {
-            updatePerson(person, newPerson);
+            updatePerson(member, newMember);
         } catch (DuplicatePersonException dpe) {
-            throw new AssertionError("Deleting a person's group only should not result in a duplicate. "
-            + "See Person#equals(Object).");
+            throw new AssertionError("Deleting a Member's group only should not result in a duplicate. "
+            + "See Member#equals(Object).");
         }
     }
 
@@ -282,13 +282,13 @@ public class ClubBook implements ReadOnlyClubBook {
 
         setTags(getListWithoutTag(tagToDelete));
         try {
-            for (Person person : persons) {
-                if (person.hasTag(tagToDelete)) {
-                    deleteTagFromPerson(tagToDelete, person);
+            for (Member member : persons) {
+                if (member.hasTag(tagToDelete)) {
+                    deleteTagFromPerson(tagToDelete, member);
                 }
             }
         } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("Impossible: original person is obtained from the club book.");
+            throw new AssertionError("Impossible: original Member is obtained from the club book.");
         }
     }
 
@@ -312,25 +312,25 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     * Removes {@code tag} from {@code person} in this {@code ClubBook}.
-     * @throws PersonNotFoundException if the {@code person} is not in this {@code ClubBook}.
+     * Removes {@code tag} from {@code Member} in this {@code ClubBook}.
+     * @throws PersonNotFoundException if the {@code Member} is not in this {@code ClubBook}.
      */
-    private void deleteTagFromPerson(Tag tag, Person person) throws PersonNotFoundException {
-        Set<Tag> personTags = new HashSet<>(person.getTags());
+    private void deleteTagFromPerson(Tag tag, Member member) throws PersonNotFoundException {
+        Set<Tag> personTags = new HashSet<>(member.getTags());
 
         if (!personTags.remove(tag)) {
             return;
         }
 
-        Person newPerson = new Person(person.getName(), person.getPhone(),
-                person.getEmail(), person.getMatricNumber(),
-                person.getGroup(), personTags, person.getUsername(), person.getPassword());
+        Member newMember = new Member(member.getName(), member.getPhone(),
+                member.getEmail(), member.getMatricNumber(),
+                member.getGroup(), personTags, member.getUsername(), member.getPassword());
 
         try {
-            updatePerson(person, newPerson);
+            updatePerson(member, newMember);
         } catch (DuplicatePersonException dpe) {
-            throw new AssertionError("Modifying a person's tags only should not result in a duplicate. "
-                    + "See Person#equals(Object).");
+            throw new AssertionError("Modifying a Member's tags only should not result in a duplicate. "
+                    + "See Member#equals(Object).");
         }
     }
 
@@ -343,7 +343,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
-    public ObservableList<Person> getPersonList() {
+    public ObservableList<Member> getPersonList() {
         return persons.asObservableList();
     }
 

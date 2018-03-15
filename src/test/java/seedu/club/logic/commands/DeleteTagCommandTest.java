@@ -126,7 +126,7 @@ public class DeleteTagCommandTest {
     /**
      * 1. Removes a {@code Tag} from a filtered list.
      * 2. Undo the removal.
-     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted person in the
+     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted Member in the
      * unfiltered list is different from the index at the filtered list.
      * 4. Redo the deletion. This ensures {@code RedoCommand} removes the tag object regardless of indexing.
      */
@@ -173,7 +173,7 @@ public class DeleteTagCommandTest {
         // null -> returns false
         assertFalse(removeFirstTagCommand.equals(null));
 
-        // different person -> returns fal
+        // different Member -> returns fal
 
         // se
         assertFalse(removeFirstTagCommand.equals(removeSecondTagCommand));

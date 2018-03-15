@@ -25,10 +25,10 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.club.model.ClubBook;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.person.Person;
 import seedu.club.testutil.EditPersonDescriptorBuilder;
 import seedu.club.testutil.PersonBuilder;
 
@@ -41,14 +41,14 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() throws Exception {
-        Person editedPerson = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
+        Member editedMember = new PersonBuilder().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON, descriptor);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedPerson);
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedMember);
 
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedMember);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -56,20 +56,20 @@ public class EditCommandTest {
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() throws Exception {
         Index indexLastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
-        Person lastPerson = model.getFilteredPersonList().get(indexLastPerson.getZeroBased());
+        Member lastMember = model.getFilteredPersonList().get(indexLastPerson.getZeroBased());
 
-        PersonBuilder personInList = new PersonBuilder(lastPerson);
-        Person editedPerson = personInList.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+        PersonBuilder personInList = new PersonBuilder(lastMember);
+        Member editedMember = personInList.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withTags(VALID_TAG_HUSBAND).build();
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_HUSBAND).build();
         EditCommand editCommand = prepareCommand(indexLastPerson, descriptor);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedPerson);
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedMember);
 
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updatePerson(lastPerson, editedPerson);
+        expectedModel.updatePerson(lastMember, editedMember);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -77,9 +77,9 @@ public class EditCommandTest {
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON, new EditPersonDescriptor());
-        Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Member editedMember = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedPerson);
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedMember);
 
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
 
@@ -90,23 +90,23 @@ public class EditCommandTest {
     public void execute_filteredList_success() throws Exception {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        Person personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(personInFilteredList).withName(VALID_NAME_BOB).build();
+        Member memberInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Member editedMember = new PersonBuilder(memberInFilteredList).withName(VALID_NAME_BOB).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON,
                 new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedPerson);
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedMember);
 
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedMember);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_duplicatePersonUnfilteredList_failure() {
-        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
+        Member firstMember = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstMember).build();
         EditCommand editCommand = prepareCommand(INDEX_SECOND_PERSON, descriptor);
 
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
@@ -116,10 +116,10 @@ public class EditCommandTest {
     public void execute_duplicatePersonFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        // edit person in filtered list into a duplicate in club book
-        Person personInList = model.getClubBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        // edit Member in filtered list into a duplicate in club book
+        Member memberInList = model.getClubBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON,
-                new EditPersonDescriptorBuilder(personInList).build());
+                new EditPersonDescriptorBuilder(memberInList).build());
 
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
     }
@@ -155,21 +155,21 @@ public class EditCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        Person editedPerson = new PersonBuilder().build();
-        Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
+        Member editedMember = new PersonBuilder().build();
+        Member memberToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON, descriptor);
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
 
-        // edit -> first person edited
+        // edit -> first Member edited
         editCommand.execute();
         undoRedoStack.push(editCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered person list to show all persons
+        // undo -> reverts addressbook back to previous state and filtered Member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        // redo -> same first person edited again
-        expectedModel.updatePerson(personToEdit, editedPerson);
+        // redo -> same first Member edited again
+        expectedModel.updatePerson(memberToEdit, editedMember);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -191,34 +191,34 @@ public class EditCommandTest {
     }
 
     /**
-     * 1. Edits a {@code Person} from a filtered list.
+     * 1. Edits a {@code Member} from a filtered list.
      * 2. Undo the edit.
-     * 3. The unfiltered list should be shown now. Verify that the index of the previously edited person in the
+     * 3. The unfiltered list should be shown now. Verify that the index of the previously edited Member in the
      * unfiltered list is different from the index at the filtered list.
-     * 4. Redo the edit. This ensures {@code RedoCommand} edits the person object regardless of indexing.
+     * 4. Redo the edit. This ensures {@code RedoCommand} edits the Member object regardless of indexing.
      */
     @Test
     public void executeUndoRedo_validIndexFilteredList_samePersonEdited() throws Exception {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        Person editedPerson = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
+        Member editedMember = new PersonBuilder().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON, descriptor);
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
 
         showPersonAtIndex(model, INDEX_SECOND_PERSON);
-        Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        // edit -> edits second person in unfiltered person list / first person in filtered person list
+        Member memberToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        // edit -> edits second Member in unfiltered Member list / first Member in filtered Member list
         editCommand.execute();
         undoRedoStack.push(editCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered person list to show all persons
+        // undo -> reverts addressbook back to previous state and filtered Member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        expectedModel.updatePerson(personToEdit, editedPerson);
-        assertNotEquals(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()), personToEdit);
-        // redo -> edits same second person in unfiltered person list
+        expectedModel.updatePerson(memberToEdit, editedMember);
+        assertNotEquals(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()), memberToEdit);
+        // redo -> edits same second Member in unfiltered Member list
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 

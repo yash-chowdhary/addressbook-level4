@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.person.Person;
 import seedu.club.testutil.PersonBuilder;
 
 /**
@@ -29,26 +29,26 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_newPerson_success() throws Exception {
-        Person validPerson = new PersonBuilder().build();
+        Member validMember = new PersonBuilder().build();
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.addPerson(validPerson);
+        expectedModel.addPerson(validMember);
 
-        assertCommandSuccess(prepareCommand(validPerson, model), model,
-                String.format(AddCommand.MESSAGE_SUCCESS, validPerson), expectedModel);
+        assertCommandSuccess(prepareCommand(validMember, model), model,
+                String.format(AddCommand.MESSAGE_SUCCESS, validMember), expectedModel);
     }
 
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
-        Person personInList = model.getClubBook().getPersonList().get(0);
-        assertCommandFailure(prepareCommand(personInList, model), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
+        Member memberInList = model.getClubBook().getPersonList().get(0);
+        assertCommandFailure(prepareCommand(memberInList, model), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
     /**
-     * Generates a new {@code AddCommand} which upon execution, adds {@code person} into the {@code model}.
+     * Generates a new {@code AddCommand} which upon execution, adds {@code Member} into the {@code model}.
      */
-    private AddCommand prepareCommand(Person person, Model model) {
-        AddCommand command = new AddCommand(person);
+    private AddCommand prepareCommand(Member member, Model model) {
+        AddCommand command = new AddCommand(member);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }

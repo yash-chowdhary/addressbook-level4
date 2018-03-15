@@ -1,4 +1,4 @@
-package seedu.club.model.person;
+package seedu.club.model.Member;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -37,7 +37,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -65,7 +65,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -93,7 +93,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -121,7 +121,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -149,7 +149,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -177,7 +177,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 

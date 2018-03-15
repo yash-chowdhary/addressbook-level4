@@ -1,16 +1,16 @@
-package seedu.club.model.person;
+package seedu.club.model.Member;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's matric number in the club book.
+ * Represents a Member's matric number in the club book.
  * Guarantees: immutable; is valid as declared in {@link #isValidMatricNumber(String)}
  */
 public class MatricNumber {
 
     public static final String MESSAGE_MATRIC_NUMBER_CONSTRAINTS =
-            "Person matric number must begin with one letter, 7 digits in the middle and a letter at the end";
+            "Member matric number must begin with one letter, 7 digits in the middle and a letter at the end";
 
     public static final String MATRIC_NUMBER_VALIDATION_REGEX = "^[aA]\\d{7}[a-zA-Z]$";
 
@@ -28,7 +28,7 @@ public class MatricNumber {
     }
 
     /**
-     * Returns true if a given string is a valid person email.
+     * Returns true if a given string is a valid Member email.
      */
     public static boolean isValidMatricNumber(String test) {
         return test.matches(MATRIC_NUMBER_VALIDATION_REGEX);

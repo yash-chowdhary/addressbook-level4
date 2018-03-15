@@ -18,10 +18,10 @@ import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.person.Person;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -33,13 +33,13 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Member memberToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_PERSON);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, personToDelete);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, memberToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.deletePerson(personToDelete);
+        expectedModel.deletePerson(memberToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -56,13 +56,13 @@ public class DeleteCommandTest {
     public void execute_validIndexFilteredList_success() throws Exception {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Member memberToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_PERSON);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, personToDelete);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, memberToDelete);
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.deletePerson(personToDelete);
+        expectedModel.deletePerson(memberToDelete);
         showNoPerson(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -86,19 +86,19 @@ public class DeleteCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Member memberToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_PERSON);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
 
-        // delete -> first person deleted
+        // delete -> first Member deleted
         deleteCommand.execute();
         undoRedoStack.push(deleteCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered person list to show all persons
+        // undo -> reverts addressbook back to previous state and filtered Member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        // redo -> same first person deleted again
-        expectedModel.deletePerson(personToDelete);
+        // redo -> same first Member deleted again
+        expectedModel.deletePerson(memberToDelete);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -119,11 +119,11 @@ public class DeleteCommandTest {
     }
 
     /**
-     * 1. Deletes a {@code Person} from a filtered list.
+     * 1. Deletes a {@code Member} from a filtered list.
      * 2. Undo the deletion.
-     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted person in the
+     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted Member in the
      * unfiltered list is different from the index at the filtered list.
-     * 4. Redo the deletion. This ensures {@code RedoCommand} deletes the person object regardless of indexing.
+     * 4. Redo the deletion. This ensures {@code RedoCommand} deletes the Member object regardless of indexing.
      */
     @Test
     public void executeUndoRedo_validIndexFilteredList_samePersonDeleted() throws Exception {
@@ -134,17 +134,17 @@ public class DeleteCommandTest {
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
 
         showPersonAtIndex(model, INDEX_SECOND_PERSON);
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        // delete -> deletes second person in unfiltered person list / first person in filtered person list
+        Member memberToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        // delete -> deletes second Member in unfiltered Member list / first Member in filtered Member list
         deleteCommand.execute();
         undoRedoStack.push(deleteCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered person list to show all persons
+        // undo -> reverts addressbook back to previous state and filtered Member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        expectedModel.deletePerson(personToDelete);
-        assertNotEquals(personToDelete, model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()));
-        // redo -> deletes same second person in unfiltered person list
+        expectedModel.deletePerson(memberToDelete);
+        assertNotEquals(memberToDelete, model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()));
+        // redo -> deletes same second Member in unfiltered Member list
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -170,7 +170,7 @@ public class DeleteCommandTest {
         // null -> returns false
         assertFalse(deleteFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
     }
 

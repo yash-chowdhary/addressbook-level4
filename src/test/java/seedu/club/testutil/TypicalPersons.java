@@ -18,73 +18,73 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.model.ClubBook;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.exceptions.DuplicatePersonException;
+import seedu.club.model.Member.Member;
+import seedu.club.model.Member.exceptions.DuplicatePersonException;
 
 /**
- * A utility class containing a list of {@code Person} objects
+ * A utility class containing a list of {@code Member} objects
  * to be used in tests.
  */
 public class TypicalPersons {
 
-    public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
+    public static final Member ALICE = new PersonBuilder().withName("Alice Pauline")
             .withEmail("alice@example.com")
             .withPhone("85355255")
             .withMatricNumber("A9210701B")
             .withGroup("logistics")
             .withTags("friends").build();
-    public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
+    public static final Member BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com")
             .withPhone("98765432")
             .withMatricNumber("A8389539B")
             .withGroup("pr")
             .withTags("owesMoney", "friends").build();
-    public static final Person CARL = new PersonBuilder().withName("Carl Kurz")
+    public static final Member CARL = new PersonBuilder().withName("Carl Kurz")
             .withPhone("95352563")
             .withEmail("heinz@example.com")
             .withMatricNumber("A6076201A")
             .withGroup("marketing").build();
-    public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier")
+    public static final Member DANIEL = new PersonBuilder().withName("Daniel Meier")
             .withPhone("87652533")
             .withEmail("cornelia@example.com")
             .withMatricNumber("A2719059H")
             .withGroup("publicity").build();
-    public static final Person ELLE = new PersonBuilder().withName("Elle Meyer")
+    public static final Member ELLE = new PersonBuilder().withName("Elle Meyer")
             .withPhone("9482224")
             .withEmail("werner@example.com")
             .withMatricNumber("A1932279G")
             .withGroup("marketing").build();
-    public static final Person FIONA = new PersonBuilder().withName("Fiona Kunz")
+    public static final Member FIONA = new PersonBuilder().withName("Fiona Kunz")
             .withPhone("9482427")
             .withEmail("lydia@example.com")
             .withMatricNumber("A9662042H")
             .withGroup("operations").build();
-    public static final Person GEORGE = new PersonBuilder().withName("George Best")
+    public static final Member GEORGE = new PersonBuilder().withName("George Best")
             .withPhone("9482442")
             .withEmail("anna@example.com")
             .withMatricNumber("A2836750A")
             .withGroup("legal").build();
 
     // Manually added
-    public static final Person HOON = new PersonBuilder().withName("Hoon Meier")
+    public static final Member HOON = new PersonBuilder().withName("Hoon Meier")
             .withPhone("8482424")
             .withEmail("stefan@example.com")
             .withMatricNumber("a9123096J")
             .withGroup("publicity")
             .build();
-    public static final Person IDA = new PersonBuilder().withName("Ida Mueller")
+    public static final Member IDA = new PersonBuilder().withName("Ida Mueller")
             .withPhone("8482131")
             .withEmail("hans@example.com")
             .withMatricNumber("a9239483F")
             .withGroup("logistics")
             .build();
 
-    // Manually added - Person's details found in {@code CommandTestUtil}
-    public static final Person AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+    // Manually added - Member's details found in {@code CommandTestUtil}
+    public static final Member AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
             .withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY)
             .withGroup(VALID_GROUP_AMY)
             .withTags(VALID_TAG_FRIEND).build();
-    public static final Person BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+    public static final Member BOB = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
             .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
             .withGroup(VALID_GROUP_BOB)
             .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
@@ -99,9 +99,9 @@ public class TypicalPersons {
      */
     public static ClubBook getTypicalClubBook() {
         ClubBook ab = new ClubBook();
-        for (Person person : getTypicalPersons()) {
+        for (Member member : getTypicalPersons()) {
             try {
-                ab.addPerson(person);
+                ab.addPerson(member);
             } catch (DuplicatePersonException e) {
                 throw new AssertionError("not possible");
             }
@@ -109,7 +109,7 @@ public class TypicalPersons {
         return ab;
     }
 
-    public static List<Person> getTypicalPersons() {
+    public static List<Member> getTypicalPersons() {
         return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
     }
 }

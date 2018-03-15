@@ -22,11 +22,11 @@ import org.junit.Test;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.ClubBook;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.person.FieldContainsKeywordsPredicate;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.FieldContainsKeywordsPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindByCommand}.
@@ -60,7 +60,7 @@ public class FindByCommandTest {
         // null -> returns false
         assertFalse(findByFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 
@@ -87,7 +87,7 @@ public class FindByCommandTest {
         // null -> returns false
         assertFalse(findByFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 
@@ -114,7 +114,7 @@ public class FindByCommandTest {
         // null -> returns false
         assertFalse(findByFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 
@@ -141,7 +141,7 @@ public class FindByCommandTest {
         // null -> returns false
         assertFalse(findByFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 
@@ -168,7 +168,7 @@ public class FindByCommandTest {
         // null -> returns false
         assertFalse(findByFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 
@@ -195,7 +195,7 @@ public class FindByCommandTest {
         // null -> returns false
         assertFalse(findByFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 
@@ -267,10 +267,10 @@ public class FindByCommandTest {
     /**
      * Asserts that {@code command} is successfully executed, and<br>
      *     - the command feedback is equal to {@code expectedMessage}<br>
-     *     - the {@code FilteredList<Person>} is equal to {@code expectedList}<br>
+     *     - the {@code FilteredList<Member>} is equal to {@code expectedList}<br>
      *     - the {@code ClubBook} in model remains the same after executing the {@code command}
      */
-    private void assertCommandSuccess(FindByCommand command, String expectedMessage, List<Person> expectedList) {
+    private void assertCommandSuccess(FindByCommand command, String expectedMessage, List<Member> expectedList) {
         ClubBook expectedClubBook = new ClubBook(model.getClubBook());
         CommandResult commandResult = command.execute();
 

@@ -22,13 +22,13 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
     public void select() {
         /* ------------------------ Perform select operations on the shown unfiltered list -------------------------- */
 
-        /* Case: select the first card in the person list, command with leading spaces and trailing spaces
+        /* Case: select the first card in the Member list, command with leading spaces and trailing spaces
          * -> selected
          */
         String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
         assertCommandSuccess(command, INDEX_FIRST_PERSON);
 
-        /* Case: select the last card in the person list -> selected */
+        /* Case: select the last card in the Member list -> selected */
         Index personCount = Index.fromOneBased(getTypicalPersons().size());
         command = SelectCommand.COMMAND_WORD + " " + personCount.getOneBased();
         assertCommandSuccess(command, personCount);
@@ -43,7 +43,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         expectedResultMessage = RedoCommand.MESSAGE_FAILURE;
         assertCommandFailure(command, expectedResultMessage);
 
-        /* Case: select the middle card in the person list -> selected */
+        /* Case: select the middle card in the Member list -> selected */
         Index middleIndex = Index.fromOneBased(personCount.getOneBased() / 2);
         command = SelectCommand.COMMAND_WORD + " " + middleIndex.getOneBased();
         assertCommandSuccess(command, middleIndex);
@@ -53,14 +53,14 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
 
         /* ------------------------ Perform select operations on the shown filtered list ---------------------------- */
 
-        /* Case: filtered person list, select index within bounds of club book but out of bounds of person list
+        /* Case: filtered Member list, select index within bounds of club book but out of bounds of Member list
          * -> rejected
          */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
         int invalidIndex = getModel().getClubBook().getPersonList().size();
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
-        /* Case: filtered person list, select index within bounds of club book and person list -> selected */
+        /* Case: filtered Member list, select index within bounds of club book and Member list -> selected */
         Index validIndex = Index.fromOneBased(1);
         assertTrue(validIndex.getZeroBased() < getModel().getFilteredPersonList().size());
         command = SelectCommand.COMMAND_WORD + " " + validIndex.getOneBased();
@@ -102,7 +102,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
      * 1. Command box displays an empty string.<br>
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the success message of executing select command with the
-     * {@code expectedSelectedCardIndex} of the selected person.<br>
+     * {@code expectedSelectedCardIndex} of the selected Member.<br>
      * 4. {@code Model}, {@code Storage} and {@code PersonListPanel} remain unchanged.<br>
      * 5. Selected card is at {@code expectedSelectedCardIndex} and the browser url is updated accordingly.<br>
      * 6. Status bar remains unchanged.<br>

@@ -1,9 +1,9 @@
-package seedu.club.model.person.exceptions;
+package seedu.club.model.Member.exceptions;
 
 import seedu.club.commons.exceptions.DuplicateDataException;
 
 /**
- * Signals that the operation will result in duplicate Person objects.
+ * Signals that the operation will result in duplicate Member objects.
  */
 public class DuplicatePersonException extends DuplicateDataException {
     public DuplicatePersonException() {

@@ -10,11 +10,11 @@ import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
 import org.junit.Test;
 
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.exceptions.PersonNotFoundException;
+import seedu.club.model.Member.exceptions.PersonNotFoundException;
 
 public class UndoableCommandTest {
     private final Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
@@ -47,7 +47,7 @@ public class UndoableCommandTest {
     }
 
     /**
-     * Deletes the first person in the model's filtered list.
+     * Deletes the first Member in the model's filtered list.
      */
     class DummyCommand extends UndoableCommand {
         DummyCommand(Model model) {
@@ -56,11 +56,11 @@ public class UndoableCommandTest {
 
         @Override
         public CommandResult executeUndoableCommand() throws CommandException {
-            Person personToDelete = model.getFilteredPersonList().get(0);
+            Member memberToDelete = model.getFilteredPersonList().get(0);
             try {
-                model.deletePerson(personToDelete);
+                model.deletePerson(memberToDelete);
             } catch (PersonNotFoundException pnfe) {
-                fail("Impossible: personToDelete was retrieved from model.");
+                fail("Impossible: memberToDelete was retrieved from model.");
             }
             return new CommandResult("");
         }

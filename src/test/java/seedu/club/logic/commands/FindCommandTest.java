@@ -21,8 +21,8 @@ import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.person.NameContainsKeywordsPredicate;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.NameContainsKeywordsPredicate;
+import seedu.club.model.Member.Member;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -53,7 +53,7 @@ public class FindCommandTest {
         // null -> returns false
         assertFalse(findFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different Member -> returns false
         assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 
@@ -84,10 +84,10 @@ public class FindCommandTest {
     /**
      * Asserts that {@code command} is successfully executed, and<br>
      *     - the command feedback is equal to {@code expectedMessage}<br>
-     *     - the {@code FilteredList<Person>} is equal to {@code expectedList}<br>
+     *     - the {@code FilteredList<Member>} is equal to {@code expectedList}<br>
      *     - the {@code ClubBook} in model remains the same after executing the {@code command}
      */
-    private void assertCommandSuccess(FindCommand command, String expectedMessage, List<Person> expectedList) {
+    private void assertCommandSuccess(FindCommand command, String expectedMessage, List<Member> expectedList) {
         ClubBook expectedClubBook = new ClubBook(model.getClubBook());
         CommandResult commandResult = command.execute();
 

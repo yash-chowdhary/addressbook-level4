@@ -10,22 +10,22 @@ import javax.xml.bind.annotation.XmlElement;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 
+import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
-import seedu.club.model.person.Email;
-import seedu.club.model.person.MatricNumber;
-import seedu.club.model.person.Name;
-import seedu.club.model.person.Password;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.Phone;
-import seedu.club.model.person.Username;
+import seedu.club.model.Member.Email;
+import seedu.club.model.Member.MatricNumber;
+import seedu.club.model.Member.Name;
+import seedu.club.model.Member.Password;
+import seedu.club.model.Member.Phone;
+import seedu.club.model.Member.Username;
 import seedu.club.model.tag.Tag;
 
 /**
- * JAXB-friendly version of the Person.
+ * JAXB-friendly version of the Member.
  */
 public class XmlAdaptedPerson {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Member's %s field is missing!";
 
     @XmlElement(required = true)
     private String name;
@@ -52,7 +52,7 @@ public class XmlAdaptedPerson {
     public XmlAdaptedPerson() {}
 
     /**
-     * Constructs an {@code XmlAdaptedPerson} with the given person details.
+     * Constructs an {@code XmlAdaptedPerson} with the given Member details.
      */
 
     public XmlAdaptedPerson(String name, String phone, String email, String matricNumber, String group,
@@ -70,11 +70,11 @@ public class XmlAdaptedPerson {
     }
 
     /**
-     * Converts a given Person into this class for JAXB use.
+     * Converts a given Member into this class for JAXB use.
      *
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
-    public XmlAdaptedPerson(Person source) {
+    public XmlAdaptedPerson(Member source) {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
@@ -89,11 +89,11 @@ public class XmlAdaptedPerson {
     }
 
     /**
-     * Converts this jaxb-friendly adapted person object into the model's Person object.
+     * Converts this jaxb-friendly adapted Member object into the model's Member object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person
+     * @throws IllegalValueException if there were any data constraints violated in the adapted Member
      */
-    public Person toModelType() throws IllegalValueException {
+    public Member toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
             personTags.add(tag.toModelType());
@@ -142,7 +142,7 @@ public class XmlAdaptedPerson {
 
         final Set<Tag> tags = new HashSet<>(personTags);
 
-        return new Person(name, phone, email, matricNumber, group, tags, username, password);
+        return new Member(name, phone, email, matricNumber, group, tags, username, password);
     }
 
     @Override

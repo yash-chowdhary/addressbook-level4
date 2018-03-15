@@ -1,4 +1,4 @@
-package seedu.club.model.person;
+package seedu.club.model.Member;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -8,9 +8,9 @@ import seedu.club.commons.util.StringUtil;
 import seedu.club.model.tag.Tag;
 
 /**
- * Tests that a {@code Person}'s matches any of the keywords given according to the {@code fieldType}.
+ * Tests that a {@code Member}'s matches any of the keywords given according to the {@code fieldType}.
  */
-public class FieldContainsKeywordsPredicate implements Predicate<Person> {
+public class FieldContainsKeywordsPredicate implements Predicate<Member> {
     private final List<String> keywords;
     private final String fieldType;
 
@@ -20,9 +20,9 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     }
 
     @Override
-    public boolean test(Person person) {
+    public boolean test(Member member) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.partiallyContainsWordIgnoreCase(getFieldValue(person), keyword));
+                .anyMatch(keyword -> StringUtil.partiallyContainsWordIgnoreCase(getFieldValue(member), keyword));
     }
 
     @Override
@@ -34,23 +34,23 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
     }
 
     /**
-     * Get relevant field value of person according to fieldType
+     * Get relevant field value of Member according to fieldType
      *
      */
-    private String getFieldValue(Person person) {
+    private String getFieldValue(Member member) {
         switch (fieldType) {
         case "email":
-            return person.getEmail().toString();
+            return member.getEmail().toString();
         case "phone":
-            return person.getPhone().toString();
+            return member.getPhone().toString();
         case "matric":
-            return person.getMatricNumber().toString();
+            return member.getMatricNumber().toString();
         case "group":
-            return person.getGroup().toString();
+            return member.getGroup().toString();
         case "tag":
-            return person.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
+            return member.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
         default:
-            return person.getName().toString();
+            return member.getName().toString();
         }
     }
 }

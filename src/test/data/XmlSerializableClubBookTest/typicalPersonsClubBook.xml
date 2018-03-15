@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- ClubBook save file which contains the same Person values as in
+<!-- ClubBook save file which contains the same Member values as in
 {@code TypicalPersons#getTypicalAddressBook()}-->
 <addressbook>
-    <persons>
+    <members>
         <name>Alice Pauline</name>
         <phone>85355255</phone>
         <email>alice@example.com</email>
         <matricNumber>A9210701B</matricNumber>
         <group>logistics</group>
         <tagged>friends</tagged>
-    </persons>
-    <persons>
+    </members>
+    <members>
         <name>Benson Meier</name>
         <phone>98765432</phone>
         <email>johnd@example.com</email>
@@ -18,42 +18,42 @@
         <group>pr</group>
         <tagged>owesMoney</tagged>
         <tagged>friends</tagged>
-    </persons>
-    <persons>
+    </members>
+    <members>
         <name>Carl Kurz</name>
         <phone>95352563</phone>
         <email>heinz@example.com</email>
         <matricNumber>A6076201A</matricNumber>
         <group>marketing</group>
-    </persons>
-    <persons>
+    </members>
+    <members>
         <name>Daniel Meier</name>
         <phone>87652533</phone>
         <email>cornelia@example.com</email>
         <matricNumber>A2719059H</matricNumber>
         <group>publicity</group>
-    </persons>
-    <persons>
+    </members>
+    <members>
         <name>Elle Meyer</name>
         <phone>9482224</phone>
         <email>werner@example.com</email>
         <matricNumber>A1932279G</matricNumber>
         <group>marketing</group>
-    </persons>
-    <persons>
+    </members>
+    <members>
         <name>Fiona Kunz</name>
         <phone>9482427</phone>
         <email>lydia@example.com</email>
         <matricNumber>A9662042H</matricNumber>
         <group>operations</group>
-    </persons>
-    <persons>
+    </members>
+    <members>
         <name>George Best</name>
         <phone>9482442</phone>
         <email>anna@example.com</email>
         <matricNumber>A2836750A</matricNumber>
         <group>legal</group>
-    </persons>
+    </members>
     <tags>friends</tags>
     <tags>owesMoney</tags>
 </addressbook>

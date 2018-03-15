@@ -47,13 +47,13 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
-import seedu.club.model.person.Email;
-import seedu.club.model.person.MatricNumber;
-import seedu.club.model.person.Name;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.Phone;
-import seedu.club.model.person.exceptions.DuplicatePersonException;
+import seedu.club.model.Member.Email;
+import seedu.club.model.Member.MatricNumber;
+import seedu.club.model.Member.Name;
+import seedu.club.model.Member.Phone;
+import seedu.club.model.Member.exceptions.DuplicatePersonException;
 import seedu.club.model.tag.Tag;
 import seedu.club.testutil.PersonBuilder;
 import seedu.club.testutil.PersonUtil;
@@ -66,10 +66,10 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
 
         /* ------------------------ Perform add operations on the shown unfiltered list ----------------------------- */
 
-        /* Case: add a person without tags to a non-empty club book, command with leading spaces and trailing spaces
+        /* Case: add a Member without tags to a non-empty club book, command with leading spaces and trailing spaces
          * -> added
          */
-        Person toAdd = AMY;
+        Member toAdd = AMY;
         String command = "   " + AddCommand.COMMAND_WORD + "  " + NAME_DESC_AMY + "  " + PHONE_DESC_AMY + " "
                 + EMAIL_DESC_AMY + "   " + MATRIC_NUMBER_DESC_AMY + "   "
                 + GROUP_DESC_AMY + "   " + TAG_DESC_FRIEND + " " + " " + USERNAME_DESC_AMY + " " + PASSWORD_DESC;
@@ -86,7 +86,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedResultMessage);
 
-        /* Case: add a person with all fields same as another person in the club book except name -> added */
+        /* Case: add a Member with all fields same as another Member in the club book except name -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
@@ -94,7 +94,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_BOB + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a person with all fields same as another person in the club book except phone -> added */
+        /* Case: add a Member with all fields same as another Member in the club book except phone -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
@@ -102,7 +102,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a person with all fields same as another person in the club book except email -> added */
+        /* Case: add a Member with all fields same as another Member in the club book except email -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_BOB)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
@@ -110,7 +110,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a person with all fields same as another person in the club book
+        /* Case: add a Member with all fields same as another Member in the club book
          * except matric number -> added
          */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
@@ -124,37 +124,37 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         deleteAllPersons();
         assertCommandSuccess(ALICE);
 
-        /* Case: add a person with tags, command with parameters in random order -> added */
+        /* Case: add a Member with tags, command with parameters in random order -> added */
         toAdd = BOB;
         command = AddCommand.COMMAND_WORD + TAG_DESC_FRIEND + PHONE_DESC_BOB + MATRIC_NUMBER_DESC_BOB + NAME_DESC_BOB
                 + GROUP_DESC_BOB + TAG_DESC_HUSBAND + EMAIL_DESC_BOB + USERNAME_DESC_BOB + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a person, missing tags -> added */
+        /* Case: add a Member, missing tags -> added */
         assertCommandSuccess(HOON);
 
         /* -------------------------- Perform add operation on the shown filtered list ------------------------------ */
 
-        /* Case: filters the person list before adding -> added */
+        /* Case: filters the Member list before adding -> added */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
         assertCommandSuccess(IDA);
 
-        /* ------------------------ Perform add operation while a person card is selected --------------------------- */
+        /* ------------------------ Perform add operation while a Member card is selected --------------------------- */
 
-        /* Case: selects first card in the person list, add a person -> added, card selection remains unchanged */
+        /* Case: selects first card in the Member list, add a Member -> added, card selection remains unchanged */
         selectPerson(Index.fromOneBased(1));
         assertCommandSuccess(CARL);
 
         /* ----------------------------------- Perform invalid add operations --------------------------------------- */
 
-        /* Case: add a duplicate person -> rejected */
+        /* Case: add a duplicate Member -> rejected */
         command = PersonUtil.getAddCommand(HOON);
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
 
-        /* Case: add a duplicate person except with different tags -> rejected */
+        /* Case: add a duplicate Member except with different tags -> rejected */
         // "friends" is an existing tag used in the default model, see TypicalPersons#ALICE
         // This test will fail if a new tag that is not in the model is used, see the bug documented in
-        // ClubBook#addPerson(Person)
+        // ClubBook#addPerson(Member)
         command = PersonUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "friends";
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
 
@@ -218,16 +218,16 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
-    private void assertCommandSuccess(Person toAdd) {
+    private void assertCommandSuccess(Member toAdd) {
         assertCommandSuccess(PersonUtil.getAddCommand(toAdd), toAdd);
     }
 
     /**
-     * Performs the same verification as {@code assertCommandSuccess(Person)}. Executes {@code command}
+     * Performs the same verification as {@code assertCommandSuccess(Member)}. Executes {@code command}
      * instead.
-     * @see AddCommandSystemTest#assertCommandSuccess(Person)
+     * @see AddCommandSystemTest#assertCommandSuccess(Member)
      */
-    private void assertCommandSuccess(String command, Person toAdd) {
+    private void assertCommandSuccess(String command, Member toAdd) {
         Model expectedModel = getModel();
         try {
             expectedModel.addPerson(toAdd);
@@ -240,12 +240,12 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
     }
 
     /**
-     * Performs the same verification as {@code assertCommandSuccess(String, Person)} except asserts that
+     * Performs the same verification as {@code assertCommandSuccess(String, Member)} except asserts that
      * the,<br>
      * 1. Result display box displays {@code expectedResultMessage}.<br>
      * 2. {@code Model}, {@code Storage} and {@code PersonListPanel} equal to the corresponding components in
      * {@code expectedModel}.<br>
-     * @see AddCommandSystemTest#assertCommandSuccess(String, Person)
+     * @see AddCommandSystemTest#assertCommandSuccess(String, Member)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage) {
         executeCommand(command);

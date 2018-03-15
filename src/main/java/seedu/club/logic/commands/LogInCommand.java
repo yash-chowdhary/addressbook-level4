@@ -5,8 +5,8 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.person.Password;
-import seedu.club.model.person.Username;
+import seedu.club.model.Member.Password;
+import seedu.club.model.Member.Username;
 
 /**
  * Logs in a Member to ClubConnect

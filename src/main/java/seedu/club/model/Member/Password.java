@@ -1,4 +1,4 @@
-package seedu.club.model.person;
+package seedu.club.model.Member;
 
 /**
  * Represent a member's password

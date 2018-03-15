@@ -36,10 +36,10 @@ import org.junit.Test;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditPersonDescriptor;
-import seedu.club.model.person.Email;
-import seedu.club.model.person.MatricNumber;
-import seedu.club.model.person.Name;
-import seedu.club.model.person.Phone;
+import seedu.club.model.Member.Email;
+import seedu.club.model.Member.MatricNumber;
+import seedu.club.model.Member.Name;
+import seedu.club.model.Member.Phone;
 import seedu.club.model.tag.Tag;
 import seedu.club.testutil.EditPersonDescriptorBuilder;
 
@@ -95,7 +95,7 @@ public class EditCommandParserTest {
         // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
         assertParseFailure(parser, "1" + PHONE_DESC_BOB + INVALID_PHONE_DESC, Phone.MESSAGE_PHONE_CONSTRAINTS);
 
-        // while parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Person} being edited,
+        // while parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Member} being edited,
         // parsing it together with a valid tag results in error
         assertParseFailure(parser, "1" + TAG_DESC_FRIEND + TAG_DESC_HUSBAND + TAG_EMPTY, Tag.MESSAGE_TAG_CONSTRAINTS);
         assertParseFailure(parser, "1" + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_TAG_CONSTRAINTS);

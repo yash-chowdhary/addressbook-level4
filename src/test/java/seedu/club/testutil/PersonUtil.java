@@ -10,35 +10,35 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.commands.AddCommand;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.Member;
 
 /**
- * A utility class for Person.
+ * A utility class for Member.
  */
 public class PersonUtil {
 
     /**
-     * Returns an add command string for adding the {@code person}.
+     * Returns an add command string for adding the {@code Member}.
      */
-    public static String getAddCommand(Person person) {
-        return AddCommand.COMMAND_WORD + " " + getPersonDetails(person);
+    public static String getAddCommand(Member member) {
+        return AddCommand.COMMAND_WORD + " " + getPersonDetails(member);
     }
 
     /**
-     * Returns the part of command string for the given {@code person}'s details.
+     * Returns the part of command string for the given {@code Member}'s details.
      */
-    public static String getPersonDetails(Person person) {
+    public static String getPersonDetails(Member member) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX_NAME + person.getName().fullName + " ");
-        sb.append(PREFIX_PHONE + person.getPhone().value + " ");
-        sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
-        sb.append(PREFIX_MATRIC_NUMBER + person.getMatricNumber().value + " ");
-        sb.append(PREFIX_GROUP + person.getGroup().groupName + " ");
-        person.getTags().stream().forEach(
+        sb.append(PREFIX_NAME + member.getName().fullName + " ");
+        sb.append(PREFIX_PHONE + member.getPhone().value + " ");
+        sb.append(PREFIX_EMAIL + member.getEmail().value + " ");
+        sb.append(PREFIX_MATRIC_NUMBER + member.getMatricNumber().value + " ");
+        sb.append(PREFIX_GROUP + member.getGroup().groupName + " ");
+        member.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
-        sb.append(PREFIX_USERNAME + person.getUsername().value + " ");
-        sb.append(PREFIX_PASSWORD + person.getPassword().value + " ");
+        sb.append(PREFIX_USERNAME + member.getUsername().value + " ");
+        sb.append(PREFIX_PASSWORD + member.getPassword().value + " ");
         return sb.toString();
     }
 }

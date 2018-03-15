@@ -11,17 +11,17 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.exceptions.DuplicatePersonException;
+import seedu.club.model.Member.Member;
+import seedu.club.model.Member.exceptions.DuplicatePersonException;
 
 /**
- * Adds a person to the club book.
+ * Adds a Member to the club book.
  */
 public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Member to the club book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
@@ -42,17 +42,17 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_USERNAME + "JohnDoe "
             + PREFIX_PASSWORD + "password";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the club book";
+    public static final String MESSAGE_SUCCESS = "New Member added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This Member already exists in the club book";
 
-    private final Person toAdd;
+    private final Member toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified {@code Member}
      */
-    public AddCommand(Person person) {
-        requireNonNull(person);
-        toAdd = person;
+    public AddCommand(Member member) {
+        requireNonNull(member);
+        toAdd = member;
     }
 
     @Override

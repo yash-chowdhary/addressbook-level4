@@ -61,15 +61,15 @@ public class XmlClubBookStorageTest {
     }
 
     @Test
-    public void readClubBook_invalidPersonClubBook_throwDataConversionException() throws Exception {
+    public void readClubBook_invalidMemberClubBook_throwDataConversionException() throws Exception {
         thrown.expect(DataConversionException.class);
-        readClubBook("invalidPersonClubBook.xml");
+        readClubBook("invalidMemberClubBook.xml");
     }
 
     @Test
-    public void readClubBook_invalidAndValidPersonClubBook_throwDataConversionException() throws Exception {
+    public void readClubBook_invalidAndValidMemberClubBook_throwDataConversionException() throws Exception {
         thrown.expect(DataConversionException.class);
-        readClubBook("invalidAndValidPersonClubBook.xml");
+        readClubBook("invalidAndValidMemberClubBook.xml");
     }
 
     @Test

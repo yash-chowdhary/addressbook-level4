@@ -1,16 +1,16 @@
-package seedu.club.model.person;
+package seedu.club.model.Member;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's name in the club book.
+ * Represents a Member's name in the club book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Name {
 
     public static final String MESSAGE_NAME_CONSTRAINTS =
-            "Person names should only contain alphanumeric characters and spaces, and it should not be blank";
+            "Member names should only contain alphanumeric characters and spaces, and it should not be blank";
 
     /*
      * The first character of the club must not be a whitespace,
@@ -32,7 +32,7 @@ public class Name {
     }
 
     /**
-     * Returns true if a given string is a valid person name.
+     * Returns true if a given string is a valid Member name.
      */
     public static boolean isValidName(String test) {
         return test.matches(NAME_VALIDATION_REGEX);

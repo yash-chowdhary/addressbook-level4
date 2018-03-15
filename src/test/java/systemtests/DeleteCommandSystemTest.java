@@ -17,9 +17,9 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.exceptions.PersonNotFoundException;
+import seedu.club.model.Member.exceptions.PersonNotFoundException;
 
 public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
@@ -30,42 +30,42 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
     public void delete() {
         /* ----------------- Performing delete operation while an unfiltered list is being shown -------------------- */
 
-        /* Case: delete the first person in the list, command with leading spaces and trailing spaces -> deleted */
+        /* Case: delete the first Member in the list, command with leading spaces and trailing spaces -> deleted */
         Model expectedModel = getModel();
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_PERSON.getOneBased() + "       ";
-        Person deletedPerson = removePerson(expectedModel, INDEX_FIRST_PERSON);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedPerson);
+        Member deletedMember = removePerson(expectedModel, INDEX_FIRST_PERSON);
+        String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 
-        /* Case: delete the last person in the list -> deleted */
+        /* Case: delete the last Member in the list -> deleted */
         Model modelBeforeDeletingLast = getModel();
         Index lastPersonIndex = getLastIndex(modelBeforeDeletingLast);
         assertCommandSuccess(lastPersonIndex);
 
-        /* Case: undo deleting the last person in the list -> last person restored */
+        /* Case: undo deleting the last Member in the list -> last Member restored */
         command = UndoCommand.COMMAND_WORD;
         expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, modelBeforeDeletingLast, expectedResultMessage);
 
-        /* Case: redo deleting the last person in the list -> last person deleted again */
+        /* Case: redo deleting the last Member in the list -> last Member deleted again */
         command = RedoCommand.COMMAND_WORD;
         removePerson(modelBeforeDeletingLast, lastPersonIndex);
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, modelBeforeDeletingLast, expectedResultMessage);
 
-        /* Case: delete the middle person in the list -> deleted */
+        /* Case: delete the middle Member in the list -> deleted */
         Index middlePersonIndex = getMidIndex(getModel());
         assertCommandSuccess(middlePersonIndex);
 
         /* ------------------ Performing delete operation while a filtered list is being shown ---------------------- */
 
-        /* Case: filtered person list, delete index within bounds of club book and person list -> deleted */
+        /* Case: filtered Member list, delete index within bounds of club book and Member list -> deleted */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
         Index index = INDEX_FIRST_PERSON;
         assertTrue(index.getZeroBased() < getModel().getFilteredPersonList().size());
         assertCommandSuccess(index);
 
-        /* Case: filtered person list, delete index within bounds of club book but out of bounds of person list
+        /* Case: filtered Member list, delete index within bounds of club book but out of bounds of Member list
          * -> rejected
          */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
@@ -73,17 +73,17 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         command = DeleteCommand.COMMAND_WORD + " " + invalidIndex;
         assertCommandFailure(command, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
 
-        /* --------------------- Performing delete operation while a person card is selected ------------------------ */
+        /* --------------------- Performing delete operation while a Member card is selected ------------------------ */
 
-        /* Case: delete the selected person -> person list panel selects the person before the deleted person */
+        /* Case: delete the selected Member -> Member list panel selects the Member before the deleted Member */
         showAllPersons();
         expectedModel = getModel();
         Index selectedIndex = getLastIndex(expectedModel);
         Index expectedIndex = Index.fromZeroBased(selectedIndex.getZeroBased() - 1);
         selectPerson(selectedIndex);
         command = DeleteCommand.COMMAND_WORD + " " + selectedIndex.getOneBased();
-        deletedPerson = removePerson(expectedModel, selectedIndex);
-        expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedPerson);
+        deletedMember = removePerson(expectedModel, selectedIndex);
+        expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage, expectedIndex);
 
         /* --------------------------------- Performing invalid delete operation ------------------------------------ */
@@ -113,28 +113,28 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
     }
 
     /**
-     * Removes the {@code Person} at the specified {@code index} in {@code model}'s club book.
-     * @return the removed person
+     * Removes the {@code Member} at the specified {@code index} in {@code model}'s club book.
+     * @return the removed Member
      */
-    private Person removePerson(Model model, Index index) {
-        Person targetPerson = getPerson(model, index);
+    private Member removePerson(Model model, Index index) {
+        Member targetMember = getPerson(model, index);
         try {
-            model.deletePerson(targetPerson);
+            model.deletePerson(targetMember);
         } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("targetPerson is retrieved from model.");
+            throw new AssertionError("targetMember is retrieved from model.");
         }
-        return targetPerson;
+        return targetMember;
     }
 
     /**
-     * Deletes the person at {@code toDelete} by creating a default {@code DeleteCommand} using {@code toDelete} and
+     * Deletes the Member at {@code toDelete} by creating a default {@code DeleteCommand} using {@code toDelete} and
      * performs the same verification as {@code assertCommandSuccess(String, Model, String)}.
      * @see DeleteCommandSystemTest#assertCommandSuccess(String, Model, String)
      */
     private void assertCommandSuccess(Index toDelete) {
         Model expectedModel = getModel();
-        Person deletedPerson = removePerson(expectedModel, toDelete);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedPerson);
+        Member deletedMember = removePerson(expectedModel, toDelete);
+        String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
 
         assertCommandSuccess(
                 DeleteCommand.COMMAND_WORD + " " + toDelete.getOneBased(), expectedModel, expectedResultMessage);

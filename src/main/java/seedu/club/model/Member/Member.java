@@ -1,4 +1,4 @@
-package seedu.club.model.person;
+package seedu.club.model.Member;
 
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
@@ -13,10 +13,10 @@ import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
 
 /**
- * Represents a Person in the club book.
+ * Represents a Member in the club book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Person {
+public class Member {
 
     private final Name name;
     private final Phone phone;
@@ -32,7 +32,7 @@ public class Person {
      * Every field must be present and not null.
      */
 
-    public Person(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
                   Username username, Password password) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags,
                 username, password);
@@ -116,15 +116,15 @@ public class Person {
             return true;
         }
 
-        if (!(other instanceof Person)) {
+        if (!(other instanceof Member)) {
             return false;
         }
 
-        Person otherPerson = (Person) other;
-        return otherPerson.getName().equals(this.getName())
-                && otherPerson.getPhone().equals(this.getPhone())
-                && otherPerson.getEmail().equals(this.getEmail())
-                && otherPerson.getMatricNumber().equals(this.getMatricNumber());
+        Member otherMember = (Member) other;
+        return otherMember.getName().equals(this.getName())
+                && otherMember.getPhone().equals(this.getPhone())
+                && otherMember.getEmail().equals(this.getEmail())
+                && otherMember.getMatricNumber().equals(this.getMatricNumber());
     }
 
     @Override
@@ -151,7 +151,7 @@ public class Person {
     }
 
     /**
-     * change the status of the person loggin in
+     * change the status of the Member loggin in
      */
 
     public void changeLogInStatus() {

@@ -1,6 +1,6 @@
 package seedu.club.logic.commands;
 
-import seedu.club.model.person.FieldContainsKeywordsPredicate;
+import seedu.club.model.Member.FieldContainsKeywordsPredicate;
 
 /**
  * Finds and lists all persons in club book whose field contains any of the argument keywords.

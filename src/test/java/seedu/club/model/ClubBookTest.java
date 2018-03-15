@@ -24,10 +24,10 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.person.Person;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.testutil.ClubBookBuilder;
@@ -72,8 +72,8 @@ public class ClubBookTest {
     public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
         clubBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
 
-        Person bobNotInLogistics = new PersonBuilder(BOB).withGroup().build();
-        Person amyNotInLogistics = new PersonBuilder(AMY).build();
+        Member bobNotInLogistics = new PersonBuilder(BOB).withGroup().build();
+        Member amyNotInLogistics = new PersonBuilder(AMY).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(bobNotInLogistics)
                 .withPerson(amyNotInLogistics).build();
 
@@ -106,9 +106,9 @@ public class ClubBookTest {
     @Test
     public void resetData_withDuplicatePersons_throwsAssertionError() {
         // Repeat ALICE twice
-        List<Person> newPersons = Arrays.asList(ALICE, ALICE);
+        List<Member> newMembers = Arrays.asList(ALICE, ALICE);
         List<Tag> newTags = new ArrayList<>(ALICE.getTags());
-        ClubBookStub newData = new ClubBookStub(newPersons, newTags);
+        ClubBookStub newData = new ClubBookStub(newMembers, newTags);
 
         thrown.expect(AssertionError.class);
         clubBook.resetData(newData);
@@ -150,8 +150,8 @@ public class ClubBookTest {
     public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
         clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_FRIEND));
 
-        Person amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
-        Person bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
+        Member amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
+        Member bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(bobWithoutFriendTag)
                 .withPerson(amyWithoutFriendTag).build();
 
@@ -159,20 +159,20 @@ public class ClubBookTest {
     }
 
     /**
-     * A stub ReadOnlyClubBook whose persons and tags lists can violate interface constraints.
+     * A stub ReadOnlyClubBook whose members and tags lists can violate interface constraints.
      */
     private static class ClubBookStub implements ReadOnlyClubBook {
-        private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final ObservableList<Member> members = FXCollections.observableArrayList();
         private final ObservableList<Tag> tags = FXCollections.observableArrayList();
 
-        ClubBookStub(Collection<Person> persons, Collection<? extends Tag> tags) {
-            this.persons.setAll(persons);
+        ClubBookStub(Collection<Member> members, Collection<? extends Tag> tags) {
+            this.members.setAll(members);
             this.tags.setAll(tags);
         }
 
         @Override
-        public ObservableList<Person> getPersonList() {
-            return persons;
+        public ObservableList<Member> getPersonList() {
+            return members;
         }
 
         @Override

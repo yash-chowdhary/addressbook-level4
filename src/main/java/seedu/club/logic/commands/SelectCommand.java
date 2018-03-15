@@ -7,21 +7,21 @@ import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.Member;
 
 /**
- * Selects a person identified using it's last displayed index from the club book.
+ * Selects a Member identified using it's last displayed index from the club book.
  */
 public class SelectCommand extends Command {
 
     public static final String COMMAND_WORD = "select";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects the person identified by the index number used in the last person listing.\n"
+            + ": Selects the Member identified by the index number used in the last Member listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_SELECT_PERSON_SUCCESS = "Selected Person: %1$s";
+    public static final String MESSAGE_SELECT_PERSON_SUCCESS = "Selected Member: %1$s";
 
     private final Index targetIndex;
 
@@ -32,7 +32,7 @@ public class SelectCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
 
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Member> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);

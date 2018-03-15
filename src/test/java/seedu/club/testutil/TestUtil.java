@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.FileUtil;
+import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
-import seedu.club.model.person.Person;
 
 /**
  * A utility class for test cases.
@@ -32,23 +32,23 @@ public class TestUtil {
     }
 
     /**
-     * Returns the middle index of the person in the {@code model}'s person list.
+     * Returns the middle index of the Member in the {@code model}'s Member list.
      */
     public static Index getMidIndex(Model model) {
         return Index.fromOneBased(model.getClubBook().getPersonList().size() / 2);
     }
 
     /**
-     * Returns the last index of the person in the {@code model}'s person list.
+     * Returns the last index of the Member in the {@code model}'s Member list.
      */
     public static Index getLastIndex(Model model) {
         return Index.fromOneBased(model.getClubBook().getPersonList().size());
     }
 
     /**
-     * Returns the person in the {@code model}'s person list at {@code index}.
+     * Returns the Member in the {@code model}'s Member list at {@code index}.
      */
-    public static Person getPerson(Model model, Index index) {
+    public static Member getPerson(Model model, Index index) {
         return model.getClubBook().getPersonList().get(index.getZeroBased());
     }
 }

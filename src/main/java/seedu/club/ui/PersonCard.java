@@ -5,10 +5,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.Member;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * An UI component that displays information of a {@code Member}.
  */
 public class PersonCard extends UiPart<Region> {
 
@@ -22,7 +22,7 @@ public class PersonCard extends UiPart<Region> {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on ClubBook level 4</a>
      */
 
-    public final Person person;
+    public final Member member;
 
     @FXML
     private HBox cardPane;
@@ -41,16 +41,16 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
 
-    public PersonCard(Person person, int displayedIndex) {
+    public PersonCard(Member member, int displayedIndex) {
         super(FXML);
-        this.person = person;
+        this.member = member;
         id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        matricNumber.setText(person.getMatricNumber().value);
-        group.setText(person.getGroup().groupName);
-        email.setText(person.getEmail().value);
-        person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        name.setText(member.getName().fullName);
+        phone.setText(member.getPhone().value);
+        matricNumber.setText(member.getMatricNumber().value);
+        group.setText(member.getGroup().groupName);
+        email.setText(member.getEmail().value);
+        member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
     @Override
@@ -68,6 +68,6 @@ public class PersonCard extends UiPart<Region> {
         // state check
         PersonCard card = (PersonCard) other;
         return id.getText().equals(card.id.getText())
-                && person.equals(card.person);
+                && member.equals(card.member);
     }
 }

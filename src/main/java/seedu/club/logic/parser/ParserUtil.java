@@ -12,12 +12,12 @@ import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.commons.util.StringUtil;
 
 import seedu.club.model.group.Group;
-import seedu.club.model.person.Email;
-import seedu.club.model.person.MatricNumber;
-import seedu.club.model.person.Name;
-import seedu.club.model.person.Password;
-import seedu.club.model.person.Phone;
-import seedu.club.model.person.Username;
+import seedu.club.model.Member.Email;
+import seedu.club.model.Member.MatricNumber;
+import seedu.club.model.Member.Name;
+import seedu.club.model.Member.Password;
+import seedu.club.model.Member.Phone;
+import seedu.club.model.Member.Username;
 import seedu.club.model.tag.Tag;
 
 /**

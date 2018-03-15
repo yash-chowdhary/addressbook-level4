@@ -6,11 +6,11 @@ import java.util.stream.Stream;
 
 import seedu.club.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.club.model.group.Group;
-import seedu.club.model.person.Email;
-import seedu.club.model.person.MatricNumber;
-import seedu.club.model.person.Name;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.Phone;
+import seedu.club.model.Member.Email;
+import seedu.club.model.Member.MatricNumber;
+import seedu.club.model.Member.Name;
+import seedu.club.model.Member.Member;
+import seedu.club.model.Member.Phone;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -29,16 +29,16 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Returns an {@code EditPersonDescriptor} with fields containing {@code person}'s details
+     * Returns an {@code EditPersonDescriptor} with fields containing {@code Member}'s details
      */
-    public EditPersonDescriptorBuilder(Person person) {
+    public EditPersonDescriptorBuilder(Member member) {
         descriptor = new EditPersonDescriptor();
-        descriptor.setName(person.getName());
-        descriptor.setPhone(person.getPhone());
-        descriptor.setEmail(person.getEmail());
-        descriptor.setMatricNumber(person.getMatricNumber());
-        descriptor.setGroup(person.getGroup());
-        descriptor.setTags(person.getTags());
+        descriptor.setName(member.getName());
+        descriptor.setPhone(member.getPhone());
+        descriptor.setEmail(member.getEmail());
+        descriptor.setMatricNumber(member.getMatricNumber());
+        descriptor.setGroup(member.getGroup());
+        descriptor.setTags(member.getTags());
     }
 
     /**

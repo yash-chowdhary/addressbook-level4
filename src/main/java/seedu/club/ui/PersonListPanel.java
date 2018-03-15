@@ -15,7 +15,7 @@ import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.commons.events.ui.PersonPanelSelectionChangedEvent;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.Member;
 
 /**
  * Panel containing the list of persons.
@@ -27,15 +27,15 @@ public class PersonListPanel extends UiPart<Region> {
     @FXML
     private ListView<PersonCard> personListView;
 
-    public PersonListPanel(ObservableList<Person> personList) {
+    public PersonListPanel(ObservableList<Member> memberList) {
         super(FXML);
-        setConnections(personList);
+        setConnections(memberList);
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<Person> personList) {
+    private void setConnections(ObservableList<Member> memberList) {
         ObservableList<PersonCard> mappedList = EasyBind.map(
-                personList, (person) -> new PersonCard(person, personList.indexOf(person) + 1));
+                memberList, (person) -> new PersonCard(person, memberList.indexOf(person) + 1));
         personListView.setItems(mappedList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
         setEventHandlerForSelectionChangeEvent();
@@ -45,7 +45,7 @@ public class PersonListPanel extends UiPart<Region> {
         personListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        logger.fine("Selection in person list panel changed to : '" + newValue + "'");
+                        logger.fine("Selection in Member list panel changed to : '" + newValue + "'");
                         raise(new PersonPanelSelectionChangedEvent(newValue));
                     }
                 });

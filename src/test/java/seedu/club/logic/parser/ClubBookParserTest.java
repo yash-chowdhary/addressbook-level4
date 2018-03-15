@@ -30,9 +30,9 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
-import seedu.club.model.person.FieldContainsKeywordsPredicate;
-import seedu.club.model.person.NameContainsKeywordsPredicate;
-import seedu.club.model.person.Person;
+import seedu.club.model.Member.FieldContainsKeywordsPredicate;
+import seedu.club.model.Member.Member;
+import seedu.club.model.Member.NameContainsKeywordsPredicate;
 import seedu.club.testutil.EditPersonDescriptorBuilder;
 import seedu.club.testutil.PersonBuilder;
 import seedu.club.testutil.PersonUtil;
@@ -45,9 +45,9 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_add() throws Exception {
-        Person person = new PersonBuilder().build();
-        AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person));
-        assertEquals(new AddCommand(person), command);
+        Member member = new PersonBuilder().build();
+        AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(member));
+        assertEquals(new AddCommand(member), command);
     }
 
     @Test
@@ -65,10 +65,10 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Person person = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
+        Member member = new PersonBuilder().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(member).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getPersonDetails(person));
+                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getPersonDetails(member));
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 

@@ -20,27 +20,27 @@ import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
-import seedu.club.model.person.Email;
-import seedu.club.model.person.MatricNumber;
-import seedu.club.model.person.Name;
-import seedu.club.model.person.Password;
-import seedu.club.model.person.Person;
-import seedu.club.model.person.Phone;
-import seedu.club.model.person.Username;
-import seedu.club.model.person.exceptions.DuplicatePersonException;
-import seedu.club.model.person.exceptions.PersonNotFoundException;
+import seedu.club.model.Member.Email;
+import seedu.club.model.Member.MatricNumber;
+import seedu.club.model.Member.Name;
+import seedu.club.model.Member.Password;
+import seedu.club.model.Member.Phone;
+import seedu.club.model.Member.Username;
+import seedu.club.model.Member.exceptions.DuplicatePersonException;
+import seedu.club.model.Member.exceptions.PersonNotFoundException;
 import seedu.club.model.tag.Tag;
 
 /**
- * Edits the details of an existing person in the club book.
+ * Edits the details of an existing Member in the club book.
  */
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
-            + "by the index number used in the last person listing. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the Member identified "
+            + "by the index number used in the last Member listing. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
@@ -53,19 +53,19 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Member: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the club book.";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This Member already exists in the club book.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
 
-    private Person personToEdit;
-    private Person editedPerson;
+    private Member memberToEdit;
+    private Member editedMember;
 
     /**
-     * @param index of the person in the filtered person list to edit
-     * @param editPersonDescriptor details to edit the person with
+     * @param index of the Member in the filtered Member list to edit
+     * @param editPersonDescriptor details to edit the Member with
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(index);
@@ -78,46 +78,46 @@ public class EditCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
-            model.updatePerson(personToEdit, editedPerson);
+            model.updatePerson(memberToEdit, editedMember);
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("The target person cannot be missing");
+            throw new AssertionError("The target Member cannot be missing");
         }
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
+        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedMember));
     }
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Member> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        personToEdit = lastShownList.get(index.getZeroBased());
-        editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        memberToEdit = lastShownList.get(index.getZeroBased());
+        editedMember = createEditedPerson(memberToEdit, editPersonDescriptor);
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
+     * Creates and returns a {@code Member} with the details of {@code memberToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+    private static Member createEditedPerson(Member memberToEdit, EditPersonDescriptor editPersonDescriptor) {
+        assert memberToEdit != null;
 
-        Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        Name updatedName = editPersonDescriptor.getName().orElse(memberToEdit.getName());
+        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(memberToEdit.getPhone());
+        Email updatedEmail = editPersonDescriptor.getEmail().orElse(memberToEdit.getEmail());
         MatricNumber updatedMatricNumber = editPersonDescriptor.getMatricNumber()
-                .orElse(personToEdit.getMatricNumber());
-        Group updatedGroup = editPersonDescriptor.getGroup().orElse(personToEdit.getGroup());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-        Username updatedUsername = editPersonDescriptor.getUsername().orElse(personToEdit.getUsername());
-        Password updatedPassword = editPersonDescriptor.getPassword().orElse(personToEdit.getPassword());
+                .orElse(memberToEdit.getMatricNumber());
+        Group updatedGroup = editPersonDescriptor.getGroup().orElse(memberToEdit.getGroup());
+        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(memberToEdit.getTags());
+        Username updatedUsername = editPersonDescriptor.getUsername().orElse(memberToEdit.getUsername());
+        Password updatedPassword = editPersonDescriptor.getPassword().orElse(memberToEdit.getPassword());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
+        return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
                 updatedTags, updatedUsername, updatedPassword);
     }
 
@@ -137,12 +137,12 @@ public class EditCommand extends UndoableCommand {
         EditCommand e = (EditCommand) other;
         return index.equals(e.index)
                 && editPersonDescriptor.equals(e.editPersonDescriptor)
-                && Objects.equals(personToEdit, e.personToEdit);
+                && Objects.equals(memberToEdit, e.memberToEdit);
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
+     * Stores the details to edit the Member with. Each non-empty field value will replace the
+     * corresponding field value of the Member.
      */
     public static class EditPersonDescriptor {
         private Name name;
