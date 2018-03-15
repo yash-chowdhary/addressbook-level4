@@ -10,8 +10,8 @@ import static seedu.club.ui.testutil.GuiTestAssert.assertCardEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import guitests.guihandles.PersonCardHandle;
-import guitests.guihandles.PersonListPanelHandle;
+import guitests.guihandles.MemberCardHandle;
+import guitests.guihandles.MemberListPanelHandle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
@@ -23,23 +23,23 @@ public class MemberListPanelTest extends GuiUnitTest {
 
     private static final JumpToListRequestEvent JUMP_TO_SECOND_EVENT = new JumpToListRequestEvent(INDEX_SECOND_PERSON);
 
-    private PersonListPanelHandle personListPanelHandle;
+    private MemberListPanelHandle memberListPanelHandle;
 
     @Before
     public void setUp() {
         PersonListPanel personListPanel = new PersonListPanel(TYPICAL_MEMBERS);
         uiPartRule.setUiPart(personListPanel);
 
-        personListPanelHandle = new PersonListPanelHandle(getChildNode(personListPanel.getRoot(),
-                PersonListPanelHandle.PERSON_LIST_VIEW_ID));
+        memberListPanelHandle = new MemberListPanelHandle(getChildNode(personListPanel.getRoot(),
+                MemberListPanelHandle.MEMBER_LIST_VIEW_ID));
     }
 
     @Test
     public void display() {
         for (int i = 0; i < TYPICAL_MEMBERS.size(); i++) {
-            personListPanelHandle.navigateToCard(TYPICAL_MEMBERS.get(i));
+            memberListPanelHandle.navigateToCard(TYPICAL_MEMBERS.get(i));
             Member expectedMember = TYPICAL_MEMBERS.get(i);
-            PersonCardHandle actualCard = personListPanelHandle.getPersonCardHandle(i);
+            MemberCardHandle actualCard = memberListPanelHandle.getPersonCardHandle(i);
 
             assertCardDisplaysPerson(expectedMember, actualCard);
             assertEquals(Integer.toString(i + 1) + ". ", actualCard.getId());
@@ -51,8 +51,8 @@ public class MemberListPanelTest extends GuiUnitTest {
         postNow(JUMP_TO_SECOND_EVENT);
         guiRobot.pauseForHuman();
 
-        PersonCardHandle expectedCard = personListPanelHandle.getPersonCardHandle(INDEX_SECOND_PERSON.getZeroBased());
-        PersonCardHandle selectedCard = personListPanelHandle.getHandleToSelectedCard();
+        MemberCardHandle expectedCard = memberListPanelHandle.getPersonCardHandle(INDEX_SECOND_PERSON.getZeroBased());
+        MemberCardHandle selectedCard = memberListPanelHandle.getHandleToSelectedCard();
         assertCardEquals(expectedCard, selectedCard);
     }
 }

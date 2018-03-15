@@ -10,7 +10,7 @@ import javafx.scene.layout.Region;
 /**
  * Provides a handle to a member card in the member list panel.
  */
-public class PersonCardHandle extends NodeHandle<Node> {
+public class MemberCardHandle extends NodeHandle<Node> {
     private static final String ID_FIELD_ID = "#id";
     private static final String NAME_FIELD_ID = "#name";
     private static final String MATRIC_NUMBER_FIELD_ID = "#matricNumber";
@@ -25,7 +25,7 @@ public class PersonCardHandle extends NodeHandle<Node> {
     private final Label emailLabel;
     private final List<Label> tagLabels;
 
-    public PersonCardHandle(Node cardNode) {
+    public MemberCardHandle(Node cardNode) {
         super(cardNode);
 
         this.idLabel = getChildNode(ID_FIELD_ID);

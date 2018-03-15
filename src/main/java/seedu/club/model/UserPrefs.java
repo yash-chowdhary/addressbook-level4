@@ -10,8 +10,8 @@ import seedu.club.commons.core.GuiSettings;
 public class UserPrefs {
 
     private GuiSettings guiSettings;
-    private String clubBookFilePath = "data/clubbook.xml";
-    private String clubBookName = "MyClubBook";
+    private String clubBookFilePath = "clubbook.xml";
+    private String clubBookName = "TypicalClubBookName";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);

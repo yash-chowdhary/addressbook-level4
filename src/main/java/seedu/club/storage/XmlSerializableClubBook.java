@@ -14,7 +14,7 @@ import seedu.club.model.ReadOnlyClubBook;
 /**
  * An Immutable ClubBook that is serializable to XML format
  */
-@XmlRootElement(name = "addressbook")
+@XmlRootElement(name = "clubbook")
 public class XmlSerializableClubBook {
 
     @XmlElement

@@ -7,7 +7,7 @@ import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
 
 import org.junit.Test;
 
-import guitests.guihandles.PersonCardHandle;
+import guitests.guihandles.MemberCardHandle;
 import seedu.club.model.member.Member;
 import seedu.club.testutil.MemberBuilder;
 
@@ -61,12 +61,12 @@ public class MemberCardTest extends GuiUnitTest {
     private void assertCardDisplay(MemberCard memberCard, Member expectedMember, int expectedId) {
         guiRobot.pauseForHuman();
 
-        PersonCardHandle personCardHandle = new PersonCardHandle(memberCard.getRoot());
+        MemberCardHandle memberCardHandle = new MemberCardHandle(memberCard.getRoot());
 
         // verify id is displayed correctly
-        assertEquals(Integer.toString(expectedId) + ". ", personCardHandle.getId());
+        assertEquals(Integer.toString(expectedId) + ". ", memberCardHandle.getId());
 
         // verify member details are displayed correctly
-        assertCardDisplaysPerson(expectedMember, personCardHandle);
+        assertCardDisplaysPerson(expectedMember, memberCardHandle);
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addressbook>
+<clubbook>
     <!-- Valid member -->
     <members>
         <name>Hans Muster</name>
@@ -17,4 +17,4 @@
         <matricNumber isPrivate="false">A0011122L</matricNumber>
         <group isPrivate="false">publicity</group>
     </members>
-</addressbook>
+</clubbook>

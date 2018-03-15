@@ -10,12 +10,12 @@ import seedu.club.ui.MemberCard;
 /**
  * Provides a handle for {@code PersonListPanel} containing the list of {@code MemberCard}.
  */
-public class PersonListPanelHandle extends NodeHandle<ListView<MemberCard>> {
-    public static final String PERSON_LIST_VIEW_ID = "#personListView";
+public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
+    public static final String MEMBER_LIST_VIEW_ID = "#personListView";
 
     private Optional<MemberCard> lastRememberedSelectedPersonCard;
 
-    public PersonListPanelHandle(ListView<MemberCard> personListPanelNode) {
+    public MemberListPanelHandle(ListView<MemberCard> personListPanelNode) {
         super(personListPanelNode);
     }
 
@@ -24,14 +24,14 @@ public class PersonListPanelHandle extends NodeHandle<ListView<MemberCard>> {
      * A maximum of 1 item can be selected at any time.
      * @throws AssertionError if no card is selected, or more than 1 card is selected.
      */
-    public PersonCardHandle getHandleToSelectedCard() {
+    public MemberCardHandle getHandleToSelectedCard() {
         List<MemberCard> personList = getRootNode().getSelectionModel().getSelectedItems();
 
         if (personList.size() != 1) {
             throw new AssertionError("member list size expected 1.");
         }
 
-        return new PersonCardHandle(personList.get(0).getRoot());
+        return new MemberCardHandle(personList.get(0).getRoot());
     }
 
     /**
@@ -75,17 +75,17 @@ public class PersonListPanelHandle extends NodeHandle<ListView<MemberCard>> {
     /**
      * Returns the member card handle of a member associated with the {@code index} in the list.
      */
-    public PersonCardHandle getPersonCardHandle(int index) {
+    public MemberCardHandle getPersonCardHandle(int index) {
         return getPersonCardHandle(getRootNode().getItems().get(index).member);
     }
 
     /**
      * Returns the {@code PersonCardHandle} of the specified {@code member} in the list.
      */
-    public PersonCardHandle getPersonCardHandle(Member member) {
-        Optional<PersonCardHandle> handle = getRootNode().getItems().stream()
+    public MemberCardHandle getPersonCardHandle(Member member) {
+        Optional<MemberCardHandle> handle = getRootNode().getItems().stream()
                 .filter(card -> card.member.equals(member))
-                .map(card -> new PersonCardHandle(card.getRoot()))
+                .map(card -> new MemberCardHandle(card.getRoot()))
                 .findFirst();
         return handle.orElseThrow(() -> new IllegalArgumentException("member does not exist."));
     }

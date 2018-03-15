@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addressbook>
+<clubbook>
     <members>
         <name>Hans Muster</name>
         <phone isPrivate="false">9482424</phone>
@@ -63,4 +63,4 @@
         <matricNumber isPrivate="false">A8801996A</matricNumber>
         <group isPrivate="false">marketing</group>
     </members>
-</addressbook>
+</clubbook>

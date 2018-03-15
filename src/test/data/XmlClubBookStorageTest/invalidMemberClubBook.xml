@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addressbook>
+<clubbook>
     <!-- member with invalid name field -->
     <members>
         <name>Ha!ns Mu@ster</name>
@@ -8,4 +8,4 @@
         <matricNumber isPrivate="false">4th street</matricNumber>
         <group isPrivate="false">logistics</group>
     </members>
-</addressbook>
+</clubbook>

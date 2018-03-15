@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- ClubBook save file which contains the same member values as in
-{@code TypicalPersons#getTypicalAddressBook()}-->
-<addressbook>
+{@code TypicalMembers#getTypicalClubBook()}-->
+<clubbook>
     <members>
         <name>Alice Pauline</name>
         <phone>85355255</phone>
@@ -56,4 +56,4 @@
     </members>
     <tags>friends</tags>
     <tags>owesMoney</tags>
-</addressbook>
+</clubbook>

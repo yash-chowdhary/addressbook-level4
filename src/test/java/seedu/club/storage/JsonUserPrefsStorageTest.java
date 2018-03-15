@@ -82,8 +82,8 @@ public class JsonUserPrefsStorageTest {
     private UserPrefs getTypicalUserPrefs() {
         UserPrefs userPrefs = new UserPrefs();
         userPrefs.setGuiSettings(1000, 500, 300, 100);
-        userPrefs.setClubBookFilePath("data/clubbook.xml");
-        userPrefs.setClubBookName("MyClubBook");
+        userPrefs.setClubBookFilePath("clubbook.xml");
+        userPrefs.setClubBookName("TypicalClubBookName");
         return userPrefs;
     }
 
