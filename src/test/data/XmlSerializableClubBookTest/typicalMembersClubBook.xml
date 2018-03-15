@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- ClubBook save file which contains the same Member values as in
+<!-- ClubBook save file which contains the same member values as in
 {@code TypicalPersons#getTypicalAddressBook()}-->
 <addressbook>
     <members>

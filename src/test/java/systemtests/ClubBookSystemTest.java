@@ -38,7 +38,7 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
-import seedu.club.testutil.TypicalPersons;
+import seedu.club.testutil.TypicalMembers;
 import seedu.club.ui.BrowserPanel;
 import seedu.club.ui.CommandBox;
 
@@ -83,7 +83,7 @@ public abstract class ClubBookSystemTest {
      * Returns the data to be loaded into the file in {@link #getDataFileLocation()}.
      */
     protected ClubBook getInitialData() {
-        return TypicalPersons.getTypicalClubBook();
+        return TypicalMembers.getTypicalClubBook();
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Selects the Member at {@code index} of the displayed list.
+     * Selects the member at {@code index} of the displayed list.
      */
     protected void selectPerson(Index index) {
         executeCommand(SelectCommand.COMMAND_WORD + " " + index.getOneBased());
@@ -170,8 +170,8 @@ public abstract class ClubBookSystemTest {
 
     /**
      * Asserts that the {@code CommandBox} displays {@code expectedCommandInput}, the {@code ResultDisplay} displays
-     * {@code expectedResultMessage}, the model and storage contains the same Member objects as {@code expectedModel}
-     * and the Member list panel displays the persons in the model correctly.
+     * {@code expectedResultMessage}, the model and storage contains the same member objects as {@code expectedModel}
+     * and the member list panel displays the persons in the model correctly.
      */
     protected void assertApplicationDisplaysExpected(String expectedCommandInput, String expectedResultMessage,
             Model expectedModel) {
@@ -196,7 +196,7 @@ public abstract class ClubBookSystemTest {
 
     /**
      * Asserts that the previously selected card is now deselected and the browser's url remains displaying the details
-     * of the previously selected Member.
+     * of the previously selected member.
      * @see BrowserPanelHandle#isUrlChanged()
      */
     protected void assertSelectedCardDeselected() {
@@ -205,7 +205,7 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Asserts that the browser's url is changed to display the details of the Member in the Member list panel at
+     * Asserts that the browser's url is changed to display the details of the member in the member list panel at
      * {@code expectedSelectedCardIndex}, and only the card at {@code expectedSelectedCardIndex} is selected.
      * @see BrowserPanelHandle#isUrlChanged()
      * @see PersonListPanelHandle#isSelectedPersonCardChanged()
@@ -224,7 +224,7 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Asserts that the browser's url and the selected card in the Member list panel remain unchanged.
+     * Asserts that the browser's url and the selected card in the member list panel remain unchanged.
      * @see BrowserPanelHandle#isUrlChanged()
      * @see PersonListPanelHandle#isSelectedPersonCardChanged()
      */

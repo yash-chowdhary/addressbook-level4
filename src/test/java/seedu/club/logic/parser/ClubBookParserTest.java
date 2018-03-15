@@ -30,12 +30,12 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
-import seedu.club.model.Member.FieldContainsKeywordsPredicate;
-import seedu.club.model.Member.Member;
-import seedu.club.model.Member.NameContainsKeywordsPredicate;
-import seedu.club.testutil.EditPersonDescriptorBuilder;
-import seedu.club.testutil.PersonBuilder;
-import seedu.club.testutil.PersonUtil;
+import seedu.club.model.member.FieldContainsKeywordsPredicate;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.NameContainsKeywordsPredicate;
+import seedu.club.testutil.EditMemberDescriptorBuilder;
+import seedu.club.testutil.MemberBuilder;
+import seedu.club.testutil.MemberUtil;
 
 public class ClubBookParserTest {
     @Rule
@@ -45,8 +45,8 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_add() throws Exception {
-        Member member = new PersonBuilder().build();
-        AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(member));
+        Member member = new MemberBuilder().build();
+        AddCommand command = (AddCommand) parser.parseCommand(MemberUtil.getAddCommand(member));
         assertEquals(new AddCommand(member), command);
     }
 
@@ -65,10 +65,10 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Member member = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(member).build();
+        Member member = new MemberBuilder().build();
+        EditPersonDescriptor descriptor = new EditMemberDescriptorBuilder(member).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getPersonDetails(member));
+                + INDEX_FIRST_PERSON.getOneBased() + " " + MemberUtil.getPersonDetails(member));
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 

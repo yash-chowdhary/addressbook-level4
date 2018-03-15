@@ -2,7 +2,7 @@ package seedu.club.storage;
 
 import static org.junit.Assert.assertEquals;
 import static seedu.club.storage.XmlAdaptedMember.MISSING_FIELD_MESSAGE_FORMAT;
-import static seedu.club.testutil.TypicalPersons.BENSON;
+import static seedu.club.testutil.TypicalMembers.BENSON;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.model.Member.Email;
-import seedu.club.model.Member.MatricNumber;
-import seedu.club.model.Member.Name;
-import seedu.club.model.Member.Phone;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
 import seedu.club.testutil.Assert;
 
 public class XmlAdaptedMemberTest {
@@ -38,86 +38,86 @@ public class XmlAdaptedMemberTest {
 
     @Test
     public void toModelType_validPersonDetails_returnsPerson() throws Exception {
-        XmlAdaptedMember person = new XmlAdaptedMember(BENSON);
-        assertEquals(BENSON, person.toModelType());
+        XmlAdaptedMember member = new XmlAdaptedMember(BENSON);
+        assertEquals(BENSON, member.toModelType());
     }
 
     @Test
     public void toModelType_invalidName_throwsIllegalValueException() {
-        XmlAdaptedMember person =
+        XmlAdaptedMember member =
                 new XmlAdaptedMember(INVALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                         VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = Name.MESSAGE_NAME_CONSTRAINTS;
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_nullName_throwsIllegalValueException() {
-        XmlAdaptedMember person = new XmlAdaptedMember(null, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER,
+        XmlAdaptedMember member = new XmlAdaptedMember(null, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER,
                 VALID_GROUP, VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_invalidPhone_throwsIllegalValueException() {
-        XmlAdaptedMember person =
+        XmlAdaptedMember member =
                 new XmlAdaptedMember(VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                         VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = Phone.MESSAGE_PHONE_CONSTRAINTS;
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_nullPhone_throwsIllegalValueException() {
-        XmlAdaptedMember person = new XmlAdaptedMember(VALID_NAME, null, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
+        XmlAdaptedMember member = new XmlAdaptedMember(VALID_NAME, null, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                 VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_invalidEmail_throwsIllegalValueException() {
-        XmlAdaptedMember person =
+        XmlAdaptedMember member =
                 new XmlAdaptedMember(VALID_NAME, VALID_PHONE, INVALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                         VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = Email.MESSAGE_EMAIL_CONSTRAINTS;
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_nullEmail_throwsIllegalValueException() {
-        XmlAdaptedMember person = new XmlAdaptedMember(VALID_NAME, VALID_PHONE, null, VALID_MATRIC_NUMBER, VALID_GROUP,
+        XmlAdaptedMember member = new XmlAdaptedMember(VALID_NAME, VALID_PHONE, null, VALID_MATRIC_NUMBER, VALID_GROUP,
                 VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_invalidAddress_throwsIllegalValueException() {
-        XmlAdaptedMember person =
+        XmlAdaptedMember member =
                 new XmlAdaptedMember(VALID_NAME, VALID_PHONE, VALID_EMAIL, INVALID_MATRIC_NUMBER, VALID_GROUP,
                         VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS;
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_nullAddress_throwsIllegalValueException() {
-        XmlAdaptedMember person = new XmlAdaptedMember(VALID_NAME, VALID_PHONE, VALID_EMAIL, null,
+        XmlAdaptedMember member = new XmlAdaptedMember(VALID_NAME, VALID_PHONE, VALID_EMAIL, null,
                 VALID_GROUP, VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, MatricNumber.class.getSimpleName());
-        Assert.assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, expectedMessage, member::toModelType);
     }
 
     @Test
     public void toModelType_invalidTags_throwsIllegalValueException() {
         List<XmlAdaptedTag> invalidTags = new ArrayList<>(VALID_TAGS);
         invalidTags.add(new XmlAdaptedTag(INVALID_TAG));
-        XmlAdaptedMember person =
+        XmlAdaptedMember member =
                 new XmlAdaptedMember(VALID_NAME, VALID_PHONE, VALID_EMAIL,
                         VALID_MATRIC_NUMBER, VALID_GROUP, invalidTags, VALID_USERNAME, VALID_PASSWORD);
-        Assert.assertThrows(IllegalValueException.class, person::toModelType);
+        Assert.assertThrows(IllegalValueException.class, member::toModelType);
     }
 
 }

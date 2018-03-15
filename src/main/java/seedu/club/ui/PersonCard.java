@@ -5,10 +5,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 /**
- * An UI component that displays information of a {@code Member}.
+ * An UI component that displays information of a {@code member}.
  */
 public class PersonCard extends UiPart<Region> {
 

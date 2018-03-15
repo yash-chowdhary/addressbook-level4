@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import org.junit.Test;
 
 import seedu.club.model.ClubBook;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 import seedu.club.model.util.SampleDataUtil;
 import seedu.club.testutil.TestUtil;
 

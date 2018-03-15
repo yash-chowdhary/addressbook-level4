@@ -40,21 +40,21 @@ import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import org.junit.Test;
 
 import seedu.club.logic.commands.AddCommand;
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
-import seedu.club.model.Member.Email;
-import seedu.club.model.Member.MatricNumber;
-import seedu.club.model.Member.Name;
-import seedu.club.model.Member.Phone;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
 import seedu.club.model.tag.Tag;
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.testutil.MemberBuilder;
 
 public class AddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Member expectedMember = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+        Member expectedMember = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
                 .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_FRIEND).build();
 
@@ -84,7 +84,7 @@ public class AddCommandParserTest {
                 + USERNAME_DESC_BOB + PASSWORD_DESC, new AddCommand(expectedMember));
 
         // multiple tags - all accepted
-        Member expectedMemberMultipleTags = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+        Member expectedMemberMultipleTags = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
                 .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_BOB
@@ -95,14 +95,14 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Member expectedMemberAmy = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
+        Member expectedMemberAmy = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
                 .withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY).withTags().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
                         + USERNAME_DESC_AMY + PASSWORD_DESC,
                 new AddCommand(expectedMemberAmy));
 
         // no group
-        Member expectedMemberBob = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+        Member expectedMemberBob = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup().withTags().build();
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_BOB
                         + USERNAME_DESC_BOB + PASSWORD_DESC,

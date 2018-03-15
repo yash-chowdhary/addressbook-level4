@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addressbook>
-    <!-- Valid Member -->
+    <!-- Valid member -->
     <members>
         <name>Hans Muster</name>
         <phone isPrivate="false">9482424</phone>
@@ -8,7 +8,7 @@
         <matricNumber isPrivate="false">A1234567G</matricNumber>
         <group isPrivate="false">logistics</group>
     </members>
-    <!-- Member with invalid phone field -->
+    <!-- member with invalid phone field -->
     <members>
         <name>Hans Muster</name>
         <phone isPrivate="false"

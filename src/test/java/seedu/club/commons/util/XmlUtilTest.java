@@ -19,7 +19,7 @@ import seedu.club.storage.XmlAdaptedMember;
 import seedu.club.storage.XmlAdaptedTag;
 import seedu.club.storage.XmlSerializableClubBook;
 import seedu.club.testutil.ClubBookBuilder;
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TestUtil;
 
 public class XmlUtilTest {
@@ -136,7 +136,7 @@ public class XmlUtilTest {
 
         ClubBookBuilder builder = new ClubBookBuilder(new ClubBook());
         dataToWrite = new XmlSerializableClubBook(
-                builder.withPerson(new PersonBuilder().build()).withTag("Friends").build());
+                builder.withPerson(new MemberBuilder().build()).withTag("Friends").build());
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableClubBook.class);

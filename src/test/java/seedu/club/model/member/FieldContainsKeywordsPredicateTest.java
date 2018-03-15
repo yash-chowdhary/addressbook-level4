@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.testutil.MemberBuilder;
 
 public class FieldContainsKeywordsPredicateTest {
 
@@ -37,7 +37,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -65,7 +65,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -93,7 +93,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -121,7 +121,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -149,7 +149,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -177,7 +177,7 @@ public class FieldContainsKeywordsPredicateTest {
         // null -> returns false
         assertFalse(firstPredicate.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
     }
 
@@ -186,19 +186,19 @@ public class FieldContainsKeywordsPredicateTest {
         // One keyword
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.singletonList("Alice"), "name");
-        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+        assertTrue(predicate.test(new MemberBuilder().withName("Alice Bob").build()));
 
         // Multiple keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"), "name");
-        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+        assertTrue(predicate.test(new MemberBuilder().withName("Alice Bob").build()));
 
         // Only one matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), "name");
-        assertTrue(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
+        assertTrue(predicate.test(new MemberBuilder().withName("Alice Carol").build()));
 
         // Mixed-case keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("aLIce", "bOB"), "name");
-        assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+        assertTrue(predicate.test(new MemberBuilder().withName("Alice Bob").build()));
     }
 
     @Test
@@ -206,15 +206,15 @@ public class FieldContainsKeywordsPredicateTest {
         // One keyword
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.singletonList("123"), "phone");
-        assertTrue(predicate.test(new PersonBuilder().withPhone("12345678").build()));
+        assertTrue(predicate.test(new MemberBuilder().withPhone("12345678").build()));
 
         // Multiple keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("123", "456"), "phone");
-        assertTrue(predicate.test(new PersonBuilder().withPhone("123456").build()));
+        assertTrue(predicate.test(new MemberBuilder().withPhone("123456").build()));
 
         // Only one matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("123", "456"), "phone");
-        assertTrue(predicate.test(new PersonBuilder().withPhone("5431236647").build()));
+        assertTrue(predicate.test(new MemberBuilder().withPhone("5431236647").build()));
     }
 
     @Test
@@ -222,19 +222,19 @@ public class FieldContainsKeywordsPredicateTest {
         // One keyword
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.singletonList("Alice"), "email");
-        assertTrue(predicate.test(new PersonBuilder().withEmail("Alice@hotmail").build()));
+        assertTrue(predicate.test(new MemberBuilder().withEmail("Alice@hotmail").build()));
 
         // Multiple keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "Bob@"), "email");
-        assertTrue(predicate.test(new PersonBuilder().withEmail("AliceANDBob@outlook.com").build()));
+        assertTrue(predicate.test(new MemberBuilder().withEmail("AliceANDBob@outlook.com").build()));
 
         // Only one matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), "email");
-        assertTrue(predicate.test(new PersonBuilder().withEmail("Carol@chacha.com").build()));
+        assertTrue(predicate.test(new MemberBuilder().withEmail("Carol@chacha.com").build()));
 
         // Mixed-case keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("aLIce"), "email");
-        assertTrue(predicate.test(new PersonBuilder().withEmail("Alice@hohoho.com").build()));
+        assertTrue(predicate.test(new MemberBuilder().withEmail("Alice@hohoho.com").build()));
     }
 
     @Test
@@ -242,19 +242,19 @@ public class FieldContainsKeywordsPredicateTest {
         // One keyword
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.singletonList("1234567"), "matric");
-        assertTrue(predicate.test(new PersonBuilder().withMatricNumber("A1234567H").build()));
+        assertTrue(predicate.test(new MemberBuilder().withMatricNumber("A1234567H").build()));
 
         // Multiple keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("A789", "541"), "matric");
-        assertTrue(predicate.test(new PersonBuilder().withMatricNumber("A7896541H").build()));
+        assertTrue(predicate.test(new MemberBuilder().withMatricNumber("A7896541H").build()));
 
         // Only one matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("594", "654"), "matric");
-        assertTrue(predicate.test(new PersonBuilder().withMatricNumber("A7531594J").build()));
+        assertTrue(predicate.test(new MemberBuilder().withMatricNumber("A7531594J").build()));
 
         // Small letters
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("a1234567h"), "matric");
-        assertTrue(predicate.test(new PersonBuilder().withMatricNumber("A1234567H").build()));
+        assertTrue(predicate.test(new MemberBuilder().withMatricNumber("A1234567H").build()));
     }
 
     @Test
@@ -262,19 +262,19 @@ public class FieldContainsKeywordsPredicateTest {
         // One keyword
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.singletonList("logis"), "group");
-        assertTrue(predicate.test(new PersonBuilder().withGroup("logistics").build()));
+        assertTrue(predicate.test(new MemberBuilder().withGroup("logistics").build()));
 
         // Multiple keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("log", "tics"), "group");
-        assertTrue(predicate.test(new PersonBuilder().withGroup("logistics").build()));
+        assertTrue(predicate.test(new MemberBuilder().withGroup("logistics").build()));
 
         // Only one matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("KLAN", "654"), "group");
-        assertTrue(predicate.test(new PersonBuilder().withGroup("KLANIBAL").build()));
+        assertTrue(predicate.test(new MemberBuilder().withGroup("KLANIBAL").build()));
 
         // Mixed letters
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("wumBoLoGY"), "group");
-        assertTrue(predicate.test(new PersonBuilder().withGroup("Wumbology").build()));
+        assertTrue(predicate.test(new MemberBuilder().withGroup("Wumbology").build()));
     }
 
     @Test
@@ -282,35 +282,35 @@ public class FieldContainsKeywordsPredicateTest {
         // One keyword
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.singletonList("Logi"), "tag");
-        assertTrue(predicate.test(new PersonBuilder().withTags("Logistics").build()));
+        assertTrue(predicate.test(new MemberBuilder().withTags("Logistics").build()));
 
         // Multiple keywords
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("sai", "warrior"), "tag");
-        assertTrue(predicate.test(new PersonBuilder().withTags("saikangWarriors").build()));
+        assertTrue(predicate.test(new MemberBuilder().withTags("saikangWarriors").build()));
 
         // Only one matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("book", "nah"), "tag");
-        assertTrue(predicate.test(new PersonBuilder().withTags("bookkeepers", "YOLO").build()));
+        assertTrue(predicate.test(new MemberBuilder().withTags("bookkeepers", "YOLO").build()));
 
         // Mixed letters
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("reSearChers"), "tag");
-        assertTrue(predicate.test(new PersonBuilder().withTags("RESearchers").build()));
+        assertTrue(predicate.test(new MemberBuilder().withTags("RESearchers").build()));
     }
 
     @Test
     public void test_nameDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), "name");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").build()));
 
         // Non-matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Carol"), "name");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice Bob").build()));
 
         // Keywords match phone, email and matric number, but does not match name
         predicate =
                 new FieldContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com", "Main", "Street"), "name");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").build()));
     }
 
@@ -318,16 +318,16 @@ public class FieldContainsKeywordsPredicateTest {
     public void test_phoneDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), "phone");
-        assertFalse(predicate.test(new PersonBuilder().withPhone("12345678").build()));
+        assertFalse(predicate.test(new MemberBuilder().withPhone("12345678").build()));
 
         // Non-matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("123456"), "phone");
-        assertFalse(predicate.test(new PersonBuilder().withPhone("654321").build()));
+        assertFalse(predicate.test(new MemberBuilder().withPhone("654321").build()));
 
         // Keywords match name, email and matric number, but does not match phone
         predicate =
                 new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "alice@email.com", "A1152241G"), "phone");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").build()));
     }
 
@@ -335,16 +335,16 @@ public class FieldContainsKeywordsPredicateTest {
     public void test_emailDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), "email");
-        assertFalse(predicate.test(new PersonBuilder().withEmail("Alice@jojojoget.com").build()));
+        assertFalse(predicate.test(new MemberBuilder().withEmail("Alice@jojojoget.com").build()));
 
         // Non-matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Carol@caroling.com"), "email");
-        assertFalse(predicate.test(new PersonBuilder().withEmail("AliceBob@Fett.com").build()));
+        assertFalse(predicate.test(new MemberBuilder().withEmail("AliceBob@Fett.com").build()));
 
         // Keywords match name, phone and matric number, but does not match email
         predicate =
                 new FieldContainsKeywordsPredicate(Arrays.asList("12345", "Alice", "A1152241G"), "email");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("Wonderland@lolo.com").withMatricNumber("A1152241G").build()));
     }
 
@@ -353,16 +353,16 @@ public class FieldContainsKeywordsPredicateTest {
         // Zero keywords
         FieldContainsKeywordsPredicate predicate =
                 new FieldContainsKeywordsPredicate(Collections.emptyList(), "matric");
-        assertFalse(predicate.test(new PersonBuilder().withMatricNumber("A1234567H").build()));
+        assertFalse(predicate.test(new MemberBuilder().withMatricNumber("A1234567H").build()));
 
         // Non-matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("987"), "matric");
-        assertFalse(predicate.test(new PersonBuilder().withMatricNumber("A1234567A").build()));
+        assertFalse(predicate.test(new MemberBuilder().withMatricNumber("A1234567A").build()));
 
         // Keywords match name, phone and email, but does not match matric number
         predicate =
                 new FieldContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com", "Alice"), "matric");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").build()));
     }
 
@@ -370,17 +370,17 @@ public class FieldContainsKeywordsPredicateTest {
     public void test_tagDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), "tag");
-        assertFalse(predicate.test(new PersonBuilder().withTags("Saikanger").build()));
+        assertFalse(predicate.test(new MemberBuilder().withTags("Saikanger").build()));
 
         // Non-matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("nerds"), "tag");
-        assertFalse(predicate.test(new PersonBuilder().withTags("geeks", "jocks").build()));
+        assertFalse(predicate.test(new MemberBuilder().withTags("geeks", "jocks").build()));
 
         // Keywords match name, phone, email and matric number, but does not match tag
         predicate =
                 new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "12345", "alice@email.com", "A1152241G"),
                         "tag");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").withTags("Lightbringer").build()));
     }
 
@@ -388,17 +388,17 @@ public class FieldContainsKeywordsPredicateTest {
     public void test_groupDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), "group");
-        assertFalse(predicate.test(new PersonBuilder().withGroup("SaikangRangers").build()));
+        assertFalse(predicate.test(new MemberBuilder().withGroup("SaikangRangers").build()));
 
         // Non-matching keyword
         predicate = new FieldContainsKeywordsPredicate(Arrays.asList("Relativist"), "group");
-        assertFalse(predicate.test(new PersonBuilder().withGroup("QuantumMechanics").build()));
+        assertFalse(predicate.test(new MemberBuilder().withGroup("QuantumMechanics").build()));
 
         // Keywords match name, phone, email, matric number and tag, but does not match group
         predicate =
                 new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "12345", "alice@email.com",
                         "A1152241G", "Lightbringer"), "group");
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").withTags("Lightbringer")
                 .withGroup("Garoupa").build()));
     }

@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 /**
  * Represent a member's username

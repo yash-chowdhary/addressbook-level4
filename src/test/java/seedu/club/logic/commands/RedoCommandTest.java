@@ -6,7 +6,7 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.deleteFirstPerson;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -1,16 +1,16 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Member's email in the club book.
+ * Represents a member's email in the club book.
  * Guarantees: immutable; is valid as declared in {@link #isValidEmail(String)}
  */
 public class Email {
 
     private static  final String SPECIAL_CHARACTERS = "!#$%&'*+/=?`{|}~^.-";
-    public static final String MESSAGE_EMAIL_CONSTRAINTS = "Member emails should be of the format local-part@domain "
+    public static final String MESSAGE_EMAIL_CONSTRAINTS = "member emails should be of the format local-part@domain "
             + "and adhere to the following constraints:\n"
             + "1. The local-part should only contain alphanumeric characters and these special characters, excluding "
             + "the parentheses, (" + SPECIAL_CHARACTERS + ") .\n"
@@ -41,7 +41,7 @@ public class Email {
     }
 
     /**
-     * Returns if a given string is a valid Member email.
+     * Returns if a given string is a valid member email.
      */
     public static boolean isValidEmail(String test) {
         return test.matches(EMAIL_VALIDATION_REGEX);

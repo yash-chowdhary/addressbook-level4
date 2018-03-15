@@ -8,7 +8,7 @@ import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.club.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -91,7 +91,7 @@ public class SelectCommandTest {
         // null -> returns false
         assertFalse(selectFirstCommand.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(selectFirstCommand.equals(selectSecondCommand));
     }
 

@@ -14,12 +14,12 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.AddressBookChangedEvent;
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
@@ -69,14 +69,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deletePerson(Member target) throws PersonNotFoundException {
+    public synchronized void deletePerson(Member target) throws MemberNotFoundException {
         clubBook.removePerson(target);
         indicateAddressBookChanged();
     }
 
     @Override
-    public synchronized void addPerson(Member member) throws DuplicatePersonException {
-        //updateTagList(Member.getTags());
+    public synchronized void addPerson(Member member) throws DuplicateMemberException {
+        //updateTagList(member.getTags());
         clubBook.addPerson(member);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
@@ -84,7 +84,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updatePerson(Member target, Member editedMember)
-            throws DuplicatePersonException, PersonNotFoundException {
+            throws DuplicateMemberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
 
         clubBook.updatePerson(target, editedMember);
@@ -141,7 +141,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /**
-     * Returns true is no Member in the club book is tagged with {@code tag}.
+     * Returns true is no member in the club book is tagged with {@code tag}.
      */
     private boolean isNotTaggedInPersons(Tag tag) {
         List<Member> members = new ArrayList<>(clubBook.getPersonList());
@@ -154,10 +154,10 @@ public class ModelManager extends ComponentManager implements Model {
         return true;
     }
 
-    //=========== Filtered Member List Accessors =============================================================
+    //=========== Filtered member List Accessors =============================================================
 
     /**
-     * Returns an unmodifiable view of the list of {@code Member} backed by the internal list of
+     * Returns an unmodifiable view of the list of {@code member} backed by the internal list of
      * {@code clubBook}
      */
     @Override

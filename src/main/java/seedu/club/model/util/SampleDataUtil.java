@@ -4,18 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.club.model.ClubBook;
-import seedu.club.model.Member.Member;
 import seedu.club.model.ReadOnlyClubBook;
 
 import seedu.club.model.group.Group;
-import seedu.club.model.Member.Email;
-import seedu.club.model.Member.MatricNumber;
-import seedu.club.model.Member.Name;
-import seedu.club.model.Member.Password;
-import seedu.club.model.Member.Phone;
-import seedu.club.model.Member.Username;
 
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Password;
+import seedu.club.model.member.Phone;
+import seedu.club.model.member.Username;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
+
 import seedu.club.model.tag.Tag;
 
 /**
@@ -52,7 +53,7 @@ public class SampleDataUtil {
                 sampleAb.addPerson(sampleMember);
             }
             return sampleAb;
-        } catch (DuplicatePersonException e) {
+        } catch (DuplicateMemberException e) {
             throw new AssertionError("sample data cannot contain duplicate persons", e);
         }
     }

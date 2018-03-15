@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addressbook>
-    <!-- Member with invalid email field -->
+    <!-- member with invalid email field -->
     <members>
         <name>Hans Muster</name>
         <phone isPrivate="false">9482424</phone>

@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

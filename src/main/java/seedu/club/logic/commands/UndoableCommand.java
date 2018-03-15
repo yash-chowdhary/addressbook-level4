@@ -32,7 +32,7 @@ public abstract class UndoableCommand extends Command {
 
     /**
      * Reverts the ClubBook to the state before this command
-     * was executed and updates the filtered Member list to
+     * was executed and updates the filtered member list to
      * show all persons.
      */
     protected final void undo() {
@@ -42,7 +42,7 @@ public abstract class UndoableCommand extends Command {
     }
 
     /**
-     * Executes the command and updates the filtered Member
+     * Executes the command and updates the filtered member
      * list to show all persons.
      */
     protected final void redo() {

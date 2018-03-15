@@ -1,10 +1,10 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Member's phone number in the club book.
+ * Represents a member's phone number in the club book.
  * Guarantees: immutable; is valid as declared in {@link #isValidPhone(String)}
  */
 public class Phone {
@@ -27,7 +27,7 @@ public class Phone {
     }
 
     /**
-     * Returns true if a given string is a valid Member phone number.
+     * Returns true if a given string is a valid member phone number.
      */
     public static boolean isValidPhone(String test) {
         return test.matches(PHONE_VALIDATION_REGEX);

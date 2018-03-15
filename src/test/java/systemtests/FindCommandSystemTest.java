@@ -3,10 +3,10 @@ package systemtests;
 import static org.junit.Assert.assertFalse;
 import static seedu.club.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.club.testutil.TypicalPersons.BENSON;
-import static seedu.club.testutil.TypicalPersons.CARL;
-import static seedu.club.testutil.TypicalPersons.DANIEL;
-import static seedu.club.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
+import static seedu.club.testutil.TypicalMembers.BENSON;
+import static seedu.club.testutil.TypicalMembers.CARL;
+import static seedu.club.testutil.TypicalMembers.DANIEL;
+import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +34,14 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: repeat previous find command where Member list is displaying the persons we are finding
+        /* Case: repeat previous find command where member list is displaying the persons we are finding
          * -> 2 persons found
          */
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find Member where Member list is not displaying the Member we are finding -> 1 Member found */
+        /* Case: find member where member list is not displaying the member we are finding -> 1 member found */
         command = FindCommand.COMMAND_WORD + " Carl";
         ModelHelper.setFilteredList(expectedModel, CARL);
         assertCommandSuccess(command, expectedModel);
@@ -80,7 +80,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         expectedResultMessage = RedoCommand.MESSAGE_FAILURE;
         assertCommandFailure(command, expectedResultMessage);
 
-        /* Case: find same persons in club book after deleting 1 of them -> 1 Member found */
+        /* Case: find same persons in club book after deleting 1 of them -> 1 member found */
         executeCommand(DeleteCommand.COMMAND_WORD + " 1");
         assertFalse(getModel().getClubBook().getPersonList().contains(BENSON));
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
@@ -89,50 +89,50 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find Member in club book, keyword is same as name but of different case -> 1 Member found */
+        /* Case: find member in club book, keyword is same as name but of different case -> 1 member found */
         command = FindCommand.COMMAND_WORD + " MeIeR";
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find Member in club book, keyword is substring of name -> 0 persons found */
+        /* Case: find member in club book, keyword is substring of name -> 0 persons found */
         command = FindCommand.COMMAND_WORD + " Mei";
         ModelHelper.setFilteredList(expectedModel);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find Member in club book, name is substring of keyword -> 0 persons found */
+        /* Case: find member in club book, name is substring of keyword -> 0 persons found */
         command = FindCommand.COMMAND_WORD + " Meiers";
         ModelHelper.setFilteredList(expectedModel);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find Member not in club book -> 0 persons found */
+        /* Case: find member not in club book -> 0 persons found */
         command = FindCommand.COMMAND_WORD + " Mark";
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find phone number of Member in club book -> 0 persons found */
+        /* Case: find phone number of member in club book -> 0 persons found */
         command = FindCommand.COMMAND_WORD + " " + DANIEL.getPhone().value;
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find matric number of Member in club book -> 0 persons found */
+        /* Case: find matric number of member in club book -> 0 persons found */
         command = FindCommand.COMMAND_WORD + " " + DANIEL.getMatricNumber().value;
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find email of Member in club book -> 0 persons found */
+        /* Case: find email of member in club book -> 0 persons found */
         command = FindCommand.COMMAND_WORD + " " + DANIEL.getEmail().value;
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find tags of Member in club book -> 0 persons found */
+        /* Case: find tags of member in club book -> 0 persons found */
         List<Tag> tags = new ArrayList<>(DANIEL.getTags());
         command = FindCommand.COMMAND_WORD + " " + tags.get(0).tagName;
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find while a Member is selected -> selected card deselected */
+        /* Case: find while a member is selected -> selected card deselected */
         showAllPersons();
         selectPerson(Index.fromOneBased(1));
         assertFalse(getPersonListPanel().getHandleToSelectedCard().getName().equals(DANIEL.getName().fullName));
@@ -141,7 +141,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardDeselected();
 
-        /* Case: find Member in empty club book -> 0 persons found */
+        /* Case: find member in empty club book -> 0 persons found */
         deleteAllPersons();
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();

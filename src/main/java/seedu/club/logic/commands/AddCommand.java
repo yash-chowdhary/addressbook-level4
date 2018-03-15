@@ -11,17 +11,17 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.Member.Member;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
 
 /**
- * Adds a Member to the club book.
+ * Adds a member to the club book.
  */
 public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Member to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a member to the club book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
@@ -42,13 +42,13 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_USERNAME + "JohnDoe "
             + PREFIX_PASSWORD + "password";
 
-    public static final String MESSAGE_SUCCESS = "New Member added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This Member already exists in the club book";
+    public static final String MESSAGE_SUCCESS = "New member added: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This member already exists in the club book";
 
     private final Member toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Member}
+     * Creates an AddCommand to add the specified {@code member}
      */
     public AddCommand(Member member) {
         requireNonNull(member);
@@ -61,7 +61,7 @@ public class AddCommand extends UndoableCommand {
         try {
             model.addPerson(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
-        } catch (DuplicatePersonException e) {
+        } catch (DuplicateMemberException e) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 

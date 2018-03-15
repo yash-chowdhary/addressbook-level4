@@ -20,27 +20,27 @@ import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
-import seedu.club.model.Member.Email;
-import seedu.club.model.Member.MatricNumber;
-import seedu.club.model.Member.Name;
-import seedu.club.model.Member.Password;
-import seedu.club.model.Member.Phone;
-import seedu.club.model.Member.Username;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Password;
+import seedu.club.model.member.Phone;
+import seedu.club.model.member.Username;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 
 /**
- * Edits the details of an existing Member in the club book.
+ * Edits the details of an existing member in the club book.
  */
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the Member identified "
-            + "by the index number used in the last Member listing. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the member identified "
+            + "by the index number used in the last member listing. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
@@ -53,9 +53,9 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Member: %1$s";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited member: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This Member already exists in the club book.";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This member already exists in the club book.";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -64,8 +64,8 @@ public class EditCommand extends UndoableCommand {
     private Member editedMember;
 
     /**
-     * @param index of the Member in the filtered Member list to edit
-     * @param editPersonDescriptor details to edit the Member with
+     * @param index of the member in the filtered member list to edit
+     * @param editPersonDescriptor details to edit the member with
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(index);
@@ -79,10 +79,10 @@ public class EditCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
             model.updatePerson(memberToEdit, editedMember);
-        } catch (DuplicatePersonException dpe) {
+        } catch (DuplicateMemberException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("The target Member cannot be missing");
+        } catch (MemberNotFoundException pnfe) {
+            throw new AssertionError("The target member cannot be missing");
         }
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedMember));
@@ -101,7 +101,7 @@ public class EditCommand extends UndoableCommand {
     }
 
     /**
-     * Creates and returns a {@code Member} with the details of {@code memberToEdit}
+     * Creates and returns a {@code member} with the details of {@code memberToEdit}
      * edited with {@code editPersonDescriptor}.
      */
     private static Member createEditedPerson(Member memberToEdit, EditPersonDescriptor editPersonDescriptor) {
@@ -141,8 +141,8 @@ public class EditCommand extends UndoableCommand {
     }
 
     /**
-     * Stores the details to edit the Member with. Each non-empty field value will replace the
-     * corresponding field value of the Member.
+     * Stores the details to edit the member with. Each non-empty field value will replace the
+     * corresponding field value of the member.
      */
     public static class EditPersonDescriptor {
         private Name name;

@@ -2,18 +2,18 @@ package seedu.club.logic.commands;
 
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
-import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.model.member.Member;
+import seedu.club.testutil.MemberBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code AddCommand}.
@@ -29,7 +29,7 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_newPerson_success() throws Exception {
-        Member validMember = new PersonBuilder().build();
+        Member validMember = new MemberBuilder().build();
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.addPerson(validMember);
@@ -45,7 +45,7 @@ public class AddCommandIntegrationTest {
     }
 
     /**
-     * Generates a new {@code AddCommand} which upon execution, adds {@code Member} into the {@code model}.
+     * Generates a new {@code AddCommand} which upon execution, adds {@code member} into the {@code model}.
      */
     private AddCommand prepareCommand(Member member, Model model) {
         AddCommand command = new AddCommand(member);

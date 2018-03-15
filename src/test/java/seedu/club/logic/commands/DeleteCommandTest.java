@@ -10,7 +10,7 @@ import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
 
@@ -18,10 +18,10 @@ import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
-import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
+import seedu.club.model.member.Member;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -90,14 +90,14 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_PERSON);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
 
-        // delete -> first Member deleted
+        // delete -> first member deleted
         deleteCommand.execute();
         undoRedoStack.push(deleteCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered Member list to show all persons
+        // undo -> reverts addressbook back to previous state and filtered member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        // redo -> same first Member deleted again
+        // redo -> same first member deleted again
         expectedModel.deletePerson(memberToDelete);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
@@ -119,11 +119,11 @@ public class DeleteCommandTest {
     }
 
     /**
-     * 1. Deletes a {@code Member} from a filtered list.
+     * 1. Deletes a {@code member} from a filtered list.
      * 2. Undo the deletion.
-     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted Member in the
+     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted member in the
      * unfiltered list is different from the index at the filtered list.
-     * 4. Redo the deletion. This ensures {@code RedoCommand} deletes the Member object regardless of indexing.
+     * 4. Redo the deletion. This ensures {@code RedoCommand} deletes the member object regardless of indexing.
      */
     @Test
     public void executeUndoRedo_validIndexFilteredList_samePersonDeleted() throws Exception {
@@ -135,16 +135,16 @@ public class DeleteCommandTest {
 
         showPersonAtIndex(model, INDEX_SECOND_PERSON);
         Member memberToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        // delete -> deletes second Member in unfiltered Member list / first Member in filtered Member list
+        // delete -> deletes second member in unfiltered member list / first member in filtered member list
         deleteCommand.execute();
         undoRedoStack.push(deleteCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered Member list to show all persons
+        // undo -> reverts addressbook back to previous state and filtered member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.deletePerson(memberToDelete);
         assertNotEquals(memberToDelete, model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()));
-        // redo -> deletes same second Member in unfiltered Member list
+        // redo -> deletes same second member in unfiltered member list
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -170,7 +170,7 @@ public class DeleteCommandTest {
         // null -> returns false
         assertFalse(deleteFirstCommand.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
     }
 

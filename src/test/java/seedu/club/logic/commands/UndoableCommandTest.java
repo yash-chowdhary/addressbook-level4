@@ -5,16 +5,16 @@ import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.deleteFirstPerson;
 import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 public class UndoableCommandTest {
     private final Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
@@ -47,7 +47,7 @@ public class UndoableCommandTest {
     }
 
     /**
-     * Deletes the first Member in the model's filtered list.
+     * Deletes the first member in the model's filtered list.
      */
     class DummyCommand extends UndoableCommand {
         DummyCommand(Model model) {
@@ -59,7 +59,7 @@ public class UndoableCommandTest {
             Member memberToDelete = model.getFilteredPersonList().get(0);
             try {
                 model.deletePerson(memberToDelete);
-            } catch (PersonNotFoundException pnfe) {
+            } catch (MemberNotFoundException pnfe) {
                 fail("Impossible: memberToDelete was retrieved from model.");
             }
             return new CommandResult("");

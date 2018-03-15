@@ -3,12 +3,12 @@ package seedu.club.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
@@ -25,33 +25,33 @@ public interface Model {
     /** Returns the ClubBook */
     ReadOnlyClubBook getClubBook();
 
-    /** Deletes the given Member. */
-    void deletePerson(Member target) throws PersonNotFoundException;
+    /** Deletes the given member. */
+    void deletePerson(Member target) throws MemberNotFoundException;
 
-    /** Adds the given Member */
-    void addPerson(Member member) throws DuplicatePersonException;
+    /** Adds the given member */
+    void addPerson(Member member) throws DuplicateMemberException;
 
     /**
-     * Replaces the given Member {@code target} with {@code editedMember}.
+     * Replaces the given member {@code target} with {@code editedMember}.
      *
-     * @throws DuplicatePersonException if updating the Member's details causes the Member to be equivalent to
-     *      another existing Member in the list.
-     * @throws PersonNotFoundException if {@code target} could not be found in the list.
+     * @throws DuplicateMemberException if updating the member's details causes the member to be equivalent to
+     *      another existing member in the list.
+     * @throws MemberNotFoundException if {@code target} could not be found in the list.
      */
     void updatePerson(Member target, Member editedMember)
-            throws DuplicatePersonException, PersonNotFoundException;
+            throws DuplicateMemberException, MemberNotFoundException;
 
-    /** Returns an unmodifiable view of the filtered Member list */
+    /** Returns an unmodifiable view of the filtered member list */
     ObservableList<Member> getFilteredPersonList();
 
     /**
-     * Updates the filter of the filtered Member list to filter by the given {@code predicate}.
+     * Updates the filter of the filtered member list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Member> predicate);
 
     /**
-     * Logs In a Member in the club
+     * Logs In a member in the club
      */
     boolean logInMemberSuccessful(String username, String password);
 

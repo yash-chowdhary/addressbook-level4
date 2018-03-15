@@ -10,10 +10,10 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_PERSONS;
-import static seedu.club.testutil.TypicalPersons.ALICE;
-import static seedu.club.testutil.TypicalPersons.AMY;
-import static seedu.club.testutil.TypicalPersons.BENSON;
-import static seedu.club.testutil.TypicalPersons.BOB;
+import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalMembers.AMY;
+import static seedu.club.testutil.TypicalMembers.BENSON;
+import static seedu.club.testutil.TypicalMembers.BOB;
 
 import java.util.Arrays;
 
@@ -21,15 +21,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.Member.NameContainsKeywordsPredicate;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.testutil.ClubBookBuilder;
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.testutil.MemberBuilder;
 
 public class ModelManagerTest {
     @Rule
@@ -76,8 +76,8 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         modelManager.removeGroup(new Group(VALID_GROUP_AMY));
 
-        Member amyNotInPublicity = new PersonBuilder(AMY).withGroup().build();
-        Member bobNotInPublicity = new PersonBuilder(BOB).build();
+        Member amyNotInPublicity = new MemberBuilder(AMY).withGroup().build();
+        Member bobNotInPublicity = new MemberBuilder(BOB).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(amyNotInPublicity)
                 .withPerson(bobNotInPublicity).build();
 
@@ -106,8 +106,8 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         modelManager.deleteTag(new Tag(VALID_TAG_FRIEND));
 
-        Member amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
-        Member bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
+        Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
+        Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(amyWithoutFriendTag)
                 .withPerson(bobWithoutFriendTag).build();
 

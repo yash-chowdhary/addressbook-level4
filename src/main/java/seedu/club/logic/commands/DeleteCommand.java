@@ -8,22 +8,22 @@ import java.util.Objects;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.Member.Member;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 /**
- * Deletes a Member identified using it's last displayed index from the club book.
+ * Deletes a member identified using it's last displayed index from the club book.
  */
 public class DeleteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the Member identified by the index number used in the last Member listing.\n"
+            + ": Deletes the member identified by the index number used in the last member listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Member: %1$s";
+    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted member: %1$s";
 
     private final Index targetIndex;
 
@@ -39,8 +39,8 @@ public class DeleteCommand extends UndoableCommand {
         requireNonNull(memberToDelete);
         try {
             model.deletePerson(memberToDelete);
-        } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("The target Member cannot be missing");
+        } catch (MemberNotFoundException pnfe) {
+            throw new AssertionError("The target member cannot be missing");
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, memberToDelete));

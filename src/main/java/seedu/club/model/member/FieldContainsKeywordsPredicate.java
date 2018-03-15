@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -8,7 +8,7 @@ import seedu.club.commons.util.StringUtil;
 import seedu.club.model.tag.Tag;
 
 /**
- * Tests that a {@code Member}'s matches any of the keywords given according to the {@code fieldType}.
+ * Tests that a {@code member}'s matches any of the keywords given according to the {@code fieldType}.
  */
 public class FieldContainsKeywordsPredicate implements Predicate<Member> {
     private final List<String> keywords;
@@ -34,7 +34,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
     }
 
     /**
-     * Get relevant field value of Member according to fieldType
+     * Get relevant field value of member according to fieldType
      *
      */
     private String getFieldValue(Member member) {

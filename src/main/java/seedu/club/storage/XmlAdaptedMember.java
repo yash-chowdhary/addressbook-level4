@@ -10,22 +10,22 @@ import javax.xml.bind.annotation.XmlElement;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
-import seedu.club.model.Member.Email;
-import seedu.club.model.Member.MatricNumber;
-import seedu.club.model.Member.Name;
-import seedu.club.model.Member.Password;
-import seedu.club.model.Member.Phone;
-import seedu.club.model.Member.Username;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Password;
+import seedu.club.model.member.Phone;
+import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
 /**
- * JAXB-friendly version of the Member.
+ * JAXB-friendly version of the member.
  */
 public class XmlAdaptedMember {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Member's %s field is missing!";
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "member's %s field is missing!";
 
     @XmlElement(required = true)
     private String name;
@@ -52,7 +52,7 @@ public class XmlAdaptedMember {
     public XmlAdaptedMember() {}
 
     /**
-     * Constructs an {@code XmlAdaptedMember} with the given Member details.
+     * Constructs an {@code XmlAdaptedMember} with the given member details.
      */
 
     public XmlAdaptedMember(String name, String phone, String email, String matricNumber, String group,
@@ -70,7 +70,7 @@ public class XmlAdaptedMember {
     }
 
     /**
-     * Converts a given Member into this class for JAXB use.
+     * Converts a given member into this class for JAXB use.
      *
      * @param source future changes to this will not affect the created XmlAdaptedMember
      */
@@ -89,9 +89,9 @@ public class XmlAdaptedMember {
     }
 
     /**
-     * Converts this jaxb-friendly adapted Member object into the model's Member object.
+     * Converts this jaxb-friendly adapted member object into the model's member object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted Member
+     * @throws IllegalValueException if there were any data constraints violated in the adapted member
      */
     public Member toModelType() throws IllegalValueException {
         final List<Tag> memberTags = new ArrayList<>();

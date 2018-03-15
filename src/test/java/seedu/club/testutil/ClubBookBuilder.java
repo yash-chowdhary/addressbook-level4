@@ -2,8 +2,8 @@ package seedu.club.testutil;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.model.ClubBook;
-import seedu.club.model.Member.Member;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -24,13 +24,13 @@ public class ClubBookBuilder {
     }
 
     /**
-     * Adds a new {@code Member} to the {@code ClubBook} that we are building.
+     * Adds a new {@code member} to the {@code ClubBook} that we are building.
      */
     public ClubBookBuilder withPerson(Member member) {
         try {
             clubBook.addPerson(member);
-        } catch (DuplicatePersonException dpe) {
-            throw new IllegalArgumentException("Member is expected to be unique.");
+        } catch (DuplicateMemberException dpe) {
+            throw new IllegalArgumentException("member is expected to be unique.");
         }
         return this;
     }

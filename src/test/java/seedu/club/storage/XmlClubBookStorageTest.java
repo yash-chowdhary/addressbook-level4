@@ -2,10 +2,10 @@ package seedu.club.storage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static seedu.club.testutil.TypicalPersons.ALICE;
-import static seedu.club.testutil.TypicalPersons.HOON;
-import static seedu.club.testutil.TypicalPersons.IDA;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalMembers.HOON;
+import static seedu.club.testutil.TypicalMembers.IDA;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.io.IOException;
 

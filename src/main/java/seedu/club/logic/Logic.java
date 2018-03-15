@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.parser.exceptions.ParseException;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 /**
  * API of the Logic component

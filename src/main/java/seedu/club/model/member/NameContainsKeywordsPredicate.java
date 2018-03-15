@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import seedu.club.commons.util.StringUtil;
 
 /**
- * Tests that a {@code Member}'s {@code Name} matches any of the keywords given.
+ * Tests that a {@code member}'s {@code Name} matches any of the keywords given.
  */
 public class NameContainsKeywordsPredicate implements Predicate<Member> {
     private final List<String> keywords;

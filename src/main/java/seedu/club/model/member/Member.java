@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
@@ -13,7 +13,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
 
 /**
- * Represents a Member in the club book.
+ * Represents a member in the club book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Member {
@@ -151,7 +151,7 @@ public class Member {
     }
 
     /**
-     * change the status of the Member loggin in
+     * change the status of the member loggin in
      */
 
     public void changeLogInStatus() {

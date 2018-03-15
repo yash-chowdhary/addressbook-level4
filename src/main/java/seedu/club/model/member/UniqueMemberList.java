@@ -1,4 +1,4 @@
-package seedu.club.model.Member;
+package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
@@ -10,8 +10,8 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 /**
  * A list of persons that enforces uniqueness between its elements and does not allow nulls.
@@ -21,12 +21,12 @@ import seedu.club.model.Member.exceptions.PersonNotFoundException;
  * @see Member#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
-public class UniquePersonList implements Iterable<Member> {
+public class UniqueMemberList implements Iterable<Member> {
 
     private final ObservableList<Member> internalList = FXCollections.observableArrayList();
 
     /**
-     * Returns true if the list contains an equivalent Member as the given argument.
+     * Returns true if the list contains an equivalent member as the given argument.
      */
     public boolean contains(Member toCheck) {
         requireNonNull(toCheck);
@@ -34,61 +34,61 @@ public class UniquePersonList implements Iterable<Member> {
     }
 
     /**
-     * Adds a Member to the list.
+     * Adds a member to the list.
      *
-     * @throws DuplicatePersonException if the Member to add is a duplicate of an existing Member in the list.
+     * @throws DuplicateMemberException if the member to add is a duplicate of an existing member in the list.
      */
-    public void add(Member toAdd) throws DuplicatePersonException {
+    public void add(Member toAdd) throws DuplicateMemberException {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
-            throw new DuplicatePersonException();
+            throw new DuplicateMemberException();
         }
         internalList.add(toAdd);
     }
 
     /**
-     * Replaces the Member {@code target} in the list with {@code editedMember}.
+     * Replaces the member {@code target} in the list with {@code editedMember}.
      *
-     * @throws DuplicatePersonException if the replacement is equivalent to another existing Member in the list.
-     * @throws PersonNotFoundException if {@code target} could not be found in the list.
+     * @throws DuplicateMemberException if the replacement is equivalent to another existing member in the list.
+     * @throws MemberNotFoundException if {@code target} could not be found in the list.
      */
     public void setPerson(Member target, Member editedMember)
-            throws DuplicatePersonException, PersonNotFoundException {
+            throws DuplicateMemberException, MemberNotFoundException {
         requireNonNull(editedMember);
 
         int index = internalList.indexOf(target);
         if (index == -1) {
-            throw new PersonNotFoundException();
+            throw new MemberNotFoundException();
         }
 
         if (!target.equals(editedMember) && internalList.contains(editedMember)) {
-            throw new DuplicatePersonException();
+            throw new DuplicateMemberException();
         }
 
         internalList.set(index, editedMember);
     }
 
     /**
-     * Removes the equivalent Member from the list.
+     * Removes the equivalent member from the list.
      *
-     * @throws PersonNotFoundException if no such Member could be found in the list.
+     * @throws MemberNotFoundException if no such member could be found in the list.
      */
-    public boolean remove(Member toRemove) throws PersonNotFoundException {
+    public boolean remove(Member toRemove) throws MemberNotFoundException {
         requireNonNull(toRemove);
         final boolean personFoundAndDeleted = internalList.remove(toRemove);
         if (!personFoundAndDeleted) {
-            throw new PersonNotFoundException();
+            throw new MemberNotFoundException();
         }
         return personFoundAndDeleted;
     }
 
-    public void setPersons(UniquePersonList replacement) {
+    public void setPersons(UniqueMemberList replacement) {
         this.internalList.setAll(replacement.internalList);
     }
 
-    public void setPersons(List<Member> members) throws DuplicatePersonException {
+    public void setPersons(List<Member> members) throws DuplicateMemberException {
         requireAllNonNull(members);
-        final UniquePersonList replacement = new UniquePersonList();
+        final UniqueMemberList replacement = new UniqueMemberList();
         for (final Member member : members) {
             replacement.add(member);
         }
@@ -110,8 +110,8 @@ public class UniquePersonList implements Iterable<Member> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof UniquePersonList // instanceof handles nulls
-                        && this.internalList.equals(((UniquePersonList) other).internalList));
+                || (other instanceof UniqueMemberList // instanceof handles nulls
+                        && this.internalList.equals(((UniqueMemberList) other).internalList));
     }
 
     @Override

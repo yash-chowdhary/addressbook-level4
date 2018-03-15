@@ -1,7 +1,7 @@
 package seedu.club.model;
 
 import javafx.collections.ObservableList;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 
 /**

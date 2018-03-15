@@ -7,21 +7,21 @@ import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 /**
- * Selects a Member identified using it's last displayed index from the club book.
+ * Selects a member identified using it's last displayed index from the club book.
  */
 public class SelectCommand extends Command {
 
     public static final String COMMAND_WORD = "select";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects the Member identified by the index number used in the last Member listing.\n"
+            + ": Selects the member identified by the index number used in the last member listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_SELECT_PERSON_SUCCESS = "Selected Member: %1$s";
+    public static final String MESSAGE_SELECT_PERSON_SUCCESS = "Selected member: %1$s";
 
     private final Index targetIndex;
 

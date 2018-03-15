@@ -13,7 +13,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import org.junit.Test;
 
 import seedu.club.logic.commands.EditCommand.EditPersonDescriptor;
-import seedu.club.testutil.EditPersonDescriptorBuilder;
+import seedu.club.testutil.EditMemberDescriptorBuilder;
 
 public class EditMemberDescriptorTest {
 
@@ -36,23 +36,23 @@ public class EditMemberDescriptorTest {
         assertFalse(DESC_AMY.equals(DESC_BOB));
 
         // different name -> returns false
-        EditPersonDescriptor editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withName(VALID_NAME_BOB).build();
+        EditPersonDescriptor editedAmy = new EditMemberDescriptorBuilder(DESC_AMY).withName(VALID_NAME_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different phone -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withPhone(VALID_PHONE_BOB).build();
+        editedAmy = new EditMemberDescriptorBuilder(DESC_AMY).withPhone(VALID_PHONE_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different email -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withEmail(VALID_EMAIL_BOB).build();
+        editedAmy = new EditMemberDescriptorBuilder(DESC_AMY).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different club -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withMatricNumber(VALID_MATRIC_NUMBER_BOB).build();
+        editedAmy = new EditMemberDescriptorBuilder(DESC_AMY).withMatricNumber(VALID_MATRIC_NUMBER_BOB).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different tags -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_HUSBAND).build();
+        editedAmy = new EditMemberDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(DESC_AMY.equals(editedAmy));
     }
 }

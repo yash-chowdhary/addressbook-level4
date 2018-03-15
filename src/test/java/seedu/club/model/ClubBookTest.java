@@ -7,10 +7,10 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
-import static seedu.club.testutil.TypicalPersons.ALICE;
-import static seedu.club.testutil.TypicalPersons.AMY;
-import static seedu.club.testutil.TypicalPersons.BOB;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalMembers.AMY;
+import static seedu.club.testutil.TypicalMembers.BOB;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,14 +24,14 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.club.model.Member.Member;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.testutil.ClubBookBuilder;
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.testutil.MemberBuilder;
 
 public class ClubBookTest {
 
@@ -72,8 +72,8 @@ public class ClubBookTest {
     public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
         clubBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
 
-        Member bobNotInLogistics = new PersonBuilder(BOB).withGroup().build();
-        Member amyNotInLogistics = new PersonBuilder(AMY).build();
+        Member bobNotInLogistics = new MemberBuilder(BOB).withGroup().build();
+        Member amyNotInLogistics = new MemberBuilder(AMY).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(bobNotInLogistics)
                 .withPerson(amyNotInLogistics).build();
 
@@ -150,8 +150,8 @@ public class ClubBookTest {
     public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
         clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_FRIEND));
 
-        Member amyWithoutFriendTag = new PersonBuilder(AMY).withTags().build();
-        Member bobWithoutFriendTag = new PersonBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
+        Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
+        Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(bobWithoutFriendTag)
                 .withPerson(amyWithoutFriendTag).build();
 

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
+import seedu.club.model.member.Member;
 
 /**
  * Contains helper methods to set up {@code Model} for testing.
@@ -31,7 +31,7 @@ public class ModelHelper {
     }
 
     /**
-     * Returns a predicate that evaluates to true if this {@code Member} equals to {@code other}.
+     * Returns a predicate that evaluates to true if this {@code member} equals to {@code other}.
      */
     private static Predicate<Member> getPredicateMatching(Member other) {
         return person -> person.equals(other);

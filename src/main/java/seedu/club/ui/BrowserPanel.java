@@ -13,7 +13,7 @@ import javafx.scene.web.WebView;
 import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.PersonPanelSelectionChangedEvent;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 /**
  * The Browser Panel of the App.

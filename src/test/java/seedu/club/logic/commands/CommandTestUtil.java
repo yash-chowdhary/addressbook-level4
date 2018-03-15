@@ -22,10 +22,10 @@ import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
-import seedu.club.model.Member.NameContainsKeywordsPredicate;
-import seedu.club.model.Member.Member;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
-import seedu.club.testutil.EditPersonDescriptorBuilder;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.NameContainsKeywordsPredicate;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.testutil.EditMemberDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
@@ -44,7 +44,7 @@ public class CommandTestUtil {
     public static final String VALID_MATRIC_NUMBER_BOB = "A8389539B";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friends";
-    public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a Member
+    public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member
     public static final String VALID_TAG_UNUSED_DESC = " " + PREFIX_TAG + VALID_TAG_UNUSED;
     public static final String VALID_USERNAME_AMY = "AmyBee";
     public static final String VALID_USERNAME_BOB = "BobChoo";
@@ -87,10 +87,10 @@ public class CommandTestUtil {
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
 
     static {
-        DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
+        DESC_AMY = new EditMemberDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY)
                 .withGroup(VALID_GROUP_AMY).withTags(VALID_TAG_FRIEND).build();
-        DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
+        DESC_BOB = new EditMemberDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
                 .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
     }
@@ -115,7 +115,7 @@ public class CommandTestUtil {
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
-     * - the club book and the filtered Member list in the {@code actualModel} remain unchanged
+     * - the club book and the filtered member list in the {@code actualModel} remain unchanged
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
@@ -134,7 +134,7 @@ public class CommandTestUtil {
     }
 
     /**
-     * Updates {@code model}'s filtered list to show only the Member at the given {@code targetIndex} in the
+     * Updates {@code model}'s filtered list to show only the member at the given {@code targetIndex} in the
      * {@code model}'s club book.
      */
     public static void showPersonAtIndex(Model model, Index targetIndex) {
@@ -148,14 +148,14 @@ public class CommandTestUtil {
     }
 
     /**
-     * Deletes the first Member in {@code model}'s filtered list from {@code model}'s club book.
+     * Deletes the first member in {@code model}'s filtered list from {@code model}'s club book.
      */
     public static void deleteFirstPerson(Model model) {
         Member firstMember = model.getFilteredPersonList().get(0);
         try {
             model.deletePerson(firstMember);
-        } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("Member in filtered list must exist in model.", pnfe);
+        } catch (MemberNotFoundException pnfe) {
+            throw new AssertionError("member in filtered list must exist in model.", pnfe);
         }
     }
 

@@ -15,7 +15,7 @@ import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.commons.events.ui.PersonPanelSelectionChangedEvent;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 /**
  * Panel containing the list of persons.
@@ -45,7 +45,7 @@ public class PersonListPanel extends UiPart<Region> {
         personListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        logger.fine("Selection in Member list panel changed to : '" + newValue + "'");
+                        logger.fine("Selection in member list panel changed to : '" + newValue + "'");
                         raise(new PersonPanelSelectionChangedEvent(newValue));
                     }
                 });

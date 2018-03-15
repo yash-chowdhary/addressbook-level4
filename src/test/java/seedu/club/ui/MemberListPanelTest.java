@@ -3,7 +3,7 @@ package seedu.club.ui;
 import static org.junit.Assert.assertEquals;
 import static seedu.club.testutil.EventsUtil.postNow;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.club.testutil.TypicalPersons.getTypicalPersons;
+import static seedu.club.testutil.TypicalMembers.getTypicalPersons;
 import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
 import static seedu.club.ui.testutil.GuiTestAssert.assertCardEquals;
 
@@ -15,7 +15,7 @@ import guitests.guihandles.PersonListPanelHandle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 public class MemberListPanelTest extends GuiUnitTest {
     private static final ObservableList<Member> TYPICAL_MEMBERS =

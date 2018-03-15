@@ -10,22 +10,22 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.commands.AddCommand;
-import seedu.club.model.Member.Member;
+import seedu.club.model.member.Member;
 
 /**
- * A utility class for Member.
+ * A utility class for member.
  */
-public class PersonUtil {
+public class MemberUtil {
 
     /**
-     * Returns an add command string for adding the {@code Member}.
+     * Returns an add command string for adding the {@code member}.
      */
     public static String getAddCommand(Member member) {
         return AddCommand.COMMAND_WORD + " " + getPersonDetails(member);
     }
 
     /**
-     * Returns the part of command string for the given {@code Member}'s details.
+     * Returns the part of command string for the given {@code member}'s details.
      */
     public static String getPersonDetails(Member member) {
         StringBuilder sb = new StringBuilder();

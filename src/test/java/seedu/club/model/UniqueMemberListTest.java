@@ -4,7 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.club.model.Member.UniquePersonList;
+import seedu.club.model.member.UniqueMemberList;
 
 public class UniqueMemberListTest {
     @Rule
@@ -12,8 +12,8 @@ public class UniqueMemberListTest {
 
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
-        UniquePersonList uniquePersonList = new UniquePersonList();
+        UniqueMemberList uniqueMemberList = new UniqueMemberList();
         thrown.expect(UnsupportedOperationException.class);
-        uniquePersonList.asObservableList().remove(0);
+        uniqueMemberList.asObservableList().remove(0);
     }
 }

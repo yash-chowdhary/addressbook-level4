@@ -19,17 +19,17 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
-import seedu.club.model.Member.Member;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.Member.exceptions.DuplicatePersonException;
-import seedu.club.model.Member.exceptions.PersonNotFoundException;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
-import seedu.club.testutil.PersonBuilder;
+import seedu.club.testutil.MemberBuilder;
 
 public class AddCommandTest {
 
@@ -45,7 +45,7 @@ public class AddCommandTest {
     @Test
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Member validMember = new PersonBuilder().build();
+        Member validMember = new MemberBuilder().build();
 
         CommandResult commandResult = getAddCommandForPerson(validMember, modelStub).execute();
 
@@ -56,7 +56,7 @@ public class AddCommandTest {
     @Test
     public void execute_duplicatePerson_throwsCommandException() throws Exception {
         ModelStub modelStub = new ModelStubThrowingDuplicatePersonException();
-        Member validMember = new PersonBuilder().build();
+        Member validMember = new MemberBuilder().build();
 
         thrown.expect(CommandException.class);
         thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
@@ -66,8 +66,8 @@ public class AddCommandTest {
 
     @Test
     public void equals() {
-        Member alice = new PersonBuilder().withName("Alice").build();
-        Member bob = new PersonBuilder().withName("Bob").build();
+        Member alice = new MemberBuilder().withName("Alice").build();
+        Member bob = new MemberBuilder().withName("Bob").build();
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 
@@ -84,12 +84,12 @@ public class AddCommandTest {
         // null -> returns false
         assertFalse(addAliceCommand.equals(null));
 
-        // different Member -> returns false
+        // different member -> returns false
         assertFalse(addAliceCommand.equals(addBobCommand));
     }
 
     /**
-     * Generates a new AddCommand with the details of the given Member.
+     * Generates a new AddCommand with the details of the given member.
      */
     private AddCommand getAddCommandForPerson(Member member, Model model) {
         AddCommand command = new AddCommand(member);
@@ -102,7 +102,7 @@ public class AddCommandTest {
      */
     private class ModelStub implements Model {
         @Override
-        public void addPerson(Member member) throws DuplicatePersonException {
+        public void addPerson(Member member) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -123,13 +123,13 @@ public class AddCommandTest {
         }
 
         @Override
-        public void deletePerson(Member target) throws PersonNotFoundException {
+        public void deletePerson(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
         }
 
         @Override
         public void updatePerson(Member target, Member editedMember)
-                throws DuplicatePersonException {
+                throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -167,12 +167,12 @@ public class AddCommandTest {
     }
 
     /**
-     * A Model stub that always throw a DuplicatePersonException when trying to add a Member.
+     * A Model stub that always throw a DuplicateMemberException when trying to add a member.
      */
     private class ModelStubThrowingDuplicatePersonException extends ModelStub {
         @Override
-        public void addPerson(Member member) throws DuplicatePersonException {
-            throw new DuplicatePersonException();
+        public void addPerson(Member member) throws DuplicateMemberException {
+            throw new DuplicateMemberException();
         }
 
         @Override
@@ -182,13 +182,13 @@ public class AddCommandTest {
     }
 
     /**
-     * A Model stub that always accept the Member being added.
+     * A Model stub that always accept the member being added.
      */
     private class ModelStubAcceptingPersonAdded extends ModelStub {
         final ArrayList<Member> personsAdded = new ArrayList<>();
 
         @Override
-        public void addPerson(Member member) throws DuplicatePersonException {
+        public void addPerson(Member member) throws DuplicateMemberException {
             requireNonNull(member);
             personsAdded.add(member);
         }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Member with an invalid phone field -->
+<!-- member with an invalid phone field -->
 <member>
     <name>Hans Muster</name>
     <phone>9482asf424</phone>

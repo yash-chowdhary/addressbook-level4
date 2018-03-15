@@ -15,7 +15,7 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TAG;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_TAG;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
 
@@ -126,7 +126,7 @@ public class DeleteTagCommandTest {
     /**
      * 1. Removes a {@code Tag} from a filtered list.
      * 2. Undo the removal.
-     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted Member in the
+     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted member in the
      * unfiltered list is different from the index at the filtered list.
      * 4. Redo the deletion. This ensures {@code RedoCommand} removes the tag object regardless of indexing.
      */
@@ -173,7 +173,7 @@ public class DeleteTagCommandTest {
         // null -> returns false
         assertFalse(removeFirstTagCommand.equals(null));
 
-        // different Member -> returns fal
+        // different member -> returns fal
 
         // se
         assertFalse(removeFirstTagCommand.equals(removeSecondTagCommand));
