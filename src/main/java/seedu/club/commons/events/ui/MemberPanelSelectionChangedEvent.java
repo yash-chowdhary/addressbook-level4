@@ -6,12 +6,12 @@ import seedu.club.ui.MemberCard;
 /**
  * Represents a selection change in the member List Panel
  */
-public class PersonPanelSelectionChangedEvent extends BaseEvent {
+public class MemberPanelSelectionChangedEvent extends BaseEvent {
 
 
     private final MemberCard newSelection;
 
-    public PersonPanelSelectionChangedEvent(MemberCard newSelection) {
+    public MemberPanelSelectionChangedEvent(MemberCard newSelection) {
         this.newSelection = newSelection;
     }
 
