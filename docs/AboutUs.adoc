@@ -24,7 +24,7 @@ image::amrut-prabhu.png[width="150", align="left"]
 {empty}[https://github.com/amrut-prabhu[github]] [<<amrutprabhu#, portfolio>>]
 
 Role: DevOps +
-Responsibilities: In charge of Logic, Documentation
+Responsibilities: In charge of Logic, Documentation and Project Management
 
 '''
 
