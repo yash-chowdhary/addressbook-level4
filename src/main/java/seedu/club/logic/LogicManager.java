@@ -8,7 +8,7 @@ import seedu.club.commons.core.LogsCenter;
 import seedu.club.logic.commands.Command;
 import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.parser.AddressBookParser;
+import seedu.club.logic.parser.ClubBookParser;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
@@ -21,13 +21,13 @@ public class LogicManager extends ComponentManager implements Logic {
 
     private final Model model;
     private final CommandHistory history;
-    private final AddressBookParser addressBookParser;
+    private final ClubBookParser clubBookParser;
     private final UndoRedoStack undoRedoStack;
 
     public LogicManager(Model model) {
         this.model = model;
         history = new CommandHistory();
-        addressBookParser = new AddressBookParser();
+        clubBookParser = new ClubBookParser();
         undoRedoStack = new UndoRedoStack();
     }
 
@@ -35,7 +35,7 @@ public class LogicManager extends ComponentManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
-            Command command = addressBookParser.parseCommand(commandText);
+            Command command = clubBookParser.parseCommand(commandText);
             command.setData(model, history, undoRedoStack);
             CommandResult result = command.execute();
             undoRedoStack.push(command);

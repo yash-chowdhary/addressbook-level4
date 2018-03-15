@@ -29,7 +29,7 @@ import seedu.club.logic.parser.exceptions.ParseException;
 /**
  * Parses user input.
  */
-public class AddressBookParser {
+public class ClubBookParser {
 
     /**
      * Used for initial separation of command word and args.

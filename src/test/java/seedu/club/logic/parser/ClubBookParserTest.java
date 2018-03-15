@@ -41,7 +41,7 @@ public class ClubBookParserTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private final AddressBookParser parser = new AddressBookParser();
+    private final ClubBookParser parser = new ClubBookParser();
 
     @Test
     public void parseCommand_add() throws Exception {
