@@ -37,13 +37,13 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
      */
-    public ModelManager(ReadOnlyClubBook addressBook, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyClubBook clubBook, UserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(clubBook, userPrefs);
 
-        logger.fine("Initializing with club book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with club book: " + clubBook + " and user prefs " + userPrefs);
 
-        this.clubBook = new ClubBook(addressBook);
+        this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
     }
@@ -55,7 +55,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void resetData(ReadOnlyClubBook newData) {
         clubBook.resetData(newData);
-        indicateAddressBookChanged();
+        indicateClubBookChanged();
     }
 
     @Override
@@ -64,14 +64,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /** Raises an event to indicate the model has changed */
-    private void indicateAddressBookChanged() {
+    private void indicateClubBookChanged() {
         raise(new ClubBookChangedEvent(clubBook));
     }
 
     @Override
     public synchronized void deletePerson(Member target) throws MemberNotFoundException {
-        clubBook.removePerson(target);
-        indicateAddressBookChanged();
+        clubBook.removeMember(target);
+        indicateClubBookChanged();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ModelManager extends ComponentManager implements Model {
         //updateTagList(member.getTags());
         clubBook.addMember(member);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        indicateAddressBookChanged();
+        indicateClubBookChanged();
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         clubBook.updatePerson(target, editedMember);
         deleteUnusedTags();
-        indicateAddressBookChanged();
+        indicateClubBookChanged();
     }
 
     @Override
@@ -104,14 +104,14 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(toRemove);
 
         clubBook.removeGroup(toRemove);
-        indicateAddressBookChanged();
+        indicateClubBookChanged();
     }
 
     @Override
     public void deleteTag(Tag tag) throws TagNotFoundException {
         clubBook.deleteTag(tag);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        indicateAddressBookChanged();
+        indicateClubBookChanged();
     }
 
     /**

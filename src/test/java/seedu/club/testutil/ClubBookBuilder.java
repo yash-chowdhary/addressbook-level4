@@ -7,9 +7,9 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.tag.Tag;
 
 /**
- * A utility class to help with building Addressbook objects.
+ * A utility class to help with building Clubbook objects.
  * Example usage: <br>
- *     {@code ClubBook ab = new ClubBookBuilder().withPerson("John", "Doe").withTag("Friend").build();}
+ *     {@code ClubBook cb = new ClubBookBuilder().withPerson("John", "Doe").withTag("Friend").build();}
  */
 public class ClubBookBuilder {
 

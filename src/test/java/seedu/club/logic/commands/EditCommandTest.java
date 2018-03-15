@@ -165,7 +165,7 @@ public class EditCommandTest {
         editCommand.execute();
         undoRedoStack.push(editCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered member list to show all persons
+        // undo -> reverts clubbook back to previous state and filtered member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // redo -> same first member edited again
@@ -213,7 +213,7 @@ public class EditCommandTest {
         editCommand.execute();
         undoRedoStack.push(editCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered member list to show all persons
+        // undo -> reverts clubbook back to previous state and filtered member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.updatePerson(memberToEdit, editedMember);

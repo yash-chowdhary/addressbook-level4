@@ -8,5 +8,5 @@
     }
   },
   "clubBookFilePath": "clubbook.xml",
-  "addressBookName" : "TypicalClubBookName"
+  "clubBookName": "TypicalClubBookName"
 }

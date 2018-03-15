@@ -94,7 +94,7 @@ public class XmlAdaptedMemberTest {
     }
 
     @Test
-    public void toModelType_invalidAddress_throwsIllegalValueException() {
+    public void toModelType_invalidMatricNumber_throwsIllegalValueException() {
         XmlAdaptedMember member =
                 new XmlAdaptedMember(VALID_NAME, VALID_PHONE, VALID_EMAIL, INVALID_MATRIC_NUMBER, VALID_GROUP,
                         VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
@@ -103,7 +103,7 @@ public class XmlAdaptedMemberTest {
     }
 
     @Test
-    public void toModelType_nullAddress_throwsIllegalValueException() {
+    public void toModelType_nullMatricNumber_throwsIllegalValueException() {
         XmlAdaptedMember member = new XmlAdaptedMember(VALID_NAME, VALID_PHONE, VALID_EMAIL, null,
                 VALID_GROUP, VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, MatricNumber.class.getSimpleName());

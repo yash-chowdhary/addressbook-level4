@@ -49,7 +49,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void removeGroup_nonExistentGroup_unchangedAddressBook() throws Exception {
+    public void removeGroup_nonExistentGroup_unchangedClubBook() throws Exception {
         try {
             clubBookWithBobAndAmy.removeGroup(new Group(NON_EXISTENT_GROUP));
         } catch (GroupNotFoundException gnfe) {
@@ -59,7 +59,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void removeGroup_mandatoryGroup_unchangedAddressBook() throws Exception {
+    public void removeGroup_mandatoryGroup_unchangedClubBook() throws Exception {
         try {
             clubBookWithBobAndAmy.removeGroup(new Group(MANDATORY_GROUP));
         } catch (GroupCannotBeRemovedException e) {
@@ -97,7 +97,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void resetData_withValidReadOnlyAddressBook_replacesData() {
+    public void resetData_withValidReadOnlyClubBook_replacesData() {
         ClubBook newData = getTypicalClubBook();
         clubBook.resetData(newData);
         assertEquals(newData, clubBook);
@@ -137,7 +137,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void deleteTag_nonExistentTag_addressBookUnchanged() {
+    public void deleteTag_nonExistentTag_clubBookUnchanged() {
         try {
             clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_UNUSED));
         } catch (TagNotFoundException tnfe) {

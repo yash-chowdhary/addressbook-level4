@@ -44,7 +44,7 @@ public class SampleDataTest extends ClubBookSystemTest {
     }
 
     @Test
-    public void addressBook_dataFileDoesNotExist_loadSampleData() {
+    public void clubBook_dataFileDoesNotExist_loadSampleData() {
         Member[] expectedList = SampleDataUtil.getSampleMembers();
         assertListMatching(getPersonListPanel(), expectedList);
     }

@@ -78,7 +78,7 @@ public class ClubBook implements ReadOnlyClubBook {
         try {
             setPersons(syncedMemberList);
         } catch (DuplicateMemberException e) {
-            throw new AssertionError("AddressBooks should not have duplicate persons");
+            throw new AssertionError("ClubConnect should not have duplicate members");
         }
     }
 
@@ -166,7 +166,7 @@ public class ClubBook implements ReadOnlyClubBook {
      * Removes {@code key} from this {@code ClubBook}.
      * @throws MemberNotFoundException if the {@code key} is not in this {@code ClubBook}.
      */
-    public boolean removePerson(Member key) throws MemberNotFoundException {
+    public boolean removeMember(Member key) throws MemberNotFoundException {
         deletePersonTags(key);
 
         if (persons.remove(key)) {

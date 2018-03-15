@@ -99,7 +99,7 @@ public class DeleteTagCommandTest {
         deleteTagCommand.execute();
         undoRedoStack.push(deleteTagCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered tag list to show all tags
+        // undo -> reverts clubbook back to previous state and filtered tag list to show all tags
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // redo -> same first tag removed again
@@ -144,7 +144,7 @@ public class DeleteTagCommandTest {
         deleteTagCommand.execute();
         undoRedoStack.push(deleteTagCommand);
 
-        // undo -> reverts addressbook back to previous state and filtered tag list to show all tags
+        // undo -> reverts clubbook back to previous state and filtered tag list to show all tags
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.deleteTag(tagToRemove);

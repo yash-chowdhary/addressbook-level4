@@ -78,7 +78,7 @@ public class AddCommandParserTest {
                 + MATRIC_NUMBER_DESC_BOB + GROUP_DESC_BOB + TAG_DESC_FRIEND
                 + USERNAME_DESC_BOB + PASSWORD_DESC, new AddCommand(expectedMember));
 
-        // multiple addresses - last club accepted
+        // multiple matriculation numbers - last club accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_AMY
                 + MATRIC_NUMBER_DESC_BOB + GROUP_DESC_BOB + TAG_DESC_FRIEND
                 + USERNAME_DESC_BOB + PASSWORD_DESC, new AddCommand(expectedMember));

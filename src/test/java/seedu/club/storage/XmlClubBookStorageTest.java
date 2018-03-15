@@ -29,7 +29,7 @@ public class XmlClubBookStorageTest {
     public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Test
-    public void readAddressBook_nullFilePath_throwsNullPointerException() throws Exception {
+    public void readClubBook_nullFilePath_throwsNullPointerException() throws Exception {
         thrown.expect(NullPointerException.class);
         readClubBook(null);
     }
@@ -85,7 +85,7 @@ public class XmlClubBookStorageTest {
 
         //Modify data, overwrite exiting file, and read back
         original.addMember(HOON);
-        original.removePerson(ALICE);
+        original.removeMember(ALICE);
         xmlClubBookStorage.saveClubBook(original, filePath);
         readBack = xmlClubBookStorage.readClubBook(filePath).get();
         assertEquals(original, new ClubBook(readBack));

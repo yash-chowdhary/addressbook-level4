@@ -12,16 +12,16 @@ import seedu.club.model.ReadOnlyClubBook;
  * Represents a command which can be undone and redone.
  */
 public abstract class UndoableCommand extends Command {
-    private ReadOnlyClubBook previousAddressBook;
+    private ReadOnlyClubBook previousClubBook;
 
     protected abstract CommandResult executeUndoableCommand() throws CommandException;
 
     /**
-     * Stores the current state of {@code model#addressBook}.
+     * Stores the current state of {@code model#clubBook}.
      */
-    private void saveAddressBookSnapshot() {
+    private void saveClubBookSnapshot() {
         requireNonNull(model);
-        this.previousAddressBook = new ClubBook(model.getClubBook());
+        this.previousClubBook = new ClubBook(model.getClubBook());
     }
 
     /**
@@ -36,8 +36,8 @@ public abstract class UndoableCommand extends Command {
      * show all persons.
      */
     protected final void undo() {
-        requireAllNonNull(model, previousAddressBook);
-        model.resetData(previousAddressBook);
+        requireAllNonNull(model, previousClubBook);
+        model.resetData(previousClubBook);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
@@ -58,7 +58,7 @@ public abstract class UndoableCommand extends Command {
 
     @Override
     public final CommandResult execute() throws CommandException {
-        saveAddressBookSnapshot();
+        saveClubBookSnapshot();
         preprocessUndoableCommand();
         return executeUndoableCommand();
     }
