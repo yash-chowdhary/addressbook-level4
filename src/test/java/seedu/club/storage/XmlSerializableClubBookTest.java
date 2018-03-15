@@ -17,8 +17,8 @@ import seedu.club.testutil.TypicalPersons;
 public class XmlSerializableClubBookTest {
 
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("src/test/data/XmlSerializableClubBookTest/");
-    private static final File TYPICAL_PERSONS_FILE = new File(TEST_DATA_FOLDER + "typicalPersonsClubBook.xml");
-    private static final File INVALID_PERSON_FILE = new File(TEST_DATA_FOLDER + "invalidPersonClubBook.xml");
+    private static final File TYPICAL_PERSONS_FILE = new File(TEST_DATA_FOLDER + "typicalMembersClubBook.xml");
+    private static final File INVALID_PERSON_FILE = new File(TEST_DATA_FOLDER + "invalidMemberClubBook.xml");
     private static final File INVALID_TAG_FILE = new File(TEST_DATA_FOLDER + "invalidTagClubBook.xml");
 
     @Rule

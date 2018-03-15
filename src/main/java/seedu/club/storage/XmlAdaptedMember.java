@@ -23,7 +23,7 @@ import seedu.club.model.tag.Tag;
 /**
  * JAXB-friendly version of the Member.
  */
-public class XmlAdaptedPerson {
+public class XmlAdaptedMember {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Member's %s field is missing!";
 
@@ -46,16 +46,16 @@ public class XmlAdaptedPerson {
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     /**
-     * Constructs an XmlAdaptedPerson.
+     * Constructs an XmlAdaptedMember.
      * This is the no-arg constructor that is required by JAXB.
      */
-    public XmlAdaptedPerson() {}
+    public XmlAdaptedMember() {}
 
     /**
-     * Constructs an {@code XmlAdaptedPerson} with the given Member details.
+     * Constructs an {@code XmlAdaptedMember} with the given Member details.
      */
 
-    public XmlAdaptedPerson(String name, String phone, String email, String matricNumber, String group,
+    public XmlAdaptedMember(String name, String phone, String email, String matricNumber, String group,
                             List<XmlAdaptedTag> tagged, String username, String password) {
         this.name = name;
         this.phone = phone;
@@ -72,9 +72,9 @@ public class XmlAdaptedPerson {
     /**
      * Converts a given Member into this class for JAXB use.
      *
-     * @param source future changes to this will not affect the created XmlAdaptedPerson
+     * @param source future changes to this will not affect the created XmlAdaptedMember
      */
-    public XmlAdaptedPerson(Member source) {
+    public XmlAdaptedMember(Member source) {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
@@ -94,9 +94,9 @@ public class XmlAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted Member
      */
     public Member toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> memberTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
-            personTags.add(tag.toModelType());
+            memberTags.add(tag.toModelType());
         }
 
         if (this.name == null) {
@@ -140,7 +140,7 @@ public class XmlAdaptedPerson {
         final Username username = new Username(this.username);
         final Password password = new Password(this.password);
 
-        final Set<Tag> tags = new HashSet<>(personTags);
+        final Set<Tag> tags = new HashSet<>(memberTags);
 
         return new Member(name, phone, email, matricNumber, group, tags, username, password);
     }
@@ -151,16 +151,16 @@ public class XmlAdaptedPerson {
             return true;
         }
 
-        if (!(other instanceof XmlAdaptedPerson)) {
+        if (!(other instanceof XmlAdaptedMember)) {
             return false;
         }
 
-        XmlAdaptedPerson otherPerson = (XmlAdaptedPerson) other;
-        return Objects.equals(name, otherPerson.name)
-                && Objects.equals(phone, otherPerson.phone)
-                && Objects.equals(email, otherPerson.email)
-                && Objects.equals(matricNumber, otherPerson.matricNumber)
-                && Objects.equals(group, otherPerson.group)
-                && tagged.equals(otherPerson.tagged);
+        XmlAdaptedMember otherMember = (XmlAdaptedMember) other;
+        return Objects.equals(name, otherMember.name)
+                && Objects.equals(phone, otherMember.phone)
+                && Objects.equals(email, otherMember.email)
+                && Objects.equals(matricNumber, otherMember.matricNumber)
+                && Objects.equals(group, otherMember.group)
+                && tagged.equals(otherMember.tagged);
     }
 }

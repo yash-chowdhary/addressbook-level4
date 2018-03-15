@@ -18,7 +18,7 @@ import seedu.club.model.ReadOnlyClubBook;
 public class XmlSerializableClubBook {
 
     @XmlElement
-    private List<XmlAdaptedPerson> persons;
+    private List<XmlAdaptedMember> members;
     @XmlElement
     private List<XmlAdaptedTag> tags;
 
@@ -27,7 +27,7 @@ public class XmlSerializableClubBook {
      * This empty constructor is required for marshalling.
      */
     public XmlSerializableClubBook() {
-        persons = new ArrayList<>();
+        members = new ArrayList<>();
         tags = new ArrayList<>();
     }
 
@@ -36,7 +36,7 @@ public class XmlSerializableClubBook {
      */
     public XmlSerializableClubBook(ReadOnlyClubBook src) {
         this();
-        persons.addAll(src.getPersonList().stream().map(XmlAdaptedPerson::new).collect(Collectors.toList()));
+        members.addAll(src.getPersonList().stream().map(XmlAdaptedMember::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
@@ -44,15 +44,15 @@ public class XmlSerializableClubBook {
      * Converts this addressbook into the model's {@code ClubBook} object.
      *
      * @throws IllegalValueException if there were any data constraints violated or duplicates in the
-     * {@code XmlAdaptedPerson} or {@code XmlAdaptedTag}.
+     * {@code XmlAdaptedMember} or {@code XmlAdaptedTag}.
      */
     public ClubBook toModelType() throws IllegalValueException {
         ClubBook clubBook = new ClubBook();
         for (XmlAdaptedTag t : tags) {
             clubBook.addTag(t.toModelType());
         }
-        for (XmlAdaptedPerson p : persons) {
-            clubBook.addPerson(p.toModelType());
+        for (XmlAdaptedMember m : members) {
+            clubBook.addPerson(m.toModelType());
         }
         return clubBook;
     }
@@ -68,6 +68,6 @@ public class XmlSerializableClubBook {
         }
 
         XmlSerializableClubBook otherAb = (XmlSerializableClubBook) other;
-        return persons.equals(otherAb.persons) && tags.equals(otherAb.tags);
+        return members.equals(otherAb.members) && tags.equals(otherAb.tags);
     }
 }
