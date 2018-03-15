@@ -3,7 +3,7 @@ package seedu.club.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.club.commons.core.Messages.MESSAGE_MEMBERS_LISTED_OVERVIEW;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.CARL;
@@ -223,7 +223,7 @@ public class FindByCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 0);
         for (String fieldType: fieldTypes) {
             assertCommandSuccess(prepareCommand(" ", fieldType), expectedMessage, Collections.emptyList());
         }
@@ -231,7 +231,7 @@ public class FindByCommandTest {
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+        String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 3);
         FindByCommand command = prepareCommand("Kurz Elle Kunz", "name");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
@@ -247,7 +247,7 @@ public class FindByCommandTest {
         command = prepareCommand("marketing operations", "group");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
-        expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 7);
+        expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 7);
         command = prepareCommand("friend friends owesMoney", "tag");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON, CARL,
                 DANIEL, ELLE, FIONA, GEORGE));

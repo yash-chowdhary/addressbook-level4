@@ -14,6 +14,6 @@ public class ClubBookChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "number of persons " + data.getPersonList().size() + ", number of tags " + data.getTagList().size();
+        return "number of members " + data.getPersonList().size() + ", number of tags " + data.getTagList().size();
     }
 }

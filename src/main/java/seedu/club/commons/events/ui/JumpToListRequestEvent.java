@@ -4,7 +4,7 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.BaseEvent;
 
 /**
- * Indicates a request to jump to the list of persons
+ * Indicates a request to jump to the list of members
  */
 public class JumpToListRequestEvent extends BaseEvent {
 
