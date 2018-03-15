@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static seedu.club.testutil.EventsUtil.postNow;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalPersons;
-import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
+import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysMember;
 import static seedu.club.ui.testutil.GuiTestAssert.assertCardEquals;
 
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class MemberListPanelTest extends GuiUnitTest {
             Member expectedMember = TYPICAL_MEMBERS.get(i);
             MemberCardHandle actualCard = memberListPanelHandle.getPersonCardHandle(i);
 
-            assertCardDisplaysPerson(expectedMember, actualCard);
+            assertCardDisplaysMember(expectedMember, actualCard);
             assertEquals(Integer.toString(i + 1) + ". ", actualCard.getId());
         }
     }

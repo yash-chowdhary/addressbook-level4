@@ -3,7 +3,7 @@ package seedu.club.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
+import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysMember;
 
 import org.junit.Test;
 
@@ -67,6 +67,6 @@ public class MemberCardTest extends GuiUnitTest {
         assertEquals(Integer.toString(expectedId) + ". ", memberCardHandle.getId());
 
         // verify member details are displayed correctly
-        assertCardDisplaysPerson(expectedMember, memberCardHandle);
+        assertCardDisplaysMember(expectedMember, memberCardHandle);
     }
 }

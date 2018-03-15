@@ -3,7 +3,7 @@ package seedu.club.logic.commands;
 import static seedu.club.logic.UndoRedoStackUtil.prepareStack;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.club.logic.commands.CommandTestUtil.deleteFirstPerson;
+import static seedu.club.logic.commands.CommandTestUtil.deleteFirstMember;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
@@ -45,11 +45,11 @@ public class RedoCommandTest {
         Model expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
 
         // multiple commands in redoStack
-        deleteFirstPerson(expectedModel);
+        deleteFirstMember(expectedModel);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // single command in redoStack
-        deleteFirstPerson(expectedModel);
+        deleteFirstMember(expectedModel);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // no command in redoStack

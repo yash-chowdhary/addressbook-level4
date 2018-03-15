@@ -43,7 +43,7 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_PASSWORD + "password";
 
     public static final String MESSAGE_SUCCESS = "New member added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This member already exists in the club book";
+    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book";
 
     private final Member toAdd;
 
@@ -59,10 +59,10 @@ public class AddCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
-            model.addPerson(toAdd);
+            model.addMember(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (DuplicateMemberException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
         }
 
     }

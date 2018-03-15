@@ -137,7 +137,7 @@ public class CommandTestUtil {
      * Updates {@code model}'s filtered list to show only the member at the given {@code targetIndex} in the
      * {@code model}'s club book.
      */
-    public static void showPersonAtIndex(Model model, Index targetIndex) {
+    public static void showMemberAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredMemberList().size());
 
         Member member = model.getFilteredMemberList().get(targetIndex.getZeroBased());
@@ -150,10 +150,10 @@ public class CommandTestUtil {
     /**
      * Deletes the first member in {@code model}'s filtered list from {@code model}'s club book.
      */
-    public static void deleteFirstPerson(Model model) {
+    public static void deleteFirstMember(Model model) {
         Member firstMember = model.getFilteredMemberList().get(0);
         try {
-            model.deletePerson(firstMember);
+            model.deleteMember(firstMember);
         } catch (MemberNotFoundException pnfe) {
             throw new AssertionError("member in filtered list must exist in model.", pnfe);
         }

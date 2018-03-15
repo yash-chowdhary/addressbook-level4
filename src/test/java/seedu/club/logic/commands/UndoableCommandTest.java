@@ -2,8 +2,8 @@ package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static seedu.club.logic.commands.CommandTestUtil.deleteFirstPerson;
-import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.club.logic.commands.CommandTestUtil.deleteFirstMember;
+import static seedu.club.logic.commands.CommandTestUtil.showMemberAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
@@ -25,10 +25,10 @@ public class UndoableCommandTest {
     @Test
     public void executeUndo() throws Exception {
         dummyCommand.execute();
-        deleteFirstPerson(expectedModel);
+        deleteFirstMember(expectedModel);
         assertEquals(expectedModel, model);
 
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         // undo() should cause the model's filtered list to show all persons
         dummyCommand.undo();
@@ -38,11 +38,11 @@ public class UndoableCommandTest {
 
     @Test
     public void redo() {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         // redo() should cause the model's filtered list to show all persons
         dummyCommand.redo();
-        deleteFirstPerson(expectedModel);
+        deleteFirstMember(expectedModel);
         assertEquals(expectedModel, model);
     }
 
@@ -58,7 +58,7 @@ public class UndoableCommandTest {
         public CommandResult executeUndoableCommand() throws CommandException {
             Member memberToDelete = model.getFilteredMemberList().get(0);
             try {
-                model.deletePerson(memberToDelete);
+                model.deleteMember(memberToDelete);
             } catch (MemberNotFoundException pnfe) {
                 fail("Impossible: memberToDelete was retrieved from model.");
             }

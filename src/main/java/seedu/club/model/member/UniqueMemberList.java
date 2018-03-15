@@ -14,7 +14,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 /**
- * A list of persons that enforces uniqueness between its elements and does not allow nulls.
+ * A list of members that enforces uniqueness between its elements and does not allow nulls.
  *
  * Supports a minimal set of list operations.
  *
@@ -52,7 +52,7 @@ public class UniqueMemberList implements Iterable<Member> {
      * @throws DuplicateMemberException if the replacement is equivalent to another existing member in the list.
      * @throws MemberNotFoundException if {@code target} could not be found in the list.
      */
-    public void setPerson(Member target, Member editedMember)
+    public void setMember(Member target, Member editedMember)
             throws DuplicateMemberException, MemberNotFoundException {
         requireNonNull(editedMember);
 
@@ -75,24 +75,24 @@ public class UniqueMemberList implements Iterable<Member> {
      */
     public boolean remove(Member toRemove) throws MemberNotFoundException {
         requireNonNull(toRemove);
-        final boolean personFoundAndDeleted = internalList.remove(toRemove);
-        if (!personFoundAndDeleted) {
+        final boolean memberFoundAndDeleted = internalList.remove(toRemove);
+        if (!memberFoundAndDeleted) {
             throw new MemberNotFoundException();
         }
-        return personFoundAndDeleted;
+        return memberFoundAndDeleted;
     }
 
-    public void setPersons(UniqueMemberList replacement) {
+    public void setMembers(UniqueMemberList replacement) {
         this.internalList.setAll(replacement.internalList);
     }
 
-    public void setPersons(List<Member> members) throws DuplicateMemberException {
+    public void setMembers(List<Member> members) throws DuplicateMemberException {
         requireAllNonNull(members);
         final UniqueMemberList replacement = new UniqueMemberList();
         for (final Member member : members) {
             replacement.add(member);
         }
-        setPersons(replacement);
+        setMembers(replacement);
     }
 
     /**

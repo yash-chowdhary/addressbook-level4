@@ -82,7 +82,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: redo adding Amy to the list -> Amy added again */
         command = RedoCommand.COMMAND_WORD;
-        model.addPerson(toAdd);
+        model.addMember(toAdd);
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedResultMessage);
 
@@ -149,14 +149,14 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: add a duplicate member -> rejected */
         command = MemberUtil.getAddCommand(HOON);
-        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MEMBER);
 
         /* Case: add a duplicate member except with different tags -> rejected */
         // "friends" is an existing tag used in the default model, see TypicalMembers#ALICE
         // This test will fail if a new tag that is not in the model is used, see the bug documented in
         // ClubBook#addMember(member)
         command = MemberUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "friends";
-        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MEMBER);
 
         /* Case: missing name -> rejected */
         command = AddCommand.COMMAND_WORD + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
@@ -230,7 +230,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
     private void assertCommandSuccess(String command, Member toAdd) {
         Model expectedModel = getModel();
         try {
-            expectedModel.addPerson(toAdd);
+            expectedModel.addMember(toAdd);
         } catch (DuplicateMemberException dpe) {
             throw new IllegalArgumentException("toAdd already exists in the model.");
         }

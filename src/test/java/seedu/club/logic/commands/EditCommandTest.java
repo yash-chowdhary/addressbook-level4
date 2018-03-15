@@ -12,7 +12,7 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
-import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.club.logic.commands.CommandTestUtil.showMemberAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
@@ -88,7 +88,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_filteredList_success() throws Exception {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Member memberInFilteredList = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         Member editedMember = new MemberBuilder(memberInFilteredList).withName(VALID_NAME_BOB).build();
@@ -114,7 +114,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_duplicatePersonFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         // edit member in filtered list into a duplicate in club book
         Member memberInList = model.getClubBook().getMemberList().get(INDEX_SECOND_MEMBER.getZeroBased());
@@ -139,7 +139,7 @@ public class EditCommandTest {
      */
     @Test
     public void execute_invalidPersonIndexFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
         Index outOfBoundIndex = INDEX_SECOND_MEMBER;
         // ensures that outOfBoundIndex is still in bounds of club book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getClubBook().getMemberList().size());
@@ -207,7 +207,7 @@ public class EditCommandTest {
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, descriptor);
         Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
 
-        showPersonAtIndex(model, INDEX_SECOND_MEMBER);
+        showMemberAtIndex(model, INDEX_SECOND_MEMBER);
         Member memberToEdit = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         // edit -> edits second member in unfiltered member list / first member in filtered member list
         editCommand.execute();

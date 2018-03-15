@@ -7,7 +7,7 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
-import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.club.logic.commands.CommandTestUtil.showMemberAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
@@ -36,10 +36,10 @@ public class DeleteCommandTest {
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, memberToDelete);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.deletePerson(memberToDelete);
+        expectedModel.deleteMember(memberToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -54,15 +54,15 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, memberToDelete);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.deletePerson(memberToDelete);
+        expectedModel.deleteMember(memberToDelete);
         showNoPerson(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -70,7 +70,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Index outOfBoundIndex = INDEX_SECOND_MEMBER;
         // ensures that outOfBoundIndex is still in bounds of club book list
@@ -98,7 +98,7 @@ public class DeleteCommandTest {
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // redo -> same first member deleted again
-        expectedModel.deletePerson(memberToDelete);
+        expectedModel.deleteMember(memberToDelete);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -133,7 +133,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
 
-        showPersonAtIndex(model, INDEX_SECOND_MEMBER);
+        showMemberAtIndex(model, INDEX_SECOND_MEMBER);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         // delete -> deletes second member in unfiltered member list / first member in filtered member list
         deleteCommand.execute();
@@ -142,7 +142,7 @@ public class DeleteCommandTest {
         // undo -> reverts clubbook back to previous state and filtered member list to show all persons
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        expectedModel.deletePerson(memberToDelete);
+        expectedModel.deleteMember(memberToDelete);
         assertNotEquals(memberToDelete, model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()));
         // redo -> deletes same second member in unfiltered member list
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);

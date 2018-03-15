@@ -28,9 +28,9 @@ public class XmlUtilTest {
     private static final File EMPTY_FILE = new File(TEST_DATA_FOLDER + "empty.xml");
     private static final File MISSING_FILE = new File(TEST_DATA_FOLDER + "missing.xml");
     private static final File VALID_FILE = new File(TEST_DATA_FOLDER + "validClubBook.xml");
-    private static final File MISSING_PERSON_FIELD_FILE = new File(TEST_DATA_FOLDER + "missingMemberField.xml");
-    private static final File INVALID_PERSON_FIELD_FILE = new File(TEST_DATA_FOLDER + "invalidMemberField.xml");
-    private static final File VALID_PERSON_FILE = new File(TEST_DATA_FOLDER + "validMember.xml");
+    private static final File MISSING_MEMBER_FIELD_FILE = new File(TEST_DATA_FOLDER + "missingMemberField.xml");
+    private static final File INVALID_MEMBER_FIELD_FILE = new File(TEST_DATA_FOLDER + "invalidMemberField.xml");
+    private static final File VALID_MEMBER_FILE = new File(TEST_DATA_FOLDER + "validMember.xml");
     private static final File TEMP_FILE = new File(TestUtil.getFilePathInSandboxFolder("tempClubBook.xml"));
 
     private static final String INVALID_PHONE = "9482asf424";
@@ -81,7 +81,7 @@ public class XmlUtilTest {
     @Test
     public void xmlAdaptedPersonFromFile_fileWithMissingPersonField_validResult() throws Exception {
         XmlAdaptedMember actualPerson = XmlUtil.getDataFromFile(
-                MISSING_PERSON_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
+                MISSING_MEMBER_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
         XmlAdaptedMember expectedPerson = new XmlAdaptedMember(
                 null, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS,
                 VALID_USERNAME, VALID_PASSWORD);
@@ -91,7 +91,7 @@ public class XmlUtilTest {
     @Test
     public void xmlAdaptedPersonFromFile_fileWithInvalidPersonField_validResult() throws Exception {
         XmlAdaptedMember actualPerson = XmlUtil.getDataFromFile(
-                INVALID_PERSON_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
+                INVALID_MEMBER_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
         XmlAdaptedMember expectedPerson = new XmlAdaptedMember(
                 VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS,
                 VALID_USERNAME, VALID_PASSWORD);
@@ -101,7 +101,7 @@ public class XmlUtilTest {
     @Test
     public void xmlAdaptedPersonFromFile_fileWithValidPerson_validResult() throws Exception {
         XmlAdaptedMember actualPerson = XmlUtil.getDataFromFile(
-                VALID_PERSON_FILE, XmlAdaptedMemberWithRootElement.class);
+                VALID_MEMBER_FILE, XmlAdaptedMemberWithRootElement.class);
         XmlAdaptedMember expectedPerson = new XmlAdaptedMember(
                 VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                 VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);

@@ -10,8 +10,8 @@ import seedu.club.model.tag.Tag;
 public interface ReadOnlyClubBook {
 
     /**
-     * Returns an unmodifiable view of the persons list.
-     * This list will not contain any duplicate persons.
+     * Returns an unmodifiable view of the members list.
+     * This list will not contain any duplicate members.
      */
     ObservableList<Member> getMemberList();
 

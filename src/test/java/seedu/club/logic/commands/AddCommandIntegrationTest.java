@@ -32,7 +32,7 @@ public class AddCommandIntegrationTest {
         Member validMember = new MemberBuilder().build();
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.addPerson(validMember);
+        expectedModel.addMember(validMember);
 
         assertCommandSuccess(prepareCommand(validMember, model), model,
                 String.format(AddCommand.MESSAGE_SUCCESS, validMember), expectedModel);
@@ -41,7 +41,7 @@ public class AddCommandIntegrationTest {
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
         Member memberInList = model.getClubBook().getMemberList().get(0);
-        assertCommandFailure(prepareCommand(memberInList, model), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(prepareCommand(memberInList, model), model, AddCommand.MESSAGE_DUPLICATE_MEMBER);
     }
 
     /**

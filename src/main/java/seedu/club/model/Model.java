@@ -26,10 +26,10 @@ public interface Model {
     ReadOnlyClubBook getClubBook();
 
     /** Deletes the given member. */
-    void deletePerson(Member target) throws MemberNotFoundException;
+    void deleteMember(Member target) throws MemberNotFoundException;
 
     /** Adds the given member */
-    void addPerson(Member member) throws DuplicateMemberException;
+    void addMember(Member member) throws DuplicateMemberException;
 
     /**
      * Replaces the given member {@code target} with {@code editedMember}.
@@ -56,7 +56,7 @@ public interface Model {
     boolean logInMemberSuccessful(String username, String password);
 
 
-    /** Removes the given tag {@code tag} for all persons in the club book. */
+    /** Removes the given tag {@code tag} for all members in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;
 
     /** Returns an unmodifiable view of the filtered tag list */

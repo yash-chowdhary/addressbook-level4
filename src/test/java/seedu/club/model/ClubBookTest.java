@@ -83,7 +83,7 @@ public class ClubBookTest {
     @Test
     public void updatePerson_detailsChanged_personUpdated() throws Exception {
         ClubBook updatedToBob = new ClubBookBuilder().withPerson(AMY).build();
-        updatedToBob.updatePerson(AMY, BOB);
+        updatedToBob.updateMember(AMY, BOB);
 
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(BOB).build();
 
@@ -129,7 +129,7 @@ public class ClubBookTest {
     @Test
     public void updatePerson_detailsChanged_personsAndTagsListUpdated() throws Exception {
         ClubBook clubBookUpdatedToAmy = new ClubBookBuilder().withPerson(BOB).build();
-        clubBookUpdatedToAmy.updatePerson(BOB, AMY);
+        clubBookUpdatedToAmy.updateMember(BOB, AMY);
 
         ClubBook expectedClubBook = new ClubBookBuilder().withPerson(AMY).build();
 

@@ -33,7 +33,7 @@ public abstract class UndoableCommand extends Command {
     /**
      * Reverts the ClubBook to the state before this command
      * was executed and updates the filtered member list to
-     * show all persons.
+     * show all members.
      */
     protected final void undo() {
         requireAllNonNull(model, previousClubBook);
@@ -43,7 +43,7 @@ public abstract class UndoableCommand extends Command {
 
     /**
      * Executes the command and updates the filtered member
-     * list to show all persons.
+     * list to show all members.
      */
     protected final void redo() {
         requireNonNull(model);

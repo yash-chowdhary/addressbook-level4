@@ -59,7 +59,7 @@ public class AddCommandTest {
         Member validMember = new MemberBuilder().build();
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
+        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
 
         getAddCommandForPerson(validMember, modelStub).execute();
     }
@@ -102,7 +102,7 @@ public class AddCommandTest {
      */
     private class ModelStub implements Model {
         @Override
-        public void addPerson(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -123,7 +123,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void deletePerson(Member target) throws MemberNotFoundException {
+        public void deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
         }
 
@@ -171,7 +171,7 @@ public class AddCommandTest {
      */
     private class ModelStubThrowingDuplicatePersonException extends ModelStub {
         @Override
-        public void addPerson(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMemberException {
             throw new DuplicateMemberException();
         }
 
@@ -188,7 +188,7 @@ public class AddCommandTest {
         final ArrayList<Member> personsAdded = new ArrayList<>();
 
         @Override
-        public void addPerson(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMemberException {
             requireNonNull(member);
             personsAdded.add(member);
         }

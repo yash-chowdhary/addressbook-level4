@@ -67,8 +67,8 @@ public class Member {
         return group;
     }
 
-    private void setTags(Set<Tag> personTags) {
-        Iterator itr = personTags.iterator();
+    private void setTags(Set<Tag> memberTags) {
+        Iterator itr = memberTags.iterator();
 
         while (itr.hasNext()) {
             Tag tag = (Tag) itr.next();
@@ -93,17 +93,17 @@ public class Member {
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
-        Set<Tag> personTags = new HashSet<Tag>();
+        Set<Tag> memberTags = new HashSet<Tag>();
 
         Set<String> tagNames = tags.keySet();
         Iterator itr = tagNames.iterator();
 
         while (itr.hasNext()) {
             String key = (String) itr.next();
-            personTags.add(tags.get(key));
+            memberTags.add(tags.get(key));
         }
 
-        return Collections.unmodifiableSet(personTags);
+        return Collections.unmodifiableSet(memberTags);
     }
 
     public boolean hasTag(Tag tag) {

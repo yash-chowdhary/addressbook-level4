@@ -8,7 +8,7 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
-import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.club.logic.commands.CommandTestUtil.showMemberAtIndex;
 import static seedu.club.logic.commands.DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS;
 import static seedu.club.logic.commands.DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
@@ -58,7 +58,7 @@ public class DeleteTagCommandTest {
 
     @Test
     public void execute_validTagFilteredList_success() throws Exception {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
 
@@ -75,7 +75,7 @@ public class DeleteTagCommandTest {
 
     @Test
     public void execute_invalidTagFilteredList_throwsCommandException() {
-        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Tag nonExistentTag = new Tag(VALID_TAG_UNUSED);
 
@@ -139,7 +139,7 @@ public class DeleteTagCommandTest {
         DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
 
-        showPersonAtIndex(model, INDEX_SECOND_MEMBER);
+        showMemberAtIndex(model, INDEX_SECOND_MEMBER);
         // remove tag -> removes first tag in unfiltered tag list / filtered tag list
         deleteTagCommand.execute();
         undoRedoStack.push(deleteTagCommand);

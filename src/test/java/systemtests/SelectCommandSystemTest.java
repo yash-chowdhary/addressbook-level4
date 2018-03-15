@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.club.logic.commands.SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS;
+import static seedu.club.logic.commands.SelectCommand.MESSAGE_SELECT_MEMBER_SUCCESS;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 import static seedu.club.testutil.TypicalMembers.getTypicalPersons;
@@ -29,9 +29,9 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, INDEX_FIRST_MEMBER);
 
         /* Case: select the last card in the member list -> selected */
-        Index personCount = Index.fromOneBased(getTypicalPersons().size());
-        command = SelectCommand.COMMAND_WORD + " " + personCount.getOneBased();
-        assertCommandSuccess(command, personCount);
+        Index memberCount = Index.fromOneBased(getTypicalPersons().size());
+        command = SelectCommand.COMMAND_WORD + " " + memberCount.getOneBased();
+        assertCommandSuccess(command, memberCount);
 
         /* Case: undo previous selection -> rejected */
         command = UndoCommand.COMMAND_WORD;
@@ -44,7 +44,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         assertCommandFailure(command, expectedResultMessage);
 
         /* Case: select the middle card in the member list -> selected */
-        Index middleIndex = Index.fromOneBased(personCount.getOneBased() / 2);
+        Index middleIndex = Index.fromOneBased(memberCount.getOneBased() / 2);
         command = SelectCommand.COMMAND_WORD + " " + middleIndex.getOneBased();
         assertCommandSuccess(command, middleIndex);
 
@@ -114,7 +114,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
     private void assertCommandSuccess(String command, Index expectedSelectedCardIndex) {
         Model expectedModel = getModel();
         String expectedResultMessage = String.format(
-                MESSAGE_SELECT_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
+                MESSAGE_SELECT_MEMBER_SUCCESS, expectedSelectedCardIndex.getOneBased());
         int preExecutionSelectedCardIndex = getMemberListPanel().getSelectedCardIndex();
 
         executeCommand(command);

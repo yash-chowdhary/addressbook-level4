@@ -69,13 +69,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deletePerson(Member target) throws MemberNotFoundException {
+    public synchronized void deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
         indicateClubBookChanged();
     }
 
     @Override
-    public synchronized void addPerson(Member member) throws DuplicateMemberException {
+    public synchronized void addMember(Member member) throws DuplicateMemberException {
         //updateTagList(member.getTags());
         clubBook.addMember(member);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
@@ -87,7 +87,7 @@ public class ModelManager extends ComponentManager implements Model {
             throws DuplicateMemberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
 
-        clubBook.updatePerson(target, editedMember);
+        clubBook.updateMember(target, editedMember);
         deleteUnusedTags();
         indicateClubBookChanged();
     }
@@ -115,7 +115,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /**
-     * Removes those tags from the master tag list that no persons in the club book are tagged with.
+     * Removes those tags from the master tag list that no members in the club book are tagged with.
      */
     private void deleteUnusedTags() {
         List<Tag> tags = new ArrayList<>(clubBook.getTagList());
@@ -126,12 +126,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /**
-     * Removes {@code tag} from the master tag list if no persons in the club book are tagged with it.
+     * Removes {@code tag} from the master tag list if no members in the club book are tagged with it.
      *
-     * @param tag Tag to remove if no persons are tagged with it
+     * @param tag Tag to remove if no members are tagged with it
      */
     private void deleteTagIfUnused(Tag tag) {
-        if (isNotTaggedInPersons(tag)) {
+        if (isNotTaggedInMembers(tag)) {
             try {
                 deleteTag(tag);
             } catch (TagNotFoundException tnfe) {
@@ -143,7 +143,7 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Returns true is no member in the club book is tagged with {@code tag}.
      */
-    private boolean isNotTaggedInPersons(Tag tag) {
+    private boolean isNotTaggedInMembers(Tag tag) {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         for (Member member : members) {

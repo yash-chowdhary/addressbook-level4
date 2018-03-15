@@ -3,7 +3,7 @@ package systemtests;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.club.logic.commands.DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
+import static seedu.club.logic.commands.DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS;
 import static seedu.club.testutil.TestUtil.getLastIndex;
 import static seedu.club.testutil.TestUtil.getMidIndex;
 import static seedu.club.testutil.TestUtil.getPerson;
@@ -34,7 +34,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         Model expectedModel = getModel();
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
         Member deletedMember = removePerson(expectedModel, INDEX_FIRST_MEMBER);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
+        String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 
         /* Case: delete the last member in the list -> deleted */
@@ -83,7 +83,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         selectMember(selectedIndex);
         command = DeleteCommand.COMMAND_WORD + " " + selectedIndex.getOneBased();
         deletedMember = removePerson(expectedModel, selectedIndex);
-        expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
+        expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage, expectedIndex);
 
         /* --------------------------------- Performing invalid delete operation ------------------------------------ */
@@ -119,7 +119,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
     private Member removePerson(Model model, Index index) {
         Member targetMember = getPerson(model, index);
         try {
-            model.deletePerson(targetMember);
+            model.deleteMember(targetMember);
         } catch (MemberNotFoundException pnfe) {
             throw new AssertionError("targetMember is retrieved from model.");
         }
@@ -134,7 +134,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
     private void assertCommandSuccess(Index toDelete) {
         Model expectedModel = getModel();
         Member deletedMember = removePerson(expectedModel, toDelete);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
+        String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
 
         assertCommandSuccess(
                 DeleteCommand.COMMAND_WORD + " " + toDelete.getOneBased(), expectedModel, expectedResultMessage);
