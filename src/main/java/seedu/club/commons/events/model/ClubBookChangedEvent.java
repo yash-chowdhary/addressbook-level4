@@ -4,11 +4,11 @@ import seedu.club.commons.events.BaseEvent;
 import seedu.club.model.ReadOnlyClubBook;
 
 /** Indicates the ClubBook in the model has changed*/
-public class AddressBookChangedEvent extends BaseEvent {
+public class ClubBookChangedEvent extends BaseEvent {
 
     public final ReadOnlyClubBook data;
 
-    public AddressBookChangedEvent(ReadOnlyClubBook data) {
+    public ClubBookChangedEvent(ReadOnlyClubBook data) {
         this.data = data;
     }
 

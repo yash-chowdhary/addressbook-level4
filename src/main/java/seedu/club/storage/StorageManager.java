@@ -8,7 +8,7 @@ import com.google.common.eventbus.Subscribe;
 
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.model.AddressBookChangedEvent;
+import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.model.ReadOnlyClubBook;
@@ -80,7 +80,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
     @Override
     @Subscribe
-    public void handleAddressBookChangedEvent(AddressBookChangedEvent event) {
+    public void handleAddressBookChangedEvent(ClubBookChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
         try {
             saveClubBook(event.data);

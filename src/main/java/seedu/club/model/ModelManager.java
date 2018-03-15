@@ -13,7 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.model.AddressBookChangedEvent;
+import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -65,7 +65,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
-        raise(new AddressBookChangedEvent(clubBook));
+        raise(new ClubBookChangedEvent(clubBook));
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.club.commons.events.model.AddressBookChangedEvent;
+import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.model.ClubBook;
 import seedu.club.model.ReadOnlyClubBook;
@@ -78,7 +78,7 @@ public class StorageManagerTest {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlClubBookStorageExceptionThrowingStub("dummy"),
                                              new JsonUserPrefsStorage("dummy"));
-        storage.handleAddressBookChangedEvent(new AddressBookChangedEvent(new ClubBook()));
+        storage.handleAddressBookChangedEvent(new ClubBookChangedEvent(new ClubBook()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
 

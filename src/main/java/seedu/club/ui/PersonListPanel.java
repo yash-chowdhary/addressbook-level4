@@ -25,7 +25,7 @@ public class PersonListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
     @FXML
-    private ListView<PersonCard> personListView;
+    private ListView<MemberCard> personListView;
 
     public PersonListPanel(ObservableList<Member> memberList) {
         super(FXML);
@@ -34,8 +34,8 @@ public class PersonListPanel extends UiPart<Region> {
     }
 
     private void setConnections(ObservableList<Member> memberList) {
-        ObservableList<PersonCard> mappedList = EasyBind.map(
-                memberList, (person) -> new PersonCard(person, memberList.indexOf(person) + 1));
+        ObservableList<MemberCard> mappedList = EasyBind.map(
+                memberList, (person) -> new MemberCard(person, memberList.indexOf(person) + 1));
         personListView.setItems(mappedList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
         setEventHandlerForSelectionChangeEvent();
@@ -52,7 +52,7 @@ public class PersonListPanel extends UiPart<Region> {
     }
 
     /**
-     * Scrolls to the {@code PersonCard} at the {@code index} and selects it.
+     * Scrolls to the {@code MemberCard} at the {@code index} and selects it.
      */
     private void scrollTo(int index) {
         Platform.runLater(() -> {
@@ -68,12 +68,12 @@ public class PersonListPanel extends UiPart<Region> {
     }
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
+     * Custom {@code ListCell} that displays the graphics of a {@code MemberCard}.
      */
-    class PersonListViewCell extends ListCell<PersonCard> {
+    class PersonListViewCell extends ListCell<MemberCard> {
 
         @Override
-        protected void updateItem(PersonCard person, boolean empty) {
+        protected void updateItem(MemberCard person, boolean empty) {
             super.updateItem(person, empty);
 
             if (empty || person == null) {

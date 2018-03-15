@@ -3,7 +3,7 @@ package seedu.club.storage;
 import java.io.IOException;
 import java.util.Optional;
 
-import seedu.club.commons.events.model.AddressBookChangedEvent;
+import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.model.ReadOnlyClubBook;
@@ -34,5 +34,5 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage {
      *   Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
-    void handleAddressBookChangedEvent(AddressBookChangedEvent abce);
+    void handleAddressBookChangedEvent(ClubBookChangedEvent abce);
 }

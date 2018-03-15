@@ -17,51 +17,51 @@ public class MemberCardTest extends GuiUnitTest {
     public void display() {
         // no tags
         Member memberWithNoTags = new MemberBuilder().withTags(new String[0]).build();
-        PersonCard personCard = new PersonCard(memberWithNoTags, 1);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, memberWithNoTags, 1);
+        MemberCard memberCard = new MemberCard(memberWithNoTags, 1);
+        uiPartRule.setUiPart(memberCard);
+        assertCardDisplay(memberCard, memberWithNoTags, 1);
 
         // with tags
         Member memberWithTags = new MemberBuilder().build();
-        personCard = new PersonCard(memberWithTags, 2);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, memberWithTags, 2);
+        memberCard = new MemberCard(memberWithTags, 2);
+        uiPartRule.setUiPart(memberCard);
+        assertCardDisplay(memberCard, memberWithTags, 2);
     }
 
     @Test
     public void equals() {
         Member member = new MemberBuilder().build();
-        PersonCard personCard = new PersonCard(member, 0);
+        MemberCard memberCard = new MemberCard(member, 0);
 
         // same member, same index -> returns true
-        PersonCard copy = new PersonCard(member, 0);
-        assertTrue(personCard.equals(copy));
+        MemberCard copy = new MemberCard(member, 0);
+        assertTrue(memberCard.equals(copy));
 
         // same object -> returns true
-        assertTrue(personCard.equals(personCard));
+        assertTrue(memberCard.equals(memberCard));
 
         // null -> returns false
-        assertFalse(personCard.equals(null));
+        assertFalse(memberCard.equals(null));
 
         // different types -> returns false
-        assertFalse(personCard.equals(0));
+        assertFalse(memberCard.equals(0));
 
         // different member, same index -> returns false
         Member differentMember = new MemberBuilder().withName("differentName").build();
-        assertFalse(personCard.equals(new PersonCard(differentMember, 0)));
+        assertFalse(memberCard.equals(new MemberCard(differentMember, 0)));
 
         // same member, different index -> returns false
-        assertFalse(personCard.equals(new PersonCard(member, 1)));
+        assertFalse(memberCard.equals(new MemberCard(member, 1)));
     }
 
     /**
-     * Asserts that {@code personCard} displays the details of {@code expectedMember} correctly and matches
+     * Asserts that {@code memberCard} displays the details of {@code expectedMember} correctly and matches
      * {@code expectedId}.
      */
-    private void assertCardDisplay(PersonCard personCard, Member expectedMember, int expectedId) {
+    private void assertCardDisplay(MemberCard memberCard, Member expectedMember, int expectedId) {
         guiRobot.pauseForHuman();
 
-        PersonCardHandle personCardHandle = new PersonCardHandle(personCard.getRoot());
+        PersonCardHandle personCardHandle = new PersonCardHandle(memberCard.getRoot());
 
         // verify id is displayed correctly
         assertEquals(Integer.toString(expectedId) + ". ", personCardHandle.getId());

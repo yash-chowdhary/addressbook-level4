@@ -1,7 +1,7 @@
 package seedu.club.commons.events.ui;
 
 import seedu.club.commons.events.BaseEvent;
-import seedu.club.ui.PersonCard;
+import seedu.club.ui.MemberCard;
 
 /**
  * Represents a selection change in the member List Panel
@@ -9,9 +9,9 @@ import seedu.club.ui.PersonCard;
 public class PersonPanelSelectionChangedEvent extends BaseEvent {
 
 
-    private final PersonCard newSelection;
+    private final MemberCard newSelection;
 
-    public PersonPanelSelectionChangedEvent(PersonCard newSelection) {
+    public PersonPanelSelectionChangedEvent(MemberCard newSelection) {
         this.newSelection = newSelection;
     }
 
@@ -20,7 +20,7 @@ public class PersonPanelSelectionChangedEvent extends BaseEvent {
         return this.getClass().getSimpleName();
     }
 
-    public PersonCard getNewSelection() {
+    public MemberCard getNewSelection() {
         return newSelection;
     }
 }
