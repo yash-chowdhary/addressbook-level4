@@ -86,14 +86,14 @@ public class MainApp extends Application {
      * or an empty club book will be used instead if errors occur when reading {@code storage}'s club book.
      */
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
-        Optional<ReadOnlyClubBook> addressBookOptional;
+        Optional<ReadOnlyClubBook> clubBookOptional;
         ReadOnlyClubBook initialData;
         try {
-            addressBookOptional = storage.readClubBook();
-            if (!addressBookOptional.isPresent()) {
+            clubBookOptional = storage.readClubBook();
+            if (!clubBookOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with a sample ClubBook");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            initialData = clubBookOptional.orElseGet(SampleDataUtil::getSampleClubBook);
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty ClubBook");
             initialData = new ClubBook();
@@ -189,7 +189,7 @@ public class MainApp extends Application {
 
     @Override
     public void stop() {
-        logger.info("============================ [ Stopping Address Book ] =============================");
+        logger.info("============================ [ Stopping Club Connect ] =============================");
         ui.stop();
         try {
             storage.saveUserPrefs(userPrefs);

@@ -178,7 +178,7 @@ public abstract class ClubBookSystemTest {
         assertEquals(expectedCommandInput, getCommandBox().getInput());
         assertEquals(expectedResultMessage, getResultDisplay().getText());
         assertEquals(expectedModel, getModel());
-        assertEquals(expectedModel.getClubBook(), testApp.readStorageAddressBook());
+        assertEquals(expectedModel.getClubBook(), testApp.readStorageClubBook());
         assertListMatching(getPersonListPanel(), expectedModel.getFilteredPersonList());
     }
 

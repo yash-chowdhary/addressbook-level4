@@ -23,7 +23,7 @@ import seedu.club.model.tag.Tag;
  * Contains utility methods for populating {@code ClubBook} with sample data.
  */
 public class SampleDataUtil {
-    public static Member[] getSamplePersons() {
+    public static Member[] getSampleMembers() {
         return new Member[] {
             new Member(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                     new MatricNumber("A5215090A"), new Group("logistics"),
@@ -46,15 +46,15 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyClubBook getSampleAddressBook() {
+    public static ReadOnlyClubBook getSampleClubBook() {
         try {
             ClubBook sampleCb = new ClubBook();
-            for (Member sampleMember : getSamplePersons()) {
+            for (Member sampleMember : getSampleMembers()) {
                 sampleCb.addMember(sampleMember);
             }
             return sampleCb;
         } catch (DuplicateMemberException e) {
-            throw new AssertionError("sample data cannot contain duplicate persons", e);
+            throw new AssertionError("sample data cannot contain duplicate members", e);
         }
     }
 
