@@ -136,13 +136,13 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         /* -------------------------- Perform add operation on the shown filtered list ------------------------------ */
 
         /* Case: filters the member list before adding -> added */
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
         assertCommandSuccess(IDA);
 
         /* ------------------------ Perform add operation while a member card is selected --------------------------- */
 
         /* Case: selects first card in the member list, add a member -> added, card selection remains unchanged */
-        selectPerson(Index.fromOneBased(1));
+        selectMember(Index.fromOneBased(1));
         assertCommandSuccess(CARL);
 
         /* ----------------------------------- Perform invalid add operations --------------------------------------- */

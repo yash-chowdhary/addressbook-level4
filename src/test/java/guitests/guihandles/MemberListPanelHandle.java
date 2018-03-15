@@ -13,7 +13,7 @@ import seedu.club.ui.MemberCard;
 public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
     public static final String MEMBER_LIST_VIEW_ID = "#personListView";
 
-    private Optional<MemberCard> lastRememberedSelectedPersonCard;
+    private Optional<MemberCard> lastRememberedSelectedMemberCard;
 
     public MemberListPanelHandle(ListView<MemberCard> personListPanelNode) {
         super(personListPanelNode);
@@ -104,9 +104,9 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
         List<MemberCard> selectedItems = getRootNode().getSelectionModel().getSelectedItems();
 
         if (selectedItems.size() == 0) {
-            lastRememberedSelectedPersonCard = Optional.empty();
+            lastRememberedSelectedMemberCard = Optional.empty();
         } else {
-            lastRememberedSelectedPersonCard = Optional.of(selectedItems.get(0));
+            lastRememberedSelectedMemberCard = Optional.of(selectedItems.get(0));
         }
     }
 
@@ -118,10 +118,10 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
         List<MemberCard> selectedItems = getRootNode().getSelectionModel().getSelectedItems();
 
         if (selectedItems.size() == 0) {
-            return lastRememberedSelectedPersonCard.isPresent();
+            return lastRememberedSelectedMemberCard.isPresent();
         } else {
-            return !lastRememberedSelectedPersonCard.isPresent()
-                    || !lastRememberedSelectedPersonCard.get().equals(selectedItems.get(0));
+            return !lastRememberedSelectedMemberCard.isPresent()
+                    || !lastRememberedSelectedMemberCard.get().equals(selectedItems.get(0));
         }
     }
 

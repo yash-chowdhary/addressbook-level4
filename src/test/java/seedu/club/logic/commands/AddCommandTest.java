@@ -128,7 +128,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updatePerson(Member target, Member editedMember)
+        public void updateMember(Member target, Member editedMember)
                 throws DuplicateMemberException {
             fail("This method should not be called.");
         }
@@ -139,13 +139,13 @@ public class AddCommandTest {
         }
 
         @Override
-        public ObservableList<Member> getFilteredPersonList() {
+        public ObservableList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
             return null;
         }
 
         @Override
-        public void updateFilteredPersonList(Predicate<Member> predicate) {
+        public void updateFilteredMemberList(Predicate<Member> predicate) {
             fail("This method should not be called.");
         }
 

@@ -7,7 +7,7 @@ import static seedu.club.logic.commands.DeleteCommand.MESSAGE_DELETE_PERSON_SUCC
 import static seedu.club.testutil.TestUtil.getLastIndex;
 import static seedu.club.testutil.TestUtil.getMidIndex;
 import static seedu.club.testutil.TestUtil.getPerson;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
@@ -32,8 +32,8 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: delete the first member in the list, command with leading spaces and trailing spaces -> deleted */
         Model expectedModel = getModel();
-        String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_PERSON.getOneBased() + "       ";
-        Member deletedMember = removePerson(expectedModel, INDEX_FIRST_PERSON);
+        String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
+        Member deletedMember = removePerson(expectedModel, INDEX_FIRST_MEMBER);
         String expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 
@@ -60,15 +60,15 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* ------------------ Performing delete operation while a filtered list is being shown ---------------------- */
 
         /* Case: filtered member list, delete index within bounds of club book and member list -> deleted */
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
-        Index index = INDEX_FIRST_PERSON;
-        assertTrue(index.getZeroBased() < getModel().getFilteredPersonList().size());
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
+        Index index = INDEX_FIRST_MEMBER;
+        assertTrue(index.getZeroBased() < getModel().getFilteredMemberList().size());
         assertCommandSuccess(index);
 
         /* Case: filtered member list, delete index within bounds of club book but out of bounds of member list
          * -> rejected
          */
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
         int invalidIndex = getModel().getClubBook().getMemberList().size();
         command = DeleteCommand.COMMAND_WORD + " " + invalidIndex;
         assertCommandFailure(command, MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
@@ -76,11 +76,11 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* --------------------- Performing delete operation while a member card is selected ------------------------ */
 
         /* Case: delete the selected member -> member list panel selects the member before the deleted member */
-        showAllPersons();
+        showAllMembers();
         expectedModel = getModel();
         Index selectedIndex = getLastIndex(expectedModel);
         Index expectedIndex = Index.fromZeroBased(selectedIndex.getZeroBased() - 1);
-        selectPerson(selectedIndex);
+        selectMember(selectedIndex);
         command = DeleteCommand.COMMAND_WORD + " " + selectedIndex.getOneBased();
         deletedMember = removePerson(expectedModel, selectedIndex);
         expectedResultMessage = String.format(MESSAGE_DELETE_PERSON_SUCCESS, deletedMember);

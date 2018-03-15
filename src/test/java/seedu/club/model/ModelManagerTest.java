@@ -9,7 +9,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BENSON;
@@ -39,7 +39,7 @@ public class ModelManagerTest {
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         ModelManager modelManager = new ModelManager();
         thrown.expect(UnsupportedOperationException.class);
-        modelManager.getFilteredPersonList().remove(0);
+        modelManager.getFilteredMemberList().remove(0);
     }
 
     @Test
@@ -139,11 +139,11 @@ public class ModelManagerTest {
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
-        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+        modelManager.updateFilteredMemberList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
         assertFalse(modelManager.equals(new ModelManager(clubBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
-        modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        modelManager.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
 
         // different userPrefs -> returns true
         UserPrefs differentUserPrefs = new UserPrefs();

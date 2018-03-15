@@ -78,12 +78,12 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void addPerson(Member member) throws DuplicateMemberException {
         //updateTagList(member.getTags());
         clubBook.addMember(member);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
 
     @Override
-    public void updatePerson(Member target, Member editedMember)
+    public void updateMember(Member target, Member editedMember)
             throws DuplicateMemberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
 
@@ -110,7 +110,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void deleteTag(Tag tag) throws TagNotFoundException {
         clubBook.deleteTag(tag);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
 
@@ -161,12 +161,12 @@ public class ModelManager extends ComponentManager implements Model {
      * {@code clubBook}
      */
     @Override
-    public ObservableList<Member> getFilteredPersonList() {
+    public ObservableList<Member> getFilteredMemberList() {
         return FXCollections.unmodifiableObservableList(filteredMembers);
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Member> predicate) {
+    public void updateFilteredMemberList(Predicate<Member> predicate) {
         requireNonNull(predicate);
         filteredMembers.setPredicate(predicate);
     }

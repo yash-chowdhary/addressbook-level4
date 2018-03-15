@@ -2,7 +2,7 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
@@ -38,7 +38,7 @@ public abstract class UndoableCommand extends Command {
     protected final void undo() {
         requireAllNonNull(model, previousClubBook);
         model.resetData(previousClubBook);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class UndoableCommand extends Command {
             throw new AssertionError("The command has been successfully executed previously; "
                     + "it should not fail now");
         }
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
     }
 
     @Override

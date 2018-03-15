@@ -38,13 +38,13 @@ public class ClearCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: selects first card in member list and clears club book -> cleared and no card selected */
         executeCommand(UndoCommand.COMMAND_WORD); // restores the original club book
-        selectPerson(Index.fromOneBased(1));
+        selectMember(Index.fromOneBased(1));
         assertCommandSuccess(ClearCommand.COMMAND_WORD);
         assertSelectedCardDeselected();
 
         /* Case: filters the member list before clearing -> entire club book cleared */
         executeCommand(UndoCommand.COMMAND_WORD); // restores the original club book
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
         assertCommandSuccess(ClearCommand.COMMAND_WORD);
         assertSelectedCardUnchanged();
 

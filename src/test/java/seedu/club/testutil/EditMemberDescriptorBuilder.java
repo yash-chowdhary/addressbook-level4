@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import seedu.club.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
@@ -18,21 +18,21 @@ import seedu.club.model.tag.Tag;
  */
 public class EditMemberDescriptorBuilder {
 
-    private EditPersonDescriptor descriptor;
+    private EditMemberDescriptor descriptor;
 
     public EditMemberDescriptorBuilder() {
-        descriptor = new EditPersonDescriptor();
+        descriptor = new EditMemberDescriptor();
     }
 
-    public EditMemberDescriptorBuilder(EditPersonDescriptor descriptor) {
-        this.descriptor = new EditPersonDescriptor(descriptor);
+    public EditMemberDescriptorBuilder(EditMemberDescriptor descriptor) {
+        this.descriptor = new EditMemberDescriptor(descriptor);
     }
 
     /**
      * Returns an {@code EditPersonDescriptor} with fields containing {@code member}'s details
      */
     public EditMemberDescriptorBuilder(Member member) {
-        descriptor = new EditPersonDescriptor();
+        descriptor = new EditMemberDescriptor();
         descriptor.setName(member.getName());
         descriptor.setPhone(member.getPhone());
         descriptor.setEmail(member.getEmail());
@@ -90,7 +90,7 @@ public class EditMemberDescriptorBuilder {
         return this;
     }
 
-    public EditPersonDescriptor build() {
+    public EditMemberDescriptor build() {
         return descriptor;
     }
 }

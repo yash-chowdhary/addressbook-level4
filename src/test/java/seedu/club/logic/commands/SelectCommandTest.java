@@ -5,9 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.club.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_THIRD_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Before;
@@ -41,32 +41,32 @@ public class SelectCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Index lastPersonIndex = Index.fromOneBased(model.getFilteredPersonList().size());
+        Index lastPersonIndex = Index.fromOneBased(model.getFilteredMemberList().size());
 
-        assertExecutionSuccess(INDEX_FIRST_PERSON);
-        assertExecutionSuccess(INDEX_THIRD_PERSON);
+        assertExecutionSuccess(INDEX_FIRST_MEMBER);
+        assertExecutionSuccess(INDEX_THIRD_MEMBER);
         assertExecutionSuccess(lastPersonIndex);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_failure() {
-        Index outOfBoundsIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        Index outOfBoundsIndex = Index.fromOneBased(model.getFilteredMemberList().size() + 1);
 
         assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
     }
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
 
-        assertExecutionSuccess(INDEX_FIRST_PERSON);
+        assertExecutionSuccess(INDEX_FIRST_MEMBER);
     }
 
     @Test
     public void execute_invalidIndexFilteredList_failure() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
 
-        Index outOfBoundsIndex = INDEX_SECOND_PERSON;
+        Index outOfBoundsIndex = INDEX_SECOND_MEMBER;
         // ensures that outOfBoundIndex is still in bounds of club book list
         assertTrue(outOfBoundsIndex.getZeroBased() < model.getClubBook().getMemberList().size());
 
@@ -75,14 +75,14 @@ public class SelectCommandTest {
 
     @Test
     public void equals() {
-        SelectCommand selectFirstCommand = new SelectCommand(INDEX_FIRST_PERSON);
-        SelectCommand selectSecondCommand = new SelectCommand(INDEX_SECOND_PERSON);
+        SelectCommand selectFirstCommand = new SelectCommand(INDEX_FIRST_MEMBER);
+        SelectCommand selectSecondCommand = new SelectCommand(INDEX_SECOND_MEMBER);
 
         // same object -> returns true
         assertTrue(selectFirstCommand.equals(selectFirstCommand));
 
         // same values -> returns true
-        SelectCommand selectFirstCommandCopy = new SelectCommand(INDEX_FIRST_PERSON);
+        SelectCommand selectFirstCommandCopy = new SelectCommand(INDEX_FIRST_MEMBER);
         assertTrue(selectFirstCommand.equals(selectFirstCommandCopy));
 
         // different types -> returns false

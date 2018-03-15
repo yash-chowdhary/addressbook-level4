@@ -2,7 +2,7 @@ package seedu.club.ui;
 
 import static org.junit.Assert.assertEquals;
 import static seedu.club.testutil.EventsUtil.postNow;
-import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalPersons;
 import static seedu.club.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
 import static seedu.club.ui.testutil.GuiTestAssert.assertCardEquals;
@@ -21,16 +21,16 @@ public class MemberListPanelTest extends GuiUnitTest {
     private static final ObservableList<Member> TYPICAL_MEMBERS =
             FXCollections.observableList(getTypicalPersons());
 
-    private static final JumpToListRequestEvent JUMP_TO_SECOND_EVENT = new JumpToListRequestEvent(INDEX_SECOND_PERSON);
+    private static final JumpToListRequestEvent JUMP_TO_SECOND_EVENT = new JumpToListRequestEvent(INDEX_SECOND_MEMBER);
 
     private MemberListPanelHandle memberListPanelHandle;
 
     @Before
     public void setUp() {
-        PersonListPanel personListPanel = new PersonListPanel(TYPICAL_MEMBERS);
-        uiPartRule.setUiPart(personListPanel);
+        MemberListPanel memberListPanel = new MemberListPanel(TYPICAL_MEMBERS);
+        uiPartRule.setUiPart(memberListPanel);
 
-        memberListPanelHandle = new MemberListPanelHandle(getChildNode(personListPanel.getRoot(),
+        memberListPanelHandle = new MemberListPanelHandle(getChildNode(memberListPanel.getRoot(),
                 MemberListPanelHandle.MEMBER_LIST_VIEW_ID));
     }
 
@@ -51,7 +51,7 @@ public class MemberListPanelTest extends GuiUnitTest {
         postNow(JUMP_TO_SECOND_EVENT);
         guiRobot.pauseForHuman();
 
-        MemberCardHandle expectedCard = memberListPanelHandle.getPersonCardHandle(INDEX_SECOND_PERSON.getZeroBased());
+        MemberCardHandle expectedCard = memberListPanelHandle.getPersonCardHandle(INDEX_SECOND_MEMBER.getZeroBased());
         MemberCardHandle selectedCard = memberListPanelHandle.getHandleToSelectedCard();
         assertCardEquals(expectedCard, selectedCard);
     }

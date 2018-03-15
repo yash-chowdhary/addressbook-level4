@@ -133,9 +133,9 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertSelectedCardUnchanged();
 
         /* Case: find while a member is selected -> selected card deselected */
-        showAllPersons();
-        selectPerson(Index.fromOneBased(1));
-        assertFalse(getPersonListPanel().getHandleToSelectedCard().getName().equals(DANIEL.getName().fullName));
+        showAllMembers();
+        selectMember(Index.fromOneBased(1));
+        assertFalse(getMemberListPanel().getHandleToSelectedCard().getName().equals(DANIEL.getName().fullName));
         command = FindCommand.COMMAND_WORD + " Daniel";
         ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
@@ -166,7 +166,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
      */
     private void assertCommandSuccess(String command, Model expectedModel) {
         String expectedResultMessage = String.format(
-                MESSAGE_MEMBERS_LISTED_OVERVIEW, expectedModel.getFilteredPersonList().size());
+                MESSAGE_MEMBERS_LISTED_OVERVIEW, expectedModel.getFilteredMemberList().size());
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);

@@ -83,8 +83,8 @@ public class CommandTestUtil {
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
-    public static final EditCommand.EditPersonDescriptor DESC_AMY;
-    public static final EditCommand.EditPersonDescriptor DESC_BOB;
+    public static final EditCommand.EditMemberDescriptor DESC_AMY;
+    public static final EditCommand.EditMemberDescriptor DESC_BOB;
 
     static {
         DESC_AMY = new EditMemberDescriptorBuilder().withName(VALID_NAME_AMY)
@@ -121,7 +121,7 @@ public class CommandTestUtil {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         ClubBook expectedClubBook = new ClubBook(actualModel.getClubBook());
-        List<Member> expectedFilteredList = new ArrayList<>(actualModel.getFilteredPersonList());
+        List<Member> expectedFilteredList = new ArrayList<>(actualModel.getFilteredMemberList());
 
         try {
             command.execute();
@@ -129,7 +129,7 @@ public class CommandTestUtil {
         } catch (CommandException e) {
             assertEquals(expectedMessage, e.getMessage());
             assertEquals(expectedClubBook, actualModel.getClubBook());
-            assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
+            assertEquals(expectedFilteredList, actualModel.getFilteredMemberList());
         }
     }
 
@@ -138,20 +138,20 @@ public class CommandTestUtil {
      * {@code model}'s club book.
      */
     public static void showPersonAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredPersonList().size());
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredMemberList().size());
 
-        Member member = model.getFilteredPersonList().get(targetIndex.getZeroBased());
+        Member member = model.getFilteredMemberList().get(targetIndex.getZeroBased());
         final String[] splitName = member.getName().fullName.split("\\s+");
-        model.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
+        model.updateFilteredMemberList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
-        assertEquals(1, model.getFilteredPersonList().size());
+        assertEquals(1, model.getFilteredMemberList().size());
     }
 
     /**
      * Deletes the first member in {@code model}'s filtered list from {@code model}'s club book.
      */
     public static void deleteFirstPerson(Model model) {
-        Member firstMember = model.getFilteredPersonList().get(0);
+        Member firstMember = model.getFilteredMemberList().get(0);
         try {
             model.deletePerson(firstMember);
         } catch (MemberNotFoundException pnfe) {

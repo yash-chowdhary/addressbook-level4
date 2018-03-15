@@ -20,14 +20,14 @@ import seedu.club.model.member.Member;
 /**
  * Panel containing the list of persons.
  */
-public class PersonListPanel extends UiPart<Region> {
+public class MemberListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+    private final Logger logger = LogsCenter.getLogger(MemberListPanel.class);
 
     @FXML
     private ListView<MemberCard> personListView;
 
-    public PersonListPanel(ObservableList<Member> memberList) {
+    public MemberListPanel(ObservableList<Member> memberList) {
         super(FXML);
         setConnections(memberList);
         registerAsAnEventHandler(this);

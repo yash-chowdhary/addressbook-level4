@@ -275,7 +275,7 @@ public class FindByCommandTest {
         CommandResult commandResult = command.execute();
 
         assertEquals(expectedMessage, commandResult.feedbackToUser);
-        assertEquals(expectedList, model.getFilteredPersonList());
+        assertEquals(expectedList, model.getFilteredMemberList());
         assertEquals(expectedClubBook, model.getClubBook());
     }
 }

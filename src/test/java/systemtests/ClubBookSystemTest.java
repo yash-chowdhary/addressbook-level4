@@ -101,7 +101,7 @@ public abstract class ClubBookSystemTest {
         return mainWindowHandle.getCommandBox();
     }
 
-    public MemberListPanelHandle getPersonListPanel() {
+    public MemberListPanelHandle getMemberListPanel() {
         return mainWindowHandle.getMemberListPanel();
     }
 
@@ -139,25 +139,25 @@ public abstract class ClubBookSystemTest {
     /**
      * Displays all persons in the club book.
      */
-    protected void showAllPersons() {
+    protected void showAllMembers() {
         executeCommand(ListCommand.COMMAND_WORD);
-        assertEquals(getModel().getClubBook().getMemberList().size(), getModel().getFilteredPersonList().size());
+        assertEquals(getModel().getClubBook().getMemberList().size(), getModel().getFilteredMemberList().size());
     }
 
     /**
      * Displays all persons with any parts of their names matching {@code keyword} (case-insensitive).
      */
-    protected void showPersonsWithName(String keyword) {
+    protected void showMembersWithName(String keyword) {
         executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
-        assertTrue(getModel().getFilteredPersonList().size() < getModel().getClubBook().getMemberList().size());
+        assertTrue(getModel().getFilteredMemberList().size() < getModel().getClubBook().getMemberList().size());
     }
 
     /**
      * Selects the member at {@code index} of the displayed list.
      */
-    protected void selectPerson(Index index) {
+    protected void selectMember(Index index) {
         executeCommand(SelectCommand.COMMAND_WORD + " " + index.getOneBased());
-        assertEquals(index.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
+        assertEquals(index.getZeroBased(), getMemberListPanel().getSelectedCardIndex());
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class ClubBookSystemTest {
         assertEquals(expectedResultMessage, getResultDisplay().getText());
         assertEquals(expectedModel, getModel());
         assertEquals(expectedModel.getClubBook(), testApp.readStorageClubBook());
-        assertListMatching(getPersonListPanel(), expectedModel.getFilteredPersonList());
+        assertListMatching(getMemberListPanel(), expectedModel.getFilteredMemberList());
     }
 
     /**
@@ -191,7 +191,7 @@ public abstract class ClubBookSystemTest {
         getBrowserPanel().rememberUrl();
         statusBarFooterHandle.rememberSaveLocation();
         statusBarFooterHandle.rememberSyncStatus();
-        getPersonListPanel().rememberSelectedPersonCard();
+        getMemberListPanel().rememberSelectedPersonCard();
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class ClubBookSystemTest {
      */
     protected void assertSelectedCardDeselected() {
         assertFalse(getBrowserPanel().isUrlChanged());
-        assertFalse(getPersonListPanel().isAnyCardSelected());
+        assertFalse(getMemberListPanel().isAnyCardSelected());
     }
 
     /**
@@ -211,7 +211,7 @@ public abstract class ClubBookSystemTest {
      * @see MemberListPanelHandle#isSelectedPersonCardChanged()
      */
     protected void assertSelectedCardChanged(Index expectedSelectedCardIndex) {
-        String selectedCardName = getPersonListPanel().getHandleToSelectedCard().getName();
+        String selectedCardName = getMemberListPanel().getHandleToSelectedCard().getName();
         URL expectedUrl;
         try {
             expectedUrl = new URL(BrowserPanel.SEARCH_PAGE_URL + selectedCardName.replaceAll(" ", "%20"));
@@ -220,7 +220,7 @@ public abstract class ClubBookSystemTest {
         }
         assertEquals(expectedUrl, getBrowserPanel().getLoadedUrl());
 
-        assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
+        assertEquals(expectedSelectedCardIndex.getZeroBased(), getMemberListPanel().getSelectedCardIndex());
     }
 
     /**
@@ -230,7 +230,7 @@ public abstract class ClubBookSystemTest {
      */
     protected void assertSelectedCardUnchanged() {
         assertFalse(getBrowserPanel().isUrlChanged());
-        assertFalse(getPersonListPanel().isSelectedPersonCardChanged());
+        assertFalse(getMemberListPanel().isSelectedPersonCardChanged());
     }
 
     /**
@@ -275,7 +275,7 @@ public abstract class ClubBookSystemTest {
         try {
             assertEquals("", getCommandBox().getInput());
             assertEquals("", getResultDisplay().getText());
-            assertListMatching(getPersonListPanel(), getModel().getFilteredPersonList());
+            assertListMatching(getMemberListPanel(), getModel().getFilteredMemberList());
             assertEquals(MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE), getBrowserPanel().getLoadedUrl());
             assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());

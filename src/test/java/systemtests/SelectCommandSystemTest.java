@@ -5,7 +5,7 @@ import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 import static seedu.club.testutil.TypicalMembers.getTypicalPersons;
 
@@ -25,8 +25,8 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         /* Case: select the first card in the member list, command with leading spaces and trailing spaces
          * -> selected
          */
-        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
-        assertCommandSuccess(command, INDEX_FIRST_PERSON);
+        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased() + "   ";
+        assertCommandSuccess(command, INDEX_FIRST_MEMBER);
 
         /* Case: select the last card in the member list -> selected */
         Index personCount = Index.fromOneBased(getTypicalPersons().size());
@@ -56,13 +56,13 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         /* Case: filtered member list, select index within bounds of club book but out of bounds of member list
          * -> rejected
          */
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
         int invalidIndex = getModel().getClubBook().getMemberList().size();
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
 
         /* Case: filtered member list, select index within bounds of club book and member list -> selected */
         Index validIndex = Index.fromOneBased(1);
-        assertTrue(validIndex.getZeroBased() < getModel().getFilteredPersonList().size());
+        assertTrue(validIndex.getZeroBased() < getModel().getFilteredMemberList().size());
         command = SelectCommand.COMMAND_WORD + " " + validIndex.getOneBased();
         assertCommandSuccess(command, validIndex);
 
@@ -77,7 +77,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
 
         /* Case: invalid index (size + 1) -> rejected */
-        invalidIndex = getModel().getFilteredPersonList().size() + 1;
+        invalidIndex = getModel().getFilteredMemberList().size() + 1;
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
 
         /* Case: invalid arguments (alphabets) -> rejected */
@@ -93,7 +93,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: select from empty club book -> rejected */
         deleteAllPersons();
-        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased(),
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased(),
                 MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
     }
 
@@ -115,7 +115,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         Model expectedModel = getModel();
         String expectedResultMessage = String.format(
                 MESSAGE_SELECT_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
-        int preExecutionSelectedCardIndex = getPersonListPanel().getSelectedCardIndex();
+        int preExecutionSelectedCardIndex = getMemberListPanel().getSelectedCardIndex();
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);

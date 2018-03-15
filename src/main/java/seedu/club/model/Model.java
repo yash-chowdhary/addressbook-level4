@@ -17,7 +17,7 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
  */
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
-    Predicate<Member> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+    Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyClubBook newData);
@@ -38,17 +38,17 @@ public interface Model {
      *      another existing member in the list.
      * @throws MemberNotFoundException if {@code target} could not be found in the list.
      */
-    void updatePerson(Member target, Member editedMember)
+    void updateMember(Member target, Member editedMember)
             throws DuplicateMemberException, MemberNotFoundException;
 
     /** Returns an unmodifiable view of the filtered member list */
-    ObservableList<Member> getFilteredPersonList();
+    ObservableList<Member> getFilteredMemberList();
 
     /**
      * Updates the filter of the filtered member list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredPersonList(Predicate<Member> predicate);
+    void updateFilteredMemberList(Predicate<Member> predicate);
 
     /**
      * Logs In a member in the club

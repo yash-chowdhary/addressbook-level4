@@ -30,8 +30,8 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_PERSONS;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
@@ -67,7 +67,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         /* Case: edit all fields, command with leading spaces, trailing spaces and multiple spaces between each field
          * -> edited
          */
-        Index index = INDEX_FIRST_PERSON;
+        Index index = INDEX_FIRST_MEMBER;
         String command = " " + EditCommand.COMMAND_WORD + "  " + index.getOneBased() + "  " + NAME_DESC_BOB + "  "
                 + PHONE_DESC_BOB + " " + EMAIL_DESC_BOB + "  " + MATRIC_NUMBER_DESC_BOB + " "
                 + GROUP_DESC_BOB + " " + TAG_DESC_HUSBAND + " " + USERNAME_DESC_BOB + " " + PASSWORD_DESC;
@@ -84,8 +84,8 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         /* Case: redo editing the last member in the list -> last member edited again */
         command = RedoCommand.COMMAND_WORD;
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
-        model.updatePerson(
-                getModel().getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()), editedMember);
+        model.updateMember(
+                getModel().getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()), editedMember);
         assertCommandSuccess(command, model, expectedResultMessage);
 
         /* Case: edit a member with new values same as existing values -> edited */
@@ -94,14 +94,14 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, index, BOB);
 
         /* Case: edit some fields -> edited */
-        index = INDEX_FIRST_PERSON;
+        index = INDEX_FIRST_MEMBER;
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + TAG_DESC_FRIEND;
-        Member memberToEdit = getModel().getFilteredPersonList().get(index.getZeroBased());
+        Member memberToEdit = getModel().getFilteredMemberList().get(index.getZeroBased());
         editedMember = new MemberBuilder(memberToEdit).withTags(VALID_TAG_FRIEND).build();
         assertCommandSuccess(command, index, editedMember);
 
         /* Case: clear tags -> cleared */
-        index = INDEX_FIRST_PERSON;
+        index = INDEX_FIRST_MEMBER;
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + PREFIX_TAG.getPrefix();
         editedMember = new MemberBuilder(memberToEdit).withTags().build();
         assertCommandSuccess(command, index, editedMember);
@@ -109,18 +109,18 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         /* ------------------ Performing edit operation while a filtered list is being shown ------------------------ */
 
         /* Case: filtered member list, edit index within bounds of club book and member list -> edited */
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
-        index = INDEX_FIRST_PERSON;
-        assertTrue(index.getZeroBased() < getModel().getFilteredPersonList().size());
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
+        index = INDEX_FIRST_MEMBER;
+        assertTrue(index.getZeroBased() < getModel().getFilteredMemberList().size());
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + NAME_DESC_BOB;
-        memberToEdit = getModel().getFilteredPersonList().get(index.getZeroBased());
+        memberToEdit = getModel().getFilteredMemberList().get(index.getZeroBased());
         editedMember = new MemberBuilder(memberToEdit).withName(VALID_NAME_BOB).build();
         assertCommandSuccess(command, index, editedMember);
 
         /* Case: filtered member list, edit index within bounds of club book but out of bounds of member list
          * -> rejected
          */
-        showPersonsWithName(KEYWORD_MATCHING_MEIER);
+        showMembersWithName(KEYWORD_MATCHING_MEIER);
         int invalidIndex = getModel().getClubBook().getMemberList().size();
         assertCommandFailure(EditCommand.COMMAND_WORD + " " + invalidIndex + NAME_DESC_BOB,
                 Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
@@ -130,9 +130,9 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         /* Case: selects first card in the member list, edit a member -> edited, card selection remains unchanged but
          * browser url changes
          */
-        showAllPersons();
-        index = INDEX_FIRST_PERSON;
-        selectPerson(index);
+        showAllMembers();
+        index = INDEX_FIRST_MEMBER;
+        selectMember(index);
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY
                 + MATRIC_NUMBER_DESC_AMY + GROUP_DESC_AMY + TAG_DESC_FRIEND;
         // this can be misleading: card selection actually remains unchanged but the
@@ -150,7 +150,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
 
         /* Case: invalid index (size + 1) -> rejected */
-        invalidIndex = getModel().getFilteredPersonList().size() + 1;
+        invalidIndex = getModel().getFilteredMemberList().size() + 1;
         assertCommandFailure(EditCommand.COMMAND_WORD + " " + invalidIndex + NAME_DESC_BOB,
                 Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
 
@@ -159,47 +159,47 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
 
         /* Case: missing all fields -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased(),
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased(),
                 EditCommand.MESSAGE_NOT_EDITED);
 
         /* Case: invalid name -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + INVALID_NAME_DESC,
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased() + INVALID_NAME_DESC,
                 Name.MESSAGE_NAME_CONSTRAINTS);
 
         /* Case: invalid phone -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + INVALID_PHONE_DESC,
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased() + INVALID_PHONE_DESC,
                 Phone.MESSAGE_PHONE_CONSTRAINTS);
 
         /* Case: invalid email -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + INVALID_EMAIL_DESC,
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased() + INVALID_EMAIL_DESC,
                 Email.MESSAGE_EMAIL_CONSTRAINTS);
 
         /* Case: invalid matric number -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased()
                         + INVALID_MATRIC_NUMBER_DESC,
                 MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
 
         /* Case: invalid group -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + INVALID_GROUP_DESC,
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased() + INVALID_GROUP_DESC,
                 Group.MESSAGE_GROUP_CONSTRAINTS);
 
         /* Case: invalid tag -> rejected */
-        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + INVALID_TAG_DESC,
+        assertCommandFailure(EditCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased() + INVALID_TAG_DESC,
                 Tag.MESSAGE_TAG_CONSTRAINTS);
 
         /* Case: edit a member with new values same as another member's values -> rejected */
         executeCommand(MemberUtil.getAddCommand(BOB));
         assertTrue(getModel().getClubBook().getMemberList().contains(BOB));
-        index = INDEX_FIRST_PERSON;
-        assertFalse(getModel().getFilteredPersonList().get(index.getZeroBased()).equals(BOB));
+        index = INDEX_FIRST_MEMBER;
+        assertFalse(getModel().getFilteredMemberList().get(index.getZeroBased()).equals(BOB));
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + TAG_DESC_FRIEND + TAG_DESC_HUSBAND;
-        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MEMBER);
 
         /* Case: edit a member with new values same as another member's values but with different tags -> rejected */
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + TAG_DESC_HUSBAND;
-        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MEMBER);
     }
 
     /**
@@ -226,16 +226,16 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
                                       Index expectedSelectedCardIndex) {
         Model expectedModel = getModel();
         try {
-            expectedModel.updatePerson(
-                    expectedModel.getFilteredPersonList().get(toEdit.getZeroBased()), editedMember);
-            expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            expectedModel.updateMember(
+                    expectedModel.getFilteredMemberList().get(toEdit.getZeroBased()), editedMember);
+            expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         } catch (DuplicateMemberException | MemberNotFoundException e) {
             throw new IllegalArgumentException(
                     "editedMember is a duplicate in expectedModel, or it isn't found in the model.");
         }
 
         assertCommandSuccess(command, expectedModel,
-                String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedMember), expectedSelectedCardIndex);
+                String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember), expectedSelectedCardIndex);
     }
 
     /**
@@ -266,7 +266,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage,
                                       Index expectedSelectedCardIndex) {
         executeCommand(command);
-        expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertCommandBoxShowsDefaultStyle();
         if (expectedSelectedCardIndex != null) {

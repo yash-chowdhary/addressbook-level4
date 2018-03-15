@@ -7,7 +7,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,69 +53,69 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited member: %1$s";
+    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This member already exists in the club book.";
+    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book.";
 
     private final Index index;
-    private final EditPersonDescriptor editPersonDescriptor;
+    private final EditMemberDescriptor editMemberDescriptor;
 
     private Member memberToEdit;
     private Member editedMember;
 
     /**
      * @param index of the member in the filtered member list to edit
-     * @param editPersonDescriptor details to edit the member with
+     * @param editMemberDescriptor details to edit the member with
      */
-    public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
+    public EditCommand(Index index, EditMemberDescriptor editMemberDescriptor) {
         requireNonNull(index);
-        requireNonNull(editPersonDescriptor);
+        requireNonNull(editMemberDescriptor);
 
         this.index = index;
-        this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
+        this.editMemberDescriptor = new EditMemberDescriptor(editMemberDescriptor);
     }
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
-            model.updatePerson(memberToEdit, editedMember);
+            model.updateMember(memberToEdit, editedMember);
         } catch (DuplicateMemberException dpe) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
         } catch (MemberNotFoundException pnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedMember));
+        model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        return new CommandResult(String.format(MESSAGE_EDIT_MEMBER_SUCCESS, editedMember));
     }
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
-        List<Member> lastShownList = model.getFilteredPersonList();
+        List<Member> lastShownList = model.getFilteredMemberList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
         }
 
         memberToEdit = lastShownList.get(index.getZeroBased());
-        editedMember = createEditedPerson(memberToEdit, editPersonDescriptor);
+        editedMember = createEditedMember(memberToEdit, editMemberDescriptor);
     }
 
     /**
      * Creates and returns a {@code member} with the details of {@code memberToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * edited with {@code editMemberDescriptor}.
      */
-    private static Member createEditedPerson(Member memberToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Member createEditedMember(Member memberToEdit, EditMemberDescriptor editMemberDescriptor) {
         assert memberToEdit != null;
 
-        Name updatedName = editPersonDescriptor.getName().orElse(memberToEdit.getName());
-        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(memberToEdit.getPhone());
-        Email updatedEmail = editPersonDescriptor.getEmail().orElse(memberToEdit.getEmail());
-        MatricNumber updatedMatricNumber = editPersonDescriptor.getMatricNumber()
+        Name updatedName = editMemberDescriptor.getName().orElse(memberToEdit.getName());
+        Phone updatedPhone = editMemberDescriptor.getPhone().orElse(memberToEdit.getPhone());
+        Email updatedEmail = editMemberDescriptor.getEmail().orElse(memberToEdit.getEmail());
+        MatricNumber updatedMatricNumber = editMemberDescriptor.getMatricNumber()
                 .orElse(memberToEdit.getMatricNumber());
-        Group updatedGroup = editPersonDescriptor.getGroup().orElse(memberToEdit.getGroup());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(memberToEdit.getTags());
-        Username updatedUsername = editPersonDescriptor.getUsername().orElse(memberToEdit.getUsername());
-        Password updatedPassword = editPersonDescriptor.getPassword().orElse(memberToEdit.getPassword());
+        Group updatedGroup = editMemberDescriptor.getGroup().orElse(memberToEdit.getGroup());
+        Set<Tag> updatedTags = editMemberDescriptor.getTags().orElse(memberToEdit.getTags());
+        Username updatedUsername = editMemberDescriptor.getUsername().orElse(memberToEdit.getUsername());
+        Password updatedPassword = editMemberDescriptor.getPassword().orElse(memberToEdit.getPassword());
 
         return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
                 updatedTags, updatedUsername, updatedPassword);
@@ -136,7 +136,7 @@ public class EditCommand extends UndoableCommand {
         // state check
         EditCommand e = (EditCommand) other;
         return index.equals(e.index)
-                && editPersonDescriptor.equals(e.editPersonDescriptor)
+                && editMemberDescriptor.equals(e.editMemberDescriptor)
                 && Objects.equals(memberToEdit, e.memberToEdit);
     }
 
@@ -144,7 +144,7 @@ public class EditCommand extends UndoableCommand {
      * Stores the details to edit the member with. Each non-empty field value will replace the
      * corresponding field value of the member.
      */
-    public static class EditPersonDescriptor {
+    public static class EditMemberDescriptor {
         private Name name;
         private Phone phone;
         private Email email;
@@ -154,13 +154,13 @@ public class EditCommand extends UndoableCommand {
         private Username username;
         private Password password;
 
-        public EditPersonDescriptor() {}
+        public EditMemberDescriptor() {}
 
         /**
          * Copy constructor.
          * A defensive copy of {@code tags} is used internally.
          */
-        public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+        public EditMemberDescriptor(EditMemberDescriptor toCopy) {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
@@ -261,12 +261,12 @@ public class EditCommand extends UndoableCommand {
             }
 
             // instanceof handles nulls
-            if (!(other instanceof EditPersonDescriptor)) {
+            if (!(other instanceof EditMemberDescriptor)) {
                 return false;
             }
 
             // state check
-            EditPersonDescriptor e = (EditPersonDescriptor) other;
+            EditMemberDescriptor e = (EditMemberDescriptor) other;
 
             return getName().equals(e.getName())
                     && getPhone().equals(e.getPhone())

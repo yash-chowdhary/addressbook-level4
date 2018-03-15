@@ -4,7 +4,7 @@ import static seedu.club.logic.UndoRedoStackUtil.prepareStack;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.deleteFirstPerson;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.util.Arrays;
@@ -24,8 +24,8 @@ public class UndoCommandTest {
     private static final UndoRedoStack EMPTY_STACK = new UndoRedoStack();
 
     private final Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-    private final DeleteCommand deleteCommandOne = new DeleteCommand(INDEX_FIRST_PERSON);
-    private final DeleteCommand deleteCommandTwo = new DeleteCommand(INDEX_FIRST_PERSON);
+    private final DeleteCommand deleteCommandOne = new DeleteCommand(INDEX_FIRST_MEMBER);
+    private final DeleteCommand deleteCommandTwo = new DeleteCommand(INDEX_FIRST_MEMBER);
 
     @Before
     public void setUp() {

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.deleteFirstPerson;
 import static seedu.club.logic.commands.CommandTestUtil.showPersonAtIndex;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class UndoableCommandTest {
         deleteFirstPerson(expectedModel);
         assertEquals(expectedModel, model);
 
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
 
         // undo() should cause the model's filtered list to show all persons
         dummyCommand.undo();
@@ -38,7 +38,7 @@ public class UndoableCommandTest {
 
     @Test
     public void redo() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showPersonAtIndex(model, INDEX_FIRST_MEMBER);
 
         // redo() should cause the model's filtered list to show all persons
         dummyCommand.redo();
@@ -56,7 +56,7 @@ public class UndoableCommandTest {
 
         @Override
         public CommandResult executeUndoableCommand() throws CommandException {
-            Member memberToDelete = model.getFilteredPersonList().get(0);
+            Member memberToDelete = model.getFilteredMemberList().get(0);
             try {
                 model.deletePerson(memberToDelete);
             } catch (MemberNotFoundException pnfe) {
