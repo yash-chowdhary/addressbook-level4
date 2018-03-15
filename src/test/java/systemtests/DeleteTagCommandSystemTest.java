@@ -1,25 +1,25 @@
 package systemtests;
 
 import static org.junit.Assert.assertEquals;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_UNUSED_DESC;
-import static seedu.address.logic.commands.DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS;
-import static seedu.address.logic.commands.DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_TAG;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED_DESC;
+import static seedu.club.logic.commands.DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS;
+import static seedu.club.logic.commands.DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG;
 
 import org.junit.Test;
 
-import seedu.address.logic.commands.DeleteTagCommand;
-import seedu.address.logic.commands.RedoCommand;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.model.Model;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.exceptions.TagNotFoundException;
+import seedu.club.logic.commands.DeleteTagCommand;
+import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.UndoCommand;
+import seedu.club.model.Model;
+import seedu.club.model.tag.Tag;
+import seedu.club.model.tag.exceptions.TagNotFoundException;
 
-public class DeleteTagCommandSystemTest extends AddressBookSystemTest {
+public class DeleteTagCommandSystemTest extends ClubBookSystemTest {
 
     @Test
     public void deleteTag() {
@@ -30,7 +30,7 @@ public class DeleteTagCommandSystemTest extends AddressBookSystemTest {
 
         /* ------------------------ Perform deleteTag operations on the shown unfiltered list -------------------- */
 
-        /* Case: delete a valid tag which is present in the address book */
+        /* Case: delete a valid tag which is present in the club book */
         command = DeleteTagCommand.COMMAND_WORD + TAG_DESC_FRIEND;
         deletedTag = deleteTagFromModel(expectedModel, VALID_TAG_FRIEND);
         String expectedResultMessage = String.format(MESSAGE_DELETE_TAG_SUCCESS, deletedTag);
@@ -67,8 +67,8 @@ public class DeleteTagCommandSystemTest extends AddressBookSystemTest {
      * 4. Asserts that the status bar's sync status changes.<br>
      * 5. Asserts that the command box has the default style class.<br>
      * Verifications 1 to 3 are performed by
-     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.
-     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(String command, Model model, String expectedResultMessage) {
         executeCommand(command);
@@ -85,8 +85,8 @@ public class DeleteTagCommandSystemTest extends AddressBookSystemTest {
      * 3. Asserts that the model related components equal to the current model.<br>
      * 4. Asserts that the command box has the error style.<br>
      * Verifications 1 to 3 are performed by
-     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
-     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandFailure(String command, String expectedResultMessage) {
         executeCommand(command);
