@@ -4,23 +4,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.address.ui.testutil.GuiTestAssert.assertListMatching;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.club.ui.testutil.GuiTestAssert.assertListMatching;
 
 import org.junit.Test;
 
 import guitests.GuiRobot;
 import guitests.guihandles.HelpWindowHandle;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.SelectCommand;
-import seedu.address.ui.BrowserPanel;
-import seedu.address.ui.StatusBarFooter;
+import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.SelectCommand;
+import seedu.club.ui.BrowserPanel;
+import seedu.club.ui.StatusBarFooter;
 
 /**
  * A system test class for the help window, which contains interaction with other UI components.
  */
-public class HelpCommandSystemTest extends AddressBookSystemTest {
+public class HelpCommandSystemTest extends ClubBookSystemTest {
     private static final String ERROR_MESSAGE = "ATTENTION!!!! : On some computers, this test may fail when run on "
             + "non-headless mode as FxRobot#clickOn(Node, MouseButton...) clicks on the wrong location. We suspect "
             + "that this is a bug with TestFX library that we are using. If this test fails, you have to run your "
