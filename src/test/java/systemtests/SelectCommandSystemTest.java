@@ -57,7 +57,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
          * -> rejected
          */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
-        int invalidIndex = getModel().getClubBook().getPersonList().size();
+        int invalidIndex = getModel().getClubBook().getMemberList().size();
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
 
         /* Case: filtered member list, select index within bounds of club book and member list -> selected */

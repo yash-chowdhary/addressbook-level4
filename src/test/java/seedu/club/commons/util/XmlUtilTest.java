@@ -74,7 +74,7 @@ public class XmlUtilTest {
     @Test
     public void getDataFromFile_validFile_validResult() throws Exception {
         ClubBook dataFromFile = XmlUtil.getDataFromFile(VALID_FILE, XmlSerializableClubBook.class).toModelType();
-        assertEquals(9, dataFromFile.getPersonList().size());
+        assertEquals(9, dataFromFile.getMemberList().size());
         assertEquals(0, dataFromFile.getTagList().size());
     }
 

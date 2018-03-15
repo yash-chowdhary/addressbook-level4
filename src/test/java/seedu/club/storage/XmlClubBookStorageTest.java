@@ -84,14 +84,14 @@ public class XmlClubBookStorageTest {
         assertEquals(original, new ClubBook(readBack));
 
         //Modify data, overwrite exiting file, and read back
-        original.addPerson(HOON);
+        original.addMember(HOON);
         original.removePerson(ALICE);
         xmlClubBookStorage.saveClubBook(original, filePath);
         readBack = xmlClubBookStorage.readClubBook(filePath).get();
         assertEquals(original, new ClubBook(readBack));
 
         //Save and read without specifying file path
-        original.addPerson(IDA);
+        original.addMember(IDA);
         xmlClubBookStorage.saveClubBook(original); //file path not specified
         readBack = xmlClubBookStorage.readClubBook().get(); //file path not specified
         assertEquals(original, new ClubBook(readBack));

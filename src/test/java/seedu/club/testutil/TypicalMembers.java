@@ -101,7 +101,7 @@ public class TypicalMembers {
         ClubBook ab = new ClubBook();
         for (Member member : getTypicalPersons()) {
             try {
-                ab.addPerson(member);
+                ab.addMember(member);
             } catch (DuplicateMemberException e) {
                 throw new AssertionError("not possible");
             }

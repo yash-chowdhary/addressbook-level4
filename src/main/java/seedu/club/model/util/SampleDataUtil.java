@@ -48,11 +48,11 @@ public class SampleDataUtil {
 
     public static ReadOnlyClubBook getSampleAddressBook() {
         try {
-            ClubBook sampleAb = new ClubBook();
+            ClubBook sampleCb = new ClubBook();
             for (Member sampleMember : getSamplePersons()) {
-                sampleAb.addPerson(sampleMember);
+                sampleCb.addMember(sampleMember);
             }
-            return sampleAb;
+            return sampleCb;
         } catch (DuplicateMemberException e) {
             throw new AssertionError("sample data cannot contain duplicate persons", e);
         }

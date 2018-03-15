@@ -117,7 +117,7 @@ public class EditCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         // edit member in filtered list into a duplicate in club book
-        Member memberInList = model.getClubBook().getPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
+        Member memberInList = model.getClubBook().getMemberList().get(INDEX_SECOND_PERSON.getZeroBased());
         EditCommand editCommand = prepareCommand(INDEX_FIRST_PERSON,
                 new EditMemberDescriptorBuilder(memberInList).build());
 
@@ -142,7 +142,7 @@ public class EditCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
         // ensures that outOfBoundIndex is still in bounds of club book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getClubBook().getPersonList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getClubBook().getMemberList().size());
 
         EditCommand editCommand = prepareCommand(outOfBoundIndex,
                 new EditMemberDescriptorBuilder().withName(VALID_NAME_BOB).build());

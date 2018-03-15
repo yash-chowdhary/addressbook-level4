@@ -15,7 +15,7 @@ public interface ClubBookStorage {
     /**
      * Returns the file path of the data file.
      */
-    String getAddressBookFilePath();
+    String getClubBookFilePath();
 
     /**
      * Returns ClubBook data as a {@link ReadOnlyClubBook}.
@@ -26,20 +26,20 @@ public interface ClubBookStorage {
     Optional<ReadOnlyClubBook> readClubBook() throws DataConversionException, IOException;
 
     /**
-     * @see #getAddressBookFilePath()
+     * @see #getClubBookFilePath()
      */
     Optional<ReadOnlyClubBook> readClubBook(String filePath) throws DataConversionException, IOException;
 
     /**
      * Saves the given {@link ReadOnlyClubBook} to the storage.
-     * @param addressBook cannot be null.
+     * @param clubBook cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
-    void saveClubBook(ReadOnlyClubBook addressBook) throws IOException;
+    void saveClubBook(ReadOnlyClubBook clubBook) throws IOException;
 
     /**
      * @see #saveClubBook(ReadOnlyClubBook)
      */
-    void saveClubBook(ReadOnlyClubBook addressBook, String filePath) throws IOException;
+    void saveClubBook(ReadOnlyClubBook clubBook, String filePath) throws IOException;
 
 }

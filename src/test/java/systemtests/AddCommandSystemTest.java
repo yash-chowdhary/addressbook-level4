@@ -154,7 +154,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         /* Case: add a duplicate member except with different tags -> rejected */
         // "friends" is an existing tag used in the default model, see TypicalMembers#ALICE
         // This test will fail if a new tag that is not in the model is used, see the bug documented in
-        // ClubBook#addPerson(member)
+        // ClubBook#addMember(member)
         command = MemberUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "friends";
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
 

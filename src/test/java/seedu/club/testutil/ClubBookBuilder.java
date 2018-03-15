@@ -28,7 +28,7 @@ public class ClubBookBuilder {
      */
     public ClubBookBuilder withPerson(Member member) {
         try {
-            clubBook.addPerson(member);
+            clubBook.addMember(member);
         } catch (DuplicateMemberException dpe) {
             throw new IllegalArgumentException("member is expected to be unique.");
         }

@@ -21,18 +21,18 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage {
     void saveUserPrefs(UserPrefs userPrefs) throws IOException;
 
     @Override
-    String getAddressBookFilePath();
+    String getClubBookFilePath();
 
     @Override
     Optional<ReadOnlyClubBook> readClubBook() throws DataConversionException, IOException;
 
     @Override
-    void saveClubBook(ReadOnlyClubBook addressBook) throws IOException;
+    void saveClubBook(ReadOnlyClubBook clubBook) throws IOException;
 
     /**
-     * Saves the current version of the Address Book to the hard disk.
+     * Saves the current version of the Club Book to the hard disk.
      *   Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
-    void handleAddressBookChangedEvent(ClubBookChangedEvent abce);
+    void handleClubBookChangedEvent(ClubBookChangedEvent cbce);
 }

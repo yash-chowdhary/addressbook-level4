@@ -71,7 +71,7 @@ public class ClubBook implements ReadOnlyClubBook {
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
-        List<Member> syncedMemberList = newData.getPersonList().stream()
+        List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
 
@@ -91,7 +91,7 @@ public class ClubBook implements ReadOnlyClubBook {
      *
      * @throws DuplicateMemberException if an equivalent member already exists.
      */
-    public void addPerson(Member p) throws DuplicateMemberException {
+    public void addMember(Member p) throws DuplicateMemberException {
         Member member = syncWithMasterTagList(p);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any member
@@ -343,7 +343,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
-    public ObservableList<Member> getPersonList() {
+    public ObservableList<Member> getMemberList() {
         return persons.asObservableList();
     }
 

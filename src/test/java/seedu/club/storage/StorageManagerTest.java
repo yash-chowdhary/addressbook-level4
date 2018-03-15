@@ -70,7 +70,7 @@ public class StorageManagerTest {
 
     @Test
     public void getAddressBookFilePath() {
-        assertNotNull(storageManager.getAddressBookFilePath());
+        assertNotNull(storageManager.getClubBookFilePath());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class StorageManagerTest {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlClubBookStorageExceptionThrowingStub("dummy"),
                                              new JsonUserPrefsStorage("dummy"));
-        storage.handleAddressBookChangedEvent(new ClubBookChangedEvent(new ClubBook()));
+        storage.handleClubBookChangedEvent(new ClubBookChangedEvent(new ClubBook()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
 
@@ -93,7 +93,7 @@ public class StorageManagerTest {
         }
 
         @Override
-        public void saveClubBook(ReadOnlyClubBook addressBook, String filePath) throws IOException {
+        public void saveClubBook(ReadOnlyClubBook clubBook, String filePath) throws IOException {
             throw new IOException("dummy exception");
         }
     }

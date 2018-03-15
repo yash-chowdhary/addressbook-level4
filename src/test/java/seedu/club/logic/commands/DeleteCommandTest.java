@@ -74,7 +74,7 @@ public class DeleteCommandTest {
 
         Index outOfBoundIndex = INDEX_SECOND_PERSON;
         // ensures that outOfBoundIndex is still in bounds of club book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getClubBook().getPersonList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getClubBook().getMemberList().size());
 
         DeleteCommand deleteCommand = prepareCommand(outOfBoundIndex);
 

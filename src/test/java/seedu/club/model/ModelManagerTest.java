@@ -147,7 +147,7 @@ public class ModelManagerTest {
 
         // different userPrefs -> returns true
         UserPrefs differentUserPrefs = new UserPrefs();
-        differentUserPrefs.setAddressBookName("differentName");
+        differentUserPrefs.setClubBookName("differentName");
         assertTrue(modelManager.equals(new ModelManager(clubBook, differentUserPrefs)));
     }
 }

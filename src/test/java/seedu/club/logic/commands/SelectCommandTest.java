@@ -68,7 +68,7 @@ public class SelectCommandTest {
 
         Index outOfBoundsIndex = INDEX_SECOND_PERSON;
         // ensures that outOfBoundIndex is still in bounds of club book list
-        assertTrue(outOfBoundsIndex.getZeroBased() < model.getClubBook().getPersonList().size());
+        assertTrue(outOfBoundsIndex.getZeroBased() < model.getClubBook().getMemberList().size());
 
         assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
     }

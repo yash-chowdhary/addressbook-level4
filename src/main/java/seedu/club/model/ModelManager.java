@@ -44,7 +44,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with club book: " + addressBook + " and user prefs " + userPrefs);
 
         this.clubBook = new ClubBook(addressBook);
-        filteredMembers = new FilteredList<>(this.clubBook.getPersonList());
+        filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
     }
 
@@ -77,7 +77,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addPerson(Member member) throws DuplicateMemberException {
         //updateTagList(member.getTags());
-        clubBook.addPerson(member);
+        clubBook.addMember(member);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
     }
@@ -144,7 +144,7 @@ public class ModelManager extends ComponentManager implements Model {
      * Returns true is no member in the club book is tagged with {@code tag}.
      */
     private boolean isNotTaggedInPersons(Tag tag) {
-        List<Member> members = new ArrayList<>(clubBook.getPersonList());
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         for (Member member : members) {
             if (member.getTags().contains(tag)) {

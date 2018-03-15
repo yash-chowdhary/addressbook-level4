@@ -121,7 +121,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
          * -> rejected
          */
         showPersonsWithName(KEYWORD_MATCHING_MEIER);
-        int invalidIndex = getModel().getClubBook().getPersonList().size();
+        int invalidIndex = getModel().getClubBook().getMemberList().size();
         assertCommandFailure(EditCommand.COMMAND_WORD + " " + invalidIndex + NAME_DESC_BOB,
                 Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
 
@@ -189,7 +189,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: edit a member with new values same as another member's values -> rejected */
         executeCommand(MemberUtil.getAddCommand(BOB));
-        assertTrue(getModel().getClubBook().getPersonList().contains(BOB));
+        assertTrue(getModel().getClubBook().getMemberList().contains(BOB));
         index = INDEX_FIRST_PERSON;
         assertFalse(getModel().getFilteredPersonList().get(index.getZeroBased()).equals(BOB));
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB

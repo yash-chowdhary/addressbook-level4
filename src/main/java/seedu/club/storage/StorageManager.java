@@ -51,13 +51,13 @@ public class StorageManager extends ComponentManager implements Storage {
     // ================ ClubBook methods ==============================
 
     @Override
-    public String getAddressBookFilePath() {
-        return clubBookStorage.getAddressBookFilePath();
+    public String getClubBookFilePath() {
+        return clubBookStorage.getClubBookFilePath();
     }
 
     @Override
     public Optional<ReadOnlyClubBook> readClubBook() throws DataConversionException, IOException {
-        return readClubBook(clubBookStorage.getAddressBookFilePath());
+        return readClubBook(clubBookStorage.getClubBookFilePath());
     }
 
     @Override
@@ -67,20 +67,20 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
-    public void saveClubBook(ReadOnlyClubBook addressBook) throws IOException {
-        saveClubBook(addressBook, clubBookStorage.getAddressBookFilePath());
+    public void saveClubBook(ReadOnlyClubBook clubBook) throws IOException {
+        saveClubBook(clubBook, clubBookStorage.getClubBookFilePath());
     }
 
     @Override
-    public void saveClubBook(ReadOnlyClubBook addressBook, String filePath) throws IOException {
+    public void saveClubBook(ReadOnlyClubBook clubBook, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        clubBookStorage.saveClubBook(addressBook, filePath);
+        clubBookStorage.saveClubBook(clubBook, filePath);
     }
 
 
     @Override
     @Subscribe
-    public void handleAddressBookChangedEvent(ClubBookChangedEvent event) {
+    public void handleClubBookChangedEvent(ClubBookChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
         try {
             saveClubBook(event.data);

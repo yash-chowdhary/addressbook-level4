@@ -36,12 +36,12 @@ public class XmlSerializableClubBook {
      */
     public XmlSerializableClubBook(ReadOnlyClubBook src) {
         this();
-        members.addAll(src.getPersonList().stream().map(XmlAdaptedMember::new).collect(Collectors.toList()));
+        members.addAll(src.getMemberList().stream().map(XmlAdaptedMember::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
     /**
-     * Converts this addressbook into the model's {@code ClubBook} object.
+     * Converts this clubbook into the model's {@code ClubBook} object.
      *
      * @throws IllegalValueException if there were any data constraints violated or duplicates in the
      * {@code XmlAdaptedMember} or {@code XmlAdaptedTag}.
@@ -52,7 +52,7 @@ public class XmlSerializableClubBook {
             clubBook.addTag(t.toModelType());
         }
         for (XmlAdaptedMember m : members) {
-            clubBook.addPerson(m.toModelType());
+            clubBook.addMember(m.toModelType());
         }
         return clubBook;
     }

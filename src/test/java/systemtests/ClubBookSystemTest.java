@@ -141,7 +141,7 @@ public abstract class ClubBookSystemTest {
      */
     protected void showAllPersons() {
         executeCommand(ListCommand.COMMAND_WORD);
-        assertEquals(getModel().getClubBook().getPersonList().size(), getModel().getFilteredPersonList().size());
+        assertEquals(getModel().getClubBook().getMemberList().size(), getModel().getFilteredPersonList().size());
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class ClubBookSystemTest {
      */
     protected void showPersonsWithName(String keyword) {
         executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
-        assertTrue(getModel().getFilteredPersonList().size() < getModel().getClubBook().getPersonList().size());
+        assertTrue(getModel().getFilteredPersonList().size() < getModel().getClubBook().getMemberList().size());
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class ClubBookSystemTest {
      */
     protected void deleteAllPersons() {
         executeCommand(ClearCommand.COMMAND_WORD);
-        assertEquals(0, getModel().getClubBook().getPersonList().size());
+        assertEquals(0, getModel().getClubBook().getMemberList().size());
     }
 
     /**

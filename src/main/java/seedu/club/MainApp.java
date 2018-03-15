@@ -61,7 +61,7 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         userPrefs = initPrefs(userPrefsStorage);
-        ClubBookStorage clubBookStorage = new XmlClubBookStorage(userPrefs.getAddressBookFilePath());
+        ClubBookStorage clubBookStorage = new XmlClubBookStorage(userPrefs.getClubBookFilePath());
         storage = new StorageManager(clubBookStorage, userPrefsStorage);
 
         initLogging(config);

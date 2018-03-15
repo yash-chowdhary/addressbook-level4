@@ -82,7 +82,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: find same persons in club book after deleting 1 of them -> 1 member found */
         executeCommand(DeleteCommand.COMMAND_WORD + " 1");
-        assertFalse(getModel().getClubBook().getPersonList().contains(BENSON));
+        assertFalse(getModel().getClubBook().getMemberList().contains(BENSON));
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();
         ModelHelper.setFilteredList(expectedModel, DANIEL);

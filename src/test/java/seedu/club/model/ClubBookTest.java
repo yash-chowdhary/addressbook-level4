@@ -44,7 +44,7 @@ public class ClubBookTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), clubBook.getPersonList());
+        assertEquals(Collections.emptyList(), clubBook.getMemberList());
         assertEquals(Collections.emptyList(), clubBook.getTagList());
     }
 
@@ -117,7 +117,7 @@ public class ClubBookTest {
     @Test
     public void getPersonList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
-        clubBook.getPersonList().remove(0);
+        clubBook.getMemberList().remove(0);
     }
 
     @Test
@@ -171,7 +171,7 @@ public class ClubBookTest {
         }
 
         @Override
-        public ObservableList<Member> getPersonList() {
+        public ObservableList<Member> getMemberList() {
             return members;
         }
 
