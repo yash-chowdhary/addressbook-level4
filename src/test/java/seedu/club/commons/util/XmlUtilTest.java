@@ -79,33 +79,33 @@ public class XmlUtilTest {
     }
 
     @Test
-    public void xmlAdaptedPersonFromFile_fileWithMissingPersonField_validResult() throws Exception {
-        XmlAdaptedMember actualPerson = XmlUtil.getDataFromFile(
+    public void xmlAdaptedMemberFromFile_fileWithMissingMemberField_validResult() throws Exception {
+        XmlAdaptedMember actualMember = XmlUtil.getDataFromFile(
                 MISSING_MEMBER_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
-        XmlAdaptedMember expectedPerson = new XmlAdaptedMember(
+        XmlAdaptedMember expectedMember = new XmlAdaptedMember(
                 null, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS,
                 VALID_USERNAME, VALID_PASSWORD);
-        assertEquals(expectedPerson, actualPerson);
+        assertEquals(expectedMember, actualMember);
     }
 
     @Test
-    public void xmlAdaptedPersonFromFile_fileWithInvalidPersonField_validResult() throws Exception {
-        XmlAdaptedMember actualPerson = XmlUtil.getDataFromFile(
+    public void xmlAdaptedMemberFromFile_fileWithInvalidMemberField_validResult() throws Exception {
+        XmlAdaptedMember actualMember = XmlUtil.getDataFromFile(
                 INVALID_MEMBER_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
-        XmlAdaptedMember expectedPerson = new XmlAdaptedMember(
+        XmlAdaptedMember expectedMember = new XmlAdaptedMember(
                 VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS,
                 VALID_USERNAME, VALID_PASSWORD);
-        assertEquals(expectedPerson, actualPerson);
+        assertEquals(expectedMember, actualMember);
     }
 
     @Test
-    public void xmlAdaptedPersonFromFile_fileWithValidPerson_validResult() throws Exception {
-        XmlAdaptedMember actualPerson = XmlUtil.getDataFromFile(
+    public void xmlAdaptedMemberFromFile_fileWithValidMember_validResult() throws Exception {
+        XmlAdaptedMember actualMember = XmlUtil.getDataFromFile(
                 VALID_MEMBER_FILE, XmlAdaptedMemberWithRootElement.class);
-        XmlAdaptedMember expectedPerson = new XmlAdaptedMember(
+        XmlAdaptedMember expectedMember = new XmlAdaptedMember(
                 VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                 VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
-        assertEquals(expectedPerson, actualPerson);
+        assertEquals(expectedMember, actualMember);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class XmlUtilTest {
 
         ClubBookBuilder builder = new ClubBookBuilder(new ClubBook());
         dataToWrite = new XmlSerializableClubBook(
-                builder.withPerson(new MemberBuilder().build()).withTag("Friends").build());
+                builder.withMember(new MemberBuilder().build()).withTag("Friends").build());
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableClubBook.class);

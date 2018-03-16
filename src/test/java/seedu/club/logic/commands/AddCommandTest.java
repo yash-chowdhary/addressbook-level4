@@ -44,13 +44,13 @@ public class AddCommandTest {
 
     @Test
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        ModelStubAcceptingMemberAdded modelStub = new ModelStubAcceptingMemberAdded();
         Member validMember = new MemberBuilder().build();
 
         CommandResult commandResult = getAddCommandForPerson(validMember, modelStub).execute();
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validMember), commandResult.feedbackToUser);
-        assertEquals(Arrays.asList(validMember), modelStub.personsAdded);
+        assertEquals(Arrays.asList(validMember), modelStub.membersAdded);
     }
 
     @Test
@@ -184,13 +184,13 @@ public class AddCommandTest {
     /**
      * A Model stub that always accept the member being added.
      */
-    private class ModelStubAcceptingPersonAdded extends ModelStub {
-        final ArrayList<Member> personsAdded = new ArrayList<>();
+    private class ModelStubAcceptingMemberAdded extends ModelStub {
+        final ArrayList<Member> membersAdded = new ArrayList<>();
 
         @Override
         public void addMember(Member member) throws DuplicateMemberException {
             requireNonNull(member);
-            personsAdded.add(member);
+            membersAdded.add(member);
         }
 
         @Override

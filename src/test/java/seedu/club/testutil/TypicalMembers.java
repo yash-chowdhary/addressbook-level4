@@ -99,7 +99,7 @@ public class TypicalMembers {
      */
     public static ClubBook getTypicalClubBook() {
         ClubBook ab = new ClubBook();
-        for (Member member : getTypicalPersons()) {
+        for (Member member : getTypicalMembers()) {
             try {
                 ab.addMember(member);
             } catch (DuplicateMemberException e) {
@@ -109,7 +109,7 @@ public class TypicalMembers {
         return ab;
     }
 
-    public static List<Member> getTypicalPersons() {
+    public static List<Member> getTypicalMembers() {
         return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
     }
 }

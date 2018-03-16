@@ -21,7 +21,7 @@ import seedu.club.model.member.Member;
  * Panel containing the list of persons.
  */
 public class MemberListPanel extends UiPart<Region> {
-    private static final String FXML = "PersonListPanel.fxml";
+    private static final String FXML = "MemberListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(MemberListPanel.class);
 
     @FXML

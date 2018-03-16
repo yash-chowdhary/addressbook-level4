@@ -142,7 +142,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertSelectedCardDeselected();
 
         /* Case: find member in empty club book -> 0 persons found */
-        deleteAllPersons();
+        deleteAllMembers();
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();
         ModelHelper.setFilteredList(expectedModel, DANIEL);

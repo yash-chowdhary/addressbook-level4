@@ -14,7 +14,7 @@ import seedu.club.model.member.Phone;
 import seedu.club.model.tag.Tag;
 
 /**
- * A utility class to help with building EditPersonDescriptor objects.
+ * A utility class to help with building EditMemberDescriptor objects.
  */
 public class EditMemberDescriptorBuilder {
 
@@ -29,7 +29,7 @@ public class EditMemberDescriptorBuilder {
     }
 
     /**
-     * Returns an {@code EditPersonDescriptor} with fields containing {@code member}'s details
+     * Returns an {@code EditMemberDescriptor} with fields containing {@code member}'s details
      */
     public EditMemberDescriptorBuilder(Member member) {
         descriptor = new EditMemberDescriptor();
@@ -42,7 +42,7 @@ public class EditMemberDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Name} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code Name} of the {@code EditMemberDescriptor} that we are building.
      */
     public EditMemberDescriptorBuilder withName(String name) {
         descriptor.setName(new Name(name));
@@ -50,7 +50,7 @@ public class EditMemberDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Phone} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code Phone} of the {@code EditMemberDescriptor} that we are building.
      */
     public EditMemberDescriptorBuilder withPhone(String phone) {
         descriptor.setPhone(new Phone(phone));
@@ -58,7 +58,7 @@ public class EditMemberDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Email} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code Email} of the {@code EditMemberDescriptor} that we are building.
      */
     public EditMemberDescriptorBuilder withEmail(String email) {
         descriptor.setEmail(new Email(email));
@@ -66,7 +66,7 @@ public class EditMemberDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code MatricNumber} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code MatricNumber} of the {@code EditMemberDescriptor} that we are building.
      */
     public EditMemberDescriptorBuilder withMatricNumber(String matricNumber) {
         descriptor.setMatricNumber(new MatricNumber(matricNumber));
@@ -74,14 +74,14 @@ public class EditMemberDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Group} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code Group} of the {@code EditMemberDescriptor} that we are building.
      */
     public EditMemberDescriptorBuilder withGroup(String group) {
         descriptor.setGroup(new Group(group));
         return this;
     }
     /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code EditPersonDescriptor}
+     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code EditMemberDescriptor}
      * that we are building.
      */
     public EditMemberDescriptorBuilder withTags(String... tags) {

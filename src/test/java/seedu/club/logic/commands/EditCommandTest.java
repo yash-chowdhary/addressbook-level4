@@ -55,16 +55,16 @@ public class EditCommandTest {
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() throws Exception {
-        Index indexLastPerson = Index.fromOneBased(model.getFilteredMemberList().size());
-        Member lastMember = model.getFilteredMemberList().get(indexLastPerson.getZeroBased());
+        Index indexLastMember = Index.fromOneBased(model.getFilteredMemberList().size());
+        Member lastMember = model.getFilteredMemberList().get(indexLastMember.getZeroBased());
 
-        MemberBuilder personInList = new MemberBuilder(lastMember);
-        Member editedMember = personInList.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+        MemberBuilder memberInList = new MemberBuilder(lastMember);
+        Member editedMember = memberInList.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withTags(VALID_TAG_HUSBAND).build();
 
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_HUSBAND).build();
-        EditCommand editCommand = prepareCommand(indexLastPerson, descriptor);
+        EditCommand editCommand = prepareCommand(indexLastMember, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
 
@@ -104,7 +104,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonUnfilteredList_failure() {
+    public void execute_duplicateMemberUnfilteredList_failure() {
         Member firstMember = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(firstMember).build();
         EditCommand editCommand = prepareCommand(INDEX_SECOND_MEMBER, descriptor);
@@ -113,7 +113,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonFilteredList_failure() {
+    public void execute_duplicateMemberFilteredList_failure() {
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         // edit member in filtered list into a duplicate in club book
@@ -125,7 +125,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_invalidPersonIndexUnfilteredList_failure() {
+    public void execute_invalidMemberIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredMemberList().size() + 1);
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder().withName(VALID_NAME_BOB).build();
         EditCommand editCommand = prepareCommand(outOfBoundIndex, descriptor);
@@ -138,7 +138,7 @@ public class EditCommandTest {
      * but smaller than size of club book
      */
     @Test
-    public void execute_invalidPersonIndexFilteredList_failure() {
+    public void execute_invalidMemberIndexFilteredList_failure() {
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
         Index outOfBoundIndex = INDEX_SECOND_MEMBER;
         // ensures that outOfBoundIndex is still in bounds of club book list

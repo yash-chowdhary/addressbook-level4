@@ -137,7 +137,7 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Displays all persons in the club book.
+     * Displays all members in the club book.
      */
     protected void showAllMembers() {
         executeCommand(ListCommand.COMMAND_WORD);
@@ -145,7 +145,7 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Displays all persons with any parts of their names matching {@code keyword} (case-insensitive).
+     * Displays all members with any parts of their names matching {@code keyword} (case-insensitive).
      */
     protected void showMembersWithName(String keyword) {
         executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
@@ -161,9 +161,9 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Deletes all persons in the club book.
+     * Deletes all members in the club book.
      */
-    protected void deleteAllPersons() {
+    protected void deleteAllMembers() {
         executeCommand(ClearCommand.COMMAND_WORD);
         assertEquals(0, getModel().getClubBook().getMemberList().size());
     }
@@ -183,7 +183,7 @@ public abstract class ClubBookSystemTest {
     }
 
     /**
-     * Calls {@code BrowserPanelHandle}, {@code PersonListPanelHandle} and {@code StatusBarFooterHandle} to remember
+     * Calls {@code BrowserPanelHandle}, {@code MemberListPanelHandle} and {@code StatusBarFooterHandle} to remember
      * their current state.
      */
     private void rememberStates() {

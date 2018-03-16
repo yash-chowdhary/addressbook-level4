@@ -131,7 +131,7 @@ public class DeleteTagCommandTest {
      * 4. Redo the deletion. This ensures {@code RedoCommand} removes the tag object regardless of indexing.
      */
     @Test
-    public void executeUndoRedo_validTagFilteredList_samePersonDeleted() throws Exception {
+    public void executeUndoRedo_validTagFilteredList_sameMemberDeleted() throws Exception {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);

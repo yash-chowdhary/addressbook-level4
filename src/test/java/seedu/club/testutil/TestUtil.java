@@ -48,7 +48,7 @@ public class TestUtil {
     /**
      * Returns the member in the {@code model}'s member list at {@code index}.
      */
-    public static Member getPerson(Model model, Index index) {
+    public static Member getMember(Model model, Index index) {
         return model.getClubBook().getMemberList().get(index.getZeroBased());
     }
 }

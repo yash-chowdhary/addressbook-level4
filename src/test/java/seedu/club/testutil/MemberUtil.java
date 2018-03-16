@@ -21,13 +21,13 @@ public class MemberUtil {
      * Returns an add command string for adding the {@code member}.
      */
     public static String getAddCommand(Member member) {
-        return AddCommand.COMMAND_WORD + " " + getPersonDetails(member);
+        return AddCommand.COMMAND_WORD + " " + getMemberDetails(member);
     }
 
     /**
      * Returns the part of command string for the given {@code member}'s details.
      */
-    public static String getPersonDetails(Member member) {
+    public static String getMemberDetails(Member member) {
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + member.getName().fullName + " ");
         sb.append(PREFIX_PHONE + member.getPhone().value + " ");

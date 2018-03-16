@@ -222,7 +222,7 @@ public class FindByCommandTest {
     }
 
     @Test
-    public void execute_zeroKeywords_noPersonFound() {
+    public void execute_zeroKeywords_noMemberFound() {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 0);
         for (String fieldType: fieldTypes) {
             assertCommandSuccess(prepareCommand(" ", fieldType), expectedMessage, Collections.emptyList());
@@ -230,7 +230,7 @@ public class FindByCommandTest {
     }
 
     @Test
-    public void execute_multipleKeywords_multiplePersonsFound() {
+    public void execute_multipleKeywords_multipleMembersFound() {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 3);
         FindByCommand command = prepareCommand("Kurz Elle Kunz", "name");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));

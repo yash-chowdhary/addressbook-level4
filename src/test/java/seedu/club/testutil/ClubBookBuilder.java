@@ -9,7 +9,7 @@ import seedu.club.model.tag.Tag;
 /**
  * A utility class to help with building Clubbook objects.
  * Example usage: <br>
- *     {@code ClubBook cb = new ClubBookBuilder().withPerson("John", "Doe").withTag("Friend").build();}
+ *     {@code ClubBook cb = new ClubBookBuilder().withMember("John", "Doe").withTag("Friend").build();}
  */
 public class ClubBookBuilder {
 
@@ -26,7 +26,7 @@ public class ClubBookBuilder {
     /**
      * Adds a new {@code member} to the {@code ClubBook} that we are building.
      */
-    public ClubBookBuilder withPerson(Member member) {
+    public ClubBookBuilder withMember(Member member) {
         try {
             clubBook.addMember(member);
         } catch (DuplicateMemberException dpe) {

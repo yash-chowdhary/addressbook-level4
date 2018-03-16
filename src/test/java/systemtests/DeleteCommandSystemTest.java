@@ -5,8 +5,8 @@ import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS;
 import static seedu.club.testutil.TestUtil.getLastIndex;
+import static seedu.club.testutil.TestUtil.getMember;
 import static seedu.club.testutil.TestUtil.getMidIndex;
-import static seedu.club.testutil.TestUtil.getPerson;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
@@ -33,14 +33,14 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* Case: delete the first member in the list, command with leading spaces and trailing spaces -> deleted */
         Model expectedModel = getModel();
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
-        Member deletedMember = removePerson(expectedModel, INDEX_FIRST_MEMBER);
+        Member deletedMember = removeMember(expectedModel, INDEX_FIRST_MEMBER);
         String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 
         /* Case: delete the last member in the list -> deleted */
         Model modelBeforeDeletingLast = getModel();
-        Index lastPersonIndex = getLastIndex(modelBeforeDeletingLast);
-        assertCommandSuccess(lastPersonIndex);
+        Index lastMemberIndex = getLastIndex(modelBeforeDeletingLast);
+        assertCommandSuccess(lastMemberIndex);
 
         /* Case: undo deleting the last member in the list -> last member restored */
         command = UndoCommand.COMMAND_WORD;
@@ -49,7 +49,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: redo deleting the last member in the list -> last member deleted again */
         command = RedoCommand.COMMAND_WORD;
-        removePerson(modelBeforeDeletingLast, lastPersonIndex);
+        removeMember(modelBeforeDeletingLast, lastMemberIndex);
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, modelBeforeDeletingLast, expectedResultMessage);
 
@@ -82,7 +82,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         Index expectedIndex = Index.fromZeroBased(selectedIndex.getZeroBased() - 1);
         selectMember(selectedIndex);
         command = DeleteCommand.COMMAND_WORD + " " + selectedIndex.getOneBased();
-        deletedMember = removePerson(expectedModel, selectedIndex);
+        deletedMember = removeMember(expectedModel, selectedIndex);
         expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
         assertCommandSuccess(command, expectedModel, expectedResultMessage, expectedIndex);
 
@@ -116,8 +116,8 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      * Removes the {@code member} at the specified {@code index} in {@code model}'s club book.
      * @return the removed member
      */
-    private Member removePerson(Model model, Index index) {
-        Member targetMember = getPerson(model, index);
+    private Member removeMember(Model model, Index index) {
+        Member targetMember = getMember(model, index);
         try {
             model.deleteMember(targetMember);
         } catch (MemberNotFoundException pnfe) {
@@ -133,7 +133,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      */
     private void assertCommandSuccess(Index toDelete) {
         Model expectedModel = getModel();
-        Member deletedMember = removePerson(expectedModel, toDelete);
+        Member deletedMember = removeMember(expectedModel, toDelete);
         String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
 
         assertCommandSuccess(

@@ -68,7 +68,7 @@ public class ClubBookParserTest {
         Member member = new MemberBuilder().build();
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(member).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_MEMBER.getOneBased() + " " + MemberUtil.getPersonDetails(member));
+                + INDEX_FIRST_MEMBER.getOneBased() + " " + MemberUtil.getMemberDetails(member));
         assertEquals(new EditCommand(INDEX_FIRST_MEMBER, descriptor), command);
     }
 

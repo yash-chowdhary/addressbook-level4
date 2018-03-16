@@ -15,8 +15,8 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
 
     private Optional<MemberCard> lastRememberedSelectedMemberCard;
 
-    public MemberListPanelHandle(ListView<MemberCard> personListPanelNode) {
-        super(personListPanelNode);
+    public MemberListPanelHandle(ListView<MemberCard> memberListPanelNode) {
+        super(memberListPanelNode);
     }
 
     /**

@@ -39,7 +39,7 @@ public class ClubBookTest {
     public ExpectedException thrown = ExpectedException.none();
 
     private final ClubBook clubBook = new ClubBook();
-    private final ClubBook clubBookWithBobAndAmy = new ClubBookBuilder().withPerson(BOB).withPerson(AMY)
+    private final ClubBook clubBookWithBobAndAmy = new ClubBookBuilder().withMember(BOB).withMember(AMY)
             .build();
 
     @Test
@@ -53,7 +53,7 @@ public class ClubBookTest {
         try {
             clubBookWithBobAndAmy.removeGroup(new Group(NON_EXISTENT_GROUP));
         } catch (GroupNotFoundException gnfe) {
-            ClubBook expectedClubBook = new ClubBookBuilder().withPerson(BOB).withPerson(AMY).build();
+            ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
         }
     }
@@ -63,7 +63,7 @@ public class ClubBookTest {
         try {
             clubBookWithBobAndAmy.removeGroup(new Group(MANDATORY_GROUP));
         } catch (GroupCannotBeRemovedException e) {
-            ClubBook expectedClubBook = new ClubBookBuilder().withPerson(BOB).withPerson(AMY).build();
+            ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
         }
     }
@@ -74,18 +74,18 @@ public class ClubBookTest {
 
         Member bobNotInLogistics = new MemberBuilder(BOB).withGroup().build();
         Member amyNotInLogistics = new MemberBuilder(AMY).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withPerson(bobNotInLogistics)
-                .withPerson(amyNotInLogistics).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bobNotInLogistics)
+                .withMember(amyNotInLogistics).build();
 
         assertEquals(expectedClubBook, clubBookWithBobAndAmy);
     }
 
     @Test
     public void updatePerson_detailsChanged_personUpdated() throws Exception {
-        ClubBook updatedToBob = new ClubBookBuilder().withPerson(AMY).build();
+        ClubBook updatedToBob = new ClubBookBuilder().withMember(AMY).build();
         updatedToBob.updateMember(AMY, BOB);
 
-        ClubBook expectedClubBook = new ClubBookBuilder().withPerson(BOB).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).build();
 
         assertEquals(expectedClubBook, updatedToBob);
     }
@@ -128,10 +128,10 @@ public class ClubBookTest {
 
     @Test
     public void updatePerson_detailsChanged_personsAndTagsListUpdated() throws Exception {
-        ClubBook clubBookUpdatedToAmy = new ClubBookBuilder().withPerson(BOB).build();
+        ClubBook clubBookUpdatedToAmy = new ClubBookBuilder().withMember(BOB).build();
         clubBookUpdatedToAmy.updateMember(BOB, AMY);
 
-        ClubBook expectedClubBook = new ClubBookBuilder().withPerson(AMY).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(AMY).build();
 
         assertEquals(expectedClubBook, clubBookUpdatedToAmy);
     }
@@ -141,7 +141,7 @@ public class ClubBookTest {
         try {
             clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_UNUSED));
         } catch (TagNotFoundException tnfe) {
-            ClubBook expectedClubBook = new ClubBookBuilder().withPerson(BOB).withPerson(AMY).build();
+            ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
         }
     }
@@ -152,8 +152,8 @@ public class ClubBookTest {
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withPerson(bobWithoutFriendTag)
-                .withPerson(amyWithoutFriendTag).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bobWithoutFriendTag)
+                .withMember(amyWithoutFriendTag).build();
 
         assertEquals(expectedClubBook, clubBookWithBobAndAmy);
     }

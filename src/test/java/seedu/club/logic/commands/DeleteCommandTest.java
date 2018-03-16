@@ -63,7 +63,7 @@ public class DeleteCommandTest {
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.deleteMember(memberToDelete);
-        showNoPerson(expectedModel);
+        showNoMember(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
@@ -126,7 +126,7 @@ public class DeleteCommandTest {
      * 4. Redo the deletion. This ensures {@code RedoCommand} deletes the member object regardless of indexing.
      */
     @Test
-    public void executeUndoRedo_validIndexFilteredList_samePersonDeleted() throws Exception {
+    public void executeUndoRedo_validIndexFilteredList_sameMemberDeleted() throws Exception {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -186,7 +186,7 @@ public class DeleteCommandTest {
     /**
      * Updates {@code model}'s filtered list to show no one.
      */
-    private void showNoPerson(Model model) {
+    private void showNoMember(Model model) {
         model.updateFilteredMemberList(p -> false);
 
         assertTrue(model.getFilteredMemberList().isEmpty());

@@ -121,7 +121,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, toAdd);
 
         /* Case: add to empty club book -> added */
-        deleteAllPersons();
+        deleteAllMembers();
         assertCommandSuccess(ALICE);
 
         /* Case: add a member with tags, command with parameters in random order -> added */
@@ -175,7 +175,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         /* Case: invalid keyword -> rejected */
-        command = "adds " + MemberUtil.getPersonDetails(toAdd);
+        command = "adds " + MemberUtil.getMemberDetails(toAdd);
         assertCommandFailure(command, Messages.MESSAGE_UNKNOWN_COMMAND);
 
         /* Case: invalid name -> rejected */
@@ -210,7 +210,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the success message of executing {@code AddCommand} with the details of
      * {@code toAdd}.<br>
-     * 4. {@code Model}, {@code Storage} and {@code PersonListPanel} equal to the corresponding components in
+     * 4. {@code Model}, {@code Storage} and {@code MemberListPanel} equal to the corresponding components in
      * the current model added with {@code toAdd}.<br>
      * 5. Browser url and selected card remain unchanged.<br>
      * 6. Status bar's sync status changes.<br>
@@ -243,7 +243,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
      * Performs the same verification as {@code assertCommandSuccess(String, member)} except asserts that
      * the,<br>
      * 1. Result display box displays {@code expectedResultMessage}.<br>
-     * 2. {@code Model}, {@code Storage} and {@code PersonListPanel} equal to the corresponding components in
+     * 2. {@code Model}, {@code Storage} and {@code MemberListPanel} equal to the corresponding components in
      * {@code expectedModel}.<br>
      * @see AddCommandSystemTest#assertCommandSuccess(String, Member)
      */
@@ -260,7 +260,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
      * 1. Command box displays {@code command}.<br>
      * 2. Command box has the error style class.<br>
      * 3. Result display box displays {@code expectedResultMessage}.<br>
-     * 4. {@code Model}, {@code Storage} and {@code PersonListPanel} remain unchanged.<br>
+     * 4. {@code Model}, {@code Storage} and {@code MemberListPanel} remain unchanged.<br>
      * 5. Browser url, selected card and status bar remain unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>

@@ -44,7 +44,7 @@ public class ModelManagerTest {
 
     @Test
     public void removeGroup_nonExistentGroup_modelUnchanged() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -57,7 +57,7 @@ public class ModelManagerTest {
 
     @Test
     public void removeGroup_mandatoryGroup_modelUnchanged() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -70,7 +70,7 @@ public class ModelManagerTest {
 
     @Test
     public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -78,8 +78,8 @@ public class ModelManagerTest {
 
         Member amyNotInPublicity = new MemberBuilder(AMY).withGroup().build();
         Member bobNotInPublicity = new MemberBuilder(BOB).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withPerson(amyNotInPublicity)
-                .withPerson(bobNotInPublicity).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amyNotInPublicity)
+                .withMember(bobNotInPublicity).build();
 
         assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
 
@@ -87,7 +87,7 @@ public class ModelManagerTest {
 
     @Test
     public void deleteTag_nonExistentTag_modelUnchanged() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -100,7 +100,7 @@ public class ModelManagerTest {
 
     @Test
     public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withPerson(AMY).withPerson(BOB).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -108,15 +108,15 @@ public class ModelManagerTest {
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withPerson(amyWithoutFriendTag)
-                .withPerson(bobWithoutFriendTag).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amyWithoutFriendTag)
+                .withMember(bobWithoutFriendTag).build();
 
         assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
     }
 
     @Test
     public void equals() {
-        ClubBook clubBook = new ClubBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
         ClubBook differentClubBook = new ClubBook();
         UserPrefs userPrefs = new UserPrefs();
 

@@ -39,7 +39,7 @@ public class GuiTestAssert {
     }
 
     /**
-     * Asserts that the list in {@code personListPanelHandle} displays the details of {@code members} correctly and
+     * Asserts that the list in {@code memberListPanelHandle} displays the details of {@code members} correctly and
      * in the correct order.
      */
     public static void assertListMatching(MemberListPanelHandle memberListPanelHandle, Member... members) {
@@ -49,7 +49,7 @@ public class GuiTestAssert {
     }
 
     /**
-     * Asserts that the list in {@code personListPanelHandle} displays the details of {@code members} correctly and
+     * Asserts that the list in {@code memberListPanelHandle} displays the details of {@code members} correctly and
      * in the correct order.
      */
     public static void assertListMatching(MemberListPanelHandle memberListPanelHandle, List<Member> members) {
@@ -57,7 +57,7 @@ public class GuiTestAssert {
     }
 
     /**
-     * Asserts the size of the list in {@code personListPanelHandle} equals to {@code size}.
+     * Asserts the size of the list in {@code memberListPanelHandle} equals to {@code size}.
      */
     public static void assertListSize(MemberListPanelHandle memberListPanelHandle, int size) {
         int numberOfPeople = memberListPanelHandle.getListSize();

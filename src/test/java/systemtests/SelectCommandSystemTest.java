@@ -7,7 +7,7 @@ import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.SelectCommand.MESSAGE_SELECT_MEMBER_SUCCESS;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
-import static seedu.club.testutil.TypicalMembers.getTypicalPersons;
+import static seedu.club.testutil.TypicalMembers.getTypicalMembers;
 
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, INDEX_FIRST_MEMBER);
 
         /* Case: select the last card in the member list -> selected */
-        Index memberCount = Index.fromOneBased(getTypicalPersons().size());
+        Index memberCount = Index.fromOneBased(getTypicalMembers().size());
         command = SelectCommand.COMMAND_WORD + " " + memberCount.getOneBased();
         assertCommandSuccess(command, memberCount);
 
@@ -92,7 +92,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         assertCommandFailure("SeLeCt 1", MESSAGE_UNKNOWN_COMMAND);
 
         /* Case: select from empty club book -> rejected */
-        deleteAllPersons();
+        deleteAllMembers();
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased(),
                 MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
     }
@@ -103,7 +103,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the success message of executing select command with the
      * {@code expectedSelectedCardIndex} of the selected member.<br>
-     * 4. {@code Model}, {@code Storage} and {@code PersonListPanel} remain unchanged.<br>
+     * 4. {@code Model}, {@code Storage} and {@code MemberListPanel} remain unchanged.<br>
      * 5. Selected card is at {@code expectedSelectedCardIndex} and the browser url is updated accordingly.<br>
      * 6. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
@@ -135,7 +135,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
      * 1. Command box displays {@code command}.<br>
      * 2. Command box has the error style class.<br>
      * 3. Result display box displays {@code expectedResultMessage}.<br>
-     * 4. {@code Model}, {@code Storage} and {@code PersonListPanel} remain unchanged.<br>
+     * 4. {@code Model}, {@code Storage} and {@code MemberListPanel} remain unchanged.<br>
      * 5. Browser url, selected card and status bar remain unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
