@@ -165,7 +165,7 @@ public class EditCommandTest {
         editCommand.execute();
         undoRedoStack.push(editCommand);
 
-        // undo -> reverts clubbook back to previous state and filtered member list to show all persons
+        // undo -> reverts clubbook back to previous state and filtered member list to show all members
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // redo -> same first member edited again
@@ -198,7 +198,7 @@ public class EditCommandTest {
      * 4. Redo the edit. This ensures {@code RedoCommand} edits the member object regardless of indexing.
      */
     @Test
-    public void executeUndoRedo_validIndexFilteredList_samePersonEdited() throws Exception {
+    public void executeUndoRedo_validIndexFilteredList_sameMemberEdited() throws Exception {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -213,7 +213,7 @@ public class EditCommandTest {
         editCommand.execute();
         undoRedoStack.push(editCommand);
 
-        // undo -> reverts clubbook back to previous state and filtered member list to show all persons
+        // undo -> reverts clubbook back to previous state and filtered member list to show all members
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.updateMember(memberToEdit, editedMember);

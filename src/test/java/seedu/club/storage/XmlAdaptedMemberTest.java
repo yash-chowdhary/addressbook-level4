@@ -37,7 +37,7 @@ public class XmlAdaptedMemberTest {
     private static final String VALID_PASSWORD = BENSON.getPassword().toString();
 
     @Test
-    public void toModelType_validPersonDetails_returnsPerson() throws Exception {
+    public void toModelType_validMemberDetails_returnsMember() throws Exception {
         XmlAdaptedMember member = new XmlAdaptedMember(BENSON);
         assertEquals(BENSON, member.toModelType());
     }

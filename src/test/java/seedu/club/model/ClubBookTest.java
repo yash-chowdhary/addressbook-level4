@@ -69,7 +69,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
+    public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
         clubBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
 
         Member bobNotInLogistics = new MemberBuilder(BOB).withGroup().build();
@@ -81,7 +81,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void updatePerson_detailsChanged_personUpdated() throws Exception {
+    public void updateMember_detailsChanged_memberUpdated() throws Exception {
         ClubBook updatedToBob = new ClubBookBuilder().withMember(AMY).build();
         updatedToBob.updateMember(AMY, BOB);
 
@@ -104,7 +104,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void resetData_withDuplicatePersons_throwsAssertionError() {
+    public void resetData_withDuplicateMembers_throwsAssertionError() {
         // Repeat ALICE twice
         List<Member> newMembers = Arrays.asList(ALICE, ALICE);
         List<Tag> newTags = new ArrayList<>(ALICE.getTags());
@@ -115,7 +115,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void getPersonList_modifyList_throwsUnsupportedOperationException() {
+    public void getMemberList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
         clubBook.getMemberList().remove(0);
     }
@@ -127,7 +127,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void updatePerson_detailsChanged_personsAndTagsListUpdated() throws Exception {
+    public void updateMember_detailsChanged_membersAndTagsListUpdated() throws Exception {
         ClubBook clubBookUpdatedToAmy = new ClubBookBuilder().withMember(BOB).build();
         clubBookUpdatedToAmy.updateMember(BOB, AMY);
 
@@ -147,7 +147,7 @@ public class ClubBookTest {
     }
 
     @Test
-    public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+    public void deleteTag_tagUsedByMultipleMembers_tagRemoved() throws Exception {
         clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_FRIEND));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();

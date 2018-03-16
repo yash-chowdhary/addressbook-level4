@@ -44,7 +44,7 @@ public class GuiTestAssert {
      */
     public static void assertListMatching(MemberListPanelHandle memberListPanelHandle, Member... members) {
         for (int i = 0; i < members.length; i++) {
-            assertCardDisplaysMember(members[i], memberListPanelHandle.getPersonCardHandle(i));
+            assertCardDisplaysMember(members[i], memberListPanelHandle.getMemberCardHandle(i));
         }
     }
 

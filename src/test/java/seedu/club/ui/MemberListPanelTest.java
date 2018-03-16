@@ -39,7 +39,7 @@ public class MemberListPanelTest extends GuiUnitTest {
         for (int i = 0; i < TYPICAL_MEMBERS.size(); i++) {
             memberListPanelHandle.navigateToCard(TYPICAL_MEMBERS.get(i));
             Member expectedMember = TYPICAL_MEMBERS.get(i);
-            MemberCardHandle actualCard = memberListPanelHandle.getPersonCardHandle(i);
+            MemberCardHandle actualCard = memberListPanelHandle.getMemberCardHandle(i);
 
             assertCardDisplaysMember(expectedMember, actualCard);
             assertEquals(Integer.toString(i + 1) + ". ", actualCard.getId());
@@ -51,7 +51,7 @@ public class MemberListPanelTest extends GuiUnitTest {
         postNow(JUMP_TO_SECOND_EVENT);
         guiRobot.pauseForHuman();
 
-        MemberCardHandle expectedCard = memberListPanelHandle.getPersonCardHandle(INDEX_SECOND_MEMBER.getZeroBased());
+        MemberCardHandle expectedCard = memberListPanelHandle.getMemberCardHandle(INDEX_SECOND_MEMBER.getZeroBased());
         MemberCardHandle selectedCard = memberListPanelHandle.getHandleToSelectedCard();
         assertCardEquals(expectedCard, selectedCard);
     }

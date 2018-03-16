@@ -36,7 +36,7 @@ public class ModelManagerTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
+    public void getFilteredMemberList_modifyList_throwsUnsupportedOperationException() {
         ModelManager modelManager = new ModelManager();
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getFilteredMemberList().remove(0);
@@ -69,7 +69,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void removeGroup_atLeastOnePersonInGroup_groupRemoved() throws Exception {
+    public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -99,7 +99,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void deleteTag_tagUsedByMultiplePersons_tagRemoved() throws Exception {
+    public void deleteTag_tagUsedByMultipleMembers_tagRemoved() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 

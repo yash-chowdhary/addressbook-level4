@@ -171,7 +171,7 @@ public abstract class ClubBookSystemTest {
     /**
      * Asserts that the {@code CommandBox} displays {@code expectedCommandInput}, the {@code ResultDisplay} displays
      * {@code expectedResultMessage}, the model and storage contains the same member objects as {@code expectedModel}
-     * and the member list panel displays the persons in the model correctly.
+     * and the member list panel displays the members in the model correctly.
      */
     protected void assertApplicationDisplaysExpected(String expectedCommandInput, String expectedResultMessage,
             Model expectedModel) {
@@ -191,7 +191,7 @@ public abstract class ClubBookSystemTest {
         getBrowserPanel().rememberUrl();
         statusBarFooterHandle.rememberSaveLocation();
         statusBarFooterHandle.rememberSyncStatus();
-        getMemberListPanel().rememberSelectedPersonCard();
+        getMemberListPanel().rememberSelectedMemberCard();
     }
 
     /**
@@ -208,7 +208,7 @@ public abstract class ClubBookSystemTest {
      * Asserts that the browser's url is changed to display the details of the member in the member list panel at
      * {@code expectedSelectedCardIndex}, and only the card at {@code expectedSelectedCardIndex} is selected.
      * @see BrowserPanelHandle#isUrlChanged()
-     * @see MemberListPanelHandle#isSelectedPersonCardChanged()
+     * @see MemberListPanelHandle#isSelectedMemberCardChanged()
      */
     protected void assertSelectedCardChanged(Index expectedSelectedCardIndex) {
         String selectedCardName = getMemberListPanel().getHandleToSelectedCard().getName();
@@ -226,11 +226,11 @@ public abstract class ClubBookSystemTest {
     /**
      * Asserts that the browser's url and the selected card in the member list panel remain unchanged.
      * @see BrowserPanelHandle#isUrlChanged()
-     * @see MemberListPanelHandle#isSelectedPersonCardChanged()
+     * @see MemberListPanelHandle#isSelectedMemberCardChanged()
      */
     protected void assertSelectedCardUnchanged() {
         assertFalse(getBrowserPanel().isUrlChanged());
-        assertFalse(getMemberListPanel().isSelectedPersonCardChanged());
+        assertFalse(getMemberListPanel().isSelectedMemberCardChanged());
     }
 
     /**

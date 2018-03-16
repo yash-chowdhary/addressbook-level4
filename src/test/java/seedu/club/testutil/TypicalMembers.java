@@ -95,7 +95,7 @@ public class TypicalMembers {
     private TypicalMembers() {} // prevents instantiation
 
     /**
-     * Returns an {@code ClubBook} with all the typical persons.
+     * Returns an {@code ClubBook} with all the typical members.
      */
     public static ClubBook getTypicalClubBook() {
         ClubBook ab = new ClubBook();

@@ -37,31 +37,31 @@ public class AddCommandTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void constructor_nullPerson_throwsNullPointerException() {
+    public void constructor_nullMember_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         new AddCommand(null);
     }
 
     @Test
-    public void execute_personAcceptedByModel_addSuccessful() throws Exception {
+    public void execute_memberAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingMemberAdded modelStub = new ModelStubAcceptingMemberAdded();
         Member validMember = new MemberBuilder().build();
 
-        CommandResult commandResult = getAddCommandForPerson(validMember, modelStub).execute();
+        CommandResult commandResult = getAddCommandForMember(validMember, modelStub).execute();
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validMember), commandResult.feedbackToUser);
         assertEquals(Arrays.asList(validMember), modelStub.membersAdded);
     }
 
     @Test
-    public void execute_duplicatePerson_throwsCommandException() throws Exception {
-        ModelStub modelStub = new ModelStubThrowingDuplicatePersonException();
+    public void execute_duplicateMember_throwsCommandException() throws Exception {
+        ModelStub modelStub = new ModelStubThrowingDuplicateMemberException();
         Member validMember = new MemberBuilder().build();
 
         thrown.expect(CommandException.class);
         thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
 
-        getAddCommandForPerson(validMember, modelStub).execute();
+        getAddCommandForMember(validMember, modelStub).execute();
     }
 
     @Test
@@ -91,7 +91,7 @@ public class AddCommandTest {
     /**
      * Generates a new AddCommand with the details of the given member.
      */
-    private AddCommand getAddCommandForPerson(Member member, Model model) {
+    private AddCommand getAddCommandForMember(Member member, Model model) {
         AddCommand command = new AddCommand(member);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
@@ -169,7 +169,7 @@ public class AddCommandTest {
     /**
      * A Model stub that always throw a DuplicateMemberException when trying to add a member.
      */
-    private class ModelStubThrowingDuplicatePersonException extends ModelStub {
+    private class ModelStubThrowingDuplicateMemberException extends ModelStub {
         @Override
         public void addMember(Member member) throws DuplicateMemberException {
             throw new DuplicateMemberException();

@@ -54,8 +54,8 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, modelBeforeDeletingLast, expectedResultMessage);
 
         /* Case: delete the middle member in the list -> deleted */
-        Index middlePersonIndex = getMidIndex(getModel());
-        assertCommandSuccess(middlePersonIndex);
+        Index middleMemberIndex = getMidIndex(getModel());
+        assertCommandSuccess(middleMemberIndex);
 
         /* ------------------ Performing delete operation while a filtered list is being shown ---------------------- */
 

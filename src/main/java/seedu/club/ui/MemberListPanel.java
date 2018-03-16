@@ -18,7 +18,7 @@ import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.model.member.Member;
 
 /**
- * Panel containing the list of persons.
+ * Panel containing the list of members.
  */
 public class MemberListPanel extends UiPart<Region> {
     private static final String FXML = "MemberListPanel.fxml";
@@ -35,9 +35,9 @@ public class MemberListPanel extends UiPart<Region> {
 
     private void setConnections(ObservableList<Member> memberList) {
         ObservableList<MemberCard> mappedList = EasyBind.map(
-                memberList, (person) -> new MemberCard(person, memberList.indexOf(person) + 1));
+                memberList, (member) -> new MemberCard(member, memberList.indexOf(member) + 1));
         personListView.setItems(mappedList);
-        personListView.setCellFactory(listView -> new PersonListViewCell());
+        personListView.setCellFactory(listView -> new MemberListViewCell());
         setEventHandlerForSelectionChangeEvent();
     }
 
@@ -70,17 +70,17 @@ public class MemberListPanel extends UiPart<Region> {
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code MemberCard}.
      */
-    class PersonListViewCell extends ListCell<MemberCard> {
+    class MemberListViewCell extends ListCell<MemberCard> {
 
         @Override
-        protected void updateItem(MemberCard person, boolean empty) {
-            super.updateItem(person, empty);
+        protected void updateItem(MemberCard member, boolean empty) {
+            super.updateItem(member, empty);
 
-            if (empty || person == null) {
+            if (empty || member == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(person.getRoot());
+                setGraphic(member.getRoot());
             }
         }
     }

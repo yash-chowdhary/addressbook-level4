@@ -30,7 +30,7 @@ public class UndoableCommandTest {
 
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
-        // undo() should cause the model's filtered list to show all persons
+        // undo() should cause the model's filtered list to show all members
         dummyCommand.undo();
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         assertEquals(expectedModel, model);
@@ -40,7 +40,7 @@ public class UndoableCommandTest {
     public void redo() {
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
-        // redo() should cause the model's filtered list to show all persons
+        // redo() should cause the model's filtered list to show all members
         dummyCommand.redo();
         deleteFirstMember(expectedModel);
         assertEquals(expectedModel, model);

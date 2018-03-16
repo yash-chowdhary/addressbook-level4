@@ -7,6 +7,6 @@ import seedu.club.commons.exceptions.DuplicateDataException;
  */
 public class DuplicateMemberException extends DuplicateDataException {
     public DuplicateMemberException() {
-        super("Operation would result in duplicate persons");
+        super("Operation would result in duplicate members");
     }
 }

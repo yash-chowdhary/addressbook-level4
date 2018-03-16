@@ -8,7 +8,7 @@ import seedu.club.model.member.Member;
 import seedu.club.ui.MemberCard;
 
 /**
- * Provides a handle for {@code PersonListPanel} containing the list of {@code MemberCard}.
+ * Provides a handle for {@code MemberListPanel} containing the list of {@code MemberCard}.
  */
 public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
     public static final String MEMBER_LIST_VIEW_ID = "#personListView";
@@ -20,18 +20,18 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
     }
 
     /**
-     * Returns a handle to the selected {@code PersonCardHandle}.
+     * Returns a handle to the selected {@code MemberCardHandle}.
      * A maximum of 1 item can be selected at any time.
      * @throws AssertionError if no card is selected, or more than 1 card is selected.
      */
     public MemberCardHandle getHandleToSelectedCard() {
-        List<MemberCard> personList = getRootNode().getSelectionModel().getSelectedItems();
+        List<MemberCard> memberList = getRootNode().getSelectionModel().getSelectedItems();
 
-        if (personList.size() != 1) {
+        if (memberList.size() != 1) {
             throw new AssertionError("member list size expected 1.");
         }
 
-        return new MemberCardHandle(personList.get(0).getRoot());
+        return new MemberCardHandle(memberList.get(0).getRoot());
     }
 
     /**
@@ -75,14 +75,14 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
     /**
      * Returns the member card handle of a member associated with the {@code index} in the list.
      */
-    public MemberCardHandle getPersonCardHandle(int index) {
-        return getPersonCardHandle(getRootNode().getItems().get(index).member);
+    public MemberCardHandle getMemberCardHandle(int index) {
+        return getMemberCardHandle(getRootNode().getItems().get(index).member);
     }
 
     /**
-     * Returns the {@code PersonCardHandle} of the specified {@code member} in the list.
+     * Returns the {@code MemberCardHandle} of the specified {@code member} in the list.
      */
-    public MemberCardHandle getPersonCardHandle(Member member) {
+    public MemberCardHandle getMemberCardHandle(Member member) {
         Optional<MemberCardHandle> handle = getRootNode().getItems().stream()
                 .filter(card -> card.member.equals(member))
                 .map(card -> new MemberCardHandle(card.getRoot()))
@@ -100,7 +100,7 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
     /**
      * Remembers the selected {@code MemberCard} in the list.
      */
-    public void rememberSelectedPersonCard() {
+    public void rememberSelectedMemberCard() {
         List<MemberCard> selectedItems = getRootNode().getSelectionModel().getSelectedItems();
 
         if (selectedItems.size() == 0) {
@@ -112,9 +112,9 @@ public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
 
     /**
      * Returns true if the selected {@code MemberCard} is different from the value remembered by the most recent
-     * {@code rememberSelectedPersonCard()} call.
+     * {@code rememberSelectedMemberCard()} call.
      */
-    public boolean isSelectedPersonCardChanged() {
+    public boolean isSelectedMemberCardChanged() {
         List<MemberCard> selectedItems = getRootNode().getSelectionModel().getSelectedItems();
 
         if (selectedItems.size() == 0) {

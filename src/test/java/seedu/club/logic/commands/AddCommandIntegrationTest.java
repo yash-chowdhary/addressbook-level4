@@ -28,7 +28,7 @@ public class AddCommandIntegrationTest {
     }
 
     @Test
-    public void execute_newPerson_success() throws Exception {
+    public void execute_newMember_success() throws Exception {
         Member validMember = new MemberBuilder().build();
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
@@ -39,7 +39,7 @@ public class AddCommandIntegrationTest {
     }
 
     @Test
-    public void execute_duplicatePerson_throwsCommandException() {
+    public void execute_duplicateMember_throwsCommandException() {
         Member memberInList = model.getClubBook().getMemberList().get(0);
         assertCommandFailure(prepareCommand(memberInList, model), model, AddCommand.MESSAGE_DUPLICATE_MEMBER);
     }
