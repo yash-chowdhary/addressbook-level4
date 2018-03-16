@@ -27,7 +27,7 @@ public class XmlClubBookStorage implements ClubBookStorage {
         this.filePath = filePath;
     }
 
-    public String getAddressBookFilePath() {
+    public String getClubBookFilePath() {
         return filePath;
     }
 
@@ -45,38 +45,38 @@ public class XmlClubBookStorage implements ClubBookStorage {
                                                                                  FileNotFoundException {
         requireNonNull(filePath);
 
-        File addressBookFile = new File(filePath);
+        File clubBookFile = new File(filePath);
 
-        if (!addressBookFile.exists()) {
-            logger.info("ClubBook file "  + addressBookFile + " not found");
+        if (!clubBookFile.exists()) {
+            logger.info("ClubBook file "  + clubBookFile + " not found");
             return Optional.empty();
         }
 
-        XmlSerializableClubBook xmlAddressBook = XmlFileStorage.loadDataFromSaveFile(new File(filePath));
+        XmlSerializableClubBook xmlClubBook = XmlFileStorage.loadDataFromSaveFile(new File(filePath));
         try {
-            return Optional.of(xmlAddressBook.toModelType());
+            return Optional.of(xmlClubBook.toModelType());
         } catch (IllegalValueException ive) {
-            logger.info("Illegal values found in " + addressBookFile + ": " + ive.getMessage());
+            logger.info("Illegal values found in " + clubBookFile + ": " + ive.getMessage());
             throw new DataConversionException(ive);
         }
     }
 
     @Override
-    public void saveClubBook(ReadOnlyClubBook addressBook) throws IOException {
-        saveClubBook(addressBook, filePath);
+    public void saveClubBook(ReadOnlyClubBook clubBook) throws IOException {
+        saveClubBook(clubBook, filePath);
     }
 
     /**
      * Similar to {@link #saveClubBook(ReadOnlyClubBook)}
      * @param filePath location of the data. Cannot be null
      */
-    public void saveClubBook(ReadOnlyClubBook addressBook, String filePath) throws IOException {
-        requireNonNull(addressBook);
+    public void saveClubBook(ReadOnlyClubBook clubBook, String filePath) throws IOException {
+        requireNonNull(clubBook);
         requireNonNull(filePath);
 
         File file = new File(filePath);
         FileUtil.createIfMissing(file);
-        XmlFileStorage.saveDataToFile(file, new XmlSerializableClubBook(addressBook));
+        XmlFileStorage.saveDataToFile(file, new XmlSerializableClubBook(clubBook));
     }
 
 }

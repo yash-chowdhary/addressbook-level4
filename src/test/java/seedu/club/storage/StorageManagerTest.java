@@ -3,7 +3,7 @@ package seedu.club.storage;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.testutil.TypicalPersons.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.club.commons.events.model.AddressBookChangedEvent;
+import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.model.ClubBook;
 import seedu.club.model.ReadOnlyClubBook;
@@ -31,9 +31,9 @@ public class StorageManagerTest {
 
     @Before
     public void setUp() {
-        XmlClubBookStorage addressBookStorage = new XmlClubBookStorage(getTempFilePath("ab"));
+        XmlClubBookStorage clubBookStorage = new XmlClubBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(addressBookStorage, userPrefsStorage);
+        storageManager = new StorageManager(clubBookStorage, userPrefsStorage);
     }
 
     private String getTempFilePath(String fileName) {
@@ -56,7 +56,7 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void addressBookReadSave() throws Exception {
+    public void clubBookReadSave() throws Exception {
         /*
          * Note: This is an integration test that verifies the StorageManager is properly wired to the
          * {@link XmlClubBookStorage} class.
@@ -69,16 +69,16 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void getAddressBookFilePath() {
-        assertNotNull(storageManager.getAddressBookFilePath());
+    public void getClubBookFilePath() {
+        assertNotNull(storageManager.getClubBookFilePath());
     }
 
     @Test
-    public void handleAddressBookChangedEvent_exceptionThrown_eventRaised() {
+    public void handleClubBookChangedEvent_exceptionThrown_eventRaised() {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlClubBookStorageExceptionThrowingStub("dummy"),
                                              new JsonUserPrefsStorage("dummy"));
-        storage.handleAddressBookChangedEvent(new AddressBookChangedEvent(new ClubBook()));
+        storage.handleClubBookChangedEvent(new ClubBookChangedEvent(new ClubBook()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
 
@@ -93,7 +93,7 @@ public class StorageManagerTest {
         }
 
         @Override
-        public void saveClubBook(ReadOnlyClubBook addressBook, String filePath) throws IOException {
+        public void saveClubBook(ReadOnlyClubBook clubBook, String filePath) throws IOException {
             throw new IOException("dummy exception");
         }
     }

@@ -1,9 +1,9 @@
 package seedu.club.logic.commands;
 
-import seedu.club.model.person.FieldContainsKeywordsPredicate;
+import seedu.club.model.member.FieldContainsKeywordsPredicate;
 
 /**
- * Finds and lists all persons in club book whose field contains any of the argument keywords.
+ * Finds and lists all members in club book whose field contains any of the argument keywords.
  * Partial match is acceptable.
  * Keyword matching is case insensitive.
  */
@@ -11,7 +11,7 @@ public class FindByCommand extends Command {
 
     public static final String COMMAND_WORD = "findby";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose field contain any of "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all members whose field contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
@@ -24,8 +24,8 @@ public class FindByCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        model.updateFilteredPersonList(predicate);
-        return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
+        model.updateFilteredMemberList(predicate);
+        return new CommandResult(getMessageForMemberListShownSummary(model.getFilteredMemberList().size()));
     }
 
     @Override

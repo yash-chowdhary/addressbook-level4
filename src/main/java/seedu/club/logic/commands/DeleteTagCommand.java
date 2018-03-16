@@ -10,14 +10,14 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
 /**
- * Removes a tag from all persons in the club book.
+ * Removes a tag from all members in the club book.
  */
 public class DeleteTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "deletetag";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Removes the tag from all persons.\n"
+            + ": Removes the tag from all members.\n"
             + "Parameters: TAG (must be an existing tag)\n"
             + "Example: " + COMMAND_WORD + " t/treasurer";
 
