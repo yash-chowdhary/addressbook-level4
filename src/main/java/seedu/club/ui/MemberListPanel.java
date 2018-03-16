@@ -25,7 +25,7 @@ public class MemberListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(MemberListPanel.class);
 
     @FXML
-    private ListView<MemberCard> personListView;
+    private ListView<MemberCard> memberListView;
 
     public MemberListPanel(ObservableList<Member> memberList) {
         super(FXML);
@@ -36,13 +36,13 @@ public class MemberListPanel extends UiPart<Region> {
     private void setConnections(ObservableList<Member> memberList) {
         ObservableList<MemberCard> mappedList = EasyBind.map(
                 memberList, (member) -> new MemberCard(member, memberList.indexOf(member) + 1));
-        personListView.setItems(mappedList);
-        personListView.setCellFactory(listView -> new MemberListViewCell());
+        memberListView.setItems(mappedList);
+        memberListView.setCellFactory(listView -> new MemberListViewCell());
         setEventHandlerForSelectionChangeEvent();
     }
 
     private void setEventHandlerForSelectionChangeEvent() {
-        personListView.getSelectionModel().selectedItemProperty()
+        memberListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         logger.fine("Selection in member list panel changed to : '" + newValue + "'");
@@ -56,8 +56,8 @@ public class MemberListPanel extends UiPart<Region> {
      */
     private void scrollTo(int index) {
         Platform.runLater(() -> {
-            personListView.scrollTo(index);
-            personListView.getSelectionModel().clearAndSelect(index);
+            memberListView.scrollTo(index);
+            memberListView.getSelectionModel().clearAndSelect(index);
         });
     }
 

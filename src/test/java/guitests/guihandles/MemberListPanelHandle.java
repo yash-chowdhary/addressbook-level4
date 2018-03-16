@@ -11,7 +11,7 @@ import seedu.club.ui.MemberCard;
  * Provides a handle for {@code MemberListPanel} containing the list of {@code MemberCard}.
  */
 public class MemberListPanelHandle extends NodeHandle<ListView<MemberCard>> {
-    public static final String MEMBER_LIST_VIEW_ID = "#personListView";
+    public static final String MEMBER_LIST_VIEW_ID = "#memberListView";
 
     private Optional<MemberCard> lastRememberedSelectedMemberCard;
 
