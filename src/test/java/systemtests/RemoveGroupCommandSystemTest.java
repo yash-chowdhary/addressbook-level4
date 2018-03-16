@@ -1,29 +1,29 @@
 package systemtests;
 
 import static org.junit.Assert.assertEquals;
-import static seedu.address.logic.commands.CommandTestUtil.GROUP_DESC_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_GROUP;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.MANDATORY_GROUP;
-import static seedu.address.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
-import static seedu.address.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
-import static seedu.address.logic.commands.RemoveGroupCommand.MESSAGE_MANDATORY_GROUP;
-import static seedu.address.logic.commands.RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP;
-import static seedu.address.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
+import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP;
+import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
 
 import org.junit.Test;
 
-import seedu.address.logic.commands.RedoCommand;
-import seedu.address.logic.commands.RemoveGroupCommand;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.model.Model;
-import seedu.address.model.group.Group;
-import seedu.address.model.group.exceptions.GroupCannotBeRemovedException;
-import seedu.address.model.group.exceptions.GroupNotFoundException;
+import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.RemoveGroupCommand;
+import seedu.club.logic.commands.UndoCommand;
+import seedu.club.model.Model;
+import seedu.club.model.group.Group;
+import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.club.model.group.exceptions.GroupNotFoundException;
 
-public class RemoveGroupCommandSystemTest extends AddressBookSystemTest {
+public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
 
     @Test
     public void removeGroup() {
@@ -33,13 +33,13 @@ public class RemoveGroupCommandSystemTest extends AddressBookSystemTest {
         String command;
         /* ------------------------ Perform removegroup operations on the shown unfiltered list -------------------- */
 
-        /* Case: delete a valid group which is present in the address book */
+        /* Case: delete a valid group which is present in the club book */
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + GROUP_DESC_BOB + " ";
         deletedGroup = deleteGroup(expectedModel, VALID_GROUP_BOB);
         String expectedResultMessage = String.format(MESSAGE_SUCCESS, deletedGroup);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 
-        /* Case: undo deleting the group -> group restored in relevant persons */
+        /* Case: undo deleting the group -> group restored in relevant members */
         command = UndoCommand.COMMAND_WORD;
         expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, modelBeforeDeletingGroup, expectedResultMessage);
@@ -75,8 +75,8 @@ public class RemoveGroupCommandSystemTest extends AddressBookSystemTest {
      * 3. Asserts that the model related components equal to the current model.<br>
      * 4. Asserts that the command box has the error style.<br>
      * Verifications 1 to 3 are performed by
-     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
-     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandFailure(String command, String expectedResultMessage) {
         executeCommand(command);
@@ -94,8 +94,8 @@ public class RemoveGroupCommandSystemTest extends AddressBookSystemTest {
      * 4. Asserts that the status bar's sync status changes.<br>
      * 5. Asserts that the command box has the default style class.<br>
      * Verifications 1 to 3 are performed by
-     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.
-     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(String command, Model model, String expectedResultMessage) {
         executeCommand(command);

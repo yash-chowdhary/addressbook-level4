@@ -16,7 +16,7 @@ plugins {
 }
 
 // Specifies the entry point of the application
-mainClassName = 'seedu.address.MainApp'
+mainClassName = 'seedu.club.MainApp'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -57,7 +57,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = "addressbook.jar"
+    archiveName = "clubbook.jar"
 
     destinationDir = file("${buildDir}/jar/")
 }
@@ -132,16 +132,16 @@ test {
         }
 
         if (runNonGuiTests) {
-            test.include 'seedu/address/**'
+            test.include 'seedu/club/**'
         }
 
         if (runGuiTests) {
             test.include 'systemtests/**'
-            test.include 'seedu/address/ui/**'
+            test.include 'seedu/club/ui/**'
         }
 
         if (!runGuiTests) {
-            test.exclude 'seedu/address/ui/**'
+            test.exclude 'seedu/club/ui/**'
         }
     }
 }
