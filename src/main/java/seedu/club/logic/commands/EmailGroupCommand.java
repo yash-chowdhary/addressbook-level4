@@ -10,6 +10,7 @@ import seedu.club.logic.commands.email.Client;
 import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
+import seedu.club.model.group.exceptions.GroupNotFoundException;
 
 /**
  * Sends an email to the desired recipient(s) in a particular group of the club book.
@@ -44,6 +45,10 @@ public class EmailGroupCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        return null;
+        try {
+            String emailRecipients = model.generateGroupEmailRecipients(group);
+        } catch (GroupNotFoundException gnfe) {
+            throw new CommandException(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
+        }
     }
 }

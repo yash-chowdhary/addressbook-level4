@@ -154,6 +154,24 @@ public class ModelManager extends ComponentManager implements Model {
         return true;
     }
 
+    @Override
+    public String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+
+        List<String> emailRecipients = new ArrayList<>();
+        Boolean groupFound = false;
+        for (Member member : members) {
+            if (member.getGroup().equals(toSendEmailTo)) {
+                emailRecipients.add(member.getEmail().toString());
+                groupFound = true;
+            }
+        }
+        if (!groupFound) {
+            throw new GroupNotFoundException();
+        }
+        return String.join(",", emailRecipients);
+    }
+
     //=========== Filtered member List Accessors =============================================================
 
     /**
