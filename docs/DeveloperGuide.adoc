@@ -98,8 +98,8 @@ When you are ready to start coding,
 
 The *_Architecture Diagram_* (Refer to Figure 1) explains the high-level design of the App. Given below is a quick overview of each component.
 
-.Architecture Diagram
 image::Architecture.png[width="600"]
+_Figure 1. Architecture Diagram_
 
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the .pptx file, select the objects of the diagram, and choose `Save as picture`.
@@ -128,24 +128,24 @@ Each of the four components:
 
 For example, the `Logic` component (Refer to Figure 2) defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
-.Class Diagram of the Logic Component
 image::LogicClassDiagram.png[width="800"]
+_Figure 2. Class Diagram of the Logic Component_
 
 [discrete]
 ==== Events-Driven nature of the design
 
 The _Sequence Diagram_ below (Figure 3) shows how the components interact in the scenario where the user issues the command `delete 1`.
 
-.Component interactions for `delete 1` command (part 1)
 image::SDforDeletePerson.png[width="800"]
+_Figure 3. Component interactions for delete 1 command (part 1)_
 
 [NOTE]
 Note how the `Model` simply raises a `ClubBookChangedEvent` when the Club Book data is changed, instead of asking the `Storage` to save the updates to the hard disk.
 
 The diagram below (Figure 4) shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
-.Component interactions for `delete 1` command (part 2)
 image::SDforDeletePersonEventHandling.png[width="800"]
+_Figure 4. Component interactions for delete 1 command (part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
@@ -168,8 +168,8 @@ The `UI` component:
 
 Refer to Figure 5 for the structure of the UI component.
 
-.Structure of the UI Component
 image::UiClassDiagram.png[width="800"]
+_Figure 5. Structure of the UI Component_
 
 [[Design-Logic]]
 === Logic component
@@ -184,18 +184,18 @@ link:{repoURL}/src/main/java/seedu/club/logic/Logic.java[`Logic.java`]
 Refer to Figure 6 for the structure of the Logic component.
 
 [[fig-LogicClassDiagram]]
-.Structure of the Logic Component
 image::LogicClassDiagram.png[width="800"]
+_Figure 6. Structure of the Logic Component_
 
-Figure 7 shows finer details concerning `XYZCommand` and `Command` depicted in Figure 6.
+Figure 7 below shows finer details concerning `XYZCommand` and `Command` depicted in Figure 6.
 
-.Structure of Commands in the Logic Component.
 image::LogicCommandClassDiagram.png[width="800"]
+_Figure 7. Structure of Commands in the Logic Component._
 
 Given below (Figure 8) is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
 
-.Interactions Inside the Logic Component for the `delete 1` Command
 image::DeletePersonSdForLogic.png[width="800"]
+_Figure 8. Interactions Inside the Logic Component for the delete 1 Command_
 
 [[Design-Model]]
 === Model component
@@ -211,8 +211,8 @@ The `Model`:
 
 Refer to Figure 9 for the structure of the Model component.
 
-.Structure of the Model Component
 image::ModelClassDiagram.png[width="800"]
+_Figure 9. Structure of the Model Component_
 [[Design-Storage]]
 === Storage component
 
@@ -225,8 +225,8 @@ The `Storage` component:
 
 Refer to Figure 10 for the structure of the Storage component.
 
-.Structure of the Storage Component
 image::StorageClassDiagram.png[width="800"]
+_Figure 10. Structure of the Storage Component_
 
 == Implementation
 
@@ -240,8 +240,8 @@ The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides insi
 
 `UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram (Refer to figure 11) shows the inheritance diagram for commands:
 
-.Inheritance Diagram for commands
 image::LogicCommandClassDiagram.png[width="800"]
+_Figure 11. Inheritance Diagram for commands_
 
 As you can see from the diagram (Figure 11), `UndoableCommand` adds an extra layer between the abstract `Command` class and concrete commands that can be undone, such as the `DeleteCommand`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the club book before execution. `UndoableCommand` contains the high-level algorithm for those extra tasks while the child classes implement the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in the child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
 
@@ -280,13 +280,13 @@ Suppose that the user has just launched the application. The `UndoRedoStack` wil
 
 The user executes a new `UndoableCommand` - `delete 5`, to delete the 5th member in the club book. The current state of the club book is saved before the `delete 5` command executes. The `delete 5` command will then be pushed onto the `undoStack` (the current state is saved together with the command). (Refer to Figure 12)
 
-.Initial state of `undoStack` and `redoStack`
 image::UndoRedoStartingStackDiagram.png[width="800"]
+_Figure 12. Initial state of undoStack and redoStack_
 
 As the user continues to use the program, more commands are added into the `undoStack`. For example, the user may execute `add n/David ...` to add a new member (Refer to Figure 13).
 
-.State of `undoStack` and `redoStack` after executing `add` command
 image::UndoRedoNewCommand1StackDiagram.png[width="800"]
+_Figure 13. State of undoStack and redoStack after executing add command_
 
 [NOTE]
 If a command fails its execution, it will not be pushed to the `UndoRedoStack` at all.
@@ -295,16 +295,16 @@ The user now decides that adding the member was a mistake, and decides to undo t
 
 We will pop the most recent command out of the `undoStack` and push it back to the `redoStack`. We will restore the club book to the state before the `add` command executed (Refer to figure 14).
 
-.State of `undoStack` and `redoStack` after executing `undo` command.
 image::UndoRedoExecuteUndoStackDiagram.png[width="800"]
+_Figure 14. State of undoStack and redoStack after executing undo command._
 
 [NOTE]
 If the `undoStack` is empty, then there are no other commands left to be undone, and an `Exception` will be thrown when popping the `undoStack`.
 
 The following sequence diagram (Figure 15) shows how the undo operation works:
 
-.Sequence Diagram of `undo` command
 image::UndoRedoSequenceDiagram.png[width="800"]
+_Figure 15. Sequence Diagram of undo command_
 
 The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the club book to the state after the command is executed).
 
@@ -313,18 +313,18 @@ If the `redoStack` is empty, then there are no other commands left to be redone,
 
 The user now decides to execute a new command, `clear`. As before, `clear` will be pushed into the `undoStack`. This time the `redoStack` is no longer empty. It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern desktop applications follow). (Refer to figure 16)
 
-.State of `undoStack` and `redoStack` after executing `clear` command.
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
+_Figure 16. State of undoStack and redoStack after executing clear command._
 
 Commands that are not undoable are not added into the `undoStack`. For example, `list`, which inherits from `Command` rather than `UndoableCommand`, will not be added after execution (Refer to Figure 17):
 
-.State of `undoStack` and `redoStack` after executing `list` command.
 image::UndoRedoNewCommand3StackDiagram.png[width="800"]
+_Figure 17. State of undoStack and redoStack after executing list command._
 
 The following activity diagram (Figure 18) summarize what happens inside the `UndoRedoStack` when a user executes a new command:
 
-.Activity Diagram for Undo-Redo
 image::UndoRedoActivityDiagram.png[width="650"]
+_Figure 18. Activity Diagram for Undo-Redo_
 
 ==== Design Considerations
 
