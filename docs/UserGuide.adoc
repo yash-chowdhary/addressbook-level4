@@ -11,8 +11,9 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
+:format-caption:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4
+:repoURL: https://github.com/CS2103JAN2018-W15-B4/main
 
 By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
@@ -45,7 +46,7 @@ This app will not work with earlier versions of Java 8.
 [[launch-app]]
 [.text-center]
 .Club Connect application on launch
-image::Ui.png[width="790"][align="left"]
+image::Ui.png[width="690"][align="left"]
 +
 .  Type a command in the command box and press kbd:[Enter] to execute it. +
 e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown in Figure 2).
@@ -53,13 +54,13 @@ e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown 
 [[help-window]]
 [.text-center]
 .Club Connect Help window
-image::help-window.png[align="center"][width="600"]
+image::help-window.png[align="center"][width="400"]
 +
 .  Some other example commands that you can try are:
 
 * *`list`* : lists all members of the club on the left pane
-* **`add`**`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a member named `John Doe` to your Club Connect members list
-* **`delete`**`3` : deletes the 3rd member shown in the current list
+* *`add`*`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a member named `John Doe` to your Club Connect members list
+* *`delete`*`3` : deletes the 3rd member shown in the current list
 * *`exit`* : exits the Club Connect app
 
 .  Continue to the next section, <<Features>>, for details of each command and its usage.
@@ -79,63 +80,63 @@ image::help-window.png[align="center"][width="600"]
 === Viewing help : `help`
 
 Opens the Club Connect help window (see <<help-window,Figure 2>>). +
-Format: `help`
+[format] : `help`
 
 === Logging in a member: `login`
-Logs in a member to ClubConnect. +
+Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD`
 
 Example: `login u/JohnDoe pw/pass1234`
 
-=== Adding a person: `add`
+=== Adding a member: `add`
 
-Adds a person to the address book. +
+Adds a member to Club Connect. +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [g/GROUP] [t/TAG]...`
 
 [TIP]
-A person can have any number of tags (including 0)
+A member can have any number of `tags` (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
-A person will be assigned to the default group `member` if no group is specified in the command
+A person will be assigned to the `member` group by default.
 [TIP]
 A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
-* `add n/Betsy Crowe p/1234567 t/head e/betsycrowe@example.com m/A2345678K g/logistics`
+* `add n/Betsy Crowe p/1234567 t/Head e/betsycrowe@example.com m/A2345678K g/Logistics`
 
-=== Listing all persons : `list`
+=== Listing all members : `list`
 
-Shows a list of all persons in the address book. +
+Shows a list of all members in Club Connect +
 Format: `list`
 
-=== Editing a person : `edit`
+=== Editing a member : `edit`
 
-Edits an existing person in the address book. +
+Edits an existing member in Club Connect. +
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...`
 
 ****
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
+* Edits the member at the specified `INDEX`. The index refers to the index number shown in the last member listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* You can remove a person from a group by editing the person's group to `member` as it is the default group in the addressbook.
-* You cannot remove a person from a group by typing `g/` without specifying any group after it as a group must comply with the requirements of a valid group
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person's tags by typing `t/` without specifying any tags after it.
+* You can remove a member from a group by editing the person's group to `member` as it is the default group in Club Connect.
+* You cannot remove a member from a group by typing `g/` without specifying any group after it as GROUP must comply with the requirements of a valid group name.
+* When editing tags, the existing tags of the member will be removed i.e adding of tags is not cumulative.
+* You can remove all the member's tags by typing `t/` without specifying any tags after it.
 ****
 
 Examples:
 
 * `edit 1 p/91234567 e/johndoe@example.com` +
-Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+Edits the phone number and email address of the 1st member to `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` +
-Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
-Edits the group of the 3rd person to be `finance`.
+Edits the group of the 3rd member to be `finance`.
 
-=== Locating persons by name: `find`
+=== Locating smember by name: `find`
 
 Finds persons whose names contain any of the given keywords. +
 Format: `find KEYWORD [MORE_KEYWORDS]`
