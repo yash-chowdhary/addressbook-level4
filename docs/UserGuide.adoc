@@ -21,7 +21,15 @@ Club Connect is an application that is targeted at <<DeveloperGuide#club,club>> 
 
 Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
-The faster you type, the faster Club Connect gets your club management tasks done. Interested? Jump to <<Quick Start>> to get started. Enjoy!
+The faster you type, the faster Club Connect gets your club management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
+
+The symbols (and the corresponding meanings) used in this document are:
+
+  ℹ️: Note
+
+`code`: Commands that can be entered into Club Connect
+
+  💡  : Tip
 
 == Quick Start
 
