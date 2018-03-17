@@ -13,11 +13,15 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/se-edu/addressbook-level4
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-AddressBook Level 4 (AB4) is for those who *prefer to use a desktop app for managing contacts*. More importantly, AB4 is *optimized for those who prefer to work with a Command Line Interface* (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB4 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <<Quick Start>> to get started. Enjoy!
+Club Connect is an application that is targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective.
+
+Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
+
+The faster you type, the faster Club Connect gets your club management tasks done. Interested? Jump to <<Quick Start>> to get started. Enjoy!
 
 == Quick Start
 
@@ -310,6 +314,9 @@ There is no need to save manually.
 _{explain how the user can enable/disable data encryption}_
 // end::dataencryption[]
 
+[NOTE]
+To further increase your efficiency while using Club Connect, check out <<Tips>>.
+
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
@@ -339,6 +346,13 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+
+== Tips
+
+Not satisfied with your productivity while using Club Connect? Can't remember the command names? Here are some tips to fix that:
+
+* *Command shortcuts*
+* Aikm
 
 == Coming in v2.0
 
