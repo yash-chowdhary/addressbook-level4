@@ -892,7 +892,6 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |Member |change the theme of the application |use the application with an appearance that I think looks best
 
-
 |=======================================================================
 
 _{More to be added}_
