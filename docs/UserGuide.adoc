@@ -25,10 +25,8 @@ The faster you type, the faster Club Connect gets your club management tasks don
 
 The symbols (and the corresponding meanings) used in this document are:
 
-  ℹ️: Note
-
-`code`: Commands that can be entered into Club Connect
-
+ ℹ️: Note +
+`code`: Commands that can be entered into Club Connect +
   💡  : Tip
 
 == Quick Start
