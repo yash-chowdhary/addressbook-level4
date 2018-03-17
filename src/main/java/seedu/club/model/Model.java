@@ -3,6 +3,9 @@ package seedu.club.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -71,5 +74,7 @@ public interface Model {
     void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
     String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException;
+
+    void sendEmail(String recipients, Client client, Subject subject, Body body);
 
 }

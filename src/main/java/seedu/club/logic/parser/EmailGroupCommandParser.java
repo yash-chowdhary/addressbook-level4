@@ -34,8 +34,10 @@ public class EmailGroupCommandParser implements Parser<EmailGroupCommand> {
         try {
             Group group = ParserUtil.parseGroup(argMultimap.getValue(PREFIX_TO)).get();
             Client client = ParserUtil.parseClient(argMultimap.getValue(PREFIX_CLIENT)).get();
-            Subject subject = ParserUtil.parseSubject(argMultimap.getValue(PREFIX_SUBJECT)).get();
-            Body body = ParserUtil.parseBody(argMultimap.getValue(PREFIX_BODY)).get();
+            Subject subject = ParserUtil.parseSubject(argMultimap.getValue(PREFIX_SUBJECT))
+                    .orElse(new Subject(Subject.EMPTY_SUBJECT_STRING));
+            Body body = ParserUtil.parseBody(argMultimap.getValue(PREFIX_BODY))
+                    .orElse(new Body(Body.EMPTY_BODY_STRING));
 
             return new EmailGroupCommand(group, client, subject, body);
         } catch (IllegalValueException ive) {

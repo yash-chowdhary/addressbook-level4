@@ -17,6 +17,9 @@ import org.junit.rules.ExpectedException;
 import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
@@ -162,6 +165,18 @@ public class AddCommandTest {
         @Override
         public ObservableList<Tag> getFilteredTagList() {
             fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public void sendEmail(String recipients, Client client, Subject subject, Body body) {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
+        public String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+            fail("This method should not be called");
             return null;
         }
     }

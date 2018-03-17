@@ -14,6 +14,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -170,6 +174,11 @@ public class ModelManager extends ComponentManager implements Model {
             throw new GroupNotFoundException();
         }
         return String.join(",", emailRecipients);
+    }
+
+    @Override
+    public void sendEmail(String recipients, Client client, Subject subject, Body body) {
+        raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
     //=========== Filtered member List Accessors =============================================================

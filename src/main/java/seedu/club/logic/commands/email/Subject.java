@@ -7,6 +7,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class Subject {
 
+    public static final String EMPTY_SUBJECT_STRING = "";
     private String subject;
 
     public Subject(String subject) {

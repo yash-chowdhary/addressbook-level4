@@ -7,6 +7,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class Body {
 
+    public static final String EMPTY_BODY_STRING = "";
     private String body;
 
     public Body(String body) {

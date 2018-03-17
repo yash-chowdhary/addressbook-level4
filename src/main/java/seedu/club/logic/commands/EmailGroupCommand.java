@@ -21,13 +21,18 @@ public class EmailGroupCommand extends Command {
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) in a "
             + "particular group of the club book. "
-            + "Parameters: "
-            + PREFIX_TO + "GROUP"
-            + PREFIX_CLIENT + "EMAIL CLIENT"
-            + PREFIX_SUBJECT + "SUBJECT"
-            + PREFIX_BODY + "BODY";
+            + "Parameters: " + " "
+            + PREFIX_TO + "GROUP" + " "
+            + PREFIX_CLIENT + "EMAIL CLIENT" + " "
+            + PREFIX_SUBJECT + "SUBJECT" + " "
+            + PREFIX_BODY + "BODY\n"
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_TO + "logistics "
+            + PREFIX_CLIENT + "gmail "
+            + PREFIX_SUBJECT + "Test Subject "
+            + PREFIX_BODY + "Test Body ";
 
-    public static final String MESSAGE_SENT = "Email sent!";
+    public static final String EMAIL_CLIENT_OPENED = "Email client opened!";
     public static final String MESSAGE_NOT_SENT = "Please adhere to the command usage.";
 
     private Group group;
@@ -38,8 +43,8 @@ public class EmailGroupCommand extends Command {
     public EmailGroupCommand(Group group, Client client, Subject subject, Body body) {
         this.group = group;
         this.client = client;
-        this.subject = subject;
-        this.body = body;
+        this.subject = new Subject(subject.toString().replaceAll("\\s", "+"));
+        this.body = new Body(body.toString().replaceAll("\\s", "+"));
     }
 
 
@@ -47,6 +52,8 @@ public class EmailGroupCommand extends Command {
     public CommandResult execute() throws CommandException {
         try {
             String emailRecipients = model.generateGroupEmailRecipients(group);
+            model.sendEmail(emailRecipients, client, subject, body);
+            return new CommandResult(EMAIL_CLIENT_OPENED);
         } catch (GroupNotFoundException gnfe) {
             throw new CommandException(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
         }
