@@ -17,15 +17,16 @@ By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-Club Connect is an application that is targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective.
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective.
 
-Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
+Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
 The faster you type, the faster Club Connect gets your club management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
 
-The symbols (and the corresponding meanings) used in this document are:
+The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
-`code`: Commands that can be entered into Club Connect +
+`code`: Technical keywords or Commands that can be entered into *Club Connect* +
+kbd:[key]: Key on your keyboard +
   💡  : Tip
 
 == Quick Start
@@ -36,23 +37,27 @@ The symbols (and the corresponding meanings) used in this document are:
 Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
-.  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your Address Book.
+.  Download the latest `clubconnect.jar` link:{https://github.com/CS2103JAN2018-W15-B4/main}/releases[here].
+.  Copy the file to the folder that you want to use as the home folder for *Club Connect* (and the club Database).
 .  Double-click the file to start the app. The GUI (as shown in Figure 1.) should appear in a few seconds.
 +
-.
+.*Club Connect* application on launch
 image::Ui.png[width="790"]
 +
-.  Type the command in the command box and press kbd:[Enter] to execute it. +
-e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
-.  Some example commands you can try:
+.  Type a command in the command box and press kbd:[Enter] to execute it. +
+e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown in Figure 2).
++
+.*Club Connect* Help window
+image::help-window.png[width="600"]
++
+.  Some other example commands that you can try are:
 
-* *`list`* : lists all contacts
-* **`add`**`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a contact named `John Doe` to the Address Book.
-* **`delete`**`3` : deletes the 3rd contact shown in the current list
-* *`exit`* : exits the app
+* *`list`* : lists all members of the club on the left pane
+* **`add`**`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a member named `John Doe` to your *Club Connect* members list
+* **`delete`**`3` : deletes the 3rd member shown in the current list
+* *`exit`* : exits the Club Connect app
 
-.  Refer to <<Features>> for details of each command.
+.  Continue to the next section, <<Features>>, for details of each command and its usage.
 
 [[Features]]
 == Features
@@ -60,7 +65,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 *Command Format*
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Words in `UPPER_CASE` are the parameters to be supplied by the user. For example, in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe` or `add n/Jane Doe`.
 * Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 * Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
