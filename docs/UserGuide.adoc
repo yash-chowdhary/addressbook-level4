@@ -24,7 +24,6 @@ Club Connect is a desktop app that makes use of a *Command Line Interface* (<<De
 The faster you type, the faster Club Connect gets your club management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
 
 The symbols (and the corresponding meanings) used in this document are:
-
 ℹ️: Note +
 `code`: Commands that can be entered into Club Connect +
   💡  : Tip
