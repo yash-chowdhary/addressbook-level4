@@ -850,6 +850,10 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |Busy member |be able to directly email members using my default mail client |save time and reduce errors by not needing to add recipients myself
 
+|`* * *` |Member |export members' info |so that I can share the details easily
+
+|`* * *` |Exco member |import data |add members' info to ClubConnect efficiently
+
 |`* *` |Member |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
 
 |`* *` |Member |be notified on members' birthdays |wish them on time
@@ -884,7 +888,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |Member |print profiles of selected members |view the information in the absence of a computer
 
-|`*` |Socially active member|link my social media |I can directly post things that I do in the club
+|`*` |Socially active member |link my social media |I can directly post things that I do in the club
+
+|`*` |Member |change the theme of the application |use the application with an appearance that I think looks best
+
+
 |=======================================================================
 
 _{More to be added}_
