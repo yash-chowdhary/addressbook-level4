@@ -21,6 +21,10 @@ import seedu.club.model.UserPrefs;
 import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
 
+//@@author yash-chowdhary
+/**
+ * Contains unit tests for {@code EmailCommand}.
+ */
 public class EmailCommandTest {
 
     private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
