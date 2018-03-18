@@ -92,12 +92,11 @@ Example: `login u/JohnDoe pw/pass1234`
 
 Adds a member to Club Connect. +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [g/GROUP] [t/TAG]...`
-
 [TIP]
-A member can have any number of `tags` (including 0).
+A member can have any number of tags (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
-A person will be assigned to the `member` group by default.
+A member will be assigned to the default group `member` if no group is specified in the command.
 [TIP]
 A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
@@ -114,7 +113,6 @@ Format: `list`
 === Editing a member : `edit`
 
 Edits the details of an existing member in Club Connect. +
-
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...`
 
 ****
@@ -216,18 +214,19 @@ Deletes the `logistics` group in the address book.
 
 === Deleting a tag : `deletetag`
 
+
 Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG`
 
 ****
-* Deletes the specified tag from Club COnnect.
+* Deletes the specified tag from Club Connect.
 * Deletes the specified tag for all members tagged with it in Club Connect.
 ****
 
 Examples:
 
 * `deletetag t/treasurer` +
-Deletes the `treasurer` tag for all members tagged with `treasurer` in Club COnnect.
+Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
 
 === Selecting a member : `select`
 

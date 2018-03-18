@@ -32,7 +32,7 @@ public class TestApp extends MainApp {
 
     protected static final String DEFAULT_PREF_FILE_LOCATION_FOR_TESTING =
             TestUtil.getFilePathInSandboxFolder("pref_testing.json");
-    protected static final String ADDRESS_BOOK_NAME = "Test";
+    protected static final String CLUB_BOOK_NAME = "Test";
     protected Supplier<ReadOnlyClubBook> initialDataSupplier = () -> null;
     protected String saveFileLocation = SAVE_LOCATION_FOR_TESTING;
 
@@ -65,15 +65,15 @@ public class TestApp extends MainApp {
         double x = Screen.getPrimary().getVisualBounds().getMinX();
         double y = Screen.getPrimary().getVisualBounds().getMinY();
         userPrefs.updateLastUsedGuiSetting(new GuiSettings(600.0, 600.0, (int) x, (int) y));
-        userPrefs.setAddressBookFilePath(saveFileLocation);
-        userPrefs.setAddressBookName(ADDRESS_BOOK_NAME);
+        userPrefs.setClubBookFilePath(saveFileLocation);
+        userPrefs.setClubBookName(CLUB_BOOK_NAME);
         return userPrefs;
     }
 
     /**
      * Returns a defensive copy of the club book data stored inside the storage file.
      */
-    public ClubBook readStorageAddressBook() {
+    public ClubBook readStorageClubBook() {
         try {
             return new ClubBook(storage.readClubBook().get());
         } catch (DataConversionException dce) {
@@ -87,7 +87,7 @@ public class TestApp extends MainApp {
      * Returns the file path of the storage file.
      */
     public String getStorageSaveLocation() {
-        return storage.getAddressBookFilePath();
+        return storage.getClubBookFilePath();
     }
 
     /**
@@ -95,7 +95,7 @@ public class TestApp extends MainApp {
      */
     public Model getModel() {
         Model copy = new ModelManager((model.getClubBook()), new UserPrefs());
-        ModelHelper.setFilteredList(copy, model.getFilteredPersonList());
+        ModelHelper.setFilteredList(copy, model.getFilteredMemberList());
         return copy;
     }
 

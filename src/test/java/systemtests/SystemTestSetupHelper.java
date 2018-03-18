@@ -20,10 +20,10 @@ public class SystemTestSetupHelper {
     /**
      * Sets up a new {@code TestApp} and returns it.
      */
-    public TestApp setupApplication(Supplier<ReadOnlyClubBook> addressBook, String saveFileLocation) {
+    public TestApp setupApplication(Supplier<ReadOnlyClubBook> clubBook, String saveFileLocation) {
         try {
             FxToolkit.registerStage(Stage::new);
-            FxToolkit.setupApplication(() -> testApp = new TestApp(addressBook, saveFileLocation));
+            FxToolkit.setupApplication(() -> testApp = new TestApp(clubBook, saveFileLocation));
         } catch (TimeoutException te) {
             throw new AssertionError("Application takes too long to set up.");
         }

@@ -2,7 +2,7 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
@@ -12,16 +12,16 @@ import seedu.club.model.ReadOnlyClubBook;
  * Represents a command which can be undone and redone.
  */
 public abstract class UndoableCommand extends Command {
-    private ReadOnlyClubBook previousAddressBook;
+    private ReadOnlyClubBook previousClubBook;
 
     protected abstract CommandResult executeUndoableCommand() throws CommandException;
 
     /**
-     * Stores the current state of {@code model#addressBook}.
+     * Stores the current state of {@code model#clubBook}.
      */
-    private void saveAddressBookSnapshot() {
+    private void saveClubBookSnapshot() {
         requireNonNull(model);
-        this.previousAddressBook = new ClubBook(model.getClubBook());
+        this.previousClubBook = new ClubBook(model.getClubBook());
     }
 
     /**
@@ -32,18 +32,18 @@ public abstract class UndoableCommand extends Command {
 
     /**
      * Reverts the ClubBook to the state before this command
-     * was executed and updates the filtered person list to
-     * show all persons.
+     * was executed and updates the filtered member list to
+     * show all members.
      */
     protected final void undo() {
-        requireAllNonNull(model, previousAddressBook);
-        model.resetData(previousAddressBook);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        requireAllNonNull(model, previousClubBook);
+        model.resetData(previousClubBook);
+        model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
     }
 
     /**
-     * Executes the command and updates the filtered person
-     * list to show all persons.
+     * Executes the command and updates the filtered member
+     * list to show all members.
      */
     protected final void redo() {
         requireNonNull(model);
@@ -53,12 +53,12 @@ public abstract class UndoableCommand extends Command {
             throw new AssertionError("The command has been successfully executed previously; "
                     + "it should not fail now");
         }
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
     }
 
     @Override
     public final CommandResult execute() throws CommandException {
-        saveAddressBookSnapshot();
+        saveClubBookSnapshot();
         preprocessUndoableCommand();
         return executeUndoableCommand();
     }
