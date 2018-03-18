@@ -115,13 +115,6 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
-    @Override
-    public void sort() {
-        clubBook.sortMember();
-        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        indicateClubBookChanged();
-    }
-
     /**
      * Removes those tags from the master tag list that no members in the club book are tagged with.
      */
