@@ -823,7 +823,7 @@ Club Connect provides student organisations with a one-stop shop for all their m
 
 *Value proposition*: clubs can efficiently manage its activities and members faster than a typical mouse/GUI driven application
 
-*Feature Contribution*
+*Feature Contribution: *
 
 1. Yash Chowdhary
 
