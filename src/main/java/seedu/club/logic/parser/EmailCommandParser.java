@@ -10,7 +10,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import java.util.stream.Stream;
 
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.EmailGroupCommand;
+import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.email.Body;
 import seedu.club.logic.commands.email.Client;
 import seedu.club.logic.commands.email.Subject;
@@ -20,19 +20,19 @@ import seedu.club.model.tag.Tag;
 
 //@@author yash-chowdhary
 /**
- * Parses input arguments and creates a new EmailGroupCommand object
+ * Parses input arguments and creates a new EmailCommand object
  */
-public class EmailGroupCommandParser implements Parser<EmailGroupCommand> {
+public class EmailCommandParser implements Parser<EmailCommand> {
 
     @Override
-    public EmailGroupCommand parse(String args) throws ParseException {
+    public EmailCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_GROUP, PREFIX_TAG, PREFIX_CLIENT,
                 PREFIX_SUBJECT, PREFIX_BODY);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_CLIENT) || !argMultimap.getPreamble().isEmpty()
                 && ((arePrefixesPresent(argMultimap, PREFIX_GROUP) || arePrefixesPresent(argMultimap, PREFIX_TAG))
                 && !(arePrefixesPresent(argMultimap, PREFIX_GROUP) && arePrefixesPresent(argMultimap, PREFIX_TAG)))) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailGroupCommand.COMMAND_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.COMMAND_USAGE));
         }
 
         try {
@@ -46,7 +46,7 @@ public class EmailGroupCommandParser implements Parser<EmailGroupCommand> {
             Body body = ParserUtil.parseBody(argMultimap.getValue(PREFIX_BODY))
                     .orElse(new Body(Body.EMPTY_BODY_STRING));
 
-            return new EmailGroupCommand(group, tag, client, subject, body);
+            return new EmailCommand(group, tag, client, subject, body);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }

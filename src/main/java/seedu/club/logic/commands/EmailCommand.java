@@ -19,7 +19,7 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 /**
  * Sends an email to the desired recipient(s) in a particular group of the club book.
  */
-public class EmailGroupCommand extends Command {
+public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
 
@@ -46,7 +46,7 @@ public class EmailGroupCommand extends Command {
     private Subject subject;
     private Body body;
 
-    public EmailGroupCommand(Group group, Tag tag, Client client, Subject subject, Body body) {
+    public EmailCommand(Group group, Tag tag, Client client, Subject subject, Body body) {
         this.group = group;
         this.tag = tag;
         this.client = client;

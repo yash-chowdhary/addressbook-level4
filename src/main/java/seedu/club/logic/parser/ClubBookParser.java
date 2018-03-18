@@ -12,7 +12,7 @@ import seedu.club.logic.commands.Command;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.EditCommand;
-import seedu.club.logic.commands.EmailGroupCommand;
+import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.FindByCommand;
 import seedu.club.logic.commands.FindCommand;
@@ -102,8 +102,8 @@ public class ClubBookParser {
         case DeleteTagCommand.COMMAND_WORD:
             return new DeleteTagCommandParser().parse(arguments);
 
-        case EmailGroupCommand.COMMAND_WORD:
-            return new EmailGroupCommandParser().parse(arguments);
+        case EmailCommand.COMMAND_WORD:
+            return new EmailCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
