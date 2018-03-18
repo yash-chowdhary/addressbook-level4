@@ -22,7 +22,6 @@ import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.SortCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
@@ -100,9 +99,6 @@ public class ClubBookParser {
 
         case DeleteTagCommand.COMMAND_WORD:
             return new DeleteTagCommandParser().parse(arguments);
-
-        case SortCommand.COMMAND_WORD:
-            return new SortCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
