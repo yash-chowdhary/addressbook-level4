@@ -64,7 +64,7 @@ This project follows https://github.com/oss-generic/process/blob/master/docs/Cod
 * For `Class count to use import with '\*'` and `Names count to use static import with '*'`: Set to `999` to prevent IntelliJ from contracting the import statements
 * For `Import Layout`: The order is `import static all other imports`, `import java.\*`, `import javax.*`, `import org.\*`, `import com.*`, `import all other imports`. Add a `<blank line>` between each `import`
 
-Optionally, you can follow the <<UsingCheckstyle#, UsingCheckstyle.adoc>> document to configure Intellij to check style-compliance as you write code.
+Optionally, you can follow the <<UsingCheckstyle#, UsingCheckstyle.adoc>> document to configure IntelliJ to check style-compliance as you write code.
 
 ==== Updating documentation to match your fork
 
@@ -92,6 +92,8 @@ When you are ready to start coding,
 2. Take a look at <<GetStartedProgramming>>.
 
 == Design
+[TIP]
+The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the .pptx file, select the objects of the diagram, and choose `Save as picture`.
 
 [[Design-Architecture]]
 === Architecture
@@ -101,8 +103,6 @@ The *_Architecture Diagram_* (Refer to Figure 1) explains the high-level design 
 image::Architecture.png[width="600"]
 _Figure 1. Architecture Diagram_
 
-[TIP]
-The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the .pptx file, select the objects of the diagram, and choose `Save as picture`.
 
 `Main` has only one class called link:{repoURL}/src/main/java/seedu/club/MainApp.java[`MainApp`]. It is responsible for the following:
 
@@ -365,7 +365,7 @@ _Figure 18. Activity Diagram for Undo-Redo_
 ** Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update * both `HistoryManager` and `UndoRedoStack`.
 * **Alternative 2:** Use `HistoryManager` for undo/redo
 ** Pros: We do not need to maintain a separate stack, and can just reuse what is already in the codebase.
-** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Furthermore, the Single Responsibility Principle and Separation of Concerns are violated as `HistoryManager` now needs to do two * different things.
+** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Furthermore, the "Single Responsibility" and "Separation of Concerns" principles are violated as `HistoryManager` now needs to do two * different things.
 // end::undoredo[]
 
 // tag::dataencryption[]
