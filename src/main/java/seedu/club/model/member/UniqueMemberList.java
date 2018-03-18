@@ -100,6 +100,7 @@ public class UniqueMemberList implements Iterable<Member> {
      * Returns the backing list as an unmodifiable {@code ObservableList}.
      */
     public ObservableList<Member> asObservableList() {
+        sort();
         return FXCollections.unmodifiableObservableList(internalList);
     }
 
