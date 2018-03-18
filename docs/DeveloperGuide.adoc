@@ -823,6 +823,14 @@ Club Connect provides student organisations with a one-stop shop for all their m
 
 *Value proposition*: clubs can efficiently manage its activities and members faster than a typical mouse/GUI driven application
 
+=== Feature Contribution
+==== Email Command
+Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+
+==== Task Management
+Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status.
+This ensures transparency and accountability of the club.
+
 [appendix]
 == User Stories
 
