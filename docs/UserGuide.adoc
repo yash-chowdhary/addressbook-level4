@@ -46,7 +46,7 @@ This app will not work with earlier versions of Java 8.
 [[launch-app]]
 [.text-center]
 .Club Connect application on launch
-image::Ui.png[width="690"][align="left"]
+image::Ui.png[width="590"][align="left"]
 +
 .  Type a command in the command box and press kbd:[Enter] to execute it. +
 e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown in Figure 2).
@@ -54,7 +54,7 @@ e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown 
 [[help-window]]
 [.text-center]
 .Club Connect Help window
-image::help-window.png[align="center"][width="400"]
+image::help-window.png[align="center"][width="300"]
 +
 .  Some other example commands that you can try are:
 
@@ -380,17 +380,17 @@ Not satisfied with your productivity while using Club Connect? Can't remember th
 
 == Coming in v2.0
 
-* Encrypt data files +
+* *Encrypt data files* : `encrypt` +
 Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
 By encrypting Club Connect's data files, you can ensure that others will not be able to read members' information if they open the files. Do note, however, that this may slightly affect performance.
 
-* Chat with any member +
+* *Chat with any member* : `chat INDEX` +
 You can message other members in real time without ever needing to leave the Club Connect application.
 
-* Group Chats +
+* *Group Chats* : `gchat GROUP_NAME` +
 Tired of sending the same message to multiple members? The *Group Chat* feature allows you to have conversations as a group so that everyone is kept in the loop.
 
-* Submit anonymous feedback +
+* *Submit anonymous feedback* : `feedback` +
 Not satisfied with certain aspects of the club? Afraid to speak up? +
 Fret not, Club Connect provides you with a platform to voice your opinions. And yes, we guarantee your anonymity.
 
