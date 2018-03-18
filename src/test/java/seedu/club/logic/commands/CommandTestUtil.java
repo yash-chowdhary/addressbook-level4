@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
@@ -79,6 +80,11 @@ public class CommandTestUtil {
     public static final String NON_EXISTENT_GROUP_DESC = PREFIX_GROUP + NON_EXISTENT_GROUP;
     public static final String MANDATORY_GROUP = "member";
     public static final String MANDATORY_GROUP_DESC = PREFIX_GROUP + MANDATORY_GROUP;
+
+    public static final String VALID_CLIENT = "gmail";
+    public static final String VALID_CLIENT_DESC = " " + PREFIX_CLIENT + VALID_CLIENT;
+    public static final String INVALID_CLIENT = "yahoo";
+    public static final String INVALID_CLIENT_DESC = " " + PREFIX_CLIENT + INVALID_CLIENT;
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

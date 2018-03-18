@@ -72,8 +72,8 @@ public class EmailCommand extends Command {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof EmailCommand // instanceof handles nulls
-                && group.equals(((EmailCommand) other).group))
-                && tag.equals(((EmailCommand) other).tag)
-                && client.equals(((EmailCommand) other).client);
+                && (group == ((EmailCommand) other).group || group.equals(((EmailCommand) other).group))
+                && (tag == ((EmailCommand) other).tag || tag.equals(((EmailCommand) other).tag))
+                && client.equals(((EmailCommand) other).client));
     }
 }

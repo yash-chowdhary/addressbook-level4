@@ -29,9 +29,14 @@ public class EmailCommandParser implements Parser<EmailCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_GROUP, PREFIX_TAG, PREFIX_CLIENT,
                 PREFIX_SUBJECT, PREFIX_BODY);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_CLIENT) || !argMultimap.getPreamble().isEmpty()
-                && ((arePrefixesPresent(argMultimap, PREFIX_GROUP) || arePrefixesPresent(argMultimap, PREFIX_TAG))
-                && !(arePrefixesPresent(argMultimap, PREFIX_GROUP) && arePrefixesPresent(argMultimap, PREFIX_TAG)))) {
+        if (arePrefixesPresent(argMultimap, PREFIX_GROUP) && arePrefixesPresent(argMultimap, PREFIX_TAG)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.COMMAND_USAGE));
+        }
+        if (!((arePrefixesPresent(argMultimap, PREFIX_GROUP)) || arePrefixesPresent(argMultimap, PREFIX_TAG))) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.COMMAND_USAGE));
+        }
+        if (!arePrefixesPresent(argMultimap, PREFIX_CLIENT)
+                || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.COMMAND_USAGE));
         }
 

@@ -10,7 +10,7 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Group {
     public static final String MESSAGE_GROUP_CONSTRAINTS =
-            "member groups should only contain alphanumeric characters, and it should not be blank";
+            "Member groups should only contain alphanumeric characters, and it should not be blank";
 
     /*
      * The first character of the group must not be a whitespace,
