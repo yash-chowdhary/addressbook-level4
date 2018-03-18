@@ -27,9 +27,9 @@ The faster you type, the faster Club Connect gets your club management tasks don
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
+  💡  : Tip +
 `code`: Technical keywords or Commands that can be entered into *Club Connect* +
 kbd:[key]: Key on your keyboard +
-  💡  : Tip
 
 == Quick Start
 
@@ -108,12 +108,12 @@ Examples:
 
 === Listing all members : `list`
 
-Shows a list of all members in Club Connect +
+Shows a list of all members in Club Connect. +
 Format: `list`
 
 === Editing a member : `edit`
 
-Edits an existing member in Club Connect. +
+Edits the details of an existing member in Club Connect. +
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...`
 
@@ -130,59 +130,59 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/
 Examples:
 
 * `edit 1 p/91234567 e/johndoe@example.com` +
-Edits the phone number and email address of the 1st member to `91234567` and `johndoe@example.com` respectively.
+Edits the phone number and email address of the 1st member in the list to `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
 Edits the group of the 3rd member to be `finance`.
 
-=== Locating smember by name: `find`
+=== Locating members by name: `find`
 
-Finds persons whose names contain any of the given keywords. +
+Finds members whose names contain any of the given keywords. +
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 ****
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Only full words will be matched e.g. `Han` will not match `Hans`.
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 ****
 
 Examples:
 
 * `find John` +
-Returns `john` and `John Doe`
+Returns `john` and `John Doe`.
 * `find Betsy Tim John` +
-Returns any person having names `Betsy`, `Tim`, or `John`
+Returns any member having names `Betsy`, `Tim`, or `John`.
 
-=== Locating persons by any field: `findby`
+=== Locating members by any field: `findby`
 
-Finds persons whose field contain any of the given keywords. +
+Finds members whose field contains any of the given keywords. +
 Format: `findby FIELD KEYWORD [MORE_KEYWORDS]`
 
 ****
-* FIELD can be name, phone, email, matric(matric number), group or tag and is case insensitive
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Partial matches will be matched e.g. `Han` will match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* FIELD can be name, phone, email, matric(matric number), group or tag and is case insensitive.
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
+* Partial matches will be matched e.g. `Han` will match `Hans`.
+* Members matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 ****
 
 Examples:
 
 * `findby phone 123` +
-Returns any person having phone number containing 123
+Returns any member having phone number containing 123.
 * `findby matric A654` +
-Returns any person having matric number containing A654
+Returns any member having matric number containing A654.
 
-=== Deleting a person : `delete`
+=== Deleting a member : `delete`
 
-Deletes the specified person from the address book. +
+Deletes the specified member from the address book. +
 Format: `delete INDEX`
 
 ****
-* Deletes the person at the specified `INDEX`.
+* Deletes the member at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
@@ -191,10 +191,10 @@ Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd person in the address book.
+Deletes the 2nd member in the member listing.
 * `find Betsy` +
 `delete 1` +
-Deletes the 1st person in the results of the `find` command.
+Deletes the 1st member in the results of the `find` command.
 
 === Deleting a group : `removegroup`
 
@@ -216,26 +216,26 @@ Deletes the `logistics` group in the address book.
 
 === Deleting a tag : `deletetag`
 
-Deletes the specified tag for all persons in the address book. +
+Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG`
 
 ****
-* Deletes the specified tag from the addressbook.
-* Deletes the specified tag for all persons tagged with it in the addressbook.
+* Deletes the specified tag from Club COnnect.
+* Deletes the specified tag for all members tagged with it in Club Connect.
 ****
 
 Examples:
 
 * `deletetag t/treasurer` +
-Deletes the `treasurer` tag for all persons tagged with `treasurer` in the address book.
+Deletes the `treasurer` tag for all members tagged with `treasurer` in Club COnnect.
 
-=== Selecting a person : `select`
+=== Selecting a member : `select`
 
-Selects the person identified by the index number used in the last person listing. +
+Selects the member identified by the index number used in the most recent member listing. +
 Format: `select INDEX`
 
 ****
-* Selects the person and loads the Google search page the person at the specified `INDEX`.
+* Selects the member and loads the Google search page the member at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* `1, 2, 3, ...`
 ****
@@ -244,10 +244,10 @@ Examples:
 
 * `list` +
 `select 2` +
-Selects the 2nd person in the address book.
+Selects the 2nd member in the address book.
 * `find Betsy` +
 `select 1` +
-Selects the 1st person in the results of the `find` command.
+Selects the 1st member in the results of the `find` command.
 
 === Listing entered commands : `history`
 
@@ -262,12 +262,12 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 // tag::undoredo[]
 === Undoing previous command : `undo`
 
-Restores the address book to the state before the previous _undoable_ command was executed. +
+Restores Club Connect to the state before the previous _undoable_ command was executed. +
 Format: `undo`
 
 [NOTE]
 ====
-Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit` and `clear`).
+Undoable commands: those commands that modify Club Connect's content (`add`, `delete`, `edit` and `clear`).
 ====
 
 Examples:
@@ -311,32 +311,41 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 === Clearing all entries : `clear`
 
-Clears all entries from the address book. +
+Clears all entries from Club Connect. +
 Format: `clear`
 
-=== Exiting the program : `exit`
+=== Exiting the application : `exit`
 
-Exits the program. +
+Exits the Club Connect application. +
 Format: `exit`
 
 === Saving the data
 
-Address book data are saved in the hard disk automatically after any command that changes the data. +
+Club Connect data is saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
 // tag::dataencryption[]
 === Encrypting data files `[coming in v2.0]`
 
+Encrypts the file in the hard disk that contains data from the Club Connect application. +
+Format: `encrypt`
 _{explain how the user can enable/disable data encryption}_
 // end::dataencryption[]
-
 [NOTE]
+====
+Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
+Encrypting Club Connect's data files ensures that others will not be able to read members' information if they open the files.
+====
+
+<br/>
+
+[TIP]
 To further increase your efficiency while using Club Connect, check out <<Tips>>.
 
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
+*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Club Connect folder.
 
 == Command Summary
 
@@ -353,7 +362,7 @@ e.g. `removegroup g/publicity`
 e.g. `deletetag t/president`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
-* *Find* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
+* *Find By* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
 e.g. `findby phone 123`
 * *List* : `list`
 * *Help* : `help`
@@ -368,12 +377,21 @@ e.g.`select 2`
 Not satisfied with your productivity while using Club Connect? Can't remember the command names? Here are some tips to fix that:
 
 * *Command shortcuts*
-* Aikm
+* Lorem Ipsum
 
 == Coming in v2.0
 
-* Encrypt data files
-* Group Chats
-* Submit anonymous feedback
-* Chat with any member
-* Know who is online
+* Encrypt data files +
+Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
+By encrypting Club Connect's data files, you can ensure that others will not be able to read members' information if they open the files. Do note, however, that this may slightly affect performance.
+
+* Chat with any member +
+You can message other members in real time without ever needing to leave the Club Connect application.
+
+* Group Chats +
+Tired of sending the same message to multiple members? The *Group Chat* feature allows you to have conversations as a group so that everyone is kept in the loop.
+
+* Submit anonymous feedback +
+Not satisfied with certain aspects of the club? Afraid to speak up? +
+Fret not, Club Connect provides you with a platform to voice your opinions. And yes, we guarantee your anonymity.
+
