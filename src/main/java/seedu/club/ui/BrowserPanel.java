@@ -50,6 +50,7 @@ public class BrowserPanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
+    //@@author yash-chowdhary
     /**
      * Loads the client page based on {@code client}
      */
@@ -98,6 +99,7 @@ public class BrowserPanel extends UiPart<Region> {
             }
         }
     }
+    //@@author
 
     private void loadMemberPage(Member member) {
         loadPage(SEARCH_PAGE_URL + member.getName().fullName);
@@ -128,6 +130,7 @@ public class BrowserPanel extends UiPart<Region> {
         loadMemberPage(event.getNewSelection().member);
     }
 
+    //@@author yash-chowdhary
     @Subscribe
     private void handleSendingEmailEvent(SendEmailRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Sending email via "

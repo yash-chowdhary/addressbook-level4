@@ -2,6 +2,7 @@ package seedu.club.logic.commands.email;
 
 import static java.util.Objects.requireNonNull;
 
+//@@author yash-chowdhary
 /**
  * Refers to the subject of an email
  */

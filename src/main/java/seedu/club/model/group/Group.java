@@ -3,6 +3,7 @@ package seedu.club.model.group;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
+//@@author yash-chowdhary
 /**
  * Represents a member's Group in the club book
  * Guarantees: immutable; is valid as declared in {@link #isValidGroup(String)}

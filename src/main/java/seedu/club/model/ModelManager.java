@@ -104,6 +104,7 @@ public class ModelManager extends ComponentManager implements Model {
         return clubBook.logInMember(username, password);
     }
 
+    //@@author yash-chowdhary
     @Override
     public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
@@ -111,6 +112,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
+    //@@author
 
     @Override
     public void deleteTag(Tag tag) throws TagNotFoundException {
