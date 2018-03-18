@@ -38,7 +38,7 @@ public class EmailGroupCommandParser implements Parser<EmailGroupCommand> {
         try {
 
             Group group = ParserUtil.parseGroup(argMultimap.getValue(PREFIX_GROUP)).orElse(null);
-            Tag tag = ParserUtil.parseTag(argMultimap.getValue(PREFIX_TAG)).orElse(null);
+            Tag tag = ParserUtil.parseOptionalTag(argMultimap.getValue(PREFIX_TAG)).orElse(null);
 
             Client client = ParserUtil.parseClient(argMultimap.getValue(PREFIX_CLIENT)).get();
             Subject subject = ParserUtil.parseSubject(argMultimap.getValue(PREFIX_SUBJECT))

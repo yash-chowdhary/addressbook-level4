@@ -228,7 +228,7 @@ public class ParserUtil {
     /**
      * Parses a {@code Optional<String> tag} into a {@code Optional<Tag>} if {@code group} is present
      */
-    public static Optional<Tag> parseTag(Optional<String> tag) throws IllegalValueException {
+    public static Optional<Tag> parseOptionalTag(Optional<String> tag) throws IllegalValueException {
         requireNonNull(tag);
         return tag.isPresent() ? Optional.of(parseTag(tag.get())) : Optional.empty();
     }
