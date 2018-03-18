@@ -9,6 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class Body {
 
     public static final String EMPTY_BODY_STRING = "";
+    public static final String TEST_BODY_STRING = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit.";
     private String body;
 
     public Body(String body) {

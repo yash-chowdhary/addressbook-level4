@@ -9,6 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class Subject {
 
     public static final String EMPTY_SUBJECT_STRING = "";
+    public static final String TEST_SUBJECT_STRING = "Lorem Ipsum";
     private String subject;
 
     public Subject(String subject) {
