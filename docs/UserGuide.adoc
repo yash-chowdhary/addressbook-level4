@@ -46,7 +46,7 @@ This app will not work with earlier versions of Java 8.
 [[launch-app]]
 [.text-center]
 .Club Connect application on launch
-image::Ui.png[width="390"][align="left"]
+image::Ui.png[width="390"]
 +
 .  Type a command in the command box and press kbd:[Enter] to execute it. +
 e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown in Figure 2).
