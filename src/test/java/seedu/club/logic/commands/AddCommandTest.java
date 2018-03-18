@@ -112,6 +112,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void sort() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called.");
         }
