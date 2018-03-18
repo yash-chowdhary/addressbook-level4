@@ -184,6 +184,13 @@ public class ClubBook implements ReadOnlyClubBook {
         return members.logInMemberSuccessful(username, password);
     }
 
+    /**
+     * Sorts the list in alphabetical order
+     */
+
+    public void sortMember() {
+        members.sort();
+    }
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
      */

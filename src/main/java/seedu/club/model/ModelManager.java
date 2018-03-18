@@ -107,9 +107,17 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
+
     @Override
     public void deleteTag(Tag tag) throws TagNotFoundException {
         clubBook.deleteTag(tag);
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public void sort() {
+        clubBook.sortMember();
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }

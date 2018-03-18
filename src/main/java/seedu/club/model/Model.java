@@ -70,4 +70,8 @@ public interface Model {
 
     void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
+    /**
+     * Sorts the member list in alphabetical order
+     */
+    void sort();
 }
