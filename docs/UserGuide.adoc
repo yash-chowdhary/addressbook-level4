@@ -91,7 +91,7 @@ Examples:
 Shows a list of all members in the address book. +
 Format: `list`
 
-=== Sort members in alphabetical order : `
+=== Sort members in alphabetical order : `Sort`
 
 Sort a list of members in the Clubbook in alphabetical order
 Format: `sort`
