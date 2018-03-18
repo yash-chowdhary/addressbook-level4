@@ -175,7 +175,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+        public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException,
+                TagNotFoundException {
             fail("This method should not be called");
             return null;
         }

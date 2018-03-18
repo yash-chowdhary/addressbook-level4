@@ -5,6 +5,7 @@ import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -158,8 +159,43 @@ public class ModelManager extends ComponentManager implements Model {
         return true;
     }
 
+    //@@author yash-chowdhary
     @Override
-    public String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+    public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException {
+        if (group != null) {
+            return generateGroupEmailRecipients(group);
+        }
+        return generateTagEmailRecipients(tag);
+    }
+
+    /**
+     * Generates recipient list of all members part of {@code Tag toSendEmailTo}
+     * @throws TagNotFoundException if {@code Tag toSendEmailTo} doesn't exist in the club book
+     */
+    private String generateTagEmailRecipients(Tag toSendEmailTo) throws TagNotFoundException {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+
+        List<String> emailRecipients = new ArrayList<>();
+        Boolean tagFound = false;
+        for (Member member : members) {
+            Set<Tag> memberTags = member.getTags();
+            if (memberTags.contains(toSendEmailTo)) {
+                emailRecipients.add(member.getEmail().toString());
+                tagFound = true;
+            }
+        }
+        if (!tagFound) {
+            throw new TagNotFoundException();
+        }
+
+        return String.join(",", emailRecipients);
+    }
+
+    /**
+     * Generates recipient list of all members part of {@code Group toSendEmailTo}
+     * @throws GroupNotFoundException if {@code Group toSendEmailTo} doesn't exist in the club book
+     */
+    private String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
@@ -180,6 +216,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void sendEmail(String recipients, Client client, Subject subject, Body body) {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
+    //@@author
 
     //=========== Filtered member List Accessors =============================================================
 

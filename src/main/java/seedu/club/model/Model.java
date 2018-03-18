@@ -73,8 +73,7 @@ public interface Model {
 
     void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
-    String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException;
+    String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
-
 }
