@@ -1,11 +1,14 @@
 package seedu.club.logic.commands;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TAG;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
@@ -173,6 +176,32 @@ public class EmailCommandTest {
         assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
     }
 
+    @Test
+    public void equals() {
+        Group groupToEmailOne = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
+        Group groupToEmailTwo = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        Tag tagToEmailOne = new Tag(VALID_TAG_UNUSED);
+        Tag tagToEmailTwo = new Tag(VALID_TAG_UNUSED);
+
+        EmailCommand firstCommand = prepareCommand(groupToEmailOne, tagToEmailOne, gmailClient,
+                testSubject, testBody);
+        EmailCommand secondCommand = prepareCommand(groupToEmailTwo, tagToEmailTwo, gmailClient,
+                emptySubject, emptyBody);
+
+        assertTrue(firstCommand.equals(firstCommand));
+        assertTrue(secondCommand.equals(secondCommand));
+
+        EmailCommand firstCommandCopy = prepareCommand(model.getFilteredMemberList().get(INDEX_FIRST_MEMBER
+                .getZeroBased()).getGroup(), tagToEmailOne, gmailClient, testSubject, emptyBody);
+        assertTrue(firstCommand.equals(firstCommandCopy));
+
+        assertFalse(secondCommand.equals(true));
+
+        assertFalse(secondCommand.equals(null));
+
+        assertFalse(firstCommand.equals(secondCommand));
+
+    }
     /**
      * Returns a {@code EmailCommand} object with the parameters {@code group}, {@code tag},
      * {@code client}, {@code subject}, and {@code body}

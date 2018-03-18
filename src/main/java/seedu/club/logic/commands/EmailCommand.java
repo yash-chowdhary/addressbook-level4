@@ -67,4 +67,13 @@ public class EmailCommand extends Command {
             throw new CommandException(DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG);
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof EmailCommand // instanceof handles nulls
+                && group.equals(((EmailCommand) other).group))
+                && tag.equals(((EmailCommand) other).tag)
+                && client.equals(((EmailCommand) other).client);
+    }
 }
