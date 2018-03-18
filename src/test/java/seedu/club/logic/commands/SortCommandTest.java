@@ -28,12 +28,12 @@ public class SortCommandTest {
     }
 
     @Test
-    public void execute_listIsNotFiltered_showsSameList() {
+    public void executelistIsNotFilteredshowsSameList() {
         assertCommandSuccess(sortCommand, model, SortCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
     @Test
-    public void execute_listIsFiltered_showsEverything() {
+    public void executelistIsFilteredshowsEverything() {
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
         assertCommandSuccess(sortCommand, model, SortCommand.MESSAGE_SUCCESS, expectedModel);
     }
