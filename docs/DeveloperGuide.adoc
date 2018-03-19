@@ -862,7 +862,7 @@ Instead of just finding a member by name, Findby Command is used to search membe
 +
 Members can log in to their own accounts and excess their unique storage files. This can allow allocation of task to certain members and memebrs can organise their datas uniquely.
 
-*Minor Feature: AutoSorting
+* Minor Feature: AutoSorting
 +
 After Members edited their list of contacts, the contact list will be automatically sorted in alphabetical order.
 
