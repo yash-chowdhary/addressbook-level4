@@ -87,4 +87,18 @@ public class EmailCommandParserTest {
                 tagToEmail, new Client(VALID_CLIENT), new Subject(Subject.TEST_SUBJECT_STRING),
                 new Body(Body.TEST_BODY_STRING)));
     }
+
+    @Test
+    public void parse_clientMissing_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.COMMAND_USAGE);
+        String invalidCommand = GROUP_DESC_AMY;
+        assertParseFailure(parser, invalidCommand, expectedMessage);
+    }
+
+    @Test
+    public void parse_emptyCommand_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.COMMAND_USAGE);
+        String invalidCommand = " ";
+        assertParseFailure(parser, invalidCommand, expectedMessage);
+    }
 }
