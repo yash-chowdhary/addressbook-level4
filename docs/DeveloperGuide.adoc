@@ -827,13 +827,24 @@ Club Connect provides student organisations with a one-stop shop for all their m
 
 1. Yash Chowdhary
 
-* Minor Enhancement: Email Command
+* Major Feature: Task Management
++
+Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status. This ensures transparency and accountability of the club.
+
+* Minor Feature: Email Command
 +
 Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
 
-* Major Enhancement: Task Management
+2. Amrut Prabhu
+
+* Major Feature: Importing and Exporting Members List
 +
-Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status. This ensures transparency and accountability of the club.
+After recruitment events like SLF at NUS or other situations in which details of incoming members are recorded on an Excel sheet, the data can be imported from the Club Connect application instead of manually adding all the members.
+The list of members from the Club Connect application can be exported to formats such as .csv or .txt so that the club members can have access to a readable and sharable version of the member list outside the Club Connect application.
+
+* Minor Feature: Add a profile picture
++
+All the members of a club are not known by each other, which is especially the case in larger clubs. Adding a profile picture makes it easier to know what other members look like and to differentiate between members with similar names.
 
 [appendix]
 == User Stories
