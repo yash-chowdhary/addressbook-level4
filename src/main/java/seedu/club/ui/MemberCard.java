@@ -53,8 +53,8 @@ public class MemberCard extends UiPart<Region> {
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
-    public MemberCard(Member member, int displayedIndex, String FXML) {
-        super(FXML);
+    public MemberCard(Member member, int displayedIndex, String fxml) {
+        super(fxml);
         this.member = member;
         id.setText(displayedIndex + ". ");
         name.setText(member.getName().fullName);
@@ -81,7 +81,7 @@ public class MemberCard extends UiPart<Region> {
                 && member.equals(card.member);
     }
 
-    protected Label getID() {
+    protected Label getId() {
         return id;
     }
 }

@@ -37,14 +37,20 @@ public class MemberListPanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    public void compressMemberCards() {
+    /**
+     * Compress view of member details.
+     */
+    protected void compressMemberCards() {
         if (!isDisplayingCompressedMembers) {
             isDisplayingCompressedMembers = true;
             setMemberListView(memberList);
         }
     }
 
-    public void decompressMemberCards() {
+    /**
+     * Decompress view of member details.
+     */
+    protected void decompressMemberCards() {
         if (isDisplayingCompressedMembers) {
             isDisplayingCompressedMembers = false;
             setMemberListView(memberList);
@@ -59,12 +65,12 @@ public class MemberListPanel extends UiPart<Region> {
     private void setMemberListView(ObservableList<Member> memberList) {
         ObservableList<MemberCard> mappedList = EasyBind.map(
                 memberList, (member) -> {
-                    if (isDisplayingCompressedMembers) {
-                        return new CompressedMemberCard(member, memberList.indexOf(member) + 1);
-                    } else {
-                        return new MemberCard(member, memberList.indexOf(member) + 1);
-                    }
-                });
+                if (isDisplayingCompressedMembers) {
+                    return new CompressedMemberCard(member, memberList.indexOf(member) + 1);
+                } else {
+                    return new MemberCard(member, memberList.indexOf(member) + 1);
+                }
+            });
         memberListView.setItems(mappedList);
         memberListView.setCellFactory(listView -> new MemberListViewCell());
     }

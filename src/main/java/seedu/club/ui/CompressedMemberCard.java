@@ -35,7 +35,7 @@ public class CompressedMemberCard extends MemberCard {
 
         // state check
         CompressedMemberCard card = (CompressedMemberCard) other;
-        return getID().getText().equals(getID().getText())
+        return getId().getText().equals(getId().getText())
                 && member.equals(card.member);
     }
 }

@@ -1,7 +1,6 @@
 package seedu.club.logic.commands;
 
 import seedu.club.commons.core.EventsCenter;
-import seedu.club.commons.events.ui.CompressMembersRequestEvent;
 import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 
 /**
