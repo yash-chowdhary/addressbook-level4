@@ -846,6 +846,16 @@ The list of members from the Club Connect application can be exported to formats
 +
 All the members of a club are not known by each other, which is especially the case in larger clubs. Adding a profile picture makes it easier to know what other members look like and to differentiate between members with similar names.
 
+3. Muhammad Nur Kamal Bin Mohammed Ariff
+
+* Major Feature: Polling system
++
+Exco members can create polls and look at the results to help ascertain the needs and want of other members. Members can vote for polls to express what they require from the club.
+
+* Minor Feature: Findby Command
++
+Instead of just finding a member by name, Findby Command is used to search members by a specified field which includes: Name, Phone, Email, Matric Number, Tags and Group. This increases navigability of the contacts inside Club Connect.
+
 [appendix]
 == User Stories
 
