@@ -23,19 +23,27 @@ import seedu.club.model.member.Member;
 public class MemberListPanel extends UiPart<Region> {
     private static final String FXML = "MemberListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(MemberListPanel.class);
+    private boolean isDisplayingCompressedMembers;
 
     @FXML
     private ListView<MemberCard> memberListView;
 
     public MemberListPanel(ObservableList<Member> memberList) {
         super(FXML);
+        isDisplayingCompressedMembers = true;
         setConnections(memberList);
         registerAsAnEventHandler(this);
     }
 
     private void setConnections(ObservableList<Member> memberList) {
-        ObservableList<MemberCard> mappedList = EasyBind.map(
-                memberList, (member) -> new MemberCard(member, memberList.indexOf(member) + 1));
+        ObservableList<MemberCard> mappedList;
+        if (isDisplayingCompressedMembers) {
+            mappedList = EasyBind.map(
+                    memberList, (member) -> new CompressedMemberCard(member, memberList.indexOf(member) + 1));
+        } else {
+            mappedList = EasyBind.map(
+                    memberList, (member) -> new MemberCard(member, memberList.indexOf(member) + 1));
+        }
         memberListView.setItems(mappedList);
         memberListView.setCellFactory(listView -> new MemberListViewCell());
         setEventHandlerForSelectionChangeEvent();
