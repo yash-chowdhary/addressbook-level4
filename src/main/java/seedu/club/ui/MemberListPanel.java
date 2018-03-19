@@ -24,29 +24,49 @@ public class MemberListPanel extends UiPart<Region> {
     private static final String FXML = "MemberListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(MemberListPanel.class);
     private boolean isDisplayingCompressedMembers;
+    private ObservableList<Member> memberList;
 
     @FXML
     private ListView<MemberCard> memberListView;
 
     public MemberListPanel(ObservableList<Member> memberList) {
         super(FXML);
-        isDisplayingCompressedMembers = true;
+        this.memberList = memberList;
+        isDisplayingCompressedMembers = false;
         setConnections(memberList);
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<Member> memberList) {
-        ObservableList<MemberCard> mappedList;
-        if (isDisplayingCompressedMembers) {
-            mappedList = EasyBind.map(
-                    memberList, (member) -> new CompressedMemberCard(member, memberList.indexOf(member) + 1));
-        } else {
-            mappedList = EasyBind.map(
-                    memberList, (member) -> new MemberCard(member, memberList.indexOf(member) + 1));
+    public void compressMemberCards() {
+        if (!isDisplayingCompressedMembers) {
+            isDisplayingCompressedMembers = true;
+            setMemberListView(memberList);
         }
+    }
+
+    public void decompressMemberCards() {
+        if (isDisplayingCompressedMembers) {
+            isDisplayingCompressedMembers = false;
+            setMemberListView(memberList);
+        }
+    }
+
+    private void setConnections(ObservableList<Member> memberList) {
+        setMemberListView(memberList);
+        setEventHandlerForSelectionChangeEvent();
+    }
+
+    private void setMemberListView(ObservableList<Member> memberList) {
+        ObservableList<MemberCard> mappedList = EasyBind.map(
+                memberList, (member) -> {
+                    if (isDisplayingCompressedMembers) {
+                        return new CompressedMemberCard(member, memberList.indexOf(member) + 1);
+                    } else {
+                        return new MemberCard(member, memberList.indexOf(member) + 1);
+                    }
+                });
         memberListView.setItems(mappedList);
         memberListView.setCellFactory(listView -> new MemberListViewCell());
-        setEventHandlerForSelectionChangeEvent();
     }
 
     private void setEventHandlerForSelectionChangeEvent() {

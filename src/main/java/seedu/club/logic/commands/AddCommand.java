@@ -13,6 +13,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.ui.MemberListPanel;
 
 /**
  * Adds a member to the club book.
