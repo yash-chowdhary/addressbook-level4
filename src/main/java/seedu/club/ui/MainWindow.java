@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import seedu.club.commons.core.Config;
 import seedu.club.commons.core.GuiSettings;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.CompressMembersRequestEvent;
 import seedu.club.commons.events.ui.ExitAppRequestEvent;
 import seedu.club.commons.events.ui.ShowHelpRequestEvent;
 import seedu.club.logic.Logic;
@@ -193,5 +194,11 @@ public class MainWindow extends UiPart<Stage> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    @Subscribe
+    private void handleCompressMembersEvent(CompressMembersRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        memberListPanel.compressMemberCards();
     }
 }
