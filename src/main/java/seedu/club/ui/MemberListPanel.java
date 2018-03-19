@@ -133,4 +133,7 @@ public class MemberListPanel extends UiPart<Region> {
         decompressMemberCards();
     }
 
+    public boolean isDisplayingCompressedMembers() {
+        return isDisplayingCompressedMembers;
+    }
 }
