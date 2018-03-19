@@ -23,7 +23,7 @@ By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
-The faster you type, the faster Club Connect gets your club management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
+The faster you type, the faster Club Connect gets your club-management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
@@ -73,7 +73,7 @@ image::help-window.png[height="450"]
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user. For example, in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe` or `add n/Jane Doe`.
 * Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/President` or as `n/John Doe`.
-* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/Treasurer`, `t/Operations t/Logistics` etc.
+* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/Treasurer`, `t/Captain t/Goalkeeper` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 ====
 
