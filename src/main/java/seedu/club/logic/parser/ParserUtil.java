@@ -17,6 +17,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
@@ -183,6 +184,29 @@ public class ParserUtil {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
 
+    /**
+     * Parses a {@code String photo} into an {@code ProfilePhoto}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code photo} is invalid.
+     */
+    public static ProfilePhoto parseProfilePhoto(String photo) throws IllegalValueException {
+        requireNonNull(photo);
+        String trimmedProfilePhoto = photo.trim();
+        if (!ProfilePhoto.isValidProfilePhoto(trimmedProfilePhoto)) {
+            throw new IllegalValueException(ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+        }
+        return new ProfilePhoto(trimmedProfilePhoto);
+    }
+
+    /**
+     * Parses a {@code Optional<String> photo} into an {@code Optional<ProfilePhoto>} if {@code photo} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<ProfilePhoto> parseProfilePhoto(Optional<String> photo) throws IllegalValueException {
+        requireNonNull(photo);
+        return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
+    }
 
     /**
      * Parses a {@code String group} into a {@code Group}.
