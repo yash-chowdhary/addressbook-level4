@@ -823,6 +823,49 @@ Club Connect provides student organisations with a one-stop shop for all their m
 
 *Value proposition*: clubs can efficiently manage its activities and members faster than a typical mouse/GUI driven application
 
+*Feature Contribution:*
+
+1. Yash Chowdhary
+
+* Major Feature: Task Management
++
+Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status. This ensures transparency and accountability of the club.
+
+* Minor Feature: Email Command
++
+Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+
+2. Amrut Prabhu
+
+* Major Feature: Importing and Exporting Members List
++
+After recruitment events like SLF at NUS or other situations in which details of incoming members are recorded on an Excel sheet, the data can be imported from the Club Connect application instead of manually adding all the members.
+The list of members from the Club Connect application can be exported to formats such as .csv or .txt so that the club members can have access to a readable and sharable version of the member list outside the Club Connect application.
+
+* Minor Feature: Add a profile picture
++
+All the members of a club are not known by each other, which is especially the case in larger clubs. Adding a profile picture makes it easier to know what other members look like and to differentiate between members with similar names.
+
+3. Muhammad Nur Kamal Bin Mohammed Ariff
+
+* Major Feature: Polling system
++
+Exco members can create polls and look at the results to help ascertain the needs and want of other members. Members can vote for polls to express what they require from the club.
+
+* Minor Feature: Findby Command
++
+Instead of just finding a member by name, Findby Command is used to search members by a specified field which includes: Name, Phone, Email, Matric Number, Tags and Group. This increases navigability of the contacts inside Club Connect.
+
+4. Song Weiyang
+
+* Major Feature: Log In Function
++
+Members can log in to their own accounts and excess their unique storage files. This can allow allocation of task to certain members and memebrs can organise their datas uniquely.
+
+* Minor Feature: AutoSorting
++
+After Members edited their list of contacts, the contact list will be automatically sorted in alphabetical order.
+
 [appendix]
 == User Stories
 
