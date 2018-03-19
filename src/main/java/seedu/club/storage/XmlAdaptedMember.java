@@ -85,7 +85,7 @@ public class XmlAdaptedMember {
         group = source.getGroup().groupName;
         username = source.getUsername().value;
         password = source.getPassword().value;
-        profilePhoto = source.getProfilePhoto().photoFilePath;
+        profilePhoto = source.getProfilePhoto().originalPhotoFilePath;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
