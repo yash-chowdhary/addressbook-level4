@@ -17,8 +17,10 @@ public class ProfilePhoto {
      */
     public static final String IMAGE_PATH_VALIDATION_REGEX = "(.*/)*.+\\\\.(png|jpg|jpeg|PNG|JPG)$";
     //https://stackoverflow.com/questions/7102890/java-regex-for-image-filename
-    //"([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?";  https://stackoverflow.com/questions/4489582/java-regular-expression-to-match-file-path
-    //([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)  http://www.mkyong.com/regular-expressions/how-to-validate-image-file-extension-with-regular-expression/
+    //"([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?";  https://stackoverflow.com/questions/4489582/
+    // java-regular-expression-to-match-file-path
+    //([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)  http://www.mkyong.com/regular-expressions/
+    // how-to-validate-image-file-extension-with-regular-expression/
 
     private String photoFilePath;
 
@@ -29,7 +31,7 @@ public class ProfilePhoto {
      */
     public ProfilePhoto(String path) {
         requireNonNull(path);
-        checkArgument(isValidPhotoPath(path), IMAGE_PATH_VALIDATION_REGEX);
+        checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.photoFilePath = path;
     }
 
@@ -38,7 +40,7 @@ public class ProfilePhoto {
      *
      * @param test Path whose validity is to be checked.
      */
-    public static boolean isValidPhotoPath(String test) {
+    public static boolean isValidProfilePhoto(String test) {
         return test.matches(IMAGE_PATH_VALIDATION_REGEX);
     }
 
@@ -50,7 +52,7 @@ public class ProfilePhoto {
     //TODO: make valid image path within ClubConnect Directory for this method.
     public void setPhotoPath(String path) {
         requireNonNull(path);
-        checkArgument(isValidPhotoPath(path), IMAGE_PATH_VALIDATION_REGEX);
+        checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.photoFilePath = path;
     }
 

@@ -27,13 +27,14 @@ public class Member {
     private final MatricNumber matricNumber;
     private Group group;
     private final HashMap<String, Tag> tags;
+    private ProfilePhoto profilePhoto;
 
     /**
      * Every field must be present and not null.
      */
 
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Username username, Password password) {
+                  Username username, Password password, ProfilePhoto profilePhoto) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags,
                 username, password);
         this.name = name;
@@ -44,6 +45,7 @@ public class Member {
         this.tags = new HashMap<String, Tag>();
         this.username = username;
         this.password = password;
+        this.profilePhoto = profilePhoto;
         setTags(tags);
     }
 
@@ -86,6 +88,10 @@ public class Member {
 
     public boolean isLogIn() {
         return isLogIn;
+    }
+
+    public ProfilePhoto getProfilePhoto() {
+        return profilePhoto;
     }
 
     /**
