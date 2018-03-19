@@ -1,9 +1,9 @@
+//@@author amrut-prabhu
 package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
-//@author amrut-prabhu
 /**
  * Represents a member's profile photo in the club book.
  */
@@ -22,7 +22,11 @@ public class ProfilePhoto {
     //([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)  http://www.mkyong.com/regular-expressions/
     // how-to-validate-image-file-extension-with-regular-expression/
 
-    private String photoFilePath;
+    public final String originalPhotoFilePath;
+    //Note: The actual image file used in the application UI is a copy of this image stored in Club Connect's
+    // resources as "MATRIC_NUM.png".
+
+    private String profilePhotoPath = "/photos/default.png";
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -30,9 +34,9 @@ public class ProfilePhoto {
      * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        requireNonNull(path);
-        checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
-        this.photoFilePath = path;
+        //requireNonNull(path);
+        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
+        this.originalPhotoFilePath = path;
     }
 
     /**
@@ -53,22 +57,21 @@ public class ProfilePhoto {
     public void setPhotoPath(String path) {
         requireNonNull(path);
         checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
-        this.photoFilePath = path;
+        //this.originalPhotoFilePath = path;
     }
 
     public String getPhotoPath() {
-        return photoFilePath;
+        return originalPhotoFilePath;
     }
 
     @Override
     public String toString() {
-        return photoFilePath;
+        return originalPhotoFilePath;
     }
 
     @Override
     public int hashCode() {
-        return photoFilePath.hashCode();
+        return originalPhotoFilePath.hashCode();
     }
 
 }
-//@author
