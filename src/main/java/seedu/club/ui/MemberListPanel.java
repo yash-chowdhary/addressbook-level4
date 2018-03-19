@@ -13,6 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.CompressMembersRequestEvent;
+import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.model.member.Member;
@@ -117,6 +119,18 @@ public class MemberListPanel extends UiPart<Region> {
                 setGraphic(member.getRoot());
             }
         }
+    }
+
+    @Subscribe
+    private void handleCompressMembersEvent(CompressMembersRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        compressMemberCards();
+    }
+
+    @Subscribe
+    private void handledeCompressMembersEvent(DecompressMembersRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        decompressMemberCards();
     }
 
 }

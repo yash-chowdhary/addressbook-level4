@@ -196,16 +196,4 @@ public class MainWindow extends UiPart<Stage> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
     }
-
-    @Subscribe
-    private void handleCompressMembersEvent(CompressMembersRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        memberListPanel.compressMemberCards();
-    }
-
-    @Subscribe
-    private void handledeCompressMembersEvent(DecompressMembersRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        memberListPanel.decompressMemberCards();
-    }
 }
