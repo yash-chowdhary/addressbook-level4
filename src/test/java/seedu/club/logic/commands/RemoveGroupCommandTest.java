@@ -24,7 +24,11 @@ import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.group.Group;
 
-
+//@@author yash-chowdhary
+/**
+ * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
+ * {@code RemoveGroupCommand}.
+ */
 public class RemoveGroupCommandTest {
     private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
 

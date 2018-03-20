@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clubbook>
+    <members>
+        <name>Alex Yeoh</name>
+        <phone>87438807</phone>
+        <email>alexyeoh@example.com</email>
+        <username>AlexYeoh</username>
+        <password>password</password>
+        <matricNumber>A5215090A</matricNumber>
+        <group>logistics</group>
+        <tagged>friends</tagged>
+    </members>
+    <members>
+        <name>Charlotte Oliveiro</name>
+        <phone>93210283</phone>
+        <email>charlotte@example.com</email>
+        <username>CharllotteOliveiro</username>
+        <password>password</password>
+        <matricNumber>A1010027G</matricNumber>
+        <group>exco</group>
+        <tagged>neighbours</tagged>
+    </members>
+    <members>
+        <name>David Li</name>
+        <phone>91031282</phone>
+        <email>lidavid@example.com</email>
+        <username>DavidLi</username>
+        <password>password</password>
+        <matricNumber>A7251856A</matricNumber>
+        <group>marketing</group>
+        <tagged>family</tagged>
+    </members>
+    <members>
+        <name>John Doe</name>
+        <phone>98765432</phone>
+        <email>johnd@example.com</email>
+        <username>JohnDoe</username>
+        <password>password</password>
+        <matricNumber>A0123456H</matricNumber>
+        <group>logistics</group>
+        <tagged>owesMoney</tagged>
+        <tagged>friends</tagged>
+    </members>
+    <members>
+        <name>John Roe</name>
+        <phone>98765432</phone>
+        <email>johnd@example.com</email>
+        <username>JohnDoe</username>
+        <password>password</password>
+        <matricNumber>A0123456H</matricNumber>
+        <group>prod</group>
+        <tagged>owesMoney</tagged>
+        <tagged>friends</tagged>
+    </members>
+    <members>
+        <name>Roy Balakrishnan</name>
+        <phone>92624417</phone>
+        <email>royb@example.com</email>
+        <username>RoyBalakrishnan</username>
+        <password>password</password>
+        <matricNumber>A2488865L</matricNumber>
+        <group>legal</group>
+        <tagged>colleagues</tagged>
+    </members>
+    <tags>owesMoney</tags>
+    <tags>colleagues</tags>
+    <tags>neighbours</tags>
+    <tags>family</tags>
+    <tags>friends</tags>
+</clubbook>

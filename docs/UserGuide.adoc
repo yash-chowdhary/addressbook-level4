@@ -1,4 +1,5 @@
 = Club Connect - User Guide
+[.text-center]
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -10,14 +11,25 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
+:format-caption:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4
+:repoURL: https://github.com/CS2103JAN2018-W15-B4/main
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-AddressBook Level 4 (AB4) is for those who *prefer to use a desktop app for managing contacts*. More importantly, AB4 is *optimized for those who prefer to work with a Command Line Interface* (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB4 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <<Quick Start>> to get started. Enjoy!
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective.
+
+Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
+
+The faster you type, the faster Club Connect gets your club-management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
+
+The symbols and formatting used in this document, along with their corresponding meanings, are: +
+ℹ️: Note +
+  💡  : Tip +
+`code`: Technical keywords or Commands that can be entered into *Club Connect* +
+kbd:[key]: Key on your keyboard +
 
 == Quick Start
 
@@ -27,22 +39,31 @@ AddressBook Level 4 (AB4) is for those who *prefer to use a desktop app for mana
 Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
-.  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your Address Book.
-.  Double-click the file to start the app. The GUI should appear in a few seconds.
+.  Download the latest `clubconnect.jar` link:{https://github.com/CS2103JAN2018-W15-B4/main}/releases[here].
+.  Copy the file to the folder that you want to use as the home folder for Club Connect (and the club Database).
+.  Double-click the file to start the app. The GUI (as shown in <<launch-app, Figure 1>>) should appear in a few seconds.
 +
-image::Ui.png[width="790"]
+[[launch-app]]
+[.text-center]
+.Club Connect application on launch
+image::Ui.png[width="550"]
 +
-.  Type the command in the command box and press kbd:[Enter] to execute it. +
-e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
-.  Some example commands you can try:
+.  Type a command in the command box and press kbd:[Enter] to execute it. +
+e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown in Figure 2).
++
+[[help-window]]
+[.text-center]
+.Club Connect Help window
+image::help-window.png[height="450"]
++
+.  Some other example commands that you can try are:
 
-* *`list`* : lists all contacts
-* **`add`**`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a contact named `John Doe` to the Address Book.
-* **`delete`**`3` : deletes the 3rd contact shown in the current list
-* *`exit`* : exits the app
+* *`list`* : lists all members of the club on the left pane
+* *`add`*`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a member named `John Doe` to your Club Connect members list
+* *`delete`*`3` : deletes the 3rd member shown in the current list
+* *`exit`* : exits the Club Connect app
 
-.  Refer to <<Features>> for details of each command.
+.  Continue to the next section, <<Features>>, for details of each command and its usage.
 
 [[Features]]
 == Features
@@ -50,59 +71,57 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 *Command Format*
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
-* Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
-* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Words in `UPPER_CASE` are the parameters to be supplied by the user. For example, in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe` or `add n/Jane Doe`.
+* Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/President` or as `n/John Doe`.
+* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/Treasurer`, `t/Captain t/Goalkeeper` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 ====
 
 === Viewing help : `help`
 
-Format: `help`
+Opens the Club Connect help window (see <<help-window,Figure 2>>). +
+[format] : `help`
 
 === Logging in a member: `login`
-Logs in a member to ClubConnect
-Format: `login u/USERNAME pw/PASSWORD
+Logs in a member to Club Connect. +
+Format: `login u/USERNAME pw/PASSWORD`
 
-Examples:
-
-* `login u/JohnDoe pw/password`
+Example: `login u/JohnDoe pw/pass1234`
 
 === Adding a member: `add`
 
-Adds a member to the address book +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER pic/PHOTO_PATH [g/GROUP] [t/TAG]...`
+Adds a member to Club Connect. +
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [g/GROUP] [t/TAG]...`
 
 [TIP]
-A member can have any number of tags (including 0)
+A member can have any number of tags (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
-A member will be assigned to the default group `member` if no group is specified in the command
+A member will be assigned to the default group `member` if no group is specified in the command.
 [TIP]
 A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
-* `add n/Betsy Crowe p/1234567 t/head e/betsycrowe@example.com m/A2345678K g/logistics`
+* `add n/Betsy Crowe p/1234567 t/Head e/betsycrowe@example.com m/A2345678K g/Logistics`
 
 === Listing all members : `list`
 
-Shows a list of all members in the address book. +
+Shows a list of all members in Club Connect. +
 Format: `list`
 
 === Editing a member : `edit`
 
-Edits an existing member in the address book. +
-
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [pic/PHOTO_PATH] [g/GROUP] [t/TAG]...`
+Edits the details of an existing member in Club Connect. +
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...`
 
 ****
 * Edits the member at the specified `INDEX`. The index refers to the index number shown in the last member listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* You can remove a member from a group by editing the member's group to `member` as it is the default group in the addressbook.
-* You cannot remove a member from a group by typing `g/` without specifying any group after it as a group must comply with the requirements of a valid group
+* You can remove a member from a group by editing the person's group to `member` as it is the default group in Club Connect.
+* You cannot remove a member from a group by typing `g/` without specifying any group after it as GROUP must comply with the requirements of a valid group name.
 * When editing tags, the existing tags of the member will be removed i.e adding of tags is not cumulative.
 * You can remove all the member's tags by typing `t/` without specifying any tags after it.
 ****
@@ -110,9 +129,9 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [pic/PHOTO_PA
 Examples:
 
 * `edit 1 p/91234567 e/johndoe@example.com` +
-Edits the phone number and email address of the 1st member to be `91234567` and `johndoe@example.com` respectively.
+Edits the phone number and email address of the 1st member in the list to `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` +
-Edits the name of the 2nd member to be `Betsy Crower` and clears all existing tags.
+Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
 Edits the group of the 3rd member to be `finance`.
 
@@ -122,39 +141,39 @@ Finds members whose names contain any of the given keywords. +
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
 ****
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
 * Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Only full words will be matched e.g. `Han` will not match `Hans`.
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 ****
 
 Examples:
 
 * `find John` +
-Returns `john` and `John Doe`
+Returns `john` and `John Doe`.
 * `find Betsy Tim John` +
-Returns any member having names `Betsy`, `Tim`, or `John`
+Returns any member having names `Betsy`, `Tim`, or `John`.
 
 === Locating members by any field: `findby`
 
-Finds members whose field contain any of the given keywords. +
+Finds members whose field contains any of the given keywords. +
 Format: `findby FIELD KEYWORD [MORE_KEYWORDS]`
 
 ****
-* FIELD can be name, phone, email, matric(matric number), group or tag and is case insensitive
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Partial matches will be matched e.g. `Han` will match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* FIELD can be name, phone, email, matric(matric number), group or tag and is case insensitive.
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
+* Partial matches will be matched e.g. `Han` will match `Hans`.
+* Members matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 ****
 
 Examples:
 
 * `findby phone 123` +
-Returns any member having phone number containing 123
+Returns any member having phone number containing 123.
 * `findby matric A654` +
-Returns any member having matric number containing A654
+Returns any member having matric number containing A654.
 
 === Deleting a member : `delete`
 
@@ -171,7 +190,7 @@ Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd member in the address book.
+Deletes the 2nd member in the member listing.
 * `find Betsy` +
 `delete 1` +
 Deletes the 1st member in the results of the `find` command.
@@ -196,22 +215,48 @@ Deletes the `logistics` group in the address book.
 
 === Deleting a tag : `deletetag`
 
-Deletes the specified tag for all members in the address book. +
+
+Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG`
 
 ****
-* Deletes the specified tag from the addressbook.
-* Deletes the specified tag for all members tagged with it in the addressbook.
+* Deletes the specified tag from Club Connect.
+* Deletes the specified tag for all members tagged with it in Club Connect.
 ****
 
 Examples:
 
 * `deletetag t/treasurer` +
-Deletes the `treasurer` tag for all members tagged with `treasurer` in the address book.
+Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
+
+=== Emailing club members belonging to a particular group or tag: `email`
+
+Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
+Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]`
+
+[NOTE]
+ClubConnect currently only supports GMail and Outlook mail clients.
+
+[NOTE]
+Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+
+****
+* Opens up the mail client's URL in the default web browser e.g. Google Chrome
+* A Group AND a Tag is not considered valid input
+* The Group (or Tag) must exist in the club book
+* The Group (or Tag) must be in valid format
+****
+
+Examples:
+
+* `email g/logistics c/gmail s/Meeting Minutes` +
+Opens up the Compose Message page of GMail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
+* `email t/projectHead c/outlook` +
+Opens up the Compose Message page of Outlook with blank `Subject` and `Body` fields. The recipients are all the members that are tagged with `projectHead`.
 
 === Selecting a member : `select`
 
-Selects the member identified by the index number used in the last member listing. +
+Selects the member identified by the index number used in the most recent member listing. +
 Format: `select INDEX`
 
 ****
@@ -242,12 +287,12 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 // tag::undoredo[]
 === Undoing previous command : `undo`
 
-Restores the address book to the state before the previous _undoable_ command was executed. +
+Restores Club Connect to the state before the previous _undoable_ command was executed. +
 Format: `undo`
 
 [NOTE]
 ====
-Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit` and `clear`).
+Undoable commands: those commands that modify Club Connect's content (`add`, `delete`, `edit` and `clear`).
 ====
 
 Examples:
@@ -291,29 +336,41 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 === Clearing all entries : `clear`
 
-Clears all entries from the address book. +
+Clears all entries from Club Connect. +
 Format: `clear`
 
-=== Exiting the program : `exit`
+=== Exiting the application : `exit`
 
-Exits the program. +
+Exits the Club Connect application. +
 Format: `exit`
 
 === Saving the data
 
-Address book data are saved in the hard disk automatically after any command that changes the data. +
+Club Connect data is saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
 // tag::dataencryption[]
 === Encrypting data files `[coming in v2.0]`
 
+Encrypts the file in the hard disk that contains data from the Club Connect application. +
+Format: `encrypt`
 _{explain how the user can enable/disable data encryption}_
 // end::dataencryption[]
+[NOTE]
+====
+Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
+Encrypting Club Connect's data files ensures that others will not be able to read members' information if they open the files.
+====
+
+<br/>
+
+[TIP]
+To further increase your efficiency while using Club Connect, check out <<Tips>>.
 
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
+*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Club Connect folder.
 
 == Command Summary
 
@@ -330,8 +387,10 @@ e.g. `removegroup g/publicity`
 e.g. `deletetag t/president`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
-* *Find* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
+* *Find By* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
 e.g. `findby phone 123`
+* *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
+e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *List* : `list`
 * *Help* : `help`
 * *Select* : `select INDEX` +
@@ -340,10 +399,26 @@ e.g.`select 2`
 * *Undo* : `undo`
 * *Redo* : `redo`
 
+== Tips
+
+Not satisfied with your productivity while using Club Connect? Can't remember the command names? Here are some tips to fix that:
+
+* *Command shortcuts*
+* Lorem Ipsum
+
 == Coming in v2.0
 
-* Encrypt data files
-* Group Chats
-* Submit anonymous feedback
-* Chat with any member
-* Know who is online
+* *Encrypt data files* : `encrypt` +
+Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
+By encrypting Club Connect's data files, you can ensure that others will not be able to read members' information if they open the files. Do note, however, that this may slightly affect performance.
+
+* *Chat with any member* : `chat INDEX` +
+You can message other members in real time without ever needing to leave the Club Connect application.
+
+* *Group Chats* : `gchat GROUP_NAME` +
+Tired of sending the same message to multiple members? The *Group Chat* feature allows you to have conversations as a group so that everyone is kept in the loop.
+
+* *Submit anonymous feedback* : `feedback` +
+Not satisfied with certain aspects of the club? Afraid to speak up? +
+Fret not, Club Connect provides you with a platform to voice your opinions. And yes, we guarantee your anonymity.
+

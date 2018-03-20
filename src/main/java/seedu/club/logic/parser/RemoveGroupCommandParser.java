@@ -10,6 +10,7 @@ import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.group.Group;
 
+//@@author yash-chowdhary
 /**
  * Parses input arguments and creates a new RemoveGroupCommand object
  */
