@@ -43,7 +43,7 @@ public class FindByCommandParser implements Parser<FindByCommand> {
             for (Prefix prefix : prefixes) {
                 if (findArgs[0].toLowerCase().equals(prefix.toString())) {
                     return new FindByCommand(new FieldContainsKeywordsPredicate(
-                            Arrays.asList(findArgs).subList(1, findArgs.length), findArgs[0]));
+                            Arrays.asList(findArgs).subList(1, findArgs.length), prefix));
                 }
             }
         }

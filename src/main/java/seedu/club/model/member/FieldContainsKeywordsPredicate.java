@@ -16,16 +16,16 @@ import seedu.club.logic.parser.Prefix;
 import seedu.club.model.tag.Tag;
 
 /**
- * Tests that a {@code member}'s matches any of the keywords given according to the {@code fieldType}.
+ * Tests that a {@code member}'s matches any of the keywords given according to the fieldType given by {@code prefix}.
  */
 public class FieldContainsKeywordsPredicate implements Predicate<Member> {
 
     private final List<String> keywords;
-    private final String fieldType;
+    private final Prefix prefix;
 
-    public FieldContainsKeywordsPredicate(List<String> keywords, String fieldType) {
+    public FieldContainsKeywordsPredicate(List<String> keywords, Prefix prefix) {
         this.keywords = keywords;
-        this.fieldType = fieldType;
+        this.prefix = prefix;
     }
 
     @Override
@@ -40,13 +40,13 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
             return true;
         }
         if (other instanceof  FieldContainsKeywordsPredicate) {
-            if(this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords)) {
-                if(this.fieldType == null && ((FieldContainsKeywordsPredicate) other).fieldType == null) {
+            if (this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords)) {
+                if (this.prefix == null && ((FieldContainsKeywordsPredicate) other).prefix == null) {
                     return true;
-                } else if (this.fieldType == null || ((FieldContainsKeywordsPredicate) other).fieldType == null) {
+                } else if (this.prefix == null || ((FieldContainsKeywordsPredicate) other).prefix == null) {
                     return false;
                 }
-                else if (this.fieldType.equals(((FieldContainsKeywordsPredicate) other).fieldType)) {
+                else if (this.prefix.equals(((FieldContainsKeywordsPredicate) other).prefix)) {
                     return true;
                 }
             }
@@ -55,8 +55,8 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
     }
 
     /**
-     * Get relevant field value of member according to {@code fieldType}
-     *  or all field values if {@code fieldType} is null     *
+     * Get relevant field value of member according to {@code prefix}
+     *  or all field values if {@code prefix} is null     *
      */
     private String getFieldValue(Member member) {
 
@@ -67,20 +67,20 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
         String group = member.getGroup().toString();
         String tags = member.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
 
-        if (PREFIX_NAME.toString().equals(fieldType)) {
+        if (PREFIX_NAME.equals(prefix)) {
             return name;
-        } else if (PREFIX_PHONE.toString().equals(fieldType)) {
+        } else if (PREFIX_PHONE.equals(prefix)) {
             return phone;
-        } else if (PREFIX_EMAIL.toString().equals(fieldType)) {
+        } else if (PREFIX_EMAIL.equals(prefix)) {
             return email;
-        } else if (PREFIX_MATRIC_NUMBER.toString().equals(fieldType)) {
+        } else if (PREFIX_MATRIC_NUMBER.equals(prefix)) {
             return matricNumber;
-        } else if (PREFIX_GROUP.toString().equals(fieldType)) {
+        } else if (PREFIX_GROUP.equals(prefix)) {
             return group;
-        } else if (PREFIX_TAG.toString().equals(fieldType)) {
+        } else if (PREFIX_TAG.equals(prefix)) {
             return tags;
         } else {
-            return fieldType + " " + name + " " + phone + " " + email + " " + matricNumber + " " + group + " " + tags;
+            return name + " " + phone + " " + email + " " + matricNumber + " " + group + " " + tags;
         }
     }
 }

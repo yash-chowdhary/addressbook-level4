@@ -82,11 +82,11 @@ public class ClubBookParserTest {
     @Test
     public void parseCommand_findBy() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        String fieldType = PREFIX_NAME.toString();
+        Prefix prefix = PREFIX_NAME;
         FindByCommand command = (FindByCommand) parser.parseCommand(
-                FindByCommand.COMMAND_WORD + " " + fieldType + " "
+                FindByCommand.COMMAND_WORD + " " + prefix + " "
                         + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindByCommand(new FieldContainsKeywordsPredicate(keywords, fieldType)), command);
+        assertEquals(new FindByCommand(new FieldContainsKeywordsPredicate(keywords, prefix)), command);
     }
 
     @Test
