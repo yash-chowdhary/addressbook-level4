@@ -36,10 +36,22 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof FieldContainsKeywordsPredicate // instanceof handles nulls
-                && this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords) // state check
-                && this.fieldType.equals(((FieldContainsKeywordsPredicate) other).fieldType));
+        if (other == this) {
+            return true;
+        }
+        if (other instanceof  FieldContainsKeywordsPredicate) {
+            if(this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords)) {
+                if(this.fieldType == null && ((FieldContainsKeywordsPredicate) other).fieldType == null) {
+                    return true;
+                } else if (this.fieldType == null || ((FieldContainsKeywordsPredicate) other).fieldType == null) {
+                    return false;
+                }
+                else if (this.fieldType.equals(((FieldContainsKeywordsPredicate) other).fieldType)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

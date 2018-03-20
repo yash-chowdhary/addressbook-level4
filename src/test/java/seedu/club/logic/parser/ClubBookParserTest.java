@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 
 import java.util.Arrays;
@@ -79,17 +80,9 @@ public class ClubBookParserTest {
     }
 
     @Test
-    public void parseCommand_find() throws Exception {
-        List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
-    }
-
-    @Test
     public void parseCommand_findBy() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        String fieldType = "name";
+        String fieldType = PREFIX_NAME.toString();
         FindByCommand command = (FindByCommand) parser.parseCommand(
                 FindByCommand.COMMAND_WORD + " " + fieldType + " "
                         + keywords.stream().collect(Collectors.joining(" ")));

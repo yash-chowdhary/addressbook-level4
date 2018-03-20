@@ -4,6 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_MEMBERS_LISTED_OVERVIEW;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.CARL;
@@ -21,6 +27,7 @@ import org.junit.Test;
 
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.parser.Prefix;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
@@ -33,16 +40,16 @@ import seedu.club.model.member.Member;
  */
 public class FindByCommandTest {
 
-    private static final String[] fieldTypes = {"name", "email", "phone", "matric", "tag", "group"};
+    private static final String[] prefixStrings = {PREFIX_NAME.toString(), PREFIX_EMAIL.toString(), PREFIX_PHONE.toString(), PREFIX_MATRIC_NUMBER.toString(), PREFIX_TAG.toString(), PREFIX_GROUP.toString()};
 
     private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
 
     @Test
     public void equals_nameFieldType() {
         FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), "name");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_NAME.toString());
         FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), "name");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_NAME.toString());
 
         FindByCommand findByFirstCommand = new FindByCommand(firstPredicate);
         FindByCommand findBySecondCommand = new FindByCommand(secondPredicate);
@@ -67,9 +74,9 @@ public class FindByCommandTest {
     @Test
     public void equals_emailFieldType() {
         FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), "email");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_EMAIL.toString());
         FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), "email");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_EMAIL.toString());
 
         FindByCommand findByFirstCommand = new FindByCommand(firstPredicate);
         FindByCommand findBySecondCommand = new FindByCommand(secondPredicate);
@@ -94,9 +101,9 @@ public class FindByCommandTest {
     @Test
     public void equals_phoneFieldType() {
         FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), "phone");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_PHONE.toString());
         FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), "phone");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_PHONE.toString());
 
         FindByCommand findByFirstCommand = new FindByCommand(firstPredicate);
         FindByCommand findBySecondCommand = new FindByCommand(secondPredicate);
@@ -121,9 +128,9 @@ public class FindByCommandTest {
     @Test
     public void equals_matricNumberFieldType() {
         FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), "matric");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_MATRIC_NUMBER.toString());
         FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), "matric");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_MATRIC_NUMBER.toString());
 
         FindByCommand findByFirstCommand = new FindByCommand(firstPredicate);
         FindByCommand findBySecondCommand = new FindByCommand(secondPredicate);
@@ -148,9 +155,9 @@ public class FindByCommandTest {
     @Test
     public void equals_groupFieldType() {
         FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), "group");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_GROUP.toString());
         FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), "group");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_GROUP.toString());
 
         FindByCommand findByFirstCommand = new FindByCommand(firstPredicate);
         FindByCommand findBySecondCommand = new FindByCommand(secondPredicate);
@@ -175,9 +182,9 @@ public class FindByCommandTest {
     @Test
     public void equals_tagFieldType() {
         FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), "tag");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_TAG.toString());
         FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), "tag");
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_TAG.toString());
 
         FindByCommand findByFirstCommand = new FindByCommand(firstPredicate);
         FindByCommand findBySecondCommand = new FindByCommand(secondPredicate);
@@ -201,7 +208,7 @@ public class FindByCommandTest {
 
     @Test
     public void equals_differentFieldType_returnFalse() {
-        String[] fieldTypes = {"name", "email", "phone", "matric", "tag", "group"};
+        String[] fieldTypes = {PREFIX_NAME.toString(), PREFIX_EMAIL.toString(), PREFIX_PHONE.toString(), PREFIX_MATRIC_NUMBER.toString(), PREFIX_TAG.toString(), PREFIX_GROUP.toString()};
         FindByCommand[] commands = new FindByCommand[fieldTypes.length];
 
         for (int index = 0; index < fieldTypes.length; index++) {
@@ -224,31 +231,31 @@ public class FindByCommandTest {
     @Test
     public void execute_zeroKeywords_noMemberFound() {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 0);
-        for (String fieldType: fieldTypes) {
-            assertCommandSuccess(prepareCommand(" ", fieldType), expectedMessage, Collections.emptyList());
+        for (String prefixString : prefixStrings) {
+            assertCommandSuccess(prepareCommand(" ", prefixString), expectedMessage, Collections.emptyList());
         }
     }
 
     @Test
     public void execute_multipleKeywords_multipleMembersFound() {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 3);
-        FindByCommand command = prepareCommand("Kurz Elle Kunz", "name");
+        FindByCommand command = prepareCommand("Kurz Elle Kunz", PREFIX_NAME.toString());
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
-        command = prepareCommand("95352563 9482224 9482427", "phone");
+        command = prepareCommand("95352563 9482224 9482427", PREFIX_PHONE.toString());
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
-        command = prepareCommand("heinz@example.com werner@example.com lydia@example.com", "email");
+        command = prepareCommand("heinz@example.com werner@example.com lydia@example.com", PREFIX_EMAIL.toString());
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
-        command = prepareCommand("A6076201A A1932279G A9662042H", "matric");
+        command = prepareCommand("A6076201A A1932279G A9662042H", PREFIX_MATRIC_NUMBER.toString());
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
-        command = prepareCommand("marketing operations", "group");
+        command = prepareCommand("marketing operations", PREFIX_GROUP.toString());
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
         expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 7);
-        command = prepareCommand("friend friends owesMoney", "tag");
+        command = prepareCommand("friend friends owesMoney", PREFIX_TAG.toString());
         assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON, CARL,
                 DANIEL, ELLE, FIONA, GEORGE));
     }
