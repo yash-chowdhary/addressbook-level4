@@ -14,6 +14,11 @@ endif::[]
 
 By: `Team W15-B4`      Since: `Jun 2016`      Licence: `MIT`
 
+== Introduction
+
+Club Connect is an application targeted at club members who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective. It provides features that are essential for a club to function smoothly such as user authentication, assigning tasks, email blasts, conducting polls, and importing and exporting member details.
+This guide provides the necessary information for developers who are interested in contributing to the application - from the steps required to set-up, to detailed descriptions of the current features that the application sports.
+
 == Setting up
 
 === Prerequisites
@@ -395,6 +400,71 @@ The construction of a symmetric key is done by passing the algorithm the encrypt
 
 Once the key is generated, all data will be encrypted with AES. Anyone who wishes to view the decrypted form of the data must possess the secret key.
 // end::dataencryption[]
+
+=== Email Mechanism
+==== Current Implementation
+The `email` mechanism of ClubConnect is facilitated by the `EmailCommand` class and is event-driven.
+The `EmailCommand` consists of the following fields:
+
+* Client - the mail client used to send the email (currently restricted to GMail and Outlook).
+* Subject - the subject of the email (optional field).
+* Body - the body of the email (optional field).
+* Group - the club group to whom the user wishes to send an email to.
+* Tag - the tag to which the user wishes to send an email to.
+
+[NOTE]
+Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+
+The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command. Refer to Figure 19 for the UML diagram.
+
+image::EmailCommandUML.png[width="600"]
+_Figure 19. EmailCommand UML Diagram_
+
+`EmailCommandParser` is responsible for parsing the `email` command. It returns a `EmailCommand` object after parsing `Client`, `Subject`, `Body`, `Group`, and `Tag`. Figure 20 depicts the sequence of parsing the command.
+
+image::SDforEmailCommandParser.png[width="650"]
+_Figure 20. Sequence Diagram for Email Command parsing_
+
+[NOTE]
+Since `Subject` and `Body` are optional fields, their default values are `EMPTY_SUBJECT_STRING` and `EMPTY_BODY_STRING` which store blank Strings.
+
+[NOTE]
+As ClubConnect only allows emails to be sent to members of EITHER a `Group` OR a `Tag`, a valid command will result in either one of them being assigned to `null`.
+
+The `EmailCommand#execute()` calls the following methods of `model`:
+
+. ```generateEmailRecipients()``` - takes in a `Group` and `Tag` object. Depending on the object that is not `null`, it returns a string of recipients.
+. ```sendEmail()``` - takes in the recipient string, and an object each of `Client`, `Subject`, and `Body`.
+
+`EmailCommand#sendEmail()` raises an event `SendEmailRequestEvent`, which triggers the system's default browser to open the chosen mail client's 'Compose Message' page with all the relevant fields filled-in.
+Figure 21 depicts the high-level sequence of events that take place.
+
+image::SDforEmail.png[width="800"]
+_Figure 21. Sequence Diagram for Email Command_
+
+
+The browser URL for composing the email is generated as follows:
+
+[source, java]
+----
+public static final String GMAIL_EMAIL_URL =
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s
+
+public static final String OUTLOOK_EMAIL_URL =
+            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
+
+Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
+----
+
+
+==== Design Considerations
+===== Aspect: Location of mail client
+* **Alternative 1 (current choice)**: Open up the mail client in system's default web browser
+** Pros: Easy to implement
+** Cons: Since ClubConnect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
+* **Alternative 2:** Open up the mail client in `BrowserPanel`
+** Pros: No dependency on third party apps.
+** Cons: Older version browser will disallow auto-filling of email fields.
 
 === Logging
 
