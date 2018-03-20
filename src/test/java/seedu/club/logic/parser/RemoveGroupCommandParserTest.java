@@ -17,7 +17,7 @@ import org.junit.Test;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.model.group.Group;
 
-
+//@@author yash-chowdhary
 public class RemoveGroupCommandParserTest {
     private RemoveGroupCommandParser parser = new RemoveGroupCommandParser();
 
@@ -53,6 +53,4 @@ public class RemoveGroupCommandParserTest {
         assertParseFailure(parser, VALID_GROUP_AMY, expectedMessage);
         assertParseFailure(parser, VALID_GROUP_BOB, expectedMessage);
     }
-
-
 }

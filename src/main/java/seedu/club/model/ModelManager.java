@@ -5,6 +5,7 @@ import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -14,6 +15,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -99,6 +104,7 @@ public class ModelManager extends ComponentManager implements Model {
         return clubBook.logInMember(username, password);
     }
 
+    //@@author yash-chowdhary
     @Override
     public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
@@ -106,6 +112,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
+    //@@author
 
 
     @Override
@@ -154,6 +161,65 @@ public class ModelManager extends ComponentManager implements Model {
         }
         return true;
     }
+
+    //@@author yash-chowdhary
+    @Override
+    public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException {
+        if (group != null) {
+            return generateGroupEmailRecipients(group);
+        }
+        return generateTagEmailRecipients(tag);
+    }
+
+    /**
+     * Generates recipient list of all members part of {@code Tag toSendEmailTo}
+     * @throws TagNotFoundException if {@code Tag toSendEmailTo} doesn't exist in the club book
+     */
+    private String generateTagEmailRecipients(Tag toSendEmailTo) throws TagNotFoundException {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+
+        List<String> emailRecipients = new ArrayList<>();
+        Boolean tagFound = false;
+        for (Member member : members) {
+            Set<Tag> memberTags = member.getTags();
+            if (memberTags.contains(toSendEmailTo)) {
+                emailRecipients.add(member.getEmail().toString());
+                tagFound = true;
+            }
+        }
+        if (!tagFound) {
+            throw new TagNotFoundException();
+        }
+
+        return String.join(",", emailRecipients);
+    }
+
+    /**
+     * Generates recipient list of all members part of {@code Group toSendEmailTo}
+     * @throws GroupNotFoundException if {@code Group toSendEmailTo} doesn't exist in the club book
+     */
+    private String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+
+        List<String> emailRecipients = new ArrayList<>();
+        Boolean groupFound = false;
+        for (Member member : members) {
+            if (member.getGroup().equals(toSendEmailTo)) {
+                emailRecipients.add(member.getEmail().toString());
+                groupFound = true;
+            }
+        }
+        if (!groupFound) {
+            throw new GroupNotFoundException();
+        }
+        return String.join(",", emailRecipients);
+    }
+
+    @Override
+    public void sendEmail(String recipients, Client client, Subject subject, Body body) {
+        raise(new SendEmailRequestEvent(recipients, subject, body, client));
+    }
+    //@@author
 
     //=========== Filtered member List Accessors =============================================================
 

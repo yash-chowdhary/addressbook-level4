@@ -5,6 +5,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 
 import java.util.Arrays;
@@ -22,6 +26,7 @@ import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
+import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.FindByCommand;
 import seedu.club.logic.commands.FindCommand;
@@ -29,9 +34,14 @@ import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.group.Group;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
@@ -121,6 +131,21 @@ public class ClubBookParserTest {
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_email() throws Exception {
+        EmailCommand command = (EmailCommand) parser.parseCommand(
+                EmailCommand.COMMAND_WORD + GROUP_DESC_AMY + VALID_CLIENT_DESC);
+        assertEquals(new EmailCommand(new Group(VALID_GROUP_AMY), null, new Client(VALID_CLIENT),
+                new Subject(Subject.TEST_SUBJECT_STRING), new Body(Body.TEST_BODY_STRING)), command);
+    }
+
+    @Test
+    public void parseCommand_removeGroup() throws Exception {
+        RemoveGroupCommand removeGroupCommand = (RemoveGroupCommand) parser.parseCommand(
+                RemoveGroupCommand.COMMAND_WORD + GROUP_DESC_AMY);
+        assertEquals(new RemoveGroupCommand(new Group(VALID_GROUP_AMY)), removeGroupCommand);
     }
 
     @Test
