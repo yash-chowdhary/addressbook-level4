@@ -64,6 +64,12 @@ public class ClubBookParser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
+        case CompressCommand.COMMAND_WORD:
+            return new CompressCommand();
+
+        case DecompressCommand.COMMAND_WORD:
+            return new DecompressCommand();
+
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
@@ -73,14 +79,14 @@ public class ClubBookParser {
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
+        case EmailCommand.COMMAND_WORD:
+            return new EmailCommandParser().parse(arguments);
+
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
-
-        case FindByCommand.COMMAND_WORD:
-            return new FindByCommandParser().parse(arguments);
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
@@ -90,6 +96,9 @@ public class ClubBookParser {
 
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
+
+        case LogInCommand.COMMAND_WORD:
+            return new LoginCommandParser().parse(arguments);
 
         case RedoCommand.COMMAND_WORD:
             return new RedoCommand();
@@ -102,21 +111,6 @@ public class ClubBookParser {
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
-
-        case LogInCommand.COMMAND_WORD:
-            return new LoginCommandParser().parse(arguments);
-
-        case DeleteTagCommand.COMMAND_WORD:
-            return new DeleteTagCommandParser().parse(arguments);
-
-        case EmailCommand.COMMAND_WORD:
-            return new EmailCommandParser().parse(arguments);
-
-        case CompressCommand.COMMAND_WORD:
-            return new CompressCommand();
-
-        case DecompressCommand.COMMAND_WORD:
-            return new DecompressCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
