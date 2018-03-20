@@ -62,6 +62,7 @@ public class MemberCard extends UiPart<Region> {
         matricNumber.setText(member.getMatricNumber().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
+        //setProfilePhoto(member);
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
