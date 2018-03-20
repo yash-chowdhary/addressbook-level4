@@ -59,6 +59,17 @@ public interface Model {
     /** Removes the given tag {@code tag} for all members in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;
 
+    //@@author amrut-prabhu
+
+    /**
+     * Adds a profile photo for the given member.
+     * @param originalPhotoPath Absolute file path of the original photo.
+     * @param newFileName File name under which the photo is to be copied to Club Connect's resources.
+     */
+    void addProfilePhoto(String originalPhotoPath, String newFileName);
+
+    //@@author
+
     /** Returns an unmodifiable view of the filtered tag list */
     ObservableList<Tag> getFilteredTagList();
 

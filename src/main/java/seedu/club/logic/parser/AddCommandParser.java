@@ -59,10 +59,9 @@ public class AddCommandParser implements Parser<AddCommand> {
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             Username username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME)).get();
             Password password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_PASSWORD)).get();
-            ProfilePhoto profilePhoto = ParserUtil.parseProfilePhoto(argMultimap.getValue(PREFIX_PROFILE_PHOTO)).get();
 
             Member member = new Member(name, phone, email, matricNumber, group, tagList,
-                    username, password, profilePhoto);
+                    username, password);
 
             return new AddCommand(member);
         } catch (IllegalValueException ive) {

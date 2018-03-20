@@ -57,11 +57,19 @@ public class ProfilePhoto {
     public void setPhotoPath(String path) {
         requireNonNull(path);
         checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
+        this.profilePhotoPath = path;
         //this.originalPhotoFilePath = path;
     }
 
     public String getPhotoPath() {
-        return originalPhotoFilePath;
+        return profilePhotoPath;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof ProfilePhoto // instanceof handles nulls
+                && this.getPhotoPath().equals(((ProfilePhoto) other).getPhotoPath())); // state check
     }
 
     @Override

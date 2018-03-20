@@ -34,7 +34,7 @@ public class Member {
      */
 
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Username username, Password password, ProfilePhoto profilePhoto) {
+                  Username username, Password password) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags,
                 username, password);
         this.name = name;
@@ -45,7 +45,6 @@ public class Member {
         this.tags = new HashMap<String, Tag>();
         this.username = username;
         this.password = password;
-        this.profilePhoto = profilePhoto;
         setTags(tags);
     }
 

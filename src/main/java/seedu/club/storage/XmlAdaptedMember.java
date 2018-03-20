@@ -43,8 +43,6 @@ public class XmlAdaptedMember {
     @XmlElement
     private String group;
     @XmlElement
-    private String profilePhoto;
-    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     /**
@@ -58,7 +56,7 @@ public class XmlAdaptedMember {
      */
 
     public XmlAdaptedMember(String name, String phone, String email, String matricNumber, String group,
-                            List<XmlAdaptedTag> tagged, String username, String password, String profilePhoto) {
+                            List<XmlAdaptedTag> tagged, String username, String password) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -66,7 +64,6 @@ public class XmlAdaptedMember {
         this.group = group;
         this.username = username;
         this.password = password;
-        this.profilePhoto = profilePhoto;
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -85,7 +82,6 @@ public class XmlAdaptedMember {
         group = source.getGroup().groupName;
         username = source.getUsername().value;
         password = source.getPassword().value;
-        profilePhoto = source.getProfilePhoto().originalPhotoFilePath;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -141,17 +137,12 @@ public class XmlAdaptedMember {
         }
         final Group group = new Group(this.group);
 
-        if (!ProfilePhoto.isValidProfilePhoto(this.profilePhoto)) {
-            throw new IllegalValueException(ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
-        }
-        final ProfilePhoto profilePhoto = new ProfilePhoto(this.profilePhoto);
-
         final Username username = new Username(this.username);
         final Password password = new Password(this.password);
 
         final Set<Tag> tags = new HashSet<>(memberTags);
 
-        return new Member(name, phone, email, matricNumber, group, tags, username, password, profilePhoto);
+        return new Member(name, phone, email, matricNumber, group, tags, username, password);
     }
 
     @Override
@@ -170,7 +161,6 @@ public class XmlAdaptedMember {
                 && Objects.equals(email, otherMember.email)
                 && Objects.equals(matricNumber, otherMember.matricNumber)
                 && Objects.equals(group, otherMember.group)
-                && Objects.equals(profilePhoto, otherMember.profilePhoto)
                 && tagged.equals(otherMember.tagged);
     }
 }

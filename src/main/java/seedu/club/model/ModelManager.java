@@ -14,6 +14,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -33,6 +34,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final ClubBook clubBook;
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
+    private  Member loggedInMember;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -46,6 +48,8 @@ public class ModelManager extends ComponentManager implements Model {
         this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
+
+        loggedInMember = filteredMembers.get(0);
     }
 
     public ModelManager() {
@@ -67,6 +71,19 @@ public class ModelManager extends ComponentManager implements Model {
     private void indicateClubBookChanged() {
         raise(new ClubBookChangedEvent(clubBook));
     }
+
+    //@@author amrut-prabhu
+    /** Raises an event to indicate the profile photo of a member has changed */
+    private void indicateProfilePhotoChanged(String originalPath, String newFileName) {
+        ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
+        raise(profilePhotoChangedEvent);
+    }
+
+    @Override
+    public void addProfilePhoto(String originalPhotoPath, String newFileName) {
+        indicateProfilePhotoChanged(originalPhotoPath, newFileName);
+    }
+    //@@author
 
     @Override
     public synchronized void deleteMember(Member target) throws MemberNotFoundException {

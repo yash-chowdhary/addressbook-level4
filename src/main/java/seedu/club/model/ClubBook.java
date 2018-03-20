@@ -159,7 +159,7 @@ public class ClubBook implements ReadOnlyClubBook {
         memberTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Member(
                 member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
-                    correctTagReferences, member.getUsername(), member.getPassword(), member.getProfilePhoto());
+                    correctTagReferences, member.getUsername(), member.getPassword());
     }
 
     /**
@@ -260,7 +260,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                defaultGroup, member.getTags(), member.getUsername(), member.getPassword(), member.getProfilePhoto());
+                defaultGroup, member.getTags(), member.getUsername(), member.getPassword());
 
         try {
             updateMember(member, newMember);
@@ -324,7 +324,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Member newMember = new Member(member.getName(), member.getPhone(),
                 member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags, member.getUsername(), member.getPassword(), member.getProfilePhoto());
+                member.getGroup(), memberTags, member.getUsername(), member.getPassword());
 
         try {
             updateMember(member, newMember);
