@@ -240,7 +240,7 @@ ClubConnect currently only supports GMail and Outlook mail clients.
 Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
 
 ****
-* Opens up the mail client's URL in the default web browser
+* Opens up the mail client's URL in the default web browser e.g. Google Chrome
 * A Group AND a Tag is not considered valid input
 * The Group (or Tag) must exist in the club book
 * The Group (or Tag) must be in valid format
