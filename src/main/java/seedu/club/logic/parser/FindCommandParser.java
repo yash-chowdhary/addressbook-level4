@@ -41,7 +41,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         } else if (findArgs.length > 1) {
             for (Prefix prefix : prefixes) {
-                if (findArgs[0].toLowerCase().equals(prefix.toString())) {
+                if (findArgs[0].equalsIgnoreCase(prefix.toString())) {
                     return new FindCommand(new FieldContainsKeywordsPredicate(
                             Arrays.asList(findArgs).subList(1, findArgs.length), prefix));
                 }

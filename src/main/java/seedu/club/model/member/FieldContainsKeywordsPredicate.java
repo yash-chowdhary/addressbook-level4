@@ -39,16 +39,20 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
         if (other == this) {
             return true;
         }
-        if (other instanceof  FieldContainsKeywordsPredicate) {
-            if (this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords)) {
-                if (this.prefix == null && ((FieldContainsKeywordsPredicate) other).prefix == null) {
-                    return true;
-                } else if (this.prefix == null || ((FieldContainsKeywordsPredicate) other).prefix == null) {
-                    return false;
-                } else if (this.prefix.equals(((FieldContainsKeywordsPredicate) other).prefix)) {
-                    return true;
-                }
-            }
+        if (!(other instanceof  FieldContainsKeywordsPredicate)) {
+            return false;
+        }
+        if (!(this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords))) {
+            return false;
+        }
+        if (this.prefix == null && ((FieldContainsKeywordsPredicate) other).prefix == null) {
+            return true;
+        }
+        if (this.prefix == null || ((FieldContainsKeywordsPredicate) other).prefix == null) {
+            return false;
+        }
+        if (this.prefix.equals(((FieldContainsKeywordsPredicate) other).prefix)) {
+            return true;
         }
         return false;
     }
