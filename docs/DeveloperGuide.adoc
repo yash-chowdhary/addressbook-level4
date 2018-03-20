@@ -579,12 +579,12 @@ Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
-_Figure 20. Before tag color modification_
+_Figure 20. Member details before modification_
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
-_Figure 21. After tag color modification_
+_Figure 21. Member details after modification_
 +
 ****
 * Hints
@@ -602,12 +602,12 @@ _Figure 21. After tag color modification_
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 22. Before ResultDisplay modification_
+_Figure 22. ResultDisplay before modification_
 +
 **After**
 +
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 23. After ResultDisplay modification_
+_Figure 23. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -628,12 +628,12 @@ _Figure 23. After ResultDisplay modification_
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 24. Before StatusBarFooter modification_
+_Figure 24. StatusBarFooter before modification_
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 25. After StatusBarFooter modification_
+_Figure 25. StatusBarFooter after modification_
 +
 ****
 * Hints
