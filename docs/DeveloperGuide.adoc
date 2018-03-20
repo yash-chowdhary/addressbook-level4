@@ -458,11 +458,11 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 
 
 ==== Design Considerations
-===== Aspect: Location of mail client
-* **Alternative 1 (current choice)**: Open up the mail client in system's default web browser
+===== Aspect: Location of opening the mail client
+* **Alternative 1 (current choice)**: Open up the mail client in system's default web browser.
 ** Pros: Easy to implement
 ** Cons: Since ClubConnect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
-* **Alternative 2:** Open up the mail client in `BrowserPanel`
+* **Alternative 2:** Open up the mail client in `BrowserPanel`.
 ** Pros: No dependency on third party apps.
 ** Cons: Older version browser will disallow auto-filling of email fields.
 
