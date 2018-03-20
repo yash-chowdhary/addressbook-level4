@@ -1,18 +1,22 @@
 package seedu.club.storage;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
+import seedu.club.commons.exceptions.PhotoException;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.UserPrefs;
 
 /**
  * API of the Storage component
  */
-public interface Storage extends ClubBookStorage, UserPrefsStorage {
+public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage {
 
     @Override
     Optional<UserPrefs> readUserPrefs() throws DataConversionException, IOException;
@@ -35,4 +39,17 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage {
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleClubBookChangedEvent(ClubBookChangedEvent cbce);
+
+    //@@author amrut-prabhu
+    @Override
+    void readOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException;
+
+    @Override
+    void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException;
+
+    /**
+     * Saves a copy of the newly added photo to Club Connect's resources.
+     * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
+     */
+    void handleProfilePictureChangedEvent(ProfilePhotoChangedEvent event);
 }
