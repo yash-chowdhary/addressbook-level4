@@ -1,6 +1,12 @@
 package seedu.club.logic.parser;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
 
@@ -13,7 +19,8 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
  */
 public class FindByCommandParser implements Parser<FindByCommand> {
 
-    private static final String[] fieldTypes = {"name", "email", "phone", "matric", "tag", "group"};
+    private static Prefix[] prefixes = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
+        PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG};
 
     /**
      * Parses the given {@code String} of arguments in the context of the FindByCommand
@@ -27,20 +34,20 @@ public class FindByCommandParser implements Parser<FindByCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindByCommand.MESSAGE_USAGE));
         }
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
+        String[] findArgs = trimmedArgs.split("\\s+");
 
-        if (nameKeywords.length < 2) {
+        if (findArgs.length < 1) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindByCommand.MESSAGE_USAGE));
+        } else if (findArgs.length > 1) {
+            for (Prefix prefix : prefixes) {
+                if (findArgs[0].toLowerCase().equals(prefix.toString())) {
+                    return new FindByCommand(new FieldContainsKeywordsPredicate(
+                            Arrays.asList(findArgs).subList(1, findArgs.length), findArgs[0]));
+                }
+            }
         }
-
-        String fieldType = nameKeywords[0].toLowerCase();
-        if (!Arrays.asList(fieldTypes).contains(fieldType)) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindByCommand.MESSAGE_USAGE));
-        }
-
         return new FindByCommand(new FieldContainsKeywordsPredicate(
-                Arrays.asList(nameKeywords).subList(1, nameKeywords.length), fieldType));
+                Arrays.asList(findArgs, null);
     }
 }

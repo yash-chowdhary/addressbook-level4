@@ -1,16 +1,25 @@
 package seedu.club.model.member;
 
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import seedu.club.commons.util.StringUtil;
+import seedu.club.logic.parser.Prefix;
 import seedu.club.model.tag.Tag;
 
 /**
  * Tests that a {@code member}'s matches any of the keywords given according to the {@code fieldType}.
  */
 public class FieldContainsKeywordsPredicate implements Predicate<Member> {
+
     private final List<String> keywords;
     private final String fieldType;
 
@@ -38,19 +47,28 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
      *
      */
     private String getFieldValue(Member member) {
-        switch (fieldType) {
-        case "email":
-            return member.getEmail().toString();
-        case "phone":
-            return member.getPhone().toString();
-        case "matric":
-            return member.getMatricNumber().toString();
-        case "group":
-            return member.getGroup().toString();
-        case "tag":
-            return member.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
-        default:
-            return member.getName().toString();
+
+        String name = member.getName().toString();
+        String phone = member.getPhone().toString();
+        String email = member.getEmail().toString();
+        String matricNumber = member.getMatricNumber().toString();
+        String group = member.getMatricNumber().toString();
+        String tags = member.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
+
+        if (PREFIX_NAME.toString().equals(fieldType)) {
+            return name;
+        } else if (PREFIX_PHONE.toString().equals(fieldType)) {
+            return phone;
+        } else if (PREFIX_EMAIL.toString().equals(fieldType)) {
+            return email;
+        } else if (PREFIX_MATRIC_NUMBER.toString().equals(fieldType)) {
+            return matricNumber;
+        } else if (PREFIX_GROUP.toString().equals(fieldType)) {
+            return group;
+        } else if (PREFIX_TAG.toString().equals(fieldType)) {
+            return tags;
+        } else {
+            return fieldType + " " + name + " " + phone + " " + email + " " + matricNumber + " " + group + " " + tags;
         }
     }
 }

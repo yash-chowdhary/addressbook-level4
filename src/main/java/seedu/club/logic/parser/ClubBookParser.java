@@ -68,9 +68,6 @@ public class ClubBookParser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
-
         case FindByCommand.COMMAND_WORD:
             return new FindByCommandParser().parse(arguments);
 
