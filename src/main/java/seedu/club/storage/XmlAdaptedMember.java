@@ -43,6 +43,8 @@ public class XmlAdaptedMember {
     @XmlElement
     private String group;
     @XmlElement
+    private String profilePhoto;
+    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     /**
@@ -64,6 +66,7 @@ public class XmlAdaptedMember {
         this.group = group;
         this.username = username;
         this.password = password;
+        this.profilePhoto = "";
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -82,6 +85,7 @@ public class XmlAdaptedMember {
         group = source.getGroup().groupName;
         username = source.getUsername().value;
         password = source.getPassword().value;
+        profilePhoto = source.getProfilePhoto().getProfilePhotoPath();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -142,7 +146,10 @@ public class XmlAdaptedMember {
 
         final Set<Tag> tags = new HashSet<>(memberTags);
 
-        return new Member(name, phone, email, matricNumber, group, tags, username, password);
+        Member member = new Member(name, phone, email, matricNumber, group, tags, username, password);
+        member.setProfilePhoto(new ProfilePhoto(profilePhoto));
+
+        return member;
     }
 
     @Override
@@ -161,6 +168,7 @@ public class XmlAdaptedMember {
                 && Objects.equals(email, otherMember.email)
                 && Objects.equals(matricNumber, otherMember.matricNumber)
                 && Objects.equals(group, otherMember.group)
+                && Objects.equals(profilePhoto, otherMember.profilePhoto)
                 && tagged.equals(otherMember.tagged);
     }
 }

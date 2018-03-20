@@ -36,7 +36,6 @@ public class ProfilePhoto {
      * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        requireNonNull(path);
         //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.originalPhotoFilePath = path;
     }
