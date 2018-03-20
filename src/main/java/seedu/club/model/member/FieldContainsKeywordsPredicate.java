@@ -43,8 +43,8 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
     }
 
     /**
-     * Get relevant field value of member according to fieldType
-     *
+     * Get relevant field value of member according to {@code fieldType}
+     *  or all field values if {@code fieldType} is null     *
      */
     private String getFieldValue(Member member) {
 
@@ -52,7 +52,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
         String phone = member.getPhone().toString();
         String email = member.getEmail().toString();
         String matricNumber = member.getMatricNumber().toString();
-        String group = member.getMatricNumber().toString();
+        String group = member.getGroup().toString();
         String tags = member.getTags().stream().map(Tag::toString).collect(Collectors.joining(" "));
 
         if (PREFIX_NAME.toString().equals(fieldType)) {

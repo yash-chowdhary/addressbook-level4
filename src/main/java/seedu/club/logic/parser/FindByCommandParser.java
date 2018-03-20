@@ -48,6 +48,6 @@ public class FindByCommandParser implements Parser<FindByCommand> {
             }
         }
         return new FindByCommand(new FieldContainsKeywordsPredicate(
-                Arrays.asList(findArgs, null);
+                Arrays.asList(findArgs), null));
     }
 }
