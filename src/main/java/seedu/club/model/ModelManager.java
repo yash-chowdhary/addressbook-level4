@@ -114,6 +114,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
     //@@author
 
+
     @Override
     public void deleteTag(Tag tag) throws TagNotFoundException {
         clubBook.deleteTag(tag);

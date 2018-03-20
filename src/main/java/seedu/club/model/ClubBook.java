@@ -179,11 +179,9 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Logs in a member
      */
-
     public boolean logInMember(String username, String password) {
         return members.logInMemberSuccessful(username, password);
     }
-
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
      */

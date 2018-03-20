@@ -21,6 +21,8 @@ import org.junit.rules.ExpectedException;
 
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.ClearCommand;
+import seedu.club.logic.commands.CompressCommand;
+import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
@@ -177,5 +179,15 @@ public class ClubBookParserTest {
         thrown.expect(ParseException.class);
         thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
         parser.parseCommand("unknownCommand");
+    }
+
+    @Test
+    public void parseCommand_compress() throws Exception {
+        assertTrue(parser.parseCommand(CompressCommand.COMMAND_WORD) instanceof CompressCommand);
+    }
+
+    @Test
+    public void parseCommand_decompress() throws Exception {
+        assertTrue(parser.parseCommand(DecompressCommand.COMMAND_WORD) instanceof DecompressCommand);
     }
 }
