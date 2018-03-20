@@ -20,7 +20,7 @@ import seedu.club.commons.exceptions.PhotoException;
 public class ProfilePhotoStorage implements  PhotoStorage {
 
     public static final String FILE_EXTENSION = ".png";
-    private static final String SAVE_PHOTO_DIRECTORY = "/src/main/resources/photos/";
+    public static final String SAVE_PHOTO_DIRECTORY = "/src/main/resources/photos/";
 
     private static final String URL_PREFIX = "file:///";
 
@@ -51,7 +51,7 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     /**
      * Returns the absolute file path of the current directory.
      */
-    private String getCurrentDirectory() {
+    public static String getCurrentDirectory() {
         File file = new File(".");
         String currentDirectory = file.getAbsolutePath();
         currentDirectory = currentDirectory.replace('\\', (char) 47); //ASCII 47 = '/'

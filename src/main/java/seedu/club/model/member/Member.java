@@ -45,6 +45,7 @@ public class Member {
         this.tags = new HashMap<String, Tag>();
         this.username = username;
         this.password = password;
+        this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
     }
 

@@ -4,10 +4,13 @@ package seedu.club.model.member;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
+import seedu.club.storage.ProfilePhotoStorage;
+
 /**
  * Represents a member's profile photo in the club book.
  */
 public class ProfilePhoto {
+
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
 
@@ -18,12 +21,14 @@ public class ProfilePhoto {
     public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
     //Matches C:/Users/Amrut Prabhu/Desktop/My Timetable (1).png
     //https://www.freeformatter.com/java-regex-tester.html#ad-output
+    public static final String DEFAULT_PHOTO_NAME = "default";
 
     public final String originalPhotoFilePath;
     //Note: The actual image file used in the application UI is a copy of this image stored in Club Connect's
     // resources as "MATRIC_NUM.png".
 
-    private String profilePhotoPath = "/src/main/resources/photos/default.png";
+    private String profilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
+            + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY +  DEFAULT_PHOTO_NAME + ProfilePhotoStorage.FILE_EXTENSION;
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -59,6 +64,8 @@ public class ProfilePhoto {
     public String getOriginalPhotoPath() {
         return originalPhotoFilePath;
     }
+
+    public String getProfilePhotoPath() { return  profilePhotoPath; }
 
     @Override
     public boolean equals(Object other) {
