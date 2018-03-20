@@ -13,7 +13,7 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
  * Finds and lists all members in club book whose field contains any of the argument keywords.
  * Partial match is acceptable.
  * Keyword matching is case insensitive.
- * Finds by all possible fields if fieldType is not specified
+ * Finds by all possible fields if prefix is not specified
  */
 public class FindCommand extends Command {
 
@@ -21,8 +21,9 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all members whose field contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters:"
-            + "{ "
+            + "Insert field prefix after find to search by field, otherwise find will search all fields.\n"
+            + "Parameters: "
+            + "[ "
             + PREFIX_NAME + " | "
             + PREFIX_PHONE + " | "
             + PREFIX_EMAIL + " | "
@@ -30,7 +31,7 @@ public class FindCommand extends Command {
             + PREFIX_GROUP + " | "
             + PREFIX_TAG
             + " ]"
-            + " KEYWORD [] [MORE_KEYWORDS]...\n"
+            + " KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_GROUP + " logistics";
 
     private final FieldContainsKeywordsPredicate predicate;
