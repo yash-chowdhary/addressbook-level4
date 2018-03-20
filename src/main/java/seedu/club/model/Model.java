@@ -70,7 +70,7 @@ public interface Model {
      * @param originalPhotoPath Absolute file path of the original photo.
      * @param newFileName File name under which the photo is to be copied to Club Connect's resources.
      */
-    void changeProfilePhoto(String originalPhotoPath, String newFileName);
+    void addProfilePhoto(String originalPhotoPath, String newFileName);
 
     //@@author
 

@@ -85,7 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void changeProfilePhoto(String originalPhotoPath, String newFileName) {
+    public void addProfilePhoto(String originalPhotoPath, String newFileName) {
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
     }
     //@@author

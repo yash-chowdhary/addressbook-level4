@@ -93,6 +93,8 @@ public class Member {
         return profilePhoto;
     }
 
+    public void setProfilePhoto(ProfilePhoto profilePhoto) { this.profilePhoto = profilePhoto; }
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
