@@ -1,7 +1,10 @@
 package seedu.club.model.member;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 
 import org.junit.Test;
 
@@ -58,5 +61,23 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("a1+be!@example1.com")); // mixture of alphanumeric and special characters
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com"));   // long domain name
         assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com"));    // long local part
+    }
+
+    @Test
+    public void test_hashCode() {
+        Email email = new Email(VALID_EMAIL_AMY);
+        String expectedEmail = VALID_EMAIL_AMY;
+        assertEquals(expectedEmail.hashCode(), email.hashCode());
+    }
+
+    @Test
+    public void test_equals() {
+        Email testEmailOne = new Email(VALID_EMAIL_AMY);
+        Email testEmailTwo = new Email(VALID_EMAIL_BOB);
+
+        assertTrue(testEmailOne.equals(testEmailOne));
+        assertFalse(testEmailOne.equals(testEmailTwo));
+
+        assertFalse(testEmailOne.equals(null));
     }
 }
