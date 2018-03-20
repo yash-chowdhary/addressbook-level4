@@ -8,6 +8,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 
+//@@author yash-chowdhary
 /**
  * Removes a group from the Club Book
  */

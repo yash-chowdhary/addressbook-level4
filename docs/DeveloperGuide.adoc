@@ -14,6 +14,11 @@ endif::[]
 
 By: `Team W15-B4`      Since: `Jun 2016`      Licence: `MIT`
 
+== Introduction
+
+Club Connect is an application targeted at club members who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective. It provides features that are essential for a club to function smoothly such as user authentication, assigning tasks, email blasts, conducting polls, and importing and exporting member details.
+This guide provides the necessary information for developers who are interested in contributing to the application - from the steps required to set-up, to detailed descriptions of the current features that the application sports.
+
 == Setting up
 
 === Prerequisites
@@ -396,6 +401,71 @@ The construction of a symmetric key is done by passing the algorithm the encrypt
 Once the key is generated, all data will be encrypted with AES. Anyone who wishes to view the decrypted form of the data must possess the secret key.
 // end::dataencryption[]
 
+=== Email Mechanism
+==== Current Implementation
+The `email` mechanism of ClubConnect is facilitated by the `EmailCommand` class and is event-driven.
+The `EmailCommand` consists of the following fields:
+
+* Client - the mail client used to send the email (currently restricted to GMail and Outlook).
+* Subject - the subject of the email (optional field).
+* Body - the body of the email (optional field).
+* Group - the club group to whom the user wishes to send an email to.
+* Tag - the tag to which the user wishes to send an email to.
+
+[NOTE]
+Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+
+The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command. Refer to Figure 19 for the UML diagram.
+
+image::EmailCommandUML.png[width="600"]
+_Figure 19. EmailCommand UML Diagram_
+
+`EmailCommandParser` is responsible for parsing the `email` command. It returns a `EmailCommand` object after parsing `Client`, `Subject`, `Body`, `Group`, and `Tag`. Figure 20 depicts the sequence of parsing the command.
+
+image::SDforEmailCommandParser.png[width="650"]
+_Figure 20. Sequence Diagram for Email Command parsing_
+
+[NOTE]
+Since `Subject` and `Body` are optional fields, their default values are `EMPTY_SUBJECT_STRING` and `EMPTY_BODY_STRING` which store blank Strings.
+
+[NOTE]
+As ClubConnect only allows emails to be sent to members of EITHER a `Group` OR a `Tag`, a valid command will result in either one of them being assigned to `null`.
+
+The `EmailCommand#execute()` calls the following methods of `model`:
+
+. ```generateEmailRecipients()``` - takes in a `Group` and `Tag` object. Depending on the object that is not `null`, it returns a string of recipients.
+. ```sendEmail()``` - takes in the recipient string, and an object each of `Client`, `Subject`, and `Body`.
+
+`EmailCommand#sendEmail()` raises an event `SendEmailRequestEvent`, which triggers the system's default browser to open the chosen mail client's 'Compose Message' page with all the relevant fields filled-in.
+Figure 21 depicts the high-level sequence of events that take place.
+
+image::SDforEmail.png[width="800"]
+_Figure 21. Sequence Diagram for Email Command_
+
+
+The browser URL for composing the email is generated as follows:
+
+[source, java]
+----
+public static final String GMAIL_EMAIL_URL =
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s
+
+public static final String OUTLOOK_EMAIL_URL =
+            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
+
+Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
+----
+
+
+==== Design Considerations
+===== Aspect: Location of opening the mail client
+* **Alternative 1 (current choice)**: Open up the mail client in system's default web browser.
+** Pros: Easy to implement
+** Cons: Since ClubConnect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
+* **Alternative 2:** Open up the mail client in `BrowserPanel`.
+** Pros: No dependency on third party apps.
+** Cons: Older version browser will disallow auto-filling of email fields.
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
@@ -441,10 +511,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 19 below.
 
-.Saving documentation as PDF files in Chrome
 image::chrome_save_as_pdf.png[width="300"]
+_Figure 19. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -517,14 +587,14 @@ When a pull request has changes to asciidoc files, you can use https://www.netli
 
 Here are the steps to create a new release.
 
-.  Update the version number in link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp.java`].
+.  Update the version number in link:{repoURL}/src/main/java/seedu/club/MainApp.java[`MainApp.java`].
 .  Generate a JAR file <<UsingGradle#creating-the-jar-file, using Gradle>>.
 .  Tag the repo with the version number. e.g. `v0.1`
 .  https://help.github.com/articles/creating-releases/[Create a new release using GitHub] and upload the JAR file you created.
 
 === Managing Dependencies
 
-A project often depends on third-party libraries. For example, Address Book depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
+A project often depends on third-party libraries. For example, Club Book depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
 a. Include those libraries in the repo (this bloats the repo size) +
 b. Require developers to download those libraries manually (this creates extra work for developers)
 
@@ -596,15 +666,17 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 [TIP]
 Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow.
+. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 21.
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
+_Figure 20. Member details before modification_
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
+_Figure 21. Member details after modification_
 +
 ****
 * Hints
@@ -622,10 +694,12 @@ image::getting-started-ui-tag-after.png[width="300"]
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
+_Figure 22. ResultDisplay before modification_
 +
 **After**
 +
 image::getting-started-ui-result-after.png[width="200"]
+_Figure 23. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -646,10 +720,12 @@ image::getting-started-ui-result-after.png[width="200"]
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
+_Figure 24. StatusBarFooter before modification_
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
+_Figure 25. StatusBarFooter after modification_
 +
 ****
 * Hints

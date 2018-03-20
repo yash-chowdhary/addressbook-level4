@@ -179,11 +179,9 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Logs in a member
      */
-
     public boolean logInMember(String username, String password) {
         return members.logInMemberSuccessful(username, password);
     }
-
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
      */
@@ -221,6 +219,7 @@ public class ClubBook implements ReadOnlyClubBook {
         tags.add(t);
     }
 
+    //@@author yash-chowdhary
     /**
      * Removes the Group {@code toRemove} from the Club Book. Every member who was once a part of {@code toRemove}
      * will be assigned the default group - "member".
@@ -269,6 +268,7 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
+    //@@author yash-chowdhary
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.

@@ -228,6 +228,31 @@ Examples:
 * `deletetag t/treasurer` +
 Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
 
+=== Emailing club members belonging to a particular group or tag: `email`
+
+Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
+Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]`
+
+[NOTE]
+ClubConnect currently only supports GMail and Outlook mail clients.
+
+[NOTE]
+Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+
+****
+* Opens up the mail client's URL in the default web browser e.g. Google Chrome
+* A Group AND a Tag is not considered valid input
+* The Group (or Tag) must exist in the club book
+* The Group (or Tag) must be in valid format
+****
+
+Examples:
+
+* `email g/logistics c/gmail s/Meeting Minutes` +
+Opens up the Compose Message page of GMail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
+* `email t/projectHead c/outlook` +
+Opens up the Compose Message page of Outlook with blank `Subject` and `Body` fields. The recipients are all the members that are tagged with `projectHead`.
+
 === Selecting a member : `select`
 
 Selects the member identified by the index number used in the most recent member listing. +
@@ -363,6 +388,8 @@ e.g. `deletetag t/president`
 e.g. `find James Jacob`
 * *Find By* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
 e.g. `findby phone 123`
+* *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
+e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *List* : `list`
 * *Help* : `help`
 * *Select* : `select INDEX` +

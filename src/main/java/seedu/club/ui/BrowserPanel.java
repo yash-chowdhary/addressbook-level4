@@ -1,5 +1,8 @@
 package seedu.club.ui;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -13,6 +16,8 @@ import javafx.scene.web.WebView;
 import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
+import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.logic.commands.email.Client;
 import seedu.club.model.member.Member;
 
 /**
@@ -23,6 +28,10 @@ public class BrowserPanel extends UiPart<Region> {
     public static final String DEFAULT_PAGE = "default.html";
     public static final String SEARCH_PAGE_URL =
             "https://se-edu.github.io/addressbook-level4/DummySearchPage.html?name=";
+    public static final String GMAIL_URL = "https://mail.google.com/mail/?view=cm&fs=1&to=%1$s"
+            + "&su=%2$s&body=%3$s";
+    public static final String OUTLOOK_URL = "https://outlook.office.com/?path=/mail/action/"
+            + "compose&to=%1$s&subject=%2$s&body=%3$s";
 
     private static final String FXML = "BrowserPanel.fxml";
 
@@ -40,6 +49,57 @@ public class BrowserPanel extends UiPart<Region> {
         loadDefaultPage();
         registerAsAnEventHandler(this);
     }
+
+    //@@author yash-chowdhary
+    /**
+     * Loads the client page based on {@code client}
+     */
+    private void callClient(String client, String recipients, String subject, String body) {
+        if (client.equalsIgnoreCase(Client.VALID_CLIENT_GMAIL)) {
+            String gMailUrl = String.format(GMAIL_URL, recipients, subject, body);
+            loadGmailPage(gMailUrl);
+        } else if (client.equalsIgnoreCase(Client.VALID_CLIENT_OUTLOOK)) {
+            String outlookUrl = String.format(OUTLOOK_URL, recipients, subject, body);
+            loadOutlookPage(outlookUrl);
+        }
+    }
+
+    /**
+     * loads the 'Compose Email' page based on the {@code outlookUrl} in Outlook
+     * adapted from https://www.codeproject.com/Questions/398241/how-to-open-url-in-java
+     */
+    private void loadOutlookPage(String outlookUrl) {
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    desktop.browse(URI.create(outlookUrl));
+                    return;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * loads the 'Compose Email' page based on the {@code gMailUrl} in GMail
+     * adapted from https://www.codeproject.com/Questions/398241/how-to-open-url-in-java
+     */
+    private void loadGmailPage(String gMailUrl) {
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    desktop.browse(URI.create(gMailUrl));
+                    return;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    //@@author
 
     private void loadMemberPage(Member member) {
         loadPage(SEARCH_PAGE_URL + member.getName().fullName);
@@ -68,5 +128,14 @@ public class BrowserPanel extends UiPart<Region> {
     private void handleMemberPanelSelectionChangedEvent(MemberPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadMemberPage(event.getNewSelection().member);
+    }
+
+    //@@author yash-chowdhary
+    @Subscribe
+    private void handleSendingEmailEvent(SendEmailRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Sending email via "
+                + event.getClient().toString()));
+        callClient(event.getClient().toString(), event.getRecipients(), event.getSubject().toString(),
+                event.getBody().toString());
     }
 }

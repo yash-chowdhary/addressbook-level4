@@ -13,6 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.CompressMembersRequestEvent;
+import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.model.member.Member;
@@ -23,22 +25,56 @@ import seedu.club.model.member.Member;
 public class MemberListPanel extends UiPart<Region> {
     private static final String FXML = "MemberListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(MemberListPanel.class);
+    private boolean isDisplayingCompressedMembers;
+    private ObservableList<Member> memberList;
 
     @FXML
     private ListView<MemberCard> memberListView;
 
     public MemberListPanel(ObservableList<Member> memberList) {
         super(FXML);
+        this.memberList = memberList;
+        isDisplayingCompressedMembers = false;
         setConnections(memberList);
         registerAsAnEventHandler(this);
     }
 
+    /**
+     * Compress view of member details.
+     */
+    protected void compressMemberCards() {
+        if (!isDisplayingCompressedMembers) {
+            isDisplayingCompressedMembers = true;
+            setMemberListView(memberList);
+        }
+    }
+
+    /**
+     * Decompress view of member details.
+     */
+    protected void decompressMemberCards() {
+        if (isDisplayingCompressedMembers) {
+            isDisplayingCompressedMembers = false;
+            setMemberListView(memberList);
+        }
+    }
+
     private void setConnections(ObservableList<Member> memberList) {
+        setMemberListView(memberList);
+        setEventHandlerForSelectionChangeEvent();
+    }
+
+    private void setMemberListView(ObservableList<Member> memberList) {
         ObservableList<MemberCard> mappedList = EasyBind.map(
-                memberList, (member) -> new MemberCard(member, memberList.indexOf(member) + 1));
+                memberList, (member) -> {
+                if (isDisplayingCompressedMembers) {
+                    return new CompressedMemberCard(member, memberList.indexOf(member) + 1);
+                } else {
+                    return new MemberCard(member, memberList.indexOf(member) + 1);
+                }
+            });
         memberListView.setItems(mappedList);
         memberListView.setCellFactory(listView -> new MemberListViewCell());
-        setEventHandlerForSelectionChangeEvent();
     }
 
     private void setEventHandlerForSelectionChangeEvent() {
@@ -85,4 +121,19 @@ public class MemberListPanel extends UiPart<Region> {
         }
     }
 
+    @Subscribe
+    private void handleCompressMembersEvent(CompressMembersRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        compressMemberCards();
+    }
+
+    @Subscribe
+    private void handledeCompressMembersEvent(DecompressMembersRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        decompressMemberCards();
+    }
+
+    public boolean isDisplayingCompressedMembers() {
+        return isDisplayingCompressedMembers;
+    }
 }

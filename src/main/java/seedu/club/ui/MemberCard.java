@@ -53,6 +53,16 @@ public class MemberCard extends UiPart<Region> {
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
+    public MemberCard(Member member, int displayedIndex, String fxml) {
+        super(fxml);
+        this.member = member;
+        id.setText(displayedIndex + ". ");
+        name.setText(member.getName().fullName);
+        phone.setText(member.getPhone().value);
+        group.setText(member.getGroup().groupName);
+        email.setText(member.getEmail().value);
+    }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object
@@ -69,5 +79,9 @@ public class MemberCard extends UiPart<Region> {
         MemberCard card = (MemberCard) other;
         return id.getText().equals(card.id.getText())
                 && member.equals(card.member);
+    }
+
+    protected Label getId() {
+        return id;
     }
 }

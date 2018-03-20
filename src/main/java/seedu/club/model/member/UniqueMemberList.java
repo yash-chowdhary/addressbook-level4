@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,6 +100,7 @@ public class UniqueMemberList implements Iterable<Member> {
      * Returns the backing list as an unmodifiable {@code ObservableList}.
      */
     public ObservableList<Member> asObservableList() {
+        sort();
         return FXCollections.unmodifiableObservableList(internalList);
     }
 
@@ -146,5 +148,17 @@ public class UniqueMemberList implements Iterable<Member> {
             }
         }
         return false;
+    }
+
+    /**
+     Sort the list according to alphabetical order
+     */
+    public void sort() {
+        internalList.sort(new Comparator<Member>() {
+            @Override
+            public int compare(Member otherMember1, Member otherMember2) {
+                return otherMember1.getName().toString().compareTo(otherMember2.getName().toString());
+            }
+        });
     }
 }
