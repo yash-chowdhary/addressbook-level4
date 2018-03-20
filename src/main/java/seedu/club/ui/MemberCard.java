@@ -2,6 +2,8 @@ package seedu.club.ui;
 
 import java.io.File;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -62,7 +64,8 @@ public class MemberCard extends UiPart<Region> {
         matricNumber.setText(member.getMatricNumber().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
-        //setProfilePhoto(member);
+        setProfilePhoto(member);
+        //bindListeners(member);
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
@@ -74,6 +77,19 @@ public class MemberCard extends UiPart<Region> {
         phone.setText(member.getPhone().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
+        setProfilePhoto(member);
+        //bindListeners(member);
+    }
+
+    /**
+     * Binds the individual UI elements to observe their respective {@code Person} properties
+     * so that they will be notified of any changes.
+     */
+    private void bindListeners(Member member) {
+        name.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getName())));
+        phone.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getPhone())));
+
+        setProfilePhoto(member);
     }
 
     //@@author amrut-prabhu

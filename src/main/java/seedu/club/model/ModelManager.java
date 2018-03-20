@@ -20,6 +20,7 @@ import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.logic.commands.email.Body;
 import seedu.club.logic.commands.email.Client;
 import seedu.club.logic.commands.email.Subject;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -28,6 +29,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.storage.ProfilePhotoStorage;
 
 /**
  * Represents the in-memory model of the club book data.
@@ -89,8 +91,23 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void addProfilePhoto(String originalPhotoPath, String newFileName) {
+    public void addProfilePhoto(String originalPhotoPath, String newFileName) throws CommandException {
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
+
+        String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
+                + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
+
+        /*Member newMember = new Member(loggedInMember);
+        newMember.setProfilePhotoPath(newProfilePhotoPath);
+        try {
+            updateMember(loggedInMember, newMember);
+        } catch (DuplicateMemberException eme) {
+            throw new CommandException(MESSAGE_SAME_PHOTO_PATH);
+        } catch (MemberNotFoundException mnfe) {
+            assert false : "Member is guaranteed to be found";
+        }*/
+        loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
+        indicateClubBookChanged();
     }
     //@@author
 

@@ -17,7 +17,8 @@ public class ChangeProfilePhotoCommand extends Command {
     public static final String COMMAND_WORD = "changepic";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
-            + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo.)";
+            + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
+            + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Desktop/john_doe.jpg";
 
     public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book";
     public static final String MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS =
@@ -46,16 +47,6 @@ public class ChangeProfilePhotoCommand extends Command {
         assert this.memberToEdit == null : "ChangeProfilePhotoCommand cannot be called without a logged in member.";
 
         model.addProfilePhoto(newProfilePhoto.getOriginalPhotoPath(), memberToEdit.getMatricNumber().toString());
-
-        newProfilePhoto.setNewPhotoPath(memberToEdit.getMatricNumber().toString());
-
-        Member editedMember = new Member(memberToEdit.getName(), memberToEdit.getPhone(), memberToEdit.getEmail(),
-                memberToEdit.getMatricNumber(), memberToEdit.getGroup(), memberToEdit.getTags(),
-                memberToEdit.getUsername(), memberToEdit.getPassword());
-
-        editedMember.setProfilePhoto(newProfilePhoto);
-
-        updateMember(memberToEdit, editedMember);
 
         return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));
     }

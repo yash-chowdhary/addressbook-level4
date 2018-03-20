@@ -49,6 +49,25 @@ public class Member {
         setTags(tags);
     }
 
+    //@@author amrut-prabhu
+
+    /**
+     * Copy constructor
+     * @param member Member whose attributes are to be copied to (@code this}.
+     */
+    public Member(Member member) {
+        this.name = member.name;
+        this.phone = member.phone;
+        this.email = member.email;
+        this.matricNumber = member.matricNumber;
+        this.group = member.group;
+        this.tags = member.tags;
+        this.username = member.username;
+        this.password = member.password;
+        this.profilePhoto = member.profilePhoto;
+    }
+    //@@author
+
     public Name getName() {
         return name;
     }
@@ -94,7 +113,13 @@ public class Member {
         return profilePhoto;
     }
 
-    public void setProfilePhoto(ProfilePhoto profilePhoto) { this.profilePhoto = profilePhoto; }
+    public void setProfilePhoto(ProfilePhoto profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public void setProfilePhotoPath(String newPath) {
+        profilePhoto.setNewPhotoPath(newPath);
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

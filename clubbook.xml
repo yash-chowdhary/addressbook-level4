@@ -8,6 +8,7 @@
         <password>password</password>
         <matricNumber>A5215090A</matricNumber>
         <group>logistics</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/A5215090A.png</profilePhoto>
         <tagged>friends</tagged>
     </members>
     <members>
@@ -18,6 +19,7 @@
         <password>password</password>
         <matricNumber>A1010027G</matricNumber>
         <group>exco</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/default.png</profilePhoto>
         <tagged>neighbours</tagged>
     </members>
     <members>
@@ -28,7 +30,19 @@
         <password>password</password>
         <matricNumber>A7251856A</matricNumber>
         <group>marketing</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/default.png</profilePhoto>
         <tagged>family</tagged>
+    </members>
+    <members>
+        <name>Jane Smith</name>
+        <phone>98765432</phone>
+        <email>janed@example.com</email>
+        <username>JaneSmith</username>
+        <password>password</password>
+        <matricNumber>A0123456H</matricNumber>
+        <group>logistics</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/default.png</profilePhoto>
+        <tagged>friends</tagged>
     </members>
     <members>
         <name>John Doe</name>
@@ -38,6 +52,7 @@
         <password>password</password>
         <matricNumber>A0123456H</matricNumber>
         <group>logistics</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/default.png</profilePhoto>
         <tagged>owesMoney</tagged>
         <tagged>friends</tagged>
     </members>
@@ -49,6 +64,7 @@
         <password>password</password>
         <matricNumber>A0123456H</matricNumber>
         <group>prod</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/default.png</profilePhoto>
         <tagged>owesMoney</tagged>
         <tagged>friends</tagged>
     </members>
@@ -60,6 +76,7 @@
         <password>password</password>
         <matricNumber>A2488865L</matricNumber>
         <group>legal</group>
+        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/default.png</profilePhoto>
         <tagged>colleagues</tagged>
     </members>
     <tags>owesMoney</tags>

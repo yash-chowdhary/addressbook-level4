@@ -2,7 +2,6 @@
 package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.club.commons.util.AppUtil.checkArgument;
 
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -51,12 +50,11 @@ public class ProfilePhoto {
 
     /**
      * Sets the {@code photoFilePath} to the specified {@code path}.
-     *
      * @param path A valid image path.
      */
     public void setNewPhotoPath(String path) {
         requireNonNull(path);
-        checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
+        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 
@@ -64,7 +62,9 @@ public class ProfilePhoto {
         return originalPhotoFilePath;
     }
 
-    public String getProfilePhotoPath() { return  profilePhotoPath; }
+    public String getProfilePhotoPath() {
+        return  profilePhotoPath;
+    }
 
     @Override
     public boolean equals(Object other) {

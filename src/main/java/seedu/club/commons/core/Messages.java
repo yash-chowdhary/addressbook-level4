@@ -10,5 +10,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX = "The member index provided is invalid";
     public static final String MESSAGE_MEMBERS_LISTED_OVERVIEW = "%1$d members listed!";
     public static final String MESSAGE_INVALID_PHOTO_PATH = "Unable to read profile photo from the path: %1$s";
+    public static final String MESSAGE_SAME_PHOTO_PATH = "Profile photo path entered is same as the current photo";
 
 }
