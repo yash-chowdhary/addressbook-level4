@@ -69,5 +69,4 @@ public interface Model {
     void updateFilteredTagList(Predicate<Tag> predicate);
 
     void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
-
 }

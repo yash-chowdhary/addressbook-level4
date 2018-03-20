@@ -25,7 +25,6 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
-
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
