@@ -9,24 +9,21 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class ProfilePhoto {
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
-            "the photo path should follow the format of this example: C://Downloads//...//mypic.png";
+            "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
 
     /*
      * The first character of the club must be a single alphabet. It is followed by ":", then "\\",
      * a directory whose name consists of alphabets and/or digits, followed by a "." and the file type.
      */
-    public static final String IMAGE_PATH_VALIDATION_REGEX = "(.*/)*.+\\\\.(png|jpg|jpeg|PNG|JPG)$";
-    //https://stackoverflow.com/questions/7102890/java-regex-for-image-filename
-    //"([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?";  https://stackoverflow.com/questions/4489582/
-    // java-regular-expression-to-match-file-path
-    //([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)  http://www.mkyong.com/regular-expressions/
-    // how-to-validate-image-file-extension-with-regular-expression/
+    public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
+    //Matches C:/Users/Amrut Prabhu/Desktop/My Timetable (1).png
+    //https://www.freeformatter.com/java-regex-tester.html#ad-output
 
     public final String originalPhotoFilePath;
     //Note: The actual image file used in the application UI is a copy of this image stored in Club Connect's
     // resources as "MATRIC_NUM.png".
 
-    private String profilePhotoPath = "./photos/default.png";
+    private String profilePhotoPath = "/src/main/resources/photos/default.png";
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -34,7 +31,7 @@ public class ProfilePhoto {
      * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        //requireNonNull(path);
+        requireNonNull(path);
         //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.originalPhotoFilePath = path;
     }
@@ -53,21 +50,21 @@ public class ProfilePhoto {
      *
      * @param path A valid image path.
      */
-    public void setPhotoPath(String path) {
+    public void setNewPhotoPath(String path) {
         requireNonNull(path);
         checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 
-    public String getPhotoPath() {
-        return profilePhotoPath;
+    public String getOriginalPhotoPath() {
+        return originalPhotoFilePath;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ProfilePhoto // instanceof handles nulls
-                && this.getPhotoPath().equals(((ProfilePhoto) other).getPhotoPath())); // state check
+                && this.getOriginalPhotoPath().equals(((ProfilePhoto) other).getOriginalPhotoPath())); // state check
     }
 
     @Override

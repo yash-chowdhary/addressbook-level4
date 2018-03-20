@@ -107,6 +107,17 @@ public class AddCommandTest {
         }
 
         @Override
+        public void addProfilePhoto(String originalPhotoPath, String newFileName) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public Member getLoggedInMember() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
         public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
             fail("This method should not be called.");
         }

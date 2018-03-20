@@ -33,24 +33,21 @@ public class ChangeProfilePhotoCommand extends Command {
     public ChangeProfilePhotoCommand(ProfilePhoto profilePhoto) {
         requireNonNull(profilePhoto);
         this.newProfilePhoto = profilePhoto;
-
-        this.memberToEdit = model.getLoggedInMember();
-
-        //Defensive programming
-        assert this.memberToEdit == null : "ChangeProfilePhotoCommand cannot be called without a logged in member.";
     }
 
     @Override
     public CommandResult execute() throws CommandException {
 
         //Defensive programming
-        if (newProfilePhoto.getPhotoPath() == null) {
-            assert false : "Photo path should not be null.";
-        }
+        assert newProfilePhoto.getOriginalPhotoPath() == null : "Photo path should not be null.";
 
-        model.addProfilePhoto(newProfilePhoto.getPhotoPath(), memberToEdit.getMatricNumber().toString());
+        memberToEdit = model.getLoggedInMember();
+        //Defensive programming
+        assert this.memberToEdit == null : "ChangeProfilePhotoCommand cannot be called without a logged in member.";
 
-        newProfilePhoto.setPhotoPath(memberToEdit.getMatricNumber().toString());
+        model.addProfilePhoto(newProfilePhoto.getOriginalPhotoPath(), memberToEdit.getMatricNumber().toString());
+
+        newProfilePhoto.setNewPhotoPath(memberToEdit.getMatricNumber().toString());
 
         Member editedMember = new Member(memberToEdit.getName(), memberToEdit.getPhone(), memberToEdit.getEmail(),
                 memberToEdit.getMatricNumber(), memberToEdit.getGroup(), memberToEdit.getTags(),

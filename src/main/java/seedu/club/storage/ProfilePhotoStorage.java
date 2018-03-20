@@ -19,8 +19,8 @@ import seedu.club.commons.exceptions.PhotoException;
  */
 public class ProfilePhotoStorage implements  PhotoStorage {
 
-    private static final String FILE_EXTENSION = ".png";
-    private static final String SAVE_PHOTO_DIRECTORY = "pictures/";
+    public static final String FILE_EXTENSION = ".png";
+    private static final String SAVE_PHOTO_DIRECTORY = "/src/main/resources/photos/";
 
     private static final String URL_PREFIX = "file:///";
 
@@ -39,24 +39,29 @@ public class ProfilePhotoStorage implements  PhotoStorage {
             originalPhoto = ImageIO.read(photoUrl);
 
             String saveAs = newPhotoName + FILE_EXTENSION;
-            File newPath = new File(SAVE_PHOTO_DIRECTORY, saveAs);
+            File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
 
             createPhotoFileCopy(originalPhoto, newPath);
         } catch (IOException ioe) {
-            logger.info("Error while reading photo file");
+            logger.info("Error while reading/writing photo file");
             throw new PhotoException(String.format(MESSAGE_INVALID_PHOTO_PATH, originalPhotoPath));
         }
     }
 
+    /**
+     * Returns the absolute file path of the current directory.
+     */
+    private String getCurrentDirectory() {
+        File file = new File(".");
+        String currentDirectory = file.getAbsolutePath();
+        currentDirectory = currentDirectory.replace('\\', (char) 47); //ASCII 47 = '/'
+        return currentDirectory.substring(0, currentDirectory.length() - 1); //To get rid of "." at end of file path
+    }
+
     @Override
     public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
-        try {
-            logger.info("Profile Photo is being copied to " + newPath);
-
-            ImageIO.write(originalPhoto, "png", newPath);
-        } catch (IOException ioe) {
-            logger.info("Error while copying photo file");
-            assert false : "Photo copy creation should not fail.";
-        }
+        logger.info("Profile Photo is being copied to " + newPath);
+        ImageIO.write(originalPhoto, "png", newPath);
+        logger.info("Profile Photo copying successful");
     }
 }

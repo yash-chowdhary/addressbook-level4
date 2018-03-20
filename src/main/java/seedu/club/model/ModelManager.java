@@ -48,8 +48,6 @@ public class ModelManager extends ComponentManager implements Model {
         this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
-
-        loggedInMember = filteredMembers.get(0);
     }
 
     public ModelManager() {
@@ -58,6 +56,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public Member getLoggedInMember() {
+        loggedInMember = getFilteredMemberList().get(0);
         return loggedInMember;
     }
 

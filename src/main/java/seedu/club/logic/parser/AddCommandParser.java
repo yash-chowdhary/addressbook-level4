@@ -24,7 +24,6 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
