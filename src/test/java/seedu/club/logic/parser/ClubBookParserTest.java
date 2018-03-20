@@ -9,6 +9,7 @@ import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 
 import java.util.Arrays;
@@ -28,7 +29,6 @@ import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
-import seedu.club.logic.commands.FindByCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
@@ -44,7 +44,6 @@ import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
@@ -91,21 +90,13 @@ public class ClubBookParserTest {
     }
 
     @Test
-    public void parseCommand_find() throws Exception {
-        List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
-    }
-
-    @Test
     public void parseCommand_findBy() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        String fieldType = "name";
-        FindByCommand command = (FindByCommand) parser.parseCommand(
-                FindByCommand.COMMAND_WORD + " " + fieldType + " "
+        Prefix prefix = PREFIX_NAME;
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + PREFIX_NAME + " "
                         + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindByCommand(new FieldContainsKeywordsPredicate(keywords, fieldType)), command);
+        assertEquals(new FindCommand(new FieldContainsKeywordsPredicate(keywords, prefix)), command);
     }
 
     @Test
