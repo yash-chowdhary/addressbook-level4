@@ -13,7 +13,6 @@ import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.ExitCommand;
-import seedu.club.logic.commands.FindByCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
@@ -68,8 +67,8 @@ public class ClubBookParser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindByCommand.COMMAND_WORD:
-            return new FindByCommandParser().parse(arguments);
+        case FindCommand.COMMAND_WORD:
+            return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
             return new ListCommand();

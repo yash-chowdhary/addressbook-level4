@@ -45,8 +45,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
                     return true;
                 } else if (this.prefix == null || ((FieldContainsKeywordsPredicate) other).prefix == null) {
                     return false;
-                }
-                else if (this.prefix.equals(((FieldContainsKeywordsPredicate) other).prefix)) {
+                } else if (this.prefix.equals(((FieldContainsKeywordsPredicate) other).prefix)) {
                     return true;
                 }
             }

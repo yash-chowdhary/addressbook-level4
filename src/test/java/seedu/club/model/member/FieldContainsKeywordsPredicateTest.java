@@ -334,7 +334,8 @@ public class FieldContainsKeywordsPredicateTest {
     @Test
     public void test_nameDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_NAME);
+        FieldContainsKeywordsPredicate predicate =
+                new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_NAME);
         assertFalse(predicate.test(new MemberBuilder().withName("Alice").build()));
 
         // Non-matching keyword
@@ -343,7 +344,8 @@ public class FieldContainsKeywordsPredicateTest {
 
         // Keywords match phone, email and matric number, but does not match name
         predicate =
-                new FieldContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com", "Main", "Street"), PREFIX_NAME);
+                new FieldContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com", "Main", "Street"),
+                        PREFIX_NAME);
         assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").build()));
     }
@@ -351,7 +353,8 @@ public class FieldContainsKeywordsPredicateTest {
     @Test
     public void test_phoneDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_PHONE);
+        FieldContainsKeywordsPredicate predicate =
+                new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_PHONE);
         assertFalse(predicate.test(new MemberBuilder().withPhone("12345678").build()));
 
         // Non-matching keyword
@@ -360,7 +363,8 @@ public class FieldContainsKeywordsPredicateTest {
 
         // Keywords match name, email and matric number, but does not match phone
         predicate =
-                new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "alice@email.com", "A1152241G"), PREFIX_PHONE);
+                new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "alice@email.com", "A1152241G"),
+                        PREFIX_PHONE);
         assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").build()));
     }
@@ -368,7 +372,8 @@ public class FieldContainsKeywordsPredicateTest {
     @Test
     public void test_emailDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_EMAIL);
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(),
+                PREFIX_EMAIL);
         assertFalse(predicate.test(new MemberBuilder().withEmail("Alice@jojojoget.com").build()));
 
         // Non-matching keyword
@@ -395,7 +400,8 @@ public class FieldContainsKeywordsPredicateTest {
 
         // Keywords match name, phone and email, but does not match matric number
         predicate =
-                new FieldContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com", "Alice"), PREFIX_MATRIC_NUMBER);
+                new FieldContainsKeywordsPredicate(Arrays.asList("12345", "alice@email.com", "Alice"),
+                        PREFIX_MATRIC_NUMBER);
         assertFalse(predicate.test(new MemberBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withMatricNumber("A1152241G").build()));
     }
@@ -403,7 +409,8 @@ public class FieldContainsKeywordsPredicateTest {
     @Test
     public void test_tagDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_TAG);
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(),
+                PREFIX_TAG);
         assertFalse(predicate.test(new MemberBuilder().withTags("Saikanger").build()));
 
         // Non-matching keyword
@@ -421,7 +428,8 @@ public class FieldContainsKeywordsPredicateTest {
     @Test
     public void test_groupDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(), PREFIX_GROUP);
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(Collections.emptyList(),
+                PREFIX_GROUP);
         assertFalse(predicate.test(new MemberBuilder().withGroup("SaikangRangers").build()));
 
         // Non-matching keyword

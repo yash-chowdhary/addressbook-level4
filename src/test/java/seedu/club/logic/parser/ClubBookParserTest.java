@@ -22,7 +22,6 @@ import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.logic.commands.ExitCommand;
-import seedu.club.logic.commands.FindByCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
@@ -33,7 +32,6 @@ import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
@@ -83,10 +81,10 @@ public class ClubBookParserTest {
     public void parseCommand_findBy() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         Prefix prefix = PREFIX_NAME;
-        FindByCommand command = (FindByCommand) parser.parseCommand(
-                FindByCommand.COMMAND_WORD + " " + prefix + " "
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + PREFIX_NAME + " "
                         + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindByCommand(new FieldContainsKeywordsPredicate(keywords, prefix)), command);
+        assertEquals(new FindCommand(new FieldContainsKeywordsPredicate(keywords, prefix)), command);
     }
 
     @Test
