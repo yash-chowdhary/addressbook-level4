@@ -21,7 +21,7 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all members whose field contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Insert field prefix after find to search by field, otherwise find will search all fields.\n"
+            + "Insert field prefix after 'find' to search by field, otherwise all fields will be searched.\n"
             + "Parameters: "
             + "[ "
             + PREFIX_NAME + " | "

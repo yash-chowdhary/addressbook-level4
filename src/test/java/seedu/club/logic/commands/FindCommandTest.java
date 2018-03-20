@@ -66,7 +66,7 @@ public class FindCommandTest {
         assertFalse(findByFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findByFirstCommand.equals(null));
+        assertFalse(findByFirstCommand == null);
 
         // different member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
@@ -93,7 +93,7 @@ public class FindCommandTest {
         assertFalse(findByFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findByFirstCommand.equals(null));
+        assertFalse(findByFirstCommand == null);
 
         // different member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
@@ -120,7 +120,7 @@ public class FindCommandTest {
         assertFalse(findByFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findByFirstCommand.equals(null));
+        assertFalse(findByFirstCommand == null);
 
         // different member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
@@ -147,7 +147,7 @@ public class FindCommandTest {
         assertFalse(findByFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findByFirstCommand.equals(null));
+        assertFalse(findByFirstCommand == null);
 
         // different member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
@@ -174,7 +174,7 @@ public class FindCommandTest {
         assertFalse(findByFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findByFirstCommand.equals(null));
+        assertFalse(findByFirstCommand == null);
 
         // different member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
@@ -201,7 +201,7 @@ public class FindCommandTest {
         assertFalse(findByFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(findByFirstCommand.equals(null));
+        assertFalse(findByFirstCommand == null);
 
         // different member -> returns false
         assertFalse(findByFirstCommand.equals(findBySecondCommand));
