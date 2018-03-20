@@ -26,7 +26,7 @@ public class ProfilePhoto {
     //Note: The actual image file used in the application UI is a copy of this image stored in Club Connect's
     // resources as "MATRIC_NUM.png".
 
-    private String profilePhotoPath = "/photos/default.png";
+    private String profilePhotoPath = "./photos/default.png";
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -53,12 +53,10 @@ public class ProfilePhoto {
      *
      * @param path A valid image path.
      */
-    //TODO: make valid image path within ClubConnect Directory for this method.
     public void setPhotoPath(String path) {
         requireNonNull(path);
         checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
-        //this.originalPhotoFilePath = path;
     }
 
     public String getPhotoPath() {

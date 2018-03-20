@@ -55,6 +55,10 @@ public interface Model {
      */
     boolean logInMemberSuccessful(String username, String password);
 
+    /**
+     * Returns the member who is currently logged in to Club Connect.
+     */
+    Member getLoggedInMember();
 
     /** Removes the given tag {@code tag} for all members in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;
@@ -66,7 +70,7 @@ public interface Model {
      * @param originalPhotoPath Absolute file path of the original photo.
      * @param newFileName File name under which the photo is to be copied to Club Connect's resources.
      */
-    void addProfilePhoto(String originalPhotoPath, String newFileName);
+    void changeProfilePhoto(String originalPhotoPath, String newFileName);
 
     //@@author
 

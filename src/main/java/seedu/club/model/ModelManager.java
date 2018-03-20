@@ -34,7 +34,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final ClubBook clubBook;
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
-    private  Member loggedInMember;
+    private Member loggedInMember;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -54,6 +54,11 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager() {
         this(new ClubBook(), new UserPrefs());
+    }
+
+    @Override
+    public Member getLoggedInMember() {
+        return loggedInMember;
     }
 
     @Override
@@ -80,7 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void addProfilePhoto(String originalPhotoPath, String newFileName) {
+    public void changeProfilePhoto(String originalPhotoPath, String newFileName) {
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
     }
     //@@author
