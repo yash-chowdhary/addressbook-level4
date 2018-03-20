@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
+import seedu.club.logic.commands.CompressCommand;
+import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.EditCommand;
@@ -100,6 +102,12 @@ public class ClubBookParser {
 
         case DeleteTagCommand.COMMAND_WORD:
             return new DeleteTagCommandParser().parse(arguments);
+
+        case CompressCommand.COMMAND_WORD:
+            return new CompressCommand();
+
+        case DecompressCommand.COMMAND_WORD:
+            return new DecompressCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

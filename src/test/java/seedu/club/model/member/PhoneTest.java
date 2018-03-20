@@ -1,7 +1,10 @@
 package seedu.club.model.member;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 
 import org.junit.Test;
 
@@ -37,5 +40,23 @@ public class PhoneTest {
         assertTrue(Phone.isValidPhone("911")); // exactly 3 numbers
         assertTrue(Phone.isValidPhone("93121534"));
         assertTrue(Phone.isValidPhone("124293842033123")); // long phone numbers
+    }
+
+    @Test
+    public void test_hashCode() {
+        Phone phone = new Phone(VALID_PHONE_AMY);
+        String phoneNumber = VALID_PHONE_AMY;
+        assertEquals(phoneNumber.hashCode(), phone.hashCode());
+    }
+
+    @Test
+    public void test_equals() {
+        Phone testPhoneOne = new Phone(VALID_PHONE_AMY);
+        Phone testPhoneTwo = new Phone(VALID_PHONE_BOB);
+
+        assertTrue(testPhoneOne.equals(testPhoneOne));
+        assertFalse(testPhoneOne.equals(testPhoneTwo));
+
+        assertFalse(testPhoneOne.equals(null));
     }
 }
