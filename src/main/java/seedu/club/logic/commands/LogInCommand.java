@@ -4,7 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
+import seedu.club.logic.CommandHistory;
+import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
 
@@ -34,9 +37,15 @@ public class LogInCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
-        if (model.logInMemberSuccessful(username.value, password.value)) {
-            return new CommandResult(MESSAGE_SUCCESS);
+        model.logsInMember(username.value, password.value);
+        if (model.getLoggedInMember() != null) {
+            return new CommandResult(MESSAGE_SUCCESS + model.getLoggedInMember().getName().toString());
         }
         return new CommandResult(MESSAGE_FAILURE);
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
+        super.setData(model, history, undoRedoStack);
     }
 }
