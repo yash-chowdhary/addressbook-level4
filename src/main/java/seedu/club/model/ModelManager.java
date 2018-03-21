@@ -15,6 +15,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.logic.commands.email.Body;
 import seedu.club.logic.commands.email.Client;
@@ -27,6 +28,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.storage.ProfilePhotoStorage;
 
 /**
  * Represents the in-memory model of the club book data.
@@ -38,6 +40,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final ClubBook clubBook;
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
+    private Member loggedInMember;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -58,6 +61,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public Member getLoggedInMember() {
+        loggedInMember = getFilteredMemberList().get(0);
+        return loggedInMember;
+    }
+
+    @Override
     public void resetData(ReadOnlyClubBook newData) {
         clubBook.resetData(newData);
         indicateClubBookChanged();
@@ -72,6 +81,30 @@ public class ModelManager extends ComponentManager implements Model {
     private void indicateClubBookChanged() {
         raise(new ClubBookChangedEvent(clubBook));
     }
+
+    //@@author amrut-prabhu
+    /** Raises an event to indicate the profile photo of a member has changed */
+    private boolean indicateProfilePhotoChanged(String originalPath, String newFileName) {
+        ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
+        raise(profilePhotoChangedEvent);
+        return profilePhotoChangedEvent.isPhotoChanged();
+    }
+
+    @Override
+    public boolean addProfilePhoto(String originalPhotoPath) {
+        String newFileName = getLoggedInMember().getMatricNumber().toString();
+        if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
+            return false;
+        }
+
+        String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
+                + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
+
+        loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
+        indicateClubBookChanged();
+        return true;
+    }
+    //@@author
 
     @Override
     public synchronized void deleteMember(Member target) throws MemberNotFoundException {

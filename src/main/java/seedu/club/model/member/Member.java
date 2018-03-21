@@ -27,6 +27,7 @@ public class Member {
     private final MatricNumber matricNumber;
     private Group group;
     private final HashMap<String, Tag> tags;
+    private ProfilePhoto profilePhoto;
 
     /**
      * Every field must be present and not null.
@@ -44,8 +45,28 @@ public class Member {
         this.tags = new HashMap<String, Tag>();
         this.username = username;
         this.password = password;
+        this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
     }
+
+    //@@author amrut-prabhu
+
+    /**
+     * Copy constructor
+     * @param member Member whose attributes are to be copied to (@code this}.
+     */
+    public Member(Member member) {
+        this.name = member.name;
+        this.phone = member.phone;
+        this.email = member.email;
+        this.matricNumber = member.matricNumber;
+        this.group = member.group;
+        this.tags = member.tags;
+        this.username = member.username;
+        this.password = member.password;
+        this.profilePhoto = member.profilePhoto;
+    }
+    //@@author
 
     public Name getName() {
         return name;
@@ -86,6 +107,18 @@ public class Member {
 
     public boolean isLogIn() {
         return isLogIn;
+    }
+
+    public ProfilePhoto getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(ProfilePhoto profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public void setProfilePhotoPath(String newPath) {
+        profilePhoto.setNewPhotoPath(newPath);
     }
 
     /**

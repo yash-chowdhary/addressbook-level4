@@ -1,11 +1,19 @@
 package seedu.club.ui;
 
+import java.io.File;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import seedu.club.model.member.Member;
+import seedu.club.storage.ProfilePhotoStorage;
 
 /**
  * An UI component that displays information of a {@code member}.
@@ -13,6 +21,10 @@ import seedu.club.model.member.Member;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
+    private static final Integer PHOTO_WIDTH = 100;
+    private static final Integer PHOTO_HEIGHT = 100;
+    private static final String DEFAULT_PHOTO = "src/main/resources/images/defaultProfilePhoto.png";
+    private static final String EMPTY_STRING = "";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -40,6 +52,8 @@ public class MemberCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Circle profilePhoto;
 
     public MemberCard(Member member, int displayedIndex) {
         super(FXML);
@@ -50,6 +64,8 @@ public class MemberCard extends UiPart<Region> {
         matricNumber.setText(member.getMatricNumber().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
+        setProfilePhoto(member);
+        //bindListeners(member);
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
@@ -61,7 +77,46 @@ public class MemberCard extends UiPart<Region> {
         phone.setText(member.getPhone().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
+        setProfilePhoto(member);
+        //bindListeners(member);
     }
+
+    /**
+     * Binds the individual UI elements to observe their respective {@code Person} properties
+     * so that they will be notified of any changes.
+     */
+    private void bindListeners(Member member) {
+        name.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getName())));
+        phone.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getPhone())));
+
+        setProfilePhoto(member);
+    }
+
+    //@@author amrut-prabhu
+    /**
+     * Sets the profile photo to the displayed photo shape.
+     */
+    private void setProfilePhoto(Member member) {
+        Image photo = null;
+        String photoPath;
+
+        if (!member.getProfilePhoto().getProfilePhotoPath().equals(EMPTY_STRING)) {
+            photoPath = member.getProfilePhoto().getProfilePhotoPath();
+
+            //Defensive programming
+            File file = new File(member.getProfilePhoto().getProfilePhotoPath());
+            if (!file.exists()) {
+                photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
+            }
+        } else {
+            photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
+        }
+
+        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
+
+        profilePhoto.setFill(new ImagePattern(photo));
+    }
+    //@@author
 
     @Override
     public boolean equals(Object other) {

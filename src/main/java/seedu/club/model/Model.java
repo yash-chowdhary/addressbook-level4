@@ -58,9 +58,23 @@ public interface Model {
      */
     boolean logInMemberSuccessful(String username, String password);
 
+    /**
+     * Returns the member who is currently logged in to Club Connect.
+     */
+    Member getLoggedInMember();
 
     /** Removes the given tag {@code tag} for all members in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;
+
+    //@@author amrut-prabhu
+
+    /**
+     * Returns true if profile photo is successfully changed for the logged in member.
+     * @param originalPhotoPath Absolute file path of the original photo.
+     */
+    boolean addProfilePhoto(String originalPhotoPath);
+
+    //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */
     ObservableList<Tag> getFilteredTagList();

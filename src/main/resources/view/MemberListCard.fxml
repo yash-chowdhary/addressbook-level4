@@ -9,7 +9,12 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+
+<!--HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"-->
+<HBox id="cardPane" fx:id="cardPane" prefHeight="105.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.102"
+      xmlns:fx="http://javafx.com/fxml/1">
   <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
@@ -33,5 +38,17 @@
       <Label fx:id="matricNumber" styleClass="cell_small_label" text="\$matricNumber" />
       <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
     </VBox>
+    <rowConstraints>
+      <RowConstraints />
+    </rowConstraints>
   </GridPane>
+
+  <!--@@author amrut-prabhu-->
+  <Circle fx:id="profilePhoto" fill="#738000" layoutX="150.0" layoutY="150.0" radius="40.0" stroke="BLACK"
+          strokeType="INSIDE" strokeWidth="2.5">
+    <HBox.margin>
+      <Insets bottom="10.0" right="20.0" top="10.0" />
+    </HBox.margin>
+  </Circle>
+  <!--@@author-->
 </HBox>

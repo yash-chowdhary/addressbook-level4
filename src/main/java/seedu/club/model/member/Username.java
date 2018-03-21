@@ -1,7 +1,7 @@
 package seedu.club.model.member;
 
 /**
- * Represent a member's username
+ * Represents a member's username.
  */
 public class Username {
     public final String value;

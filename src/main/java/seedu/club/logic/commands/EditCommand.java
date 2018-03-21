@@ -6,6 +6,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PROFILE_PHOTO;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
@@ -27,6 +28,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -47,6 +49,7 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
+            + "[" + PREFIX_PROFILE_PHOTO + "PHOTO PATH] "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -116,6 +119,8 @@ public class EditCommand extends UndoableCommand {
         Set<Tag> updatedTags = editMemberDescriptor.getTags().orElse(memberToEdit.getTags());
         Username updatedUsername = editMemberDescriptor.getUsername().orElse(memberToEdit.getUsername());
         Password updatedPassword = editMemberDescriptor.getPassword().orElse(memberToEdit.getPassword());
+        ProfilePhoto updatedProfilePhoto = editMemberDescriptor.getProfilePhoto()
+                .orElse(memberToEdit.getProfilePhoto());
 
         return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
                 updatedTags, updatedUsername, updatedPassword);
@@ -153,6 +158,7 @@ public class EditCommand extends UndoableCommand {
         private Set<Tag> tags;
         private Username username;
         private Password password;
+        private ProfilePhoto profilePhoto;
 
         public EditMemberDescriptor() {}
 
@@ -169,7 +175,7 @@ public class EditCommand extends UndoableCommand {
             setTags(toCopy.tags);
             setUsername(toCopy.username);
             setPassword(toCopy.password);
-
+            setProfilePhoto(toCopy.profilePhoto);
         }
 
         /**
@@ -236,8 +242,18 @@ public class EditCommand extends UndoableCommand {
             return Optional.ofNullable(password);
         }
 
+        public void setProfilePhoto(ProfilePhoto profilePhoto) {
+            this.profilePhoto = profilePhoto;
+        }
+
+        public Optional<ProfilePhoto> getProfilePhoto() {
+            return Optional.ofNullable(profilePhoto);
+        }
+
         /**
          * Sets {@code tags} to this object's {@code tags}.
+         *
+         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
          * A defensive copy of {@code tags} is used internally.
          */
         public void setTags(Set<Tag> tags) {
