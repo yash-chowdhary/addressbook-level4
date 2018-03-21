@@ -56,14 +56,14 @@ public class XmlAdaptedMember {
      */
 
     public XmlAdaptedMember(String name, String phone, String email, String matricNumber, String group,
-                            List<XmlAdaptedTag> tagged, String username, String password) {
+                            List<XmlAdaptedTag> tagged) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.matricNumber = matricNumber;
         this.group = group;
-        this.username = username;
-        this.password = password;
+        this.username = this.matricNumber;
+        this.password = "password";
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -80,8 +80,8 @@ public class XmlAdaptedMember {
         email = source.getEmail().value;
         matricNumber = source.getMatricNumber().value;
         group = source.getGroup().groupName;
-        username = source.getUsername().value;
-        password = source.getPassword().value;
+        username = source.getCredentials().getUsername().value;
+        password = source.getCredentials().getPassword().value;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -142,7 +142,7 @@ public class XmlAdaptedMember {
 
         final Set<Tag> tags = new HashSet<>(memberTags);
 
-        return new Member(name, phone, email, matricNumber, group, tags, username, password);
+        return new Member(name, phone, email, matricNumber, group, tags);
     }
 
     @Override
