@@ -17,8 +17,8 @@ public class CompressedMemberCard extends MemberCard {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
-    public CompressedMemberCard(Member member, int displayedIndex) {
-        super(member, displayedIndex, FXML);
+    public CompressedMemberCard(Member member, int displayedIndex, boolean isCompressed) {
+        super(member, displayedIndex, FXML, isCompressed);
     }
 
     @Override

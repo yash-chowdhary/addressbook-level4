@@ -596,6 +596,51 @@ The logged in member's details are then updated to include this new profile phot
 // end::profilephoto[]
 // end::profilephoto[]
 
+=== Compress/Decompress Mechanism
+==== Current Implementation
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
+
+image::DecompressedMemberCards.png[width="300"]
+_Figure 22. Decompressed Member Cards_
+
+image::CompressedCards.png[width="300"]
+_Figure 23. Compressed Member Cards_
+
+The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 24) since a `CompressedMemberCard` is a `MemberCard`.
+Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
+
+image::MemberCardClassDiagram.png[width="300"]
+_Figure 24. `MemberCard` class diagram_
+
+The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
+These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
+
+Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
+
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
+
+The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
+
+image::SDforCompressToEventsCenter.png[width="800"]
+_Figure 25. Sequence diagram for compress command to Events Center_
+
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 25). If the cards are already compressed, no changes occur.
+However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
+
+image::SDforCompressFromEventsCenter.png[width="800"]
+_Figure 26. Sequence diagram for compress command from Events Center_
+
+==== Design Considerations
+===== Aspect: How to interact from Logic to Ui
+* **Alternative 1 (current choice)**: Use Event-Driven approach to interact from `CompressCommand`/`DecompressCommand` to `MemberListPanel`
+** Pros: Reduces coupling.
+** Cons: Slower than just directly changing the `Ui` since a seperate class(`EventsCenter`) has to manage interactions, not
+just for compress/decompress but for other events as well.
+* **Alternative 2:** Keep a `Ui` attribute in every command just like `Model`
+** Pros: Easy to implement.
+** Cons: Increases coupling
+
 === Logging
 
 We are using `java.util.logging` package for logging.

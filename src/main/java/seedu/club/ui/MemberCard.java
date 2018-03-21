@@ -69,7 +69,7 @@ public class MemberCard extends UiPart<Region> {
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
-    public MemberCard(Member member, int displayedIndex, String fxml) {
+    public MemberCard(Member member, int displayedIndex, String fxml, boolean isCompressed) {
         super(fxml);
         this.member = member;
         id.setText(displayedIndex + ". ");
@@ -77,7 +77,9 @@ public class MemberCard extends UiPart<Region> {
         phone.setText(member.getPhone().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
-        setProfilePhoto(member);
+        if (!isCompressed) {
+            setProfilePhoto(member);
+        }
         //bindListeners(member);
     }
 
