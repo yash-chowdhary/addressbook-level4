@@ -114,11 +114,9 @@ public class EditCommand extends UndoableCommand {
                 .orElse(memberToEdit.getMatricNumber());
         Group updatedGroup = editMemberDescriptor.getGroup().orElse(memberToEdit.getGroup());
         Set<Tag> updatedTags = editMemberDescriptor.getTags().orElse(memberToEdit.getTags());
-        Username updatedUsername = editMemberDescriptor.getUsername().orElse(memberToEdit.getUsername());
-        Password updatedPassword = editMemberDescriptor.getPassword().orElse(memberToEdit.getPassword());
 
         return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
-                updatedTags, updatedUsername, updatedPassword);
+                updatedTags);
     }
 
     @Override

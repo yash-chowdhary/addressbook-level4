@@ -38,12 +38,11 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_MATRIC_NUMBER + "A0123456H "
             + PREFIX_GROUP + "logistics "
             + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney "
-            + PREFIX_USERNAME + "JohnDoe "
-            + PREFIX_PASSWORD + "password";
+            + PREFIX_TAG + "owesMoney ";
 
     public static final String MESSAGE_SUCCESS = "New member added: %1$s";
     public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book";
+    public static final String MESSAGE_NOT_LOGGED_IN = "You have yet to log in";
 
     private final Member toAdd;
 
