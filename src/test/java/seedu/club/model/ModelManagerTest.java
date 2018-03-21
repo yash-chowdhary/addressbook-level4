@@ -104,14 +104,16 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.updateFilteredMemberList(modelManager.PREDICATE_SHOW_ALL_MEMBERS);
         modelManager.deleteTag(new Tag(VALID_TAG_FRIEND));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withMember(amyWithoutFriendTag)
                 .withMember(bobWithoutFriendTag).build();
-
-        assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
+        assertEquals(expectedModel, modelManager);
     }
 
     @Test
@@ -123,6 +125,8 @@ public class ModelManagerTest {
         // same values -> returns true
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         ModelManager modelManagerCopy = new ModelManager(clubBook, userPrefs);
+        modelManager.updateFilteredMemberList(modelManager.PREDICATE_SHOW_ALL_MEMBERS);
+        modelManagerCopy.updateFilteredMemberList(modelManagerCopy.PREDICATE_SHOW_ALL_MEMBERS);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -148,6 +152,8 @@ public class ModelManagerTest {
         // different userPrefs -> returns true
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setClubBookName("differentName");
-        assertTrue(modelManager.equals(new ModelManager(clubBook, differentUserPrefs)));
+        ModelManager expectedMode1 = new ModelManager(clubBook, differentUserPrefs);
+        expectedMode1.updateFilteredMemberList(expectedMode1.PREDICATE_SHOW_ALL_MEMBERS);
+        assertTrue(modelManager.equals(expectedMode1));
     }
 }

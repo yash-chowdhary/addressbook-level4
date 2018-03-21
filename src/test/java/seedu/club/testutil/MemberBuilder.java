@@ -59,8 +59,8 @@ public class MemberBuilder {
         matricNumber = memberToCopy.getMatricNumber();
         group = memberToCopy.getGroup();
         tags = new HashSet<>(memberToCopy.getTags());
-        username = memberToCopy.getUsername();
-        password = memberToCopy.getPassword();
+        username = new Username(matricNumber.value);
+        password = new Password("password");
     }
 
     /**
@@ -133,6 +133,6 @@ public class MemberBuilder {
         return this;
     }
     public Member build() {
-        return new Member(name, phone, email, matricNumber, group, tags, username, password);
+        return new Member(name, phone, email, matricNumber, group, tags);
     }
 }

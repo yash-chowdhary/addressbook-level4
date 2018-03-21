@@ -37,6 +37,7 @@ public class SelectCommandTest {
     @Before
     public void setUp() {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
     }
 
     @Test

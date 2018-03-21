@@ -38,9 +38,11 @@ import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.EditCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
@@ -61,6 +63,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
     @Test
     public void edit() throws Exception {
         Model model = getModel();
+        ObservableList<Member> memberObservableList = model.getClubBook().getMemberList();
 
         /* ----------------- Performing edit operation while an unfiltered list is being shown ---------------------- */
 
@@ -68,6 +71,10 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
          * -> edited
          */
         Index index = INDEX_FIRST_MEMBER;
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+
         String command = " " + EditCommand.COMMAND_WORD + "  " + index.getOneBased() + "  " + NAME_DESC_BOB + "  "
                 + PHONE_DESC_BOB + " " + EMAIL_DESC_BOB + "  " + MATRIC_NUMBER_DESC_BOB + " "
                 + GROUP_DESC_BOB + " " + TAG_DESC_HUSBAND + " " + USERNAME_DESC_BOB + " " + PASSWORD_DESC;
