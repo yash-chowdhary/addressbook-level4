@@ -466,6 +466,25 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ** Pros: No dependency on third party apps.
 ** Cons: Older version browser will disallow auto-filling of email fields.
 
+=== Compress/Decompress Mechanism
+==== Current Implementation
+Member details are shown as cards in the GUI. Cards can either be compressed(Figure 22) or decompressed(Figure 23).
+
+image::SDforEmail.png[width="800"]
+_Figure 21. Sequence Diagram for Email Command_
+
+image::SDforEmail.png[width="800"]
+_Figure 21. Sequence Diagram for Email Command_
+
+==== Design Considerations
+===== Aspect: Location of opening the mail client
+* **Alternative 1 (current choice)**: Open up the mail client in system's default web browser.
+** Pros: Easy to implement
+** Cons: Since ClubConnect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
+* **Alternative 2:** Open up the mail client in `BrowserPanel`.
+** Pros: No dependency on third party apps.
+** Cons: Older version browser will disallow auto-filling of email fields.
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
