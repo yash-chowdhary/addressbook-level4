@@ -468,7 +468,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 
 === Compress/Decompress Mechanism
 ==== Current Implementation
-Member details are shown as cards in the GUI. Cards can either be compressed(Figure 22) or decompressed(Figure 23).
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
 
 image::DecompressedMemberCards.png[width="300"]
 _Figure 22. Decompressed Member Cards_
