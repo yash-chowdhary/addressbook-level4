@@ -38,7 +38,6 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
-        expectedModel.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
         Member deletedMember = removeMember(expectedModel, INDEX_FIRST_MEMBER);
         String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);

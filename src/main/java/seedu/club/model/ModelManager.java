@@ -62,12 +62,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public Member getLoggedInMember() {
-        loggedInMember = getFilteredMemberList().get(0);
-        return loggedInMember;
-    }
-
-    @Override
     public void resetData(ReadOnlyClubBook newData) {
         clubBook.resetData(newData);
         indicateClubBookChanged();

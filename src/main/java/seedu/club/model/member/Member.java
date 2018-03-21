@@ -21,7 +21,7 @@ public class Member {
     private final Name name;
     private final Phone phone;
     private final Email email;
-    private final Credentials credentials;
+    private Credentials credentials;
     private boolean isLogIn = false;
     private final MatricNumber matricNumber;
     private Group group;
@@ -58,8 +58,6 @@ public class Member {
         this.matricNumber = member.matricNumber;
         this.group = member.group;
         this.tags = member.tags;
-        this.username = member.username;
-        this.password = member.password;
         this.profilePhoto = member.profilePhoto;
     }
     //@@author

@@ -12,13 +12,14 @@ import org.junit.Test;
 import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.group.Group;
-import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
-import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -33,14 +34,14 @@ public class LogInCommandTest {
     private Member member = new MemberBuilder().build();
 
     @Test
-    public void execute_memberSuccessfullyLogIn() throws CommandException {
+    public void executeMemberSuccessfullyLogIn() throws CommandException {
         ModelStubAcceptingMemberLoggingIn modelStubAcceptingMemberLoggingIn = new ModelStubAcceptingMemberLoggingIn();
         CommandResult commandResult = getLogInCommandForMember(member, modelStubAcceptingMemberLoggingIn).execute();
         assertEquals(LogInCommand.MESSAGE_SUCCESS + member.getName().toString(), commandResult.feedbackToUser);
     }
 
     @Test
-    public void execute_memberUnsuccessfullyLogIn() throws CommandException {
+    public void executeMemberUnsuccessfullyLogIn() throws CommandException {
         ModelStubRejectingMemberLoggingIn modelStubRejectingMemberLoggingIn = new ModelStubRejectingMemberLoggingIn();
         CommandResult commandResult = getLogInCommandForMember(member, modelStubRejectingMemberLoggingIn).execute();
         assertEquals(LogInCommand.MESSAGE_FAILURE, commandResult.feedbackToUser);
@@ -65,8 +66,18 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void removeGroup(Group toRemove) {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public String generateEmailRecipients(Group group, Tag tag) {
+            return null;
+        }
+
+        @Override
+        public void sendEmail(String recipients, Client client, Subject subject, Body body) {
+
         }
 
         @Override
@@ -94,6 +105,11 @@ public class LogInCommandTest {
         @Override
         public void deleteTag(Tag tag) throws TagNotFoundException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public boolean addProfilePhoto(String originalPhotoPath) {
+            return false;
         }
 
         @Override
