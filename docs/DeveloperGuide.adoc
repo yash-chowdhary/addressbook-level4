@@ -363,20 +363,20 @@ _Figure 18. Activity Diagram for Undo-Redo_
 
 ===== Aspect: Implementation of `UndoableCommand`
 
-* **Alternative 1 (current choice):** Add a new abstract method `executeUndoableCommand()`
+* **Alternative 1 (current choice):** Add a new abstract method `executeUndoableCommand()`.
 ** Pros: We will not lose any undone/redone functionality as it is now part of the default behaviour.
    Classes that deal with `Command` do not have to know that `executeUndoableCommand()` exist.
 ** Cons: Hard for new developers to understand the template pattern.
-* **Alternative 2:** Just override `execute()`
+* **Alternative 2:** Just override `execute()`.
 ** Pros: Does not involve the template pattern, easier for new developers to understand.
 ** Cons: Classes that inherit from `UndoableCommand` must remember to call `super.execute()`, or lose the ability to undo/redo.
 
 ===== Aspect: How undo & redo executes
 
-* **Alternative 1 (current choice):** Saves the entire address book
+* **Alternative 1 (current choice):** Saves the entire address book.
 ** Pros: Easy to implement.
 ** Cons: May have performance issues in terms of memory usage.
-* **Alternative 2:** Individual command knows how to undo/redo by itself
+* **Alternative 2:** Individual command knows how to undo/redo by itself.
 ** Pros: Will use less memory (e.g. for `delete`, just save the member being deleted).
 ** Cons: We must ensure that the implementation of each individual command is correct.
 
@@ -433,9 +433,10 @@ We plan to use the Advanced Encryption Scheme (AES) algorithm. For that reason, 
 Once the key is generated, all data will be encrypted with AES. Anyone who wishes to view the decrypted form of the data must possess the secret key.
 // end::dataencryption[]
 
+// tag::email[]
 === Email Mechanism
 ==== Current Implementation
-The `email` mechanism of ClubConnect is facilitated by the `EmailCommand` class and is event-driven.
+The `email` mechanism of Club Connect is facilitated by the `EmailCommand` class and is event-driven.
 The `EmailCommand` consists of the following fields:
 
 * Client - the mail client used to send the email (currently restricted to GMail and Outlook).
@@ -500,6 +501,48 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 * **Alternative 2:** Open up the mail client in `BrowserPanel`.
 ** Pros: No dependency on third party apps.
 ** Cons: Older version browser will disallow auto-filling of email fields.
+// end::email[]
+
+// tag::profilephoto[]
+=== Changing Profile Photo Mechanism
+==== Current Implementation
+
+The `changepic` mechanism of Club Connect is facilitated by the `ChangeProfilePhotoCommand` class and is event-driven.
+It allows members to modify their profile photos displayed in the application.
+To facilitate this, it makes use of the `ProfilePhoto` class. `ProfilePhoto`
+
+Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
+Refer to Figure 22 for the UML diagram.
+
+image::ChangeProfilePhotoCommandUML.png[width="350"]
+_Figure 22. ChangeProfilePhotoCommand UML Diagram_
+
+EmailCommandParser is responsible for parsing the email command.
+It returns a EmailCommand object after parsing Client, Subject, Body, Group, and Tag.
+Figure 20 depicts the sequence of parsing the command.
+
+==== Design Considerations
+
+===== Aspect: Implementation of `ChangeProfilePhotoCommand`
+
+* **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo.
+** Pros: Makes intuitive sense, easy to implement.
+** Cons: There is no way for Exco members to ensure that members have appropriate profile photos.
+* **Alternative 2**: Exco members can change any member's profile photo.
+** Pros: Gives Exco members a way to exercise control over members' profile photos.
+** Cons: Implementation becomes more complicated.
+
+===== Aspect: Source files of profile photos
+
+* **Alternative 1 (current choice)**: Make a copy the source image provided to the applications resources.
+** Pros: Makes application portable and non-dependent on the rest of the system.
+   Members can delete the original file from the computer, without affecting the Club Connect Application.
+** Cons: Changes made to the original source images are not reflected in the application.
+* **Alternative 2**: Always read the profile photo from the file path provided.
+** Pros: Changes made in the source image are reflected in the application.
+** Cons: Application becomes highly dependent on the system, in terms of profile photos.
+// end::profilephoto[]
+// end::profilephoto[]
 
 === Logging
 
@@ -1401,6 +1444,8 @@ A contact detail that is not meant to be shared with others
 
 [[profile]] Profile::
 Visual display of the information (attributes and entries) of a member.
+
+[[uml]] UML Diagram::
 
 [appendix]
 == Product Survey
