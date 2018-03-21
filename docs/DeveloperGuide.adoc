@@ -503,7 +503,7 @@ _Figure 25. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
-* **Alternative 1 (current choice)**: Use Event-Driven approach to interact from Compress/Decompress command to `MemberListPanel`
+* **Alternative 1 (current choice)**: Use Event-Driven approach to interact from `CompressCommand`/`DecompressCommand` to `MemberListPanel`
 ** Pros: Reduces coupling.
 ** Cons: Slower than just directly changing the `Ui` since a seperate class(`EventsCenter`) has to manage interactions, not
 just for compress/decompress but for other events as well.
