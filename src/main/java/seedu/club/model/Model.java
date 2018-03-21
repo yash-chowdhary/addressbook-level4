@@ -71,9 +71,8 @@ public interface Model {
     /**
      * Returns true if profile photo is successfully changed for the logged in member.
      * @param originalPhotoPath Absolute file path of the original photo.
-     * @param newFileName File name under which the photo is to be copied to Club Connect's resources.
      */
-    boolean addProfilePhoto(String originalPhotoPath, String newFileName);
+    boolean addProfilePhoto(String originalPhotoPath);
 
     //@@author
 

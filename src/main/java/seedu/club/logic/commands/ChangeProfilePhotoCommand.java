@@ -39,12 +39,7 @@ public class ChangeProfilePhotoCommand extends Command {
         //Defensive programming
         assert newProfilePhoto.getProfilePhotoPath() == null : "Photo path should not be null.";
 
-        memberToEdit = model.getLoggedInMember();
-        //Defensive programming
-        assert this.memberToEdit == null : "ChangeProfilePhotoCommand cannot be called without a logged in member.";
-
-        Boolean isPhotoChanged = model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath(),
-                memberToEdit.getMatricNumber().toString());
+        boolean isPhotoChanged = model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath());
 
         if (isPhotoChanged) {
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));

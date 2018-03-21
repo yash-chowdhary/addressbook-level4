@@ -22,12 +22,15 @@ public class ProfilePhoto {
     //https://www.freeformatter.com/java-regex-tester.html#ad-output
     public static final String DEFAULT_PHOTO_NAME = "default";
 
-    public final String originalPhotoFilePath;
-    //Note: The actual image file used in the application UI is a copy of this image stored in Club Connect's
-    // resources as "MATRIC_NUM.png".
+    private String profilePhotoPath;
 
-    private String profilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
-            + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY +  DEFAULT_PHOTO_NAME + ProfilePhotoStorage.FILE_EXTENSION;
+    /**
+     * Constructs a {@code ProfilePhoto}.
+     */
+    public ProfilePhoto() {
+        this(ProfilePhotoStorage.getCurrentDirectory() + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY
+                + DEFAULT_PHOTO_NAME + ProfilePhotoStorage.FILE_EXTENSION);
+    }
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -36,10 +39,9 @@ public class ProfilePhoto {
      */
     public ProfilePhoto(String path) {
         //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
-        //this.originalPhotoFilePath = path;
-        originalPhotoFilePath = null;
         this.profilePhotoPath = path;
     }
+
 
     /**
      * Returns true if a given string is a valid photo path.
@@ -58,10 +60,6 @@ public class ProfilePhoto {
         requireNonNull(path);
         //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
-    }
-
-    public String getOriginalPhotoPath() {
-        return originalPhotoFilePath;
     }
 
     public String getProfilePhotoPath() {

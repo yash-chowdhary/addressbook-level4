@@ -91,7 +91,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public boolean addProfilePhoto(String originalPhotoPath, String newFileName) {
+    public boolean addProfilePhoto(String originalPhotoPath) {
+        String newFileName = getLoggedInMember().getMatricNumber().toString();
         if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
             return false;
         }
