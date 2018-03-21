@@ -18,6 +18,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Name;
@@ -31,6 +34,7 @@ public class ParserUtilTest {
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_MATRIC_NUMBER = "1234567";
     private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_CLIENT = "yahoo";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -38,6 +42,7 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_CLIENT = "gmail";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -194,6 +199,65 @@ public class ParserUtilTest {
         Email expectedEmail = new Email(VALID_EMAIL);
         assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
         assertEquals(Optional.of(expectedEmail), ParserUtil.parseEmail(Optional.of(emailWithWhitespace)));
+    }
+
+    @Test
+    public void parseSubject_optionalEmpty_returnsOptionalEmpty() throws Exception {
+        assertFalse(ParserUtil.parseSubject(Optional.empty()).isPresent());
+    }
+
+    @Test
+    public void parseSubject_validValue_returnsTrimmedSubject() throws Exception {
+        String validSubject = WHITESPACE + Subject.TEST_SUBJECT_STRING + WHITESPACE;
+        Subject expectedSubject = new Subject(Subject.TEST_SUBJECT_STRING);
+        assertEquals(expectedSubject, ParserUtil.parseSubject(validSubject));
+        assertEquals(Optional.of(expectedSubject), ParserUtil.parseSubject(Optional.of(validSubject)));
+    }
+
+    @Test
+    public void parseSubject_null_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        ParserUtil.parseSubject((String) null);
+        ParserUtil.parseSubject((Optional<String>) null);
+    }
+
+    @Test
+    public void parseBody_optionalEmpty_returnsOptionalEmpty() throws Exception {
+        assertFalse(ParserUtil.parseBody(Optional.empty()).isPresent());
+    }
+
+    @Test
+    public void parseBody_validValue_returnsTrimmedBody() throws Exception {
+        String validBody = WHITESPACE + Body.TEST_BODY_STRING + WHITESPACE;
+        Body expectedBody = new Body(Body.TEST_BODY_STRING);
+        assertEquals(expectedBody, ParserUtil.parseBody(validBody));
+        assertEquals(Optional.of(expectedBody), ParserUtil.parseBody(Optional.of(validBody)));
+    }
+
+    @Test
+    public void parseBody_null_throwsNullPointerException() throws Exception {
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseBody((String) null));
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseBody((Optional<String>) null));
+    }
+
+    @Test
+    public void parseClient_null_throwsNullPointerException() throws Exception {
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseClient((String) null));
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseClient((Optional<String>) null));
+    }
+
+    @Test
+    public void parseClient_invalidValue_throwsIllegalValueException() throws Exception {
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseClient(INVALID_CLIENT));
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseEmail(Optional.of(INVALID_CLIENT)));
+    }
+
+    @Test
+    public void parseClient_validValue_returnsTrimmedClient() throws Exception {
+        String validClient = WHITESPACE + VALID_CLIENT + WHITESPACE;
+        Client expectedClient = new Client(Client.VALID_CLIENT_GMAIL);
+        assertEquals(expectedClient, ParserUtil.parseClient(validClient));
+        assertEquals(Optional.of(expectedClient), ParserUtil.parseClient(Optional.of(validClient)));
     }
 
     @Test

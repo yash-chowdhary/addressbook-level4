@@ -9,11 +9,13 @@ import java.util.regex.Pattern;
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
+import seedu.club.logic.commands.CompressCommand;
+import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.EditCommand;
+import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
-import seedu.club.logic.commands.FindByCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
@@ -23,7 +25,6 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
-
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
@@ -71,9 +72,6 @@ public class ClubBookParser {
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
-        case FindByCommand.COMMAND_WORD:
-            return new FindByCommandParser().parse(arguments);
-
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
 
@@ -100,6 +98,15 @@ public class ClubBookParser {
 
         case DeleteTagCommand.COMMAND_WORD:
             return new DeleteTagCommandParser().parse(arguments);
+
+        case EmailCommand.COMMAND_WORD:
+            return new EmailCommandParser().parse(arguments);
+
+        case CompressCommand.COMMAND_WORD:
+            return new CompressCommand();
+
+        case DecompressCommand.COMMAND_WORD:
+            return new DecompressCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

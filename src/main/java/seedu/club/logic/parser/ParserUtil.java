@@ -11,6 +11,9 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.commons.util.StringUtil;
 
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
@@ -183,7 +186,7 @@ public class ParserUtil {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
 
-
+    //@@author yash-chowdhary
     /**
      * Parses a {@code String group} into a {@code Group}.
      * Leading and trailing whitespaces will be trimmed.
@@ -206,7 +209,7 @@ public class ParserUtil {
         requireNonNull(group);
         return group.isPresent() ? Optional.of(parseGroup(group.get())) : Optional.empty();
     }
-
+    //@@author
     /**
      * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
@@ -223,6 +226,14 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code Optional<String> tag} into a {@code Optional<Tag>} if {@code group} is present
+     */
+    public static Optional<Tag> parseOptionalTag(Optional<String> tag) throws IllegalValueException {
+        requireNonNull(tag);
+        return tag.isPresent() ? Optional.of(parseTag(tag.get())) : Optional.empty();
+    }
+
+    /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
     public static Set<Tag> parseTags(Collection<String> tags) throws IllegalValueException {
@@ -232,5 +243,68 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String client} into a {@code Client}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code client} is invalid.
+     */
+    public static Client parseClient(String client) throws IllegalValueException {
+        requireNonNull(client);
+        String trimmedClient = client.trim();
+        if (!Client.isValidClient(trimmedClient)) {
+            throw new IllegalValueException(Client.MESSAGE_CLIENT_CONSTRAINTS);
+        }
+        return new Client(trimmedClient);
+    }
+
+    /**
+     * Parses a {@code Optional<String> client} into a {@code Optional<Client>} if {@code client} is present.
+     */
+    public static Optional<Client> parseClient(Optional<String> client) throws IllegalValueException {
+        requireNonNull(client);
+        return client.isPresent() ? Optional.of(parseClient(client.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String subject} into a {@code Subject}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code subject} is invalid.
+     */
+    public static Subject parseSubject(String subject) {
+        requireNonNull(subject);
+        String trimmedSubject = subject.trim();
+        return new Subject(trimmedSubject);
+    }
+
+    /**
+     * Parses a {@code Optional<String> subject} into a {@code Optional<Subject>} if {@code subject} is present.
+     */
+    public static Optional<Subject> parseSubject(Optional<String> subject) {
+        requireNonNull(subject);
+        return subject.isPresent() ? Optional.of(parseSubject(subject.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String body} into a {@code Body}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code body} is invalid.
+     */
+    public static Body parseBody(String body) {
+        requireNonNull(body);
+        String trimmedBody = body.trim();
+        return new Body(trimmedBody);
+    }
+
+    /**
+     * Parses a {@code Optional<String> body} into a {@code Optional<Subject>} if {@code body} is present.
+     */
+    public static Optional<Body> parseBody(Optional<String> body) {
+        requireNonNull(body);
+        return body.isPresent() ? Optional.of(parseBody(body.get())) : Optional.empty();
     }
 }

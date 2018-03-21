@@ -3,6 +3,10 @@ package systemtests;
 import static org.junit.Assert.assertFalse;
 import static seedu.club.commons.core.Messages.MESSAGE_MEMBERS_LISTED_OVERVIEW;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.CARL;
 import static seedu.club.testutil.TypicalMembers.DANIEL;
@@ -103,9 +107,9 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find member in club book, keyword is substring of name -> 0 members found */
+        /* Case: find member in club book, keyword is substring of name -> 2 members found */
         command = FindCommand.COMMAND_WORD + " Mei";
-        ModelHelper.setFilteredList(expectedModel);
+        ModelHelper.setFilteredList(expectedModel, BENSON, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
@@ -116,28 +120,32 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertSelectedCardUnchanged();
 
         /* Case: find member not in club book -> 0 members found */
-        command = FindCommand.COMMAND_WORD + " Mark";
+        command = FindCommand.COMMAND_WORD + " " + PREFIX_NAME + " Mark";
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find phone number of member in club book -> 0 members found */
-        command = FindCommand.COMMAND_WORD + " " + DANIEL.getPhone().value;
+        /* Case: find phone number of member in club book -> 1 members found */
+        command = FindCommand.COMMAND_WORD + " " + PREFIX_PHONE + " " + DANIEL.getPhone().value;
+        ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find matric number of member in club book -> 0 members found */
-        command = FindCommand.COMMAND_WORD + " " + DANIEL.getMatricNumber().value;
+        /* Case: find matric number of member in club book -> 1 members found */
+        command = FindCommand.COMMAND_WORD + " " + PREFIX_MATRIC_NUMBER + " " + DANIEL.getMatricNumber().value;
+        ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find email of member in club book -> 0 members found */
-        command = FindCommand.COMMAND_WORD + " " + DANIEL.getEmail().value;
+        /* Case: find email of member in club book -> 1 members found */
+        command = FindCommand.COMMAND_WORD + " " + PREFIX_EMAIL + " " + BENSON.getEmail().value;
+        ModelHelper.setFilteredList(expectedModel, BENSON);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
         /* Case: find tags of member in club book -> 0 members found */
-        List<Tag> tags = new ArrayList<>(DANIEL.getTags());
+        List<Tag> tags = new ArrayList<>(BENSON.getTags());
         command = FindCommand.COMMAND_WORD + " " + tags.get(0).tagName;
+        ModelHelper.setFilteredList(expectedModel, BENSON);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 

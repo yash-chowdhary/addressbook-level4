@@ -3,13 +3,14 @@ package seedu.club.model.group;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
+//@@author yash-chowdhary
 /**
  * Represents a member's Group in the club book
  * Guarantees: immutable; is valid as declared in {@link #isValidGroup(String)}
  */
 public class Group {
     public static final String MESSAGE_GROUP_CONSTRAINTS =
-            "member groups should only contain alphanumeric characters, and it should not be blank";
+            "Groups should only contain alphanumeric characters, and it should not be blank";
 
     /*
      * The first character of the group must not be a whitespace,

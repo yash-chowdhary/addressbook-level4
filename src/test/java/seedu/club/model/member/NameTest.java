@@ -1,7 +1,10 @@
 package seedu.club.model.member;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 
 import org.junit.Test;
 
@@ -37,5 +40,23 @@ public class NameTest {
         assertTrue(Name.isValidName("peter the 2nd")); // alphanumeric characters
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr 2nd")); // long names
+    }
+
+    @Test
+    public void test_hashCode() {
+        Name name = new Name(VALID_NAME_AMY);
+        String expectedName = VALID_NAME_AMY;
+        assertEquals(expectedName.hashCode(), name.hashCode());
+    }
+
+    @Test
+    public void test_equals() {
+        Name testNameOne = new Name(VALID_NAME_AMY);
+        Name testNameTwo = new Name(VALID_NAME_BOB);
+
+        assertTrue(testNameOne.equals(testNameOne));
+        assertFalse(testNameOne.equals(testNameTwo));
+
+        assertFalse(testNameOne.equals(null));
     }
 }

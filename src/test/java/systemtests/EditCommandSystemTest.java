@@ -21,14 +21,17 @@ import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
-import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_PASSWORD;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_USERNAME_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
@@ -81,6 +84,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         Member editedMember = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_BOB)
                 .withTags(VALID_TAG_HUSBAND).build();
+
         assertCommandSuccess(command, index, editedMember);
 
         /* Case: undo editing the last member in the list -> last member restored */

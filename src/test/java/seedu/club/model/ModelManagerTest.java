@@ -21,6 +21,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.club.logic.commands.email.Body;
+import seedu.club.logic.commands.email.Client;
+import seedu.club.logic.commands.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -83,6 +86,62 @@ public class ModelManagerTest {
 
         assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
 
+    }
+
+    @Test
+    public void emailGroup_nonExistentGroup_throwsException() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        try {
+            String expectedRecipients = modelManager.generateEmailRecipients(new Group(NON_EXISTENT_GROUP),
+                    null);
+        } catch (GroupNotFoundException gnfe) {
+            assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
+        }
+    }
+
+    @Test
+    public void emailTag_nonExistentTag_throwsException() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        try {
+            String expectedRecipients = modelManager.generateEmailRecipients(null,
+                    new Tag(VALID_TAG_UNUSED));
+        } catch (TagNotFoundException tnfe) {
+            assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
+        }
+    }
+
+    @Test
+    public void emailTag_validGroup_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        String expectedRecipients = modelManager.generateEmailRecipients(new Group(VALID_GROUP_AMY),
+                null);
+        modelManager.sendEmail(expectedRecipients, new Client(Client.VALID_CLIENT_GMAIL),
+                new Subject(Subject.TEST_SUBJECT_STRING), new Body(Body.TEST_BODY_STRING));
+
+        assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
+    }
+
+    @Test
+    public void emailTag_validTag_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        String expectedRecipients = modelManager.generateEmailRecipients(null,
+                new Tag(VALID_TAG_FRIEND));
+        modelManager.sendEmail(expectedRecipients, new Client(Client.VALID_CLIENT_GMAIL),
+                new Subject(Subject.TEST_SUBJECT_STRING), new Body(Body.TEST_BODY_STRING));
+
+        assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
     }
 
     @Test
