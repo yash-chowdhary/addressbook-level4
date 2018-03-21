@@ -518,12 +518,60 @@ The `ProfilePhoto` class consists of a `String` attribute to store the file path
 image::ChangeProfilePhotoCommandUML.png[width="350"]
 _Figure 22. ChangeProfilePhotoCommand UML Diagram_
 
+The `displaypic` command involves the use of multiple components of Club Connect.
+Below, Figure 23 shows the interactions betweeen these components.
+As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
+
+image::SDforChangeProfilePhoto.png[width="800"]
+_Figure 23. High Level Sequence Diagram for `changepic PATH` Command_
+
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 23 depicts the sequence of parsing the command.
+Figure 24 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
-image::SDforChangeProfilePhotoCommandParser.png[width="650"]
-_Figure 23. Sequence Diagram for Change Profile Photo Command parsing_
+image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
+_Figure 24. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+
+The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
+Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
+
+The actual reading of the profile photo from the path provided is done by the `Storage` component.
+It copies the photo to the Club Connect application's resources.
+
+The code used for reading and copying the file is as follows:
+
+[source, java]
+----
+@Override
+public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException {
+    BufferedImage originalPhoto = null;
+
+    try {
+        logger.info("Profile Photo is being read from " + originalPhotoPath);
+
+        URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
+        originalPhoto = ImageIO.read(photoUrl);
+
+        String saveAs = newPhotoName + FILE_EXTENSION;
+        File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
+
+        createPhotoFileCopy(originalPhoto, newPath);
+    } catch (IOException ioe) {
+        // ... exception handling ...
+    }
+}
+
+public static String getCurrentDirectory() {
+    // ... getting current directory logic ...
+}
+
+public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
+    // ... logging ...
+    ImageIO.write(originalPhoto, "png", newPath);
+}
+----
+
+The logged in member's details are then updated to include this new profile photo.
 
 ==== Design Considerations
 
@@ -1414,6 +1462,8 @@ _{More to be added}_
 
 [appendix]
 == Glossary
+
+[[abstraction]] Abstraction::
 
 [[attribute]] Attribute::
 An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matric number and so on.
