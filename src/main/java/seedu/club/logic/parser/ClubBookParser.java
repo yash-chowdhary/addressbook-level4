@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
 import seedu.club.logic.commands.CompressCommand;
@@ -57,56 +58,59 @@ public class ClubBookParser {
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
-        case EditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
-
-        case SelectCommand.COMMAND_WORD:
-            return new SelectCommandParser().parse(arguments);
-
-        case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
+        case ChangeProfilePhotoCommand.COMMAND_WORD:
+            return new ChangeProfilePhotoCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
-
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
-
-        case ListCommand.COMMAND_WORD:
-            return new ListCommand();
-
-        case RemoveGroupCommand.COMMAND_WORD:
-            return new RemoveGroupCommandParser().parse(arguments);
-
-        case HistoryCommand.COMMAND_WORD:
-            return new HistoryCommand();
-
-        case ExitCommand.COMMAND_WORD:
-            return new ExitCommand();
-
-        case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
-
-        case UndoCommand.COMMAND_WORD:
-            return new UndoCommand();
-
-        case RedoCommand.COMMAND_WORD:
-            return new RedoCommand();
-
-        case LogInCommand.COMMAND_WORD:
-            return new LoginCommandParser().parse(arguments);
-
-        case DeleteTagCommand.COMMAND_WORD:
-            return new DeleteTagCommandParser().parse(arguments);
-
-        case EmailCommand.COMMAND_WORD:
-            return new EmailCommandParser().parse(arguments);
 
         case CompressCommand.COMMAND_WORD:
             return new CompressCommand();
 
         case DecompressCommand.COMMAND_WORD:
             return new DecompressCommand();
+
+        case DeleteCommand.COMMAND_WORD:
+            return new DeleteCommandParser().parse(arguments);
+
+        case DeleteTagCommand.COMMAND_WORD:
+            return new DeleteTagCommandParser().parse(arguments);
+
+        case EditCommand.COMMAND_WORD:
+            return new EditCommandParser().parse(arguments);
+
+        case EmailCommand.COMMAND_WORD:
+            return new EmailCommandParser().parse(arguments);
+
+        case ExitCommand.COMMAND_WORD:
+            return new ExitCommand();
+
+        case FindCommand.COMMAND_WORD:
+            return new FindCommandParser().parse(arguments);
+
+        case HelpCommand.COMMAND_WORD:
+            return new HelpCommand();
+
+        case HistoryCommand.COMMAND_WORD:
+            return new HistoryCommand();
+
+        case ListCommand.COMMAND_WORD:
+            return new ListCommand();
+
+        case LogInCommand.COMMAND_WORD:
+            return new LoginCommandParser().parse(arguments);
+
+        case RedoCommand.COMMAND_WORD:
+            return new RedoCommand();
+
+        case RemoveGroupCommand.COMMAND_WORD:
+            return new RemoveGroupCommandParser().parse(arguments);
+
+        case SelectCommand.COMMAND_WORD:
+            return new SelectCommandParser().parse(arguments);
+
+        case UndoCommand.COMMAND_WORD:
+            return new UndoCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

@@ -92,6 +92,7 @@ Example: `login u/JohnDoe pw/pass1234`
 
 Adds a member to Club Connect. +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [g/GROUP] [t/TAG]...`
+
 [TIP]
 A member can have any number of tags (including 0).
 [TIP]
@@ -272,6 +273,26 @@ Selects the 2nd member in the address book.
 * `find Betsy` +
 `select 1` +
 Selects the 1st member in the results of the `find` command.
+
+=== Changing your profile photo : `changepic` (Since v1.2)
+
+Changes the photo displayed on your profile to the specified photo.
+Format: 'changepic PHOTO_PATH`
+
+****
+* PHOTO_PATH must be an absolute path to the photo.
+  To get the abolute path, right-click on the photo file and select Properties.
+  The location field specifies the absolute location of the photo.
+  To meet the correct format for this command, add the complete name of the photo file to this location.
+* This command is only guaranteed to work for ,jpeg, .jpg, and .png files.
+****
+
+Examples:
+
+* `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
+Changes your profile picture to the "john_doe.jpg" image on your Desktop.
+* `changepic C:/Users/Admin/Downloads/CathyRay.png` +
+Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
 
 === Listing entered commands : `history`
 

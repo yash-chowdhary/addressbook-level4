@@ -17,6 +17,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
@@ -39,9 +40,10 @@ public class XmlAdaptedMember {
     private String password;
     @XmlElement(required = true)
     private String matricNumber;
-
     @XmlElement
     private String group;
+    @XmlElement
+    private String profilePhoto;
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
@@ -64,6 +66,7 @@ public class XmlAdaptedMember {
         this.group = group;
         this.username = this.matricNumber;
         this.password = "password";
+        this.profilePhoto = "";
         if (tagged != null) {
             this.tagged = new ArrayList<>(tagged);
         }
@@ -82,6 +85,7 @@ public class XmlAdaptedMember {
         group = source.getGroup().groupName;
         username = source.getCredentials().getUsername().value;
         password = source.getCredentials().getPassword().value;
+        profilePhoto = source.getProfilePhoto().getProfilePhotoPath();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -142,7 +146,10 @@ public class XmlAdaptedMember {
 
         final Set<Tag> tags = new HashSet<>(memberTags);
 
-        return new Member(name, phone, email, matricNumber, group, tags);
+        Member member = new Member(name, phone, email, matricNumber, group, tags);
+        member.setProfilePhoto(new ProfilePhoto(profilePhoto));
+
+        return member;
     }
 
     @Override
@@ -161,6 +168,7 @@ public class XmlAdaptedMember {
                 && Objects.equals(email, otherMember.email)
                 && Objects.equals(matricNumber, otherMember.matricNumber)
                 && Objects.equals(group, otherMember.group)
+                && Objects.equals(profilePhoto, otherMember.profilePhoto)
                 && tagged.equals(otherMember.tagged);
     }
 }

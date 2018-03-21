@@ -1,7 +1,7 @@
 package seedu.club.model.member;
 
 /**
- * Represent a member's password
+ * Represents a member's password.
  */
 public class Password {
     public final String value;
