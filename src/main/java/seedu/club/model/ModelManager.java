@@ -46,6 +46,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
+        updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
     }
 
     public ModelManager() {
@@ -93,10 +94,17 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public boolean logInMemberSuccessful(String username, String password) {
+    public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
+        clubBook.logInMember(username, password);
+        if (getLoggedInMember() != null) {
+            updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        }
+    }
 
-        return clubBook.logInMember(username, password);
+    @Override
+    public Member getLoggedInMember() {
+        return clubBook.getLogedInMember();
     }
 
     @Override

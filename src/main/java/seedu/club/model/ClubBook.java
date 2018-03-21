@@ -59,6 +59,7 @@ public class ClubBook implements ReadOnlyClubBook {
     //// list overwrite operations
     public void setMembers(List<Member> members) throws DuplicateMemberException {
         this.members.setMembers(members);
+        this.members.fillHashMap();
     }
 
     public void setTags(Set<Tag> tags) {
@@ -159,7 +160,7 @@ public class ClubBook implements ReadOnlyClubBook {
         memberTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Member(
                 member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
-                    correctTagReferences, member.getUsername(), member.getPassword());
+                    correctTagReferences);
     }
 
     /**
@@ -179,11 +180,17 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Logs in a member
      */
-
-    public boolean logInMember(String username, String password) {
-        return members.logInMemberSuccessful(username, password);
+    public void logInMember(String inputUsername, String inputPassword) {
+        members.fillHashMap();
+        members.logsInMember(inputUsername, inputPassword);
     }
 
+    /**
+     * Get the member who is log in, if null, there are no one that is logged in.
+     */
+    public Member getLogedInMember() {
+        return members.getCurrentlyLogInMember();
+    }
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
      */
@@ -260,7 +267,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                defaultGroup, member.getTags(), member.getUsername(), member.getPassword());
+                defaultGroup, member.getTags());
 
         try {
             updateMember(member, newMember);
@@ -324,7 +331,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Member newMember = new Member(member.getName(), member.getPhone(),
                 member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags, member.getUsername(), member.getPassword());
+                member.getGroup(), memberTags);
 
         try {
             updateMember(member, newMember);

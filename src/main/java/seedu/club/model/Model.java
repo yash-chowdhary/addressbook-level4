@@ -19,6 +19,9 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
+    /** {@code Predicate} that always evaluate to true */
+    Predicate<Member> PREDICATE_NOT_SHOW_ALL_MEMBERS = unused -> false;
+
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyClubBook newData);
 
@@ -53,8 +56,12 @@ public interface Model {
     /**
      * Logs In a member in the club
      */
-    boolean logInMemberSuccessful(String username, String password);
+    void logsInMember(String username, String password);
 
+    /**
+     * Get the member who is log in, if null, there are no one that is logged in.
+     */
+    Member getLoggedInMember();
 
     /** Removes the given tag {@code tag} for all members in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,9 @@ import seedu.club.model.member.exceptions.MemberNotFoundException;
 public class UniqueMemberList implements Iterable<Member> {
 
     private final ObservableList<Member> internalList = FXCollections.observableArrayList();
+    private HashMap<String, Member> usernameCredentialsHashMap = new HashMap<>();
+    private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
+    private Member currentlyLogInMember = null;
 
     /**
      * Returns true if the list contains an equivalent member as the given argument.
@@ -44,6 +48,9 @@ public class UniqueMemberList implements Iterable<Member> {
             throw new DuplicateMemberException();
         }
         internalList.add(toAdd);
+        usernameCredentialsHashMap.put(toAdd.getCredentials().getUsername().value, toAdd);
+        usernamePasswordHashMap.put(toAdd.getCredentials().getUsername().value,
+                toAdd.getCredentials().getPassword().value);
     }
 
     /**
@@ -57,7 +64,7 @@ public class UniqueMemberList implements Iterable<Member> {
         requireNonNull(editedMember);
 
         int index = internalList.indexOf(target);
-        if (index == -1) {
+        if (index == -1 || usernamePasswordHashMap.get(target.getCredentials().getUsername().toString()) == null) {
             throw new MemberNotFoundException();
         }
 
@@ -66,6 +73,8 @@ public class UniqueMemberList implements Iterable<Member> {
         }
 
         internalList.set(index, editedMember);
+        usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
+        usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
     }
 
     /**
@@ -79,6 +88,8 @@ public class UniqueMemberList implements Iterable<Member> {
         if (!memberFoundAndDeleted) {
             throw new MemberNotFoundException();
         }
+        usernameCredentialsHashMap.remove(toRemove.getCredentials().getUsername().toString());
+        usernamePasswordHashMap.remove(toRemove.getCredentials().getUsername().toString());
         return memberFoundAndDeleted;
     }
 
@@ -121,30 +132,31 @@ public class UniqueMemberList implements Iterable<Member> {
 
     /**
      * Logs in a member successfully and return a true value
-     * @param username
-     * @param password
      * @return
      */
-    public boolean logInMemberSuccessful(String username, String password) {
-        if (!areThereAnyMemberLogedIn()) {
-            for (int i = 0; i < internalList.size(); i++) {
-                if (internalList.get(i).getUsername().toString().equals(username)) {
-                    return internalList.get(i).getPassword().toString().equals(password);
-                }
-            }
+    public void logsInMember(String username, String password) {
+        Member checkMember = usernameCredentialsHashMap.get(username);
+        if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
+            currentlyLogInMember = checkMember;
         }
-        return false;
     }
 
     /**
-     * Check that whether there are anyone being log in currently.
+     * Get the member who is logged in
+     * @return
      */
-    public boolean areThereAnyMemberLogedIn() {
-        for (int i = 0; i < internalList.size(); i++) {
-            if (internalList.get(i).isLogIn()) {
-                return true;
-            }
+    public Member getCurrentlyLogInMember() {
+        return currentlyLogInMember;
+    }
+
+    /**
+     * Fill the hashmap with username and member, and also username and password
+     */
+    public void fillHashMap() {
+        for (Member anInternalList : internalList) {
+            usernameCredentialsHashMap.put(anInternalList.getCredentials().getUsername().value, anInternalList);
+            usernamePasswordHashMap.put(anInternalList.getCredentials().getUsername().value,
+                    anInternalList.getCredentials().getPassword().value);
         }
-        return false;
     }
 }
