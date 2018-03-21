@@ -470,20 +470,46 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ==== Current Implementation
 Member details are shown as cards in the GUI. Cards can either be compressed(Figure 22) or decompressed(Figure 23).
 
-image::SDforEmail.png[width="800"]
-_Figure 21. Sequence Diagram for Email Command_
+image::DecompressedMemberCards.png[width="300"]
+_Figure 22. Decompressed Member Cards_
 
-image::SDforEmail.png[width="800"]
-_Figure 21. Sequence Diagram for Email Command_
+image::CompressedCards.png[width="300"]
+_Figure 23. Compressed Member Cards_
+
+The MemberCard class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
+To differentiate between compressed and decompressed member card, we introduced a CompressedMemberCard class. This class extends MemberCard (Figure 24) since a CompressedMember card is a MemberCard.
+Each of these classes contain a different static String showing location of the actual fxml file that determines layout of the member card, hence we get different layouts.
+
+image::MemberCardClassDiagram.png[width="300"]
+_Figure 23. MemberCard class diagram_
+
+The compress and decompress commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
+These commands do not inherit from Undoable Command but just from Command since they do not change the state of the club book.
+
+Due to the similar nature of the compress and decompress commands, only the compress command will be discussed.
+
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
+
+The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
+
+image::SDforCompressToEventsCenter.png[width="800"]
+_Figure 24. Sequence diagram for compress command to Events Center_
+
+Then, the MemberListPanel, which contains the memberCards will handle the event (Figure 25). If the memberCards are already compressed, no changes occur.
+However, if the memberCards are decompressed, the memberCards would be converted to compressed memberCards.
+
+image::SDforCompressFromEventsCenter.png[width="800"]
+_Figure 25. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
-===== Aspect: Location of opening the mail client
-* **Alternative 1 (current choice)**: Open up the mail client in system's default web browser.
-** Pros: Easy to implement
-** Cons: Since ClubConnect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
-* **Alternative 2:** Open up the mail client in `BrowserPanel`.
-** Pros: No dependency on third party apps.
-** Cons: Older version browser will disallow auto-filling of email fields.
+===== Aspect: How to interact from Logic to Ui
+* **Alternative 1 (current choice)**: Use Event-Driven approach to interact from Compress/Decompress command to MemberListPanel
+** Pros: Reduces coupling.
+** Cons: Slower than just directly changing the Ui since a seperate class(EventsCenter) has to manage interactions, not
+just for compress/decompress but for other events as well.
+* **Alternative 2:** Keep a ui attribute in every command just like model
+** Pros: Easy to implement.
+** Cons: Increases coupling
 
 === Logging
 
