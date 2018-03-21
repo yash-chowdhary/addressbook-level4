@@ -14,7 +14,7 @@ import seedu.club.model.member.Username;
 public class LogInCommand extends Command {
 
     public static final String COMMAND_WORD = "login";
-    public static final String MESSAGE_SUCCESS = "login successful!";
+    public static final String MESSAGE_SUCCESS = "login successful! Welcome, ";
     public static final String MESSAGE_FAILURE = "login unsuccessful!";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Logs in a member to ClubConnect. "
             + "Parameters: "
