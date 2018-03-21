@@ -12,11 +12,22 @@ public class ProfilePhotoChangedEvent extends BaseEvent {
 
     public final String originalPhotoPath;
     public final String newFileName;
+    private boolean isPhotoChanged;
 
     public ProfilePhotoChangedEvent(String originalPhotoPath, String newFileName) {
         this.originalPhotoPath = originalPhotoPath;
         this.newFileName = newFileName;
+        this.isPhotoChanged = true;
     }
+
+    public boolean isPhotoChanged() {
+        return isPhotoChanged;
+    }
+
+    public void setPhotoChanged(boolean photoChanged) {
+        isPhotoChanged = photoChanged;
+    }
+
 
     @Override
     public String toString() {

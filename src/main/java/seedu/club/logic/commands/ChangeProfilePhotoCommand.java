@@ -6,8 +6,6 @@ import static java.util.Objects.requireNonNull;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.ProfilePhoto;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
-import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 /**
  * Changes the profile photo of the currently logged in member.
@@ -20,7 +18,7 @@ public class ChangeProfilePhotoCommand extends Command {
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Desktop/john_doe.jpg";
 
-    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book";
+    public static final String MESSAGE_INVALID_PHOTO_PATH = "Photo path entered is not valid.";
     public static final String MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS =
             "Your profile photo has been changed successfully.";
 
@@ -38,32 +36,20 @@ public class ChangeProfilePhotoCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-
         //Defensive programming
-        assert newProfilePhoto.getOriginalPhotoPath() == null : "Photo path should not be null.";
+        assert newProfilePhoto.getProfilePhotoPath() == null : "Photo path should not be null.";
 
         memberToEdit = model.getLoggedInMember();
         //Defensive programming
         assert this.memberToEdit == null : "ChangeProfilePhotoCommand cannot be called without a logged in member.";
 
-        model.addProfilePhoto(newProfilePhoto.getOriginalPhotoPath(), memberToEdit.getMatricNumber().toString());
+        Boolean isPhotoChanged = model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath(),
+                memberToEdit.getMatricNumber().toString());
 
-        return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));
-    }
-
-    /**
-     * Updates the logged in member in Club Connect with new Profile Photo.
-     * @param memberToEdit Member whose profile photo is to be changed.
-     * @param editedMember Member assigned with new Profile Photo.
-     * @throws CommandException when a duplicate member is found.
-     */
-    private void updateMember(Member memberToEdit, Member editedMember) throws CommandException {
-        try {
-            model.updateMember(memberToEdit, editedMember);
-        } catch (DuplicateMemberException dme) {
-            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
-        } catch (MemberNotFoundException mnfe) {
-            assert false : "The target member cannot be missing";
+        if (isPhotoChanged) {
+            return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));
+        } else {
+            return new CommandResult(String.format(MESSAGE_INVALID_PHOTO_PATH));
         }
     }
 

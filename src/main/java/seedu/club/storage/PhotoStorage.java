@@ -1,10 +1,6 @@
 //@@author amrut-prabhu
 package seedu.club.storage;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 import seedu.club.commons.exceptions.PhotoException;
 
 /**
@@ -20,13 +16,7 @@ public interface PhotoStorage {
      *
      * @throws PhotoException if the {@code originalPhotoPath} is invalid.
      */
-    void readOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
+    void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
             throws PhotoException;
-
-    /**
-     * Creates a copy the given {@code originalPhoto} in the application's resources.
-     * @throws IOException if there was any problem writing to the file.
-     */
-    void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException;
 
 }

@@ -1,7 +1,5 @@
 package seedu.club.storage;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -41,11 +39,7 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
     void handleClubBookChangedEvent(ClubBookChangedEvent cbce);
 
     //@@author amrut-prabhu
-    @Override
-    void readOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException;
-
-    @Override
-    void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException;
+    void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException;
 
     /**
      * Saves a copy of the newly added photo to Club Connect's resources.

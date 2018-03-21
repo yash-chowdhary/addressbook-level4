@@ -20,7 +20,6 @@ import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.logic.commands.email.Body;
 import seedu.club.logic.commands.email.Client;
 import seedu.club.logic.commands.email.Subject;
-import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -85,29 +84,24 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author amrut-prabhu
     /** Raises an event to indicate the profile photo of a member has changed */
-    private void indicateProfilePhotoChanged(String originalPath, String newFileName) {
+    private boolean indicateProfilePhotoChanged(String originalPath, String newFileName) {
         ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
         raise(profilePhotoChangedEvent);
+        return profilePhotoChangedEvent.isPhotoChanged();
     }
 
     @Override
-    public void addProfilePhoto(String originalPhotoPath, String newFileName) throws CommandException {
-        indicateProfilePhotoChanged(originalPhotoPath, newFileName);
+    public boolean addProfilePhoto(String originalPhotoPath, String newFileName) {
+        if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
+            return false;
+        }
 
         String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
                 + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
 
-        /*Member newMember = new Member(loggedInMember);
-        newMember.setProfilePhotoPath(newProfilePhotoPath);
-        try {
-            updateMember(loggedInMember, newMember);
-        } catch (DuplicateMemberException eme) {
-            throw new CommandException(MESSAGE_SAME_PHOTO_PATH);
-        } catch (MemberNotFoundException mnfe) {
-            assert false : "Member is guaranteed to be found";
-        }*/
         loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
         indicateClubBookChanged();
+        return true;
     }
     //@@author
 

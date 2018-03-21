@@ -36,7 +36,9 @@ public class ProfilePhoto {
      */
     public ProfilePhoto(String path) {
         //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
-        this.originalPhotoFilePath = path;
+        //this.originalPhotoFilePath = path;
+        originalPhotoFilePath = null;
+        this.profilePhotoPath = path;
     }
 
     /**
@@ -63,24 +65,24 @@ public class ProfilePhoto {
     }
 
     public String getProfilePhotoPath() {
-        return  profilePhotoPath;
+        return profilePhotoPath;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ProfilePhoto // instanceof handles nulls
-                && this.getOriginalPhotoPath().equals(((ProfilePhoto) other).getOriginalPhotoPath())); // state check
+                && this.getProfilePhotoPath().equals(((ProfilePhoto) other).getProfilePhotoPath())); // state check
     }
 
     @Override
     public String toString() {
-        return originalPhotoFilePath;
+        return profilePhotoPath;
     }
 
     @Override
     public int hashCode() {
-        return originalPhotoFilePath.hashCode();
+        return profilePhotoPath.hashCode();
     }
 
 }

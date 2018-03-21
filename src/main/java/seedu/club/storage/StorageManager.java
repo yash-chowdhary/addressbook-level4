@@ -1,7 +1,5 @@
 package seedu.club.storage;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -98,26 +96,26 @@ public class StorageManager extends ComponentManager implements Storage {
 
     //@@author amrut-prabhu
     @Override
-    public void readOriginalPhotoFile(String originalPath, String newPhotoName) throws PhotoException {
+    public void copyOriginalPhotoFile(String originalPath, String newPhotoName) throws PhotoException {
         logger.fine("Attempting to read photo from file: " + originalPath);
-        profilePhotoStorage.readOriginalPhotoFile(originalPath, newPhotoName);
+        profilePhotoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
     }
 
-    @Override
+    /*@Override
     public void createPhotoFileCopy(BufferedImage image, File newPath) throws IOException {
         logger.fine("Attempting to write photo to file: " + newPath);
         profilePhotoStorage.createPhotoFileCopy(image, newPath);
-    }
+    }*/
 
     @Override
     @Subscribe
     public void handleProfilePictureChangedEvent(ProfilePhotoChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Profile photo changed, copying file"));
         try {
-            readOriginalPhotoFile(event.originalPhotoPath, event.newFileName);
+            copyOriginalPhotoFile(event.originalPhotoPath, event.newFileName);
         } catch (PhotoException pe) {
+            event.setPhotoChanged(false);
             raise(new DataSavingExceptionEvent(pe));
         }
     }
-
 }

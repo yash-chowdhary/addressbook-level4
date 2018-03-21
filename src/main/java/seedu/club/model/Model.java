@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import seedu.club.logic.commands.email.Body;
 import seedu.club.logic.commands.email.Client;
 import seedu.club.logic.commands.email.Subject;
-import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -70,12 +69,11 @@ public interface Model {
     //@@author amrut-prabhu
 
     /**
-     * Adds a profile photo for the given member.
+     * Returns true if profile photo is successfully changed for the logged in member.
      * @param originalPhotoPath Absolute file path of the original photo.
      * @param newFileName File name under which the photo is to be copied to Club Connect's resources.
-     * @throws CommandException when the current photo path is entered as the new photo path.
      */
-    void addProfilePhoto(String originalPhotoPath, String newFileName) throws CommandException;
+    boolean addProfilePhoto(String originalPhotoPath, String newFileName);
 
     //@@author
 

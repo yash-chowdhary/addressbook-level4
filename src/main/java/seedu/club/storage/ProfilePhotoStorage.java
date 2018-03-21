@@ -27,9 +27,8 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     private static final Logger logger = LogsCenter.getLogger(ProfilePhotoStorage.class);
 
     @Override
-    public void readOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
+    public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
             throws PhotoException {
-
         BufferedImage originalPhoto = null;
 
         try {
@@ -58,7 +57,10 @@ public class ProfilePhotoStorage implements  PhotoStorage {
         return currentDirectory.substring(0, currentDirectory.length() - 1); //To get rid of "." at end of file path
     }
 
-    @Override
+    /**
+     * Creates a copy the given {@code originalPhoto} in the application's resources.
+     * @throws IOException if there was any problem writing to the file.
+     */
     public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
         logger.info("Profile Photo is being copied to " + newPath);
         ImageIO.write(originalPhoto, "png", newPath);
