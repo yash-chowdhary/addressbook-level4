@@ -513,13 +513,17 @@ To facilitate this, it makes use of the `ProfilePhoto` class. `ProfilePhoto`
 
 Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
 Refer to Figure 22 for the UML diagram.
+The `ProfilePhoto` class consists of a `String` attribute to store the file path of the profile photo.
 
 image::ChangeProfilePhotoCommandUML.png[width="350"]
 _Figure 22. ChangeProfilePhotoCommand UML Diagram_
 
-EmailCommandParser is responsible for parsing the email command.
-It returns a EmailCommand object after parsing Client, Subject, Body, Group, and Tag.
-Figure 20 depicts the sequence of parsing the command.
+ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
+It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
+Figure 23 depicts the sequence of parsing the command.
+
+image::SDforChangeProfilePhotoCommandParser.png[width="650"]
+_Figure 23. Sequence Diagram for Change Profile Photo Command parsing_
 
 ==== Design Considerations
 
@@ -1006,9 +1010,10 @@ Every student club / organisation makes use of email blasts to communicate with 
 After recruitment events like SLF at NUS or other situations in which details of incoming members are recorded on an Excel sheet, the data can be imported from the Club Connect application instead of manually adding all the members.
 The list of members from the Club Connect application can be exported to formats such as .csv or .txt so that the club members can have access to a readable and sharable version of the member list outside the Club Connect application.
 
-* Minor Feature: Add a profile picture
+* Minor Feature: Add a profile photo
 +
-All the members of a club are not known by each other, which is especially the case in larger clubs. Adding a profile picture makes it easier to know what other members look like and to differentiate between members with similar names.
+All the members of a club are not known by each other, which is especially the case in larger clubs.
+Adding a profile photo makes it easier to know what other members look like and to differentiate between members with similar names.
 
 3. Muhammad Nur Kamal Bin Mohammed Ariff
 
@@ -1074,7 +1079,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |Member |get notifications for new tasks |be aware of new tasks assigned to me
 
-|`* * *` |Member |add a display picture |be identified by others
+|`* * *` |Member |add a profile photo |be identified by others
 
 |`* * *` |Member |add multiple <<entry,entries>> for <<attribute,attributes>> |provide all alternative contact details to others
 
