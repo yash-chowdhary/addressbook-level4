@@ -481,7 +481,7 @@ To differentiate between compressed and decompressed member card, we introduced 
 Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
 
 image::MemberCardClassDiagram.png[width="300"]
-_Figure 23. `MemberCard` class diagram_
+_Figure 24. `MemberCard` class diagram_
 
 The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
 These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
@@ -493,13 +493,13 @@ Suppose that the user has just launched the application. The member cards would 
 The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
 
 image::SDforCompressToEventsCenter.png[width="800"]
-_Figure 24. Sequence diagram for compress command to Events Center_
+_Figure 25. Sequence diagram for compress command to Events Center_
 
-Then, the `MemberListPanel`, which contains the `memberCards` will handle the event (Figure 25). If the memberCards are already compressed, no changes occur.
-However, if the `memberCards` are decompressed, the memberCards would be converted to compressed memberCards.
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 25). If the cards are already compressed, no changes occur.
+However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
 
 image::SDforCompressFromEventsCenter.png[width="800"]
-_Figure 25. Sequence diagram for compress command from Events Center_
+_Figure 26. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
