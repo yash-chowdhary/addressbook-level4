@@ -2,6 +2,7 @@ package seedu.club.model.member;
 
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +12,8 @@ import java.util.Set;
 
 import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 
 /**
  * Represents a member in the club book.
@@ -28,6 +31,7 @@ public class Member {
     private Group group;
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
+    private ArrayList<Task> taskList;
 
     /**
      * Every field must be present and not null.
@@ -47,6 +51,7 @@ public class Member {
         this.password = password;
         this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
+        this.taskList = null;
     }
 
     //@@author amrut-prabhu
@@ -65,6 +70,7 @@ public class Member {
         this.username = member.username;
         this.password = member.password;
         this.profilePhoto = member.profilePhoto;
+        this.taskList = member.taskList;
     }
     //@@author
 
@@ -193,5 +199,16 @@ public class Member {
         } else {
             isLogIn = false;
         }
+    }
+
+    /**
+     * Adds {@code Task toAdd} to the taskList.
+     * @throws DuplicateTaskException if the task {@code toAdd} already exists.
+     */
+    public void addToTaskList(Task toAdd) throws DuplicateTaskException {
+        if (taskList.contains(toAdd)) {
+            throw new DuplicateTaskException();
+        }
+        taskList.add(toAdd);
     }
 }

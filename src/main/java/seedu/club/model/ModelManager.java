@@ -28,6 +28,8 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.storage.ProfilePhotoStorage;
 
 /**
@@ -252,6 +254,16 @@ public class ModelManager extends ComponentManager implements Model {
     public void sendEmail(String recipients, Client client, Subject subject, Body body) {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
+
+    @Override
+    public void addTask(Task toAdd) throws DuplicateTaskException {
+        try {
+            loggedInMember.addToTaskList(toAdd);
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
     //@@author
 
     //=========== Filtered member List Accessors =============================================================

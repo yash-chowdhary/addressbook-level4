@@ -14,6 +14,8 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 
 /**
  * The API of the Model component.
@@ -90,4 +92,6 @@ public interface Model {
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
+
+    void addTask(Task toAdd) throws DuplicateTaskException;
 }
