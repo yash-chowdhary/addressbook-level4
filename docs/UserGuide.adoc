@@ -438,7 +438,7 @@ e.g.`select 2`
 * *Change Display Picture* : `changepic PHOTO_PATH` +
 e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 * *Compress Member Details* : `compress`
-* *Decompress Member Details* : `compress`
+* *Decompress Member Details* : `decompress`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
