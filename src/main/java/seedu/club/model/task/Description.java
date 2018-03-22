@@ -3,6 +3,7 @@ package seedu.club.model.task;
 //@@author yash-chowdhary
 
 import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.util.AppUtil.checkArgument;
 
 /**
  * Refers to the Description of a Task
@@ -10,10 +11,13 @@ import static java.util.Objects.requireNonNull;
 public class Description {
 
     public static final String DESCRIPTION_VALIDATION_REGEX = "^\\\\W*(?:\\\\w+\\\\b\\\\W*){1,6}$";
-    private String description;
+    public static final String MESSAGE_DESCRIPTION_CONSTRAINTS = "Description should a non-empty alphanumeric string"
+            + "not exceeding 6 words in length";
+    public final String description;
 
     public Description(String description) {
         requireNonNull(description);
+        checkArgument(isValidDescription(description), MESSAGE_DESCRIPTION_CONSTRAINTS);
         this.description = description;
     }
 
@@ -24,8 +28,8 @@ public class Description {
     /**
      * Returns true if the given string is a valid description.
      */
-    public boolean isValidDescription(String test) {
-        return description.matches(DESCRIPTION_VALIDATION_REGEX);
+    public static boolean isValidDescription(String test) {
+        return test.matches(DESCRIPTION_VALIDATION_REGEX);
     }
 
     @Override

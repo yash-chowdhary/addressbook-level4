@@ -13,10 +13,9 @@ public class Task {
     private Date date;
     private Status status;
 
-    public Task(Description description, Assignor assignor, Time time, Date date) {
+    public Task(Description description, Time time, Date date) {
         requireAllNonNull(description, assignor, time, date, status);
         this.description = description;
-        this.assignor = assignor;
         this.time = time;
         this.date = date;
         this.status = new Status(Status.NOT_STARTED_STATUS);
@@ -36,6 +35,10 @@ public class Task {
 
     public Date getDate() {
         return date;
+    }
+
+    public void setAssignor(Assignor assignor) {
+        this.assignor = assignor;
     }
 
     public boolean isTaskCompleted() {

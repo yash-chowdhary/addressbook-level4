@@ -23,6 +23,9 @@ import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.Date;
+import seedu.club.model.task.Description;
+import seedu.club.model.task.Time;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -270,6 +273,7 @@ public class ParserUtil {
         return tagSet;
     }
 
+    //@@author yash-chowdhary
     /**
      * Parses a {@code String client} into a {@code Client}.
      * Leading and trailing whitespaces will be trimmed.
@@ -332,4 +336,50 @@ public class ParserUtil {
         requireNonNull(body);
         return body.isPresent() ? Optional.of(parseBody(body.get())) : Optional.empty();
     }
+
+    /**
+     * Parses a {@code String description} into a {@code Description}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code description} is invalid.
+     */
+    public static Description parseDescription(String description) throws IllegalValueException {
+        requireNonNull(description);
+        String trimmedDescription = description.trim();
+        if (!Description.isValidDescription(trimmedDescription)) {
+            throw new IllegalValueException(Description.MESSAGE_DESCRIPTION_CONSTRAINTS);
+        }
+        return new Description(trimmedDescription);
+    }
+
+    /**
+     * Parses a {@code String date} into a {@code Date}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code date} is invalid.
+     */
+    public static Date parseDate(String date) throws IllegalValueException {
+        requireNonNull(date);
+        String trimmedDate = date.trim();
+        if (!Date.isValidDate(trimmedDate)) {
+            throw new IllegalValueException(Date.MESSAGE_DATE_CONSTRAINTS);
+        }
+        return new Date(trimmedDate);
+    }
+
+    /**
+     * Parses a {@code String time} into a {@code Date}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code time} is invalid.
+     */
+    public static Time parseTime(String time) throws IllegalValueException {
+        requireNonNull(time);
+        String trimmedTime = time.trim();
+        if (!Time.isValidTime(trimmedTime)) {
+            throw new IllegalValueException(Time.MESSAGE_TIME_CONSTRAINTS);
+        }
+        return new Time(trimmedTime);
+    }
+    //@@author
 }

@@ -14,7 +14,7 @@ public class Date {
 
     public static final String DATE_SPLITTER = "[/.-]";
     public static final String DATE_SEPARATOR = "/";
-    public static final String DATE_MESSAGE_CONSTRAINTS = "Date should be a string separated by '.', '/', or "
+    public static final String MESSAGE_DATE_CONSTRAINTS = "Date should be a string separated by '.', '/', or "
             + "'-' in the format DD-MM-YYYY";
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-date-with-regular-expression/}
@@ -22,15 +22,11 @@ public class Date {
     public static final String DATE_VALIDATION_REGEX = "(0?[1-9]|[12][0-9]|3[01])[/.-](0?[1-9]|1[012])[/.-]"
             + "((19|20)\\\\d\\\\d)";
 
-    private int day;
-    private int month;
-    private int year;
-
-    private String date;
+    public final String date;
 
     public Date(String date) {
         requireNonNull(date);
-        checkArgument(isValidDate(date), DATE_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidDate(date), MESSAGE_DATE_CONSTRAINTS);
         this.date = date;
     }
 
@@ -39,15 +35,15 @@ public class Date {
      * Adapted from {@linktourl https://stackoverflow.com/questions/32204953/validating-java-8-dates?utm_medium=organic
      * &utm_source=* google_rich_qa&utm_campaign=google_rich_qa}
      */
-    private Boolean isValidDate(String date) {
+    public static boolean isValidDate(String date) {
         if (!date.matches(DATE_VALIDATION_REGEX)) {
             return false;
         }
         String[] dateFields = date.split(DATE_SPLITTER);
 
-        day = Integer.parseInt(dateFields[0]);
-        month = Integer.parseInt(dateFields[1]);
-        year = Integer.parseInt(dateFields[2]);
+        final int day = Integer.parseInt(dateFields[0]);
+        final int month = Integer.parseInt(dateFields[1]);
+        final int year = Integer.parseInt(dateFields[2]);
 
         try {
             LocalDate.of(year, month, day);
@@ -64,13 +60,13 @@ public class Date {
         String[] dateFields = date.split(DATE_SPLITTER);
         StringBuilder sb = new StringBuilder();
 
-        day = Integer.parseInt(dateFields[0]);
+        final int day = Integer.parseInt(dateFields[0]);
         sb.append(day);
         sb.append(DATE_SEPARATOR);
-        month = Integer.parseInt(dateFields[1]);
+        final int month = Integer.parseInt(dateFields[1]);
         sb.append(month);
         sb.append(DATE_SEPARATOR);
-        year = Integer.parseInt(dateFields[2]);
+        final int year = Integer.parseInt(dateFields[2]);
         sb.append(year);
 
         return sb.toString();

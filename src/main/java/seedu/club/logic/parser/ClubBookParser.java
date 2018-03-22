@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
@@ -57,6 +58,9 @@ public class ClubBookParser {
 
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
+
+        case AddTaskCommand.COMMAND_WORD:
+            return new AddTaskCommandParser().parse(arguments);
 
         case ChangeProfilePhotoCommand.COMMAND_WORD:
             return new ChangeProfilePhotoCommandParser().parse(arguments);

@@ -1,13 +1,11 @@
 package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.member.Member;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 
@@ -32,13 +30,11 @@ public class AddTaskCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New task created";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
 
-    private final Member assignor;
     private final Task toAdd;
 
-    public AddTaskCommand(Task toAdd, Member assignor) {
-        requireAllNonNull(toAdd, assignor);
+    public AddTaskCommand(Task toAdd) {
+        requireNonNull(toAdd);
         this.toAdd = toAdd;
-        this.assignor = assignor;
     }
 
     @Override
@@ -56,7 +52,6 @@ public class AddTaskCommand extends UndoableCommand {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof AddTaskCommand // instanceof handles nulls
-                && toAdd.equals(((AddTaskCommand) other).toAdd))
-                && assignor.equals(((AddTaskCommand) other).assignor);
+                && toAdd.equals(((AddTaskCommand) other).toAdd));
     }
 }

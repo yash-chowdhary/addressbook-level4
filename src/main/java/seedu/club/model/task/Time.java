@@ -10,7 +10,7 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Time {
 
-    public static final String TIME_MESSAGE_CONSTRAINTS = "Time must be in the format HH:MM and can be separated "
+    public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in the format HH:MM and can be separated "
             + "by ':' or '-'";
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-time-in-24-hours-format-
@@ -20,27 +20,25 @@ public class Time {
     public static final String TIME_SPLITTER = "[-:]";
     public static final String TIME_SEPARATOR = ":";
 
-    private String time;
-    private int hour;
-    private int minute;
+    public final String time;
 
     public Time(String time) {
         requireNonNull(time);
-        checkArgument(isValidTime(time), TIME_MESSAGE_CONSTRAINTS);
+        checkArgument(isValidTime(time), MESSAGE_TIME_CONSTRAINTS);
         this.time = time;
     }
 
     /**
-     * Returns true if the given string {@code time} is a valid time.
+     * Returns true if the given string {@code test} is a valid test.
      */
-    private Boolean isValidTime(String time) {
-        if (!time.matches(TIME_VALIDATION_REGEX)) {
+    public static boolean isValidTime(String test) {
+        if (!test.matches(TIME_VALIDATION_REGEX)) {
             return false;
         }
-        String[] timeFields = time.split(TIME_SPLITTER);
+        String[] timeFields = test.split(TIME_SPLITTER);
 
-        hour = Integer.parseInt(timeFields[0]);
-        minute = Integer.parseInt(timeFields[1]);
+        final int hour = Integer.parseInt(timeFields[0]);
+        final int minute = Integer.parseInt(timeFields[1]);
         return true;
     }
 
@@ -51,10 +49,10 @@ public class Time {
         StringBuilder sb = new StringBuilder();
         String[] timeFields = time.split(TIME_SPLITTER);
 
-        hour = Integer.parseInt(timeFields[0]);
+        final int hour = Integer.parseInt(timeFields[0]);
         sb.append(hour);
         sb.append(TIME_SEPARATOR);
-        minute = Integer.parseInt(timeFields[1]);
+        final int minute = Integer.parseInt(timeFields[1]);
         sb.append(minute);
 
         return sb.toString();
