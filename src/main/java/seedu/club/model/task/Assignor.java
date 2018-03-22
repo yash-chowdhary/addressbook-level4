@@ -2,6 +2,7 @@ package seedu.club.model.task;
 
 import static java.util.Objects.requireNonNull;
 
+//@@author yash-chowdhary
 /**
  * Refers to the assignor of a Task
  */
