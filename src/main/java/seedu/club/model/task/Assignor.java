@@ -1,5 +1,7 @@
 package seedu.club.model.task;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Refers to the assignor of a Task
  */
@@ -8,6 +10,7 @@ public class Assignor {
     private String assignor;
 
     public Assignor(String assignor) {
+        requireNonNull(assignor);
         this.assignor = assignor;
     }
 

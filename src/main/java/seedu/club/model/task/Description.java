@@ -1,6 +1,9 @@
 package seedu.club.model.task;
 
 //@@author yash-chowdhary
+
+import static java.util.Objects.requireNonNull;
+
 /**
  * Refers to the Description of a Task
  */
@@ -10,6 +13,7 @@ public class Description {
     private String description;
 
     public Description(String description) {
+        requireNonNull(description);
         this.description = description;
     }
 
