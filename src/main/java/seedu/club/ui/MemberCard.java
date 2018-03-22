@@ -21,7 +21,7 @@ import seedu.club.storage.ProfilePhotoStorage;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
-    private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "green",
+    private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
         "orange", "blue", "violet"};
     private static final Integer PHOTO_WIDTH = 100;
     private static final Integer PHOTO_HEIGHT = 100;

@@ -359,7 +359,7 @@
 
 #tags .red {
     -fx-text-fill: white;
-    -fx-background-color: #F70D1A;
+    -fx-background-color: #B10202;
 }
 
 #tags .yellow {
@@ -367,8 +367,8 @@
     -fx-background-color: #F4F00D;
 }
 #tags .grey {
-    -fx-text-fill: black;
-    -fx-background-color: grey;
+    -fx-text-fill: white;
+    -fx-background-color: #595959;
 }
 #tags .brown {
     -fx-text-fill: white;
@@ -378,12 +378,12 @@
     -fx-text-fill: black;
     -fx-background-color: pink;
 }
-#tags .green {
-    -fx-text-fill: lightblue;
-    -fx-background-color: green;
+#tags .white {
+    -fx-text-fill: #235E70;
+    -fx-background-color: white;
 }
 #tags .orange {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-background-color: orange;
 }
 
