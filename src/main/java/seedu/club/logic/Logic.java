@@ -5,6 +5,7 @@ import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.member.Member;
+import seedu.club.model.poll.Poll;
 
 /**
  * API of the Logic component
@@ -24,4 +25,7 @@ public interface Logic {
 
     /** Returns the list of input entered by the user, encapsulated in a {@code ListElementPointer} object */
     ListElementPointer getHistorySnapshot();
+
+    ObservableList<Poll> getObservablePollList();
+
 }

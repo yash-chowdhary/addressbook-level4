@@ -13,12 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.ui.CompressMembersRequestEvent;
-import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 import seedu.club.commons.events.ui.JumpToListRequestEvent;
-import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.commons.events.ui.PollPanelSelectionChangedEvent;
-import seedu.club.model.member.Member;
 import seedu.club.model.poll.Poll;
 
 /**
@@ -39,15 +35,19 @@ public class PollListPanel extends UiPart<Region> {
 
 
     private void setConnections(ObservableList<Poll> pollList) {
-        setpollListView(pollList);
+        setPollListView(pollList);
         setEventHandlerForSelectionChangeEvent();
     }
 
-    private void setpollListView(ObservableList<Poll> pollList) {
+    private void setPollListView(ObservableList<Poll> pollList) {
+        System.out.println("pollList = " + pollList);
         ObservableList<PollCard> mappedList = EasyBind.map(
                 pollList, (poll) -> new PollCard(poll, pollList.indexOf(poll) + 1));
+        System.out.println("HELLO");
+        System.out.println("mappedList = " + mappedList);
         pollListView.setItems(mappedList);
         pollListView.setCellFactory(listView -> new pollListViewCell());
+        System.out.println("SAIJHDBSAKJDLKJSA");
     }
 
     private void setEventHandlerForSelectionChangeEvent() {

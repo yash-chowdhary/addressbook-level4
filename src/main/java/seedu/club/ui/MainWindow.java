@@ -1,9 +1,14 @@
 package seedu.club.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -19,6 +24,9 @@ import seedu.club.commons.events.ui.ExitAppRequestEvent;
 import seedu.club.commons.events.ui.ShowHelpRequestEvent;
 import seedu.club.logic.Logic;
 import seedu.club.model.UserPrefs;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -36,6 +44,7 @@ public class MainWindow extends UiPart<Stage> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private MemberListPanel memberListPanel;
+    private PollListPanel pollListPanel;
     private Config config;
     private UserPrefs prefs;
 
@@ -50,6 +59,9 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane memberListPanelPlaceholder;
+
+    @FXML
+    private StackPane pollListPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -121,6 +133,10 @@ public class MainWindow extends UiPart<Stage> {
 
         memberListPanel = new MemberListPanel(logic.getFilteredMemberList());
         memberListPanelPlaceholder.getChildren().add(memberListPanel.getRoot());
+
+        //TODO
+        pollListPanel = new PollListPanel(logic.getObservablePollList());
+        pollListPanelPlaceholder.getChildren().add(pollListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());

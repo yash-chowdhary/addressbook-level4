@@ -31,11 +31,10 @@
         <Label fx:id="pollerName" styleClass="cell_big_label" text="\$pollerName" />
       </HBox>
       <Label fx:id="question" styleClass="cell_small_label" text="\$question" />
-      <FlowPane fx:id="tags" />
+      <FlowPane fx:id="answers" />
     </VBox>
     <rowConstraints>
       <RowConstraints />
     </rowConstraints>
   </GridPane>
-  <!--@@author-->
 </HBox>
