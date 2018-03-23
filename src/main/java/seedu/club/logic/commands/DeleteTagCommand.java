@@ -15,6 +15,7 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 public class DeleteTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "deletetag";
+    public static final String COMMAND_FORMAT = "deletetag t/TAG";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes the tag from all members.\n"

@@ -15,6 +15,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 public class RemoveGroupCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "removegroup";
+    public static final String COMMAND_FORMAT = "removegroup g/GROUP";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Book. "
             + "Parameters: "

@@ -18,6 +18,8 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
+    public static final String COMMAND_FORMAT = "find [n/ NAME..] | [p/ PHONE..] | [e/ EMAIL..] | [m/ MATRIC NUMBER..]"
+            + " | [g/ GROUP..] | [t/ TAG]";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all members whose field contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
