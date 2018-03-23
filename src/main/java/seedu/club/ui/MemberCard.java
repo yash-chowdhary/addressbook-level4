@@ -5,10 +5,11 @@ import java.io.File;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import seedu.club.model.member.Member;
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -50,7 +51,7 @@ public class MemberCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private ImageView profilePhoto;
+    private Rectangle profilePhoto;
 
     public MemberCard(Member member, int displayedIndex) {
         super(FXML);
@@ -100,7 +101,7 @@ public class MemberCard extends UiPart<Region> {
 
         photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
 
-        profilePhoto.setImage(photo);
+        profilePhoto.setFill(new ImagePattern(photo));
     }
     //@@author
 
