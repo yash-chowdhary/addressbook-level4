@@ -11,7 +11,9 @@ import guitests.guihandles.CommandBoxHandle;
 import javafx.scene.input.KeyCode;
 import seedu.club.logic.Logic;
 import seedu.club.logic.LogicManager;
+import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ListCommand;
+import seedu.club.logic.commands.RedoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 
@@ -19,6 +21,11 @@ public class CommandBoxTest extends GuiUnitTest {
 
     private static final String COMMAND_THAT_SUCCEEDS = ListCommand.COMMAND_WORD;
     private static final String COMMAND_THAT_FAILS = "invalid command";
+    private static final String BLANK_COMMAND = "";
+    private static final String INCOMPLETE_EMAIL_COMMAND = "em";
+    private static final String COMPLETE_EMAIL_COMMAND = EmailCommand.COMMAND_FORMAT;
+    private static final String INCOMPLETE_REDO_COMMAND = "r";
+    private static final String COMPLETE_REDO_COMMAND = RedoCommand.COMMAND_WORD;
 
     private ArrayList<String> defaultStyleOfCommandBox;
     private ArrayList<String> errorStyleOfCommandBox;
@@ -67,6 +74,18 @@ public class CommandBoxTest extends GuiUnitTest {
 
         guiRobot.push(KeyCode.A);
         assertEquals(defaultStyleOfCommandBox, commandBoxHandle.getStyleClass());
+    }
+
+    @Test
+    public void commandBox_handleKeyPressTab() {
+        commandBoxHandle.setInput(COMMAND_THAT_FAILS);
+        assertInputHistory(KeyCode.TAB, BLANK_COMMAND);
+
+        commandBoxHandle.setInput(INCOMPLETE_EMAIL_COMMAND);
+        assertInputHistory(KeyCode.TAB, COMPLETE_EMAIL_COMMAND);
+
+        commandBoxHandle.setInput(INCOMPLETE_REDO_COMMAND);
+        assertInputHistory(KeyCode.TAB, COMPLETE_REDO_COMMAND);
     }
 
     @Test
