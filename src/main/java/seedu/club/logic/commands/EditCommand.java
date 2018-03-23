@@ -6,7 +6,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PROFILE_PHOTO;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
@@ -49,7 +48,6 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
-            + "[" + PREFIX_PROFILE_PHOTO + "PHOTO PATH] "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "

@@ -14,7 +14,7 @@ public class ChangeProfilePhotoCommand extends Command {
 
     public static final String COMMAND_WORD = "changepic";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo. "
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Desktop/john_doe.jpg";
 

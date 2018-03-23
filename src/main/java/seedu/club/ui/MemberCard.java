@@ -2,16 +2,13 @@ package seedu.club.ui;
 
 import java.io.File;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import seedu.club.model.member.Member;
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -21,7 +18,7 @@ import seedu.club.storage.ProfilePhotoStorage;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
-    private static final Integer PHOTO_WIDTH = 100;
+    private static final Integer PHOTO_WIDTH = 75;
     private static final Integer PHOTO_HEIGHT = 100;
     private static final String DEFAULT_PHOTO = "src/main/resources/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
@@ -53,7 +50,7 @@ public class MemberCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Circle profilePhoto;
+    private ImageView profilePhoto;
 
     public MemberCard(Member member, int displayedIndex) {
         super(FXML);
@@ -65,7 +62,6 @@ public class MemberCard extends UiPart<Region> {
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
-        //bindListeners(member);
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
@@ -80,18 +76,6 @@ public class MemberCard extends UiPart<Region> {
         if (!isCompressed) {
             setProfilePhoto(member);
         }
-        //bindListeners(member);
-    }
-
-    /**
-     * Binds the individual UI elements to observe their respective {@code Person} properties
-     * so that they will be notified of any changes.
-     */
-    private void bindListeners(Member member) {
-        name.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getName())));
-        phone.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getPhone())));
-
-        setProfilePhoto(member);
     }
 
     //@@author amrut-prabhu
@@ -114,9 +98,9 @@ public class MemberCard extends UiPart<Region> {
             photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
         }
 
-        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
+        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
 
-        profilePhoto.setFill(new ImagePattern(photo));
+        profilePhoto.setImage(photo);
     }
     //@@author
 

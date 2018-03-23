@@ -7,7 +7,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PROFILE_PHOTO;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
@@ -28,7 +27,6 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER "
-            + PREFIX_PROFILE_PHOTO + "PHOTO PATH "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]... "
             + PREFIX_USERNAME + "username "
