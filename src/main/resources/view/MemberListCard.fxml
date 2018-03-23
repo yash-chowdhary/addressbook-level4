@@ -12,11 +12,18 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
 
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.image.ImageView?>
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-<!--HBox id="cardPane" fx:id="cardPane" prefHeight="105.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.102"
-      xmlns:fx="http://javafx.com/fxml/1"-->
+  <!--@@author amrut-prabhu-->
+  <!--Circle fx:id="profilePhoto" fill="#738000" layoutX="150.0" layoutY="200.0" radius="25" stroke="BLACK" strokeType="INSIDE"-->
+  <ImageView fx:id="profilePhoto" fitWidth="85.0" fitHeight="110.0">
+    <!--Rectangle -->
+    <HBox.margin>
+      <Insets left="7.5" bottom="7.5" right="5.0" top="7.5" />
+    </HBox.margin>
+  </ImageView>
+  <!--@@author-->
+
   <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
@@ -44,13 +51,4 @@
       <RowConstraints />
     </rowConstraints>
   </GridPane>
-
-  <!--@@author amrut-prabhu-->
-  <!--Circle fx:id="profilePhoto" fill="#738000" layoutX="150.0" layoutY="200.0" radius="25" stroke="BLACK" strokeType="INSIDE"-->
-  <ImageView fx:id="profilePhoto" layoutX="200.0" layoutY="270.0">
-    <HBox.margin>
-      <Insets bottom="5.0" right="10.0" top="10.0" />
-    </HBox.margin>
-  </ImageView>
-  <!--@@author-->
 </HBox>
