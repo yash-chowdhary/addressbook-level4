@@ -9,6 +9,7 @@ public class Task {
 
     private Description description;
     private Assignor assignor;
+    private Assignee assignee;
     private Time time;
     private Date date;
     private Status status;
@@ -39,6 +40,14 @@ public class Task {
 
     public void setAssignor(Assignor assignor) {
         this.assignor = assignor;
+    }
+
+    public Assignee getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Assignee assignee) {
+        this.assignee = assignee;
     }
 
     public boolean isTaskCompleted() {
