@@ -19,7 +19,7 @@ public class Poll {
 
     private final Question question;
     private final List<Answer> answers;
-    private final Set<MatricNumber> polleesMatricNumber;
+    private final Set<MatricNumber> polleesMatricNumbers;
     private final MatricNumber pollerMatricNumber;
 
 
@@ -29,11 +29,28 @@ public class Poll {
     public Poll(Question question, MatricNumber pollerMatricNumber, Answer... answers) {
         requireNonNull(question);
         requireNonNull(answers);
+        requireNonNull(pollerMatricNumber);
 
         this.question = question;
         this.answers = Arrays.asList(answers);
         this.pollerMatricNumber = pollerMatricNumber;
-        polleesMatricNumber = new HashSet<>();
+        this.polleesMatricNumbers = new HashSet<>();
+    }
+
+    public Poll(Question question, MatricNumber pollerMatricNumber,
+                List<Answer> answers, Set<MatricNumber> polleesMatricNumbers) {
+        requireNonNull(question);
+        requireNonNull(answers);
+        requireNonNull(pollerMatricNumber);
+
+        this.question = question;
+        this.answers = answers;
+        this.pollerMatricNumber = pollerMatricNumber;
+        if (polleesMatricNumbers == null) {
+            this.polleesMatricNumbers = new HashSet<>();
+        } else {
+            this.polleesMatricNumbers = polleesMatricNumbers;
+        }
     }
 
     @Override
@@ -42,6 +59,35 @@ public class Poll {
                 || (other instanceof Poll // instanceof handles nulls
                 && this.question.equals(((Poll) other).question) // state check
                 && this.answers.equals(((Poll) other).answers));
+    }
+
+    public String getPollerName() {
+        // TODO
+        return pollerMatricNumber.toString();
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public MatricNumber getPollerMatricNumber() {
+        return pollerMatricNumber;
+    }
+
+    /**
+     * Returns an immutable answer list, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public List<Answer> getAnswers() {
+        return Collections.unmodifiableList(answers);
+    }
+
+    /**
+     * Returns an immutable poll set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<MatricNumber> getPolleesMatricNumbers() {
+        return Collections.unmodifiableSet(polleesMatricNumbers);
     }
 
     @Override
@@ -56,22 +102,5 @@ public class Poll {
     public String toString() {
         return "[ " + question + "]"
                 + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
-    }
-
-    public String getPollerName() {
-        // TODO
-        return pollerMatricNumber.toString();
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    /**
-     * Returns an immutable answer list, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public List<Answer> getAnswers() {
-        return Collections.unmodifiableList(answers);
     }
 }

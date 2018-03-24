@@ -21,6 +21,8 @@ public class XmlSerializableClubBook {
     private List<XmlAdaptedMember> members;
     @XmlElement
     private List<XmlAdaptedTag> tags;
+    @XmlElement
+    private List<XmlAdaptedPoll> polls;
 
     /**
      * Creates an empty XmlSerializableClubBook.
@@ -29,6 +31,7 @@ public class XmlSerializableClubBook {
     public XmlSerializableClubBook() {
         members = new ArrayList<>();
         tags = new ArrayList<>();
+        polls = new ArrayList<>();
     }
 
     /**
@@ -38,6 +41,7 @@ public class XmlSerializableClubBook {
         this();
         members.addAll(src.getMemberList().stream().map(XmlAdaptedMember::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
+        polls.addAll(src.getPollList().stream().map(XmlAdaptedPoll::new).collect(Collectors.toList()));
     }
 
     /**
@@ -53,6 +57,9 @@ public class XmlSerializableClubBook {
         }
         for (XmlAdaptedMember m : members) {
             clubBook.addMember(m.toModelType());
+        }
+        for (XmlAdaptedPoll p : polls) {
+            clubBook.addPoll(p.toModelType());
         }
         return clubBook;
     }

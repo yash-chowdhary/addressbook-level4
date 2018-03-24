@@ -1,23 +1,50 @@
 package seedu.club.model.poll;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.util.AppUtil.checkArgument;
+
 /**
  * Represents an answer to a question of a poll
  */
 public class Answer {
+
+    public static final String MESSAGE_ANSWER_CONSTRAINTS = "Answers not be empty";
+    public static final String MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS = "No answered for an answer should be non-negative";
+    public static final String ANSWER_VALIDATION_REGEX = ".*\\S.*";
+    public static final int NUMBER_NO_MEMBERS_ANSWERED = 0;
+
     private String value;
     private int noOfMembersAnswered;
 
     public Answer(String value) {
+        this(value, NUMBER_NO_MEMBERS_ANSWERED);
+    }
+
+    public Answer(String value, int noOfMembersAnswered) {
+        requireNonNull(value);
+        checkArgument(isValidAnswerValue(value), MESSAGE_ANSWER_CONSTRAINTS);
         this.value = value;
-        noOfMembersAnswered = 0;
+        this.noOfMembersAnswered = noOfMembersAnswered;
     }
 
     public int getNoOfMembersAnswered() {
         return noOfMembersAnswered;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     public void voteThisAnswer() {
         noOfMembersAnswered++;
+    }
+
+    public static boolean isValidAnswerValue(String value) {
+        return value.matches(ANSWER_VALIDATION_REGEX);
+    }
+
+    public static boolean isValidNoOfMembersAnswered(int noOfMembersAnswered) {
+        return noOfMembersAnswered >= NUMBER_NO_MEMBERS_ANSWERED;
     }
 
     @Override
