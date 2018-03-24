@@ -11,14 +11,14 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
 public class Time {
 
     public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in the format HH:MM and can be separated "
-            + "by ':' or '-'";
+            + "by ':'";
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-time-in-24-hours-format-
      * with-regular-expression/}
      */
-    public static final String TIME_VALIDATION_REGEX = "([01]?[0-9]|2[0-3])[:-][0-5][0-9]";
-    public static final String TIME_SPLITTER = "[-:]";
-    public static final String TIME_SEPARATOR = ":";
+    public static final String TIME_VALIDATION_REGEX = "(0[0-9]|1[0-9]|2[0-3]):"
+            + "(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])";
+    public static final String TIME_SPLITTER = ":";
 
     public final String time;
 
@@ -51,7 +51,7 @@ public class Time {
 
         final int hour = Integer.parseInt(timeFields[0]);
         sb.append(hour);
-        sb.append(TIME_SEPARATOR);
+        sb.append(TIME_SPLITTER);
         final int minute = Integer.parseInt(timeFields[1]);
         sb.append(minute);
 
