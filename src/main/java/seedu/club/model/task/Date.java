@@ -72,6 +72,10 @@ public class Date {
         return sb.toString();
     }
 
+    public String getDate() {
+        return standardizeDate(date);
+    }
+
     @Override
     public int hashCode() {
         return date.hashCode();

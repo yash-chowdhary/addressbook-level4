@@ -10,7 +10,7 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Description {
 
-    public static final String DESCRIPTION_VALIDATION_REGEX = "^\\\\W*(?:\\\\w+\\\\b\\\\W*){1,6}$";
+    public static final String DESCRIPTION_VALIDATION_REGEX = "[\\\\p{Alnum}][\\\\p{Alnum} ]*";
     public static final String MESSAGE_DESCRIPTION_CONSTRAINTS = "Description should a non-empty alphanumeric string"
             + "not exceeding 6 words in length";
     public final String description;

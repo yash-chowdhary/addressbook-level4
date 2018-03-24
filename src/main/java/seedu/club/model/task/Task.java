@@ -22,6 +22,17 @@ public class Task {
         this.status = new Status(Status.NOT_STARTED_STATUS);
     }
 
+    public Task(Description description, Time time, Date date, Assignor assignor, Assignee assignee,
+                Status status) {
+        requireAllNonNull(description, time, date, assignor, assignee);
+        this.description = description;
+        this.time = time;
+        this.date = date;
+        this.assignor = assignor;
+        this.assignee = assignee;
+        this.status = status;
+    }
+
     public Description getDescription() {
         return description;
     }
@@ -48,6 +59,14 @@ public class Task {
 
     public void setAssignee(Assignee assignee) {
         this.assignee = assignee;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public boolean isTaskCompleted() {

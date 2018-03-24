@@ -49,6 +49,9 @@ public interface Model {
     /** Returns an unmodifiable view of the filtered member list */
     ObservableList<Member> getFilteredMemberList();
 
+    /** Returns an unmodifiable view of the filtered member list */
+    ObservableList<Task> getFilteredTaskList();
+
     /**
      * Updates the filter of the filtered member list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.

@@ -58,6 +58,10 @@ public class Time {
         return sb.toString();
     }
 
+    public String getTime() {
+        return standardizeTime(time);
+    }
+
     @Override
     public int hashCode() {
         return time.hashCode();

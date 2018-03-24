@@ -30,6 +30,7 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Assignor;
+import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.storage.ProfilePhotoStorage;
@@ -45,6 +46,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
     private Member loggedInMember;
+    private final FilteredList<Task> filteredTasks;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -59,6 +61,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
         loggedInMember = getLoggedInMember();
+        filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
     }
 
     public ModelManager() {
@@ -263,8 +266,10 @@ public class ModelManager extends ComponentManager implements Model {
         try {
             Assignor assignor = new Assignor(loggedInMember.getName().fullName);
             Assignee assignee = new Assignee(loggedInMember.getName().fullName);
+            Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
             clubBook.addTaskToTaskList(toAdd);
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
@@ -283,6 +288,11 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public ObservableList<Member> getFilteredMemberList() {
         return FXCollections.unmodifiableObservableList(filteredMembers);
+    }
+
+    @Override
+    public ObservableList<Task> getFilteredTaskList() {
+        return FXCollections.unmodifiableObservableList(filteredTasks);
     }
 
     @Override
