@@ -21,6 +21,8 @@ import seedu.club.storage.ProfilePhotoStorage;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
+    private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
+        "orange", "blue", "violet"};
     private static final Integer PHOTO_WIDTH = 100;
     private static final Integer PHOTO_HEIGHT = 100;
     private static final String DEFAULT_PHOTO = "src/main/resources/images/defaultProfilePhoto.png";
@@ -66,10 +68,10 @@ public class MemberCard extends UiPart<Region> {
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
         //bindListeners(member);
-        member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        createTags(member);
     }
 
-    public MemberCard(Member member, int displayedIndex, String fxml) {
+    public MemberCard(Member member, int displayedIndex, String fxml, boolean isCompressed) {
         super(fxml);
         this.member = member;
         id.setText(displayedIndex + ". ");
@@ -77,7 +79,9 @@ public class MemberCard extends UiPart<Region> {
         phone.setText(member.getPhone().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
-        setProfilePhoto(member);
+        if (!isCompressed) {
+            setProfilePhoto(member);
+        }
         //bindListeners(member);
     }
 
@@ -91,6 +95,7 @@ public class MemberCard extends UiPart<Region> {
 
         setProfilePhoto(member);
     }
+
 
     //@@author amrut-prabhu
     /**
@@ -115,6 +120,26 @@ public class MemberCard extends UiPart<Region> {
         photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
 
         profilePhoto.setFill(new ImagePattern(photo));
+    }
+    //@@author
+
+    //@@author yash-chowdhary
+    /**
+     * Creates the labels for tags by randomly generating a color from `TAG_COLORS`
+     */
+    private void createTags(Member member) {
+        member.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.getStyleClass().add(returnColor(tag.tagName));
+            tags.getChildren().add(tagLabel);
+        });
+    }
+
+    /**
+     * Returns a color chosen uniformly at random from TAG_COLORS
+     */
+    private String returnColor(String tag) {
+        return TAG_COLORS[Math.abs(tag.hashCode()) % TAG_COLORS.length];
     }
     //@@author
 

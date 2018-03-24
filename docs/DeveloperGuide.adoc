@@ -596,6 +596,79 @@ The logged in member's details are then updated to include this new profile phot
 // end::profilephoto[]
 // end::profilephoto[]
 
+=== Compress/Decompress Mechanism
+==== Current Implementation
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
+
+image::DecompressedMemberCards.png[width="300"]
+_Figure 22. Decompressed Member Cards_
+
+image::CompressedCards.png[width="300"]
+_Figure 23. Compressed Member Cards_
+
+The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 24) since a `CompressedMemberCard` is a `MemberCard`.
+Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
+
+image::MemberCardClassDiagram.png[width="300"]
+_Figure 24. `MemberCard` class diagram_
+
+The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
+These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
+
+Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
+
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
+
+The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
+
+image::SDforCompressToEventsCenter.png[width="800"]
+_Figure 25. Sequence diagram for compress command to Events Center_
+
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 25). If the cards are already compressed, no changes occur.
+However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
+
+image::SDforCompressFromEventsCenter.png[width="800"]
+_Figure 26. Sequence diagram for compress command from Events Center_
+
+==== Design Considerations
+===== Aspect: How to interact from Logic to Ui
+* **Alternative 1 (current choice)**: Use Event-Driven approach to interact from `CompressCommand`/`DecompressCommand` to `MemberListPanel`
+** Pros: Reduces coupling.
+** Cons: Slower than just directly changing the `Ui` since a seperate class(`EventsCenter`) has to manage interactions, not
+just for compress/decompress but for other events as well.
+* **Alternative 2:** Keep a `Ui` attribute in every command just like `Model`
+** Pros: Easy to implement.
+** Cons: Increases coupling
+
+=== Account Management Mechanism
+==== Current Implementation
+Firstly, the ClubConnect will have no members.
+
+The user will sign up using their name, email, matric number, username and password to sign up for an account.
+
+There will only be one sign up for ClubConnect. The first sign up will be the administrator for ClubConnect.
+
+The administrator will then add members to the database with a default username and password allocated to them.
+
+Members will then log in using their username and password to view the task assign to them individually.
+With the implementation the log in and sign up function, the admin can allocated unique task to each individual.
+
+After the member logs in for the first time, they will be prompted to change their password in order to proceed.
+This will ensure security and privacy for each individual data.
+
+Lastly, after using ClubConnect, a logout function is available for them to logout of their account safetly.
+With this logout function, user will not need to restart the application frequently in order to log out of their own account.
+
+==== Design Considerations
+===== Aspect: Interaction from Storage to each unique users
+* **Alternative 1 (current choice)**: Use a command line approach to ensure data privacy between each user
+** Pros: Increases privacy and security.
+** Cons: Less intuitive then using a Login or Signup panel.
+* **Alternative 2**: Program a UI panel for Login and Signup.
+** Pros: More Intuitive for users to key in their username and password without any prefix or command word.
+** Cons: Hard to implement as you have to cater a lot of panels and change in activity after signing up or logging in.
+
 === Logging
 
 We are using `java.util.logging` package for logging.
