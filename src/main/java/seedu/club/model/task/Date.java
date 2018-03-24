@@ -12,15 +12,15 @@ import java.time.LocalDate;
  */
 public class Date {
 
-    public static final String DATE_SPLITTER = "[/.-]";
+    public static final String DATE_SPLITTER = "[///./-]";
     public static final String DATE_SEPARATOR = "/";
     public static final String MESSAGE_DATE_CONSTRAINTS = "Date should be a string separated by '.', '/', or "
             + "'-' in the format DD-MM-YYYY";
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-date-with-regular-expression/}
      */
-    public static final String DATE_VALIDATION_REGEX = "(0?[1-9]|[12][0-9]|3[01])[/.-](0?[1-9]|1[012])[/.-]"
-            + "((19|20)\\\\d\\\\d)";
+    public static final String DATE_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
+            + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
 
     public final String date;
 
