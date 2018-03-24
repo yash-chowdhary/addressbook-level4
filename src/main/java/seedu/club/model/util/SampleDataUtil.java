@@ -52,10 +52,14 @@ public class SampleDataUtil {
 
     public static Poll[] getSamplePolls() {
         return new Poll[] {
-            new Poll(new Question("How are you?"), new MatricNumber("A1234567A"), new Answer("I'm fine"), new Answer("Not good man")),
-            new Poll(new Question("What are you?"), new MatricNumber("A1111111A"), new Answer("A vampire"), new Answer("A zombie")),
-            new Poll(new Question("Who are you?"), new MatricNumber("A2222222A"), new Answer("Your father"), new Answer("Your mom")),
-            new Poll(new Question("When are you?"), new MatricNumber("A3333333A"), new Answer("I don't get it"), new Answer("Umm.."))
+            new Poll(new Question("How are you?"), new MatricNumber("A1234567A"),
+                    new Answer("I'm fine"), new Answer("Not good man")),
+            new Poll(new Question("What are you?"), new MatricNumber("A1111111A"),
+                    new Answer("A vampire"), new Answer("A zombie")),
+            new Poll(new Question("Who are you?"), new MatricNumber("A2222222A"),
+                    new Answer("Your father"), new Answer("Your mom")),
+            new Poll(new Question("When are you?"), new MatricNumber("A3333333A"),
+                    new Answer("I don't get it"), new Answer("Umm.."))
         };
     }
 

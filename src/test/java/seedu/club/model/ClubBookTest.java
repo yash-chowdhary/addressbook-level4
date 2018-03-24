@@ -109,7 +109,8 @@ public class ClubBookTest {
         // Repeat ALICE twice
         List<Member> newMembers = Arrays.asList(ALICE, ALICE);
         List<Tag> newTags = new ArrayList<>(ALICE.getTags());
-        ClubBookStub newData = new ClubBookStub(newMembers, newTags);
+        List<Poll> newPolls = new ArrayList<>();
+        ClubBookStub newData = new ClubBookStub(newMembers, newTags, newPolls);
 
         thrown.expect(AssertionError.class);
         clubBook.resetData(newData);
@@ -165,10 +166,13 @@ public class ClubBookTest {
     private static class ClubBookStub implements ReadOnlyClubBook {
         private final ObservableList<Member> members = FXCollections.observableArrayList();
         private final ObservableList<Tag> tags = FXCollections.observableArrayList();
+        private final ObservableList<Poll> polls = FXCollections.observableArrayList();
 
-        ClubBookStub(Collection<Member> members, Collection<? extends Tag> tags) {
+        ClubBookStub(Collection<Member> members, Collection<? extends Tag> tags,
+                     Collection<? extends Poll> polls) {
             this.members.setAll(members);
             this.tags.setAll(tags);
+            this.polls.setAll(polls);
         }
 
         @Override
@@ -183,8 +187,7 @@ public class ClubBookTest {
 
         @Override
         public ObservableList<Poll> getPollList() {
-            //TODO
-            return null;
+            return polls;
         }
     }
 

@@ -43,7 +43,7 @@ public class PollListPanel extends UiPart<Region> {
         ObservableList<PollCard> mappedList = EasyBind.map(
                 pollList, (poll) -> new PollCard(poll, pollList.indexOf(poll) + 1));
         pollListView.setItems(mappedList);
-        pollListView.setCellFactory(listView -> new pollListViewCell());
+        pollListView.setCellFactory(listView -> new PollListViewCell());
     }
 
     private void setEventHandlerForSelectionChangeEvent() {
@@ -75,7 +75,7 @@ public class PollListPanel extends UiPart<Region> {
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PollCard}.
      */
-    class pollListViewCell extends ListCell<PollCard> {
+    class PollListViewCell extends ListCell<PollCard> {
 
         @Override
         protected void updateItem(PollCard poll, boolean empty) {

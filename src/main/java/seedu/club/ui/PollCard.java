@@ -5,7 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.club.model.member.Member;
 import seedu.club.model.poll.Poll;
 
 /**

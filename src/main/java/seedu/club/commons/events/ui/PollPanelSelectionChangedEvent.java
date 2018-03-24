@@ -1,7 +1,6 @@
 package seedu.club.commons.events.ui;
 
 import seedu.club.commons.events.BaseEvent;
-import seedu.club.ui.MemberCard;
 import seedu.club.ui.PollCard;
 
 /**

@@ -367,7 +367,9 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
-    public ObservableList<Poll> getPollList() { return polls.asObservableList(); }
+    public ObservableList<Poll> getPollList() {
+        return polls.asObservableList();
+    }
 
     @Override
     public boolean equals(Object other) {

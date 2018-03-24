@@ -8,8 +8,9 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Answer {
 
-    public static final String MESSAGE_ANSWER_CONSTRAINTS = "Answers not be empty";
-    public static final String MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS = "No answered for an answer should be non-negative";
+    public static final String MESSAGE_ANSWER_CONSTRAINTS = "Answer not be empty";
+    public static final String MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS =
+            "No answered for an answer should be non-negative";
     public static final String ANSWER_VALIDATION_REGEX = ".*\\S.*";
     public static final int NUMBER_NO_MEMBERS_ANSWERED = 0;
 

@@ -2,7 +2,6 @@ package seedu.club.logic;
 
 import java.util.logging.Logger;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
@@ -53,7 +52,9 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
-    public ObservableList<Poll> getFilteredPollList() { return model.getFilteredPollList(); }
+    public ObservableList<Poll> getFilteredPollList() {
+        return model.getFilteredPollList();
+    }
 
     @Override
     public ObservableList<Poll> getObservablePollList() {

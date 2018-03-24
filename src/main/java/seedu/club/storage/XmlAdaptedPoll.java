@@ -62,7 +62,7 @@ public class XmlAdaptedPoll {
         pollerMatricNumber = source.getPollerMatricNumber().toString();
         polleesMatricNumbers = new ArrayList<>();
         for (MatricNumber polleeMatricNumber : source.getPolleesMatricNumbers()) {
-            polleesMatricNumbers.add( new XmlAdaptedMatricNumber(polleeMatricNumber));
+            polleesMatricNumbers.add(new XmlAdaptedMatricNumber(polleeMatricNumber));
         }
         answers = new ArrayList<>();
         for (Answer answer : source.getAnswers()) {

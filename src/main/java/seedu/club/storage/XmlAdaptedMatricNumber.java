@@ -2,7 +2,7 @@ package seedu.club.storage;
 
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.model.member.MatricNumber;
@@ -14,7 +14,7 @@ public class XmlAdaptedMatricNumber {
 
     //TODO
     private static final String MISSING_FIELD_MESSAGE_FORMAT = "Matric number missing";
-    @XmlElement(required = true)
+    @XmlValue
     private String matricNumber;
 
     /**
