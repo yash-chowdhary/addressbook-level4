@@ -330,7 +330,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> body} into a {@code Optional<Subject>} if {@code body} is present.
+     * Parses a {@code Optional<String> body} into a {@code Optional<Body>} if {@code body} is present.
      */
     public static Optional<Body> parseBody(Optional<String> body) {
         requireNonNull(body);
@@ -353,6 +353,15 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code Optional<String> description} into a {@code Optional<Description>} if {@code description}
+     * is present.
+     */
+    public static Optional<Description> parseDescription(Optional<String> description) throws IllegalValueException {
+        requireNonNull(description);
+        return description.isPresent() ? Optional.of(parseDescription(description.get())) : Optional.empty();
+    }
+
+    /**
      * Parses a {@code String date} into a {@code Date}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -365,6 +374,14 @@ public class ParserUtil {
             throw new IllegalValueException(Date.MESSAGE_DATE_CONSTRAINTS);
         }
         return new Date(trimmedDate);
+    }
+
+    /**
+     * Parses a {@code Optional<String> date} into a {@code Optional<Date>} if {@code date} is present.
+     */
+    public static Optional<Date> parseDate(Optional<String> date) throws IllegalValueException {
+        requireNonNull(date);
+        return date.isPresent() ? Optional.of(parseDate(date.get())) : Optional.empty();
     }
 
     /**
@@ -381,5 +398,14 @@ public class ParserUtil {
         }
         return new Time(trimmedTime);
     }
+
+    /**
+     * Parses a {@code Optional<String> time} into a {@code Optional<Time>} if {@code time} is present.
+     */
+    public static Optional<Time> parseTime(Optional<String> time) throws IllegalValueException {
+        requireNonNull(time);
+        return time.isPresent() ? Optional.of(parseTime(time.get())) : Optional.empty();
+    }
+
     //@@author
 }
