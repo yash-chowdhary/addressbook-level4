@@ -72,6 +72,11 @@ public class UniqueTaskList implements Iterable<Task> {
      */
     public boolean contains(Task toCheck) {
         requireNonNull(toCheck);
+        for (Task task : internalList) {
+            if (task.equals(toCheck)) {
+
+            }
+        }
         return internalList.contains(toCheck);
     }
 

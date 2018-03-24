@@ -15,7 +15,7 @@ public class Task {
     private Status status;
 
     public Task(Description description, Time time, Date date) {
-        requireAllNonNull(description, assignor, time, date, status);
+        requireAllNonNull(description, time, date);
         this.description = description;
         this.time = time;
         this.date = date;
@@ -81,4 +81,15 @@ public class Task {
         return status.getStatus().equalsIgnoreCase(Status.NOT_STARTED_STATUS);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other == this
+                || (other instanceof Task
+                && this.getDescription().equals(((Task) other).getDescription())
+                && this.getDate().equals(((Task) other).getDate())
+                && this.getTime().equals(((Task) other).getTime())
+                && this.getAssignor().equals(((Task) other).getAssignor())
+                && this.getAssignee().equals(((Task) other).getAssignee())
+                && this.getStatus().equals(((Task) other).getStatus()));
+    }
 }

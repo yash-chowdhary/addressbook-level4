@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.commons.util.StringUtil;
@@ -40,7 +42,7 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
-
+    private static final Logger logger = LogsCenter.getLogger(ParserUtil.class);
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
      * trimmed.
@@ -344,6 +346,7 @@ public class ParserUtil {
      * @throws IllegalValueException if the given {@code description} is invalid.
      */
     public static Description parseDescription(String description) throws IllegalValueException {
+        logger.info(description);
         requireNonNull(description);
         String trimmedDescription = description.trim();
         if (!Description.isValidDescription(trimmedDescription)) {

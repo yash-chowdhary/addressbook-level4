@@ -200,6 +200,12 @@ public class AddCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public ObservableList<Task> getFilteredTaskList() {
+            fail("This method should not be called");
+            return null;
+        }
     }
 
     /**

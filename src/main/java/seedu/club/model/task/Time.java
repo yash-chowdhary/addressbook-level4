@@ -53,6 +53,9 @@ public class Time {
         sb.append(hour);
         sb.append(TIME_SPLITTER);
         final int minute = Integer.parseInt(timeFields[1]);
+        if (minute < 10) {
+            sb.append(0);
+        }
         sb.append(minute);
 
         return sb.toString();
