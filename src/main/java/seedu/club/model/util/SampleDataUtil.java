@@ -17,6 +17,10 @@ import seedu.club.model.member.Phone;
 import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.Question;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -46,15 +50,29 @@ public class SampleDataUtil {
         };
     }
 
+    public static Poll[] getSamplePolls() {
+        return new Poll[] {
+            new Poll(new Question("How are you?"), new MatricNumber("A1234567A"), new Answer("I'm fine"), new Answer("Not good man")),
+            new Poll(new Question("What are you?"), new MatricNumber("A1234567A"), new Answer("A vampire"), new Answer("A zombie")),
+            new Poll(new Question("Who are you?"), new MatricNumber("A1234567A"), new Answer("Your father"), new Answer("Your mom")),
+            new Poll(new Question("When are you?"), new MatricNumber("A1234567A"), new Answer("I don't get it"), new Answer("Umm.."))
+        };
+    }
+
     public static ReadOnlyClubBook getSampleClubBook() {
         try {
             ClubBook sampleCb = new ClubBook();
             for (Member sampleMember : getSampleMembers()) {
                 sampleCb.addMember(sampleMember);
             }
+            for (Poll samplePoll : getSamplePolls()) {
+                sampleCb.addPoll(samplePoll);
+            }
             return sampleCb;
         } catch (DuplicateMemberException e) {
             throw new AssertionError("sample data cannot contain duplicate members", e);
+        } catch (DuplicatePollException e) {
+            throw new AssertionError("sample data cannot contain duplicate polls", e);
         }
     }
 

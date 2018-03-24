@@ -41,7 +41,7 @@ public class PollCard extends UiPart<Region> {
         this.poll = poll;
         id.setText(displayedIndex + ". ");
         pollerName.setText(poll.getPollerName());
-        question.setText(poll.getQuestion());
+        question.setText(poll.getQuestion().toString());
         poll.getAnswers().forEach(answer -> answers.getChildren().add(new Label(answer.toString())));
     }
 

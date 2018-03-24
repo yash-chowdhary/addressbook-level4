@@ -40,14 +40,10 @@ public class PollListPanel extends UiPart<Region> {
     }
 
     private void setPollListView(ObservableList<Poll> pollList) {
-        System.out.println("pollList = " + pollList);
         ObservableList<PollCard> mappedList = EasyBind.map(
                 pollList, (poll) -> new PollCard(poll, pollList.indexOf(poll) + 1));
-        System.out.println("HELLO");
-        System.out.println("mappedList = " + mappedList);
         pollListView.setItems(mappedList);
         pollListView.setCellFactory(listView -> new pollListViewCell());
-        System.out.println("SAIJHDBSAKJDLKJSA");
     }
 
     private void setEventHandlerForSelectionChangeEvent() {

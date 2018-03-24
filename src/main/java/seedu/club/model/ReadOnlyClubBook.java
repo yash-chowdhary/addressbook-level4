@@ -2,6 +2,7 @@ package seedu.club.model;
 
 import javafx.collections.ObservableList;
 import seedu.club.model.member.Member;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -20,6 +21,12 @@ public interface ReadOnlyClubBook {
      * This list will not contain any duplicate tags.
      */
     ObservableList<Tag> getTagList();
+
+    /**
+     * Returns an unmodifiable view of the polls list.
+     * This list will not contain any duplicate polls.
+     */
+    ObservableList<Poll> getPollList();
 
     /**
      * Returns true if tag is present in the tags list.

@@ -1,7 +1,7 @@
 package seedu.club.model.poll;
 
 /**
- * Represents an answer to a poll
+ * Represents an answer to a question of a poll
  */
 public class Answer {
     private String value;

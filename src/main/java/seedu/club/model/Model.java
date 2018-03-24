@@ -12,6 +12,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
@@ -46,6 +47,9 @@ public interface Model {
 
     /** Returns an unmodifiable view of the filtered member list */
     ObservableList<Member> getFilteredMemberList();
+
+    /** Returns an unmodifiable view of the filtered poll list */
+    ObservableList<Poll> getFilteredPollList();
 
     /**
      * Updates the filter of the filtered member list to filter by the given {@code predicate}.

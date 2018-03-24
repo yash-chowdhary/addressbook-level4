@@ -20,6 +20,9 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.UniquePollList;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -32,6 +35,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
     private final UniqueMemberList members;
     private final UniqueTagList tags;
+    private final UniquePollList polls;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -43,6 +47,7 @@ public class ClubBook implements ReadOnlyClubBook {
     {
         members = new UniqueMemberList();
         tags = new UniqueTagList();
+        polls = new UniquePollList();
     }
 
     public ClubBook() {}
@@ -65,12 +70,17 @@ public class ClubBook implements ReadOnlyClubBook {
         this.tags.setTags(tags);
     }
 
+    public void setPolls(Set<Poll> polls) {
+        this.polls.setPolls(polls);
+    }
+
     /**
      * Resets the existing data of this {@code ClubBook} with {@code newData}.
      */
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
+        setPolls(new HashSet<>(newData.getPollList()));
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
@@ -334,6 +344,10 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
+    public void addPoll(Poll poll) throws DuplicatePollException {
+        polls.add(poll);
+    }
+
     //// util methods
 
     @Override
@@ -351,6 +365,9 @@ public class ClubBook implements ReadOnlyClubBook {
     public ObservableList<Tag> getTagList() {
         return tags.asObservableList();
     }
+
+    @Override
+    public ObservableList<Poll> getPollList() { return polls.asObservableList(); }
 
     @Override
     public boolean equals(Object other) {

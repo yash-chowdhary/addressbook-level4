@@ -26,6 +26,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.storage.ProfilePhotoStorage;
@@ -40,6 +41,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final ClubBook clubBook;
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
+    private final FilteredList<Poll> filteredPolls;
     private Member loggedInMember;
 
     /**
@@ -54,6 +56,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
+        filteredPolls = new FilteredList<>(this.clubBook.getPollList());
     }
 
     public ModelManager() {
@@ -269,6 +272,11 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredMemberList(Predicate<Member> predicate) {
         requireNonNull(predicate);
         filteredMembers.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<Poll> getFilteredPollList() {
+        return FXCollections.unmodifiableObservableList(filteredPolls);
     }
 
     @Override

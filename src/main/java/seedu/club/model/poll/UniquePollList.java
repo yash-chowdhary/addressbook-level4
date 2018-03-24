@@ -9,8 +9,8 @@ import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.club.commons.exceptions.DuplicateDataException;
 import seedu.club.commons.util.CollectionUtil;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 
 /**
  * A list of polls that enforces no nulls and uniqueness between its elements.
@@ -129,14 +129,4 @@ public class UniquePollList implements Iterable<Poll> {
         assert CollectionUtil.elementsAreUnique(internalList);
         return internalList.hashCode();
     }
-
-    /**
-     * Signals that an operation would have violated the 'no duplicates' property of the list.
-     */
-    public static class DuplicatePollException extends DuplicateDataException {
-        protected DuplicatePollException() {
-            super("Operation would result in duplicate polls");
-        }
-    }
-
 }

@@ -17,7 +17,7 @@ import seedu.club.model.member.MatricNumber;
  */
 public class Poll {
 
-    private final String question;
+    private final Question question;
     private final List<Answer> answers;
     private final Set<MatricNumber> polleesMatricNumber;
     private final MatricNumber pollerMatricNumber;
@@ -26,7 +26,7 @@ public class Poll {
     /**
      * Constructs a {@code Poll}.
      */
-    public Poll(String question, MatricNumber pollerMatricNumber, Answer answers) {
+    public Poll(Question question, MatricNumber pollerMatricNumber, Answer... answers) {
         requireNonNull(question);
         requireNonNull(answers);
 
@@ -63,7 +63,7 @@ public class Poll {
         return pollerMatricNumber.toString();
     }
 
-    public String getQuestion() {
+    public Question getQuestion() {
         return question;
     }
 
