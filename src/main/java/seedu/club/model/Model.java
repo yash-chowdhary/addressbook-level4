@@ -93,5 +93,5 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
-    void addTask(Task toAdd) throws DuplicateTaskException;
+    void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
 }

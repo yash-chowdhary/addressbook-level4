@@ -28,6 +28,8 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.storage.ProfilePhotoStorage;
@@ -56,6 +58,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
+        loggedInMember = getLoggedInMember();
     }
 
     public ModelManager() {
@@ -256,9 +259,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void addTask(Task toAdd) throws DuplicateTaskException {
+    public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
-            loggedInMember.addToTaskList(toAdd);
+            Assignor assignor = new Assignor(loggedInMember.getName().fullName);
+            Assignee assignee = new Assignee(loggedInMember.getName().fullName);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            clubBook.addTaskToTaskList(toAdd);
+            indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
         }

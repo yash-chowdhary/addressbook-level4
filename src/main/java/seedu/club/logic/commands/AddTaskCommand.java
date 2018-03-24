@@ -16,6 +16,11 @@ public class AddTaskCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addtask";
 
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " "
+            + PREFIX_DESCRIPTION + "DESCRIPTION"
+            + PREFIX_TIME + "TIME"
+            + PREFIX_DATE + "DATE";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Task to the currently logged-in member's"
             + "task list. "
             + "Parameters: "
@@ -41,7 +46,7 @@ public class AddTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
-            model.addTask(toAdd);
+            model.addTaskToTaskList(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);

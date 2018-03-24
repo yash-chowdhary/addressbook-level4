@@ -23,6 +23,9 @@ import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.UniqueTaskList;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 
 /**
  * Wraps all data at the club-book level
@@ -32,6 +35,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
     private final UniqueMemberList members;
     private final UniqueTagList tags;
+    private final UniqueTaskList tasks;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -43,6 +47,7 @@ public class ClubBook implements ReadOnlyClubBook {
     {
         members = new UniqueMemberList();
         tags = new UniqueTagList();
+        tasks = new UniqueTaskList();
     }
 
     public ClubBook() {}
@@ -268,7 +273,15 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
-    //@@author yash-chowdhary
+
+    /**
+     * Adds order to list of orders.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    //@@author
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
@@ -350,6 +363,11 @@ public class ClubBook implements ReadOnlyClubBook {
     @Override
     public ObservableList<Tag> getTagList() {
         return tags.asObservableList();
+    }
+
+    @Override
+    public ObservableList<Task> getOrderList() {
+        return tasks.asObservableList();
     }
 
     @Override
