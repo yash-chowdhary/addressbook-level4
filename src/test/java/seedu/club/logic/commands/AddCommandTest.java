@@ -32,6 +32,8 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.testutil.MemberBuilder;
 
 public class AddCommandTest {
@@ -191,6 +193,12 @@ public class AddCommandTest {
                 TagNotFoundException {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+            fail("This method should not be called");
+            return;
         }
     }
 
