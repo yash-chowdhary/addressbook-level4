@@ -75,6 +75,7 @@ public class XmlSerializableClubBook {
         }
 
         XmlSerializableClubBook otherAb = (XmlSerializableClubBook) other;
-        return members.equals(otherAb.members) && tags.equals(otherAb.tags);
+        return members.equals(otherAb.members) && tags.equals(otherAb.tags)
+                && polls.equals(otherAb.polls);
     }
 }

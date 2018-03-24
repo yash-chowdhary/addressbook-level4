@@ -1,5 +1,6 @@
 package seedu.club.storage;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
 import seedu.club.commons.exceptions.IllegalValueException;
@@ -12,7 +13,7 @@ public class XmlAdaptedAnswer {
 
     @XmlValue
     private String value;
-    @XmlValue
+    @XmlAttribute
     private int noOfMembersAnswered;
 
     /**

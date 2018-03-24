@@ -26,7 +26,7 @@ public class XmlAdaptedPoll {
     @XmlElement(required = true)
     private String pollerMatricNumber;
     @XmlElement
-    private List<String> polleesMatricNumbers;
+    private List<XmlAdaptedMatricNumber> polleesMatricNumbers = new ArrayList<>();
     @XmlElement
     private List<XmlAdaptedAnswer> answers = new ArrayList<>();
 
@@ -41,11 +41,11 @@ public class XmlAdaptedPoll {
      */
 
     public XmlAdaptedPoll(String question, String pollerMatricNumber,
-                          List<String> polleesMatricNumbers, List<XmlAdaptedAnswer> answers) {
+                          List<XmlAdaptedMatricNumber> polleesMatricNumbers, List<XmlAdaptedAnswer> answers) {
         this.question = question;
         this.pollerMatricNumber = pollerMatricNumber;
         if (polleesMatricNumbers != null) {
-            this.polleesMatricNumbers = new ArrayList<>(polleesMatricNumbers);
+            this.polleesMatricNumbers = new ArrayList<XmlAdaptedMatricNumber>(polleesMatricNumbers);
         }
         if (answers != null) {
             this.answers = new ArrayList<>(answers);
@@ -62,7 +62,7 @@ public class XmlAdaptedPoll {
         pollerMatricNumber = source.getPollerMatricNumber().toString();
         polleesMatricNumbers = new ArrayList<>();
         for (MatricNumber polleeMatricNumber : source.getPolleesMatricNumbers()) {
-            polleesMatricNumbers.add(polleeMatricNumber.toString());
+            polleesMatricNumbers.add( new XmlAdaptedMatricNumber(polleeMatricNumber));
         }
         answers = new ArrayList<>();
         for (Answer answer : source.getAnswers()) {
@@ -86,6 +86,16 @@ public class XmlAdaptedPoll {
             answersToReturn.add(answer.toModelType());
         }
 
+        if (this.polleesMatricNumbers == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    MatricNumber.class.getSimpleName()));
+        }
+
+        final Set<MatricNumber> polleesMatricNumbersToReturn = new HashSet<>();
+        for (XmlAdaptedMatricNumber matricNumber : polleesMatricNumbers) {
+            polleesMatricNumbersToReturn.add(matricNumber.toModelType());
+        }
+
         if (this.question == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                     Question.class.getSimpleName()));
@@ -94,14 +104,6 @@ public class XmlAdaptedPoll {
             throw new IllegalValueException(Question.MESSAGE_QUESTION_CONSTRAINTS);
         }
         final Question questionToReturn = new Question(this.question);
-
-        final Set<MatricNumber> polleesMatricNumbersToReturn = new HashSet<>();
-        for (String stringMatricNumber : polleesMatricNumbers) {
-            if (!MatricNumber.isValidMatricNumber(stringMatricNumber)) {
-                throw new IllegalValueException(MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
-            }
-            polleesMatricNumbersToReturn.add(new MatricNumber(stringMatricNumber));
-        }
 
         if (this.pollerMatricNumber == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
