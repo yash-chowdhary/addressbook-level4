@@ -26,7 +26,7 @@ public interface ReadOnlyClubBook {
      * Returns an unmodifiable view of the orders list.
      * This list will not contain any duplicate orders.
      */
-    ObservableList<Task> getOrderList();
+    ObservableList<Task> getTaskList();
     /**
      * Returns true if tag is present in the tags list.
      */

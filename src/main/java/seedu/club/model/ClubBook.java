@@ -70,6 +70,10 @@ public class ClubBook implements ReadOnlyClubBook {
         this.tags.setTags(tags);
     }
 
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
+
     /**
      * Resets the existing data of this {@code ClubBook} with {@code newData}.
      */
@@ -80,6 +84,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
 
+        setTasks(new HashSet<>(newData.getTaskList()));
         try {
             setMembers(syncedMemberList);
         } catch (DuplicateMemberException e) {
@@ -351,7 +356,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
     @Override
     public String toString() {
-        return members.asObservableList().size() + " members, " + tags.asObservableList().size() +  " tags";
+        return members.asObservableList().size() + " members, " + tags.asObservableList().size() +  " tags"
+                + tasks.asObservableList().size() + " tasks";
         // TODO: refine later
     }
 
@@ -366,7 +372,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
-    public ObservableList<Task> getOrderList() {
+    public ObservableList<Task> getTaskList() {
         return tasks.asObservableList();
     }
 

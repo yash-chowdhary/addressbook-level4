@@ -49,7 +49,7 @@ public class UniqueTaskList implements Iterable<Task> {
     /**
      * Replaces the Tasks in this list with those in the argument order list.
      */
-    public void setOrders(Set<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
         requireAllNonNull(tasks);
         internalList.setAll(tasks);
         assert CollectionUtil.elementsAreUnique(internalList);
