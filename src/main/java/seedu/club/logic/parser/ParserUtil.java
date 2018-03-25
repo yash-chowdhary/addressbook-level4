@@ -2,6 +2,8 @@ package seedu.club.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -37,6 +39,7 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
+    public static final String MESSAGE_INVALID_PATH = "Path should be a valid absolute path to a file.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -210,6 +213,41 @@ public class ParserUtil {
         requireNonNull(photo);
         return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
     }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code path} is invalid.
+     */
+    public static File parsePath(String path) throws IllegalValueException {
+        requireNonNull(path);
+        String trimmedPath = path.trim();
+
+        if (trimmedPath.isEmpty()) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return new File(trimmedPath);
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     *
+     * @throws IllegalValueException if the given {@code path} is a directory.
+     */
+    public static File parseExportPath(String path) throws IllegalValueException, IOException {
+        File file = parsePath(path);
+
+        if (!file.isAbsolute() || file.isDirectory()) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        file.createNewFile();
+        return file;
+    }
+
+    //@@author
 
     //@@author yash-chowdhary
     /**

@@ -1,10 +1,12 @@
 //@@author amrut-prabhu
 package seedu.club.logic.commands;
 
+import java.io.File;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
- * Exports Club Connect members' information to the file specified.
+ * Exports Club Connect's members' information to the file specified.
  */
 public class ExportCommand extends Command {
 
@@ -17,24 +19,27 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_EXPORT_SUCCESS = "Members' details exported to %1$s";
 
-    private final String exportFilePath;
+    private final File exportFile;
 
-    public ExportCommand(String exportFilePath) {
-        this.exportFilePath = exportFilePath;
+    /**
+     * @param exportFile CSV file to be exported to.
+     */
+    public ExportCommand(File exportFile) {
+        this.exportFile = exportFile;
     }
 
     @Override
     public CommandResult execute() throws CommandException {
-        model.exportClubConnect(exportFilePath);
+        model.exportClubConnect(exportFile);
 
-        return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFilePath));
+        return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ExportCommand // instanceof handles nulls
-                && this.exportFilePath.equals(((ExportCommand) other).exportFilePath)); // state check
+                && this.exportFile.equals(((ExportCommand) other).exportFile)); // state check
     }
 }
 //@@author amrut-prabhu
