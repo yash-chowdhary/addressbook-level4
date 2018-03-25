@@ -23,7 +23,7 @@ public class Answer {
 
     public Answer(String value, int noOfMembersAnswered) {
         requireNonNull(value);
-        checkArgument(isValidAnswerValue(value), MESSAGE_ANSWER_CONSTRAINTS);
+        checkArgument(isValidAnswer(value), MESSAGE_ANSWER_CONSTRAINTS);
         this.value = value;
         this.noOfMembersAnswered = noOfMembersAnswered;
     }
@@ -40,7 +40,7 @@ public class Answer {
         noOfMembersAnswered++;
     }
 
-    public static boolean isValidAnswerValue(String value) {
+    public static boolean isValidAnswer(String value) {
         return value.matches(ANSWER_VALIDATION_REGEX);
     }
 
@@ -62,6 +62,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Ans: " + value;
+        return value;
     }
 }

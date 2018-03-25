@@ -1,16 +1,21 @@
 package seedu.club.model.poll;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.util.AppUtil.checkArgument;
+
 /**
  * Represents an question of a poll
  */
 public class Question {
 
-    public static final String MESSAGE_QUESTION_CONSTRAINTS = "Questions not be empty";
+    public static final String MESSAGE_QUESTION_CONSTRAINTS = "Questions may not be empty";
     public static final String QUESTION_VALIDATION_REGEX = ".*\\S.*";
 
     private String value;
 
     public Question(String value) {
+        requireNonNull(value);
+        checkArgument(isValidQuestion(value), MESSAGE_QUESTION_CONSTRAINTS);
         this.value = value;
     }
 
@@ -36,6 +41,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question: " + value;
+        return value;
     }
 }

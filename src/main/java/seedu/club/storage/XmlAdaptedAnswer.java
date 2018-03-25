@@ -46,7 +46,7 @@ public class XmlAdaptedAnswer {
      * @throws IllegalValueException if there were any data constraints violated in the adapted member
      */
     public Answer toModelType() throws IllegalValueException {
-        if (!Answer.isValidAnswerValue(value)) {
+        if (!Answer.isValidAnswer(value)) {
             throw new IllegalValueException(Answer.MESSAGE_ANSWER_CONSTRAINTS);
         }
         if (!Answer.isValidNoOfMembersAnswered(noOfMembersAnswered)) {

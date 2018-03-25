@@ -33,6 +33,11 @@ import seedu.club.testutil.EditMemberDescriptorBuilder;
  */
 public class CommandTestUtil {
 
+    public static final String VALID_ANSWER = "this is an answer";
+    public static final String INVALID_ANSWER = "   ";
+    public static final String VALID_QUESTION = "What is the meaning of life?";
+    public static final String INVALID_QUESTION = " ";
+
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
     public static final String VALID_PHONE_AMY = "11111111";
