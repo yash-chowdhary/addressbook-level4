@@ -17,8 +17,8 @@ public class TaskBuilder {
     public static final String DEFAULT_DESCRIPTION = "Book Auditorium";
     public static final String DEFAULT_DATE = "01/01/2018";
     public static final String DEFAULT_TIME = "15:00";
-    public static final String DEFAULT_ASSIGNOR = "Alice Pauline";
-    public static final String DEFAULT_ASSIGNEE = "Alice Pauline";
+    public static final String DEFAULT_ASSIGNOR = "";
+    public static final String DEFAULT_ASSIGNEE = "";
     public static final String DEFAULT_STATUS = "Yet To Begin";
 
     private Description description;

@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
@@ -44,9 +45,12 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
+import seedu.club.model.task.Task;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
+import seedu.club.testutil.TaskBuilder;
+import seedu.club.testutil.TaskUtil;
 
 public class ClubBookParserTest {
     @Rule
@@ -59,6 +63,13 @@ public class ClubBookParserTest {
         Member member = new MemberBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(MemberUtil.getAddCommand(member));
         assertEquals(new AddCommand(member), command);
+    }
+
+    @Test
+    public void parseCommand_addTask() throws Exception {
+        Task task = new TaskBuilder().build();
+        AddTaskCommand command = (AddTaskCommand) parser.parseCommand(TaskUtil.getAddTaskCommand(task));
+        assertEquals(new AddTaskCommand(task), command);
     }
 
     @Test
