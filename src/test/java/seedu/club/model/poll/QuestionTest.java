@@ -1,6 +1,8 @@
 package seedu.club.model.poll;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION;
 import static seedu.club.model.poll.Question.PREFIX_QUESTION;
 
