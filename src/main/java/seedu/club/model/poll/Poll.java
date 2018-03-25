@@ -27,14 +27,7 @@ public class Poll {
      * Constructs a {@code Poll}.
      */
     public Poll(Question question, MatricNumber pollerMatricNumber, Answer... answers) {
-        requireNonNull(question);
-        requireNonNull(answers);
-        requireNonNull(pollerMatricNumber);
-
-        this.question = question;
-        this.answers = Arrays.asList(answers);
-        this.pollerMatricNumber = pollerMatricNumber;
-        this.polleesMatricNumbers = new HashSet<>();
+        this(question, pollerMatricNumber, Arrays.asList(answers), null);
     }
 
     public Poll(Question question, MatricNumber pollerMatricNumber,
@@ -100,7 +93,7 @@ public class Poll {
      */
     @Override
     public String toString() {
-        return "[ " + question + "]"
+        return "[ " + question + " ]"
                 + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
     }
 }

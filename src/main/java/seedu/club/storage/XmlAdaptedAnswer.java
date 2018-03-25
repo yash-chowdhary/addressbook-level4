@@ -65,6 +65,7 @@ public class XmlAdaptedAnswer {
             return false;
         }
 
-        return value.equals(((XmlAdaptedAnswer) other).value);
+        return value.equals(((XmlAdaptedAnswer) other).value)
+                && noOfMembersAnswered == ((XmlAdaptedAnswer) other).noOfMembersAnswered;
     }
 }

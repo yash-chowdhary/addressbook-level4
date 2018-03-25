@@ -3,7 +3,7 @@ package seedu.club.model.poll;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
 import static seedu.club.model.poll.Answer.PREFIX_ANSWER;
 
 import org.junit.Test;
@@ -60,12 +60,28 @@ public class AnswerTest {
 
     @Test
     public void test_equals() {
-        Answer firstAnswer = new Answer(VALID_ANSWER);
-        Answer secondAnswer = new Answer(VALID_ANSWER);
+        Answer firstAnswer = new Answer(VALID_ANSWER_ONE);
+        Answer secondAnswer = new Answer(VALID_ANSWER_ONE);
 
         assertTrue(firstAnswer.equals(firstAnswer));
         assertTrue(firstAnswer.equals(secondAnswer));
 
         assertFalse(firstAnswer.equals(null));
+    }
+
+    @Test
+    public void test_voteThisAnswer() {
+        int initialVote = 0;
+        Answer answer = new Answer(VALID_ANSWER_ONE, initialVote);
+        assertVoteIncreasedAfterVoting(answer, initialVote);
+
+        initialVote = 0;
+        answer = new Answer(VALID_ANSWER_ONE, initialVote);
+        assertVoteIncreasedAfterVoting(answer, initialVote);
+    }
+
+    private boolean assertVoteIncreasedAfterVoting(Answer answer, int initialVote) {
+        answer.voteThisAnswer();
+        return ++initialVote == answer.getNoOfMembersAnswered();
     }
 }
