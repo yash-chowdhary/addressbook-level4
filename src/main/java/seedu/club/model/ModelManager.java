@@ -16,6 +16,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.NewExportMemberAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.logic.commands.email.Body;
@@ -253,6 +254,24 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void sendEmail(String recipients, Client client, Subject subject, Body body) {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
+    }
+    //@@author
+
+    //@@author amrut-prabhu
+    @Override
+    public void exportClubConnect(File exportFilePath) {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+        members.forEach((member) -> exportMember(exportFilePath, member));
+    }
+
+    private void exportMember(File exportFilePath, Member member) {
+        String memberData;
+        //TODO: convert member to CSV
+        indicateClubBookChanged(exportFilePath, memberData);
+    }
+
+    private void indicateNewExportMember(File exportFilePath, String member) {
+        raise(new NewExportMemberAvailableEvent(exportFilePath, member));
     }
     //@@author
 
