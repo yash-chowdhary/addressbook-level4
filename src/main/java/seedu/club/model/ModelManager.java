@@ -70,7 +70,10 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public Member getLoggedInMember() {
-        loggedInMember = getFilteredMemberList().get(0);
+        loggedInMember = null;
+        if (!getFilteredMemberList().isEmpty()) {
+            loggedInMember = getFilteredMemberList().get(0);
+        }
         return loggedInMember;
     }
 
