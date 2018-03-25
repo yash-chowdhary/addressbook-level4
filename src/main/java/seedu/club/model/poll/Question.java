@@ -10,6 +10,7 @@ public class Question {
 
     public static final String MESSAGE_QUESTION_CONSTRAINTS = "Questions may not be empty";
     public static final String QUESTION_VALIDATION_REGEX = ".*\\S.*";
+    public static final String PREFIX_QUESTION = "Qn: ";
 
     private String value;
 
@@ -41,6 +42,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return value;
+        return PREFIX_QUESTION + value;
     }
 }

@@ -2,12 +2,14 @@ package seedu.club.model.poll;
 
 import static org.junit.Assert.*;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER;
+import static seedu.club.model.poll.Answer.PREFIX_ANSWER;
 
 import org.junit.Test;
 
 import seedu.club.testutil.Assert;
 
 public class AnswerTest {
+
     @Test
     public void constructor_null_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () -> new Answer(null));
@@ -41,10 +43,10 @@ public class AnswerTest {
         Answer testAnswerOne = new Answer("hello");
         Answer testAnswerTwo = new Answer("world");
 
-        assertTrue(testAnswerOne.toString().equals("hello"));
-        assertFalse(testAnswerOne.toString().equals("world"));
-        assertTrue(testAnswerTwo.toString().equals("world"));
-        assertFalse(testAnswerTwo.toString().equals("hello"));
+        assertTrue(testAnswerOne.toString().equals(PREFIX_ANSWER + "hello"));
+        assertFalse(testAnswerOne.toString().equals(PREFIX_ANSWER + "world"));
+        assertTrue(testAnswerTwo.toString().equals(PREFIX_ANSWER + "world"));
+        assertFalse(testAnswerTwo.toString().equals(PREFIX_ANSWER + "hello"));
     }
 
     @Test

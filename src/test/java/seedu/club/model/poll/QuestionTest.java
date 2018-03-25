@@ -2,6 +2,7 @@ package seedu.club.model.poll;
 
 import static org.junit.Assert.*;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION;
+import static seedu.club.model.poll.Question.PREFIX_QUESTION;
 
 import org.junit.Test;
 
@@ -41,10 +42,10 @@ public class QuestionTest {
         Question testQuestionOne = new Question("WHAT IS LOVE");
         Question testQuestionTwo = new Question("WHAT IS LIFE");
 
-        assertTrue(testQuestionOne.toString().equals("WHAT IS LOVE"));
-        assertFalse(testQuestionOne.toString().equals("WHAT IS LIFE"));
-        assertTrue(testQuestionTwo.toString().equals("WHAT IS LIFE"));
-        assertFalse(testQuestionTwo.toString().equals("WHAT IS LOVE"));
+        assertTrue(testQuestionOne.toString().equals(PREFIX_QUESTION + "WHAT IS LOVE"));
+        assertFalse(testQuestionOne.toString().equals(PREFIX_QUESTION + "WHAT IS LIFE"));
+        assertTrue(testQuestionTwo.toString().equals(PREFIX_QUESTION + "WHAT IS LIFE"));
+        assertFalse(testQuestionTwo.toString().equals(PREFIX_QUESTION + "WHAT IS LOVE"));
     }
 
     @Test
