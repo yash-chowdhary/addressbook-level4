@@ -22,6 +22,10 @@ import seedu.club.model.task.Task;
  */
 public class TaskListPanel extends UiPart<Region> {
     private static final String FXML = "TaskListPanel.fxml";
+    private static final String DIRECTORY_PATH = "view/";
+    private static final String TASK_YET_TO_BEGIN_CSS = DIRECTORY_PATH + "TaskYetToBegin.css";
+    private static final String TASK_IN_PROGRESS_CSS = DIRECTORY_PATH + "TaskInProgress.css";
+    private static final String TASK_COMPLETED_CSS = DIRECTORY_PATH + "TaskCompleted.css";
     private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
 
     @FXML
@@ -77,15 +81,26 @@ public class TaskListPanel extends UiPart<Region> {
     class TaskListViewCell extends ListCell<TaskCard> {
 
         @Override
-        protected void updateItem(TaskCard item, boolean empty) {
-            super.updateItem(item, empty);
+        protected void updateItem(TaskCard task, boolean empty) {
+            super.updateItem(task, empty);
 
-            if (empty || item == null) {
+            if (empty || task == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                setGraphic(item.getRoot());
+                return;
             }
+
+            this.getStylesheets().clear();
+            logger.info("Status: " + task.task.getStatus().getStatus());
+            if (task.isTaskYetToBegin()) {
+                logger.info("In here");
+                this.getStylesheets().add(TASK_YET_TO_BEGIN_CSS);
+            } else if (task.isTaskInProgress()) {
+                this.getStylesheets().add(TASK_IN_PROGRESS_CSS);
+            } else if (task.isTaskCompleted()) {
+                this.getStylesheets().add(TASK_COMPLETED_CSS);
+            }
+            setGraphic(task.getRoot());
         }
     }
 }

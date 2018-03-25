@@ -52,6 +52,18 @@ public class TaskCard extends UiPart<Region> {
         status.setText("Status: " + task.getStatus().getStatus());
     }
 
+    public boolean isTaskYetToBegin() {
+        return task.hasTaskNotBegun();
+    }
+
+    public boolean isTaskInProgress() {
+        return task.isTaskInProgress();
+    }
+
+    public boolean isTaskCompleted() {
+        return task.isTaskCompleted();
+    }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object
