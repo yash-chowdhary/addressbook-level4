@@ -3,6 +3,7 @@ package seedu.club.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -82,30 +83,6 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new ClubBookChangedEvent(clubBook));
     }
 
-    //@@author amrut-prabhu
-    /** Raises an event to indicate the profile photo of a member has changed */
-    private boolean indicateProfilePhotoChanged(String originalPath, String newFileName) {
-        ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
-        raise(profilePhotoChangedEvent);
-        return profilePhotoChangedEvent.isPhotoChanged();
-    }
-
-    @Override
-    public boolean addProfilePhoto(String originalPhotoPath) {
-        String newFileName = getLoggedInMember().getMatricNumber().toString();
-        if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
-            return false;
-        }
-
-        String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
-                + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
-
-        loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
-        indicateClubBookChanged();
-        return true;
-    }
-    //@@author
-
     @Override
     public synchronized void deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
@@ -137,6 +114,30 @@ public class ModelManager extends ComponentManager implements Model {
         return clubBook.logInMember(username, password);
     }
 
+    //@@author amrut-prabhu
+    /** Raises an event to indicate the profile photo of a member has changed */
+    private boolean indicateProfilePhotoChanged(String originalPath, String newFileName) {
+        ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
+        raise(profilePhotoChangedEvent);
+        return profilePhotoChangedEvent.isPhotoChanged();
+    }
+
+    @Override
+    public boolean addProfilePhoto(String originalPhotoPath) {
+        String newFileName = getLoggedInMember().getMatricNumber().toString();
+        if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
+            return false;
+        }
+
+        String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
+                + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
+
+        loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
+        indicateClubBookChanged();
+        return true;
+    }
+    //@@author
+
     //@@author yash-chowdhary
     @Override
     public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
@@ -147,7 +148,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
     //@@author
 
-
+    //@@author amrut-prabhu
     @Override
     public void deleteTag(Tag tag) throws TagNotFoundException {
         clubBook.deleteTag(tag);
@@ -194,6 +195,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
         return true;
     }
+    //@@author
 
     //@@author yash-chowdhary
     @Override
