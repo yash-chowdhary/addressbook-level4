@@ -21,9 +21,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
