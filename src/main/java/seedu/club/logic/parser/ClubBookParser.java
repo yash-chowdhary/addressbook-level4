@@ -17,6 +17,7 @@ import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
+import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
@@ -84,6 +85,9 @@ public class ClubBookParser {
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
+
+        case ExportCommand.COMMAND_WORD:
+            return new ExportCommandParser().parse(arguments);
 
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
