@@ -42,8 +42,8 @@ public class TypicalTasks {
 
     public static final Task BUY_FOOD = new TaskBuilder()
             .withDescription("Buy Food")
-            .withDate("05/04/2018")
-            .withTime("18:00")
+            .withDate("02/05/2018")
+            .withTime("19:00")
             .withAssignor("Alice Pauline")
             .withAssignee("Alice Pauline")
             .withStatus("Yet To Begin")

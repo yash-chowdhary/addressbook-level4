@@ -3,7 +3,7 @@ package seedu.club.model.task;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DATE;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DATE_1;
 
 import org.junit.Test;
 
@@ -64,8 +64,8 @@ public class DateTest {
 
     @Test
     public void test_hashCode() {
-        Date date = new Date(VALID_TASK_DATE);
-        String expectedDate = VALID_TASK_DATE;
+        Date date = new Date(VALID_TASK_DATE_1);
+        String expectedDate = VALID_TASK_DATE_1;
         assertEquals(expectedDate.hashCode(), date.hashCode());
     }
 }

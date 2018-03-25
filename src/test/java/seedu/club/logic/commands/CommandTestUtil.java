@@ -62,7 +62,8 @@ public class CommandTestUtil {
 
     public static final String VALID_TASK_DESCRIPTION_FOOD = "Buy Food";
     public static final String VALID_TASK_DESCRIPTION_CONFETTI = "Buy Confetti";
-    public static final String VALID_TASK_DATE = "02/05/2018";
+    public static final String VALID_TASK_DATE_1 = "02/05/2018";
+    public static final String VALID_TASK_DATE_2 = "03/05/2018";
     public static final String VALID_TASK_TIME_1 = "19:00";
     public static final String VALID_TASK_TIME_2 = "19:01";
     public static final String VALID_TASK_ASSIGNOR = "Alice Pauline";
@@ -109,8 +110,12 @@ public class CommandTestUtil {
     public static final String BLANK_STRING_WITH_SPACE = " ";
 
     public static final String TASK_DESCRIPTION_DESC_FOOD = " " + PREFIX_DESCRIPTION + VALID_TASK_DESCRIPTION_FOOD;
-    public static final String TASK_DATE_DESC = " " + PREFIX_DATE + VALID_TASK_DATE;
-    public static final String TASK_TIME_DESC = " " + PREFIX_TIME + VALID_TASK_TIME_1;
+    public static final String TASK_DESCRIPTION_DESC_CONFETTI = " " + PREFIX_DESCRIPTION
+            + VALID_TASK_DESCRIPTION_CONFETTI;
+    public static final String TASK_DATE_DESC_1 = " " + PREFIX_DATE + VALID_TASK_DATE_1;
+    public static final String TASK_DATE_DESC_2 = " " + PREFIX_DATE + VALID_TASK_DATE_2;
+    public static final String TASK_TIME_DESC_1 = " " + PREFIX_TIME + VALID_TASK_TIME_1;
+    public static final String TASK_TIME_DESC_2 = " " + PREFIX_TIME + VALID_TASK_TIME_2;
 
     public static final String INVALID_DESCRIPTION_DESC = " " + PREFIX_DESCRIPTION + INVALID_TASK_DESCRIPTION;
     public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + INVALID_TASK_DATE;
