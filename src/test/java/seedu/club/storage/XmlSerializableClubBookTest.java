@@ -14,7 +14,6 @@ import seedu.club.commons.util.FileUtil;
 import seedu.club.commons.util.XmlUtil;
 import seedu.club.model.ClubBook;
 import seedu.club.model.util.SampleDataUtil;
-import seedu.club.testutil.MemberUtil;
 import seedu.club.testutil.TypicalMembers;
 import seedu.club.testutil.TypicalPolls;
 
@@ -74,9 +73,12 @@ public class XmlSerializableClubBookTest {
 
     @Test
     public void equals() throws Exception {
-        XmlSerializableClubBook xmlSerializableClubBookOne = new XmlSerializableClubBook(SampleDataUtil.getSampleClubBook());
-        XmlSerializableClubBook xmlSerializableClubBookTwo = new XmlSerializableClubBook(SampleDataUtil.getSampleClubBook());
-        XmlSerializableClubBook xmlSerializableClubBookThree = new XmlSerializableClubBook();
+        XmlSerializableClubBook xmlSerializableClubBookOne =
+                new XmlSerializableClubBook(SampleDataUtil.getSampleClubBook());
+        XmlSerializableClubBook xmlSerializableClubBookTwo =
+                new XmlSerializableClubBook(SampleDataUtil.getSampleClubBook());
+        XmlSerializableClubBook xmlSerializableClubBookThree =
+                new XmlSerializableClubBook();
 
         assertEquals(xmlSerializableClubBookOne, xmlSerializableClubBookOne);
         assertEquals(xmlSerializableClubBookOne, xmlSerializableClubBookTwo);
