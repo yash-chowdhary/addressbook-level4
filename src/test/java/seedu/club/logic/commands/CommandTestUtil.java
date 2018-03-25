@@ -101,12 +101,20 @@ public class CommandTestUtil {
     public static final String MANDATORY_GROUP = "member";
     public static final String MANDATORY_GROUP_DESC = PREFIX_GROUP + MANDATORY_GROUP;
 
+    public static final String INVALID_TASK_DESCRIPTION = "Buy* Books"; // no special characters allowed
+    public static final String INVALID_TASK_DATE = "01/13/2018";    // invalid month
+    public static final String INVALID_TASK_TIME = "8 AM";  // invalid time format
+
     public static final String EMPTY_STRING = "";
     public static final String BLANK_STRING_WITH_SPACE = " ";
 
     public static final String TASK_DESCRIPTION_DESC_FOOD = " " + PREFIX_DESCRIPTION + VALID_TASK_DESCRIPTION_FOOD;
     public static final String TASK_DATE_DESC = " " + PREFIX_DATE + VALID_TASK_DATE;
     public static final String TASK_TIME_DESC = " " + PREFIX_TIME + VALID_TASK_TIME_1;
+
+    public static final String INVALID_DESCRIPTION_DESC = " " + PREFIX_DESCRIPTION + INVALID_TASK_DESCRIPTION;
+    public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + INVALID_TASK_DATE;
+    public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + INVALID_TASK_TIME;
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

@@ -19,6 +19,8 @@ public class Task {
         this.description = description;
         this.time = time;
         this.date = date;
+        this.assignor = new Assignor("");
+        this.assignee = new Assignee("");
         this.status = new Status(Status.NOT_STARTED_STATUS);
     }
 
