@@ -17,6 +17,7 @@ import seedu.club.model.member.exceptions.MemberNotFoundException;
 public class DeleteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
+    public static final String COMMAND_FORMAT = "delete INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the member identified by the index number used in the last member listing.\n"
