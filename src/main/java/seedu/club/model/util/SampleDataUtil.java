@@ -1,6 +1,8 @@
 package seedu.club.model.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.club.model.ClubBook;
@@ -90,6 +92,28 @@ public class SampleDataUtil {
         }
 
         return tags;
+    }
+
+    /**
+     * Returns a answer list containing the list of strings given.
+     */
+    public static List<Answer> getAnswerList(String... strings) {
+        List<Answer> answers = new ArrayList<>();
+        for (String s : strings) {
+            answers.add(new Answer(s));
+        }
+        return answers;
+    }
+
+    /**
+     * Returns a matric number set containing the list of strings given.
+     */
+    public static Set<MatricNumber> getMatricNumberSet(String... strings) {
+        Set<MatricNumber> matricNumbers = new HashSet<>();
+        for (String s : strings) {
+            matricNumbers.add(new MatricNumber(s));
+        }
+        return matricNumbers;
     }
 
 }
