@@ -61,9 +61,15 @@ public class Date {
         StringBuilder sb = new StringBuilder();
 
         final int day = Integer.parseInt(dateFields[0]);
+        if (day < 10) {
+            sb.append(0);
+        }
         sb.append(day);
         sb.append(DATE_SEPARATOR);
         final int month = Integer.parseInt(dateFields[1]);
+        if (month < 10) {
+            sb.append(0);
+        }
         sb.append(month);
         sb.append(DATE_SEPARATOR);
         final int year = Integer.parseInt(dateFields[2]);
