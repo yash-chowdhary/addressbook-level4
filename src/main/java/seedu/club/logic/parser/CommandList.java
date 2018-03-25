@@ -37,7 +37,7 @@ public class CommandList {
         commandList.add(DecompressCommand.COMMAND_WORD);
         commandList.add(DeleteCommand.COMMAND_FORMAT);
         commandList.add(DeleteTagCommand.COMMAND_FORMAT);
-        commandList.add(EditCommand.COMMAND_WORD);
+        commandList.add(EditCommand.COMMAND_FORMAT);
         commandList.add(EmailCommand.COMMAND_FORMAT);
         commandList.add(ExitCommand.COMMAND_WORD);
         commandList.add(FindCommand.COMMAND_FORMAT);

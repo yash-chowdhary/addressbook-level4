@@ -40,8 +40,8 @@ import seedu.club.model.tag.Tag;
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
-    public static final String COMMAND_FORMAT = "edit [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC NUMBER]"
-            + " [pic/PHOTO PATH] [g/GROUP] [t/TAG]";
+    public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ]"
+            + " [pic/ ] [g/ ] [t/ ]";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the member identified "
             + "by the index number used in the last member listing. "

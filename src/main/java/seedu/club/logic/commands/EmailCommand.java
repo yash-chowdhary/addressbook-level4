@@ -22,7 +22,7 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
-    public static final String COMMAND_FORMAT = "email [g/GROUP] [t/TAG] c/CLIENT [s/SUBJECT] [b/BODY]";
+    public static final String COMMAND_FORMAT = "email [g/ ] [t/ ] c/ [s/ ] [b/ ]";
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) "
             + "in EITHER a particular group OR a particular tag of the club book. "
