@@ -52,6 +52,18 @@ public class XmlAdaptedTask {
     }
 
     /**
+     * Overloaded Constructor for constructing an {@code XmlAdaptedTask} with the given task details.
+     */
+    public XmlAdaptedTask(String description, String time, String date) {
+        this.description = description;
+        this.time = time;
+        this.date = date;
+        this.assignor = "";
+        this.assignee = "";
+        this.status = "";
+    }
+
+    /**
      * Converts a given Task into XmlAdaptedTask for JAXB use.
      */
     public XmlAdaptedTask(Task source) {

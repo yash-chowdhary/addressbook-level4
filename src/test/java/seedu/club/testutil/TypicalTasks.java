@@ -2,11 +2,16 @@ package seedu.club.testutil;
 
 //@@author yash-chowdhary
 
+import static seedu.club.testutil.TypicalMembers.ALICE;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import seedu.club.model.ClubBook;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 
 /**
  * Utility class containing list of {@code Task} objects to be used in tests.
@@ -51,7 +56,29 @@ public class TypicalTasks {
 
     private TypicalTasks() {}
 
-    public static List<Task> getTypicalTask() {
+    public static List<Task> getTypicalTasks() {
         return new ArrayList<>(Arrays.asList(BOOK_AUDITORIUM, BUY_CONFETTI, ADVERTISE_EVENT, BUY_FOOD));
+    }
+
+    /**
+     * Returns an {@code AddressBook} with one person and all typical orders.
+     */
+    public static ClubBook getTypicalClubBookWithTasks() {
+        ClubBook clubBook = new ClubBook();
+
+        try {
+            clubBook.addMember(ALICE);
+        } catch (DuplicateMemberException dme) {
+            throw new AssertionError("not possible");
+        }
+
+        for (Task task : getTypicalTasks()) {
+            try {
+                clubBook.addTaskToTaskList(task);
+            } catch (DuplicateTaskException dte) {
+                throw new AssertionError("not possible");
+            }
+        }
+        return clubBook;
     }
 }

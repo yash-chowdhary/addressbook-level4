@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clubbook>
+    <members>
+        <name>Benson Meier</name>
+        <phone>98765432</phone>
+        <email>johnd@example.com</email>
+        <matricNumber>A8389539B</matricNumber>
+        <group>pr</group>
+        <tagged>owesMoney</tagged>
+        <tagged>friends</tagged>
+    </members>
+    <tasks>
+        <description>Book YIH Function Room 4</description>
+        <time>27:00</time>
+        <date>02/04/2018</date>
+        <assignor>Alex Yeoh</assignor>
+        <assignee>Alex Yeoh</assignee>
+        <status>Yet To Begin</status>
+    </tasks>
+</clubbook>
