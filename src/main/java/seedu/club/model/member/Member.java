@@ -29,11 +29,6 @@ public class Member {
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
 
-    private final String CSV_FIELD_SEPARATOR = ",";
-    private final String CSV_FIELD_SURROUNDER = "\"";
-    private final String CSV_VALUE_SEPARATOR = ",";
-    private final String LINE_BREAK = "\n";
-
     /**
      * Every field must be present and not null.
      */
@@ -192,6 +187,10 @@ public class Member {
      * @return {@code String} containing the data in CSV format.
      */
     public String toCsvFormat() {
+        String csvFieldSurrounder = "\"";
+        String csvValueSeparator = ",";
+        String lineBreak = "\n";
+
         final StringBuilder builder = new StringBuilder();
 
         addCsvField(builder, getName().toString());
@@ -203,12 +202,12 @@ public class Member {
         addCsvField(builder, getUsername().toString());
         addCsvField(builder, getPassword().toString());
 
-        builder.append(CSV_FIELD_SURROUNDER);
+        builder.append(csvFieldSurrounder);
         getTags().forEach(tag -> builder.append(tag)
-                .append(CSV_VALUE_SEPARATOR)); //Results in an extra "," at end of tag list.
-        builder.append(CSV_FIELD_SURROUNDER);
+                .append(csvValueSeparator)); //Results in an extra "," at end of tag list.
+        builder.append(csvFieldSurrounder);
 
-        builder.append(LINE_BREAK);
+        builder.append(lineBreak);
 
         return builder.toString();
     }
@@ -219,10 +218,15 @@ public class Member {
      * @param field Field value that is to be appended.
      */
     private void addCsvField(StringBuilder builder, String field) {
-        builder.append(CSV_FIELD_SURROUNDER)
+        assert field != null : "Field cannot be null in Member object";
+
+        String csvFieldSeparator = ",";
+        String csvFieldSurrounder = "\"";
+
+        builder.append(csvFieldSurrounder)
                 .append(field)
-                .append(CSV_FIELD_SURROUNDER)
-                .append(CSV_FIELD_SEPARATOR);
+                .append(csvFieldSurrounder)
+                .append(csvFieldSeparator);
     }
 
     /**
