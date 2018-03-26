@@ -1,8 +1,6 @@
 package seedu.club.model.poll;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.testutil.TypicalPolls.POLL_HOW;
 import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
