@@ -8,7 +8,7 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Answer {
 
-    public static final String MESSAGE_ANSWER_CONSTRAINTS = "Answer not be empty";
+    public static final String MESSAGE_ANSWER_CONSTRAINTS = "Answer cannot be empty";
     public static final String MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS =
             "Number answered for an answer should be non-negative";
     public static final String ANSWER_VALIDATION_REGEX = ".*\\S.*";
