@@ -19,8 +19,8 @@ import seedu.club.storage.ProfilePhotoStorage;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
-    private static final Integer PHOTO_WIDTH = 75;
-    private static final Integer PHOTO_HEIGHT = 100;
+    private static final Integer PHOTO_WIDTH = 90;
+    private static final Integer PHOTO_HEIGHT = 120;
     private static final String DEFAULT_PHOTO = "src/main/resources/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 
@@ -66,7 +66,7 @@ public class MemberCard extends UiPart<Region> {
         member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
-    public MemberCard(Member member, int displayedIndex, String fxml, boolean isCompressed) {
+    public MemberCard(Member member, int displayedIndex, String fxml) {
         super(fxml);
         this.member = member;
         id.setText(displayedIndex + ". ");
@@ -74,9 +74,7 @@ public class MemberCard extends UiPart<Region> {
         phone.setText(member.getPhone().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
-        if (!isCompressed) {
-            setProfilePhoto(member);
-        }
+        setProfilePhoto(member);
     }
 
     //@@author amrut-prabhu
