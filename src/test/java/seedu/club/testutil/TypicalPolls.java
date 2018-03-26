@@ -16,21 +16,17 @@ public class TypicalPolls {
 
     public static final Poll POLL_WHAT = new PollBuilder().withQuestion("What are you?")
             .withAnswers("A vampire", "A zombie")
-            .withPollerMatricNumber("A1111111A")
             .withPolleesMatricNumbers("A1234567A", "A3333333A").build();
 
     public static final Poll POLL_HOW = new PollBuilder().withQuestion("How are you?")
             .withAnswers("I'm fine", "Not good man")
-            .withPollerMatricNumber("A1234567A")
             .withPolleesMatricNumbers("A3333333A", "A2222222A").build();
 
     public static final Poll POLL_WHEN = new PollBuilder().withQuestion("When are you?")
             .withAnswers("I don't get it", "Umm..")
-            .withPollerMatricNumber("A3333333A")
             .withPolleesMatricNumbers("A2222222A", "A1234567A").build();
     public static final Poll POLL_WHO = new PollBuilder().withQuestion("Who are you?")
             .withAnswers("Your father", "Your mom")
-            .withPollerMatricNumber("A2222222A")
             .withPolleesMatricNumbers("A3333333A", "A1111111A").build();
 
 

@@ -23,8 +23,6 @@ public class XmlAdaptedPoll {
 
     @XmlElement(required = true)
     private String question;
-    @XmlElement(required = true)
-    private String pollerMatricNumber;
     @XmlElement
     private List<XmlAdaptedMatricNumber> polleesMatricNumbers = new ArrayList<>();
     @XmlElement
@@ -43,7 +41,6 @@ public class XmlAdaptedPoll {
     public XmlAdaptedPoll(String question, String pollerMatricNumber,
                           List<XmlAdaptedMatricNumber> polleesMatricNumbers, List<XmlAdaptedAnswer> answers) {
         this.question = question;
-        this.pollerMatricNumber = pollerMatricNumber;
         if (polleesMatricNumbers != null) {
             this.polleesMatricNumbers = new ArrayList<XmlAdaptedMatricNumber>(polleesMatricNumbers);
         }
@@ -59,7 +56,6 @@ public class XmlAdaptedPoll {
      */
     public XmlAdaptedPoll(Poll source) {
         question = source.getQuestion().getValue();
-        pollerMatricNumber = source.getPollerMatricNumber().toString();
         polleesMatricNumbers = new ArrayList<>();
         for (MatricNumber polleeMatricNumber : source.getPolleesMatricNumbers()) {
             polleesMatricNumbers.add(new XmlAdaptedMatricNumber(polleeMatricNumber));
@@ -105,17 +101,7 @@ public class XmlAdaptedPoll {
         }
         final Question questionToReturn = new Question(this.question);
 
-        if (this.pollerMatricNumber == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    MatricNumber.class.getSimpleName()));
-        }
-        if (!MatricNumber.isValidMatricNumber(this.pollerMatricNumber)) {
-            throw new IllegalValueException(MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
-        }
-        final MatricNumber pollerMatricNumberToReturn = new MatricNumber(this.pollerMatricNumber);
-
-        Poll poll = new Poll (questionToReturn, pollerMatricNumberToReturn,
-                answersToReturn, polleesMatricNumbersToReturn);
+        Poll poll = new Poll (questionToReturn,answersToReturn, polleesMatricNumbersToReturn);
         return poll;
     }
 
@@ -131,7 +117,6 @@ public class XmlAdaptedPoll {
 
         XmlAdaptedPoll otherPoll = (XmlAdaptedPoll) other;
         return Objects.equals(question, otherPoll.question)
-                && Objects.equals(pollerMatricNumber, otherPoll.pollerMatricNumber)
                 && Objects.equals(polleesMatricNumbers, otherPoll.polleesMatricNumbers)
                 && Objects.equals(answers, otherPoll.answers);
     }

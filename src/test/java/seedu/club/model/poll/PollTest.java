@@ -20,7 +20,6 @@ public class PollTest {
         Poll poll = new PollBuilder()
                 .withQuestion(VALID_QUESTION)
                 .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO)
-                .withPollerMatricNumber(VALID_MATRIC_NUMBER)
                 .withPolleesMatricNumbers(VALID_MATRIC_NUMBER_AMY, VALID_MATRIC_NUMBER_BOB)
                 .build();
         assertEquals(poll.toString(), "[ " + new Question(VALID_QUESTION) + " ]"

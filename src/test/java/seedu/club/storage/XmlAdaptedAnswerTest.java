@@ -1,6 +1,7 @@
 package seedu.club.storage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_ANSWER;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_TWO;

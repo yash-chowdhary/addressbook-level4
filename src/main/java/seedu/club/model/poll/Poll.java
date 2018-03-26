@@ -20,25 +20,21 @@ public class Poll {
     private final Question question;
     private final List<Answer> answers;
     private final Set<MatricNumber> polleesMatricNumbers;
-    private final MatricNumber pollerMatricNumber;
-
 
     /**
      * Constructs a {@code Poll}.
      */
-    public Poll(Question question, MatricNumber pollerMatricNumber, Answer... answers) {
-        this(question, pollerMatricNumber, Arrays.asList(answers), null);
+    public Poll(Question question, Answer... answers) {
+        this(question,Arrays.asList(answers), null);
     }
 
-    public Poll(Question question, MatricNumber pollerMatricNumber,
-                List<Answer> answers, Set<MatricNumber> polleesMatricNumbers) {
+    public Poll(Question question, List<Answer> answers,
+                Set<MatricNumber> polleesMatricNumbers) {
         requireNonNull(question);
         requireNonNull(answers);
-        requireNonNull(pollerMatricNumber);
 
         this.question = question;
         this.answers = answers;
-        this.pollerMatricNumber = pollerMatricNumber;
         if (polleesMatricNumbers == null) {
             this.polleesMatricNumbers = new HashSet<>();
         } else {
@@ -54,17 +50,8 @@ public class Poll {
                 && this.answers.equals(((Poll) other).answers));
     }
 
-    public String getPollerName() {
-        // TODO
-        return pollerMatricNumber.toString();
-    }
-
     public Question getQuestion() {
         return question;
-    }
-
-    public MatricNumber getPollerMatricNumber() {
-        return pollerMatricNumber;
     }
 
     /**

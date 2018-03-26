@@ -27,8 +27,6 @@ public class PollCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label pollerName;
-    @FXML
     private Label id;
     @FXML
     private Label question;
@@ -39,7 +37,6 @@ public class PollCard extends UiPart<Region> {
         super(FXML);
         this.poll = poll;
         id.setText(displayedIndex + ". ");
-        pollerName.setText(poll.getPollerName());
         question.setText(poll.getQuestion().toString());
         poll.getAnswers().forEach(answer -> answers.getChildren().add(new Label(answer.toString())));
     }

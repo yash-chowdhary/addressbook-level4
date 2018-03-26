@@ -20,19 +20,16 @@ public class PollBuilder {
     public static final String DEFAULT_QUESTION = "What is the meaning of life";
     public static final String DEFAULT_ANSWER_ONE = "Fourty Two";
     public static final String DEFAULT_ANSWER_TWO = "Fourty Three";
-    public static final String DEFAULT_POLLER_MATRIC_NUMBER = "A1234567A";
     public static final String DEFAULT_POLLEE_MATRIC_NUMBER_ONE = "A1234567B";
     public static final String DEFAULT_POLLEE_MATRIC_NUMBER_TWO = "A1234567C";
 
     private Question question;
     private List<Answer> answers;
-    private MatricNumber pollerMatricNumber;
     private Set<MatricNumber> polleesMatricNumbers;
 
     public PollBuilder() {
         question = new Question(DEFAULT_QUESTION);
         answers = Arrays.asList(new Answer(DEFAULT_ANSWER_ONE), new Answer(DEFAULT_ANSWER_TWO));
-        pollerMatricNumber = new MatricNumber(DEFAULT_POLLER_MATRIC_NUMBER);
         polleesMatricNumbers = new HashSet<>();
         polleesMatricNumbers.add(new MatricNumber(DEFAULT_POLLEE_MATRIC_NUMBER_ONE));
         polleesMatricNumbers.add(new MatricNumber(DEFAULT_POLLEE_MATRIC_NUMBER_TWO));
@@ -44,7 +41,6 @@ public class PollBuilder {
     public PollBuilder(Poll pollToCopy) {
         question = pollToCopy.getQuestion();
         answers = new ArrayList<>(pollToCopy.getAnswers());
-        pollerMatricNumber = pollToCopy.getPollerMatricNumber();
         polleesMatricNumbers = new HashSet<>(pollToCopy.getPolleesMatricNumbers());
     }
 
@@ -65,14 +61,6 @@ public class PollBuilder {
     }
 
     /**
-     * Sets the {@code pollerMatricNumber} of the {@code poll} that we are building.
-     */
-    public PollBuilder withPollerMatricNumber(String pollerMatricNumber) {
-        this.pollerMatricNumber = new MatricNumber(pollerMatricNumber);
-        return this;
-    }
-
-    /**
      * Sets the {@code pollesMatricNumbers} of the {@code poll} that we are building.
      */
     public PollBuilder withPolleesMatricNumbers(String... polleesMatricNumbers) {
@@ -81,6 +69,6 @@ public class PollBuilder {
     }
 
     public Poll build() {
-        return new Poll(question, pollerMatricNumber, answers, polleesMatricNumbers);
+        return new Poll(question, answers, polleesMatricNumbers);
     }
 }
