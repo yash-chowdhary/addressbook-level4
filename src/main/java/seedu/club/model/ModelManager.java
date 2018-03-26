@@ -261,15 +261,28 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void exportClubConnect(File exportFilePath) {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        members.forEach((member) -> exportMember(exportFilePath, member));
+        members.forEach(member -> exportMember(exportFilePath, member));
     }
 
+    /**
+     * Exports the information of {@code member} to the file.
+     * @param exportFilePath CSV file to be exported to.
+     * @param member Member whose data is to be exported.
+     */
     private void exportMember(File exportFilePath, Member member) {
-        String memberData;
-        //TODO: convert member to CSV
-        indicateClubBookChanged(exportFilePath, memberData);
+        String memberData = convertMemberToCsv(member);
+        indicateNewExportMember(exportFilePath, memberData);
     }
 
+    private String convertMemberToCsv(Member member) {
+        return member.toCsvFormat();
+    }
+
+    /**
+     * Raises a {@code NewMemberAvailableEvent} to indicate that data of a {@code member} is ready to be exported.
+     * @param exportFilePath CSV file to be exported to.
+     * @param member Member data to be added to the file.
+     */
     private void indicateNewExportMember(File exportFilePath, String member) {
         raise(new NewExportMemberAvailableEvent(exportFilePath, member));
     }

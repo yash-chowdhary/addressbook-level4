@@ -29,10 +29,14 @@ public class Member {
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
 
+    private final String CSV_FIELD_SEPARATOR = ",";
+    private final String CSV_FIELD_SURROUNDER = "\"";
+    private final String CSV_VALUE_SEPARATOR = ",";
+    private final String LINE_BREAK = "\n";
+
     /**
      * Every field must be present and not null.
      */
-
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
                   Username username, Password password) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags,
@@ -181,6 +185,44 @@ public class Member {
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
+    }
+
+    /**
+     * Returns {@code this} Member's data in the format of a CSV record.
+     * @return {@code String} containing the data in CSV format.
+     */
+    public String toCsvFormat() {
+        final StringBuilder builder = new StringBuilder();
+
+        addCsvField(builder, getName().toString());
+        addCsvField(builder, getPhone().toString());
+        addCsvField(builder, getEmail().toString());
+        addCsvField(builder, getMatricNumber().toString());
+        addCsvField(builder, getGroup().toString());
+        addCsvField(builder, getProfilePhoto().toString());
+        addCsvField(builder, getUsername().toString());
+        addCsvField(builder, getPassword().toString());
+
+        builder.append(CSV_FIELD_SURROUNDER);
+        getTags().forEach(tag -> builder.append(tag)
+                .append(CSV_VALUE_SEPARATOR)); //Results in an extra "," at end of tag list.
+        builder.append(CSV_FIELD_SURROUNDER);
+
+        builder.append(LINE_BREAK);
+
+        return builder.toString();
+    }
+
+    /**
+     * Appends (@code builder} with {@code field} in CSV format.
+     * @param builder StringBuilder which is to be appended.
+     * @param field Field value that is to be appended.
+     */
+    private void addCsvField(StringBuilder builder, String field) {
+        builder.append(CSV_FIELD_SURROUNDER)
+                .append(field)
+                .append(CSV_FIELD_SURROUNDER)
+                .append(CSV_FIELD_SEPARATOR);
     }
 
     /**
