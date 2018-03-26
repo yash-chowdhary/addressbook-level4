@@ -3,7 +3,6 @@ package seedu.club.model.poll;
 import static org.junit.Assert.assertEquals;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_TWO;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION;

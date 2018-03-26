@@ -54,7 +54,7 @@ public class SampleDataUtil {
 
     public static Poll[] getSamplePolls() {
         return new Poll[] {
-            new Poll(new Question("How are you?"),new Answer("I'm fine"),
+            new Poll(new Question("How are you?"), new Answer("I'm fine"),
                     new Answer("Not good man")),
             new Poll(new Question("What are you?"),
                     new Answer("A vampire"), new Answer("A zombie")),
