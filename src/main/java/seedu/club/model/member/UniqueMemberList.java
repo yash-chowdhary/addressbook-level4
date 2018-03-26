@@ -75,7 +75,8 @@ public class UniqueMemberList implements Iterable<Member> {
 
         internalList.set(index, editedMember);
         usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
-        usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
+        usernamePasswordHashMap.put(editedMember.getCredentials().getUsername().value,
+                editedMember.getCredentials().getPassword().value);
     }
 
     /**

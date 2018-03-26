@@ -32,6 +32,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
@@ -97,6 +98,10 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, model, expectedResultMessage);
 
         /* Case: edit a member with new values same as existing values -> edited */
+        index = INDEX_SECOND_MEMBER;
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + GROUP_DESC_BOB + TAG_DESC_FRIEND + TAG_DESC_HUSBAND;
         assertCommandSuccess(command, index, BOB);
