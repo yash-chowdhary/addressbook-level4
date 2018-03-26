@@ -19,6 +19,7 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportMemberAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.commons.util.CsvUtil;
 import seedu.club.logic.commands.email.Body;
 import seedu.club.logic.commands.email.Client;
 import seedu.club.logic.commands.email.Subject;
@@ -275,7 +276,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private String convertMemberToCsv(Member member) {
-        return member.toCsvFormat();
+        return CsvUtil.toCsvFormat(member);
     }
 
     /**

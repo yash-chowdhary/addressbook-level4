@@ -183,53 +183,6 @@ public class Member {
     }
 
     /**
-     * Returns {@code this} Member's data in the format of a CSV record.
-     * @return {@code String} containing the data in CSV format.
-     */
-    public String toCsvFormat() {
-        String csvFieldSurrounder = "\"";
-        String csvValueSeparator = ",";
-        String lineBreak = "\n";
-
-        final StringBuilder builder = new StringBuilder();
-
-        addCsvField(builder, getName().toString());
-        addCsvField(builder, getPhone().toString());
-        addCsvField(builder, getEmail().toString());
-        addCsvField(builder, getMatricNumber().toString());
-        addCsvField(builder, getGroup().toString());
-        addCsvField(builder, getProfilePhoto().toString());
-        addCsvField(builder, getUsername().toString());
-        addCsvField(builder, getPassword().toString());
-
-        builder.append(csvFieldSurrounder);
-        getTags().forEach(tag -> builder.append(tag)
-                .append(csvValueSeparator)); //Results in an extra "," at end of tag list.
-        builder.append(csvFieldSurrounder);
-
-        builder.append(lineBreak);
-
-        return builder.toString();
-    }
-
-    /**
-     * Appends (@code builder} with {@code field} in CSV format.
-     * @param builder StringBuilder which is to be appended.
-     * @param field Field value that is to be appended.
-     */
-    private void addCsvField(StringBuilder builder, String field) {
-        assert field != null : "Field cannot be null in Member object";
-
-        String csvFieldSeparator = ",";
-        String csvFieldSurrounder = "\"";
-
-        builder.append(csvFieldSurrounder)
-                .append(field)
-                .append(csvFieldSurrounder)
-                .append(csvFieldSeparator);
-    }
-
-    /**
      * change the status of the member loggin in
      */
 
