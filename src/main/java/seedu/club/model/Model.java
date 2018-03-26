@@ -13,6 +13,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
@@ -22,6 +23,9 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
+
+    /** {@code Predicate} that always evaluate to true */
+    Predicate<Poll> PREDICATE_SHOW_ALL_POLLS = unused -> true;
 
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyClubBook newData);
@@ -34,6 +38,9 @@ public interface Model {
 
     /** Adds the given member */
     void addMember(Member member) throws DuplicateMemberException;
+
+    /** Adds the given poll */
+    void addPoll(Poll poll) throws DuplicatePollException;
 
     /**
      * Replaces the given member {@code target} with {@code editedMember}.
@@ -48,14 +55,20 @@ public interface Model {
     /** Returns an unmodifiable view of the filtered member list */
     ObservableList<Member> getFilteredMemberList();
 
-    /** Returns an unmodifiable view of the filtered poll list */
-    ObservableList<Poll> getFilteredPollList();
-
     /**
      * Updates the filter of the filtered member list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredMemberList(Predicate<Member> predicate);
+
+    /** Returns an unmodifiable view of the filtered poll list */
+    ObservableList<Poll> getFilteredPollList();
+
+    /**
+     * Updates the filter of the filtered poll list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredPollList(Predicate<Poll> predicate);
 
     /**
      * Logs In a member in the club

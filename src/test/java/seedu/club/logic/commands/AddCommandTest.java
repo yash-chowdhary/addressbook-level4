@@ -32,6 +32,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.testutil.MemberBuilder;
@@ -118,6 +119,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void addPoll(Poll poll) throws DuplicatePollException {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public boolean addProfilePhoto(String originalPhotoPath) {
             fail("This method should not be called.");
             return false;
@@ -173,6 +179,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void updateFilteredPollList(Predicate<Poll> poll) {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public boolean logInMemberSuccessful(String username, String password) {
             fail("This method should not be called.");
             return false;
@@ -205,7 +216,7 @@ public class AddCommandTest {
     /**
      * A Model stub that always throw a DuplicateMemberException when trying to add a member.
      */
-    private class aModelStubThrowingDuplicateMemberException extends ModelStub {
+    private class ModelStubThrowingDuplicateMemberException extends ModelStub {
         @Override
         public void addMember(Member member) throws DuplicateMemberException {
             throw new DuplicateMemberException();

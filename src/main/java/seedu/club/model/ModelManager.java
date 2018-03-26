@@ -27,6 +27,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.storage.ProfilePhotoStorage;
@@ -130,6 +131,13 @@ public class ModelManager extends ComponentManager implements Model {
 
         clubBook.updateMember(target, editedMember);
         deleteUnusedTags();
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+        clubBook.addPoll(poll);
+        updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
         indicateClubBookChanged();
     }
 
@@ -277,6 +285,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public ObservableList<Poll> getFilteredPollList() {
         return FXCollections.unmodifiableObservableList(filteredPolls);
+    }
+
+    @Override
+    public void updateFilteredPollList(Predicate<Poll> predicate) {
+        requireNonNull(predicate);
+        filteredPolls.setPredicate(predicate);
     }
 
     @Override
