@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
@@ -26,6 +27,7 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.parser.exceptions.AddPollCommandParser;
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
@@ -57,6 +59,9 @@ public class ClubBookParser {
 
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
+
+        case AddPollCommand.COMMAND_WORD:
+            return new AddPollCommandParser().parse(arguments);
 
         case ChangeProfilePhotoCommand.COMMAND_WORD:
             return new ChangeProfilePhotoCommandParser().parse(arguments);

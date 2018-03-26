@@ -24,8 +24,8 @@ public class Poll {
     /**
      * Constructs a {@code Poll}.
      */
-    public Poll(Question question, Answer... answers) {
-        this(question, Arrays.asList(answers), null);
+    public Poll(Question question, List<Answer> answers) {
+        this(question, answers, null);
     }
 
     public Poll(Question question, List<Answer> answers,

@@ -20,7 +20,7 @@ public class AddPollCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a poll to the club book. "
             + "Parameters: "
             + PREFIX_QUESTION + "QUESTION "
-            + PREFIX_ANSWER + "ANSWER..."
+            + PREFIX_ANSWER + "ANSWER...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_QUESTION + "What is love? "
             + PREFIX_ANSWER + "Baby don't hurt me "

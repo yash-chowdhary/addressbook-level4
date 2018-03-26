@@ -22,6 +22,8 @@ import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Question;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -331,5 +333,63 @@ public class ParserUtil {
     public static Optional<Body> parseBody(Optional<String> body) {
         requireNonNull(body);
         return body.isPresent() ? Optional.of(parseBody(body.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String question} into a {@code Question}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code name} is invalid.
+     */
+    public static Question parseQuestion(String question) throws IllegalValueException {
+        requireNonNull(question);
+        String trimmedQuestion = question.trim();
+        if (!Question.isValidQuestion(trimmedQuestion)) {
+            throw new IllegalValueException(Question.MESSAGE_QUESTION_CONSTRAINTS);
+        }
+        return new Question(trimmedQuestion);
+    }
+
+    /**
+     * Parses a {@code Optional<String> question} into an {@code Optional<Question>} if {@code question} is present.
+     */
+    public static Optional<Question> parseQuestion(Optional<String> question) throws IllegalValueException {
+        requireNonNull(question);
+        return question.isPresent() ? Optional.of(parseQuestion(question.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String answer} into a {@code answer}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code answer} is invalid.
+     */
+    public static Answer parseAnswer(String answer) throws IllegalValueException {
+        requireNonNull(answer);
+        String trimmedAnswer = answer.trim();
+        if (!Answer.isValidAnswer(trimmedAnswer)) {
+            throw new IllegalValueException(Answer.MESSAGE_ANSWER_CONSTRAINTS);
+        }
+        return new Answer(trimmedAnswer);
+    }
+
+    /**
+     * Parses a {@code Optional<String> answer} into a {@code Optional<Tag>} if {@code group} is present
+     */
+    public static Optional<Answer> parseOptionalAnswer(Optional<String> answer) throws IllegalValueException {
+        requireNonNull(answer);
+        return answer.isPresent() ? Optional.of(parseAnswer(answer.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code Set<Answer>}.
+     */
+    public static Set<Answer> parseAnswers(Collection<String> answers) throws IllegalValueException {
+        requireNonNull(answers);
+        final Set<Answer> answerSet = new HashSet<>();
+        for (String answer : answers) {
+            answerSet.add(parseAnswer(answer));
+        }
+        return answerSet;
     }
 }

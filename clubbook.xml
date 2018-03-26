@@ -116,4 +116,9 @@
         <answers noOfMembersAnswered="0">Your father</answers>
         <answers noOfMembersAnswered="0">Your mom</answers>
     </polls>
+    <polls>
+        <question>What is love?</question>
+        <answers noOfMembersAnswered="0">Baby don't hurt me</answers>
+        <answers noOfMembersAnswered="0">42</answers>
+    </polls>
 </clubbook>

@@ -1,6 +1,7 @@
 package seedu.club.model.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,14 +55,14 @@ public class SampleDataUtil {
 
     public static Poll[] getSamplePolls() {
         return new Poll[] {
-            new Poll(new Question("How are you?"), new Answer("I'm fine"),
-                    new Answer("Not good man")),
+            new Poll(new Question("How are you?"),
+                    Arrays.asList(new Answer("I'm fine"), new Answer("Not good man"))),
             new Poll(new Question("What are you?"),
-                    new Answer("A vampire"), new Answer("A zombie")),
+                    Arrays.asList(new Answer("A vampire"), (new Answer("A zombie")))),
             new Poll(new Question("Who are you?"),
-                    new Answer("Your father"), new Answer("Your mom")),
+                Arrays.asList(new Answer("Your father"), (new Answer("Your mom")))),
             new Poll(new Question("When are you?"),
-                    new Answer("I don't get it"), new Answer("Umm.."))
+                Arrays.asList(new Answer("I don't get it"), (new Answer("Umm.."))))
         };
     }
 
