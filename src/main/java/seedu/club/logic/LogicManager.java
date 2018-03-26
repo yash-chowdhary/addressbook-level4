@@ -61,11 +61,6 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
-    public ObservableList<Poll> getObservablePollList() {
-        return model.getFilteredPollList();
-    }
-
-    @Override
     public ListElementPointer getHistorySnapshot() {
         return new ListElementPointer(history.getHistory());
     }
