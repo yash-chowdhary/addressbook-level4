@@ -28,7 +28,7 @@
             <Region fx:constant="USE_PREF_SIZE" />
           </minWidth>
         </Label>
-         <Label fx:id="question" styleClass="cell_small_label" text="\$question" />
+         <Label fx:id="question" styleClass="cell_big_label" text="\$question" />
       </HBox>
       <FlowPane fx:id="answers" />
     </VBox>
