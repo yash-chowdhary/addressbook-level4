@@ -1,4 +1,4 @@
-package seedu.club.logic.parser.exceptions;
+package seedu.club.logic.parser;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
@@ -9,11 +9,7 @@ import java.util.stream.Stream;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.AddPollCommand;
-import seedu.club.logic.parser.ArgumentMultimap;
-import seedu.club.logic.parser.ArgumentTokenizer;
-import seedu.club.logic.parser.Parser;
-import seedu.club.logic.parser.ParserUtil;
-import seedu.club.logic.parser.Prefix;
+import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.Question;

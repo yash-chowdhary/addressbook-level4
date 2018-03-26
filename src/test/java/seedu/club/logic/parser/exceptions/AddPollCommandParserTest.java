@@ -22,7 +22,6 @@ import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import org.junit.Test;
 
 import seedu.club.logic.commands.AddPollCommand;
-import seedu.club.logic.parser.exceptions.AddPollCommandParser;
 import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.Question;
