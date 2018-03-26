@@ -60,9 +60,9 @@ public class AddPollCommandParser implements Parser<AddPollCommand> {
 
         try {
             Question question = ParserUtil.parseQuestion(argMultimap.getValue(PREFIX_QUESTION)).get();
-            Set<Answer> answerSet = ParserUtil.parseAnswers(argMultimap.getAllValues(PREFIX_ANSWER));
+            List<Answer> answerList = ParserUtil.parseAnswers(argMultimap.getAllValues(PREFIX_ANSWER));
 
-            Poll poll = new Poll(question, new ArrayList<>(answerSet));
+            Poll poll = new Poll(question, answerList);
 
             return new AddPollCommand(poll);
         } catch (IllegalValueException ive) {

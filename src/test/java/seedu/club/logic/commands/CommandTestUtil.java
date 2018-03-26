@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
@@ -10,6 +11,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
@@ -33,12 +35,6 @@ import seedu.club.testutil.EditMemberDescriptorBuilder;
  */
 public class CommandTestUtil {
 
-    public static final String VALID_ANSWER_ONE = "this is an answer";
-    public static final String VALID_ANSWER_TWO = "this is also an answer";
-    public static final String INVALID_ANSWER = "   ";
-    public static final String VALID_QUESTION = "What is the meaning of life?";
-    public static final String INVALID_QUESTION = " ";
-
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
     public static final String VALID_PHONE_AMY = "11111111";
@@ -57,6 +53,12 @@ public class CommandTestUtil {
     public static final String VALID_USERNAME_BOB = "BobChoo";
     public static final String VALID_PASSWORD = "password";
     public static final String VALID_MATRIC_NUMBER = "A1234567E";
+    public static final String VALID_QUESTION_LIFE = "What is the meaning of life?";
+    public static final String VALID_QUESTION_LOVE = "What is love?";
+    public static final String VALID_ANSWER_ONE = "this is an answer";
+    public static final String VALID_ANSWER_TWO = "this is also an answer";
+    public static final String VALID_ANSWER_THREE = "42";
+    public static final String VALID_ANSWER_FOUR = "i dono";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -73,6 +75,12 @@ public class CommandTestUtil {
     public static final String USERNAME_DESC_AMY = " " + PREFIX_USERNAME + VALID_USERNAME_AMY;
     public static final String USERNAME_DESC_BOB = " " + PREFIX_USERNAME + VALID_USERNAME_BOB;
     public static final String PASSWORD_DESC = " " + PREFIX_PASSWORD + VALID_PASSWORD;
+    public static final String QUESTION_DESC_LIFE = " " + PREFIX_QUESTION + VALID_QUESTION_LIFE;
+    public static final String QUESTION_DESC_LOVE = " " + PREFIX_QUESTION + VALID_QUESTION_LOVE;
+    public static final String ANSWER_DESC_ONE = " " + PREFIX_ANSWER + VALID_ANSWER_ONE;
+    public static final String ANSWER_DESC_TWO = " " + PREFIX_ANSWER + VALID_ANSWER_TWO;
+    public static final String ANSWER_DESC_THREE = " " + PREFIX_ANSWER + VALID_ANSWER_THREE;
+    public static final String ANSWER_DESC_FOUR = " " + PREFIX_ANSWER + VALID_ANSWER_FOUR;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
@@ -83,6 +91,10 @@ public class CommandTestUtil {
     public static final String INVALID_TAG = "hubby*";
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + INVALID_TAG; // '*' not allowed in tags
     public static final String INVALID_MATRIC_NUMBER = "A1234F";
+    public static final String INVALID_QUESTION = " ";
+    public static final String INVALID_QUESTION_DESC = " " + PREFIX_QUESTION + INVALID_QUESTION;
+    public static final String INVALID_ANSWER = "\t   ";
+    public static final String INVALID_ANSWER_DESC = " " + PREFIX_ANSWER + INVALID_ANSWER;
 
     public static final String NON_EXISTENT_GROUP = "broadcasting";
     public static final String NON_EXISTENT_GROUP_DESC = PREFIX_GROUP + NON_EXISTENT_GROUP;

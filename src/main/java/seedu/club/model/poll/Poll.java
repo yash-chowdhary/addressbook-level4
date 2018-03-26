@@ -44,6 +44,8 @@ public class Poll {
 
     @Override
     public boolean equals(Object other) {
+        System.out.println("answers = " + answers);
+        System.out.println("((Poll)other).answers = " + ((Poll)other).answers);
         return other == this // short circuit if same object
                 || (other instanceof Poll // instanceof handles nulls
                 && this.question.equals(((Poll) other).question) // state check
