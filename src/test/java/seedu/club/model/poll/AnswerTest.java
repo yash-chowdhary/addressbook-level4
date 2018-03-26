@@ -59,7 +59,7 @@ public class AnswerTest {
     }
 
     @Test
-    public void test_equals() {
+    public void equals() {
         Answer firstAnswer = new Answer(VALID_ANSWER_ONE);
         Answer secondAnswer = new Answer(VALID_ANSWER_ONE);
 
@@ -70,12 +70,12 @@ public class AnswerTest {
     }
 
     @Test
-    public void test_voteThisAnswer() {
+    public void voteThisAnswer() {
         int initialVote = 0;
         Answer answer = new Answer(VALID_ANSWER_ONE, initialVote);
         assertVoteIncreasedAfterVoting(answer, initialVote);
 
-        initialVote = 0;
+        initialVote = 5;
         answer = new Answer(VALID_ANSWER_ONE, initialVote);
         assertVoteIncreasedAfterVoting(answer, initialVote);
     }

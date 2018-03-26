@@ -3,7 +3,6 @@ package seedu.club.model.poll;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -40,32 +39,11 @@ public class UniquePollList implements Iterable<Poll> {
     }
 
     /**
-     * Returns all polls in this list as a Set.
-     * This set is mutable and change-insulated against the internal list.
-     */
-    private Set<Poll> toSet() {
-        assert CollectionUtil.elementsAreUnique(internalList);
-        return new HashSet<>(internalList);
-    }
-
-    /**
      * Replaces the Polls in this list with those in the argument poll list.
      */
     public void setPolls(Set<Poll> polls) {
         requireAllNonNull(polls);
         internalList.setAll(polls);
-        assert CollectionUtil.elementsAreUnique(internalList);
-    }
-
-    /**
-     * Ensures every poll in the argument list exists in this object.
-     */
-    public void mergeFrom(UniquePollList from) {
-        final Set<Poll> alreadyInside = this.toSet();
-        from.internalList.stream()
-                .filter(poll -> !alreadyInside.contains(poll))
-                .forEach(internalList::add);
-
         assert CollectionUtil.elementsAreUnique(internalList);
     }
 
@@ -112,16 +90,6 @@ public class UniquePollList implements Iterable<Poll> {
         return other == this // short circuit if same object
                 || (other instanceof UniquePollList // instanceof handles nulls
                         && this.internalList.equals(((UniquePollList) other).internalList));
-    }
-
-    /**
-     * Returns true if the element in this list is equal to the elements in {@code other}.
-     * The elements do not have to be in the same order.
-     */
-    public boolean equalsOrderInsensitive(UniquePollList other) {
-        assert CollectionUtil.elementsAreUnique(internalList);
-        assert CollectionUtil.elementsAreUnique(other.internalList);
-        return this == other || new HashSet<>(this.internalList).equals(new HashSet<>(other.internalList));
     }
 
     @Override

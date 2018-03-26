@@ -12,8 +12,7 @@ import seedu.club.model.member.MatricNumber;
  */
 public class XmlAdaptedMatricNumber {
 
-    //TODO
-    private static final String MISSING_FIELD_MESSAGE_FORMAT = "Matric number missing";
+    private static final String MISSING_FIELD_MESSAGE_FORMAT = "Matric Number missing";
     @XmlValue
     private String matricNumber;
 
@@ -32,23 +31,22 @@ public class XmlAdaptedMatricNumber {
     }
 
     /**
-     * Converts a given Poll into this class for JAXB use.
+     * Converts a given MatricNumber into this class for JAXB use.
      *
-     * @param source future changes to this will not affect the created XmlAdaptedPoll
+     * @param source future changes to this will not affect the created XmlAdaptedMatricNumber
      */
     public XmlAdaptedMatricNumber(MatricNumber source) {
         matricNumber = source.toString();
     }
 
     /**
-     * Converts this jaxb-friendly adapted poll object into the model's poll object.
+     * Converts this jaxb-friendly adapted matricNumber object into the model's matricNumber object.
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted member
      */
     public MatricNumber toModelType() throws IllegalValueException {
         if (this.matricNumber == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
-                    MatricNumber.class.getSimpleName()));
+            throw new IllegalValueException(MISSING_FIELD_MESSAGE_FORMAT);
         }
         if (!MatricNumber.isValidMatricNumber(this.matricNumber)) {
             throw new IllegalValueException(MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
@@ -66,7 +64,7 @@ public class XmlAdaptedMatricNumber {
             return false;
         }
 
-        XmlAdaptedMatricNumber otherPoll = (XmlAdaptedMatricNumber) other;
-        return Objects.equals(matricNumber, otherPoll.matricNumber);
+        XmlAdaptedMatricNumber otherMatricNumber = (XmlAdaptedMatricNumber) other;
+        return Objects.equals(matricNumber, otherMatricNumber.matricNumber);
     }
 }

@@ -126,8 +126,7 @@ public class MainWindow extends UiPart<Stage> {
         memberListPanel = new MemberListPanel(logic.getFilteredMemberList());
         memberListPanelPlaceholder.getChildren().add(memberListPanel.getRoot());
 
-        //TODO
-        pollListPanel = new PollListPanel(logic.getObservablePollList());
+        pollListPanel = new PollListPanel(logic.getFilteredPollList());
         pollListPanelPlaceholder.getChildren().add(pollListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();

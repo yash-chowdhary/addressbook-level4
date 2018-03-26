@@ -58,7 +58,7 @@ public class QuestionTest {
     }
 
     @Test
-    public void test_equals() {
+    public void equals() {
         Question firstQuestion = new Question(VALID_QUESTION);
         Question secondQuestion = new Question(VALID_QUESTION);
 
