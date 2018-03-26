@@ -1,6 +1,8 @@
 package seedu.club.ui;
 
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +13,7 @@ import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.NewResultAvailableEvent;
 import seedu.club.logic.ListElementPointer;
 import seedu.club.logic.Logic;
+import seedu.club.logic.LogicManager;
 import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.parser.exceptions.ParseException;
@@ -26,6 +29,9 @@ public class CommandBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
     private ListElementPointer historySnapshot;
+    private int completeCommandIndex = 0;
+    private String oldInput = null;
+    private String newInput;
 
     @FXML
     private TextField commandTextField;
@@ -55,9 +61,38 @@ public class CommandBox extends UiPart<Region> {
             keyEvent.consume();
             navigateToNextInput();
             break;
+        case TAB:
+            keyEvent.consume();
+            completeCommandIndex++;
+            autoComplete(commandTextField.getText());
+            break;
         default:
             // let JavaFx handle the keypress
         }
+    }
+
+    /**
+     * Auto-completes the input
+     */
+    private void autoComplete(String input) {
+        if (!input.equals("")) {
+            if (oldInput == null) {
+                oldInput = input;
+            } else if (input.indexOf(oldInput) == -1) {
+                oldInput = input;
+                completeCommandIndex = 0;
+            }
+            List<String> completedCommands = LogicManager.commandList.stream().filter(s -> s.startsWith(oldInput))
+                    .collect(Collectors.toList());
+
+            if (!completedCommands.isEmpty()) {
+                replaceText(completedCommands.get(completeCommandIndex % completedCommands.size()));
+            } else {
+                replaceText("");
+            }
+        }
+
+
     }
 
     /**
