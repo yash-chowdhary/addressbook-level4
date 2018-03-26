@@ -82,7 +82,7 @@ public class UniqueTaskList implements Iterable<Task> {
     }
 
     /**
-     * Adds an Task to the list.
+     * Adds a Task to the list.
      *
      * @throws DuplicateTaskException if the Task to add is a duplicate of an existing Task in the list.
      */

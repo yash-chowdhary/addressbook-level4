@@ -281,7 +281,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     * Adds order to list of orders.
+     * Adds {@code Task toAdd} to the list of tasks.
      */
     public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
         tasks.add(taskToAdd);
