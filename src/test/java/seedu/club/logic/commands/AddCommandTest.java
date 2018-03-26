@@ -205,7 +205,7 @@ public class AddCommandTest {
     /**
      * A Model stub that always throw a DuplicateMemberException when trying to add a member.
      */
-    private class ModelStubThrowingDuplicateMemberException extends ModelStub {
+    private class aModelStubThrowingDuplicateMemberException extends ModelStub {
         @Override
         public void addMember(Member member) throws DuplicateMemberException {
             throw new DuplicateMemberException();
