@@ -36,6 +36,8 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.testutil.TaskBuilder;
 
 //@@author yash-chowdhary
@@ -113,6 +115,12 @@ public class AddTaskCommandTest {
         public ReadOnlyClubBook getClubBook() {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
+            fail("This method should not be called");
+            return;
         }
 
         @Override

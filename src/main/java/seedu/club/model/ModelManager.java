@@ -33,6 +33,8 @@ import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.storage.ProfilePhotoStorage;
 
 /**
@@ -278,6 +280,19 @@ public class ModelManager extends ComponentManager implements Model {
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
         }
+    }
+
+    @Override
+    public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
+        Assignor assignor = targetTask.getAssignor();
+        Assignee assignee = targetTask.getAssignee();
+        String currentMember = loggedInMember.getName().toString();
+        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
+                || !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+            throw new TaskCannotBeDeletedException();
+        }
+        clubBook.deleteTask(targetTask);
+        indicateClubBookChanged();
     }
 
     //@@author

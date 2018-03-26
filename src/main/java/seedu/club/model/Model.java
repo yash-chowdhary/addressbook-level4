@@ -16,6 +16,8 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  * The API of the Model component.
@@ -97,4 +99,6 @@ public interface Model {
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
+
+    void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 }

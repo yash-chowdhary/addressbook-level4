@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  *
@@ -98,11 +99,12 @@ public class UniqueTaskList implements Iterable<Task> {
     /**
      * Removes {@code Task toRemove} from the list if it exists.
      */
-    public void remove(Task toRemove) {
+    public void remove(Task toRemove) throws TaskNotFoundException {
         requireNonNull(toRemove);
-        if (contains(toRemove)) {
-            internalList.remove(toRemove);
+        if (!contains(toRemove)) {
+            throw new TaskNotFoundException();
         }
+        internalList.remove(toRemove);
     }
 
     @Override

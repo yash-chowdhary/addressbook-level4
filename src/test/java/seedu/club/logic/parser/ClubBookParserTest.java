@@ -11,6 +11,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,7 @@ import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeleteTaskCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.logic.commands.EmailCommand;
@@ -83,6 +85,13 @@ public class ClubBookParserTest {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_MEMBER), command);
+    }
+
+    @Test
+    public void parseCommand_deleteTask() throws Exception {
+        DeleteTaskCommand command = (DeleteTaskCommand) parser.parseCommand(
+                DeleteTaskCommand.COMMAND_WORD + " " + INDEX_FIRST_TASK.getOneBased());
+        assertEquals(new DeleteTaskCommand(INDEX_FIRST_TASK), command);
     }
 
     @Test

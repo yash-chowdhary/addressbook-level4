@@ -26,6 +26,7 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.UniqueTaskList;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  * Wraps all data at the club-book level
@@ -389,5 +390,9 @@ public class ClubBook implements ReadOnlyClubBook {
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(members, tags);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
     }
 }

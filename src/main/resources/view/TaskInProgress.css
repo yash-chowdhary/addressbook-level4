@@ -8,7 +8,11 @@
     -fx-background-color: transparent, -fx-background;
 }
 
-.list-cell:filled {
+.list-cell:filled:even {
+    -fx-background-color: derive(#ff8c00, 0%);
+}
+
+.list-cell:filled:odd {
     -fx-background-color: derive(#ff8c00, 0%);
 }
 
