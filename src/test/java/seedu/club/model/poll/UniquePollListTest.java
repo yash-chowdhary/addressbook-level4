@@ -1,7 +1,9 @@
 package seedu.club.model.poll;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static seedu.club.testutil.TypicalPolls.POLL_HOW;
 import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
 import static seedu.club.testutil.TypicalPolls.POLL_WHEN;
@@ -45,8 +47,8 @@ public class UniquePollListTest {
         UniquePollList uniquePollListOne = new UniquePollList(POLL_SET_ONE);
         UniquePollList uniquePollListTwo = new UniquePollList(POLL_SET_TWO);
 
-        assertEquals(uniquePollListOne, uniquePollListOne);
+        assertTrue(uniquePollListOne.equals(uniquePollListOne));
 
-        assertNotEquals(uniquePollListOne, uniquePollListTwo);
+        assertFalse(uniquePollListTwo.equals(uniquePollListOne));
     }
 }
