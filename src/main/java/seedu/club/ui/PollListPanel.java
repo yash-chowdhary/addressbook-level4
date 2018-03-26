@@ -13,7 +13,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.ui.JumpToListRequestEvent;
+import seedu.club.commons.events.ui.JumpToPollListRequestEvent;
 import seedu.club.commons.events.ui.PollPanelSelectionChangedEvent;
 import seedu.club.model.poll.Poll;
 
@@ -67,7 +67,7 @@ public class PollListPanel extends UiPart<Region> {
     }
 
     @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
+    private void handleJumpToPollListRequestEvent(JumpToPollListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         scrollTo(event.targetIndex);
     }
