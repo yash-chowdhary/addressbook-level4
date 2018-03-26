@@ -392,7 +392,7 @@ public class ParserUtil {
         final Set<Answer> answerSet = new HashSet<>();
         final List<Answer> answerList = new ArrayList<>();
         for (String answer : answers) {
-            if(!answerSet.contains(answer)) {
+            if (!answerSet.contains(answer)) {
                 Answer parsedAnswer = parseAnswer(answer);
                 answerSet.add(parsedAnswer);
                 answerList.add(parsedAnswer);

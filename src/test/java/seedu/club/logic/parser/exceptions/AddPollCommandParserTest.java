@@ -37,7 +37,7 @@ public class AddPollCommandParserTest {
                 .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_THREE).build();
 
         // whitespace only preamble
-        assertParseSuccess(parser, QUESTION_DESC_LIFE + ANSWER_DESC_ONE +ANSWER_DESC_THREE,
+        assertParseSuccess(parser, QUESTION_DESC_LIFE + ANSWER_DESC_ONE + ANSWER_DESC_THREE,
                 new AddPollCommand(expectedPoll));
 
         // multiple questions - last question accepted
@@ -75,7 +75,7 @@ public class AddPollCommandParserTest {
         assertParseFailure(parser, QUESTION_DESC_LOVE + INVALID_ANSWER_DESC,
                 Answer.MESSAGE_ANSWER_CONSTRAINTS);
 
-       // two invalid values, only first invalid value reported
+        // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_QUESTION_DESC + INVALID_ANSWER_DESC,
                 Question.MESSAGE_QUESTION_CONSTRAINTS);
 

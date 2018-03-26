@@ -2,7 +2,6 @@ package seedu.club.model.poll;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Poll {
     @Override
     public boolean equals(Object other) {
         System.out.println("answers = " + answers);
-        System.out.println("((Poll)other).answers = " + ((Poll)other).answers);
+        System.out.println("((Poll)other).answers = " + ((Poll ) other).answers);
         return other == this // short circuit if same object
                 || (other instanceof Poll // instanceof handles nulls
                 && this.question.equals(((Poll) other).question) // state check

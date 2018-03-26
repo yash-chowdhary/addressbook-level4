@@ -7,7 +7,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
-import seedu.club.model.poll.Poll;
 
 /**
  * Adds a poll to the club book.
