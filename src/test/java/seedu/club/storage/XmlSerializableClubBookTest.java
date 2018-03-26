@@ -1,6 +1,8 @@
 package seedu.club.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -67,5 +69,17 @@ public class XmlSerializableClubBookTest {
                 XmlSerializableClubBook.class);
         thrown.expect(IllegalValueException.class);
         dataFromFile.toModelType();
+    }
+
+    @Test
+    public void equals() throws Exception {
+        XmlSerializableClubBook firstFile = XmlUtil.getDataFromFile(TYPICAL_MEMBERS_FILE,
+                XmlSerializableClubBook.class);
+        XmlSerializableClubBook secondFile = XmlUtil.getDataFromFile(TYPICAL_TASKS_FILE,
+                XmlSerializableClubBook.class);
+
+        assertTrue(firstFile.equals(firstFile));
+        assertFalse(firstFile.equals(null));
+        assertFalse(firstFile.equals(secondFile));
     }
 }

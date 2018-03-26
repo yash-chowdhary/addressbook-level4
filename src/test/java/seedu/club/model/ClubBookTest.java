@@ -11,6 +11,9 @@ import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
+import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
+import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
+import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +34,10 @@ import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
+import seedu.club.testutil.TaskBuilder;
 
 public class ClubBookTest {
 
@@ -79,6 +84,36 @@ public class ClubBookTest {
                 .withMember(amyNotInLogistics).build();
 
         assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+    }
+
+    @Test
+    public void deleteTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        clubBook.deleteTask(BUY_CONFETTI);
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood).build();
+
+        assertEquals(expectedClubBook, clubBook);
+    }
+
+    @Test
+    public void deleteTask_taskNotFound_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        try {
+            clubBook.deleteTask(BOOK_AUDITORIUM);
+        } catch (TaskNotFoundException tnfe) {
+            Member amy = new MemberBuilder(AMY).build();
+            Task buyFood = new TaskBuilder(BUY_FOOD).build();
+            Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+            ClubBook expectedClubBook = new ClubBookBuilder()
+                    .withMember(amy)
+                    .withTask(buyFood)
+                    .withTask(buyConfetti)
+                    .build();
+            assertEquals(expectedClubBook, clubBook);
+        }
     }
 
     @Test
