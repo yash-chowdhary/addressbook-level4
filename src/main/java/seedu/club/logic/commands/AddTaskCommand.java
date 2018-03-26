@@ -17,9 +17,9 @@ public class AddTaskCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "addtask";
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " "
-            + PREFIX_DESCRIPTION + "DESCRIPTION"
-            + PREFIX_TIME + "TIME"
-            + PREFIX_DATE + "DATE";
+            + PREFIX_DESCRIPTION + "  "
+            + PREFIX_TIME + "  "
+            + PREFIX_DATE + " ";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Task to the currently logged-in member's"
             + "task list. "
