@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clubbook>
+    <members>
+        <name>Alice Pauline</name>
+        <phone>85355255</phone>
+        <email>alice@example.com</email>
+        <matricNumber>A9210701B</matricNumber>
+        <group>logistics</group>
+        <tagged>friends</tagged>
+    </members>
+    <tasks>
+        <description>Book YIH Function Room 4</description>
+        <time>17:00</time>
+        <date>02/04/2018</date>
+        <assignor>Alex Yeoh</assignor>
+        <assignee>Alex Yeoh</assignee>
+        <status>Yet To Begin</status>
+    </tasks>
+    <tasks>
+        <description>Test task</description>
+        <time>17:00</time>
+        <date>02/04/2018</date>
+        <assignor>Alex Yeoh</assignor>
+        <assignee>Alex Yeoh</assignee>
+        <status>Yet To Begin</status>
+    </tasks>
+    <tasks>
+        <description>Buy confetti</description>
+        <time>17:00</time>
+        <date>02/04/2018</date>
+        <assignor>Alex Yeoh</assignor>
+        <assignee>Alex Yeoh</assignee>
+        <status>Yet To Begin</status>
+    </tasks>
+    <tasks>
+        <description>Book YIH Function Room 5</description>
+        <time>17:00</time>
+        <date>02/04/2018</date>
+        <assignor>Alex Yeoh</assignor>
+        <assignee>Alex Yeoh</assignee>
+        <status>Yet To Begin</status>
+    </tasks>
+</clubbook>

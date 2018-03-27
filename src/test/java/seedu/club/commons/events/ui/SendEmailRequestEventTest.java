@@ -4,9 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 
 //@@author yash-chowdhary
 public class SendEmailRequestEventTest {

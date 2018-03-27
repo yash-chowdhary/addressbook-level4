@@ -18,13 +18,13 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -34,6 +34,10 @@ import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.testutil.MemberBuilder;
 
 public class AddCommandTest {
@@ -118,6 +122,12 @@ public class AddCommandTest {
         }
 
         @Override
+        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
         public boolean addProfilePhoto(String originalPhotoPath) {
             fail("This method should not be called.");
             return false;
@@ -197,6 +207,18 @@ public class AddCommandTest {
         @Override
         public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException,
                 TagNotFoundException {
+            fail("This method should not be called");
+            return null;
+        }
+
+        @Override
+        public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
+        public ObservableList<Task> getFilteredTaskList() {
             fail("This method should not be called");
             return null;
         }

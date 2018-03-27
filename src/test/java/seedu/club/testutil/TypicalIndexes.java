@@ -12,4 +12,7 @@ public class TypicalIndexes {
 
     public static final Index INDEX_FIRST_TAG = Index.fromOneBased(1);
     public static final Index INDEX_SECOND_TAG = Index.fromOneBased(2);
+
+    public static final Index INDEX_FIRST_TASK = Index.fromOneBased(1);
+    public static final Index INDEX_SECOND_TASK = Index.fromOneBased(2);
 }

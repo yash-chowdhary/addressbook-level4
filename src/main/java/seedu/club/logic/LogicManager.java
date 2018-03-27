@@ -15,6 +15,7 @@ import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.task.Task;
 
 /**
  * The main LogicManager of the app.
@@ -58,6 +59,9 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<Poll> getFilteredPollList() {
         return model.getFilteredPollList();
+      
+    public ObservableList<Task> getFilteredTaskList() {
+        return model.getFilteredTaskList();
     }
 
     @Override

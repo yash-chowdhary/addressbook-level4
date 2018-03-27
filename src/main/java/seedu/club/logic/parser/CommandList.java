@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
+import seedu.club.logic.commands.DeleteTaskCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
@@ -48,6 +50,8 @@ public class CommandList {
         commandList.add(RemoveGroupCommand.COMMAND_FORMAT);
         commandList.add(SelectCommand.COMMAND_WORD);
         commandList.add(UndoCommand.COMMAND_WORD);
+        commandList.add(AddTaskCommand.COMMAND_FORMAT);
+        commandList.add(DeleteTaskCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;

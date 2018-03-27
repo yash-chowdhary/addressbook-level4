@@ -5,6 +5,8 @@ import seedu.club.model.ClubBook;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 
 /**
  * A utility class to help with building Clubbook objects.
@@ -43,6 +45,18 @@ public class ClubBookBuilder {
             clubBook.addTag(new Tag(tagName));
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("tagName is expected to be valid.");
+        }
+        return this;
+    }
+
+    /**
+     * Parses {@code task} into a {@code Task} and adds it to the {@code ClubBook} that we are building.
+     */
+    public ClubBookBuilder withTask(Task task) {
+        try {
+            clubBook.addTaskToTaskList(task);
+        } catch (DuplicateTaskException dte) {
+            throw new IllegalArgumentException("task is expected to be unique");
         }
         return this;
     }

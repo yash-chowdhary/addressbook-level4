@@ -17,7 +17,7 @@ import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
-import seedu.club.logic.commands.email.Client;
+import seedu.club.model.email.Client;
 import seedu.club.model.member.Member;
 
 /**
