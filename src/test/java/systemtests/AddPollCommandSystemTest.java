@@ -1,23 +1,40 @@
 package systemtests;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_FINE;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_FOUR;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_NOT_GOOD;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_ONE;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_THREE;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_TWO;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_VAMPIRE;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_ZOMBIE;
-import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_ANSWER_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_QUESTION_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_HOW;
+import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_LIFE;
+import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_LOVE;
 import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_WHAT;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_TWO;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_VAMPIRE;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ZOMBIE;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_LOVE;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_WHAT;
+import static seedu.club.testutil.TypicalPolls.POLL_HOW;
 import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
 
 import org.junit.Test;
 
 import seedu.club.commons.core.Messages;
-import seedu.club.commons.core.index.Index;
-import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.Question;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
-import seedu.club.model.tag.Tag;
 import seedu.club.testutil.PollBuilder;
 import seedu.club.testutil.PollUtil;
 
@@ -33,7 +50,8 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
          * -> added
          */
         Poll toAdd = POLL_WHAT;
-        String command = "   " + AddCommand.COMMAND_WORD + "  " + QUESTION_DESC_WHAT + "  " + ANSWER_DESC_VAMPIRE + " "
+        String command = "   " + AddPollCommand.COMMAND_WORD + "  " + QUESTION_DESC_WHAT + "  "
+                + ANSWER_DESC_VAMPIRE + " "
                 + ANSWER_DESC_ZOMBIE;
         assertCommandSuccess(command, toAdd);
 
@@ -48,111 +66,63 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedResultMessage);
 
-        /* Case: add a poll with all fields same as another poll in the club book except name -> added */
-        toAdd = new PollBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
-        command = AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
-                + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_BOB + PASSWORD_DESC;
+        /* Case: add a poll answers same as another poll in the club book but different question -> added */
+        toAdd = new PollBuilder().withQuestion(VALID_QUESTION_LOVE)
+                .withAnswers(VALID_ANSWER_VAMPIRE, VALID_ANSWER_ZOMBIE).build();
+        command = AddPollCommand.COMMAND_WORD + QUESTION_DESC_LOVE + ANSWER_DESC_VAMPIRE + ANSWER_DESC_ZOMBIE;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a poll with all fields same as another poll in the club book except phone -> added */
-        toAdd = new PollBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
-                + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
+        /* Case: add a poll with question same as another poll in the club book but with all different answers
+         -> added */
+        toAdd = new PollBuilder().withQuestion(VALID_QUESTION_WHAT)
+                .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO).build();
+        command = AddPollCommand.COMMAND_WORD + QUESTION_DESC_WHAT + ANSWER_DESC_ONE + ANSWER_DESC_TWO;
+
+        /* Case: add a poll with question same as another poll in the club book but with exactly one different answer
+         -> added */
+        toAdd = new PollBuilder().withQuestion(VALID_QUESTION_WHAT)
+                .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_VAMPIRE).build();
+        command = AddPollCommand.COMMAND_WORD + QUESTION_DESC_WHAT + ANSWER_DESC_ONE + ANSWER_DESC_VAMPIRE;
+
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add to empty club book -> added */
-        deleteAllPolls();
-        assertCommandSuccess(ALICE);
-
-        /* Case: add a poll with tags, command with parameters in random order -> added */
-        toAdd = BOB;
-        command = AddCommand.COMMAND_WORD + TAG_DESC_FRIEND + PHONE_DESC_BOB + MATRIC_NUMBER_DESC_BOB + NAME_DESC_BOB
-                + GROUP_DESC_BOB + TAG_DESC_HUSBAND + EMAIL_DESC_BOB + USERNAME_DESC_BOB + PASSWORD_DESC;
+        /* Case: add a poll with fields in random order -> added */
+        toAdd = POLL_HOW;
+        command = AddPollCommand.COMMAND_WORD + ANSWER_DESC_FINE + QUESTION_DESC_HOW + ANSWER_DESC_NOT_GOOD;
         assertCommandSuccess(command, toAdd);
-
-        /* Case: add a poll, missing tags -> added */
-        assertCommandSuccess(HOON);
-
-        /* -------------------------- Perform add operation on the shown filtered list ------------------------------ */
-
-        /* Case: filters the poll list before adding -> added */
-        showPollsWithName(KEYWORD_MATCHING_MEIER);
-        assertCommandSuccess(IDA);
-
-        /* ------------------------ Perform add operation while a poll card is selected --------------------------- */
-
-        /* Case: selects first card in the poll list, add a poll -> added, card selection remains unchanged */
-        selectPoll(Index.fromOneBased(1));
-        assertCommandSuccess(CARL);
 
         /* ----------------------------------- Perform invalid add operations --------------------------------------- */
 
         /* Case: add a duplicate poll -> rejected */
-        command = PollUtil.getAddCommand(HOON);
-        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_POLL);
+        command = PollUtil.getAddPollCommand(POLL_WHAT);
+        assertCommandFailure(command, AddPollCommand.MESSAGE_DUPLICATE_POLL);
 
-        /* Case: add a duplicate poll except with different tags -> rejected */
-        // "friends" is an existing tag used in the default model, see TypicalPolls#ALICE
-        // This test will fail if a new tag that is not in the model is used, see the bug documented in
-        // ClubBook#addPoll(poll)
-        command = PollUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "friends";
-        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_POLL);
+        /* Case: missing question -> rejected */
+        command = AddPollCommand.COMMAND_WORD + ANSWER_DESC_FOUR + ANSWER_DESC_THREE;
+        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddPollCommand.MESSAGE_USAGE));
 
-        /* Case: missing name -> rejected */
-        command = AddCommand.COMMAND_WORD + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
-        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-
-        /* Case: missing phone -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
-        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-
-        /* Case: missing email -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
-        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-
-        /* Case: missing matric number -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY;
-        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        /* Case: missing answer -> rejected */
+        command = AddPollCommand.COMMAND_WORD + QUESTION_DESC_LIFE;
+        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddPollCommand.MESSAGE_USAGE));
 
         /* Case: invalid keyword -> rejected */
-        command = "adds " + PollUtil.getPollDetails(toAdd);
+        command = "addpolls " + PollUtil.getPollDetails(toAdd);
         assertCommandFailure(command, Messages.MESSAGE_UNKNOWN_COMMAND);
 
-        /* Case: invalid name -> rejected */
-        command = AddCommand.COMMAND_WORD + INVALID_NAME_DESC + PHONE_DESC_AMY
-                + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
-        assertCommandFailure(command, Name.MESSAGE_NAME_CONSTRAINTS);
+        /* Case: invalid question -> rejected */
+        command = AddPollCommand.COMMAND_WORD + INVALID_QUESTION_DESC + ANSWER_DESC_FOUR + ANSWER_DESC_VAMPIRE;
+        assertCommandFailure(command, Question.MESSAGE_QUESTION_CONSTRAINTS);
 
-        /* Case: invalid phone -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + INVALID_PHONE_DESC
-                + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
-        assertCommandFailure(command, Phone.MESSAGE_PHONE_CONSTRAINTS);
-
-        /* Case: invalid email -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-                + INVALID_EMAIL_DESC + MATRIC_NUMBER_DESC_AMY;
-        assertCommandFailure(command, Email.MESSAGE_EMAIL_CONSTRAINTS);
-
-        /* Case: invalid matric number -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-                + EMAIL_DESC_AMY + INVALID_MATRIC_NUMBER_DESC;
-        assertCommandFailure(command, MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
-
-        /* Case: invalid tag -> rejected */
-        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
-                + INVALID_TAG_DESC;
-        assertCommandFailure(command, Tag.MESSAGE_TAG_CONSTRAINTS);
+        /* Case: invalid answer -> rejected */
+        command = AddPollCommand.COMMAND_WORD + QUESTION_DESC_LIFE + INVALID_ANSWER_DESC + ANSWER_DESC_ONE;
+        assertCommandFailure(command, Answer.MESSAGE_ANSWER_CONSTRAINTS);
     }
 
     /**
-     * Executes the {@code AddCommand} that adds {@code toAdd} to the model and asserts that the,<br>
+     * Executes the {@code AddPollCommand} that adds {@code toAdd} to the model and asserts that the,<br>
      * 1. Command box displays an empty string.<br>
      * 2. Command box has the default style class.<br>
-     * 3. Result display box displays the success message of executing {@code AddCommand} with the details of
+     * 3. Result display box displays the success message of executing {@code AddPollCommand} with the details of
      * {@code toAdd}.<br>
      * 4. {@code Model}, {@code Storage} and {@code PollListPanel} equal to the corresponding components in
      * the current model added with {@code toAdd}.<br>
@@ -163,7 +133,7 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
      * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(Poll toAdd) {
-        assertCommandSuccess(PollUtil.getAddCommand(toAdd), toAdd);
+        assertCommandSuccess(PollUtil.getAddPollCommand(toAdd), toAdd);
     }
 
     /**
@@ -178,7 +148,7 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
         } catch (DuplicatePollException dpe) {
             throw new IllegalArgumentException("toAdd already exists in the model.");
         }
-        String expectedResultMessage = String.format(AddCommand.MESSAGE_SUCCESS, toAdd);
+        String expectedResultMessage = String.format(AddPollCommand.MESSAGE_SUCCESS, toAdd);
 
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
     }

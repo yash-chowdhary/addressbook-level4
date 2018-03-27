@@ -65,6 +65,8 @@ public class CommandTestUtil {
     public static final String VALID_ANSWER_FOUR = "i dono";
     public static final String VALID_ANSWER_VAMPIRE = "A vampire";
     public static final String VALID_ANSWER_ZOMBIE = "A zombie";
+    public static final String VALID_ANSWER_FINE = "I'm fine";
+    public static final String VALID_ANSWER_NOT_GOOD = "Not good man";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -91,6 +93,8 @@ public class CommandTestUtil {
     public static final String ANSWER_DESC_FOUR = " " + PREFIX_ANSWER + VALID_ANSWER_FOUR;
     public static final String ANSWER_DESC_VAMPIRE = " " + PREFIX_ANSWER + VALID_ANSWER_VAMPIRE;
     public static final String ANSWER_DESC_ZOMBIE = " " + PREFIX_ANSWER + VALID_ANSWER_ZOMBIE;
+    public static final String ANSWER_DESC_FINE = " " + PREFIX_ANSWER + VALID_ANSWER_FINE;
+    public static final String ANSWER_DESC_NOT_GOOD = " " + PREFIX_ANSWER + VALID_ANSWER_NOT_GOOD;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
@@ -103,7 +107,7 @@ public class CommandTestUtil {
     public static final String INVALID_MATRIC_NUMBER = "A1234F";
     public static final String INVALID_QUESTION = " ";
     public static final String INVALID_QUESTION_DESC = " " + PREFIX_QUESTION + INVALID_QUESTION;
-    public static final String INVALID_ANSWER = "\t   ";
+    public static final String INVALID_ANSWER = "   ";
     public static final String INVALID_ANSWER_DESC = " " + PREFIX_ANSWER + INVALID_ANSWER;
 
     public static final String NON_EXISTENT_GROUP = "broadcasting";
