@@ -57,10 +57,14 @@ public class CommandTestUtil {
     public static final String VALID_MATRIC_NUMBER = "A1234567E";
     public static final String VALID_QUESTION_LIFE = "What is the meaning of life?";
     public static final String VALID_QUESTION_LOVE = "What is love?";
+    public static final String VALID_QUESTION_WHAT = "What are you?";
+    public static final String VALID_QUESTION_HOW = "How are you?";
     public static final String VALID_ANSWER_ONE = "this is an answer";
     public static final String VALID_ANSWER_TWO = "this is also an answer";
     public static final String VALID_ANSWER_THREE = "42";
     public static final String VALID_ANSWER_FOUR = "i dono";
+    public static final String VALID_ANSWER_VAMPIRE = "A vampire";
+    public static final String VALID_ANSWER_ZOMBIE = "A zombie";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -79,10 +83,14 @@ public class CommandTestUtil {
     public static final String PASSWORD_DESC = " " + PREFIX_PASSWORD + VALID_PASSWORD;
     public static final String QUESTION_DESC_LIFE = " " + PREFIX_QUESTION + VALID_QUESTION_LIFE;
     public static final String QUESTION_DESC_LOVE = " " + PREFIX_QUESTION + VALID_QUESTION_LOVE;
+    public static final String QUESTION_DESC_WHAT = " " + PREFIX_QUESTION + VALID_QUESTION_WHAT;
+    public static final String QUESTION_DESC_HOW = " " + PREFIX_QUESTION + VALID_QUESTION_HOW;
     public static final String ANSWER_DESC_ONE = " " + PREFIX_ANSWER + VALID_ANSWER_ONE;
     public static final String ANSWER_DESC_TWO = " " + PREFIX_ANSWER + VALID_ANSWER_TWO;
     public static final String ANSWER_DESC_THREE = " " + PREFIX_ANSWER + VALID_ANSWER_THREE;
     public static final String ANSWER_DESC_FOUR = " " + PREFIX_ANSWER + VALID_ANSWER_FOUR;
+    public static final String ANSWER_DESC_VAMPIRE = " " + PREFIX_ANSWER + VALID_ANSWER_VAMPIRE;
+    public static final String ANSWER_DESC_ZOMBIE = " " + PREFIX_ANSWER + VALID_ANSWER_ZOMBIE;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
