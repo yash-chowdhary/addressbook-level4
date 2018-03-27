@@ -114,11 +114,13 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(pe));
         }
     }
-    //@@author
 
-    //@@author amrut-prabhu
-    @Override
-    public void exportData(String content) throws IOException {
+    /**
+     * Writes {@code content} to the export file.
+     * @param content Data that is to be appended to the export file.
+     * @throws IOException when there is an error writing to the file.
+     */
+    private void exportData(String content) throws IOException {
         logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
         csvClubBookStorage.saveData(content);
     }

@@ -27,10 +27,6 @@ public class CsvClubBookStorage {
         this.file = null;
     }
 
-    public CsvClubBookStorage(File file) {
-        this.file = file;
-    }
-
     public File getClubBookFile() {
         return this.file;
     }

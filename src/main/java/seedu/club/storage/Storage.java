@@ -48,8 +48,10 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
      */
     void handleProfilePictureChangedEvent(ProfilePhotoChangedEvent event);
 
-    void exportData(String content) throws IOException;
-
+    /**
+     * Writes data to a CSV file on the hard disk.
+     * Raises {@link DataSavingExceptionEvent} if there was an error during writing.
+     */
     void handleExportMemberEvent(NewExportDataAvailableEvent event);
     //@@author
 }
