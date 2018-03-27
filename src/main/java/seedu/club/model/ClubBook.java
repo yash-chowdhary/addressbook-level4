@@ -78,6 +78,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
     public void setPolls(Set<Poll> polls) {
         this.polls.setPolls(polls);
+    }
     public void setTasks(Set<Task> tasks) {
         this.tasks.setTasks(tasks);
     }
@@ -387,7 +388,9 @@ public class ClubBook implements ReadOnlyClubBook {
     @Override
     public ObservableList<Poll> getPollList() {
         return polls.asObservableList();
+    }
 
+    @Override
     public ObservableList<Task> getTaskList() {
         return tasks.asObservableList();
     }

@@ -32,6 +32,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -144,6 +145,12 @@ public class AddTaskCommandTest {
 
         @Override
         public ObservableList<Member> getFilteredMemberList() {
+            fail("This method should not be called");
+            return null;
+        }
+
+        @Override
+        public ObservableList<Poll> getFilteredPollList() {
             fail("This method should not be called");
             return null;
         }
