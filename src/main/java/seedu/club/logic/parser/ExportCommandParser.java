@@ -15,7 +15,7 @@ import seedu.club.logic.parser.exceptions.ParseException;
  */
 public class ExportCommandParser implements Parser<ExportCommand> {
 
-    public final String MESSAGE_FILE_CREATION_ERROR = "Error while creating file %1$s";
+    public static final String MESSAGE_FILE_CREATION_ERROR = "Error while creating file %1$s";
 
     /**
      * Parses the given {@code String} of arguments in the context of the ExportCommand

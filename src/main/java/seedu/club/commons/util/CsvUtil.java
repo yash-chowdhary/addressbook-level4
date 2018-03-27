@@ -28,8 +28,7 @@ public class CsvUtil {
         Member memberToConvert = null;
         if (objectToConvert instanceof Member) {
             memberToConvert = (Member) objectToConvert;
-        }
-        else {
+        } else {
             return EMPTY_STRING;
         }
 
