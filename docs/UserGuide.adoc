@@ -466,6 +466,10 @@ e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
+* *Add Poll* `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
+e.g. `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
+* *Delete Poll* `deletepoll INDEX` +
+e.g. `deletepoll 2`
 * *Change Display Picture* : `changepic PHOTO_PATH` +
 e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 * *Compress Member Details* : `compress`
