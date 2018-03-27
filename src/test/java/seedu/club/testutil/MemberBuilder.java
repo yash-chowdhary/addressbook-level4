@@ -133,6 +133,6 @@ public class MemberBuilder {
         return this;
     }
     public Member build() {
-        return new Member(name, phone, email, matricNumber, group, tags, member.getProfilePhoto());
+        return new Member(name, phone, email, matricNumber, group, tags);
     }
 }

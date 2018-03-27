@@ -158,6 +158,7 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         modelManager.addTaskToTaskList(BUY_FOOD);
         Member amy = new MemberBuilder(AMY).build();
         Task buyFood = new TaskBuilder(BUY_FOOD).build();
@@ -167,8 +168,9 @@ public class ModelManagerTest {
                 .withTask(buyConfetti)
                 .withTask(buyFood)
                 .build();
-
-        assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        assertEquals(expectedModel, modelManager);
     }
 
     @Test
@@ -177,6 +179,9 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
             modelManager.addTaskToTaskList(BUY_CONFETTI);
         } catch (DuplicateTaskException dte) {
@@ -190,12 +195,15 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
             modelManager.deleteTask(BOOK_AUDITORIUM);
         } catch (TaskNotFoundException tnfe) {
-            assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
+            assertEquals(expectedModel, modelManager);
         } catch (TaskCannotBeDeletedException e) {
-            assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
+            assertEquals(expectedModel, modelManager);
         }
     }
 

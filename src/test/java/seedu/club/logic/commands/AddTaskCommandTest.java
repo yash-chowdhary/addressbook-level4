@@ -168,9 +168,9 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public boolean logInMemberSuccessful(String username, String password) {
+        public void logsInMember(String username, String password) {
             fail("This method should not be called");
-            return false;
+            return;
         }
 
         @Override

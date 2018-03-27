@@ -54,7 +54,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     .orElse(new Group(Group.DEFAULT_GROUP));
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-            Member member = new Member(name, phone, email, matricNumber, group, tagList, member.getProfilePhoto());
+            Member member = new Member(name, phone, email, matricNumber, group, tagList);
 
             return new AddCommand(member);
         } catch (IllegalValueException ive) {

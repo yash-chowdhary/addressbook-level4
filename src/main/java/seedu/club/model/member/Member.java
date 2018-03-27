@@ -34,7 +34,7 @@ public class Member {
      * Every field must be present and not null.
      */
 
-    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags, ProfilePhoto profilePhoto) {
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags);
         this.name = name;
         this.phone = phone;

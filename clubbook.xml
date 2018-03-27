@@ -97,4 +97,12 @@
     <tags>neighbours</tags>
     <tags>family</tags>
     <tags>friends</tags>
+    <tasks>
+        <description>Book YIH Function Room 4</description>
+        <time>17:00</time>
+        <date>02/04/2018</date>
+        <assignor>Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com MatricNumber: A5215090A Group: logistics Tags: [friends]Tasks: </assignor>
+        <assignee>Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com MatricNumber: A5215090A Group: logistics Tags: [friends]Tasks: </assignee>
+        <status>Yet To Begin</status>
+    </tasks>
 </clubbook>

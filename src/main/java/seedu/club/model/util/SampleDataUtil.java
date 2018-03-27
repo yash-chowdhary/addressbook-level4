@@ -31,22 +31,22 @@ public class SampleDataUtil {
         return new Member[] {
             new Member(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                     new MatricNumber("A5215090A"), new Group("logistics"),
-                    getTagSet("friends"), member.getProfilePhoto()),
+                    getTagSet("friends")),
             new Member(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                     new MatricNumber("A0632713Q"), new Group("production"),
-                    getTagSet("colleagues", "friends"), member.getProfilePhoto()),
+                    getTagSet("colleagues", "friends")),
             new Member(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                     new MatricNumber("A1010027G"), new Group("exco"),
-                    getTagSet("neighbours"), member.getProfilePhoto()),
+                    getTagSet("neighbours")),
             new Member(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
                     new MatricNumber("A7251856A"), new Group("marketing"),
-                    getTagSet("family"), member.getProfilePhoto()),
+                    getTagSet("family")),
             new Member(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
                     new MatricNumber("A4960627S"), new Group("pr"),
-                    getTagSet("classmates"), member.getProfilePhoto()),
+                    getTagSet("classmates")),
             new Member(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                     new MatricNumber("A2488865L"), new Group("legal"),
-                    getTagSet("colleagues"), member.getProfilePhoto())
+                    getTagSet("colleagues"))
         };
     }
 

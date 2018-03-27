@@ -27,6 +27,8 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
+    Predicate<Task> PREDICATE_SHOW_ALL_TASKS = unused -> true;
+
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_NOT_SHOW_ALL_MEMBERS = unused -> false;
 
@@ -108,4 +110,6 @@ public interface Model {
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
 
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
+
+    void updateFilteredTaskList(Predicate<Task> predicate);
 }
