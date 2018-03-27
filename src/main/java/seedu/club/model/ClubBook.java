@@ -111,8 +111,8 @@ public class ClubBook implements ReadOnlyClubBook {
      *
      * @throws DuplicateMemberException if an equivalent member already exists.
      */
-    public void addMember(Member p) throws DuplicateMemberException {
-        Member member = syncWithMasterTagList(p);
+    public void addMember(Member m) throws DuplicateMemberException {
+        Member member = syncWithMasterTagList(m);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any member
         // in the member list.
@@ -179,7 +179,7 @@ public class ClubBook implements ReadOnlyClubBook {
         memberTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Member(
                 member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
-                    correctTagReferences, member.getUsername(), member.getPassword());
+                    correctTagReferences, member.getUsername(), member.getPassword(), member.getProfilePhoto());
     }
 
     /**
