@@ -2,8 +2,6 @@ package seedu.club.ui;
 
 import java.io.File;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,7 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import seedu.club.model.member.Member;
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -21,8 +19,10 @@ import seedu.club.storage.ProfilePhotoStorage;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
-    private static final Integer PHOTO_WIDTH = 100;
-    private static final Integer PHOTO_HEIGHT = 100;
+    private static final Integer PHOTO_WIDTH = 90;
+    private static final Integer PHOTO_HEIGHT = 120;
+    private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
+        "orange", "blue", "violet"};
     private static final String DEFAULT_PHOTO = "src/main/resources/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 
@@ -53,7 +53,7 @@ public class MemberCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Circle profilePhoto;
+    private Rectangle profilePhoto;
 
     public MemberCard(Member member, int displayedIndex) {
         super(FXML);
@@ -65,11 +65,10 @@ public class MemberCard extends UiPart<Region> {
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
-        //bindListeners(member);
-        member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        createTags(member);
     }
 
-    public MemberCard(Member member, int displayedIndex, String fxml, boolean isCompressed) {
+    public MemberCard(Member member, int displayedIndex, String fxml) {
         super(fxml);
         this.member = member;
         id.setText(displayedIndex + ". ");
@@ -77,22 +76,9 @@ public class MemberCard extends UiPart<Region> {
         phone.setText(member.getPhone().value);
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
-        if (!isCompressed) {
-            setProfilePhoto(member);
-        }
-        //bindListeners(member);
-    }
-
-    /**
-     * Binds the individual UI elements to observe their respective {@code Person} properties
-     * so that they will be notified of any changes.
-     */
-    private void bindListeners(Member member) {
-        name.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getName())));
-        phone.textProperty().bind(Bindings.convert(new SimpleObjectProperty<>(member.getPhone())));
-
         setProfilePhoto(member);
     }
+
 
     //@@author amrut-prabhu
     /**
@@ -114,9 +100,29 @@ public class MemberCard extends UiPart<Region> {
             photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
         }
 
-        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
+        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
 
         profilePhoto.setFill(new ImagePattern(photo));
+    }
+    //@@author
+
+    //@@author yash-chowdhary
+    /**
+     * Creates the labels for tags by randomly generating a color from `TAG_COLORS`
+     */
+    private void createTags(Member member) {
+        member.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.getStyleClass().add(returnColor(tag.tagName));
+            tags.getChildren().add(tagLabel);
+        });
+    }
+
+    /**
+     * Returns a color chosen uniformly at random from TAG_COLORS
+     */
+    private String returnColor(String tag) {
+        return TAG_COLORS[Math.abs(tag.hashCode()) % TAG_COLORS.length];
     }
     //@@author
 

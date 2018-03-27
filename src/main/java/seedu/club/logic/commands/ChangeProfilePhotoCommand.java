@@ -3,8 +3,6 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.member.Member;
 import seedu.club.model.member.ProfilePhoto;
 
 /**
@@ -13,16 +11,15 @@ import seedu.club.model.member.ProfilePhoto;
 public class ChangeProfilePhotoCommand extends Command {
 
     public static final String COMMAND_WORD = "changepic";
+    public static final String COMMAND_FORMAT = "changepic PATH";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo. "
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Desktop/john_doe.jpg";
 
     public static final String MESSAGE_INVALID_PHOTO_PATH = "Photo path entered is not valid.";
     public static final String MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS =
             "Your profile photo has been changed successfully.";
-
-    private Member memberToEdit;
 
     private ProfilePhoto newProfilePhoto;
 
@@ -35,7 +32,7 @@ public class ChangeProfilePhotoCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() {
         //Defensive programming
         assert newProfilePhoto.getProfilePhotoPath() == null : "Photo path should not be null.";
 
@@ -62,6 +59,6 @@ public class ChangeProfilePhotoCommand extends Command {
 
         // state check
         ChangeProfilePhotoCommand e = (ChangeProfilePhotoCommand) other;
-        return memberToEdit.equals(e.memberToEdit) && this.newProfilePhoto.equals(e.newProfilePhoto);
+        return this.newProfilePhoto.equals(e.newProfilePhoto);
     }
 }

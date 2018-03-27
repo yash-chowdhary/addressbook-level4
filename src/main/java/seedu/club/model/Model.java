@@ -4,17 +4,22 @@ import java.io.File;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  * The API of the Model component.
@@ -47,6 +52,12 @@ public interface Model {
 
     /** Returns an unmodifiable view of the filtered member list */
     ObservableList<Member> getFilteredMemberList();
+
+    /** Returns an unmodifiable view of the filtered poll list */
+    ObservableList<Poll> getFilteredPollList();
+
+    /** Returns an unmodifiable view of the filtered member list */
+    ObservableList<Task> getFilteredTaskList();
 
     /**
      * Updates the filter of the filtered member list to filter by the given {@code predicate}.
@@ -95,5 +106,9 @@ public interface Model {
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
+
+    void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
+
+    void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
 }

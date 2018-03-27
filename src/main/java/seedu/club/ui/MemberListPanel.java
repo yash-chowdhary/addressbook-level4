@@ -68,8 +68,7 @@ public class MemberListPanel extends UiPart<Region> {
         ObservableList<MemberCard> mappedList = EasyBind.map(
                 memberList, (member) -> {
                 if (isDisplayingCompressedMembers) {
-                    return new CompressedMemberCard(member, memberList.indexOf(member) + 1,
-                            isDisplayingCompressedMembers);
+                    return new CompressedMemberCard(member, memberList.indexOf(member) + 1);
                 } else {
                     return new MemberCard(member, memberList.indexOf(member) + 1);
                 }

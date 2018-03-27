@@ -146,8 +146,8 @@ public class XmlAdaptedMember {
 
         final Set<Tag> tags = new HashSet<>(memberTags);
 
-        Member member = new Member(name, phone, email, matricNumber, group, tags, username, password);
-        member.setProfilePhoto(new ProfilePhoto(profilePhoto));
+        final ProfilePhoto profilePhoto = new ProfilePhoto(this.profilePhoto);
+        Member member = new Member(name, phone, email, matricNumber, group, tags, username, password, profilePhoto);
 
         return member;
     }
