@@ -65,7 +65,6 @@ public class MemberCard extends UiPart<Region> {
         group.setText(member.getGroup().groupName);
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
-        member.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
         createTags(member);
     }
 
