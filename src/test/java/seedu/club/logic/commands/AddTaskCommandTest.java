@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -220,6 +221,11 @@ public class AddTaskCommandTest {
         public void sendEmail(String recipients, Client client, Subject subject, Body body) {
             fail("This method should not be called");
             return;
+        }
+
+        @Override
+        public void exportClubConnect(File exportFilePath) {
+            fail("This method should not be called");
         }
 
         @Override

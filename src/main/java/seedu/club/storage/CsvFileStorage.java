@@ -20,7 +20,7 @@ public class CsvFileStorage {
         try {
             CsvUtil.saveDataToFile(file, data);
         } catch (IOException ioe) {
-            throw new AssertionError("Unexpected exception " + ioe.getMessage());
+            throw new IOException("Unexpected error " + ioe.getMessage());
         }
     }
 
