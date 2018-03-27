@@ -92,7 +92,7 @@ public class CsvUtil {
      */
     private static void addCsvTags(StringBuilder builder, Member member) {
         builder.append(csvFieldSurrounder);
-        member.getTags().forEach(tag -> builder.append(tag)
+        member.getTags().forEach(tag -> builder.append(tag.getTagName())
                 .append(csvValueSeparator)); //Results in an extra "," at end of tag list.
         builder.append(csvFieldSurrounder)
                 .append(csvFieldSeparator);
