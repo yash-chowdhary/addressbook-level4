@@ -16,8 +16,8 @@ import seedu.club.model.group.Group;
  */
 public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
     /**
-     * Parses the given {@code String} of arguments in the context of the AddCommand
-     * and returns an AddCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the RemoveGroupCommand
+     * and returns an RemoveGroupCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
     public RemoveGroupCommand parse(String args) throws ParseException {

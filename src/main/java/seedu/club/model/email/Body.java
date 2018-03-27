@@ -1,4 +1,4 @@
-package seedu.club.logic.commands.email;
+package seedu.club.model.email;
 
 import static java.util.Objects.requireNonNull;
 

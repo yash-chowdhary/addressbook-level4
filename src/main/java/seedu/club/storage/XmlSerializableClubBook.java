@@ -21,6 +21,8 @@ public class XmlSerializableClubBook {
     private List<XmlAdaptedMember> members;
     @XmlElement
     private List<XmlAdaptedTag> tags;
+    @XmlElement
+    private List<XmlAdaptedTask> tasks;
 
     /**
      * Creates an empty XmlSerializableClubBook.
@@ -29,6 +31,7 @@ public class XmlSerializableClubBook {
     public XmlSerializableClubBook() {
         members = new ArrayList<>();
         tags = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
     /**
@@ -38,6 +41,7 @@ public class XmlSerializableClubBook {
         this();
         members.addAll(src.getMemberList().stream().map(XmlAdaptedMember::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
+        tasks.addAll(src.getTaskList().stream().map(XmlAdaptedTask::new).collect(Collectors.toList()));
     }
 
     /**
@@ -54,6 +58,9 @@ public class XmlSerializableClubBook {
         for (XmlAdaptedMember m : members) {
             clubBook.addMember(m.toModelType());
         }
+        for (XmlAdaptedTask task : tasks) {
+            clubBook.addTaskToTaskList(task.toModelType());
+        }
         return clubBook;
     }
 
@@ -68,6 +75,7 @@ public class XmlSerializableClubBook {
         }
 
         XmlSerializableClubBook otherAb = (XmlSerializableClubBook) other;
-        return members.equals(otherAb.members) && tags.equals(otherAb.tags);
+        return members.equals(otherAb.members) && tags.equals(otherAb.tags)
+                && tasks.equals(otherAb.tasks);
     }
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
@@ -11,6 +13,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import java.util.ArrayList;
@@ -52,6 +55,22 @@ public class CommandTestUtil {
     public static final String VALID_PASSWORD = "password";
     public static final String VALID_MATRIC_NUMBER = "A1234567E";
 
+    public static final String VALID_CLIENT = "gmail";
+    public static final String VALID_CLIENT_DESC = " " + PREFIX_CLIENT + VALID_CLIENT;
+    public static final String INVALID_CLIENT = "yahoo";
+    public static final String INVALID_CLIENT_DESC = " " + PREFIX_CLIENT + INVALID_CLIENT;
+
+    public static final String VALID_TASK_DESCRIPTION_FOOD = "Buy Food";
+    public static final String VALID_TASK_DESCRIPTION_CONFETTI = "Buy Confetti";
+    public static final String VALID_TASK_DATE_1 = "02/05/2018";
+    public static final String VALID_TASK_DATE_2 = "03/05/2018";
+    public static final String VALID_TASK_TIME_1 = "19:00";
+    public static final String VALID_TASK_TIME_2 = "19:01";
+    public static final String VALID_TASK_ASSIGNOR = "Alice Pauline";
+    public static final String VALID_TASK_ASSIGNEE = "Alice Pauline";
+    public static final String VALID_TASK_STATUS_TO_BEGIN = "Yet To Begin";
+    public static final String VALID_TASK_STATUS_IN_PROGRESS = "In Progress";
+
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
     public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
@@ -83,10 +102,24 @@ public class CommandTestUtil {
     public static final String MANDATORY_GROUP = "member";
     public static final String MANDATORY_GROUP_DESC = PREFIX_GROUP + MANDATORY_GROUP;
 
-    public static final String VALID_CLIENT = "gmail";
-    public static final String VALID_CLIENT_DESC = " " + PREFIX_CLIENT + VALID_CLIENT;
-    public static final String INVALID_CLIENT = "yahoo";
-    public static final String INVALID_CLIENT_DESC = " " + PREFIX_CLIENT + INVALID_CLIENT;
+    public static final String INVALID_TASK_DESCRIPTION = "Buy* Books"; // no special characters allowed
+    public static final String INVALID_TASK_DATE = "01/13/2018";    // invalid month
+    public static final String INVALID_TASK_TIME = "8 AM";  // invalid time format
+
+    public static final String EMPTY_STRING = "";
+    public static final String BLANK_STRING_WITH_SPACE = " ";
+
+    public static final String TASK_DESCRIPTION_DESC_FOOD = " " + PREFIX_DESCRIPTION + VALID_TASK_DESCRIPTION_FOOD;
+    public static final String TASK_DESCRIPTION_DESC_CONFETTI = " " + PREFIX_DESCRIPTION
+            + VALID_TASK_DESCRIPTION_CONFETTI;
+    public static final String TASK_DATE_DESC_1 = " " + PREFIX_DATE + VALID_TASK_DATE_1;
+    public static final String TASK_DATE_DESC_2 = " " + PREFIX_DATE + VALID_TASK_DATE_2;
+    public static final String TASK_TIME_DESC_1 = " " + PREFIX_TIME + VALID_TASK_TIME_1;
+    public static final String TASK_TIME_DESC_2 = " " + PREFIX_TIME + VALID_TASK_TIME_2;
+
+    public static final String INVALID_DESCRIPTION_DESC = " " + PREFIX_DESCRIPTION + INVALID_TASK_DESCRIPTION;
+    public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + INVALID_TASK_DATE;
+    public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + INVALID_TASK_TIME;
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

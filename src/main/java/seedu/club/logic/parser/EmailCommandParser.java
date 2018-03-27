@@ -11,10 +11,10 @@ import java.util.stream.Stream;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.EmailCommand;
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
 
