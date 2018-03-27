@@ -8,7 +8,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PROFILE_PHOTO;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
@@ -38,7 +37,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_MATRIC_NUMBER,
-                        PREFIX_GROUP, PREFIX_TAG, PREFIX_USERNAME, PREFIX_PASSWORD, PREFIX_PROFILE_PHOTO);
+                        PREFIX_GROUP, PREFIX_TAG, PREFIX_USERNAME, PREFIX_PASSWORD);
 
         Index index;
 
@@ -56,8 +55,6 @@ public class EditCommandParser implements Parser<EditCommand> {
             ParserUtil.parseMatricNumber(argMultimap.getValue(PREFIX_MATRIC_NUMBER))
                     .ifPresent(editMemberDescriptor::setMatricNumber);
             ParserUtil.parseGroup(argMultimap.getValue(PREFIX_GROUP)).ifPresent(editMemberDescriptor::setGroup);
-            ParserUtil.parseProfilePhoto(argMultimap.getValue(PREFIX_PROFILE_PHOTO))
-                    .ifPresent(editMemberDescriptor::setProfilePhoto);
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editMemberDescriptor::setTags);
 
         } catch (IllegalValueException ive) {

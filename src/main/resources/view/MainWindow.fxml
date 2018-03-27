@@ -46,7 +46,7 @@
           </padding>
         </StackPane>
 
-        <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4" VBox.vgrow="ALWAYS">
+        <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.5" VBox.vgrow="ALWAYS">
           <VBox fx:id="memberList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
             <padding>
               <Insets top="10" right="10" bottom="10" left="10" />
@@ -67,6 +67,12 @@
             <StackPane fx:id="pollListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
 
+          <VBox fx:id="taskList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
+            <padding>
+              <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <StackPane fx:id="taskListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+          </VBox>
         </SplitPane>
 
         <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />

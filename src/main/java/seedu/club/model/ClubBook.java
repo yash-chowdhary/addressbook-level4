@@ -27,6 +27,10 @@ import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.UniqueTaskList;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  * Wraps all data at the club-book level
@@ -37,6 +41,7 @@ public class ClubBook implements ReadOnlyClubBook {
     private final UniqueMemberList members;
     private final UniqueTagList tags;
     private final UniquePollList polls;
+    private final UniqueTaskList tasks;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -49,6 +54,7 @@ public class ClubBook implements ReadOnlyClubBook {
         members = new UniqueMemberList();
         tags = new UniqueTagList();
         polls = new UniquePollList();
+        tasks = new UniqueTaskList();
     }
 
     public ClubBook() {}
@@ -74,6 +80,9 @@ public class ClubBook implements ReadOnlyClubBook {
     public void setPolls(Set<Poll> polls) {
         this.polls.setPolls(polls);
     }
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
 
     /**
      * Resets the existing data of this {@code ClubBook} with {@code newData}.
@@ -86,6 +95,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
 
+        setTasks(new HashSet<>(newData.getTaskList()));
         try {
             setMembers(syncedMemberList);
         } catch (DuplicateMemberException e) {
@@ -102,8 +112,8 @@ public class ClubBook implements ReadOnlyClubBook {
      *
      * @throws DuplicateMemberException if an equivalent member already exists.
      */
-    public void addMember(Member p) throws DuplicateMemberException {
-        Member member = syncWithMasterTagList(p);
+    public void addMember(Member m) throws DuplicateMemberException {
+        Member member = syncWithMasterTagList(m);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any member
         // in the member list.
@@ -182,7 +192,7 @@ public class ClubBook implements ReadOnlyClubBook {
         memberTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Member(
                 member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
-                    correctTagReferences, member.getUsername(), member.getPassword());
+                    correctTagReferences, member.getUsername(), member.getPassword(), member.getProfilePhoto());
     }
 
     /**
@@ -291,7 +301,15 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
-    //@@author yash-chowdhary
+
+    /**
+     * Adds {@code Task toAdd} to the list of tasks.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    //@@author
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
@@ -365,7 +383,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
     @Override
     public String toString() {
-        return members.asObservableList().size() + " members, " + tags.asObservableList().size() +  " tags";
+        return members.asObservableList().size() + " members, " + tags.asObservableList().size() +  " tags"
+                + tasks.asObservableList().size() + " tasks";
         // TODO: refine later
     }
 
@@ -385,6 +404,11 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
+    public ObservableList<Task> getTaskList() {
+        return tasks.asObservableList();
+    }
+
+    @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ClubBook // instanceof handles nulls
@@ -397,5 +421,9 @@ public class ClubBook implements ReadOnlyClubBook {
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(members, tags);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
     }
 }

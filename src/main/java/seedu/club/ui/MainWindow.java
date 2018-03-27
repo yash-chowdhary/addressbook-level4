@@ -37,6 +37,7 @@ public class MainWindow extends UiPart<Stage> {
     private BrowserPanel browserPanel;
     private MemberListPanel memberListPanel;
     private PollListPanel pollListPanel;
+    private TaskListPanel taskListPanel;
     private Config config;
     private UserPrefs prefs;
 
@@ -54,6 +55,9 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane pollListPanelPlaceholder;
+
+    @FXML
+    private StackPane taskListPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -129,6 +133,9 @@ public class MainWindow extends UiPart<Stage> {
         pollListPanel = new PollListPanel(logic.getFilteredPollList());
         pollListPanelPlaceholder.getChildren().add(pollListPanel.getRoot());
 
+        taskListPanel = new TaskListPanel(logic.getFilteredTaskList());
+        taskListPanelPlaceholder.getChildren().add(taskListPanel.getRoot());
+
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
@@ -190,6 +197,10 @@ public class MainWindow extends UiPart<Stage> {
 
     public MemberListPanel getMemberListPanel() {
         return this.memberListPanel;
+    }
+
+    public TaskListPanel getTaskListPanel() {
+        return this.taskListPanel;
     }
 
     void releaseResources() {
