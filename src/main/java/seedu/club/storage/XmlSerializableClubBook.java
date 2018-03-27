@@ -23,6 +23,7 @@ public class XmlSerializableClubBook {
     private List<XmlAdaptedTag> tags;
     @XmlElement
     private List<XmlAdaptedPoll> polls;
+    @XmlElement
     private List<XmlAdaptedTask> tasks;
 
     /**

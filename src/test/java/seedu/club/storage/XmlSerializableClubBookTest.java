@@ -84,11 +84,12 @@ public class XmlSerializableClubBookTest {
     }
 
     @Test
-    public void toModelType_invalidOrderFile_throwsIllegalValueException() throws Exception {
+    public void toModelType_invalidTaskFile_throwsIllegalValueException() throws Exception {
         XmlSerializableClubBook dataFromFile = XmlUtil.getDataFromFile(INVALID_TASKS_FILE,
                 XmlSerializableClubBook.class);
         thrown.expect(IllegalValueException.class);
         dataFromFile.toModelType();
+        System.out.println("dataFromFile.toModelType() = " + dataFromFile.toModelType());
     }
 
     @Test
