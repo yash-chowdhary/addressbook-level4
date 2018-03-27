@@ -272,7 +272,6 @@ public class ModelManager extends ComponentManager implements Model {
     public void sendEmail(String recipients, Client client, Subject subject, Body body) {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
-    //@@author
 
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
@@ -302,6 +301,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
+    //@@author
 
     //@@author amrut-prabhu
     /**
