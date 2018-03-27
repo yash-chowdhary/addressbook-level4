@@ -278,8 +278,10 @@ Format: `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Tuesday ans/Wednesday`
-* `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
+* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Tuesday ans/Wednesday` +
+Adds a poll asking which day Free Ice-Cream Day should be. Answers for the poll would be Monday, Tuesday and Wednesday.
+* `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7` +
+Adds a poll asking where the annual meeting should be held. Answers for the poll would be I-Cube or LT7.
 
 === Deleting a poll : `deletepoll`
 
