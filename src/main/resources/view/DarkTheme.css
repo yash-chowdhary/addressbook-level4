@@ -28,9 +28,9 @@
     -fx-text-fill: black;
     -fx-background-color: blue;
     -fx-padding: 2 5 2 5;
-    -fx-border-radius: 10;
-    -fx-background-radius: 8;
-    -fx-font-size: 11;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 13;
 }
 
 .text-field {
@@ -131,7 +131,7 @@
 
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-text-fill: #010504;
 }
 
@@ -353,8 +353,8 @@
 #tags .label {
     -fx-padding: 2 5 2 5;
     -fx-border-radius: 2;
-    -fx-background-radius: 8;
-    -fx-font-size: 11;
+    -fx-background-radius: 2;
+    -fx-font-size: 13;
 }
 
 #tags .red {

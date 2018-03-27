@@ -38,8 +38,16 @@
         </Label>
         <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
       </HBox>
-      <FlowPane fx:id="tags" />
-      <Label fx:id="group" styleClass="label-group" text ="\$group" />
+      <FlowPane fx:id="tags" >
+        <padding>
+          <Insets top="5" bottom="5"/>
+        </padding>
+      </FlowPane>
+      <Label fx:id="group" styleClass="label-group" text ="\$group" >
+        <padding>
+          <Insets bottom="2" />
+        </padding>
+      </Label>
       <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
       <Label fx:id="matricNumber" styleClass="cell_small_label" text="\$matricNumber" />
       <Label fx:id="email" styleClass="cell_small_label" text="\$email" />

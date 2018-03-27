@@ -1,10 +1,10 @@
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
-    -fx-background-radius: 15 15 15 15;
-    -fx-border-radius: 15 15 15 15;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
     -fx-padding: 10px;
-    -fx-background-insets: 10px, 10px;
+    -fx-background-insets:5px, 5px;
     -fx-background-color: transparent, -fx-background;
 }
 
@@ -23,7 +23,7 @@
 .list-cell:filled:selected #cardPane {
     -fx-border-color: derive(#006400, +80%);
     -fx-border-width: 3;
-    -fx-border-radius: 18 18 18 18;
+    -fx-border-radius: 0 0 0 0;
 }
 
 .list-cell .label {
