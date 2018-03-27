@@ -81,7 +81,7 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void setLoggedInMember(Member member) {
+        public void logOutMember() {
             fail("This method should not be called.");
         }
 

@@ -184,6 +184,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException,
                 TagNotFoundException {
             fail("This method should not be called");
