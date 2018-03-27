@@ -32,7 +32,6 @@ public class Member {
     /**
      * Every field must be present and not null.
      */
-
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
                   Username username, Password password) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags,
@@ -50,6 +49,24 @@ public class Member {
     }
 
     //@@author amrut-prabhu
+    /**
+     * Every field must be present and not null.
+     */
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+                  Username username, Password password, ProfilePhoto profilePhoto) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags,
+                username, password);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.matricNumber = matricNumber;
+        this.group = group;
+        this.tags = new HashMap<String, Tag>();
+        this.username = username;
+        this.password = password;
+        this.profilePhoto = profilePhoto;
+        setTags(tags);
+    }
 
     /**
      * Copy constructor
