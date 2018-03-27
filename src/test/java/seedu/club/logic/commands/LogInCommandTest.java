@@ -77,7 +77,7 @@ public class LogInCommandTest {
 
         @Override
         public void sendEmail(String recipients, Client client, Subject subject, Body body) {
-
+            fail("This method should not be called.");
         }
 
         @Override
@@ -147,8 +147,8 @@ public class LogInCommandTest {
      * A Model stub that always accept the member being added.
      */
     private class ModelStubAcceptingMemberLoggingIn extends ModelStub {
-        final HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
-        final HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
+        private HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
+        private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
         private Member currentlyLoggedIn = null;
 
         @Override
@@ -184,8 +184,8 @@ public class LogInCommandTest {
      * A Model stub that always rejects the member to log in.
      */
     private class ModelStubRejectingMemberLoggingIn extends ModelStub {
-        final HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
-        final HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
+        private HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
+        private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
         private Member currentlyLoggedIn = null;
 
         @Override
