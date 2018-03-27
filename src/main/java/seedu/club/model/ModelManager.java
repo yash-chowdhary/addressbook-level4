@@ -28,6 +28,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.storage.ProfilePhotoStorage;
@@ -138,6 +139,12 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
         clubBook.addPoll(poll);
         updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+        clubBook.removePoll(target);
         indicateClubBookChanged();
     }
 

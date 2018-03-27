@@ -14,6 +14,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
@@ -41,6 +42,9 @@ public interface Model {
 
     /** Adds the given poll */
     void addPoll(Poll poll) throws DuplicatePollException;
+
+    /** Deletes the given member. */
+    void deletePoll(Poll poll) throws PollNotFoundException;
 
     /**
      * Replaces the given member {@code target} with {@code editedMember}.

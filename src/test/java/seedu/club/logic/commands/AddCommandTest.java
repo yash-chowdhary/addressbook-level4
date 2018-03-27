@@ -33,6 +33,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.testutil.MemberBuilder;
@@ -120,6 +121,11 @@ public class AddCommandTest {
 
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void deletePoll(Poll target) throws PollNotFoundException {
             fail("This method should not be called.");
         }
 

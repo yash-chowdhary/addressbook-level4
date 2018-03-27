@@ -46,7 +46,6 @@ public class AddPollCommandParserTest {
         // multiple answers - all accepted
         Poll expectedPollMultipleAnswers = new PollBuilder().withQuestion(VALID_QUESTION_LOVE)
                 .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO, VALID_ANSWER_THREE, VALID_ANSWER_FOUR).build();
-        System.out.println("expectedPollMultipleAnswers = " + expectedPollMultipleAnswers);
         assertParseSuccess(parser, QUESTION_DESC_LOVE + ANSWER_DESC_ONE + ANSWER_DESC_TWO
                 + ANSWER_DESC_THREE + ANSWER_DESC_FOUR, new AddPollCommand(expectedPollMultipleAnswers));
     }
