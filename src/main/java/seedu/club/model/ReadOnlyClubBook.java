@@ -34,7 +34,7 @@ public interface ReadOnlyClubBook {
      * This list will not contain any duplicate orders.
      */
     ObservableList<Task> getTaskList();
-  
+
     /**
      * Returns true if tag is present in the tags list.
      */

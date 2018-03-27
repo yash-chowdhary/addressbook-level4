@@ -14,7 +14,6 @@ import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.commons.util.XmlUtil;
 import seedu.club.model.ClubBook;
-import seedu.club.model.util.SampleDataUtil;
 import seedu.club.testutil.TypicalMembers;
 import seedu.club.testutil.TypicalPolls;
 import seedu.club.testutil.TypicalTasks;
@@ -83,7 +82,8 @@ public class XmlSerializableClubBookTest {
         thrown.expect(IllegalValueException.class);
         dataFromFile.toModelType();
     }
-  
+
+    @Test
     public void toModelType_invalidOrderFile_throwsIllegalValueException() throws Exception {
         XmlSerializableClubBook dataFromFile = XmlUtil.getDataFromFile(INVALID_TASKS_FILE,
                 XmlSerializableClubBook.class);

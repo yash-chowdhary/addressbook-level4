@@ -132,7 +132,7 @@ public class MainWindow extends UiPart<Stage> {
 
         pollListPanel = new PollListPanel(logic.getFilteredPollList());
         pollListPanelPlaceholder.getChildren().add(pollListPanel.getRoot());
-      
+
         taskListPanel = new TaskListPanel(logic.getFilteredTaskList());
         taskListPanelPlaceholder.getChildren().add(taskListPanel.getRoot());
 
