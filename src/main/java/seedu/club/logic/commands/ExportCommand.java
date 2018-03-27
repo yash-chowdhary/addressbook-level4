@@ -13,7 +13,7 @@ public class ExportCommand extends Command {
     public static final String COMMAND_WORD = "export";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Exports the members' information to the specified CSV file.\n"
+            + ": Exports the members' information to the specified CSV file. "
             + "Parameters: FILE_PATH (must be an absolute path)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/members.csv";
 

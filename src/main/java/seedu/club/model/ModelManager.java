@@ -16,7 +16,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
-import seedu.club.commons.events.model.NewExportMemberAvailableEvent;
+import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.util.CsvUtil;
@@ -259,34 +259,55 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author
 
     //@@author amrut-prabhu
+    /**
+     * Raises a {@code NewMemberAvailableEvent} to indicate that data of a {@code member} is ready to be exported.
+     * @param member Member data to be added to the file.
+     */
+    private void indicateNewExport(String member) {
+        raise(new NewExportDataAvailableEvent(member));
+    }
+
+    /**
+     * Raises a {@code NewMemberAvailableEvent} to indicate that data is ready to be exported.
+     * @param exportFile CSV file to be exported to.
+     * @param content Data to be added to the file.
+     */
+    private void indicateNewExport(File exportFile, String content) {
+        raise(new NewExportDataAvailableEvent(exportFile, content));
+    }
+
     @Override
-    public void exportClubConnect(File exportFilePath) {
+    public void exportClubConnect(File exportFile) {
+        exportHeaders(exportFile);
+
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        members.forEach(member -> exportMember(exportFilePath, member));
+        members.forEach(member -> exportMember(member));
+    }
+
+    private void exportHeaders(File exportFile) {
+        String headers = CsvUtil.getHeaders();
+        indicateNewExport(exportFile, headers);
     }
 
     /**
      * Exports the information of {@code member} to the file.
-     * @param exportFilePath CSV file to be exported to.
      * @param member Member whose data is to be exported.
      */
-    private void exportMember(File exportFilePath, Member member) {
+    private void exportMember(Member member) {
         String memberData = convertMemberToCsv(member);
-        indicateNewExportMember(exportFilePath, memberData);
+        indicateNewExport(memberData);
     }
 
     private String convertMemberToCsv(Member member) {
         return CsvUtil.toCsvFormat(member);
     }
 
-    /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that data of a {@code member} is ready to be exported.
-     * @param exportFilePath CSV file to be exported to.
-     * @param member Member data to be added to the file.
-     */
-    private void indicateNewExportMember(File exportFilePath, String member) {
-        raise(new NewExportMemberAvailableEvent(exportFilePath, member));
-    }
+    /*@Override
+    public void importClubConnect(File exportFilePath) {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+        members.forEach(member -> exportMember(exportFilePath, member));
+        clubBook =
+    }*/
     //@@author
 
     //=========== Filtered member List Accessors =============================================================
