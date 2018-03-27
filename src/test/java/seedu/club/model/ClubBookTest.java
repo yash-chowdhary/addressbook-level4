@@ -31,6 +31,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -144,7 +145,8 @@ public class ClubBookTest {
         // Repeat ALICE twice
         List<Member> newMembers = Arrays.asList(ALICE, ALICE);
         List<Tag> newTags = new ArrayList<>(ALICE.getTags());
-        ClubBookStub newData = new ClubBookStub(newMembers, newTags);
+        List<Poll> newPolls = new ArrayList<>();
+        ClubBookStub newData = new ClubBookStub(newMembers, newTags, newPolls);
 
         thrown.expect(AssertionError.class);
         clubBook.resetData(newData);
@@ -200,11 +202,14 @@ public class ClubBookTest {
     private static class ClubBookStub implements ReadOnlyClubBook {
         private final ObservableList<Member> members = FXCollections.observableArrayList();
         private final ObservableList<Tag> tags = FXCollections.observableArrayList();
+        private final ObservableList<Poll> polls = FXCollections.observableArrayList();
         private final ObservableList<Task> tasks = FXCollections.observableArrayList();
 
-        ClubBookStub(Collection<Member> members, Collection<? extends Tag> tags) {
+        ClubBookStub(Collection<Member> members, Collection<? extends Tag> tags,
+                     Collection<? extends Poll> polls) {
             this.members.setAll(members);
             this.tags.setAll(tags);
+            this.polls.setAll(polls);
         }
 
         @Override
@@ -218,6 +223,9 @@ public class ClubBookTest {
         }
 
         @Override
+        public ObservableList<Poll> getPollList() {
+            return polls;
+        }
         public ObservableList<Task> getTaskList() {
             return tasks;
         }

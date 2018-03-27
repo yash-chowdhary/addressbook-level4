@@ -8,7 +8,19 @@
         <password>password</password>
         <matricNumber>A5215090A</matricNumber>
         <group>logistics</group>
-        <profilePhoto>C:/Users/Amrut Prabhu/IdeaProjects/main/src/main/resources/photos/A5215090A.png</profilePhoto>
+        <profilePhoto></profilePhoto>
+        <tagged>friends</tagged>
+    </members>
+    <members>
+        <name>Ali</name>
+        <phone>98765432</phone>
+        <email>johnd@example.com</email>
+        <username>JohnDoe</username>
+        <password>password</password>
+        <matricNumber>A0123456H</matricNumber>
+        <group>logistics</group>
+        <profilePhoto></profilePhoto>
+        <tagged>owesMoney</tagged>
         <tagged>friends</tagged>
     </members>
     <members>
@@ -84,4 +96,24 @@
     <tags>neighbours</tags>
     <tags>family</tags>
     <tags>friends</tags>
+    <polls>
+        <question>What are you?</question>
+        <answers noOfMembersAnswered="0">A vampire</answers>
+        <answers noOfMembersAnswered="0">A zombie</answers>
+    </polls>
+    <polls>
+        <question>How are you?</question>
+        <answers noOfMembersAnswered="0">I'm fine</answers>
+        <answers noOfMembersAnswered="0">Not good man</answers>
+    </polls>
+    <polls>
+        <question>When are you?</question>
+        <answers noOfMembersAnswered="0">I don't get it</answers>
+        <answers noOfMembersAnswered="0">Umm..</answers>
+    </polls>
+    <polls>
+        <question>Who are you?</question>
+        <answers noOfMembersAnswered="0">Your father</answers>
+        <answers noOfMembersAnswered="0">Your mom</answers>
+    </polls>
 </clubbook>
