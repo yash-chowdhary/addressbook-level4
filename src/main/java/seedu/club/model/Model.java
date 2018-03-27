@@ -22,7 +22,7 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
-    /** {@code Predicate} that always evaluate to true */
+    /** {@code Predicate} that always evaluate to false */
     Predicate<Member> PREDICATE_NOT_SHOW_ALL_MEMBERS = unused -> false;
 
     /** Clears existing backing model and replaces with the provided new data. */
@@ -93,4 +93,6 @@ public interface Model {
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
+
+    void logOutMember();
 }

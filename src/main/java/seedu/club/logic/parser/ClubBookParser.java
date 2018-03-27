@@ -22,6 +22,7 @@ import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
+import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
@@ -111,6 +112,9 @@ public class ClubBookParser {
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
+
+        case LogOutCommand.COMMAND_WORD:
+            return new LogOutCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

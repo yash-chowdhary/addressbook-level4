@@ -174,4 +174,15 @@ public class UniqueMemberList implements Iterable<Member> {
             }
         });
     }
+
+    /**
+     * Logs out the user
+     */
+    public void logout(){
+        setCurrentlyLogInMember(null);
+    }
+
+    public void setCurrentlyLogInMember(Member member) {
+        currentlyLogInMember = member;
+    }
 }

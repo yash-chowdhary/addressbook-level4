@@ -140,6 +140,7 @@ public class ModelManager extends ComponentManager implements Model {
         return clubBook.getLogedInMember();
     }
 
+
     //@@author yash-chowdhary
     @Override
     public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
@@ -254,6 +255,11 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void sendEmail(String recipients, Client client, Subject subject, Body body) {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
+    }
+
+    @Override
+    public void logOutMember() {
+        clubBook.logOutMember();
     }
     //@@author
 
