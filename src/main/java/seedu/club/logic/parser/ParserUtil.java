@@ -255,6 +255,9 @@ public class ParserUtil {
         return file;
     }
 
+    /**
+     * Returns true if {@code path} represents the path of a CSV (.csv) file.
+     */
     private static boolean validFileName(String path) {
         String csvFileExtension = ".csv";
 

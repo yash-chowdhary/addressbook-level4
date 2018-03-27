@@ -1,6 +1,5 @@
 package seedu.club.storage;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
