@@ -28,6 +28,8 @@ import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.PollContainsKeywordsPredicate;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 
 /**
@@ -171,6 +173,19 @@ public class CommandTestUtil {
         model.updateFilteredMemberList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredMemberList().size());
+    }
+
+    /**
+     * Updates {@code model}'s filtered list to show only the poll at the given {@code targetIndex} in the
+     * {@code model}'s club book.
+     */
+    public static void showPollAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredPollList().size());
+
+        Poll poll = model.getFilteredPollList().get(targetIndex.getZeroBased());
+        final String[] splitQuestion = poll.getQuestion().getValue().split("\\s+");
+        model.updateFilteredPollList(new PollContainsKeywordsPredicate(Arrays.asList(splitQuestion[0])));
+        assertEquals(1, model.getFilteredPollList().size());
     }
 
     /**

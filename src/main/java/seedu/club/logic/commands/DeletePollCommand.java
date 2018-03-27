@@ -8,8 +8,6 @@ import java.util.Objects;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
 

@@ -4,7 +4,6 @@ import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
