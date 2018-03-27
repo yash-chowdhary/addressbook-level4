@@ -11,6 +11,8 @@ import java.util.Set;
 
 import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.UniqueTaskList;
 
 /**
  * Represents a member in the club book.
@@ -28,7 +30,7 @@ public class Member {
     private Group group;
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
-
+    private final UniqueTaskList tasks;
     /**
      * Every field must be present and not null.
      */
@@ -46,6 +48,24 @@ public class Member {
         this.password = password;
         this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
+        this.tasks = new UniqueTaskList();
+    }
+
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+                  Username username, Password password, Set<Task> tasks) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags,
+                username, password, tasks);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.matricNumber = matricNumber;
+        this.group = group;
+        this.tags = new HashMap<>();
+        this.username = username;
+        this.password = password;
+        this.profilePhoto = new ProfilePhoto("");
+        setTags(tags);
+        this.tasks = new UniqueTaskList(tasks);
     }
 
     //@@author amrut-prabhu
@@ -82,6 +102,7 @@ public class Member {
         this.username = member.username;
         this.password = member.password;
         this.profilePhoto = member.profilePhoto;
+        this.tasks = member.tasks;
     }
     //@@author
 
@@ -156,6 +177,14 @@ public class Member {
         return Collections.unmodifiableSet(memberTags);
     }
 
+    /**
+     * Returns an immutable task set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Task> getTasks() {
+        return Collections.unmodifiableSet(tasks.toSet());
+    }
+
     public boolean hasTag(Tag tag) {
         return getTags().contains(tag);
     }
@@ -197,6 +226,8 @@ public class Member {
                 .append(getGroup())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
+        builder.append("Tasks: ");
+        getTasks().forEach(builder::append);
         return builder.toString();
     }
 
@@ -211,4 +242,5 @@ public class Member {
             isLogIn = false;
         }
     }
+
 }

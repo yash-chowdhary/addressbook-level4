@@ -1,6 +1,8 @@
 package seedu.club.model.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import seedu.club.model.ClubBook;
@@ -17,6 +19,10 @@ import seedu.club.model.member.Phone;
 import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.Question;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -46,15 +52,33 @@ public class SampleDataUtil {
         };
     }
 
+    public static Poll[] getSamplePolls() {
+        return new Poll[] {
+            new Poll(new Question("How are you?"), new Answer("I'm fine"),
+                    new Answer("Not good man")),
+            new Poll(new Question("What are you?"),
+                    new Answer("A vampire"), new Answer("A zombie")),
+            new Poll(new Question("Who are you?"),
+                    new Answer("Your father"), new Answer("Your mom")),
+            new Poll(new Question("When are you?"),
+                    new Answer("I don't get it"), new Answer("Umm.."))
+        };
+    }
+
     public static ReadOnlyClubBook getSampleClubBook() {
         try {
             ClubBook sampleCb = new ClubBook();
             for (Member sampleMember : getSampleMembers()) {
                 sampleCb.addMember(sampleMember);
             }
+            for (Poll samplePoll : getSamplePolls()) {
+                sampleCb.addPoll(samplePoll);
+            }
             return sampleCb;
         } catch (DuplicateMemberException e) {
             throw new AssertionError("sample data cannot contain duplicate members", e);
+        } catch (DuplicatePollException e) {
+            throw new AssertionError("sample data cannot contain duplicate polls", e);
         }
     }
 
@@ -68,6 +92,28 @@ public class SampleDataUtil {
         }
 
         return tags;
+    }
+
+    /**
+     * Returns a answer list containing the list of strings given.
+     */
+    public static List<Answer> getAnswerList(String... strings) {
+        List<Answer> answers = new ArrayList<>();
+        for (String s : strings) {
+            answers.add(new Answer(s));
+        }
+        return answers;
+    }
+
+    /**
+     * Returns a matric number set containing the list of strings given.
+     */
+    public static Set<MatricNumber> getMatricNumberSet(String... strings) {
+        Set<MatricNumber> matricNumbers = new HashSet<>();
+        for (String s : strings) {
+            matricNumbers.add(new MatricNumber(s));
+        }
+        return matricNumbers;
     }
 
 }

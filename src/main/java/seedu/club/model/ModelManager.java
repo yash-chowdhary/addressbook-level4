@@ -17,17 +17,25 @@ import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
+import seedu.club.model.task.Status;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.storage.ProfilePhotoStorage;
 
 /**
@@ -40,7 +48,9 @@ public class ModelManager extends ComponentManager implements Model {
     private final ClubBook clubBook;
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
+    private final FilteredList<Poll> filteredPolls;
     private Member loggedInMember;
+    private final FilteredList<Task> filteredTasks;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -54,6 +64,9 @@ public class ModelManager extends ComponentManager implements Model {
         this.clubBook = new ClubBook(clubBook);
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
+        filteredPolls = new FilteredList<>(this.clubBook.getPollList());
+        loggedInMember = getLoggedInMember();
+        filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
     }
 
     public ModelManager() {
@@ -62,7 +75,10 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public Member getLoggedInMember() {
-        loggedInMember = getFilteredMemberList().get(0);
+        loggedInMember = null;
+        if (!getFilteredMemberList().isEmpty()) {
+            loggedInMember = getFilteredMemberList().get(0);
+        }
         return loggedInMember;
     }
 
@@ -252,6 +268,36 @@ public class ModelManager extends ComponentManager implements Model {
     public void sendEmail(String recipients, Client client, Subject subject, Body body) {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
+
+    @Override
+    public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+        try {
+            Assignor assignor = new Assignor(loggedInMember.getName().fullName);
+            Assignee assignee = new Assignee(loggedInMember.getName().fullName);
+            Status status = new Status(Status.NOT_STARTED_STATUS);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
+            clubBook.addTaskToTaskList(toAdd);
+            indicateClubBookChanged();
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    @Override
+    public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
+        Assignor assignor = targetTask.getAssignor();
+        Assignee assignee = targetTask.getAssignee();
+        String currentMember = loggedInMember.getName().toString();
+        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
+                || !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+            throw new TaskCannotBeDeletedException();
+        }
+        clubBook.deleteTask(targetTask);
+        indicateClubBookChanged();
+    }
+
     //@@author
 
     //=========== Filtered member List Accessors =============================================================
@@ -266,9 +312,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public ObservableList<Task> getFilteredTaskList() {
+        return FXCollections.unmodifiableObservableList(filteredTasks);
+    }
+
+    @Override
     public void updateFilteredMemberList(Predicate<Member> predicate) {
         requireNonNull(predicate);
         filteredMembers.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<Poll> getFilteredPollList() {
+        return FXCollections.unmodifiableObservableList(filteredPolls);
     }
 
     @Override

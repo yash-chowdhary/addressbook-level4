@@ -6,10 +6,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_SUBJECT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.tag.Tag;
@@ -22,6 +22,7 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
+    public static final String COMMAND_FORMAT = "email [g/ ] [t/ ] c/ [s/ ] [b/ ]";
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) "
             + "in EITHER a particular group OR a particular tag of the club book. "

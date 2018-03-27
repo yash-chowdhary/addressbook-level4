@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import seedu.club.model.email.Client;
+
 public class ClientTest {
 
     @Test

@@ -11,6 +11,7 @@ import seedu.club.model.member.ProfilePhoto;
 public class ChangeProfilePhotoCommand extends Command {
 
     public static final String COMMAND_WORD = "changepic";
+    public static final String COMMAND_FORMAT = "changepic PATH";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo. "
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"

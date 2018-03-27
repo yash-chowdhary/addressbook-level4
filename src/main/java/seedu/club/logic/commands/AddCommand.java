@@ -20,6 +20,8 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_FORMAT = "add n/ p/ e/ m/ [pic/ ] "
+            + "[g/ ] [t/ ]";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a member to the club book. "
             + "Parameters: "

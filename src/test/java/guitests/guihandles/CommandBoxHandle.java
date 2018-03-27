@@ -38,6 +38,14 @@ public class CommandBoxHandle extends NodeHandle<TextField> {
     }
 
     /**
+     * Sets the given input into the commandBox
+     * @param input
+     */
+    public void setInput(String input) {
+        getRootNode().setText(input);
+    }
+
+    /**
      * Returns the list of style classes present in the command box.
      */
     public ObservableList<String> getStyleClass() {

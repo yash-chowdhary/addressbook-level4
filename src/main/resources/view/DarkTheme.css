@@ -25,11 +25,11 @@
 }
 
 .label-group {
-    -fx-text-fill: white;
-    -fx-background-color: #f7c331;
-    -fx-padding: 1 3 1 3;
-    -fx-border-radius: 2;
-    -fx-background-radius: 2;
+    -fx-text-fill: black;
+    -fx-background-color: blue;
+    -fx-padding: 2 5 2 5;
+    -fx-border-radius: 10;
+    -fx-background-radius: 8;
     -fx-font-size: 11;
 }
 
@@ -351,10 +351,62 @@
 }
 
 #tags .label {
-    -fx-text-fill: white;
-    -fx-background-color: #3e7b91;
-    -fx-padding: 1 3 1 3;
+    -fx-padding: 2 5 2 5;
     -fx-border-radius: 2;
-    -fx-background-radius: 2;
+    -fx-background-radius: 8;
     -fx-font-size: 11;
+}
+
+#tags .red {
+    -fx-text-fill: white;
+    -fx-background-color: #B10202;
+}
+
+#tags .yellow {
+    -fx-text-fill: black;
+    -fx-background-color: #F4F00D;
+}
+#tags .grey {
+    -fx-text-fill: white;
+    -fx-background-color: #595959;
+}
+#tags .brown {
+    -fx-text-fill: white;
+    -fx-background-color: brown;
+}
+#tags .pink {
+    -fx-text-fill: black;
+    -fx-background-color: pink;
+}
+#tags .white {
+    -fx-text-fill: #235E70;
+    -fx-background-color: white;
+}
+#tags .orange {
+    -fx-text-fill: black;
+    -fx-background-color: orange;
+}
+
+#tags .blue {
+    -fx-text-fill: black;
+    -fx-background-color: skyblue;
+}
+
+#tags .violet {
+    -fx-text-fill: black;
+    -fx-background-color: violet;
+}
+
+#answers {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#answers .label {
+    -fx-padding: 2 5 2 5;
+    -fx-border-radius: 2;
+    -fx-background-radius: 8;
+    -fx-font-size: 11;
+    -fx-text-fill: #235E70;
+    -fx-background-color: white;
 }
