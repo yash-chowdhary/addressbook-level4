@@ -27,6 +27,7 @@ import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.util.SampleDataUtil;
 import seedu.club.storage.ClubBookStorage;
+import seedu.club.storage.CsvClubBookStorage;
 import seedu.club.storage.JsonUserPrefsStorage;
 import seedu.club.storage.ProfilePhotoStorage;
 import seedu.club.storage.Storage;
@@ -64,7 +65,8 @@ public class MainApp extends Application {
         userPrefs = initPrefs(userPrefsStorage);
         ClubBookStorage clubBookStorage = new XmlClubBookStorage(userPrefs.getClubBookFilePath());
         ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
-        storage = new StorageManager(clubBookStorage, userPrefsStorage, profilePhotoStorage);
+        CsvClubBookStorage csvClubBookStorage = new CsvClubBookStorage();
+        storage = new StorageManager(clubBookStorage, userPrefsStorage, profilePhotoStorage, csvClubBookStorage);
 
         initLogging(config);
 
