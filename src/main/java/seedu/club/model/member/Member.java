@@ -86,6 +86,7 @@ public class Member {
         this.password = password;
         this.profilePhoto = profilePhoto;
         setTags(tags);
+        this.tasks = new UniqueTaskList();
     }
 
     /**
