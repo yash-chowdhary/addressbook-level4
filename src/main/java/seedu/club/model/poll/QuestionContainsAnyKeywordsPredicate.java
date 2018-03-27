@@ -8,10 +8,10 @@ import seedu.club.commons.util.StringUtil;
 /**
  * Tests that a {@code poll}'s {@code question} matches any of the keywords given.
  */
-public class PollContainsKeywordsPredicate implements Predicate<Poll> {
+public class QuestionContainsAnyKeywordsPredicate implements Predicate<Poll> {
     private final List<String> keywords;
 
-    public PollContainsKeywordsPredicate(List<String> keywords) {
+    public QuestionContainsAnyKeywordsPredicate(List<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -24,8 +24,8 @@ public class PollContainsKeywordsPredicate implements Predicate<Poll> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof PollContainsKeywordsPredicate // instanceof handles nulls
-                && this.keywords.equals(((PollContainsKeywordsPredicate) other).keywords)); // state check
+                || (other instanceof QuestionContainsAnyKeywordsPredicate // instanceof handles nulls
+                && this.keywords.equals(((QuestionContainsAnyKeywordsPredicate) other).keywords)); // state check
     }
 
 }

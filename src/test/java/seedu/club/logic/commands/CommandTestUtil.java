@@ -29,7 +29,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
-import seedu.club.model.poll.PollContainsKeywordsPredicate;
+import seedu.club.model.poll.QuestionContainsAnyKeywordsPredicate;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 
 /**
@@ -196,7 +196,7 @@ public class CommandTestUtil {
 
         Poll poll = model.getFilteredPollList().get(targetIndex.getZeroBased());
         final String[] splitQuestion = poll.getQuestion().getValue().split("\\s+");
-        model.updateFilteredPollList(new PollContainsKeywordsPredicate(Arrays.asList(splitQuestion[0])));
+        model.updateFilteredPollList(new QuestionContainsAnyKeywordsPredicate(Arrays.asList(splitQuestion[0])));
         assertEquals(1, model.getFilteredPollList().size());
     }
 
