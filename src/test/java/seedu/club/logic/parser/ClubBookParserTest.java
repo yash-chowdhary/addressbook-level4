@@ -11,6 +11,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,7 @@ import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.logic.commands.EmailCommand;
@@ -86,6 +88,13 @@ public class ClubBookParserTest {
     }
 
     @Test
+    public void parseCommand_deletePoll() throws Exception {
+        DeletePollCommand command = (DeletePollCommand) parser.parseCommand(
+                DeletePollCommand.COMMAND_WORD + " " + INDEX_FIRST_POLL.getOneBased());
+        assertEquals(new DeletePollCommand(INDEX_FIRST_POLL), command);
+    }
+
+    @Test
     public void parseCommand_edit() throws Exception {
         Member member = new MemberBuilder().build();
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(member).build();
@@ -101,7 +110,7 @@ public class ClubBookParserTest {
     }
 
     @Test
-    public void parseCommand_findBy() throws Exception {
+    public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         Prefix prefix = PREFIX_NAME;
         FindCommand command = (FindCommand) parser.parseCommand(
