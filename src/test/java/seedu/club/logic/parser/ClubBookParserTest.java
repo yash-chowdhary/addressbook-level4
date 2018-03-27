@@ -51,15 +51,12 @@ import seedu.club.model.group.Group;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.task.Task;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
 import seedu.club.testutil.PollBuilder;
 import seedu.club.testutil.PollUtil;
-import seedu.club.model.task.Task;
-import seedu.club.testutil.EditMemberDescriptorBuilder;
-import seedu.club.testutil.MemberBuilder;
-import seedu.club.testutil.MemberUtil;
 import seedu.club.testutil.TaskBuilder;
 import seedu.club.testutil.TaskUtil;
 
@@ -82,7 +79,8 @@ public class ClubBookParserTest {
         AddPollCommand command = (AddPollCommand) parser.parseCommand(PollUtil.getAddPollCommand(poll));
         assertEquals(new AddPollCommand(poll), command);
     }
-  
+
+    @Test
     public void parseCommand_addTask() throws Exception {
         Task task = new TaskBuilder().build();
         AddTaskCommand command = (AddTaskCommand) parser.parseCommand(TaskUtil.getAddTaskCommand(task));
@@ -108,7 +106,8 @@ public class ClubBookParserTest {
                 DeletePollCommand.COMMAND_WORD + " " + INDEX_FIRST_POLL.getOneBased());
         assertEquals(new DeletePollCommand(INDEX_FIRST_POLL), command);
     }
-  
+
+    @Test
     public void parseCommand_deleteTask() throws Exception {
         DeleteTaskCommand command = (DeleteTaskCommand) parser.parseCommand(
                 DeleteTaskCommand.COMMAND_WORD + " " + INDEX_FIRST_TASK.getOneBased());

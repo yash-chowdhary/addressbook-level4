@@ -64,7 +64,7 @@ public class ClubBookParser {
 
         case AddPollCommand.COMMAND_WORD:
             return new AddPollCommandParser().parse(arguments);
-            
+
         case AddTaskCommand.COMMAND_WORD:
             return new AddTaskCommandParser().parse(arguments);
 

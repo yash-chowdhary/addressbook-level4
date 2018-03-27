@@ -278,7 +278,7 @@ public class ParserUtil {
         }
         return tagSet;
     }
-  
+
     /**
      * Parses a {@code String question} into a {@code Question}.
      * Leading and trailing whitespaces will be trimmed.
@@ -318,7 +318,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> answer} into a {@code Optional<Tag>} if {@code group} is present
+     * Parses a {@code Optional<String> answer} into a {@code Optional<Answer>} if {@code group} is present
      */
     public static Optional<Answer> parseOptionalAnswer(Optional<String> answer) throws IllegalValueException {
         requireNonNull(answer);
@@ -342,7 +342,7 @@ public class ParserUtil {
         }
         return answerList;
     }
-  
+
     //@@author yash-chowdhary
     /**
      * Parses a {@code String client} into a {@code Client}.
@@ -406,7 +406,8 @@ public class ParserUtil {
         requireNonNull(body);
         return body.isPresent() ? Optional.of(parseBody(body.get())) : Optional.empty();
     }
-  
+
+    /**
      * Parses a {@code String description} into a {@code Description}.
      * Leading and trailing whitespaces will be trimmed.
      *

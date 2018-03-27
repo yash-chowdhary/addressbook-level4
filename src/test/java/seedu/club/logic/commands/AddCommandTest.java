@@ -132,7 +132,7 @@ public class AddCommandTest {
         public void deletePoll(Poll target) throws PollNotFoundException {
             fail("This method should not be called.");
         }
-      
+
         public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
             fail("This method should not be called");
             return;
