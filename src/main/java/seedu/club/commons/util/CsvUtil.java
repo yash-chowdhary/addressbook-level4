@@ -3,6 +3,12 @@ package seedu.club.commons.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import seedu.club.model.ClubBook;
+import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.member.Member;
 
 
@@ -11,11 +17,40 @@ import seedu.club.model.member.Member;
  */
 public class CsvUtil {
 
-    private static final String CSV_FIELD_SEPARATOR = ",";
-    private static final String CSV_FIELD_SURROUNDER = "\"";
-    private static final String CSV_VALUE_SEPARATOR = ",";
-    private static final String LINE_BREAK = "\n";
-    private static final String EMPTY_STRING = "";
+    private static final String csvFieldSeparator = ",";
+    private static final String csvFieldSurrounder = "\"";
+    private static final String csvValueSeparator = ",";
+    private static final String newline = System.lineSeparator();
+    private static final String emptyString = "";
+
+    /*private final String CSV_FIELD_SEPARATOR = ",";
+    private final String CSV_FIELD_SURROUNDER = "\"";
+    private final String CSV_VALUE_SEPARATOR = ",";
+    private final String newline = System.lineSeparator();
+    private final String EMPTY_STRING = "";*/
+
+    /**
+     * Returns {@code this} Member's data in the format of a CSV record.
+     *
+     * @return {@code String} containing the data in CSV format.
+     */
+    public static String getHeaders() {
+        final StringBuilder builder = new StringBuilder();
+
+        addCsvField(builder, "Name");
+        addCsvField(builder, "Phone");
+        addCsvField(builder, "Email");
+        addCsvField(builder, "Matriculation Number");
+        addCsvField(builder, "Group");
+        addCsvField(builder, "Tags");
+        addCsvField(builder, "Profile Photo Path");
+        addCsvField(builder, "Username");
+        addFinalCsvField(builder, "Password");
+
+        builder.append(newline);
+
+        return builder.toString();
+    }
 
     /**
      * Returns {@code this} Member's data in the format of a CSV record.
@@ -25,11 +60,11 @@ public class CsvUtil {
     public static String toCsvFormat(Object objectToConvert) {
         requireNonNull(objectToConvert);
 
-        Member memberToConvert = null;
+        Member memberToConvert;
         if (objectToConvert instanceof Member) {
             memberToConvert = (Member) objectToConvert;
         } else {
-            return EMPTY_STRING;
+            return emptyString;
         }
 
         final StringBuilder builder = new StringBuilder();
@@ -39,18 +74,28 @@ public class CsvUtil {
         addCsvField(builder, memberToConvert.getEmail().toString());
         addCsvField(builder, memberToConvert.getMatricNumber().toString());
         addCsvField(builder, memberToConvert.getGroup().toString());
+        addCsvTags(builder, memberToConvert);
         addCsvField(builder, memberToConvert.getProfilePhoto().toString());
         addCsvField(builder, memberToConvert.getUsername().toString());
-        addCsvField(builder, memberToConvert.getPassword().toString());
+        addFinalCsvField(builder, memberToConvert.getPassword().toString());
 
-        builder.append(CSV_FIELD_SURROUNDER);
-        memberToConvert.getTags().forEach(tag -> builder.append(tag)
-                .append(CSV_VALUE_SEPARATOR)); //Results in an extra "," at end of tag list.
-        builder.append(CSV_FIELD_SURROUNDER);
-
-        builder.append(LINE_BREAK);
+        builder.append(newline);
 
         return builder.toString();
+    }
+
+    /**
+     * Appends (@code builder} with all tags of {@code member} in CSV format.
+     *
+     * @param builder StringBuilder which is to be appended.
+     * @param member Member whose tags are to be appended.
+     */
+    private static void addCsvTags(StringBuilder builder, Member member) {
+        builder.append(csvFieldSurrounder);
+        member.getTags().forEach(tag -> builder.append(tag)
+                .append(csvValueSeparator)); //Results in an extra "," at end of tag list.
+        builder.append(csvFieldSurrounder)
+                .append(csvFieldSeparator);
     }
 
     /**
@@ -62,10 +107,46 @@ public class CsvUtil {
     private static void addCsvField(StringBuilder builder, String field) {
         assert field != null : "Field cannot be null in Member object";
 
-        builder.append(CSV_FIELD_SURROUNDER)
+        builder.append(csvFieldSurrounder)
                 .append(field)
-                .append(CSV_FIELD_SURROUNDER)
-                .append(CSV_FIELD_SEPARATOR);
+                .append(csvFieldSurrounder)
+                .append(csvFieldSeparator);
+    }
+
+    /**
+     * Appends (@code builder} with last {@code field} in CSV format. {@code csvFieldSeparator} is not appended.
+     *
+     * @param builder StringBuilder which is to be appended.
+     * @param field The final field value that is to be appended.
+     */
+    private static void addFinalCsvField(StringBuilder builder, String field) {
+        assert field != null : "Field cannot be null in Member object";
+
+        builder.append(csvFieldSurrounder)
+                .append(field)
+                .append(csvFieldSurrounder);
+    }
+
+    /**
+     * Saves the data in the file in csv format.
+     *
+     * @param file Points to a valid csv file containing data that match the {@code classToConvert}.
+     *             Cannot be null.
+     * @throws FileNotFoundException Thrown if the file is missing.
+     */
+    public static void saveDataToFile(File file, String data) throws IOException {
+        requireNonNull(file);
+        requireNonNull(data);
+
+        if (!file.exists()) {
+            throw new FileNotFoundException("File not found : " + file.getAbsolutePath());
+        }
+
+        FileUtil.appendToFile(file, data);
+    }
+
+    public static ReadOnlyClubBook getDataFromFile(File file) {
+        return new ClubBook();
     }
 
 }
