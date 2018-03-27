@@ -14,11 +14,11 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Exports the members' information to the specified CSV file. "
-            + "Parameters: FILE_PATH (must be an absolute path)\n"
+            + "Parameters: FILE_PATH (must be an absolute CSV file path)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/members.csv";
 
     public static final String MESSAGE_EXPORT_SUCCESS = "Members' details exported to %1$s";
-    public static final String MESSAGE_EXPORT_FAILURE = "Error occurred while exporting the file: %1$s";
+    public static final String MESSAGE_EXPORT_FAILURE = "Error occurred while exporting to the file: %1$s";
 
     private final File exportFile;
 

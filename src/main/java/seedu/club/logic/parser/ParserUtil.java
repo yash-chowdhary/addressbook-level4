@@ -247,12 +247,20 @@ public class ParserUtil {
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = parsePath(path);
 
-        if (!file.isAbsolute() || file.isDirectory()) {
+        if (!file.isAbsolute() || file.isDirectory() || !validFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
         file.createNewFile();
         return file;
+    }
+
+    private static boolean validFileName(String path) {
+        String csvFileExtension = ".csv";
+
+        int length = path.length();
+        String fileExtension = path.substring(length - 4);
+        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
     }
 
     /**
