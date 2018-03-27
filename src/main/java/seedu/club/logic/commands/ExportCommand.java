@@ -18,6 +18,7 @@ public class ExportCommand extends Command {
             + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/members.csv";
 
     public static final String MESSAGE_EXPORT_SUCCESS = "Members' details exported to %1$s";
+    public static final String MESSAGE_EXPORT_FAILURE = "Error occurred while exporting the file: %1$s";
 
     private final File exportFile;
 
@@ -30,9 +31,11 @@ public class ExportCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        model.exportClubConnect(exportFile);
-
-        return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
+        if (model.exportClubConnect(exportFile)) {
+            return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
+        } else {
+            return new CommandResult(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
+        }
     }
 
     @Override

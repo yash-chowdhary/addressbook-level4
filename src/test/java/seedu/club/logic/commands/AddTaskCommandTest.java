@@ -224,8 +224,9 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void exportClubConnect(File exportFilePath) {
+        public boolean exportClubConnect(File exportFilePath) {
             fail("This method should not be called");
+            return false;
         }
 
         @Override

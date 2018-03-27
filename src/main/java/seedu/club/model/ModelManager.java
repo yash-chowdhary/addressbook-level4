@@ -305,44 +305,79 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author amrut-prabhu
     /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that data of a {@code member} is ready to be exported.
-     * @param member Member data to be added to the file.
+     * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
+     * @param data Member data to be added to the file.
      */
-    private void indicateNewExport(String member) {
-        raise(new NewExportDataAvailableEvent(member));
+    private boolean indicateNewExport(String data) {
+        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(data);
+        raise(newExportDataAvailableEvent);
+        return newExportDataAvailableEvent.isFileChanged();
     }
 
     /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that data is ready to be exported.
+     * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
      * @param exportFile CSV file to be exported to.
-     * @param content Data to be added to the file.
+     * @return true if no errors occur when exporting.
      */
-    private void indicateNewExport(File exportFile, String content) {
-        raise(new NewExportDataAvailableEvent(exportFile, content));
+    private boolean indicateNewExport(File exportFile) {
+        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile);
+        raise(newExportDataAvailableEvent);
+        return newExportDataAvailableEvent.isFileChanged();
+    }
+
+    /**
+     * Returns true if {@code file} is empty.
+     */
+    private boolean isEmptyFile(File file) {
+        return file.length() == 0;
     }
 
     @Override
-    public void exportClubConnect(File exportFile) {
-        exportHeaders(exportFile);
+    public boolean exportClubConnect(File exportFile) {
+        if (!indicateNewExport(exportFile)) {
+            return false;
+        }
+
+        if (!exportHeaders(exportFile)) {
+            return false;
+        }
 
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        members.forEach(member -> exportMember(member));
+
+        for (Member member: members) {
+            if (!exportMember(member)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private void exportHeaders(File exportFile) {
-        String headers = CsvUtil.getHeaders();
-        indicateNewExport(exportFile, headers);
+    /**
+     * Exports the header fields of {@code Member} object if the file is empty.
+     */
+    private boolean exportHeaders(File exportFile) {
+        if (isEmptyFile(exportFile)) {
+            String headers = CsvUtil.getHeaders();
+            return indicateNewExport(headers);
+        } else {
+            return true;
+        }
     }
 
     /**
      * Exports the information of {@code member} to the file.
      * @param member Member whose data is to be exported.
      */
-    private void exportMember(Member member) {
+    private boolean exportMember(Member member) {
         String memberData = convertMemberToCsv(member);
-        indicateNewExport(memberData);
+        return indicateNewExport(memberData);
     }
 
+    /**
+     * Returns the CSV representation of {@code member}.
+     * @param member Member who is to be converted to CSV format.
+     * @return Member data in CSV format.
+     */
     private String convertMemberToCsv(Member member) {
         return CsvUtil.toCsvFormat(member);
     }

@@ -88,8 +88,9 @@ public interface Model {
     /**
      * Exports Club Connect's members' details to the specified file.
      * @param exportFilePath Absolute file path of the file to which the data is exported.
+     * @return true if no errors occur during exporting.
      */
-    void exportClubConnect(File exportFilePath);
+    boolean exportClubConnect(File exportFilePath);
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */

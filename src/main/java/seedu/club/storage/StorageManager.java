@@ -119,7 +119,7 @@ public class StorageManager extends ComponentManager implements Storage {
     //@@author amrut-prabhu
     @Override
     public void exportData(String content) throws IOException {
-        exportData(content, csvClubBookStorage.getClubBookFile());
+        csvClubBookStorage.saveData(content);
     }
 
     private void exportData(String content, File exportFile) throws IOException {
@@ -136,8 +136,11 @@ public class StorageManager extends ComponentManager implements Storage {
             csvClubBookStorage.setClubBookFilePath(event.exportFile);
         }
         try {
-            exportData(event.data);
+            if (event.data != null) {
+                exportData(event.data);
+            }
         } catch (IOException e) {
+            event.setFileChanged(false);
             raise(new DataSavingExceptionEvent(e));
         }
     }

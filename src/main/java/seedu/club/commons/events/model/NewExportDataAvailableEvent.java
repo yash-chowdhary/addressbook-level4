@@ -12,15 +12,27 @@ public class NewExportDataAvailableEvent extends BaseEvent {
 
     public final File exportFile;
     public final String data;
+    private boolean isFileChanged;
 
-    public NewExportDataAvailableEvent(File exportFile, String memberData) {
+    public NewExportDataAvailableEvent(File exportFile) {
         this.exportFile = exportFile;
-        this.data = memberData;
+        this.data = null;
+        this.isFileChanged = true;
+
     }
 
-    public NewExportDataAvailableEvent(String memberData) {
+    public NewExportDataAvailableEvent(String data) {
+        this.data = data;
         this.exportFile = null;
-        this.data = memberData;
+        this.isFileChanged = true;
+    }
+
+    public boolean isFileChanged() {
+        return isFileChanged;
+    }
+
+    public void setFileChanged(boolean isFileChanged) {
+        this.isFileChanged = isFileChanged;
     }
 
     @Override
