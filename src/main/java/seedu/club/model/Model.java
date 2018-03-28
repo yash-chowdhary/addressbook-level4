@@ -28,6 +28,11 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
+    Predicate<Task> PREDICATE_SHOW_ALL_TASKS = unused -> true;
+
+    /** {@code Predicate} that always evaluate to true */
+    Predicate<Member> PREDICATE_NOT_SHOW_ALL_MEMBERS = unused -> false;
+
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyClubBook newData);
 
@@ -68,7 +73,7 @@ public interface Model {
     /**
      * Logs In a member in the club
      */
-    boolean logInMemberSuccessful(String username, String password);
+    void logsInMember(String username, String password);
 
     /**
      * Returns the member who is currently logged in to Club Connect.
@@ -111,4 +116,6 @@ public interface Model {
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
 
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
+
+    void updateFilteredTaskList(Predicate<Task> predicate);
 }

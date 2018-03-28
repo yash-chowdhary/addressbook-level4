@@ -17,12 +17,15 @@ import java.util.List;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.FindCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 
 public class FindCommandSystemTest extends ClubBookSystemTest {
@@ -34,6 +37,11 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
          */
         String command = "   " + FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER + "   ";
         Model expectedModel = getModel();
+        ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         ModelHelper.setFilteredList(expectedModel, BENSON, DANIEL); // first names of Benson and Daniel are "Meier"
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
@@ -89,6 +97,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertFalse(getModel().getClubBook().getMemberList().contains(BENSON));
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();

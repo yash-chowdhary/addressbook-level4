@@ -169,9 +169,9 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public boolean logInMemberSuccessful(String username, String password) {
+        public void logsInMember(String username, String password) {
             fail("This method should not be called");
-            return false;
+            return;
         }
 
         @Override
@@ -231,6 +231,12 @@ public class AddTaskCommandTest {
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
+        public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
             return;
         }

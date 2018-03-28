@@ -17,7 +17,7 @@ public class ClearCommandSystemTest extends ClubBookSystemTest {
     @Test
     public void clear() {
         final Model defaultModel = getModel();
-
+        defaultModel.updateFilteredMemberList(defaultModel.PREDICATE_SHOW_ALL_MEMBERS);
         /* Case: clear non-empty club book, command with leading spaces and trailing alphanumeric characters and
          * spaces -> cleared
          */

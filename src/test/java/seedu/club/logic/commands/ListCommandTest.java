@@ -27,18 +27,22 @@ public class ListCommandTest {
     public void setUp() {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         listCommand = new ListCommand();
         listCommand.setData(model, new CommandHistory(), new UndoRedoStack());
     }
 
     @Test
     public void execute_listIsNotFiltered_showsSameList() {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         assertCommandSuccess(listCommand, model, ListCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
     @Test
     public void execute_listIsFiltered_showsEverything() {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
         assertCommandSuccess(listCommand, model, ListCommand.MESSAGE_SUCCESS, expectedModel);
     }

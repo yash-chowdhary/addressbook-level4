@@ -12,10 +12,13 @@ import static seedu.club.logic.commands.DeleteTagCommand.MESSAGE_NON_EXISTENT_TA
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.commands.DeleteTagCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
@@ -25,8 +28,14 @@ public class DeleteTagCommandSystemTest extends ClubBookSystemTest {
     public void deleteTag() {
         Model expectedModel = getModel();
         Model modelBeforeDeletingGroup = getModel();
+        ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
+        modelBeforeDeletingGroup.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         Tag deletedTag;
         String command;
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
 
         /* ------------------------ Perform deleteTag operations on the shown unfiltered list -------------------- */
 

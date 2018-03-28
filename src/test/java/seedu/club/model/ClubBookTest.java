@@ -1,6 +1,7 @@
 package seedu.club.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -228,6 +230,16 @@ public class ClubBookTest {
         }
         public ObservableList<Task> getTaskList() {
             return tasks;
+        }
+
+        @Override
+        public void setPolls(Set<Poll> polls) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void setTasks(Set<Task> tasks) {
+            fail("This method should not be called.");
         }
     }
 

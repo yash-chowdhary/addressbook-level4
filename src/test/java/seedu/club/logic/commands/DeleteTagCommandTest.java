@@ -58,6 +58,7 @@ public class DeleteTagCommandTest {
 
     @Test
     public void execute_validTagFilteredList_success() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
@@ -67,6 +68,7 @@ public class DeleteTagCommandTest {
         String expectedMessage = String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToRemove);
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.deleteTag(tagToRemove);
         showNoTag(expectedModel);
 
@@ -75,6 +77,7 @@ public class DeleteTagCommandTest {
 
     @Test
     public void execute_invalidTagFilteredList_throwsCommandException() {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Tag nonExistentTag = new Tag(VALID_TAG_UNUSED);
@@ -88,13 +91,14 @@ public class DeleteTagCommandTest {
 
     @Test
     public void executeUndoRedo_validTagUnfilteredList_success() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
         DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         // delete -> first tag removed
         deleteTagCommand.execute();
         undoRedoStack.push(deleteTagCommand);
@@ -132,12 +136,14 @@ public class DeleteTagCommandTest {
      */
     @Test
     public void executeUndoRedo_validTagFilteredList_sameMemberDeleted() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Tag tagToRemove = model.getFilteredTagList().get(INDEX_FIRST_TAG.getZeroBased());
         DeleteTagCommand deleteTagCommand = prepareCommand(tagToRemove);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         showMemberAtIndex(model, INDEX_SECOND_MEMBER);
         // remove tag -> removes first tag in unfiltered tag list / filtered tag list

@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.model.ClubBook;
 import seedu.club.model.member.Member;
 import seedu.club.model.util.SampleDataUtil;
@@ -45,6 +47,10 @@ public class SampleDataTest extends ClubBookSystemTest {
 
     @Test
     public void clubBook_dataFileDoesNotExist_loadSampleData() {
+        ObservableList<Member> memberObservableList = getModel().getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         Member[] expectedList = SampleDataUtil.getSampleMembers();
         assertListMatching(getMemberListPanel(), expectedList);
     }
