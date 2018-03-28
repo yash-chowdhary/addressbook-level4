@@ -44,7 +44,6 @@ public class TypicalPolls {
                 throw new AssertionError("not possible");
             }
         }
-        System.out.println("HELLO = " + ab);
         return ab;
     }
 

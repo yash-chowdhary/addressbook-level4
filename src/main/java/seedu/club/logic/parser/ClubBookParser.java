@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
@@ -14,6 +15,7 @@ import seedu.club.logic.commands.Command;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.DeleteTaskCommand;
 import seedu.club.logic.commands.EditCommand;
@@ -62,6 +64,9 @@ public class ClubBookParser {
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
+        case AddPollCommand.COMMAND_WORD:
+            return new AddPollCommandParser().parse(arguments);
+
         case AddTaskCommand.COMMAND_WORD:
             return new AddTaskCommandParser().parse(arguments);
 
@@ -79,6 +84,9 @@ public class ClubBookParser {
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
+
+        case DeletePollCommand.COMMAND_WORD:
+            return new DeletePollCommandParser().parse(arguments);
 
         case DeleteTagCommand.COMMAND_WORD:
             return new DeleteTagCommandParser().parse(arguments);

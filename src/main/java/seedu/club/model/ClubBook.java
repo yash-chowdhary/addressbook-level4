@@ -23,6 +23,7 @@ import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.UniquePollList;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -83,6 +84,7 @@ public class ClubBook implements ReadOnlyClubBook {
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
+        setPolls(new HashSet<>(newData.getPollList()));
         setTasks(new HashSet<>(newData.getTaskList()));
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
@@ -110,6 +112,18 @@ public class ClubBook implements ReadOnlyClubBook {
         // This can cause the tags master list to have additional tags that are not tagged to any member
         // in the member list.
         members.add(member);
+    }
+
+    /**
+     * Removes {@code key} from this {@code ClubBook}.
+     * @throws PollNotFoundException if the {@code key} is not in this {@code ClubBook}.
+     */
+    public boolean removePoll(Poll key) throws PollNotFoundException {
+        if (polls.remove(key)) {
+            return true;
+        } else {
+            throw new PollNotFoundException();
+        }
     }
 
     /**

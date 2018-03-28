@@ -27,6 +27,7 @@ import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
+import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
@@ -40,70 +41,70 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
-import seedu.club.testutil.MemberBuilder;
+import seedu.club.testutil.PollBuilder;
 
-public class AddCommandTest {
+public class AddPollCommandTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void constructor_nullMember_throwsNullPointerException() {
+    public void constructor_nullPoll_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AddCommand(null);
+        new AddPollCommand(null);
     }
 
     @Test
-    public void execute_memberAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingMemberAdded modelStub = new ModelStubAcceptingMemberAdded();
-        Member validMember = new MemberBuilder().build();
+    public void execute_pollAcceptedByModel_addSuccessful() throws Exception {
+        ModelStubAcceptingPollAdded modelStub = new ModelStubAcceptingPollAdded();
+        Poll validPoll = new PollBuilder().build();
 
-        CommandResult commandResult = getAddCommandForMember(validMember, modelStub).execute();
+        CommandResult commandResult = getAddPollCommandForPoll(validPoll, modelStub).execute();
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validMember), commandResult.feedbackToUser);
-        assertEquals(Arrays.asList(validMember), modelStub.membersAdded);
+        assertEquals(String.format(AddPollCommand.MESSAGE_SUCCESS, validPoll), commandResult.feedbackToUser);
+        assertEquals(Arrays.asList(validPoll), modelStub.pollsAdded);
     }
 
     @Test
-    public void execute_duplicateMember_throwsCommandException() throws Exception {
-        ModelStub modelStub = new ModelStubThrowingDuplicateMemberException();
-        Member validMember = new MemberBuilder().build();
+    public void execute_duplicatePoll_throwsCommandException() throws Exception {
+        ModelStub modelStub = new ModelStubThrowingDuplicatePollException();
+        Poll validPoll = new PollBuilder().build();
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        thrown.expectMessage(AddPollCommand.MESSAGE_DUPLICATE_POLL);
 
-        getAddCommandForMember(validMember, modelStub).execute();
+        getAddPollCommandForPoll(validPoll, modelStub).execute();
     }
 
     @Test
     public void equals() {
-        Member alice = new MemberBuilder().withName("Alice").build();
-        Member bob = new MemberBuilder().withName("Bob").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        Poll lovePoll = new PollBuilder().withQuestion("What is love?").build();
+        Poll lifePoll = new PollBuilder().withQuestion("What is life?").build();
+        AddPollCommand addLovePollCommand = new AddPollCommand(lovePoll);
+        AddPollCommand addLifePollCommand = new AddPollCommand(lifePoll);
 
         // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        assertTrue(addLovePollCommand.equals(addLovePollCommand));
 
         // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
+        AddPollCommand addAliceCommandCopy = new AddPollCommand(lovePoll);
+        assertTrue(addLovePollCommand.equals(addAliceCommandCopy));
 
         // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
+        assertFalse(addLovePollCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertFalse(addLovePollCommand.equals(null));
 
-        // different member -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        // different poll -> returns false
+        assertFalse(addLovePollCommand.equals(addLifePollCommand));
     }
 
     /**
-     * Generates a new AddCommand with the details of the given member.
+     * Generates a new AddPollCommand with the details of the given poll.
      */
-    private AddCommand getAddCommandForMember(Member member, Model model) {
-        AddCommand command = new AddCommand(member);
+    private AddPollCommand getAddPollCommandForPoll(Poll poll, Model model) {
+        AddPollCommand command = new AddPollCommand(poll);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -112,9 +113,30 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public boolean exportClubConnect(File exportFilePath) {
+            fail("This method should not be called.");
+            return false;
+        }
 
         @Override
-        public FilteredList<Poll> getFilteredPollList() {
+        public void logOutMember() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void logsInMember(String username, String password) {
+            fail("This method should not be called");
+        }
+
+
+        @Override
+        public void updateFilteredTaskList(Predicate<Task> predicate) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public FilteredList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
             return null;
         }
@@ -134,11 +156,6 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
-        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
-            fail("This method should not be called");
-            return;
-        }
-
         @Override
         public boolean addProfilePhoto(String originalPhotoPath) {
             fail("This method should not be called.");
@@ -146,7 +163,13 @@ public class AddCommandTest {
         }
 
         @Override
-        public void removeGroup(Group toRemove) {
+        public Member getLoggedInMember() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
             fail("This method should not be called.");
         }
 
@@ -162,12 +185,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public void deleteMember(Member member) throws MemberNotFoundException {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember)
+        public void updateMember(Member member, Member editedMember)
                 throws DuplicateMemberException {
             fail("This method should not be called.");
         }
@@ -178,7 +201,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public ObservableList<Member> getFilteredMemberList() {
+        public ObservableList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
         }
@@ -189,20 +212,11 @@ public class AddCommandTest {
         }
 
         @Override
-        public void logsInMember(String username, String password) {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public Member getLoggedInMember() {
-            return null;
-        }
-
-        @Override
         public void updateFilteredPollList(Predicate<Poll> poll) {
             fail("This method should not be called.");
         }
 
+        @Override
         public void updateFilteredTagList(Predicate<Tag> predicate) {
             fail("This method should not be called.");
         }
@@ -220,11 +234,6 @@ public class AddCommandTest {
         }
 
         @Override
-        public void logOutMember() {
-            fail("This method should not be called");
-        }
-
-        @Override
         public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException,
                 TagNotFoundException {
             fail("This method should not be called");
@@ -232,15 +241,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean exportClubConnect(File exportFilePath) {
-            fail("This method should not be called");
-            return false;
-        }
-
-        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
-            return;
         }
 
         @Override
@@ -250,19 +252,18 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredTaskList(Predicate<Task> predicate) {
+        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
             fail("This method should not be called");
-            return;
         }
     }
 
     /**
-     * A Model stub that always throw a DuplicateMemberException when trying to add a member.
+     * A Model stub that always throw a DuplicatePollException when trying to add a poll.
      */
-    private class ModelStubThrowingDuplicateMemberException extends ModelStub {
+    private class ModelStubThrowingDuplicatePollException extends ModelStub {
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            throw new DuplicateMemberException();
+        public void addPoll(Poll poll) throws DuplicatePollException {
+            throw new DuplicatePollException();
         }
 
         @Override
@@ -272,15 +273,15 @@ public class AddCommandTest {
     }
 
     /**
-     * A Model stub that always accept the member being added.
+     * A Model stub that always accept the poll being added.
      */
-    private class ModelStubAcceptingMemberAdded extends ModelStub {
-        final ArrayList<Member> membersAdded = new ArrayList<>();
+    private class ModelStubAcceptingPollAdded extends ModelStub {
+        private final ArrayList<Poll> pollsAdded = new ArrayList<>();
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            requireNonNull(member);
-            membersAdded.add(member);
+        public void addPoll(Poll poll) throws DuplicatePollException {
+            requireNonNull(poll);
+            pollsAdded.add(poll);
         }
 
         @Override

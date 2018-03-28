@@ -6,7 +6,7 @@ import static seedu.club.logic.commands.CommandTestUtil.INVALID_MATRIC_NUMBER;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_QUESTION;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_TWO;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_LIFE;
 import static seedu.club.storage.XmlAdaptedPoll.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
 
@@ -75,7 +75,7 @@ public class XmlAdaptedPollTest {
     @Test
     public void toModelType_invalidAnswersEmptyAnswer_throwsIllegalValueException() {
         XmlAdaptedPoll poll =
-                new XmlAdaptedPoll(VALID_QUESTION, INVALID_ANSWERS_EMPTY_ANSWER, VALID_POLLEES_MATRIC_NUMBERS);
+                new XmlAdaptedPoll(VALID_QUESTION_LIFE, INVALID_ANSWERS_EMPTY_ANSWER, VALID_POLLEES_MATRIC_NUMBERS);
         String expectedMessage = Answer.MESSAGE_ANSWER_CONSTRAINTS;
         Assert.assertThrows(IllegalValueException.class, expectedMessage, poll::toModelType);
     }
@@ -83,7 +83,7 @@ public class XmlAdaptedPollTest {
     @Test
     public void toModelType_invalidAnswerNegativeNumberAnswered_throwsIllegalValueException() {
         XmlAdaptedPoll poll =
-                new XmlAdaptedPoll(VALID_QUESTION, INVALID_ANSWERS_NEGATIVE_NUMBER_ANSWERED,
+                new XmlAdaptedPoll(VALID_QUESTION_LIFE, INVALID_ANSWERS_NEGATIVE_NUMBER_ANSWERED,
                         VALID_POLLEES_MATRIC_NUMBERS);
         String expectedMessage = Answer.MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS;
         Assert.assertThrows(IllegalValueException.class, expectedMessage, poll::toModelType);
@@ -91,7 +91,7 @@ public class XmlAdaptedPollTest {
 
     @Test
     public void toModelType_nullAnswers_throwsIllegalValueException() {
-        XmlAdaptedPoll poll = new XmlAdaptedPoll(VALID_QUESTION, null, VALID_POLLEES_MATRIC_NUMBERS);
+        XmlAdaptedPoll poll = new XmlAdaptedPoll(VALID_QUESTION_LIFE, null, VALID_POLLEES_MATRIC_NUMBERS);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Answer.class.getSimpleName());
         Assert.assertThrows(IllegalValueException.class, expectedMessage, poll::toModelType);
     }
@@ -99,7 +99,7 @@ public class XmlAdaptedPollTest {
     @Test
     public void toModelType_invalidPolleesMatricNumber_throwsIllegalValueException() {
         XmlAdaptedPoll poll =
-                new XmlAdaptedPoll(VALID_QUESTION, VALID_ANSWERS, INVALID_POLLEES_MATRIC_NUMBERS);
+                new XmlAdaptedPoll(VALID_QUESTION_LIFE, VALID_ANSWERS, INVALID_POLLEES_MATRIC_NUMBERS);
         String expectedMessage = MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS;
         Assert.assertThrows(IllegalValueException.class, expectedMessage, poll::toModelType);
     }

@@ -11,6 +11,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 
 import java.util.Arrays;
@@ -22,11 +23,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.DeleteTaskCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
@@ -47,10 +50,13 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.task.Task;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
+import seedu.club.testutil.PollBuilder;
+import seedu.club.testutil.PollUtil;
 import seedu.club.testutil.TaskBuilder;
 import seedu.club.testutil.TaskUtil;
 
@@ -65,6 +71,13 @@ public class ClubBookParserTest {
         Member member = new MemberBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(MemberUtil.getAddCommand(member));
         assertEquals(new AddCommand(member), command);
+    }
+
+    @Test
+    public void parseCommand_addPoll() throws Exception {
+        Poll poll = new PollBuilder().build();
+        AddPollCommand command = (AddPollCommand) parser.parseCommand(PollUtil.getAddPollCommand(poll));
+        assertEquals(new AddPollCommand(poll), command);
     }
 
     @Test
@@ -85,6 +98,13 @@ public class ClubBookParserTest {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_MEMBER), command);
+    }
+
+    @Test
+    public void parseCommand_deletePoll() throws Exception {
+        DeletePollCommand command = (DeletePollCommand) parser.parseCommand(
+                DeletePollCommand.COMMAND_WORD + " " + INDEX_FIRST_POLL.getOneBased());
+        assertEquals(new DeletePollCommand(INDEX_FIRST_POLL), command);
     }
 
     @Test
@@ -110,7 +130,7 @@ public class ClubBookParserTest {
     }
 
     @Test
-    public void parseCommand_findBy() throws Exception {
+    public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         Prefix prefix = PREFIX_NAME;
         FindCommand command = (FindCommand) parser.parseCommand(
