@@ -71,6 +71,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPolls = new FilteredList<>(this.clubBook.getPollList());
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
         updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(PREDICATE_NOT_SHOW_ALL_TASKS);
     }
 
     public ModelManager() {
@@ -137,7 +138,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-            // updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         }
     }
 
@@ -301,7 +302,7 @@ public class ModelManager extends ComponentManager implements Model {
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
             clubBook.addTaskToTaskList(toAdd);
-            // updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
