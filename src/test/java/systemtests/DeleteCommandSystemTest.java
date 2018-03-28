@@ -22,7 +22,6 @@ import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
-
 public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
     private static final String MESSAGE_INVALID_DELETE_COMMAND_FORMAT =
@@ -38,7 +37,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
-        expectedModel.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
+        expectedModel = getModel();
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
         Member deletedMember = removeMember(expectedModel, INDEX_FIRST_MEMBER);
         String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
@@ -68,6 +67,9 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* ------------------ Performing delete operation while a filtered list is being shown ---------------------- */
 
         /* Case: filtered member list, delete index within bounds of club book and member list -> deleted */
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         showMembersWithName(KEYWORD_MATCHING_MEIER);
         Index index = INDEX_FIRST_MEMBER;
         assertTrue(index.getZeroBased() < getModel().getFilteredMemberList().size());
@@ -142,7 +144,6 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      */
     private void assertCommandSuccess(Index toDelete) {
         Model expectedModel = getModel();
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         Member deletedMember = removeMember(expectedModel, toDelete);
         String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
 
@@ -200,7 +201,6 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      */
     private void assertCommandFailure(String command, String expectedResultMessage) {
         Model expectedModel = getModel();
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();

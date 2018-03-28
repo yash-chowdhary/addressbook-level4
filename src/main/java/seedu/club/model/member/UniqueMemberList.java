@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -75,7 +75,8 @@ public class UniqueMemberList implements Iterable<Member> {
 
         internalList.set(index, editedMember);
         usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
-        usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
+        usernamePasswordHashMap.put(editedMember.getCredentials().getUsername().value,
+                editedMember.getCredentials().getPassword().value);
     }
 
     /**
@@ -172,5 +173,16 @@ public class UniqueMemberList implements Iterable<Member> {
                 return otherMember1.getName().toString().compareTo(otherMember2.getName().toString());
             }
         });
+    }
+
+    /**
+     * Logs out the user
+     */
+    public void logout() {
+        setCurrentlyLogInMember(null);
+    }
+
+    public void setCurrentlyLogInMember(Member member) {
+        currentlyLogInMember = member;
     }
 }

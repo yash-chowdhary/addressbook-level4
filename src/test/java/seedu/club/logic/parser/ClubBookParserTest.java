@@ -11,6 +11,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,10 +22,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeleteTaskCommand;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.logic.commands.EmailCommand;
@@ -37,16 +40,19 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
 import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 import seedu.club.model.member.Member;
+import seedu.club.model.task.Task;
 import seedu.club.testutil.EditMemberDescriptorBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
+import seedu.club.testutil.TaskBuilder;
+import seedu.club.testutil.TaskUtil;
 
 public class ClubBookParserTest {
     @Rule
@@ -62,6 +68,13 @@ public class ClubBookParserTest {
     }
 
     @Test
+    public void parseCommand_addTask() throws Exception {
+        Task task = new TaskBuilder().build();
+        AddTaskCommand command = (AddTaskCommand) parser.parseCommand(TaskUtil.getAddTaskCommand(task));
+        assertEquals(new AddTaskCommand(task), command);
+    }
+
+    @Test
     public void parseCommand_clear() throws Exception {
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3") instanceof ClearCommand);
@@ -72,6 +85,13 @@ public class ClubBookParserTest {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_MEMBER), command);
+    }
+
+    @Test
+    public void parseCommand_deleteTask() throws Exception {
+        DeleteTaskCommand command = (DeleteTaskCommand) parser.parseCommand(
+                DeleteTaskCommand.COMMAND_WORD + " " + INDEX_FIRST_TASK.getOneBased());
+        assertEquals(new DeleteTaskCommand(INDEX_FIRST_TASK), command);
     }
 
     @Test

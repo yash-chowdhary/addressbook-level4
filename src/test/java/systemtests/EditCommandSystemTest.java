@@ -21,20 +21,18 @@ import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
-import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_PASSWORD;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_USERNAME_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
@@ -100,6 +98,10 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, model, expectedResultMessage);
 
         /* Case: edit a member with new values same as existing values -> edited */
+        index = INDEX_SECOND_MEMBER;
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + GROUP_DESC_BOB + TAG_DESC_FRIEND + TAG_DESC_HUSBAND;
         assertCommandSuccess(command, index, BOB);

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
@@ -16,14 +17,20 @@ import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
-import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
-import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.testutil.MemberBuilder;
 
 
@@ -33,14 +40,14 @@ public class LogInCommandTest {
     private Member member = new MemberBuilder().build();
 
     @Test
-    public void execute_memberSuccessfullyLogIn() throws CommandException {
+    public void executeMemberSuccessfullyLogIn() throws CommandException {
         ModelStubAcceptingMemberLoggingIn modelStubAcceptingMemberLoggingIn = new ModelStubAcceptingMemberLoggingIn();
         CommandResult commandResult = getLogInCommandForMember(member, modelStubAcceptingMemberLoggingIn).execute();
         assertEquals(LogInCommand.MESSAGE_SUCCESS + member.getName().toString(), commandResult.feedbackToUser);
     }
 
     @Test
-    public void execute_memberUnsuccessfullyLogIn() throws CommandException {
+    public void executeMemberUnsuccessfullyLogIn() throws CommandException {
         ModelStubRejectingMemberLoggingIn modelStubRejectingMemberLoggingIn = new ModelStubRejectingMemberLoggingIn();
         CommandResult commandResult = getLogInCommandForMember(member, modelStubRejectingMemberLoggingIn).execute();
         assertEquals(LogInCommand.MESSAGE_FAILURE, commandResult.feedbackToUser);
@@ -65,7 +72,32 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void removeGroup(Group toRemove) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public String generateEmailRecipients(Group group, Tag tag) {
+            return null;
+        }
+
+        @Override
+        public void sendEmail(String recipients, Client client, Subject subject, Body body) {
+
+        }
+
+        @Override
+        public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+
+        }
+
+        @Override
+        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
+
+        }
+
+        @Override
+        public void logOutMember() {
             fail("This method should not be called.");
         }
 
@@ -97,8 +129,30 @@ public class LogInCommandTest {
         }
 
         @Override
+        public boolean addProfilePhoto(String originalPhotoPath) {
+            fail("This method should not be called.");
+            return false;
+        }
+
+        @Override
+        public boolean exportClubConnect(File exportFile) {
+            fail("This method should not be called.");
+            return false;
+        }
+
+        @Override
         public ObservableList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public ObservableList<Poll> getFilteredPollList() {
+            return null;
+        }
+
+        @Override
+        public ObservableList<Task> getFilteredTaskList() {
             return null;
         }
 
@@ -126,13 +180,19 @@ public class LogInCommandTest {
             fail("This method should not be called.");
             return null;
         }
+
+        @Override
+        public void updateFilteredTaskList(Predicate<Task> predicate) {
+            fail("This method should not be called.");
+            return;
+        }
     }
     /**
      * A Model stub that always accept the member being added.
      */
     private class ModelStubAcceptingMemberLoggingIn extends ModelStub {
-        final HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
-        final HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
+        private HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
+        private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
         private Member currentlyLoggedIn = null;
 
         @Override
@@ -168,8 +228,8 @@ public class LogInCommandTest {
      * A Model stub that always rejects the member to log in.
      */
     private class ModelStubRejectingMemberLoggingIn extends ModelStub {
-        final HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
-        final HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
+        private HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
+        private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
         private Member currentlyLoggedIn = null;
 
         @Override

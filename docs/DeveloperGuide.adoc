@@ -1520,6 +1520,8 @@ A student organisation or association at the National University of Singapore. T
 Acronym for Command Line Inerface. It is a purely text-based interface for software. User respond to visual prompts by typing single commands into the interface and receive results as text as well.
 An example of CLI would be MS-DOS.
 
+[[csv]] CSV::
+
 [[entry]] Entry::
 A value added to a member's attribute.
 

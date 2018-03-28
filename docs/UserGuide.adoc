@@ -138,13 +138,21 @@ Edits the group of the 3rd member to be `finance`.
 === Locating members by name: `find`
 
 Finds members whose names contain any of the given keywords. +
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [PREFIX] KEYWORD [MORE_KEYWORDS]` +
+Allowed `PREFIX`: +
+n/ = `NAME` +
+p/ = `PHONE NUMBER` +
+e/ = `EMAIL` +
+m/ = `MATRIC NUMBER` +
+g/ = `GROUP` +
+t/ = `TAG` +
 
 ****
+* An additional `PREFIX` can be stated after `find` to narrow search to a particular field. e.g e/ for email
+* If no `PREFIX` is stated, all member fields will be searched.
 * The search is case insensitive. e.g `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`.
+* Partial matches will be matched e.g. `Han` will match `Hans`.
 * Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 ****
 
@@ -153,27 +161,11 @@ Examples:
 * `find John` +
 Returns `john` and `John Doe`.
 * `find Betsy Tim John` +
-Returns any member having names `Betsy`, `Tim`, or `John`.
-
-=== Locating members by any field: `findby`
-
-Finds members whose field contains any of the given keywords. +
-Format: `findby FIELD KEYWORD [MORE_KEYWORDS]`
-
-****
-* FIELD can be name, phone, email, matric(matric number), group or tag and is case insensitive.
-* The search is case insensitive. e.g `hans` will match `Hans`.
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Partial matches will be matched e.g. `Han` will match `Hans`.
-* Members matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
-****
-
-Examples:
-
-* `findby phone 123` +
+Returns all members having names containing `Betsy`, `Tim`, or `John`.
+* `find g/ logistics` +
+Returns all members in the logistics `group`
+* `find p/ 123` +
 Returns any member having phone number containing 123.
-* `findby matric A654` +
-Returns any member having matric number containing A654.
 
 === Deleting a member : `delete`
 
@@ -290,9 +282,59 @@ Format: 'changepic PHOTO_PATH`
 Examples:
 
 * `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
-Changes your profile picture to the "john_doe.jpg" image on your Desktop.
+Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+
+=== Exporting Club Connect data: `export` (Since v1.3)
+
+Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
+Format: 'export CSV_FILE_PATH`
+
+****
+* CSV_FILE_PATH must be an absolute path to the photo.
+* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+* A new CSV file with the specified name is created if it does not already exist.
+* If the CSV file already exists, then the member data is added to the end of the file (i.e. it does not overwrite the existing file).
+****
+
+[NOTE]
+You can import the exported CSV file in Microsoft Excel to get an even better view of the data.
+
+Examples:
+
+* `export C:/Users/John Doe/Desktop/club.csv` +
+Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
+
+=== Compressing member details : `compress` (Since v1.2)
+
+Compresses the details of members in the contact list +
+Format: `compress`
+
+****
+* No changes if member details are already compressed
+* Use this to remove clutter in contact list
+****
+
+Example:
+
+* `compress` +
+Compresses member details.
+
+=== Decompressing member details : `decompress` (Since v1.2)
+
+Decompresses the details of members in the contact list +
+Format: `decompress`
+
+****
+* No changes if member details are already decompressed
+* Use this to see more detailed information of members in contact list
+****
+
+Example:
+
+* `decompress` +
+Decompresses member details.
 
 === Listing entered commands : `history`
 
@@ -359,6 +401,11 @@ The `redo` command fails as there are no `undo` commands executed previously.
 Clears all entries from Club Connect. +
 Format: `clear`
 
+=== Exiting the application : `logout`
+
+Logouts out the user from Club Connect. +
+Format: `logout`
+
 === Exiting the application : `exit`
 
 Exits the Club Connect application. +
@@ -407,14 +454,16 @@ e.g. `removegroup g/publicity`
 e.g. `deletetag t/president`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
-* *Find By* : `findby FIELD KEYWORD [MORE_KEYWORDS]` +
-e.g. `findby phone 123`
 * *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *List* : `list`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
+* *Change Display Picture* : `changepic PHOTO_PATH` +
+e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
+* *Compress Member Details* : `compress`
+* *Decompress Member Details* : `decompress`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`

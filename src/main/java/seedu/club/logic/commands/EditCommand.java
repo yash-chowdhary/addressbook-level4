@@ -6,8 +6,8 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PROFILE_PHOTO;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TO;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
 import java.util.Collections;
@@ -22,14 +22,13 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
+import seedu.club.model.member.Credentials;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
-import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
@@ -40,6 +39,8 @@ import seedu.club.model.tag.Tag;
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
+    public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ]"
+            + " [pic/ ] [g/ ] [t/ ]";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the member identified "
             + "by the index number used in the last member listing. "
@@ -49,7 +50,7 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
-            + "[" + PREFIX_PROFILE_PHOTO + "PHOTO PATH] "
+            + "[" + PREFIX_TO + "PHOTO PATH] "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -119,9 +120,10 @@ public class EditCommand extends UndoableCommand {
         Set<Tag> updatedTags = editMemberDescriptor.getTags().orElse(memberToEdit.getTags());
         ProfilePhoto updatedProfilePhoto = editMemberDescriptor.getProfilePhoto()
                 .orElse(memberToEdit.getProfilePhoto());
+        Credentials updatedCredentials = editMemberDescriptor.getCredentials().orElse(memberToEdit.getCredentials());
 
         return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
-                updatedTags);
+                updatedTags, updatedCredentials, updatedProfilePhoto);
     }
 
     @Override
@@ -154,8 +156,7 @@ public class EditCommand extends UndoableCommand {
         private MatricNumber matricNumber;
         private Group group;
         private Set<Tag> tags;
-        private Username username;
-        private Password password;
+        private Credentials credentials;
         private ProfilePhoto profilePhoto;
 
         public EditMemberDescriptor() {}
@@ -171,8 +172,7 @@ public class EditCommand extends UndoableCommand {
             setMatricNumber(toCopy.matricNumber);
             setGroup(toCopy.group);
             setTags(toCopy.tags);
-            setUsername(toCopy.username);
-            setPassword(toCopy.password);
+            setCredentials(toCopy.credentials);
             setProfilePhoto(toCopy.profilePhoto);
         }
 
@@ -224,20 +224,12 @@ public class EditCommand extends UndoableCommand {
             this.group = group;
         }
 
-        public void setUsername(Username username) {
-            this.username = username;
+        public void setCredentials(Credentials credentials) {
+            this.credentials = credentials;
         }
 
-        public Optional<Username> getUsername() {
-            return Optional.ofNullable(username);
-        }
-
-        public void setPassword(Password password) {
-            this.password = password;
-        }
-
-        public Optional<Password> getPassword() {
-            return Optional.ofNullable(password);
+        public Optional<Credentials> getCredentials() {
+            return Optional.ofNullable(credentials);
         }
 
         public void setProfilePhoto(ProfilePhoto profilePhoto) {
@@ -287,8 +279,7 @@ public class EditCommand extends UndoableCommand {
                     && getEmail().equals(e.getEmail())
                     && getMatricNumber().equals(e.getMatricNumber())
                     && getTags().equals(e.getTags())
-                    && getUsername().equals(e.getUsername())
-                    && getPassword().equals(e.getPassword());
+                    && getCredentials().equals(e.getCredentials());
         }
     }
 }

@@ -15,10 +15,8 @@ import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
-import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -141,13 +139,9 @@ public class XmlAdaptedMember {
         }
         final Group group = new Group(this.group);
 
-        final Username username = new Username(this.username);
-        final Password password = new Password(this.password);
-
         final Set<Tag> tags = new HashSet<>(memberTags);
-
+        final ProfilePhoto profilePhoto = new ProfilePhoto(this.profilePhoto);
         Member member = new Member(name, phone, email, matricNumber, group, tags);
-        member.setProfilePhoto(new ProfilePhoto(profilePhoto));
 
         return member;
     }
