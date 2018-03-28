@@ -68,8 +68,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
         filteredPolls = new FilteredList<>(this.clubBook.getPollList());
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
-        updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS
-        );
+        updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
     }
 
     public ModelManager() {
@@ -149,7 +148,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         String newProfilePhotoPath = ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName
                 + ProfilePhotoStorage.FILE_EXTENSION;
-        loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
+        getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
         indicateClubBookChanged();
         return true;
     }

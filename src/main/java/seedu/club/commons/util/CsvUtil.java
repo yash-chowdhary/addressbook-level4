@@ -76,8 +76,8 @@ public class CsvUtil {
         addCsvField(builder, memberToConvert.getGroup().toString());
         addCsvTags(builder, memberToConvert);
         addCsvField(builder, memberToConvert.getProfilePhoto().toString());
-        addCsvField(builder, memberToConvert.getUsername().toString());
-        addFinalCsvField(builder, memberToConvert.getPassword().toString());
+        addCsvField(builder, memberToConvert.getCredentials().getUsername().toString());
+        addFinalCsvField(builder, memberToConvert.getCredentials().getPassword().toString());
 
         builder.append(newline);
 
