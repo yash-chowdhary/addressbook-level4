@@ -1,8 +1,6 @@
 package seedu.club.ui;
 
-import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
