@@ -224,6 +224,10 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called");
+        }
+
         public boolean exportClubConnect(File exportFilePath) {
             fail("This method should not be called");
             return false;

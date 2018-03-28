@@ -401,6 +401,11 @@ The `redo` command fails as there are no `undo` commands executed previously.
 Clears all entries from Club Connect. +
 Format: `clear`
 
+=== Exiting the application : `logout`
+
+Logouts out the user from Club Connect. +
+Format: `logout`
+
 === Exiting the application : `exit`
 
 Exits the Club Connect application. +

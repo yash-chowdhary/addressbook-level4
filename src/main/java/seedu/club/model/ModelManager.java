@@ -272,6 +272,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void logOutMember() {
+        clubBook.logOutMember();
+    }
+
+    @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
             Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());

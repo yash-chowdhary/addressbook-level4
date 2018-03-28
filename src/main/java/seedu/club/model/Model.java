@@ -28,6 +28,8 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
+
+    /** {@code Predicate} that always evaluate to false */
     Predicate<Task> PREDICATE_SHOW_ALL_TASKS = unused -> true;
 
     /** {@code Predicate} that always evaluate to true */
@@ -113,6 +115,7 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
+    void logOutMember();
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
 
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;

@@ -127,9 +127,6 @@ public class Member {
             tags.put(tag.tagName, tag);
         }
     }
-    public boolean isLogIn() {
-        return isLogIn;
-    }
 
     public ProfilePhoto getProfilePhoto() {
         return profilePhoto;

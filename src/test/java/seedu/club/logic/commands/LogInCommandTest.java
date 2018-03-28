@@ -97,6 +97,11 @@ public class LogInCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called.");
         }
