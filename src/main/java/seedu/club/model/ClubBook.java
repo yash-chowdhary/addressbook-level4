@@ -83,6 +83,7 @@ public class ClubBook implements ReadOnlyClubBook {
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
+        setTasks(new HashSet<>(newData.getTaskList()));
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
