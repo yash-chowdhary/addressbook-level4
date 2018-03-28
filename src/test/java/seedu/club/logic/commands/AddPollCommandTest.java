@@ -259,7 +259,7 @@ public class AddPollCommandTest {
      * A Model stub that always accept the poll being added.
      */
     private class ModelStubAcceptingPollAdded extends ModelStub {
-        final ArrayList<Poll> pollsAdded = new ArrayList<>();
+        private final ArrayList<Poll> pollsAdded = new ArrayList<>();
 
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
