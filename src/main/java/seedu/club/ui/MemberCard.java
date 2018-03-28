@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import seedu.club.MainApp;
 import seedu.club.model.member.Member;
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -23,7 +24,7 @@ public class MemberCard extends UiPart<Region> {
     private static final Integer PHOTO_HEIGHT = 120;
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
         "orange", "blue", "violet"};
-    private static final String DEFAULT_PHOTO = "src/main/resources/images/defaultProfilePhoto.png";
+    private static final String DEFAULT_PHOTO = "/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 
     /**
@@ -100,7 +101,7 @@ public class MemberCard extends UiPart<Region> {
             photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
         }
 
-        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+        photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO), PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
 
         profilePhoto.setFill(new ImagePattern(photo));
     }
