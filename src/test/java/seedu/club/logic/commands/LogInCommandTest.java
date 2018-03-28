@@ -167,6 +167,12 @@ public class LogInCommandTest {
             fail("This method should not be called.");
             return null;
         }
+
+        @Override
+        public void updateFilteredTaskList(Predicate<Task> predicate) {
+            fail("This method should not be called.");
+            return;
+        }
     }
     /**
      * A Model stub that always accept the member being added.
