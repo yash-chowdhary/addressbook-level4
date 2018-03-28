@@ -57,7 +57,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = "clubbook.jar"
+    archiveName = "clubconnect.jar"
 
     destinationDir = file("${buildDir}/jar/")
 }

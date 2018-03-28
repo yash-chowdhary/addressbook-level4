@@ -123,7 +123,7 @@ public class EditCommand extends UndoableCommand {
                 .orElse(memberToEdit.getProfilePhoto());
 
         return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
-                updatedTags, updatedUsername, updatedPassword);
+                updatedTags, updatedUsername, updatedPassword, updatedProfilePhoto);
     }
 
     @Override
