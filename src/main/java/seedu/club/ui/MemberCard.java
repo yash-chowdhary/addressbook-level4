@@ -1,6 +1,7 @@
 package seedu.club.ui;
 
 import java.io.File;
+import java.net.URL;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -100,7 +101,8 @@ public class MemberCard extends UiPart<Region> {
             photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
         }
 
-        photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+        URL url = getClass().getResource("/images/defaultProfilePhoto.png");
+        photo = new Image(url.toString());
 
         profilePhoto.setFill(new ImagePattern(photo));
     }

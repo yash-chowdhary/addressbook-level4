@@ -3,7 +3,7 @@ package seedu.club.model.poll;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_LIFE;
 import static seedu.club.model.poll.Question.PREFIX_QUESTION;
 
 import org.junit.Test;
@@ -59,8 +59,8 @@ public class QuestionTest {
 
     @Test
     public void equals() {
-        Question firstQuestion = new Question(VALID_QUESTION);
-        Question secondQuestion = new Question(VALID_QUESTION);
+        Question firstQuestion = new Question(VALID_QUESTION_LIFE);
+        Question secondQuestion = new Question(VALID_QUESTION_LIFE);
 
         assertTrue(firstQuestion.equals(firstQuestion));
         assertTrue(firstQuestion.equals(secondQuestion));

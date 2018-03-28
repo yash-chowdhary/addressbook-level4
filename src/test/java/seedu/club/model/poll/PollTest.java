@@ -5,7 +5,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_TWO;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_LIFE;
 import static seedu.club.model.poll.Answer.PREFIX_ANSWER;
 
 import org.junit.Test;
@@ -17,11 +17,11 @@ public class PollTest {
     @Test
     public void test_toString() {
         Poll poll = new PollBuilder()
-                .withQuestion(VALID_QUESTION)
+                .withQuestion(VALID_QUESTION_LIFE)
                 .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO)
                 .withPolleesMatricNumbers(VALID_MATRIC_NUMBER_AMY, VALID_MATRIC_NUMBER_BOB)
                 .build();
-        assertEquals(poll.toString(), "[ " + new Question(VALID_QUESTION) + " ]"
+        assertEquals(poll.toString(), "[ " + new Question(VALID_QUESTION_LIFE) + " ]"
                 + PREFIX_ANSWER + VALID_ANSWER_ONE + "," + PREFIX_ANSWER + VALID_ANSWER_TWO);
     }
 }
