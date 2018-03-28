@@ -271,8 +271,8 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
-            Assignor assignor = new Assignor(clubBook.getLogedInMember().toString());
-            Assignee assignee = new Assignee(clubBook.getLogedInMember().toString());
+            Assignor assignor = new Assignor(clubBook.getLogedInMember().getName().toString());
+            Assignee assignee = new Assignee(clubBook.getLogedInMember().getName().toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
