@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -112,6 +113,16 @@ public class AddPollCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public boolean exportClubConnect(File exportFilePath) {
+            fail("This method should not be called.");
+            return false;
+        }
+
+        @Override
+        public void logOutMember() {
+            fail("This method should not be called.");
+        }
 
         @Override
         public void logsInMember(String username, String password) {

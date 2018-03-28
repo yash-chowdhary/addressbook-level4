@@ -133,6 +133,7 @@ public interface Model {
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
     void logOutMember();
+
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
 
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
