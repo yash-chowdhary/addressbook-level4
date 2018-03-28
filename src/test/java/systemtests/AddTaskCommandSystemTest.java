@@ -25,10 +25,13 @@ import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.commands.AddTaskCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.member.Member;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
 import seedu.club.model.task.Task;
@@ -41,6 +44,12 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
     public void addTask() throws Exception {
         Model model = getModel();
         Model modelBeforeAdding = getModel();
+        ObservableList<Member> memberObservableList = model.getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+        model = getModel();
+        modelBeforeAdding = getModel();
 
         Task toAdd = BUY_FOOD;
 

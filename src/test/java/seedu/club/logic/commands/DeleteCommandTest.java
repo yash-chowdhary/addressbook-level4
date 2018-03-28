@@ -33,12 +33,14 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.deleteMember(memberToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -54,6 +56,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
@@ -70,6 +73,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Index outOfBoundIndex = INDEX_SECOND_MEMBER;
@@ -83,12 +87,14 @@ public class DeleteCommandTest {
 
     @Test
     public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         // delete -> first member deleted
         deleteCommand.execute();
@@ -127,12 +133,13 @@ public class DeleteCommandTest {
      */
     @Test
     public void executeUndoRedo_validIndexFilteredList_sameMemberDeleted() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_SECOND_MEMBER);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         // delete -> deletes second member in unfiltered member list / first member in filtered member list
@@ -150,6 +157,7 @@ public class DeleteCommandTest {
 
     @Test
     public void equals() throws Exception {
+        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         DeleteCommand deleteFirstCommand = prepareCommand(INDEX_FIRST_MEMBER);
         DeleteCommand deleteSecondCommand = prepareCommand(INDEX_SECOND_MEMBER);
 

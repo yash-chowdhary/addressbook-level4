@@ -12,15 +12,16 @@ import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
-
 public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
     private static final String MESSAGE_INVALID_DELETE_COMMAND_FORMAT =
@@ -32,6 +33,11 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: delete the first member in the list, command with leading spaces and trailing spaces -> deleted */
         Model expectedModel = getModel();
+        ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+        expectedModel = getModel();
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
         Member deletedMember = removeMember(expectedModel, INDEX_FIRST_MEMBER);
         String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
@@ -39,6 +45,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: delete the last member in the list -> deleted */
         Model modelBeforeDeletingLast = getModel();
+        modelBeforeDeletingLast.updateFilteredMemberList(modelBeforeDeletingLast.PREDICATE_SHOW_ALL_MEMBERS);
         Index lastMemberIndex = getLastIndex(modelBeforeDeletingLast);
         assertCommandSuccess(lastMemberIndex);
 
@@ -60,6 +67,9 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* ------------------ Performing delete operation while a filtered list is being shown ---------------------- */
 
         /* Case: filtered member list, delete index within bounds of club book and member list -> deleted */
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         showMembersWithName(KEYWORD_MATCHING_MEIER);
         Index index = INDEX_FIRST_MEMBER;
         assertTrue(index.getZeroBased() < getModel().getFilteredMemberList().size());
@@ -78,6 +88,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* Case: delete the selected member -> member list panel selects the member before the deleted member */
         showAllMembers();
         expectedModel = getModel();
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         Index selectedIndex = getLastIndex(expectedModel);
         Index expectedIndex = Index.fromZeroBased(selectedIndex.getZeroBased() - 1);
         selectMember(selectedIndex);
@@ -190,7 +201,6 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      */
     private void assertCommandFailure(String command, String expectedResultMessage) {
         Model expectedModel = getModel();
-
         executeCommand(command);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();

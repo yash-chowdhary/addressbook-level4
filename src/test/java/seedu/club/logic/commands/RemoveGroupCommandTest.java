@@ -34,11 +34,13 @@ public class RemoveGroupCommandTest {
 
     @Test
     public void execute_validGroup_success() throws Exception {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
 
         String expectedMessage = String.format(RemoveGroupCommand.MESSAGE_SUCCESS, groupToDelete);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.removeGroup(groupToDelete);
 
 
@@ -63,6 +65,7 @@ public class RemoveGroupCommandTest {
 
     @Test
     public void executeUndoRedo_validGroup_success() throws Exception {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -70,7 +73,7 @@ public class RemoveGroupCommandTest {
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         // remove -> group removed
         removeGroupCommand.execute();
         undoRedoStack.push(removeGroupCommand);
@@ -119,12 +122,13 @@ public class RemoveGroupCommandTest {
 
     @Test
     public void executeUndoRedo_validGroup_sameGroupDeleted() throws Exception {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         // remove -> removes group
         removeGroupCommand.execute();

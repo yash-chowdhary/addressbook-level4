@@ -27,7 +27,6 @@ import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
-import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
@@ -135,13 +134,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public Member getLoggedInMember() {
-            fail("This method should not be called.");
-            return null;
-        }
-
-        @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void removeGroup(Group toRemove) {
             fail("This method should not be called.");
         }
 
@@ -184,9 +177,13 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean logInMemberSuccessful(String username, String password) {
-            fail("This method should not be called.");
-            return false;
+        public void logsInMember(String username, String password) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public Member getLoggedInMember() {
+            return null;
         }
 
         public void updateFilteredTagList(Predicate<Tag> predicate) {
