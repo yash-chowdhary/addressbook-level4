@@ -67,6 +67,21 @@ public class LogInCommandTest {
      */
     private class ModelStub implements Model {
         @Override
+        public void updateFilteredPollList(Predicate<Poll> predicate) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void addPoll(Poll poll) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void deletePoll(Poll poll) {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void addMember(Member member) throws DuplicateMemberException {
             fail("This method should not be called.");
         }

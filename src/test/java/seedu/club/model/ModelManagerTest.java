@@ -185,7 +185,7 @@ public class ModelManagerTest {
         try {
             modelManager.addTaskToTaskList(BUY_CONFETTI);
         } catch (DuplicateTaskException dte) {
-            assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
+            assertEquals(expectedModel, modelManager);
         }
     }
 

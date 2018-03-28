@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
+import static seedu.club.model.Model.PREDICATE_SHOW_ALL_POLLS;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
@@ -39,6 +40,7 @@ public abstract class UndoableCommand extends Command {
         requireAllNonNull(model, previousClubBook);
         model.resetData(previousClubBook);
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        model.updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
     }
 
     /**
@@ -54,6 +56,7 @@ public abstract class UndoableCommand extends Command {
                     + "it should not fail now");
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        model.updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
     }
 
     @Override

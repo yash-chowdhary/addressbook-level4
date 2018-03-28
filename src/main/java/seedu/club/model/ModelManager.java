@@ -30,6 +30,8 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Assignee;
@@ -113,6 +115,19 @@ public class ModelManager extends ComponentManager implements Model {
 
         clubBook.updateMember(target, editedMember);
         deleteUnusedTags();
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+        clubBook.addPoll(poll);
+        updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+        clubBook.removePoll(target);
         indicateClubBookChanged();
     }
 
@@ -428,6 +443,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void updateFilteredPollList(Predicate<Poll> predicate) {
+        requireNonNull(predicate);
+        filteredPolls.setPredicate(predicate);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         // short circuit if same object
         if (obj == this) {
@@ -461,5 +482,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
         filteredTags.setPredicate(predicate);
     }
+
+
 
 }

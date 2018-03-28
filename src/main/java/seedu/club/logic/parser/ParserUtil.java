@@ -4,8 +4,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -26,6 +28,8 @@ import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Question;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
@@ -339,6 +343,70 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String question} into a {@code Question}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code name} is invalid.
+     */
+    public static Question parseQuestion(String question) throws IllegalValueException {
+        requireNonNull(question);
+        String trimmedQuestion = question.trim();
+        if (!Question.isValidQuestion(trimmedQuestion)) {
+            throw new IllegalValueException(Question.MESSAGE_QUESTION_CONSTRAINTS);
+        }
+        return new Question(trimmedQuestion);
+    }
+
+    /**
+     * Parses a {@code Optional<String> question} into an {@code Optional<Question>} if {@code question} is present.
+     */
+    public static Optional<Question> parseQuestion(Optional<String> question) throws IllegalValueException {
+        requireNonNull(question);
+        return question.isPresent() ? Optional.of(parseQuestion(question.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String answer} into a {@code answer}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code answer} is invalid.
+     */
+    public static Answer parseAnswer(String answer) throws IllegalValueException {
+        requireNonNull(answer);
+        String trimmedAnswer = answer.trim();
+        if (!Answer.isValidAnswer(trimmedAnswer)) {
+            throw new IllegalValueException(Answer.MESSAGE_ANSWER_CONSTRAINTS);
+        }
+        return new Answer(trimmedAnswer);
+    }
+
+    /**
+     * Parses a {@code Optional<String> answer} into a {@code Optional<Answer>} if {@code group} is present
+     */
+    public static Optional<Answer> parseOptionalAnswer(Optional<String> answer) throws IllegalValueException {
+        requireNonNull(answer);
+        return answer.isPresent() ? Optional.of(parseAnswer(answer.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code List<Answer>}.
+     * Removes any duplicates if any
+     */
+    public static List<Answer> parseAnswers(Collection<String> answers) throws IllegalValueException {
+        requireNonNull(answers);
+        final Set<Answer> answerSet = new HashSet<>();
+        final List<Answer> answerList = new ArrayList<>();
+        for (String answer : answers) {
+            if (!answerSet.contains(answer)) {
+                Answer parsedAnswer = parseAnswer(answer);
+                answerSet.add(parsedAnswer);
+                answerList.add(parsedAnswer);
+            }
+        }
+        return answerList;
     }
 
     //@@author yash-chowdhary

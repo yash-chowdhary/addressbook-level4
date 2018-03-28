@@ -34,7 +34,7 @@ public class LogOutCommandTest {
     /**
      * Generates a new LogOutCommand with the details of the given member.
      */
-    private LogOutCommand getLogOutCommandForMember( Model model) {
+    private LogOutCommand getLogOutCommandForMember(Model model) {
         LogOutCommand command = new LogOutCommand();
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
