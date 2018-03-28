@@ -28,8 +28,8 @@ import org.junit.Test;
 import javafx.collections.ObservableList;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.LogInCommand;
-// import seedu.club.logic.commands.RedoCommand;
-// import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.task.Date;
@@ -63,16 +63,15 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case:undo adding BUY_FOOD to the list -> BUY_FOOD deleted */
-
-        // command = UndoCommand.COMMAND_WORD;
-        // expectedMessage = UndoCommand.MESSAGE_SUCCESS;
-        // assertCommandSuccess(command, modelBeforeAdding, expectedMessage);
+        command = UndoCommand.COMMAND_WORD;
+        expectedMessage = UndoCommand.MESSAGE_SUCCESS;
+        assertCommandSuccess(command, modelBeforeAdding, expectedMessage);
 
         /* Case: redo removing BUY_FOOD from the list -> BUY_FOOD re-added */
 
-        // command = RedoCommand.COMMAND_WORD;
-        // expectedMessage = RedoCommand.MESSAGE_SUCCESS;
-        // assertCommandSuccess(command, model, expectedMessage);
+        command = RedoCommand.COMMAND_WORD;
+        expectedMessage = RedoCommand.MESSAGE_SUCCESS;
+        assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: add task with all fields same as another task in address book except task description -> added */
 

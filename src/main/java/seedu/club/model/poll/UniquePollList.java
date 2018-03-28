@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 
 /**
  * A list of polls that enforces no nulls and uniqueness between its elements.
@@ -68,6 +69,20 @@ public class UniquePollList implements Iterable<Poll> {
         internalList.add(toAdd);
 
         assert CollectionUtil.elementsAreUnique(internalList);
+    }
+
+    /**
+     * Removes the equivalent poll from the list.
+     *
+     * @throws PollNotFoundException if no such poll could be found in the list.
+     */
+    public boolean remove(Poll toRemove) throws PollNotFoundException {
+        requireNonNull(toRemove);
+        final boolean pollFoundAndDeleted = internalList.remove(toRemove);
+        if (!pollFoundAndDeleted) {
+            throw new PollNotFoundException();
+        }
+        return pollFoundAndDeleted;
     }
 
     @Override

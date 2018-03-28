@@ -49,7 +49,7 @@ public class Member {
     }
 
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Credentials credentials, Set<Task> tasks) {
+                  Credentials credentials, ProfilePhoto profilePhoto, Set<Task> tasks) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags, credentials, tasks);
         this.name = name;
         this.phone = phone;
