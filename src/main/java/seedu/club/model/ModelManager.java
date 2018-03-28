@@ -147,9 +147,8 @@ public class ModelManager extends ComponentManager implements Model {
             return false;
         }
 
-        String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
-                + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
-
+        String newProfilePhotoPath = ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName
+                + ProfilePhotoStorage.FILE_EXTENSION;
         loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
         indicateClubBookChanged();
         return true;
