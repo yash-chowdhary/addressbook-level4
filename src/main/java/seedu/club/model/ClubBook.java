@@ -221,7 +221,7 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Get the member who is log in, if null, there are no one that is logged in.
      */
-    public Member getLogedInMember() {
+    public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
     /** tag-level operation
