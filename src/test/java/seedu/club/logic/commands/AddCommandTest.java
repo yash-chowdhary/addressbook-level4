@@ -219,6 +219,12 @@ public class AddCommandTest {
             fail("This method should not be called");
             return null;
         }
+
+        @Override
+        public void updateFilteredTaskList(Predicate<Task> predicate) {
+            fail("This method should not be called");
+            return;
+        }
     }
 
     /**
