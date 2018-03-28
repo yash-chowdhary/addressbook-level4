@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
@@ -96,6 +97,11 @@ public class LogInCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called.");
         }
@@ -124,6 +130,13 @@ public class LogInCommandTest {
 
         @Override
         public boolean addProfilePhoto(String originalPhotoPath) {
+            fail("This method should not be called.");
+            return false;
+        }
+
+        @Override
+        public boolean exportClubConnect(File exportFile) {
+            fail("This method should not be called.");
             return false;
         }
 

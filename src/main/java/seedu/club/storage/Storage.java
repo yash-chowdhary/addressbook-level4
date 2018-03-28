@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
@@ -46,4 +47,11 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleProfilePictureChangedEvent(ProfilePhotoChangedEvent event);
+
+    /**
+     * Writes data to a CSV file on the hard disk.
+     * Raises {@link DataSavingExceptionEvent} if there was an error during writing.
+     */
+    void handleExportMemberEvent(NewExportDataAvailableEvent event);
+    //@@author
 }

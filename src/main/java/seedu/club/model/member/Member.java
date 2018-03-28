@@ -49,9 +49,8 @@ public class Member {
     }
 
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Username username, Password password, Set<Task> tasks) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags,
-                username, password, tasks);
+                  Credentials credentials, Set<Task> tasks) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags, credentials, tasks);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -61,6 +60,7 @@ public class Member {
         this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
         this.tasks = new UniqueTaskList(tasks);
+        this.credentials = credentials;
     }
 
     //@@author amrut-prabhu
@@ -68,9 +68,8 @@ public class Member {
      * Every field must be present and not null.
      */
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Username username, Password password, ProfilePhoto profilePhoto) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags,
-                username, password);
+                  Credentials credentials, ProfilePhoto profilePhoto) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags, credentials);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -80,6 +79,7 @@ public class Member {
         this.profilePhoto = profilePhoto;
         setTags(tags);
         this.tasks = new UniqueTaskList();
+        this.credentials = credentials;
     }
 
     /**
@@ -95,6 +95,7 @@ public class Member {
         this.tags = member.tags;
         this.profilePhoto = member.profilePhoto;
         this.tasks = member.tasks;
+        this.credentials = member.credentials;
     }
     //@@author
 
@@ -125,9 +126,6 @@ public class Member {
             Tag tag = (Tag) itr.next();
             tags.put(tag.tagName, tag);
         }
-    }
-    public boolean isLogIn() {
-        return isLogIn;
     }
 
     public ProfilePhoto getProfilePhoto() {

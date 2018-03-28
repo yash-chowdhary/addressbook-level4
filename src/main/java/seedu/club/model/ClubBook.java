@@ -218,6 +218,12 @@ public class ClubBook implements ReadOnlyClubBook {
         members.fillHashMap();
         members.logsInMember(inputUsername, inputPassword);
     }
+    /**
+     * logs out a member
+     */
+    public void logOutMember() {
+        members.logout();
+    }
 
     /**
      * Get the member who is log in, if null, there are no one that is logged in.

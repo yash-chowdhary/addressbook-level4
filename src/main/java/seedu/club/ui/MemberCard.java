@@ -1,6 +1,6 @@
 package seedu.club.ui;
 
-import java.io.File;
+import java.io.InputStream;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +12,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import seedu.club.MainApp;
 import seedu.club.model.member.Member;
-import seedu.club.storage.ProfilePhotoStorage;
 
 /**
  * An UI component that displays information of a {@code member}.
@@ -86,7 +85,7 @@ public class MemberCard extends UiPart<Region> {
      * Sets the profile photo to the displayed photo shape.
      */
     private void setProfilePhoto(Member member) {
-        Image photo = null;
+        /*Image photo = null;
         String photoPath;
 
         if (!member.getProfilePhoto().getProfilePhotoPath().equals(EMPTY_STRING)) {
@@ -103,6 +102,21 @@ public class MemberCard extends UiPart<Region> {
 
         photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO), PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
 
+        profilePhoto.setFill(new ImagePattern(photo));*/
+        Image photo;
+        String photoPath = member.getProfilePhoto().getProfilePhotoPath();
+        if (photoPath.equals(EMPTY_STRING)) {
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
+                    PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+        } else {
+            try {
+                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
+                photo = new Image(photoStream, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
+            } catch (NullPointerException npe) {
+                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
+                        PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+            }
+        }
         profilePhoto.setFill(new ImagePattern(photo));
     }
     //@@author

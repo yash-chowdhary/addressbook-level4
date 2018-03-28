@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -202,10 +203,21 @@ public class AddCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException,
                 TagNotFoundException {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public boolean exportClubConnect(File exportFilePath) {
+            fail("This method should not be called");
+            return false;
         }
 
         @Override

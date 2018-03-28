@@ -34,7 +34,8 @@ public class StorageManagerTest {
         XmlClubBookStorage clubBookStorage = new XmlClubBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
         ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
-        storageManager = new StorageManager(clubBookStorage, userPrefsStorage, profilePhotoStorage);
+        CsvClubBookStorage csvClubBookStorage = new CsvClubBookStorage();
+        storageManager = new StorageManager(clubBookStorage, userPrefsStorage, profilePhotoStorage, csvClubBookStorage);
     }
 
     private String getTempFilePath(String fileName) {
@@ -78,7 +79,8 @@ public class StorageManagerTest {
     public void handleClubBookChangedEvent_exceptionThrown_eventRaised() {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlClubBookStorageExceptionThrowingStub("dummy"),
-                                             new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorage());
+                                             new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorage(),
+                                             new CsvClubBookStorage());
         storage.handleClubBookChangedEvent(new ClubBookChangedEvent(new ClubBook()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
