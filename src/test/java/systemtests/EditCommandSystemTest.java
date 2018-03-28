@@ -21,29 +21,29 @@ import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
-import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_PASSWORD;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_USERNAME_AMY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.EditCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
@@ -64,6 +64,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
     @Test
     public void edit() throws Exception {
         Model model = getModel();
+        ObservableList<Member> memberObservableList = model.getClubBook().getMemberList();
 
         /* ----------------- Performing edit operation while an unfiltered list is being shown ---------------------- */
 
@@ -71,12 +72,17 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
          * -> edited
          */
         Index index = INDEX_FIRST_MEMBER;
-        String command = " " + EditCommand.COMMAND_WORD + "  " + index.getOneBased() + "  " + NAME_DESC_AMY + "  "
-                + PHONE_DESC_AMY + " " + EMAIL_DESC_AMY + "  " + MATRIC_NUMBER_DESC_AMY + " "
-                + GROUP_DESC_AMY + " " + TAG_DESC_HUSBAND + " " + USERNAME_DESC_AMY + " " + PASSWORD_DESC;
-        Member editedMember = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
-                .withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_HUSBAND).withUsername(VALID_USERNAME_AMY).withPassword(VALID_PASSWORD).build();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+
+        String command = " " + EditCommand.COMMAND_WORD + "  " + index.getOneBased() + "  " + NAME_DESC_BOB + "  "
+                + PHONE_DESC_BOB + " " + EMAIL_DESC_BOB + "  " + MATRIC_NUMBER_DESC_BOB + " "
+                + GROUP_DESC_BOB + " " + TAG_DESC_HUSBAND + " " + USERNAME_DESC_BOB + " " + PASSWORD_DESC;
+        Member editedMember = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_BOB)
+                .withTags(VALID_TAG_HUSBAND).build();
+
         assertCommandSuccess(command, index, editedMember);
 
         /* Case: undo editing the last member in the list -> last member restored */
@@ -92,6 +98,10 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, model, expectedResultMessage);
 
         /* Case: edit a member with new values same as existing values -> edited */
+        index = INDEX_SECOND_MEMBER;
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + GROUP_DESC_BOB + TAG_DESC_FRIEND + TAG_DESC_HUSBAND;
         assertCommandSuccess(command, index, BOB);

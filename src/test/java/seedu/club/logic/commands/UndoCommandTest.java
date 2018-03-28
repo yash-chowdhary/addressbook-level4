@@ -29,6 +29,7 @@ public class UndoCommandTest {
 
     @Before
     public void setUp() {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         deleteCommandOne.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_STACK);
         deleteCommandTwo.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_STACK);
     }
@@ -44,11 +45,13 @@ public class UndoCommandTest {
 
         // multiple commands in undoStack
         Model expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         deleteFirstMember(expectedModel);
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // single command in undoStack
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // no command in undoStack

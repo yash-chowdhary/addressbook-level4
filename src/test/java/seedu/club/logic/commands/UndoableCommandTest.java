@@ -24,6 +24,8 @@ public class UndoableCommandTest {
 
     @Test
     public void executeUndo() throws Exception {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         dummyCommand.execute();
         deleteFirstMember(expectedModel);
         assertEquals(expectedModel, model);
@@ -33,12 +35,15 @@ public class UndoableCommandTest {
         // undo() should cause the model's filtered list to show all members
         dummyCommand.undo();
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         assertEquals(expectedModel, model);
     }
 
     @Test
     public void redo() {
+        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         // redo() should cause the model's filtered list to show all members
         dummyCommand.redo();

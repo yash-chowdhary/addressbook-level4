@@ -83,8 +83,7 @@ public class XmlUtilTest {
         XmlAdaptedMember actualMember = XmlUtil.getDataFromFile(
                 MISSING_MEMBER_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
         XmlAdaptedMember expectedMember = new XmlAdaptedMember(
-                null, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS,
-                VALID_USERNAME, VALID_PASSWORD);
+                null, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS);
         assertEquals(expectedMember, actualMember);
     }
 
@@ -93,8 +92,7 @@ public class XmlUtilTest {
         XmlAdaptedMember actualMember = XmlUtil.getDataFromFile(
                 INVALID_MEMBER_FIELD_FILE, XmlAdaptedMemberWithRootElement.class);
         XmlAdaptedMember expectedMember = new XmlAdaptedMember(
-                VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS,
-                VALID_USERNAME, VALID_PASSWORD);
+                VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP, VALID_TAGS);
         assertEquals(expectedMember, actualMember);
     }
 
@@ -104,7 +102,7 @@ public class XmlUtilTest {
                 VALID_MEMBER_FILE, XmlAdaptedMemberWithRootElement.class);
         XmlAdaptedMember expectedMember = new XmlAdaptedMember(
                 VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
-                VALID_TAGS, VALID_USERNAME, VALID_PASSWORD);
+                VALID_TAGS);
         assertEquals(expectedMember, actualMember);
     }
 

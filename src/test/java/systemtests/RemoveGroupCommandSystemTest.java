@@ -15,6 +15,8 @@ import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.UndoCommand;
@@ -22,6 +24,7 @@ import seedu.club.model.Model;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Member;
 
 public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
 
@@ -29,6 +32,12 @@ public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
     public void removeGroup() {
         Model expectedModel = getModel();
         Model modelBeforeDeletingGroup = getModel();
+        ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
+        modelBeforeDeletingGroup.updateFilteredMemberList(modelBeforeDeletingGroup.PREDICATE_SHOW_ALL_MEMBERS);
         Group deletedGroup;
         String command;
         /* ------------------------ Perform removegroup operations on the shown unfiltered list -------------------- */
@@ -81,6 +90,7 @@ public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
     private void assertCommandFailure(String command, String expectedResultMessage) {
         executeCommand(command);
         Model expectedModel = getModel();
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertCommandBoxShowsErrorStyle();
         assertStatusBarUnchanged();

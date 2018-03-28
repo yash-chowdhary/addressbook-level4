@@ -11,9 +11,13 @@ import org.junit.Test;
 
 import guitests.GuiRobot;
 import guitests.guihandles.HelpWindowHandle;
+
+import javafx.collections.ObservableList;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.SelectCommand;
+import seedu.club.model.member.Member;
 import seedu.club.ui.BrowserPanel;
 import seedu.club.ui.StatusBarFooter;
 
@@ -31,6 +35,10 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
     @Test
     public void openHelpWindow() {
         //use accelerator
+        ObservableList<Member> memberObservableList = getModel().getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         getCommandBox().click();
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();

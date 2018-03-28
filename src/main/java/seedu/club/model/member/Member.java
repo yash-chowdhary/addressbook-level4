@@ -23,8 +23,7 @@ public class Member {
     private final Name name;
     private final Phone phone;
     private final Email email;
-    private final Password password;
-    private final Username username;
+    private Credentials credentials;
     private boolean isLogIn = false;
     private final MatricNumber matricNumber;
     private Group group;
@@ -34,18 +33,16 @@ public class Member {
     /**
      * Every field must be present and not null.
      */
-    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Username username, Password password) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags,
-                username, password);
+
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.matricNumber = matricNumber;
         this.group = group;
         this.tags = new HashMap<String, Tag>();
-        this.username = username;
-        this.password = password;
+        this.credentials = new Credentials(new Username(matricNumber.value));
         this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
         this.tasks = new UniqueTaskList();
@@ -61,8 +58,6 @@ public class Member {
         this.matricNumber = matricNumber;
         this.group = group;
         this.tags = new HashMap<>();
-        this.username = username;
-        this.password = password;
         this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
         this.tasks = new UniqueTaskList(tasks);
@@ -82,8 +77,6 @@ public class Member {
         this.matricNumber = matricNumber;
         this.group = group;
         this.tags = new HashMap<String, Tag>();
-        this.username = username;
-        this.password = password;
         this.profilePhoto = profilePhoto;
         setTags(tags);
         this.tasks = new UniqueTaskList();
@@ -100,8 +93,6 @@ public class Member {
         this.matricNumber = member.matricNumber;
         this.group = member.group;
         this.tags = member.tags;
-        this.username = member.username;
-        this.password = member.password;
         this.profilePhoto = member.profilePhoto;
         this.tasks = member.tasks;
     }
@@ -135,15 +126,6 @@ public class Member {
             tags.put(tag.tagName, tag);
         }
     }
-
-    public Username getUsername() {
-        return username;
-    }
-
-    public Password getPassword() {
-        return password;
-    }
-
     public boolean isLogIn() {
         return isLogIn;
     }
@@ -244,4 +226,7 @@ public class Member {
         }
     }
 
+    public Credentials getCredentials() {
+        return credentials;
+    }
 }

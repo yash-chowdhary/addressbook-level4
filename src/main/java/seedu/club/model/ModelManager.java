@@ -49,7 +49,6 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<Member> filteredMembers;
     private final FilteredList<Tag> filteredTags;
     private final FilteredList<Poll> filteredPolls;
-    private Member loggedInMember;
     private final FilteredList<Task> filteredTasks;
 
     /**
@@ -65,21 +64,13 @@ public class ModelManager extends ComponentManager implements Model {
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
         filteredPolls = new FilteredList<>(this.clubBook.getPollList());
-        loggedInMember = getLoggedInMember();
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
+        updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS
+        );
     }
 
     public ModelManager() {
         this(new ClubBook(), new UserPrefs());
-    }
-
-    @Override
-    public Member getLoggedInMember() {
-        loggedInMember = null;
-        if (!getFilteredMemberList().isEmpty()) {
-            loggedInMember = getFilteredMemberList().get(0);
-        }
-        return loggedInMember;
     }
 
     @Override
@@ -116,7 +107,7 @@ public class ModelManager extends ComponentManager implements Model {
         String newProfilePhotoPath = ProfilePhotoStorage.getCurrentDirectory()
                 + ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName + ProfilePhotoStorage.FILE_EXTENSION;
 
-        loggedInMember.setProfilePhotoPath(newProfilePhotoPath);
+        getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
         indicateClubBookChanged();
         return true;
     }
@@ -125,6 +116,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
+        filteredMembers.remove(target);
         indicateClubBookChanged();
     }
 
@@ -147,10 +139,17 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public boolean logInMemberSuccessful(String username, String password) {
+    public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
+        clubBook.logInMember(username, password);
+        if (getLoggedInMember() != null) {
+            updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        }
+    }
 
-        return clubBook.logInMember(username, password);
+    @Override
+    public Member getLoggedInMember() {
+        return clubBook.getLogedInMember();
     }
 
     //@@author yash-chowdhary
@@ -272,13 +271,14 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
-            Assignor assignor = new Assignor(loggedInMember.getName().fullName);
-            Assignee assignee = new Assignee(loggedInMember.getName().fullName);
+            Assignor assignor = new Assignor(clubBook.getLogedInMember().getName().toString());
+            Assignee assignee = new Assignee(clubBook.getLogedInMember().getName().toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
             clubBook.addTaskToTaskList(toAdd);
+            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
@@ -289,7 +289,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
-        String currentMember = loggedInMember.getName().toString();
+        String currentMember = getLoggedInMember().getName().toString();
         if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
                 || !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
             throw new TaskCannotBeDeletedException();
@@ -320,6 +320,12 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredMemberList(Predicate<Member> predicate) {
         requireNonNull(predicate);
         filteredMembers.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredTaskList(Predicate<Task> predicate) {
+        requireNonNull(predicate);
+        filteredTasks.setPredicate(predicate);
     }
 
     @Override

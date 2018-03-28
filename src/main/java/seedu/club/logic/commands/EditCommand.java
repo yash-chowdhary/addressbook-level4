@@ -7,6 +7,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TO;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
 import java.util.Collections;
@@ -50,6 +51,7 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
+            + "[" + PREFIX_TO + "PHOTO PATH] "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -117,13 +119,11 @@ public class EditCommand extends UndoableCommand {
                 .orElse(memberToEdit.getMatricNumber());
         Group updatedGroup = editMemberDescriptor.getGroup().orElse(memberToEdit.getGroup());
         Set<Tag> updatedTags = editMemberDescriptor.getTags().orElse(memberToEdit.getTags());
-        Username updatedUsername = editMemberDescriptor.getUsername().orElse(memberToEdit.getUsername());
-        Password updatedPassword = editMemberDescriptor.getPassword().orElse(memberToEdit.getPassword());
         ProfilePhoto updatedProfilePhoto = editMemberDescriptor.getProfilePhoto()
                 .orElse(memberToEdit.getProfilePhoto());
 
         return new Member(updatedName, updatedPhone, updatedEmail, updatedMatricNumber, updatedGroup,
-                updatedTags, updatedUsername, updatedPassword);
+                updatedTags);
     }
 
     @Override

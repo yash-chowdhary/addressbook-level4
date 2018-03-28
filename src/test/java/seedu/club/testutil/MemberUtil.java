@@ -4,10 +4,8 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.model.member.Member;
@@ -37,8 +35,6 @@ public class MemberUtil {
         member.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
-        sb.append(PREFIX_USERNAME + member.getUsername().value + " ");
-        sb.append(PREFIX_PASSWORD + member.getPassword().value + " ");
         return sb.toString();
     }
 }

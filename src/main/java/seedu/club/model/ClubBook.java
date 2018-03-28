@@ -70,17 +70,11 @@ public class ClubBook implements ReadOnlyClubBook {
     //// list overwrite operations
     public void setMembers(List<Member> members) throws DuplicateMemberException {
         this.members.setMembers(members);
+        this.members.fillHashMap();
     }
 
     public void setTags(Set<Tag> tags) {
         this.tags.setTags(tags);
-    }
-
-    public void setPolls(Set<Poll> polls) {
-        this.polls.setPolls(polls);
-    }
-    public void setTasks(Set<Task> tasks) {
-        this.tasks.setTasks(tasks);
     }
 
     /**
@@ -89,12 +83,10 @@ public class ClubBook implements ReadOnlyClubBook {
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
-        setPolls(new HashSet<>(newData.getPollList()));
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
 
-        setTasks(new HashSet<>(newData.getTaskList()));
         try {
             setMembers(syncedMemberList);
         } catch (DuplicateMemberException e) {
@@ -111,8 +103,8 @@ public class ClubBook implements ReadOnlyClubBook {
      *
      * @throws DuplicateMemberException if an equivalent member already exists.
      */
-    public void addMember(Member m) throws DuplicateMemberException {
-        Member member = syncWithMasterTagList(m);
+    public void addMember(Member p) throws DuplicateMemberException {
+        Member member = syncWithMasterTagList(p);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any member
         // in the member list.
@@ -179,7 +171,7 @@ public class ClubBook implements ReadOnlyClubBook {
         memberTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Member(
                 member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
-                    correctTagReferences, member.getUsername(), member.getPassword(), member.getProfilePhoto());
+                    correctTagReferences);
     }
 
     /**
@@ -196,11 +188,41 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
+    public void setPolls(Set<Poll> polls) {
+        this.polls.setPolls(polls);
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
+
+    public void addPoll(Poll poll) throws DuplicatePollException {
+        polls.add(poll);
+    }
+
+    /**
+     * Adds {@code Task toAdd} to the list of tasks.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
+    }
     /**
      * Logs in a member
      */
-    public boolean logInMember(String username, String password) {
-        return members.logInMemberSuccessful(username, password);
+    public void logInMember(String inputUsername, String inputPassword) {
+        members.fillHashMap();
+        members.logsInMember(inputUsername, inputPassword);
+    }
+
+    /**
+     * Get the member who is log in, if null, there are no one that is logged in.
+     */
+    public Member getLogedInMember() {
+        return members.getCurrentlyLogInMember();
     }
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
@@ -279,7 +301,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                defaultGroup, member.getTags(), member.getUsername(), member.getPassword());
+                defaultGroup, member.getTags());
 
         try {
             updateMember(member, newMember);
@@ -288,15 +310,7 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
-
-    /**
-     * Adds {@code Task toAdd} to the list of tasks.
-     */
-    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
-        tasks.add(taskToAdd);
-    }
-
-    //@@author
+    //@@author yash-chowdhary
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
@@ -352,7 +366,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Member newMember = new Member(member.getName(), member.getPhone(),
                 member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags, member.getUsername(), member.getPassword());
+                member.getGroup(), memberTags);
 
         try {
             updateMember(member, newMember);
@@ -362,16 +376,11 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
-    public void addPoll(Poll poll) throws DuplicatePollException {
-        polls.add(poll);
-    }
-
     //// util methods
 
     @Override
     public String toString() {
-        return members.asObservableList().size() + " members, " + tags.asObservableList().size() +  " tags"
-                + tasks.asObservableList().size() + " tasks";
+        return members.asObservableList().size() + " members, " + tags.asObservableList().size() +  " tags";
         // TODO: refine later
     }
 
@@ -408,9 +417,5 @@ public class ClubBook implements ReadOnlyClubBook {
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(members, tags);
-    }
-
-    public void deleteTask(Task targetTask) throws TaskNotFoundException {
-        tasks.remove(targetTask);
     }
 }
