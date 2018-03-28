@@ -111,7 +111,7 @@ public class MemberCard extends UiPart<Region> {
         } else {
             try {
                 InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
-                photo = new Image(photoStream, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
+                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
             } catch (NullPointerException npe) {
                 photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
                         PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
