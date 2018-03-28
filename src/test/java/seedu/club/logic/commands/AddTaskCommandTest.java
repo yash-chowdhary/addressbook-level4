@@ -223,6 +223,11 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
             return;
