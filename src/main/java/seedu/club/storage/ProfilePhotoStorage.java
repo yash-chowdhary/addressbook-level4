@@ -20,7 +20,7 @@ import seedu.club.commons.exceptions.PhotoException;
 public class ProfilePhotoStorage implements  PhotoStorage {
 
     public static final String FILE_EXTENSION = ".png";
-    public static final String SAVE_PHOTO_DIRECTORY = "src/main/resources/photos/";
+    public static final String SAVE_PHOTO_DIRECTORY = "/photos/";
 
     private static final String URL_PREFIX = "file:///";
 
@@ -38,7 +38,8 @@ public class ProfilePhotoStorage implements  PhotoStorage {
             originalPhoto = ImageIO.read(photoUrl);
 
             String saveAs = newPhotoName + FILE_EXTENSION;
-            File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
+            File newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
+            //File newPhotoPathhh = new File(MainApp.class.getResource(newPath.toString()).toURI());
 
             createPhotoFileCopy(originalPhoto, newPath);
         } catch (IOException ioe) {

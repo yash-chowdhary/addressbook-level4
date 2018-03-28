@@ -282,9 +282,29 @@ Format: 'changepic PHOTO_PATH`
 Examples:
 
 * `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
-Changes your profile picture to the "john_doe.jpg" image on your Desktop.
+Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+
+=== Exporting Club Connect data: `export` (Since v1.3)
+
+Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
+Format: 'export CSV_FILE_PATH`
+
+****
+* CSV_FILE_PATH must be an absolute path to the photo.
+* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+* A new CSV file with the specified name is created if it does not already exist.
+* If the CSV file already exists, then the member data is added to the end of the file (i.e. it does not overwrite the existing file).
+****
+
+[NOTE]
+You can import the exported CSV file in Microsoft Excel to get an even better view of the data.
+
+Examples:
+
+* `export C:/Users/John Doe/Desktop/club.csv` +
+Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
 
 === Compressing member details : `compress` (Since v1.2)
 
