@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clubbook>
+    <members>
+        <name>Alice Pauline</name>
+        <phone>85355255</phone>
+        <email>alice@example.com</email>
+        <matricNumber>A9210701B</matricNumber>
+        <group>logistics</group>
+        <tagged>friends</tagged>
+    </members>
+    <tags>friends</tags>
+    <!-- poll with invalid question -->
+    <polls>
+        <question> </question>
+        <pollerMatricNumber>A3333333A</pollerMatricNumber>
+        <answers noOfMembersAnswered="0">I don't get it</answers>
+        <answers noOfMembersAnswered="0">Umm..</answers>
+    </polls>
+</clubbook>

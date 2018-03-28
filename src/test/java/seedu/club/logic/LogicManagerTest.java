@@ -52,6 +52,12 @@ public class LogicManagerTest {
         logic.getFilteredMemberList().remove(0);
     }
 
+    @Test
+    public void getFilteredPoll_modifyList_throwsUnsupportedOperationException() {
+        thrown.expect(UnsupportedOperationException.class);
+        logic.getFilteredPollList().remove(0);
+    }
+
     /**
      * Executes the command, confirms that no exceptions are thrown and that the result message is correct.
      * Also confirms that {@code expectedModel} is as specified.

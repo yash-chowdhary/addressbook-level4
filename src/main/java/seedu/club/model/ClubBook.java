@@ -20,9 +20,16 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.UniquePollList;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.UniqueTaskList;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  * Wraps all data at the club-book level
@@ -32,6 +39,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
     private final UniqueMemberList members;
     private final UniqueTagList tags;
+    private final UniquePollList polls;
+    private final UniqueTaskList tasks;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -43,6 +52,8 @@ public class ClubBook implements ReadOnlyClubBook {
     {
         members = new UniqueMemberList();
         tags = new UniqueTagList();
+        polls = new UniquePollList();
+        tasks = new UniqueTaskList();
     }
 
     public ClubBook() {}
@@ -177,6 +188,28 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
+    public void setPolls(Set<Poll> polls) {
+        this.polls.setPolls(polls);
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
+
+    public void addPoll(Poll poll) throws DuplicatePollException {
+        polls.add(poll);
+    }
+
+    /**
+     * Adds {@code Task toAdd} to the list of tasks.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
+    }
     /**
      * Logs in a member
      */
@@ -194,7 +227,7 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Get the member who is log in, if null, there are no one that is logged in.
      */
-    public Member getLogedInMember() {
+    public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
     /** tag-level operation
@@ -365,6 +398,16 @@ public class ClubBook implements ReadOnlyClubBook {
     @Override
     public ObservableList<Tag> getTagList() {
         return tags.asObservableList();
+    }
+
+    @Override
+    public ObservableList<Poll> getPollList() {
+        return polls.asObservableList();
+    }
+
+    @Override
+    public ObservableList<Task> getTaskList() {
+        return tasks.asObservableList();
     }
 
     @Override

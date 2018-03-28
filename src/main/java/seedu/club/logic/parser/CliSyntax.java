@@ -3,7 +3,7 @@ package seedu.club.logic.parser;
 /**
  * Contains Command Line Interface (CLI) syntax definitions common to multiple commands
  */
-public class CliSyntax {
+public class    CliSyntax {
 
     /* Prefix definitions */
     public static final Prefix PREFIX_NAME = new Prefix("n/");
@@ -14,9 +14,11 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/");
     public static final Prefix PREFIX_USERNAME = new Prefix(("u/"));
     public static final Prefix PREFIX_PASSWORD = new Prefix("pw/");
-    public static final Prefix PREFIX_PROFILE_PHOTO = new Prefix("pic/");
     public static final Prefix PREFIX_TO = new Prefix("to/");
     public static final Prefix PREFIX_CLIENT = new Prefix("c/");
     public static final Prefix PREFIX_SUBJECT = new Prefix("s/");
     public static final Prefix PREFIX_BODY = new Prefix("b/");
+    public static final Prefix PREFIX_DESCRIPTION = new Prefix("desc/");
+    public static final Prefix PREFIX_DATE = new Prefix("d/");
+    public static final Prefix PREFIX_TIME = new Prefix("ti/");
 }
