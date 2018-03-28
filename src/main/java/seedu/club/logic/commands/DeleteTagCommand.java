@@ -18,7 +18,7 @@ public class DeleteTagCommand extends UndoableCommand {
     public static final String COMMAND_FORMAT = "deletetag t/ ";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Removes the tag from all members.\n"
+            + ": Removes the tag from all members. "
             + "Parameters: TAG (must be an existing tag)\n"
             + "Example: " + COMMAND_WORD + " t/treasurer";
 

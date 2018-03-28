@@ -5,6 +5,7 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
 /**
  * Writes and reads files
@@ -79,6 +80,15 @@ public class FileUtil {
     public static void writeToFile(File file, String content) throws IOException {
         Files.write(file.toPath(), content.getBytes(CHARSET));
     }
+
+    //@@author amrut-prabhu
+    /**
+     * Appends given string to a file.
+     */
+    public static void appendToFile(File file, String content) throws IOException {
+        Files.write(file.toPath(), content.getBytes(CHARSET), StandardOpenOption.APPEND);
+    }
+    //@@author
 
     /**
      * Converts a string to a platform-specific file path

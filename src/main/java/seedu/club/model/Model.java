@@ -1,5 +1,6 @@
 package seedu.club.model;
 
+import java.io.File;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -29,6 +30,8 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
+
+    /** {@code Predicate} that always evaluate to false */
     Predicate<Task> PREDICATE_SHOW_ALL_TASKS = unused -> true;
 
     /** {@code Predicate} that always evaluate to true */
@@ -96,10 +99,9 @@ public interface Model {
      */
     Member getLoggedInMember();
 
+    //@@author amrut-prabhu
     /** Removes the given tag {@code tag} for all members in the club book. */
     void deleteTag(Tag tag) throws TagNotFoundException;
-
-    //@@author amrut-prabhu
 
     /**
      * Returns true if profile photo is successfully changed for the logged in member.
@@ -107,6 +109,12 @@ public interface Model {
      */
     boolean addProfilePhoto(String originalPhotoPath);
 
+    /**
+     * Exports Club Connect's members' details to the specified file.
+     * @param exportFilePath Absolute file path of the file to which the data is exported.
+     * @return true if no errors occur during exporting.
+     */
+    boolean exportClubConnect(File exportFilePath);
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */
@@ -124,6 +132,7 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
+    void logOutMember();
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
 
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
