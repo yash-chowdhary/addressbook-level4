@@ -18,4 +18,6 @@ classes/
 /bin/
 src/main/resources/docs/
 out/
-src/main/resources/photos/A5215090A.png
+src/main/resources/photos/
+src/main/resources/images/
+photos/
