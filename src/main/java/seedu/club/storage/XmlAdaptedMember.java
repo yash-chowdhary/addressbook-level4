@@ -11,12 +11,14 @@ import javax.xml.bind.annotation.XmlElement;
 import seedu.club.commons.exceptions.IllegalValueException;
 
 import seedu.club.model.group.Group;
+import seedu.club.model.member.Credentials;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
+import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -140,8 +142,11 @@ public class XmlAdaptedMember {
         final Group group = new Group(this.group);
 
         final Set<Tag> tags = new HashSet<>(memberTags);
+
         final ProfilePhoto profilePhoto = new ProfilePhoto(this.profilePhoto);
-        Member member = new Member(name, phone, email, matricNumber, group, tags);
+
+        Member member = new Member(name, phone, email, matricNumber, group, tags,
+                new Credentials(new Username(matricNumber.value)), profilePhoto);
 
         return member;
     }
