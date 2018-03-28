@@ -178,7 +178,7 @@ public class UniqueMemberList implements Iterable<Member> {
     /**
      * Logs out the user
      */
-    public void logout(){
+    public void logout() {
         setCurrentlyLogInMember(null);
     }
 
