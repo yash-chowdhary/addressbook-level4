@@ -2,9 +2,9 @@ package seedu.club.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import seedu.club.model.poll.Poll;
 
 /**
@@ -16,21 +16,28 @@ public class PollCard extends UiPart<Region> {
 
     public final Poll poll;
 
+    private AnswerListPanel answerListPanel;
+
     @FXML
     private HBox cardPane;
+
     @FXML
     private Label id;
+
     @FXML
     private Label question;
+
     @FXML
-    private FlowPane answers;
+    private StackPane answerListPanelPlaceholder;
 
     public PollCard(Poll poll, int displayedIndex) {
         super(FXML);
         this.poll = poll;
         id.setText(displayedIndex + ". ");
         question.setText(poll.getQuestion().toString());
-        poll.getAnswers().forEach(answer -> answers.getChildren().add(new Label(answer.toString())));
+
+        answerListPanel = new AnswerListPanel(poll.getAnswers());
+        answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
     }
 
     @Override

@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ListView?>
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 <!--HBox id="cardPane" fx:id="cardPane" prefHeight="105.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.102"
       xmlns:fx="http://javafx.com/fxml/1"-->
@@ -30,7 +32,12 @@
         </Label>
          <Label fx:id="question" styleClass="cell_big_label" text="\$question" />
       </HBox>
-      <FlowPane fx:id="answers" />
+      <VBox fx:id="answerList" minWidth="340" prefWidth="340" >
+        <padding>
+          <Insets top="10" right="10" bottom="10" left="10" />
+        </padding>
+        <StackPane fx:id="answerListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+      </VBox>
     </VBox>
     <rowConstraints>
       <RowConstraints />
