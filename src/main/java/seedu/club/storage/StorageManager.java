@@ -96,6 +96,8 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     //@@author amrut-prabhu
+    // ================ ProfilePhoto methods ==============================
+
     @Override
     public void copyOriginalPhotoFile(String originalPath, String newPhotoName) throws PhotoException {
         logger.fine("Attempting to read photo from file: " + originalPath);
@@ -113,6 +115,10 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(pe));
         }
     }
+    //@@author
+
+    //@@author amrut-prabhu
+    // ================ CSV Storage methods ==============================
 
     /**
      * Writes {@code content} to the export file.

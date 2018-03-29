@@ -17,7 +17,7 @@ public class ExportCommandParserTest {
     private File currentDirectory = new File(currentDirectoryPath);
 
     @Test
-    public void parse_validArgs_returnsDeleteCommand() {
+    public void parse_validArgs_returnsExportCommand() {
         String expectedExportFilePath = currentDirectory.getAbsolutePath() + "/data/exportTestFile.csv";
         File expectedExportFile = new File(expectedExportFilePath);
         assertParseSuccess(parser, expectedExportFilePath, new ExportCommand(expectedExportFile));
