@@ -18,13 +18,23 @@ public class ExportCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        String exportFilePath = currentDirectory.getAbsolutePath() + "/data/exportTestFile.csv";
-        File exportFile = new File(exportFilePath);
-        assertParseSuccess(parser, exportFilePath, new ExportCommand(exportFile));
+        String expectedExportFilePath = currentDirectory.getAbsolutePath() + "/data/exportTestFile.csv";
+        File expectedExportFile = new File(expectedExportFilePath);
+        assertParseSuccess(parser, expectedExportFilePath, new ExportCommand(expectedExportFile));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
+        //non absolute file path
+        assertParseFailure(parser, "/data/exportTestFile.csv", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ExportCommand.MESSAGE_USAGE));
+
+        //invalid file path
+        assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
+
+        //invalid file type
+        assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/exportTestFile.txt",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
     }
 }
