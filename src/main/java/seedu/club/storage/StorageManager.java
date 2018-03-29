@@ -130,7 +130,7 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Adding member data to file"));
 
         if (event.exportFile != null) {
-            csvClubBookStorage.setClubBookFilePath(event.exportFile);
+            csvClubBookStorage.setClubBookFile(event.exportFile);
         }
         try {
             if (event.data != null) {
