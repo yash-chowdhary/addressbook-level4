@@ -1,15 +1,9 @@
 package seedu.club.ui;
 
-import java.io.InputStream;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.ImagePattern;
-import seedu.club.MainApp;
-import seedu.club.model.member.Member;
 import seedu.club.model.poll.Answer;
 
 /**
@@ -19,7 +13,6 @@ public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
     private static final String EMPTY_STRING = "";
-
     public final Answer answer;
 
     @FXML
