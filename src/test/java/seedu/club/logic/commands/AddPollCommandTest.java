@@ -114,9 +114,8 @@ public class AddPollCommandTest {
      */
     private class ModelStub implements Model {
         @Override
-        public boolean exportClubConnect(File exportFilePath) {
+        public void exportClubConnect(File exportFilePath) {
             fail("This method should not be called.");
-            return false;
         }
 
         @Override

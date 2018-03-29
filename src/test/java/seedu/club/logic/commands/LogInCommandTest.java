@@ -150,9 +150,8 @@ public class LogInCommandTest {
         }
 
         @Override
-        public boolean exportClubConnect(File exportFile) {
+        public void exportClubConnect(File exportFile) {
             fail("This method should not be called.");
-            return false;
         }
 
         @Override

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -327,22 +328,27 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
      * @param data Member data to be added to the file.
+     * @throws IOException if there was an error writing to file.
      */
-    private boolean indicateNewExport(String data) {
+    private void indicateNewExport(String data) throws IOException {
         NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(data);
         raise(newExportDataAvailableEvent);
-        return newExportDataAvailableEvent.isFileChanged();
+        if (!newExportDataAvailableEvent.isFileChanged()) {
+            throw new IOException();
+        }
     }
 
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
      * @param exportFile CSV file to be exported to.
-     * @return true if no errors occur when exporting.
+     * @throws IOException if there was an error writing to file.
      */
-    private boolean indicateNewExport(File exportFile) {
+    private void indicateNewExport(File exportFile) throws IOException {
         NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile);
         raise(newExportDataAvailableEvent);
-        return newExportDataAvailableEvent.isFileChanged();
+        if (!newExportDataAvailableEvent.isFileChanged()) {
+            throw new IOException();
+        }
     }
 
     /**
@@ -353,34 +359,24 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public boolean exportClubConnect(File exportFile) {
-        if (!indicateNewExport(exportFile)) {
-            return false;
-        }
+    public void exportClubConnect(File exportFile) throws IOException {
+        indicateNewExport(exportFile);
 
-        if (!exportHeaders(exportFile)) {
-            return false;
-        }
-
+        exportHeaders(exportFile);
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         for (Member member: members) {
-            if (!exportMember(member)) {
-                return false;
-            }
+            exportMember(member);
         }
-        return true;
     }
 
     /**
      * Exports the header fields of {@code Member} object if the file is empty.
      */
-    private boolean exportHeaders(File exportFile) {
+    private void exportHeaders(File exportFile) throws IOException {
         if (isEmptyFile(exportFile)) {
             String headers = CsvUtil.getHeaders();
-            return indicateNewExport(headers);
-        } else {
-            return true;
+            indicateNewExport(headers);
         }
     }
 
@@ -388,9 +384,9 @@ public class ModelManager extends ComponentManager implements Model {
      * Exports the information of {@code member} to the file.
      * @param member Member whose data is to be exported.
      */
-    private boolean exportMember(Member member) {
+    private void exportMember(Member member) throws IOException {
         String memberData = convertMemberToCsv(member);
-        return indicateNewExport(memberData);
+        indicateNewExport(memberData);
     }
 
     /**

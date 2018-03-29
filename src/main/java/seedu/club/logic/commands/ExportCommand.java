@@ -2,6 +2,7 @@
 package seedu.club.logic.commands;
 
 import java.io.File;
+import java.io.IOException;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -31,10 +32,11 @@ public class ExportCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        if (model.exportClubConnect(exportFile)) {
+        try {
+            model.exportClubConnect(exportFile);
             return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
-        } else {
-            return new CommandResult(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
+        } catch (IOException ioe) {
+            throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
         }
     }
 

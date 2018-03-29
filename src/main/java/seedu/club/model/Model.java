@@ -1,6 +1,7 @@
 package seedu.club.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -115,9 +116,9 @@ public interface Model {
     /**
      * Exports Club Connect's members' details to the specified file.
      * @param exportFilePath Absolute file path of the file to which the data is exported.
-     * @return true if no errors occur during exporting.
+     * @throws IOException if there was an error writing to file.
      */
-    boolean exportClubConnect(File exportFilePath);
+    void exportClubConnect(File exportFilePath) throws IOException;
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */
