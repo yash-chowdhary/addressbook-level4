@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -232,7 +233,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void exportClubConnect(File exportFilePath) {
+        public void exportClubConnectMembers(File exportFilePath) throws IOException {
             fail("This method should not be called");
         }
 

@@ -359,7 +359,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void exportClubConnect(File exportFile) throws IOException {
+    public void exportClubConnectMembers(File exportFile) throws IOException {
         indicateNewExport(exportFile);
 
         exportHeaders(exportFile);

@@ -118,7 +118,7 @@ public interface Model {
      * @param exportFilePath Absolute file path of the file to which the data is exported.
      * @throws IOException if there was an error writing to file.
      */
-    void exportClubConnect(File exportFilePath) throws IOException;
+    void exportClubConnectMembers(File exportFilePath) throws IOException;
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */

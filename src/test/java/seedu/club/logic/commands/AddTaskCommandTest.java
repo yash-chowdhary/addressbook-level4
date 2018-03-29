@@ -247,7 +247,7 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
         }
 
-        public void exportClubConnect(File exportFilePath) {
+        public void exportClubConnectMembers(File exportFilePath) {
             fail("This method should not be called");
         }
 
