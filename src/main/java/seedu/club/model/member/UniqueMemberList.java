@@ -185,4 +185,14 @@ public class UniqueMemberList implements Iterable<Member> {
     public void setCurrentlyLogInMember(Member member) {
         currentlyLogInMember = member;
     }
+
+    /**
+     * Sign up a user when the clubbook is empty
+     */
+    public void signup(Member member) {
+        internalList.add(member);
+        usernameCredentialsHashMap.put(member.getCredentials().getUsername().value, member);
+        usernamePasswordHashMap.put(member.getCredentials().getUsername().value,
+                member.getCredentials().getPassword().value);
+    }
 }

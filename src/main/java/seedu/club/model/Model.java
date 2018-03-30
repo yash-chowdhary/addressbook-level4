@@ -89,11 +89,13 @@ public interface Model {
      */
     void updateFilteredPollList(Predicate<Poll> predicate);
 
+    //@@author Song Weiyang
     /**
      * Logs In a member in the club
      */
     void logsInMember(String username, String password);
 
+    //@@author Song Weiyang
     /**
      * Returns the member who is currently logged in to Club Connect.
      */
@@ -132,6 +134,10 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
+    //@@author Song Weiyang
+    /**
+     * Logs out a member from clubbook
+     */
     void logOutMember();
 
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
@@ -139,4 +145,11 @@ public interface Model {
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
     void updateFilteredTaskList(Predicate<Task> predicate);
+
+    //@@author Song Weiyang
+    /**
+     * Signs up a member if the clubbook is empty
+     * @param member
+     */
+    void signUpMember(Member member);
 }

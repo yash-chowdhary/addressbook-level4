@@ -225,6 +225,8 @@ public class ClubBook implements ReadOnlyClubBook {
     public void deleteTask(Task targetTask) throws TaskNotFoundException {
         tasks.remove(targetTask);
     }
+
+    //@@author Song Weiyang
     /**
      * Logs in a member
      */
@@ -232,6 +234,8 @@ public class ClubBook implements ReadOnlyClubBook {
         members.fillHashMap();
         members.logsInMember(inputUsername, inputPassword);
     }
+
+    //@@author Song Weiyang
     /**
      * logs out a member
      */
@@ -239,12 +243,22 @@ public class ClubBook implements ReadOnlyClubBook {
         members.logout();
     }
 
+    //@@author Song Weiyang
     /**
      * Get the member who is log in, if null, there are no one that is logged in.
      */
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
+
+    //@@author Song Weiyang
+    /**
+     * Sign up a member if it is a new clubbook
+     */
+    public void signUpMember(Member member) {
+        members.signup(member);
+    }
+
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
      */

@@ -131,6 +131,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
+    //@@author Song Weiyang
     @Override
     public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
@@ -141,6 +142,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    //@@author Song Weiyang
     @Override
     public Member getLoggedInMember() {
         return clubBook.getLoggedInMember();
@@ -286,6 +288,7 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
@@ -435,6 +438,12 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredTaskList(Predicate<Task> predicate) {
         requireNonNull(predicate);
         filteredTasks.setPredicate(predicate);
+    }
+
+    //@@author Song Weiyang
+    @Override
+    public void signUpMember(Member member) {
+        clubBook.signUpMember(member);
     }
 
     @Override
