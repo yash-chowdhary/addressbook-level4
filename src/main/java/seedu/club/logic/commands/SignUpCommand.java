@@ -23,7 +23,7 @@ public class SignUpCommand extends Command {
 
     public static final String COMMAND_FORMAT = "login n/ p/ e/ m/ [pic/ ] ";
 
-    public static final String MESSAGE_SUCCESS = "sign up successful! Please log in again";
+    public static final String MESSAGE_SUCCESS = "Sign up successful! Please log in again";
     public static final String MESSAGE_FAILURE = "There are already members in the clubbook. Log In to continue";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sign up a member to ClubConnect. "
             + "Parameters: "
