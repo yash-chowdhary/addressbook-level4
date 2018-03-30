@@ -303,7 +303,7 @@ public class ClubBook implements ReadOnlyClubBook {
             for (Member member : members) {
                 removeGroupFromMember(toRemove, member);
             }
-        } catch (MemberNotFoundException pnfe) {
+        } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
         }
         if (!isPresent) {
@@ -385,10 +385,8 @@ public class ClubBook implements ReadOnlyClubBook {
             return;
         }
 
-        Member newMember = new Member(member.getName(), member.getPhone(),
-                member.getEmail(), member.getMatricNumber(),
+        Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
                 member.getGroup(), memberTags);
-
         try {
             updateMember(member, newMember);
         } catch (DuplicateMemberException dpe) {
@@ -396,6 +394,7 @@ public class ClubBook implements ReadOnlyClubBook {
                     + "See member#equals(Object).");
         }
     }
+    //@@author
 
     //// util methods
 

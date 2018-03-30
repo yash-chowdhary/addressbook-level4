@@ -240,8 +240,8 @@ public class CommandTestUtil {
         Member firstMember = model.getFilteredMemberList().get(0);
         try {
             model.deleteMember(firstMember);
-        } catch (MemberNotFoundException pnfe) {
-            throw new AssertionError("member in filtered list must exist in model.", pnfe);
+        } catch (MemberNotFoundException mnfe) {
+            throw new AssertionError("member in filtered list must exist in model.", mnfe);
         }
     }
 

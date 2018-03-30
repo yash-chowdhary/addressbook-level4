@@ -194,10 +194,7 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private void deleteUnusedTags() {
         List<Tag> tags = new ArrayList<>(clubBook.getTagList());
-
-        for (Tag tag: tags) {
-            deleteTagIfUnused(tag);
-        }
+        tags.forEach(tag -> deleteTagIfUnused(tag));
     }
 
     /**
@@ -220,7 +217,6 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private boolean isNotTaggedInMembers(Tag tag) {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
         for (Member member : members) {
             if (member.getTags().contains(tag)) {
                 return false;
