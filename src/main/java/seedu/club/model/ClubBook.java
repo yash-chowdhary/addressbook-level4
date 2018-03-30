@@ -207,24 +207,11 @@ public class ClubBook implements ReadOnlyClubBook {
         this.polls.setPolls(polls);
     }
 
-    public void setTasks(Set<Task> tasks) {
-        this.tasks.setTasks(tasks);
-    }
-
     public void addPoll(Poll poll) throws DuplicatePollException {
         polls.add(poll);
     }
 
-    /**
-     * Adds {@code Task toAdd} to the list of tasks.
-     */
-    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
-        tasks.add(taskToAdd);
-    }
 
-    public void deleteTask(Task targetTask) throws TaskNotFoundException {
-        tasks.remove(targetTask);
-    }
     /**
      * Logs in a member
      */
@@ -331,7 +318,22 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
-    //@@author yash-chowdhary
+
+    /**
+     * Adds {@code Task toAdd} to the list of tasks.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
+    //@@author
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.

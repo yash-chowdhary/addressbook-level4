@@ -1,5 +1,5 @@
 package seedu.club.model.task;
-
+//@@author yash-chowdhary
 import java.util.function.Predicate;
 
 import seedu.club.model.member.Member;
@@ -17,7 +17,8 @@ public class TaskIsRelatedToMemberPredicate implements Predicate<Task> {
 
     @Override
     public boolean test(Task task) {
-        return member.getName().toString().equalsIgnoreCase(task.getAssignor().getAssignor());
+        return member.getName().toString().equalsIgnoreCase(task.getAssignor().getAssignor())
+                || member.getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
     }
 
     @Override

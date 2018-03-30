@@ -1,8 +1,8 @@
 package seedu.club.model.task;
+//@@author yash-chowdhary
 
 import static java.util.Objects.requireNonNull;
 
-//@@author yash-chowdhary
 /**
  * Refers to the assignor of a Task
  */
