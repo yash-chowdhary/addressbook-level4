@@ -42,14 +42,14 @@ public class CommandTestUtil {
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
+    public static final String VALID_MATRIC_NUMBER_AMY = "A9210701B";
+    public static final String VALID_MATRIC_NUMBER_BOB = "A8389539B";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_GROUP_AMY = "publicity";
     public static final String VALID_GROUP_BOB = "logistics";
-    public static final String VALID_MATRIC_NUMBER_AMY = "A9210701B";
-    public static final String VALID_MATRIC_NUMBER_BOB = "A8389539B";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friends";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member

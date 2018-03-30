@@ -41,6 +41,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.ProfilePhotoStorage;
 
 /**
@@ -321,6 +322,16 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
+
+    @Override
+    public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+            throw new TasksCannotBeDisplayedException();
+        }
+        updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+        indicateClubBookChanged();
+    }
+
     //@@author
 
     //@@author amrut-prabhu
