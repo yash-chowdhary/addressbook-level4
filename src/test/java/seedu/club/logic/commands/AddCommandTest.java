@@ -141,9 +141,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean addProfilePhoto(String originalPhotoPath) {
+        public void addProfilePhoto(String originalPhotoPath) {
             fail("This method should not be called.");
-            return false;
         }
 
         @Override

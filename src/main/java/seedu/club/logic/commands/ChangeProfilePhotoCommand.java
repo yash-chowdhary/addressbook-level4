@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.model.member.ProfilePhoto;
 
 /**
@@ -36,11 +37,10 @@ public class ChangeProfilePhotoCommand extends Command {
         //Defensive programming
         assert newProfilePhoto.getProfilePhotoPath() == null : "Photo path should not be null.";
 
-        boolean isPhotoChanged = model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath());
-
-        if (isPhotoChanged) {
+        try {
+            model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath());
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));
-        } else {
+        } catch (PhotoReadException pe) {
             return new CommandResult(String.format(MESSAGE_INVALID_PHOTO_PATH));
         }
     }

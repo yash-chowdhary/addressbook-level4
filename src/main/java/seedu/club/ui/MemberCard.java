@@ -85,24 +85,6 @@ public class MemberCard extends UiPart<Region> {
      * Sets the profile photo to the displayed photo shape.
      */
     private void setProfilePhoto(Member member) {
-        /*Image photo = null;
-        String photoPath;
-
-        if (!member.getProfilePhoto().getProfilePhotoPath().equals(EMPTY_STRING)) {
-            photoPath = member.getProfilePhoto().getProfilePhotoPath();
-
-            //Defensive programming
-            File file = new File(member.getProfilePhoto().getProfilePhotoPath());
-            if (!file.exists()) {
-                photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
-            }
-        } else {
-            photoPath = ProfilePhotoStorage.getCurrentDirectory() + DEFAULT_PHOTO;
-        }
-
-        photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO), PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
-
-        profilePhoto.setFill(new ImagePattern(photo));*/
         Image photo;
         String photoPath = member.getProfilePhoto().getProfilePhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {

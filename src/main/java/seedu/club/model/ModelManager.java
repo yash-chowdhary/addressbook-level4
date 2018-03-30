@@ -20,6 +20,7 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -150,24 +151,23 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author amrut-prabhu
     /** Raises an event to indicate the profile photo of a member has changed */
-    private boolean indicateProfilePhotoChanged(String originalPath, String newFileName) {
+    private void indicateProfilePhotoChanged(String originalPath, String newFileName) throws PhotoReadException {
         ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
         raise(profilePhotoChangedEvent);
-        return profilePhotoChangedEvent.isPhotoChanged();
+        if (!profilePhotoChangedEvent.isPhotoChanged()) {
+            throw new PhotoReadException();
+        }
     }
 
     @Override
-    public boolean addProfilePhoto(String originalPhotoPath) {
+    public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
         String newFileName = getLoggedInMember().getMatricNumber().toString();
-        if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
-            return false;
-        }
+        indicateProfilePhotoChanged(originalPhotoPath, newFileName);
 
         String newProfilePhotoPath = ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName
                 + ProfilePhotoStorage.FILE_EXTENSION;
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
         indicateClubBookChanged();
-        return true;
     }
     //@@author
 

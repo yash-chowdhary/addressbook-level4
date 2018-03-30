@@ -11,9 +11,11 @@ import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
-import seedu.club.commons.exceptions.PhotoException;
+import seedu.club.commons.exceptions.PhotoReadException;
+import seedu.club.commons.exceptions.PhotoWriteException;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.UserPrefs;
 
@@ -99,7 +101,8 @@ public class StorageManager extends ComponentManager implements Storage {
     // ================ ProfilePhoto methods ==============================
 
     @Override
-    public void copyOriginalPhotoFile(String originalPath, String newPhotoName) throws PhotoException {
+    public void copyOriginalPhotoFile(String originalPath, String newPhotoName)
+            throws PhotoReadException, PhotoWriteException {
         logger.fine("Attempting to read photo from file: " + originalPath);
         profilePhotoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
     }
@@ -110,9 +113,11 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Profile photo changed, copying file"));
         try {
             copyOriginalPhotoFile(event.originalPhotoPath, event.newFileName);
-        } catch (PhotoException pe) {
+        } catch (PhotoReadException pre) {
             event.setPhotoChanged(false);
-            raise(new DataSavingExceptionEvent(pe));
+            raise(new DataReadingExceptionEvent(pre));
+        } catch (PhotoWriteException pwe) {
+            raise(new DataSavingExceptionEvent(pwe));
         }
     }
     //@@author

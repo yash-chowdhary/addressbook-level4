@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -110,8 +111,9 @@ public interface Model {
     /**
      * Returns true if profile photo is successfully changed for the logged in member.
      * @param originalPhotoPath Absolute file path of the original photo.
+     * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
      */
-    boolean addProfilePhoto(String originalPhotoPath);
+    void addProfilePhoto(String originalPhotoPath) throws PhotoReadException;
 
     /**
      * Exports Club Connect's members' details to the specified file.
