@@ -61,4 +61,12 @@ public class AssignTaskCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other == this)
+                || (other instanceof AssignTaskCommand // instanceof handles nulls
+                && toAdd.equals(((AssignTaskCommand) other).toAdd)
+                && name.equals(((AssignTaskCommand) other).name));
+    }
 }

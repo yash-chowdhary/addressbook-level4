@@ -3,6 +3,7 @@ package seedu.club.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
@@ -32,6 +33,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -162,6 +164,7 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         modelManager.addTaskToTaskList(BUY_FOOD);
+
         Member amy = new MemberBuilder(AMY).build();
         Task buyFood = new TaskBuilder(BUY_FOOD).build();
         Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
@@ -187,6 +190,84 @@ public class ModelManagerTest {
         try {
             modelManager.addTaskToTaskList(BUY_CONFETTI);
         } catch (DuplicateTaskException dte) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+
+    @Test
+    public void assignTask_validTask_throwsException() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value,
+                AMY.getCredentials().getPassword().value);
+        modelManager.assignTask(BUY_FOOD, BOB.getName());
+
+        Member amy = new MemberBuilder(AMY).build();
+        Member bob = new MemberBuilder(BOB).build();
+        Task buyFood = new TaskBuilder()
+                .withDescription("Buy Food")
+                .withDate("02/05/2018")
+                .withTime("19:00")
+                .withAssignor("Alice Pauline")
+                .withAssignee("Bob Choo")
+                .withStatus("Yet To Begin")
+                .build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder()
+                .withMember(amy)
+                .withMember(bob)
+                .withTask(buyConfetti)
+                .withTask(buyFood)
+                .build();
+
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value,
+                AMY.getCredentials().getPassword().value);
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void assignTask_duplicateTask_throwsException() {
+        Task buyFood = new TaskBuilder()
+                .withDescription("Buy Food")
+                .withDate("02/05/2018")
+                .withTime("19:00")
+                .withAssignor("Alice Pauline")
+                .withAssignee("Bob Choo")
+                .withStatus("Yet To Begin")
+                .build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).withTask(buyFood).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        try {
+            modelManager.assignTask(BUY_FOOD, BOB.getName());
+        } catch (DuplicateTaskException dte) {
+            assertEquals(expectedModel, modelManager);
+        } catch (MemberNotFoundException mnfe) {
+            fail("This exception should not be caught");
+        }
+    }
+
+    @Test
+    public void assignTask_memberNotFound_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        try {
+            modelManager.assignTask(BUY_CONFETTI, BOB.getName());
+        } catch (DuplicateTaskException dte) {
+            fail("This exception should not be caught");
+        } catch (MemberNotFoundException mnfe) {
             assertEquals(expectedModel, modelManager);
         }
     }
