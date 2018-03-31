@@ -10,14 +10,21 @@ import static seedu.club.ui.testutil.GuiTestAssert.assertListMatching;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.model.ClubBook;
+import seedu.club.model.group.Group;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
-import seedu.club.model.util.SampleDataUtil;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
+import seedu.club.model.tag.Tag;
 import seedu.club.testutil.TestUtil;
 
 public class SignUpCommandSystemTest extends ClubBookSystemTest {
@@ -52,19 +59,32 @@ public class SignUpCommandSystemTest extends ClubBookSystemTest {
 
     @Test
     public void signup() {
-        Member[] expectedList = SampleDataUtil.getSampleMembers();
+        Member[] list = new Member[1];
+        list[0] =  new Member(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends"));
         String signupcommand = SignUpCommand.COMMAND_WORD +  " "
-                + PREFIX_NAME + expectedList[0].getName().toString() + " "
-                + PREFIX_PHONE + expectedList[0].getPhone().toString() + " "
-                + PREFIX_EMAIL + expectedList[0].getEmail().value + " "
-                + PREFIX_MATRIC_NUMBER + expectedList[0].getMatricNumber() + " "
+                + PREFIX_NAME + list[0].getName().toString() + " "
+                + PREFIX_PHONE + list[0].getPhone().toString() + " "
+                + PREFIX_EMAIL + list[0].getEmail().value + " "
+                + PREFIX_MATRIC_NUMBER + list[0].getMatricNumber() + " "
                 + PREFIX_TAG + "friends ";
-        String logincommand = LogInCommand.COMMAND_WORD + " u/" + expectedList[0].getCredentials().getUsername().value
+        String logincommand = LogInCommand.COMMAND_WORD + " u/" + list[0].getCredentials().getUsername().value
                 + " pw/password";
         executeCommand(signupcommand);
         executeCommand(logincommand);
-        Member[] list = new Member[1];
-        list[0] = expectedList[0];
         assertListMatching(getMemberListPanel(), list);
+    }
+
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    public static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
     }
 }
