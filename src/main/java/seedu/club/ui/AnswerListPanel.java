@@ -39,6 +39,8 @@ public class AnswerListPanel extends UiPart<Region> {
                 answerList, answer -> new AnswerCard(answer, answerList.indexOf(answer) + 1));
         answerListView.setItems(mappedList);
         answerListView.setCellFactory(listView -> new AnswerListViewCell());
+        //TODO
+        answerListView.setMaxHeight(52 * 4);
     }
 
     /**
