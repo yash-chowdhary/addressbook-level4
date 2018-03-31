@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -243,6 +242,7 @@ public class ClubBook implements ReadOnlyClubBook {
     //@@author amrut-prabhu
     /**
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
+     *
      * @param member Member whose tags may be removed from {@code tags}.
      */
     private void deleteMemberTags(Member member) {
@@ -255,6 +255,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
     /**
      * Returns true if only {@code member} is tagged with {@code tag}.
+     *
      * @param tag Tag that is to be checked.
      * @param member Member whose tags are to be checked.
      */
@@ -328,15 +329,19 @@ public class ClubBook implements ReadOnlyClubBook {
     //@@author amrut-prabhu
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
+     *
      * @param tagToDelete Tag to be removed
+     * @throws TagNotFoundException if the list of {@code tags} does not contain {@code tagToDelete}.
      */
     public void deleteTag(Tag tagToDelete) throws TagNotFoundException {
+        //Update tags list
         List<Tag> tags = new ArrayList<Tag>(getTagList());
         if (!tags.contains(tagToDelete)) {
             throw new TagNotFoundException();
         }
-
         setTags(getListWithoutTag(tagToDelete));
+
+        //Update members list
         try {
             for (Member member : members) {
                 if (member.hasTag(tagToDelete)) {
@@ -350,6 +355,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
     /**
      * Returns a list of tags which does not contain {@code tagToDelete}.
+     *
      * @param tagToDelete Tag which should not be included in the tag list
      */
     private Set<Tag> getListWithoutTag(Tag tagToDelete) {
@@ -361,11 +367,13 @@ public class ClubBook implements ReadOnlyClubBook {
 
     /**
      * Removes {@code tag} from {@code member} in this {@code ClubBook}.
+     *
+     * @param tag Tag which is to be removed from {@code member}.
+     * @param member Member from whom {@code tag} is to be removed.
      * @throws MemberNotFoundException if the {@code member} is not in this {@code ClubBook}.
      */
     private void deleteTagFromMember(Tag tag, Member member) throws MemberNotFoundException {
         Set<Tag> memberTags = new HashSet<>(member.getTags());
-
         if (!memberTags.remove(tag)) {
             return;
         }
