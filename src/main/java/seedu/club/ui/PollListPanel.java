@@ -6,7 +6,6 @@ import org.fxmisc.easybind.EasyBind;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -14,9 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
-import seedu.club.commons.events.ui.JumpToPollListRequestEvent;
-import seedu.club.commons.events.ui.PollPanelSelectionChangedEvent;
-import seedu.club.commons.events.ui.ViewResultsRequestEvent;
+import seedu.club.commons.events.ui.ShowResultsRequestEvent;
 import seedu.club.model.poll.Poll;
 
 /**
@@ -51,7 +48,7 @@ public class PollListPanel extends UiPart<Region> {
     }
 
     /**
-     * Shows results of poll
+     * Shows results of polls
      */
     protected void showPollResults() {
         if (!isDisplayingPollResults) {
@@ -71,7 +68,7 @@ public class PollListPanel extends UiPart<Region> {
     }
 
     @Subscribe
-    private void handleViewResultsEvent(ViewResultsRequestEvent event) {
+    private void handleShowResultsEvent(ShowResultsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         showPollResults();
     }

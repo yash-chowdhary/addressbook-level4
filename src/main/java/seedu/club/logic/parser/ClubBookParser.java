@@ -32,8 +32,8 @@ import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
+import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
-import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
@@ -138,8 +138,8 @@ public class ClubBookParser {
         case LogOutCommand.COMMAND_WORD:
             return new LogOutCommand();
 
-        case ViewResultsCommand.COMMAND_WORD:
-            return new ViewResultsCommand();
+        case ShowResultsCommand.COMMAND_WORD:
+            return new ShowResultsCommand();
 
         case HideResultsCommand.COMMAND_WORD:
             return new HideResultsCommand();

@@ -2,7 +2,6 @@ package seedu.club.logic.commands;
 
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
-import seedu.club.commons.events.ui.ViewResultsRequestEvent;
 
 /**
  * Lists all members in the club book to the user.
