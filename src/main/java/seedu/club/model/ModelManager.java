@@ -20,6 +20,7 @@ import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.util.CsvUtil;
+import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -337,7 +338,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void viewMyTasks() throws TasksAlreadyListedException {
         if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
-            throw new TasksAlreadyListedException();
+            throw new TasksAlreadyListedException(ViewMyTasksCommand.MESSAGE_ALREADY_LISTED);
         }
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }

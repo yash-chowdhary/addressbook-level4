@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author yash-chowdhary
 import static java.util.Objects.requireNonNull;
 
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -13,9 +13,6 @@ public class ViewMyTasksCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Listed all your tasks.";
     public static final String MESSAGE_ALREADY_LISTED = "All your tasks are already listed.";
-
-    private static String MESSAGE_USAGE = COMMAND_WORD + ": Displays all the tasks of the currently "
-            + "logged-in member in the club book.";
 
     @Override
     public CommandResult execute() throws CommandException {

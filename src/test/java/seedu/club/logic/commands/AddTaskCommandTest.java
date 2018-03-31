@@ -42,6 +42,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.TaskBuilder;
 
@@ -124,6 +125,11 @@ public class AddTaskCommandTest {
 
         @Override
         public void viewAllTasks() throws TasksCannotBeDisplayedException {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void viewMyTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 
