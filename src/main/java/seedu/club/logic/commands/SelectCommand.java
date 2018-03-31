@@ -15,6 +15,7 @@ import seedu.club.model.member.Member;
 public class SelectCommand extends Command {
 
     public static final String COMMAND_WORD = "select";
+    public static final String COMMAND_FORMAT = "select INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Selects the member identified by the index number used in the last member listing.\n"

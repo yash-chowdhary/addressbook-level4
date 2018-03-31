@@ -33,6 +33,7 @@ import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
@@ -139,6 +140,9 @@ public class ClubBookParser {
 
         case SignUpCommand.COMMAND_WORD:
             return new SignUpCommandParser().parse(arguments);
+
+        case ViewAllTasksCommand.COMMAND_WORD:
+            return new ViewAllTasksCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
