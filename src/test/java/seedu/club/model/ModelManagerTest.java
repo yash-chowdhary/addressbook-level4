@@ -38,6 +38,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TaskBuilder;
@@ -53,6 +54,7 @@ public class ModelManagerTest {
         modelManager.getFilteredMemberList().remove(0);
     }
 
+    //@@author yash-chowdhary
     @Test
     public void removeGroup_nonExistentGroup_modelUnchanged() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
@@ -206,6 +208,40 @@ public class ModelManagerTest {
             assertEquals(expectedModel, modelManager);
         }
     }
+
+    @Test
+    public void viewAllTasks_validPermission_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        modelManager.viewAllTasks();
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void viewAllTasks_invalidPermission_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(BENSON.getCredentials().getUsername().value,
+                BENSON.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(BENSON.getCredentials().getUsername().value,
+                BENSON.getCredentials().getPassword().value);
+        try {
+            modelManager.viewAllTasks();
+        } catch (TasksCannotBeDisplayedException tdbde) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+    //@@author
 
     @Test
     public void deleteTag_nonExistentTag_modelUnchanged() throws Exception {

@@ -1,4 +1,5 @@
 package seedu.club.model.task;
+//@@author yash-chowdhary
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
@@ -6,7 +7,6 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 
-//@@author yash-chowdhary
 /**
  * Refers to the Due Date of a Task
  */
