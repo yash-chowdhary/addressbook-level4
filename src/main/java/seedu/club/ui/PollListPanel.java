@@ -13,8 +13,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
 import seedu.club.commons.events.ui.JumpToPollListRequestEvent;
 import seedu.club.commons.events.ui.PollPanelSelectionChangedEvent;
+import seedu.club.commons.events.ui.ViewResultsRequestEvent;
 import seedu.club.model.poll.Poll;
 
 /**
@@ -23,6 +25,8 @@ import seedu.club.model.poll.Poll;
 public class PollListPanel extends UiPart<Region> {
     private static final String FXML = "PollListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PollListPanel.class);
+    private boolean isDisplayingPollResults;
+    private ObservableList<Poll> pollList;
 
     @FXML
     private ListView<PollCard> pollListView;
@@ -41,7 +45,13 @@ public class PollListPanel extends UiPart<Region> {
 
     private void setPollListView(ObservableList<Poll> pollList) {
         ObservableList<PollCard> mappedList = EasyBind.map(
-                pollList, (poll) -> new PollCard(poll, pollList.indexOf(poll) + 1));
+                pollList, (poll) -> {
+                if (isDisplayingPollResults) {
+                    return new PollCard(poll, pollList.indexOf(poll) + 1);
+                } else {
+                    return new RestrictedPollCard(poll, pollList.indexOf(poll) + 1);
+                }
+            });
         pollListView.setItems(mappedList);
         pollListView.setCellFactory(listView -> new PollListViewCell());
     }
@@ -70,6 +80,38 @@ public class PollListPanel extends UiPart<Region> {
     private void handleJumpToPollListRequestEvent(JumpToPollListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         scrollTo(event.targetIndex);
+    }
+
+    /**
+     * Shows results of poll
+     */
+    protected void showPollResults() {
+        if (!isDisplayingPollResults) {
+            isDisplayingPollResults = true;
+            setPollListView(pollList);
+        }
+    }
+
+    /**
+     * Hides results of polls
+     */
+    protected void hidePollResults() {
+        if (isDisplayingPollResults) {
+            isDisplayingPollResults = false;
+            setPollListView(pollList);
+        }
+    }
+
+    @Subscribe
+    private void handleViewResultsEvent(ViewResultsRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        showPollResults();
+    }
+
+    @Subscribe
+    private void handleHideResultsEvent(HideResultsRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        hidePollResults();
     }
 
     /**
