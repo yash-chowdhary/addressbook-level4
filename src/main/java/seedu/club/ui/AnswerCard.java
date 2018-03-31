@@ -16,21 +16,28 @@ import seedu.club.model.poll.Answer;
 public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
+    private static final String STATEMENT_VOTE_COUNT = "Vote Count: ";
     private static final String EMPTY_STRING = "";
     public final Answer answer;
 
     @FXML
     private HBox cardPane;
+
     @FXML
     private TextArea answerValue;
+
     @FXML
     private Label choice;
+
+    @FXML
+    private Label voteCount;
 
     public AnswerCard(Answer answer, int displayedIndex) {
         super(FXML);
         this.answer = answer;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
+        voteCount.setText(STATEMENT_VOTE_COUNT + answer.getNoOfMembersAnswered());
     }
 
     public AnswerCard(Answer answer, int displayedIndex, String fxml) {
