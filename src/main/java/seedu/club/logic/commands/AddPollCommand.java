@@ -14,7 +14,7 @@ import seedu.club.model.poll.exceptions.DuplicatePollException;
 public class AddPollCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addpoll";
-    public static final String COMMAND_FORMAT = "add q/ ans/ [ans/...]";
+    public static final String COMMAND_FORMAT = "addpoll q/ ans/ [ans/...]";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a poll to the club book. "
             + "Parameters: "
