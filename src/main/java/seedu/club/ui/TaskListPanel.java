@@ -1,10 +1,8 @@
 package seedu.club.ui;
-
+//@@author yash-chowdhary
 import java.util.logging.Logger;
 
 import org.fxmisc.easybind.EasyBind;
-
-import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -13,7 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.club.model.task.Task;
 
@@ -67,12 +64,6 @@ public class TaskListPanel extends UiPart<Region> {
             taskListView.scrollTo(index);
             taskListView.getSelectionModel().clearAndSelect(index);
         });
-    }
-
-    @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        scrollTo(event.targetIndex);
     }
 
     /**

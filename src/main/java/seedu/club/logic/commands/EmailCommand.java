@@ -1,4 +1,5 @@
 package seedu.club.logic.commands;
+//@@author yash-chowdhary
 
 import static seedu.club.logic.parser.CliSyntax.PREFIX_BODY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
@@ -15,7 +16,6 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 
-//@@author yash-chowdhary
 /**
  * Sends an email to the desired recipient(s) in a particular group of the club book.
  */
