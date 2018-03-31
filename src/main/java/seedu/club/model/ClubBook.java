@@ -141,7 +141,6 @@ public class ClubBook implements ReadOnlyClubBook {
         requireNonNull(editedMember);
 
         deleteMemberTags(target);
-
         Member syncedEditedMember = syncWithMasterTagList(editedMember);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any member
@@ -159,11 +158,7 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     private void addTargetMemberTags(Member target) {
         Set<Tag> allTags = new HashSet<>(tags.asObservableList());
-
-        for (Tag tag: target.getTags()) {
-            allTags.add(tag);
-        }
-
+        allTags.addAll(target.getTags());
         tags.setTags(allTags);
     }
 
@@ -195,7 +190,6 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public boolean removeMember(Member key) throws MemberNotFoundException {
         deleteMemberTags(key);
-
         if (members.remove(key)) {
             return true;
         } else {
@@ -245,42 +239,34 @@ public class ClubBook implements ReadOnlyClubBook {
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
-    /** tag-level operation
+
+    //@@author amrut-prabhu
+    /**
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
+     * @param member Member whose tags may be removed from {@code tags}.
      */
     private void deleteMemberTags(Member member) {
-        List<Tag> tagsToCheck = tags.asObservableList().stream().collect(Collectors.toList());
+        List<Tag> tagsToCheck = new ArrayList<>(getTagList());
         Set<Tag> newTags = tagsToCheck.stream()
                 .filter(t -> !isTagUniqueToMember(t, member))
                 .collect(Collectors.toSet());
         tags.setTags(newTags);
-        /*
-        Iterator<Tag> itr = tagsToCheck.iterator();
-        while (itr.hasNext()) {
-            Tag tag = itr.next();
-            if (isTagUniqueToMember(tag, member)) {
-                deleteTag(tag);
-            }
-        }*/
     }
 
     /**
-     * Returns true if only {@code key} is tagged with {@code tag}.
+     * Returns true if only {@code member} is tagged with {@code tag}.
+     * @param tag Tag that is to be checked.
+     * @param member Member whose tags are to be checked.
      */
-    private boolean isTagUniqueToMember(Tag tag, Member key) {
-        for (Member member : members) {
-            if (member.hasTag(tag) && !member.equals(key)) {
+    private boolean isTagUniqueToMember(Tag tag, Member member) {
+        for (Member m : members) {
+            if (m.hasTag(tag) && !m.equals(member)) {
                 return false;
             }
         }
         return true;
     }
-
-
-    //// tag-level operations
-    public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
-        tags.add(t);
-    }
+    //@@author
 
     //@@author yash-chowdhary
     /**
@@ -328,11 +314,18 @@ public class ClubBook implements ReadOnlyClubBook {
             updateMember(member, newMember);
         } catch (DuplicateMemberException dpe) {
             throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
-            + "See member#equals(Object).");
+                    + "See member#equals(Object).");
         }
     }
-    //@@author yash-chowdhary
+    //@@author
 
+
+    //// tag-level operations
+    public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
+        tags.add(t);
+    }
+
+    //@@author amrut-prabhu
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
      * @param tagToDelete Tag to be removed
@@ -356,22 +349,14 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     * Returns a list of tags which does not contain {@code tagToRemove}.
-     * @param tagToRemove Tag which should not be included in the tagToRemove list
+     * Returns a list of tags which does not contain {@code tagToDelete}.
+     * @param tagToDelete Tag which should not be included in the tag list
      */
-    private Set<Tag> getListWithoutTag(Tag tagToRemove) {
-        Set<Tag> newTagsList = new HashSet<>();
-
-        Iterator<Tag> itr = tags.iterator();
-
-        while (itr.hasNext()) {
-            Tag tag = itr.next();
-            if (!tag.equals(tagToRemove)) {
-                newTagsList.add(tag);
-            }
-        }
-
-        return newTagsList;
+    private Set<Tag> getListWithoutTag(Tag tagToDelete) {
+        List<Tag> tags = new ArrayList<Tag>(this.getTagList());
+        return tags.stream()
+                .filter(t -> !t.equals(tagToDelete))
+                .collect(Collectors.toSet());
     }
 
     /**
