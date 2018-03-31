@@ -2,10 +2,12 @@ package seedu.club.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
 
 /**
  * An UI component that displays information of a {@code answerValue}.
@@ -15,7 +17,8 @@ public class AnswerCard extends UiPart<Region> {
     private static final String FXML = "AnswerListCard.fxml";
     private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
     private static final String EMPTY_STRING = "";
-    public final Answer answer;
+    private final Answer answer;
+    private final Poll poll;
 
     @FXML
     private HBox cardPane;
@@ -29,21 +32,26 @@ public class AnswerCard extends UiPart<Region> {
     @FXML
     private Label voteCount;
 
-    public AnswerCard(Answer answer, int displayedIndex) {
+    @FXML
+    private ProgressIndicator voteCountIndicator;
+
+    public AnswerCard(Answer answer, int displayedIndex, Poll poll) {
         super(FXML);
         this.answer = answer;
+        this.poll = poll;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
         voteCount.setText(DESCRIPTION_VOTE_COUNT + answer.getVoteCount());
+        setVoteCountIndicator();
     }
 
-    public AnswerCard(Answer answer, int displayedIndex, String fxml) {
-        super(fxml);
-        this.answer = answer;
-        choice.setText(displayedIndex + ". ");
-        answerValue.setText(answer.getValue());
+    private void setVoteCountIndicator() {
+        int totalVoteCount = poll.getTotalVoteCount();
+        int voteCount = answer.getVoteCount();
+        double progress = totalVoteCount == 0
+                ? 0 : voteCount / totalVoteCount;
+        voteCountIndicator.setProgress(progress);
     }
-
 
     @Override
     public boolean equals(Object other) {
@@ -61,9 +69,5 @@ public class AnswerCard extends UiPart<Region> {
         AnswerCard card = (AnswerCard) other;
         return choice.getText().equals(card.choice.getText())
                 && answer.equals(card.answer);
-    }
-
-    protected Label getChoice() {
-        return choice;
     }
 }

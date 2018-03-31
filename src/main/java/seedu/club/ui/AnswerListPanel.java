@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
 
 /**
  * Panel containing the list of answers.
@@ -19,13 +20,15 @@ public class AnswerListPanel extends UiPart<Region> {
     private static final String FXML = "AnswerListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(AnswerListPanel.class);
     private ObservableList<Answer> answerList;
+    private final Poll poll;
 
     @FXML
     private ListView<AnswerCard> answerListView;
 
-    public AnswerListPanel(ObservableList<Answer> answerList) {
+    public AnswerListPanel(ObservableList<Answer> answerList, Poll poll) {
         super(FXML);
         this.answerList = answerList;
+        this.poll = poll;
         setConnections(answerList);
         registerAsAnEventHandler(this);
     }
@@ -36,7 +39,7 @@ public class AnswerListPanel extends UiPart<Region> {
 
     private void setAnswerListView(ObservableList<Answer> answerList) {
         ObservableList<AnswerCard> mappedList = EasyBind.map(
-                answerList, answer -> new AnswerCard(answer, answerList.indexOf(answer) + 1));
+                answerList, answer -> new AnswerCard(answer, answerList.indexOf(answer) + 1, poll));
         answerListView.setItems(mappedList);
         answerListView.setCellFactory(listView -> new AnswerListViewCell());
         //TODO

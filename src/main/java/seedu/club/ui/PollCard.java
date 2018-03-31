@@ -40,7 +40,7 @@ public class PollCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         question.setText(poll.getQuestion().toString());
 
-        answerListPanel = new AnswerListPanel(poll.getAnswers());
+        answerListPanel = new AnswerListPanel(poll.getAnswers(), poll);
         answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
 
         totalVoteCount.setText(DESCRIPTION_TOTAL_VOTE_COUNT + poll.getTotalVoteCount());
