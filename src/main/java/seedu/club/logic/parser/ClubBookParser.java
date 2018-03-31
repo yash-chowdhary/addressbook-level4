@@ -24,6 +24,7 @@ import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.HideResultsCommand;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
@@ -32,6 +33,7 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
@@ -135,6 +137,12 @@ public class ClubBookParser {
 
         case LogOutCommand.COMMAND_WORD:
             return new LogOutCommand();
+
+        case ViewResultsCommand.COMMAND_WORD:
+            return new ViewResultsCommand();
+
+        case HideResultsCommand.COMMAND_WORD:
+            return new HideResultsCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

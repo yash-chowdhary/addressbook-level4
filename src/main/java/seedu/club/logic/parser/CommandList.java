@@ -3,6 +3,8 @@ package seedu.club.logic.parser;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.text.View;
+
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
@@ -17,12 +19,14 @@ import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.HideResultsCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 
 /**
  * Stores list of commands
@@ -52,6 +56,8 @@ public class CommandList {
         commandList.add(UndoCommand.COMMAND_WORD);
         commandList.add(AddTaskCommand.COMMAND_FORMAT);
         commandList.add(DeleteTaskCommand.COMMAND_FORMAT);
+        commandList.add(ViewResultsCommand.COMMAND_WORD);
+        commandList.add(HideResultsCommand.COMMAND_WORD);
 
         Collections.sort(commandList);
         return commandList;

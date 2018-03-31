@@ -9,8 +9,8 @@ import seedu.club.commons.events.ui.ViewResultsRequestEvent;
  */
 public class HideResultsCommand extends Command {
 
-    public static final String COMMAND_WORD = "viewresults";
-    public static final String MESSAGE_SUCCESS = "Viewing poll results";
+    public static final String COMMAND_WORD = "hideresults";
+    public static final String MESSAGE_SUCCESS = "Poll results hidden";
 
 
     @Override
