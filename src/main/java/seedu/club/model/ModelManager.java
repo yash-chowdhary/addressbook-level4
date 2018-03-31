@@ -343,10 +343,8 @@ public class ModelManager extends ComponentManager implements Model {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
         String currentMember = getLoggedInMember().getName().toString();
-        logger.info("assignor == currentMember" + currentMember.equalsIgnoreCase(assignor.getAssignor()));
-        logger.info("assignee == currentMember" + currentMember.equalsIgnoreCase(assignee.getAssignee()));
-        if (currentMember.equalsIgnoreCase(assignor.getAssignor()) == false
-                && currentMember.equalsIgnoreCase(assignee.getAssignee()) == false) {
+        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
+                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
             throw new TaskCannotBeDeletedException();
         }
         clubBook.deleteTask(targetTask);
