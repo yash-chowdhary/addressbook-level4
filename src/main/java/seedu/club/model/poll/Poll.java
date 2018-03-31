@@ -55,6 +55,10 @@ public class Poll {
         return question;
     }
 
+    public int getTotalVoteCount() {
+        return answers.stream().collect(Collectors.reducing(0, Answer::getVoteCount, Integer::sum));
+    }
+
     /**
      * Returns an immutable answer list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.

@@ -1,11 +1,8 @@
 package seedu.club.ui;
 
-import javax.xml.soap.Text;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
@@ -16,7 +13,7 @@ import seedu.club.model.poll.Answer;
 public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
-    private static final String STATEMENT_VOTE_COUNT = "Vote Count: ";
+    private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
     private static final String EMPTY_STRING = "";
     public final Answer answer;
 
@@ -37,7 +34,7 @@ public class AnswerCard extends UiPart<Region> {
         this.answer = answer;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
-        voteCount.setText(STATEMENT_VOTE_COUNT + answer.getNoOfMembersAnswered());
+        voteCount.setText(DESCRIPTION_VOTE_COUNT + answer.getVoteCount());
     }
 
     public AnswerCard(Answer answer, int displayedIndex, String fxml) {

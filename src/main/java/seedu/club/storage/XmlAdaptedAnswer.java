@@ -37,7 +37,7 @@ public class XmlAdaptedAnswer {
      */
     public XmlAdaptedAnswer(Answer source) {
         value = source.getValue();
-        noOfMembersAnswered = source.getNoOfMembersAnswered();
+        noOfMembersAnswered = source.getVoteCount();
     }
 
     /**
