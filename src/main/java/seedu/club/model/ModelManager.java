@@ -457,6 +457,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void signUpMember(Member member) {
         clubBook.signUpMember(member);
+        indicateClubBookChanged();
     }
 
     @Override

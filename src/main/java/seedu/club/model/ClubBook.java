@@ -239,7 +239,8 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Sign up a member if it is a new clubbook
      */
-    public void signUpMember(Member member) {
+    public void signUpMember(Member p) {
+        Member member = syncWithMasterTagList(p);
         members.signup(member);
     }
 
