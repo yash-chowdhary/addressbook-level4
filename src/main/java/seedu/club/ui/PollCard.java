@@ -46,6 +46,19 @@ public class PollCard extends UiPart<Region> {
         totalVoteCount.setText(DESCRIPTION_TOTAL_VOTE_COUNT + poll.getTotalVoteCount());
     }
 
+    /**
+     * A constructor to initialize PollCard layout using {@param fxml}
+     */
+    public PollCard(Poll poll, int displayedIndex, String fxml) {
+        super(fxml);
+        this.poll = poll;
+        id.setText(displayedIndex + ". ");
+        question.setText(poll.getQuestion().toString());
+
+        answerListPanel = new AnswerListPanel(poll.getAnswers(), poll);
+        answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
+    }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object
