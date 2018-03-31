@@ -105,7 +105,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void addMember(Member member) throws DuplicateMemberException {
-        //updateTagList(member.getTags());
         clubBook.addMember(member);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
@@ -115,9 +114,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateMember(Member target, Member editedMember)
             throws DuplicateMemberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
-
         clubBook.updateMember(target, editedMember);
-        deleteUnusedTags();
         indicateClubBookChanged();
     }
 
@@ -187,42 +184,6 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.deleteTag(tag);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
-    }
-
-    /**
-     * Removes those tags from the master tag list that no members in the club book are tagged with.
-     */
-    private void deleteUnusedTags() {
-        List<Tag> tags = new ArrayList<>(clubBook.getTagList());
-        tags.forEach(tag -> deleteTagIfUnused(tag));
-    }
-
-    /**
-     * Removes {@code tag} from the master tag list if no members in the club book are tagged with it.
-     *
-     * @param tag Tag to remove if no members are tagged with it
-     */
-    private void deleteTagIfUnused(Tag tag) {
-        if (isNotTaggedInMembers(tag)) {
-            try {
-                deleteTag(tag);
-            } catch (TagNotFoundException tnfe) {
-                throw new AssertionError("The tag cannot be missing.");
-            }
-        }
-    }
-
-    /**
-     * Returns true is no member in the club book is tagged with {@code tag}.
-     */
-    private boolean isNotTaggedInMembers(Tag tag) {
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        for (Member member : members) {
-            if (member.getTags().contains(tag)) {
-                return false;
-            }
-        }
-        return true;
     }
     //@@author
 
