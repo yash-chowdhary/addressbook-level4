@@ -1,34 +1,26 @@
 package seedu.club.logic.commands;
 
-import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import seedu.club.model.Model;
-import seedu.club.model.ModelManager;
-import seedu.club.model.UserPrefs;
+import seedu.club.commons.events.ui.CompressMembersRequestEvent;
+import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.ui.testutil.EventsCollectorRule;
 
-/**
- * Contains integration tests (interaction with the Model) and unit tests for DecompressCommand.
- */
 public class DecompressCommandTest {
-
-    private Model model;
-    private Model expectedModel;
-    private DecompressCommand decompressCommand;
-
-    @Before
-    public void setUp() {
-        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
-        decompressCommand = new DecompressCommand();
-    }
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
-    public void execute() {
-        assertCommandSuccess(decompressCommand, model, DecompressCommand.MESSAGE_SUCCESS, expectedModel);
+    public void execute_help_success() {
+        CommandResult result = new DecompressCommand().execute();
+        assertEquals(DecompressCommand.MESSAGE_SUCCESS, result.feedbackToUser);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DecompressMembersRequestEvent);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
     }
 }
