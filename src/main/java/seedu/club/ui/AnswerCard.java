@@ -45,6 +45,14 @@ public class AnswerCard extends UiPart<Region> {
         setVoteCountIndicator();
     }
 
+    public AnswerCard(Answer answer, int displayedIndex, Poll poll, String fxml) {
+        super(fxml);
+        this.answer = answer;
+        this.poll = poll;
+        choice.setText(displayedIndex + ". ");
+        answerValue.setText(answer.getValue());
+    }
+
     private void setVoteCountIndicator() {
         int totalVoteCount = poll.getTotalVoteCount();
         int voteCount = answer.getVoteCount();

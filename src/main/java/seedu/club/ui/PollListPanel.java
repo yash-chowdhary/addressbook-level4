@@ -41,7 +41,7 @@ public class PollListPanel extends UiPart<Region> {
 
     private void setPollListView(ObservableList<Poll> pollList) {
         ObservableList<PollCard> mappedList = EasyBind.map(
-                pollList, (poll) -> new RestrictedPollCard(poll, pollList.indexOf(poll) + 1));
+                pollList, (poll) -> new PollCard(poll, pollList.indexOf(poll) + 1));
         pollListView.setItems(mappedList);
         pollListView.setCellFactory(listView -> new PollListViewCell());
     }

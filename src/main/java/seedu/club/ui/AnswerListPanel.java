@@ -21,14 +21,16 @@ public class AnswerListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(AnswerListPanel.class);
     private ObservableList<Answer> answerList;
     private final Poll poll;
+    private boolean isShowingResults;
 
     @FXML
     private ListView<AnswerCard> answerListView;
 
-    public AnswerListPanel(ObservableList<Answer> answerList, Poll poll) {
+    public AnswerListPanel(ObservableList<Answer> answerList, Poll poll, boolean isShowingResults) {
         super(FXML);
         this.answerList = answerList;
         this.poll = poll;
+        this.isShowingResults = isShowingResults;
         setConnections(answerList);
         registerAsAnEventHandler(this);
     }
@@ -39,7 +41,14 @@ public class AnswerListPanel extends UiPart<Region> {
 
     private void setAnswerListView(ObservableList<Answer> answerList) {
         ObservableList<AnswerCard> mappedList = EasyBind.map(
-                answerList, answer -> new AnswerCard(answer, answerList.indexOf(answer) + 1, poll));
+                answerList, answer -> {
+                if (isShowingResults) {
+                    return new AnswerCard(answer, answerList.indexOf(answer) + 1, poll);
+                } else {
+                    return new RestrictedAnswerCard(answer, answerList.indexOf(answer) + 1, poll);
+                }
+            });
+
         answerListView.setItems(mappedList);
         answerListView.setCellFactory(listView -> new AnswerListViewCell());
         //TODO
