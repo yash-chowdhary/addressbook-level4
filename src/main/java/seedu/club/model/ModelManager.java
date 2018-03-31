@@ -42,6 +42,7 @@ import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -331,6 +332,14 @@ public class ModelManager extends ComponentManager implements Model {
         }
         updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         indicateClubBookChanged();
+    }
+
+    @Override
+    public void viewMyTasks() throws TasksAlreadyListedException {
+        if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
+            throw new TasksAlreadyListedException();
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
     //@@author

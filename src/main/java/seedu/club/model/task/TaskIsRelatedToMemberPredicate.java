@@ -21,8 +21,13 @@ public class TaskIsRelatedToMemberPredicate implements Predicate<Task> {
                 || member.getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
     }
 
+    public Member getMember() {
+        return member;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object other) {
+        return (other == this)
+            || this.member.equals(((TaskIsRelatedToMemberPredicate) other).getMember());
     }
 }
