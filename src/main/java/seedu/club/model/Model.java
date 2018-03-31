@@ -22,6 +22,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 /**
  * The API of the Model component.
@@ -142,4 +143,6 @@ public interface Model {
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
     void updateFilteredTaskList(Predicate<Task> predicate);
+
+    void viewAllTasks() throws TasksCannotBeDisplayedException;
 }

@@ -27,7 +27,7 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
-//@@author yash-chowdhary
+import seedu.club.logic.commands.ViewAllTasksCommand;
 /**
  * Stores list of commands
  */
@@ -56,11 +56,11 @@ public class CommandList {
         commandList.add(UndoCommand.COMMAND_WORD);
         commandList.add(AddTaskCommand.COMMAND_FORMAT);
         commandList.add(DeleteTaskCommand.COMMAND_FORMAT);
+        commandList.add(ViewAllTasksCommand.COMMAND_WORD);
         commandList.add(AddPollCommand.COMMAND_FORMAT);
         commandList.add(DeletePollCommand.COMMAND_FORMAT);
         commandList.add(ExportCommand.COMMAND_FORMAT);
         commandList.add(LogOutCommand.COMMAND_WORD);
-
 
         Collections.sort(commandList);
         return commandList;
