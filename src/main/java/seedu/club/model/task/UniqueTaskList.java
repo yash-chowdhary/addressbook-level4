@@ -5,6 +5,7 @@ package seedu.club.model.task;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -118,7 +119,23 @@ public class UniqueTaskList implements Iterable<Task> {
      */
     public ObservableList<Task> asObservableList() {
         assert CollectionUtil.elementsAreUnique(internalList);
+        sortList();
         return FXCollections.unmodifiableObservableList(internalList);
+    }
+
+    /**
+     * Sorts the list of tasks according to alphabetical order of description.
+     */
+    private void sortList() {
+        internalList.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task task1, Task task2) {
+                if (task1.getDate().getDate().compareTo(task2.getDate().getDate()) == 0) {
+                    return task1.getTime().getTime().compareTo(task2.getTime().getTime());
+                }
+                return task1.getDate().getDate().compareTo(task2.getDate().getDate());
+            }
+        });
     }
 
     @Override

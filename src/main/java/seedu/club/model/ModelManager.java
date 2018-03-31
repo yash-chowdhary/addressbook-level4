@@ -27,6 +27,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
@@ -312,12 +313,40 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+        boolean found = false;
+        for (Member member : filteredMembers) {
+            if (member.getName().equals(name)) {
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new MemberNotFoundException();
+        }
+        try {
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
+            Assignee assignee = new Assignee(name.toString());
+            Status status = new Status(Status.NOT_STARTED_STATUS);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
+            clubBook.addTaskToTaskList(toAdd);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+            indicateClubBookChanged();
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    @Override
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
         String currentMember = getLoggedInMember().getName().toString();
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                || !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+        logger.info("assignor == currentMember" + currentMember.equalsIgnoreCase(assignor.getAssignor()));
+        logger.info("assignee == currentMember" + currentMember.equalsIgnoreCase(assignee.getAssignee()));
+        if (currentMember.equalsIgnoreCase(assignor.getAssignor()) == false
+                && currentMember.equalsIgnoreCase(assignee.getAssignee()) == false) {
             throw new TaskCannotBeDeletedException();
         }
         clubBook.deleteTask(targetTask);
