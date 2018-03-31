@@ -38,6 +38,7 @@ import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
@@ -139,7 +140,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
 
@@ -303,7 +304,7 @@ public class ModelManager extends ComponentManager implements Model {
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
             clubBook.addTaskToTaskList(toAdd);
-            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
