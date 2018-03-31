@@ -1,7 +1,11 @@
 package seedu.club.ui;
 
+import javax.xml.soap.Text;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
@@ -18,7 +22,7 @@ public class AnswerCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label answerValue;
+    private TextArea answerValue;
     @FXML
     private Label choice;
 
@@ -27,7 +31,6 @@ public class AnswerCard extends UiPart<Region> {
         this.answer = answer;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
-
     }
 
     public AnswerCard(Answer answer, int displayedIndex, String fxml) {
