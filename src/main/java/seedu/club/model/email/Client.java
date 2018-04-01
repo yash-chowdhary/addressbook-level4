@@ -1,8 +1,8 @@
 package seedu.club.model.email;
+//@@author yash-chowdhary
 
 import static java.util.Objects.requireNonNull;
 
-//@@author yash-chowdhary
 /**
  * Refers to the email client chosen by the member to send the email.
  */

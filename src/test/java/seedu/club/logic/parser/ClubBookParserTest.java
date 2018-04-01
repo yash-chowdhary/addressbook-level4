@@ -45,6 +45,7 @@ import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
+import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -164,6 +165,12 @@ public class ClubBookParserTest {
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_viewAllTasks() throws Exception {
+        assertTrue(parser.parseCommand(ViewAllTasksCommand.COMMAND_WORD) instanceof ViewAllTasksCommand);
+        assertTrue(parser.parseCommand(ViewAllTasksCommand.COMMAND_WORD + " 1") instanceof ViewAllTasksCommand);
     }
 
     @Test

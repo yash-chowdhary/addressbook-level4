@@ -38,9 +38,11 @@ import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.ProfilePhotoStorage;
 
 /**
@@ -138,7 +140,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
 
@@ -302,7 +304,7 @@ public class ModelManager extends ComponentManager implements Model {
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
             clubBook.addTaskToTaskList(toAdd);
-            updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
@@ -321,6 +323,16 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
+
+    @Override
+    public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+            throw new TasksCannotBeDisplayedException();
+        }
+        updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+        indicateClubBookChanged();
+    }
+
     //@@author
 
     //@@author amrut-prabhu
