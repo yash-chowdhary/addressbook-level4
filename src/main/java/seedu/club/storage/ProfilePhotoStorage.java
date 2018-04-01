@@ -52,16 +52,6 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     }
 
     /**
-     * Returns the absolute file path of the current directory.
-     */
-    public static String getCurrentDirectory() {
-        File file = new File(".");
-        String currentDirectory = file.getAbsolutePath();
-        currentDirectory = currentDirectory.replace('\\', (char) 47); //ASCII 47 = '/'
-        return currentDirectory.substring(0, currentDirectory.length() - 1); //To get rid of "." at end of file path
-    }
-
-    /**
      * Creates a copy the given {@code originalPhoto} in the application's resources.
      * @throws PhotoWriteException if there was any problem writing to the file.
      */

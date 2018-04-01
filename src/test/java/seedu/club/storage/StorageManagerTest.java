@@ -91,6 +91,7 @@ public class StorageManagerTest {
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
 
+    //@@author amrut-prabhu
     @Test
     public void handleProfilePictureChangedEvent_exceptionThrown_eventRaised() {
         // Create a StorageManager while injecting a stub that  throws an exception when the copy Photo method is called
@@ -116,6 +117,7 @@ public class StorageManagerTest {
         storage.handleExportDataEvent(new NewExportDataAvailableEvent("dummy data"));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
+    //@@author
 
 
     /**
@@ -133,6 +135,7 @@ public class StorageManagerTest {
         }
     }
 
+    //@@author amrut-prabhu
     /**
      * A Stub class to throw an exception when the copy photo method is called
      */
@@ -155,5 +158,6 @@ public class StorageManagerTest {
             throw new IOException("dummy exception");
         }
     }
+    //@@author
 
 }
