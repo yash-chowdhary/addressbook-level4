@@ -9,6 +9,7 @@ import java.io.File;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.exceptions.PhotoWriteException;
@@ -16,16 +17,20 @@ import seedu.club.commons.exceptions.PhotoWriteException;
 public class ProfilePhotoStorageTest {
 
     private static final String TEST_PHOTO_PATH = new File("./photos/testPhoto.png").getAbsolutePath();
-    private static final String INVALID_PATH = "invalid/";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Test
     public void copyProfilePhoto_invalidPath_exceptionThrown() throws Exception {
         thrown.expect(PhotoReadException.class);
         ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
-        profilePhotoStorage.copyOriginalPhotoFile(INVALID_PATH, "dummyName");
+
+        String invalidPhotoPath = testFolder.getRoot().getPath() + "invalidFile.xyz";
+        profilePhotoStorage.copyOriginalPhotoFile(invalidPhotoPath, "dummyName");
     }
 
     /**
@@ -40,6 +45,7 @@ public class ProfilePhotoStorageTest {
             ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
             profilePhotoStorage.copyOriginalPhotoFile(TEST_PHOTO_PATH, "testCopy");
         } catch (Exception e) {
+
             expectedException = e;
         }
         assertEquals(null, expectedException);
