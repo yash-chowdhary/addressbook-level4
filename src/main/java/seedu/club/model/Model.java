@@ -12,6 +12,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -93,11 +94,13 @@ public interface Model {
      */
     void updateFilteredPollList(Predicate<Poll> predicate);
 
+    //@@author Song Weiyang
     /**
      * Logs In a member in the club
      */
     void logsInMember(String username, String password);
 
+    //@@author Song Weiyang
     /**
      * Returns the member who is currently logged in to Club Connect.
      */
@@ -136,6 +139,10 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
+    //@@author Song Weiyang
+    /**
+     * Logs out a member from clubbook
+     */
     void logOutMember();
 
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
@@ -143,6 +150,13 @@ public interface Model {
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
     void updateFilteredTaskList(Predicate<Task> predicate);
+
+    //@@author Song Weiyang
+    /**
+     * Signs up a member if the clubbook is empty
+     * @param member
+     */
+    void signUpMember(Member member) throws MemberListNotEmptyException;
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 }
