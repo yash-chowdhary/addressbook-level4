@@ -12,6 +12,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -155,7 +156,7 @@ public interface Model {
      * Signs up a member if the clubbook is empty
      * @param member
      */
-    void signUpMember(Member member);
+    void signUpMember(Member member) throws MemberListNotEmptyException;
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 }

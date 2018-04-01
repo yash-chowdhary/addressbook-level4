@@ -11,8 +11,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 
 //@@author Song Weiyang
 /**
@@ -51,11 +53,11 @@ public class SignUpCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
-        if (model.getClubBook().getMemberList().isEmpty()) {
+    public CommandResult execute() throws CommandException {
+        try {
             model.signUpMember(toSignUp);
             return new CommandResult(MESSAGE_SUCCESS);
-        } else {
+        } catch (MemberListNotEmptyException e) {
             return new CommandResult(MESSAGE_FAILURE);
         }
     }
