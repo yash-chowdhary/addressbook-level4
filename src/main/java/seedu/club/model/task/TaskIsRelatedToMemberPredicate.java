@@ -27,7 +27,8 @@ public class TaskIsRelatedToMemberPredicate implements Predicate<Task> {
 
     @Override
     public boolean equals(Object other) {
-        return (other == this)
-            || this.member.equals(((TaskIsRelatedToMemberPredicate) other).getMember());
+        return (other == this)  // short circuit if same object
+                || (other instanceof TaskIsRelatedToMemberPredicate     // handles nulls
+                && this.member.equals(((TaskIsRelatedToMemberPredicate) other).getMember()));   // state check
     }
 }
