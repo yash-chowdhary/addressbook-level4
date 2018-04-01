@@ -82,6 +82,17 @@ image::help-window.png[height="450"]
 Opens the Club Connect help window (see <<help-window,Figure 2>>). +
 [format] : `help`
 
+=== Signing up a member: `signup`
+Signs up a member to Club Connect. +
+Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...`
+[TIP]
+A member can have any number of tags (including 0).
+
+****
+* You must not specify a group while signing up.
+* The member who signed up will be automatically be added to a group named exco.
+****
+
 === Logging in a member: `login`
 Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD`

@@ -260,6 +260,12 @@ public class AddCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public void signUpMember(Member member) {
+            fail("This method should not be called");
+            return;
+        }
     }
 
     /**
