@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
@@ -187,7 +188,7 @@ public class UniqueMemberList implements Iterable<Member> {
         currentlyLogInMember = member;
     }
 
-    //@@authoer Song Weiyang
+    //@@author Song Weiyang
     /**
      * Changes the password of a member
      */
@@ -201,5 +202,17 @@ public class UniqueMemberList implements Iterable<Member> {
         } else {
             throw new PasswordIncorrectException();
         }
+    }
+    /**
+     * Sign up a user when the clubbook is empty
+     */
+    public void signup(Member member) throws MemberListNotEmptyException {
+        if (!internalList.isEmpty()) {
+            throw new MemberListNotEmptyException();
+        }
+        internalList.add(member);
+        usernameCredentialsHashMap.put(member.getCredentials().getUsername().value, member);
+        usernamePasswordHashMap.put(member.getCredentials().getUsername().value,
+                member.getCredentials().getPassword().value);
     }
 }

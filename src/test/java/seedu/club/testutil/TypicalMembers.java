@@ -31,7 +31,7 @@ public class TypicalMembers {
             .withEmail("alice@example.com")
             .withPhone("85355255")
             .withMatricNumber("A9210701B")
-            .withGroup("logistics")
+            .withGroup("exco")
             .withTags("friends").build();
     public static final Member BENSON = new MemberBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com")

@@ -28,6 +28,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -39,9 +40,11 @@ import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.ProfilePhotoStorage;
 
 /**
@@ -72,6 +75,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPolls = new FilteredList<>(this.clubBook.getPollList());
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
         updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(PREDICATE_NOT_SHOW_ALL_TASKS);
     }
 
     public ModelManager() {
@@ -132,16 +136,18 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
+    //@@author Song Weiyang
     @Override
     public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-            // updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
 
+    //@@author Song Weiyang
     @Override
     public Member getLoggedInMember() {
         return clubBook.getLoggedInMember();
@@ -287,6 +293,7 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
@@ -302,7 +309,7 @@ public class ModelManager extends ComponentManager implements Model {
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
             clubBook.addTaskToTaskList(toAdd);
-            // updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
@@ -321,6 +328,16 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
+
+    @Override
+    public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+            throw new TasksCannotBeDisplayedException();
+        }
+        updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+        indicateClubBookChanged();
+    }
+
     //@@author
 
     //@@author amrut-prabhu
@@ -448,6 +465,13 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredTaskList(Predicate<Task> predicate) {
         requireNonNull(predicate);
         filteredTasks.setPredicate(predicate);
+    }
+
+    //@@author Song Weiyang
+    @Override
+    public void signUpMember(Member member) throws MemberListNotEmptyException {
+        clubBook.signUpMember(member);
+        indicateClubBookChanged();
     }
 
     @Override

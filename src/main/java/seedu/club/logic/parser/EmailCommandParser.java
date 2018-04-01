@@ -1,5 +1,5 @@
 package seedu.club.logic.parser;
-
+//@@author yash-chowdhary
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_BODY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
@@ -18,7 +18,6 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
 
-//@@author yash-chowdhary
 /**
  * Parses input arguments and creates a new EmailCommand object
  */

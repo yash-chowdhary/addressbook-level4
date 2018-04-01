@@ -7,6 +7,7 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
+import seedu.club.model.task.Task;
 
 /**
  * A utility class for test cases.
@@ -46,9 +47,23 @@ public class TestUtil {
     }
 
     /**
+     * Returns the last index of the task in the {@code model}'s task list.
+     */
+    public static Index getLastTaskIndex(Model model) {
+        return Index.fromOneBased(model.getClubBook().getTaskList().size());
+    }
+
+    /**
      * Returns the member in the {@code model}'s member list at {@code index}.
      */
     public static Member getMember(Model model, Index index) {
         return model.getClubBook().getMemberList().get(index.getZeroBased());
+    }
+
+    /**
+     * Returns the task in the {@code model}'s task list at {@code index}.
+     */
+    public static Task getTask(Model model, Index index) {
+        return model.getClubBook().getTaskList().get(index.getOneBased());
     }
 }

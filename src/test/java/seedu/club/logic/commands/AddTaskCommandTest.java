@@ -43,6 +43,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.TaskBuilder;
 
 //@@author yash-chowdhary
@@ -120,6 +121,11 @@ public class AddTaskCommandTest {
         public ReadOnlyClubBook getClubBook() {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+            fail("This method should not be called");
         }
 
         @Override
@@ -268,6 +274,10 @@ public class AddTaskCommandTest {
         @Override
         public void changePassword(String username, String oldPassword, String newPassword)
                 throws PasswordIncorrectException {
+            fail("This method should not be called");
+            return;
+        }
+        public void signUpMember(Member member) {
             fail("This method should not be called");
             return;
         }

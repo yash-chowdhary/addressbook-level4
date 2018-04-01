@@ -19,6 +19,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -208,24 +209,12 @@ public class ClubBook implements ReadOnlyClubBook {
         this.polls.setPolls(polls);
     }
 
-    public void setTasks(Set<Task> tasks) {
-        this.tasks.setTasks(tasks);
-    }
-
     public void addPoll(Poll poll) throws DuplicatePollException {
         polls.add(poll);
     }
 
-    /**
-     * Adds {@code Task toAdd} to the list of tasks.
-     */
-    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
-        tasks.add(taskToAdd);
-    }
 
-    public void deleteTask(Task targetTask) throws TaskNotFoundException {
-        tasks.remove(targetTask);
-    }
+    //@@author Song Weiyang
     /**
      * Logs in a member
      */
@@ -233,6 +222,8 @@ public class ClubBook implements ReadOnlyClubBook {
         members.fillHashMap();
         members.logsInMember(inputUsername, inputPassword);
     }
+
+
     /**
      * logs out a member
      */
@@ -246,6 +237,16 @@ public class ClubBook implements ReadOnlyClubBook {
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
+
+    /**
+     * Sign up a member if it is a new clubbook
+     */
+    public void signUpMember(Member p) throws MemberListNotEmptyException {
+        Member member = syncWithMasterTagList(p);
+        members.signup(member);
+    }
+
+    //@@author
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
      */
@@ -332,7 +333,22 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
-    //@@author yash-chowdhary
+
+    /**
+     * Adds {@code Task toAdd} to the list of tasks.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
+    //@@author
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.

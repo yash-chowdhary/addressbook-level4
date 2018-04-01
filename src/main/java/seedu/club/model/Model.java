@@ -12,6 +12,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -23,6 +24,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 /**
  * The API of the Model component.
@@ -32,8 +34,11 @@ public interface Model {
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
 
 
-    /** {@code Predicate} that always evaluate to false */
+    /** {@code Predicate} that always evaluate to true */
     Predicate<Task> PREDICATE_SHOW_ALL_TASKS = unused -> true;
+
+    /** {@code Predicate} that always evaluate to false */
+    Predicate<Task> PREDICATE_NOT_SHOW_ALL_TASKS = unused -> false;
 
     /** {@code Predicate} that always evaluate to true */
     Predicate<Member> PREDICATE_NOT_SHOW_ALL_MEMBERS = unused -> false;
@@ -90,11 +95,13 @@ public interface Model {
      */
     void updateFilteredPollList(Predicate<Poll> predicate);
 
+    //@@author Song Weiyang
     /**
      * Logs In a member in the club
      */
     void logsInMember(String username, String password);
 
+    //@@author Song Weiyang
     /**
      * Returns the member who is currently logged in to Club Connect.
      */
@@ -133,6 +140,10 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
+    //@@author Song Weiyang
+    /**
+     * Logs out a member from clubbook
+     */
     void logOutMember();
 
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
@@ -140,6 +151,21 @@ public interface Model {
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
     void updateFilteredTaskList(Predicate<Task> predicate);
-
+    //@@author Song Weiyang
+    /**
+     * Changes the password of the member in that list
+     * @param username
+     * @param oldPassword
+     * @param newPassword
+     * @throws PasswordIncorrectException
+     */
     void changePassword(String username, String oldPassword, String newPassword) throws PasswordIncorrectException;
+
+    /**
+     * Signs up a member if the clubbook is empty
+     * @param member
+     */
+    void signUpMember(Member member) throws MemberListNotEmptyException;
+
+    void viewAllTasks() throws TasksCannotBeDisplayedException;
 }
