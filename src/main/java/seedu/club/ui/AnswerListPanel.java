@@ -33,14 +33,15 @@ public class AnswerListPanel extends UiPart<Region> {
     }
 
     private void setAnswersPlaceholder(ObservableList<Answer> answerList) {
+        int totalVoteCount = poll.getTotalVoteCount();
         ObservableList<Node> children = answersPlaceholder.getChildren();
         if (isShowingResults) {
             for (int index = 0; index < answerList.size(); index++) {
-                children.add(new AnswerCard(answerList.get(index), index + 1, poll).getRoot());
+                children.add(new AnswerCard(answerList.get(index), index + 1, totalVoteCount).getRoot());
             }
         } else {
             for (int index = 0; index < answerList.size(); index++) {
-                children.add(new RestrictedAnswerCard(answerList.get(index), index + 1, poll).getRoot());
+                children.add(new RestrictedAnswerCard(answerList.get(index), index + 1, totalVoteCount).getRoot());
             }
         }
     }

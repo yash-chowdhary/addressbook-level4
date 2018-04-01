@@ -17,7 +17,7 @@ public class AnswerCard extends UiPart<Region> {
     private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
     private static final String EMPTY_STRING = "";
     private final Answer answer;
-    private final Poll poll;
+    private final int totalVoteCount;
 
     @FXML
     private HBox cardPane;
@@ -34,29 +34,28 @@ public class AnswerCard extends UiPart<Region> {
     @FXML
     private ProgressIndicator voteCountIndicator;
 
-    public AnswerCard(Answer answer, int displayedIndex, Poll poll) {
+    public AnswerCard(Answer answer, int displayedIndex, int totalVoteCount) {
         super(FXML);
         this.answer = answer;
-        this.poll = poll;
+        this.totalVoteCount = totalVoteCount;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
         voteCount.setText(DESCRIPTION_VOTE_COUNT + answer.getVoteCount());
         setVoteCountIndicator();
     }
 
-    public AnswerCard(Answer answer, int displayedIndex, Poll poll, String fxml) {
+    public AnswerCard(Answer answer, int displayedIndex, int totalVoteCount, String fxml) {
         super(fxml);
         this.answer = answer;
-        this.poll = poll;
+        this.totalVoteCount = totalVoteCount;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
     }
 
     private void setVoteCountIndicator() {
-        int totalVoteCount = poll.getTotalVoteCount();
         int voteCount = answer.getVoteCount();
         double progress = totalVoteCount == 0
-                ? 0 : voteCount / totalVoteCount;
+                ? 0 : ((double) voteCount) / totalVoteCount;
         voteCountIndicator.setProgress(progress);
     }
 

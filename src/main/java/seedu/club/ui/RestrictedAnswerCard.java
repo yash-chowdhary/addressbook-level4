@@ -10,7 +10,7 @@ public class RestrictedAnswerCard extends AnswerCard {
 
     private static final String FXML = "RestrictedAnswerListCard.fxml";
 
-    public RestrictedAnswerCard(Answer answer, int displayedIndex, Poll poll) {
-        super(answer, displayedIndex, poll, FXML);
+    public RestrictedAnswerCard(Answer answer, int displayedIndex, int totalVoteCount) {
+        super(answer, displayedIndex, totalVoteCount, FXML);
     }
 }
