@@ -97,7 +97,6 @@ public class MainApp extends Application {
             if (!clubBookOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with a sample ClubBook");
             }
-            //initialData = clubBookOptional.orElseGet(SampleDataUtil::getSampleClubBook);
             initialData = clubBookOptional.orElse(new ClubBook());
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty ClubBook");
