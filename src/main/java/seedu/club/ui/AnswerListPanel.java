@@ -17,8 +17,7 @@ import seedu.club.model.poll.Poll;
 public class AnswerListPanel extends UiPart<Region> {
     private static final String FXML = "AnswerListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(AnswerListPanel.class);
-    private ObservableList<Answer> answerList;
-    private final Poll poll;
+\   private final Poll poll;
     private boolean isShowingResults;
 
     @FXML
@@ -26,7 +25,6 @@ public class AnswerListPanel extends UiPart<Region> {
 
     public AnswerListPanel(ObservableList<Answer> answerList, Poll poll, boolean isShowingResults) {
         super(FXML);
-        this.answerList = answerList;
         this.poll = poll;
         this.isShowingResults = isShowingResults;
         setAnswersPlaceholder(answerList);
