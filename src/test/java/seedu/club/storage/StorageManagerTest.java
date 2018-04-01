@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Before;
@@ -13,7 +14,12 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.NewExportDataAvailableEvent;
+import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
+import seedu.club.commons.exceptions.PhotoReadException;
+import seedu.club.commons.exceptions.PhotoWriteException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.UserPrefs;
@@ -85,6 +91,32 @@ public class StorageManagerTest {
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
 
+    @Test
+    public void handleProfilePictureChangedEvent_exceptionThrown_eventRaised() {
+        // Create a StorageManager while injecting a stub that  throws an exception when the copy Photo method is called
+        Storage storage = new StorageManager(new XmlClubBookStorage("dummy"),
+                new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorageExceptionThrowingStub(),
+                new CsvClubBookStorage());
+
+        File photoFile = new File("./src/test/resources/photos/");
+        String photoPath = photoFile.getAbsolutePath();
+        storage.handleProfilePictureChangedEvent(new ProfilePhotoChangedEvent(photoPath, "testPhotoCopy.png"));
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataReadingExceptionEvent);
+    }
+
+    @Test
+    public void handleExportDataEvent_exceptionThrown_eventRaised() {
+        // Create a StorageManager while injecting a stub that  throws an exception when the exportData method is called
+        Storage storage = new StorageManager(new XmlClubBookStorage("dummy"),
+                new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorage(),
+                new CsvClubBookStorageExceptionThrowingStub());
+
+        File dummyFile = new File("./src/test/exportFile.csv");
+        storage.handleExportDataEvent(new NewExportDataAvailableEvent(dummyFile));
+        storage.handleExportDataEvent(new NewExportDataAvailableEvent("dummy data"));
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
+    }
+
 
     /**
      * A Stub class to throw an exception when the save method is called
@@ -101,5 +133,27 @@ public class StorageManagerTest {
         }
     }
 
+    /**
+     * A Stub class to throw an exception when the copy photo method is called
+     */
+    class ProfilePhotoStorageExceptionThrowingStub extends ProfilePhotoStorage {
+
+        @Override
+        public void copyOriginalPhotoFile(String originalFilePath, String newName)
+                throws PhotoReadException, PhotoWriteException {
+            throw new PhotoReadException("dummy exception");
+        }
+    }
+
+    /**
+     * A Stub class to throw an exception when the save data method is called
+     */
+    class CsvClubBookStorageExceptionThrowingStub extends CsvClubBookStorage {
+
+        @Override
+        public void saveData(String data) throws IOException {
+            throw new IOException("dummy exception");
+        }
+    }
 
 }

@@ -54,6 +54,6 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
      * Writes data to a CSV file on the hard disk.
      * Raises {@link DataSavingExceptionEvent} if there was an error during writing.
      */
-    void handleExportMemberEvent(NewExportDataAvailableEvent event);
+    void handleExportDataEvent(NewExportDataAvailableEvent event);
     //@@author
 }

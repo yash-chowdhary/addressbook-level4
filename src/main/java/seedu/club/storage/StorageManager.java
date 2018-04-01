@@ -137,7 +137,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
     @Override
     @Subscribe
-    public void handleExportMemberEvent(NewExportDataAvailableEvent event) {
+    public void handleExportDataEvent(NewExportDataAvailableEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Adding member data to file"));
 
         if (event.exportFile != null) {
