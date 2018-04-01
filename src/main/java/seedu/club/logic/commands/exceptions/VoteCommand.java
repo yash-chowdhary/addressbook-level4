@@ -1,33 +1,19 @@
 package seedu.club.logic.commands.exceptions;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_POLLS;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
-import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.UndoableCommand;
-import seedu.club.model.group.Group;
-import seedu.club.model.member.Credentials;
-import seedu.club.model.member.Email;
-import seedu.club.model.member.MatricNumber;
-import seedu.club.model.member.Member;
-import seedu.club.model.member.Name;
-import seedu.club.model.member.Phone;
-import seedu.club.model.member.ProfilePhoto;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
-import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
-import seedu.club.model.tag.Tag;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 
 /**
  * Votes in a poll of an existing poll in the club book.
@@ -46,24 +32,28 @@ public class VoteCommand extends UndoableCommand {
     public static final String MESSAGE_VOTE_FAIL_NO_ANSWER = "No such answer";
     public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll";
 
-    private final Index index;
+    private final Index pollIndex;
+    private final Index answerIndex;
 
     private Poll pollToVoteIn;
     private Poll votedPoll;
 
     /**
-     * @param index of the poll in the filtered poll list to vote in
+     * @param pollIndex   of the poll in the filtered poll list to vote in
+     * @param answerIndex of the answer of the poll in the filtered poll list to vote in
      */
-    public VoteCommand(Index index) {
-        requireNonNull(index);
-        this.index = index;
+    public VoteCommand(Index pollIndex, Index answerIndex) {
+        requireNonNull(pollIndex);
+        requireNonNull(answerIndex)
+        this.pollIndex = pollIndex;
+        this.answerIndex = answerIndex;
     }
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
-            model.updateMember(pollToVoteIn, votedPoll);
-        } catch (QuestionNotFoundException questionNotFoundException) {
+            model.voteInPoll(pollToVoteIn);
+        } catch (PollNotFoundException questionNotFoundException) {
             throw new CommandException(MESSAGE_VOTE_FAIL_NO_QUESTION);
         } catch (AnswerNotFoundException answerNotFoundException) {
             throw new CommandException(MESSAGE_VOTE_FAIL_NO_ANSWER);
@@ -78,11 +68,11 @@ public class VoteCommand extends UndoableCommand {
     protected void preprocessUndoableCommand() throws CommandException {
         List<Poll> lastShownList = model.getFilteredPollList();
 
-        if (index.getZeroBased() >= lastShownList.size()) {
+        if (pollIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
         }
 
-        pollToVoteIn = lastShownList.get(index.getZeroBased());
+        pollToVoteIn = lastShownList.get(pollIndex.getZeroBased());
     }
 
     @Override
@@ -99,7 +89,8 @@ public class VoteCommand extends UndoableCommand {
 
         // state check
         VoteCommand e = (VoteCommand) other;
-        return index.equals(e.index)
+        return pollIndex.equals(e.pollIndex)
+                && answerIndex.equals(e.answerIndex)
                 && Objects.equals(pollToVoteIn, e.pollToVoteIn);
     }
 
