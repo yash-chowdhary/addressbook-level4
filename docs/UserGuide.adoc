@@ -82,7 +82,7 @@ image::help-window.png[height="450"]
 Opens the Club Connect help window (see <<help-window,Figure 2>>). +
 [format] : `help`
 
-=== Logging in a member: `login`
+=== Logging in a member: `login` (Since v1.3)
 Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD`
 
@@ -111,17 +111,40 @@ Examples:
 Adds a task to Club Connect. +
 Format: `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME`
 
+*****
+* The `date` and `time` attributes must be valid dates and time (in 24-hour format).
+* By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in. This cannot be changed.
+* If you wish to assign taks to other members in the capacity of an Exco member, use the `assigntask` command.
+* The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
+*****
+
 [NOTE]
-The `date` and `time` attributes must be valid dates and time (in 24-hour format).
-[NOTE]
-By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in. This cannot be changed. If you wish to assign taks to other members in the capacity of an Exco member, use the `assigntask` command.
-[NOTE]
-The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
+Duplicate tasks are not allowed.
 
 Examples:
 
 * `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00`
 * `addtask desc/Buy Food d/03.04.2018 ti/15:00`
+
+=== Adding a task: `assigntask` (Since v1.4)
+
+Adds a task to Club Connect and assigns it to a member. +
+Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME`
+
+*****
+* The `date` and `time` attributes must be valid dates and time (in 24-hour format).
+* The member who the task is meant to be assigned to must exist in the club book.
+* The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
+*****
+[NOTE]
+Duplicate tasks are not allowed.
+
+This command assigns the task to the member based on the entered `NAME`.
+
+Examples:
+
+* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 n/Bernice Yu`
+* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 n/David Li`
 
 === Listing all members : `list`
 
@@ -152,7 +175,7 @@ Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
 Edits the group of the 3rd member to be `finance`.
 
-=== Locating members by name: `find`
+=== Locating members: `find` (Since v1.2)
 
 Finds members whose names contain any of the given keywords. +
 Format: `find [PREFIX] KEYWORD [MORE_KEYWORDS]` +
@@ -184,6 +207,20 @@ Returns all members in the logistics `group`
 * `find p/ 123` +
 Returns any member having phone number containing 123.
 
+=== Viewing all tasks in Club Connect : `viewalltasks` (Since v1.4)
+
+Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
+Format: `viewalltasks`
+
+[NOTE]
+This command can only be invoked by `EXCO` members.
+
+=== Viewing tasks assigned to or assigned by you : `viewmytasks` (Since v1.4)
+
+Display all tasks created/assigned by the currently member in Club Connect. +
+The main purpose of this command is to enable `EXCO` members to toggle between all tasks and those related to them. +
+Format: `viewmytasks`
+
 === Deleting a member : `delete`
 
 Deletes the specified member from the address book. +
@@ -204,7 +241,7 @@ Deletes the 2nd member in the member listing.
 `delete 1` +
 Deletes the 1st member in the results of the `find` command.
 
-=== Deleting a group : `removegroup`
+=== Deleting a group : `removegroup` (Since v1.1)
 
 Deletes the specified group from the address book. +
 Format: `removegroup g/GROUP`
@@ -222,8 +259,7 @@ Examples:
 * `removegroup g/logistics` +
 Deletes the `logistics` group in the address book.
 
-=== Deleting a tag : `deletetag`
-
+=== Deleting a tag : `deletetag` (Since v1.1)
 
 Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG`
@@ -238,7 +274,27 @@ Examples:
 * `deletetag t/treasurer` +
 Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
 
-=== Emailing club members belonging to a particular group or tag: `email`
+=== Deleting a task : `deletetask` (Since v1.3)
+
+Deletes the specified task from the club book. +
+Format: `deletetask INDEX`
+
+****
+* Deletes the task at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+Examples:
+
+* `viewmytasks` +
+`deletetask 2` +
+Deletes the 2nd task in the results of the `viewmytasks` command.
+* `viewalltasks` +
+`deletetask 1` +
+Deletes the 1st task in the results of the `viewalltasks` command.
+
+=== Emailing club members: `email` (Since v1.2)
 
 Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
 Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]`
@@ -332,6 +388,9 @@ Example:
 
 * `decompress` +
 Decompresses member details.
+
+=== Auto-Complete Command (Since v1.3)
+Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
 
 === Listing entered commands : `history`
 
