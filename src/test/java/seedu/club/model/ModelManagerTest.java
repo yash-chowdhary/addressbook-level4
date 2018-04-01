@@ -18,12 +18,20 @@ import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 
+import seedu.club.commons.events.model.NewExportDataAvailableEvent;
+import seedu.club.commons.util.FileUtil;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -41,10 +49,20 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TaskBuilder;
+import seedu.club.ui.testutil.EventsCollectorRule;
 
 public class ModelManagerTest {
+
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/CsvClubBookStorageTest/");
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
     public void getFilteredMemberList_modifyList_throwsUnsupportedOperationException() {
@@ -236,6 +254,44 @@ public class ModelManagerTest {
         ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
         expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void exportClubConnectMembers_validFile_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+
+        //Expected content of CSV export file
+        String csvRecordSeparator = ",";
+        String csvHeaders = "\"Name\",\"Phone\",\"Email\",\"Matriculation Number\",\"Group\",\"Tags\"";
+        String csvAlice = "\"Alice Pauline\",\"85355255\",\"alice@example.com\",\"A9210701B\","
+                + "\"logistics\",\"friends,\"";
+        String csvBenson = "\"Benson Meier\",\"98765432\",\"johnd@example.com\",\"A8389539B\","
+                + "\"pr\",\"owesMoney, friends,\"";
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(csvHeaders).append(csvRecordSeparator)
+                .append(csvAlice).append(csvRecordSeparator)
+                .append(csvBenson).append(csvRecordSeparator);
+        String csvFileContent = builder.toString();
+
+
+
+        File expectedFile = new File(new File(TEST_DATA_FOLDER + "expected.csv").getAbsolutePath());
+        //File actualFile = new File(TEST_DATA_FOLDER + "actual.csv");
+        /*String filePath = new File(TEST_DATA_FOLDER + "actual.csv").getAbsolutePath();
+        File file = new File(filePath);
+        FileUtil.createIfMissing(file);
+        modelManager.exportClubConnectMembers(file);*/
+
+
+        File output = temporaryFolder.newFile("actual.csv");
+
+        modelManager.exportClubConnectMembers(output);
+
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof NewExportDataAvailableEvent);
     }
 
     @Test

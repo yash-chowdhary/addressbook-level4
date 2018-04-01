@@ -317,6 +317,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void exportClubConnectMembers(File exportFile) throws IOException {
+        requireNonNull(exportFile);
         indicateNewExport(exportFile);
 
         exportHeaders(exportFile);
