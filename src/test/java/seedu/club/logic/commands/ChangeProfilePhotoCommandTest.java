@@ -130,6 +130,11 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public void signUpMember(Member member) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void addMember(Member member) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
