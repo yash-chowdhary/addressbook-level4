@@ -1,6 +1,7 @@
 package systemtests;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_PERMISSIONS;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.CommandTestUtil.EMPTY_STRING;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
@@ -24,6 +25,7 @@ import org.junit.Test;
 import javafx.collections.ObservableList;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.LogInCommand;
+import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
@@ -89,9 +91,43 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
         expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_CARL);
         assertCommandSuccess(command, model, expectedMessage);
 
+        /* --------------------------------- Perform invalid assigntask operations ------------------------------ */
+        /* Case: member not found -> rejected */
+        command = AssignTaskCommand.COMMAND_WORD + " "
+                + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
+                + NAME_DESC_BOB;
+        assertCommandFailure(command, AssignTaskCommand.MESSAGE_MEMBER_NOT_FOUND);
+
+        command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
+        assertCommandFailure(command, AssignTaskCommand.MESSAGE_DUPLICATE_TASK);
+
         /* --------------------- Perform assigntask operations on the shown filtered list ----------------------- */
 
         /* --------------------------------- Perform invalid assigntask operations ------------------------------ */
+        String logoutCommand = " " + LogOutCommand.COMMAND_WORD;
+        executeCommand(logoutCommand);
+
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(1).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+
+        /* Case: add a task to a non-empty address book,
+         * command with leading spaces and trailing spaces -> REJECTED because Benson is not an EXCO member.
+         */
+        command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_CARL;
+
+        assertCommandFailure(command, MESSAGE_INVALID_PERMISSIONS);
+
+        logoutCommand = " " + LogOutCommand.COMMAND_WORD;
+        executeCommand(logoutCommand);
+
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+
+
         /* Case: missing description -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
@@ -143,15 +179,7 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
                 + INVALID_NAME_DESC;
         assertCommandFailure(command, Name.MESSAGE_NAME_CONSTRAINTS);
 
-        /* Case: member not found -> rejected */
-        command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BOB;
-        assertCommandFailure(command, AssignTaskCommand.MESSAGE_MEMBER_NOT_FOUND);
 
-        command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
-        assertCommandFailure(command, AssignTaskCommand.MESSAGE_DUPLICATE_TASK);
 
     }
 

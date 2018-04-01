@@ -25,6 +25,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -251,6 +252,8 @@ public class ModelManagerTest {
             assertEquals(expectedModel, modelManager);
         } catch (MemberNotFoundException mnfe) {
             fail("This exception should not be caught");
+        } catch (IllegalExecutionException iee) {
+            fail("This exception should not be caught");
         }
     }
 
@@ -269,7 +272,31 @@ public class ModelManagerTest {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
             assertEquals(expectedModel, modelManager);
+        } catch (IllegalExecutionException iee) {
+            fail("This exception should not be caught");
         }
+    }
+
+    @Test
+    public void assignTask_invalidPermission_throwsExcpetion() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(BOB).withTask(BUY_FOOD).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(BOB.getCredentials().getUsername().value, BOB.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(BOB.getCredentials().getUsername().value, BOB.getCredentials().getPassword().value);
+
+        try {
+            modelManager.assignTask(BUY_CONFETTI, AMY.getName());
+        } catch (DuplicateTaskException dte) {
+            fail("This exception should not be caught");
+        } catch (MemberNotFoundException mnfe) {
+            fail("This exception should not be caught");
+        } catch (IllegalExecutionException iee) {
+            assertEquals(expectedModel, modelManager);
+        }
+
     }
 
     @Test

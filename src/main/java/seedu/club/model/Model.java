@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -147,5 +148,6 @@ public interface Model {
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 
-    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException;
+    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+            IllegalExecutionException;
 }

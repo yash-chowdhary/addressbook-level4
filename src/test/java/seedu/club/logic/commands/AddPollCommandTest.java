@@ -20,6 +20,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -127,7 +128,8 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+                IllegalExecutionException {
             fail("This method should not be called");
         }
 
