@@ -3,7 +3,7 @@ package seedu.club.commons.events.ui;
 import seedu.club.commons.events.BaseEvent;
 
 /**
- * An event requesting to view all poll results.
+ * An event requesting to hide all poll results.
  */
 public class HideResultsRequestEvent extends BaseEvent {
 

@@ -34,6 +34,9 @@ public class PollCard extends UiPart<Region> {
     @FXML
     private Label totalVoteCount;
 
+    /**
+     * A constructor to initialize PollCard using {@value FXML} with results
+     */
     public PollCard(Poll poll, int displayedIndex) {
         super(FXML);
         this.poll = poll;
@@ -47,7 +50,7 @@ public class PollCard extends UiPart<Region> {
     }
 
     /**
-     * A constructor to initialize PollCard layout using {@param fxml}
+     * A constructor to initialize PollCard using {@param fxml} without results
      */
     public PollCard(Poll poll, int displayedIndex, String fxml) {
         super(fxml);
@@ -75,9 +78,5 @@ public class PollCard extends UiPart<Region> {
         PollCard card = (PollCard) other;
         return id.getText().equals(card.id.getText())
                 && poll.equals(card.poll);
-    }
-
-    protected Label getId() {
-        return id;
     }
 }

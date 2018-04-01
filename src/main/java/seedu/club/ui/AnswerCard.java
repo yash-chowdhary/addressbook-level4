@@ -8,14 +8,13 @@ import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
 
 /**
- * An UI component that displays information of a {@code answerValue}.
+ * A UI component that displays information of an {@code answer}.
  */
 public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
     private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
     private static final String EMPTY_STRING = "";
-    private final Answer answer;
     private final int totalVoteCount;
 
     @FXML
@@ -33,25 +32,29 @@ public class AnswerCard extends UiPart<Region> {
     @FXML
     private ProgressIndicator voteCountIndicator;
 
+    /**
+     * A constructor to initialize AnswerCard using {@value FXML} with results
+     */
     public AnswerCard(Answer answer, int displayedIndex, int totalVoteCount) {
         super(FXML);
-        this.answer = answer;
         this.totalVoteCount = totalVoteCount;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
         voteCount.setText(DESCRIPTION_VOTE_COUNT + answer.getVoteCount());
-        setVoteCountIndicator();
+        setVoteCountIndicator(answer);
     }
 
+    /**
+     * A constructor to initialize AnswerCard using {@param fxml} without results
+     */
     public AnswerCard(Answer answer, int displayedIndex, int totalVoteCount, String fxml) {
         super(fxml);
-        this.answer = answer;
         this.totalVoteCount = totalVoteCount;
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
     }
 
-    private void setVoteCountIndicator() {
+    private void setVoteCountIndicator(Answer answer) {
         int voteCount = answer.getVoteCount();
         double progress = totalVoteCount == 0
                 ? 0 : ((double) voteCount) / totalVoteCount;
@@ -73,6 +76,6 @@ public class AnswerCard extends UiPart<Region> {
         // state check
         AnswerCard card = (AnswerCard) other;
         return choice.getText().equals(card.choice.getText())
-                && answer.equals(card.answer);
+                && answerValue.equals(card.answerValue);
     }
 }

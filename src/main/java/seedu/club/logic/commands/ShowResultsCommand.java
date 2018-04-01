@@ -4,7 +4,7 @@ import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ShowResultsRequestEvent;
 
 /**
- * Lists all members in the club book to the user.
+ * Shows all poll results in the club book to the user.
  */
 public class ShowResultsCommand extends Command {
 

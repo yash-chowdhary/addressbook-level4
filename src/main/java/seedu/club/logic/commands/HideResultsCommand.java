@@ -4,7 +4,7 @@ import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
 
 /**
- * Lists all members in the club book to the user.
+ * Hides all poll results in the club book to the user.
  */
 public class HideResultsCommand extends Command {
 
