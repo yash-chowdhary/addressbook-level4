@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -111,6 +112,11 @@ public class AddTaskCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+        }
+
         @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called");

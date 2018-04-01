@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
@@ -30,8 +31,10 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Assignee;
@@ -129,10 +132,21 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void voteInPoll(Poll poll, Index answerIndex)
+            throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+        requireAllNonNull(poll, answerIndex);
+
+        clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
+        indicateClubBookChanged();
+    }
+
+    @Override
     public synchronized void deletePoll(Poll target) throws PollNotFoundException {
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
+
+
 
     @Override
     public void logsInMember(String username, String password) {

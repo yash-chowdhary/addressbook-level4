@@ -8,9 +8,13 @@ import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.CollectionUtil;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 
 /**
  * A list of polls that enforces no nulls and uniqueness between its elements.
@@ -46,6 +50,16 @@ public class UniquePollList implements Iterable<Poll> {
         requireAllNonNull(polls);
         internalList.setAll(polls);
         assert CollectionUtil.elementsAreUnique(internalList);
+    }
+
+    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+            throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+        int pollIndex = internalList.indexOf(poll);
+        if (pollIndex == -1) {
+            throw new PollNotFoundException();
+        } else {
+            internalList.get(pollIndex).vote(answerIndex, polleeMatricNumber);
+        }
     }
 
     /**

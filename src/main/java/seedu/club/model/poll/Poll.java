@@ -11,7 +11,10 @@ import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.model.member.MatricNumber;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 
 /**
  * Represents a Poll in the club book.
@@ -73,6 +76,20 @@ public class Poll {
      */
     public Set<MatricNumber> getPolleesMatricNumbers() {
         return Collections.unmodifiableSet(polleesMatricNumbers);
+    }
+
+    public void vote(Index answerIndex, MatricNumber polleeMatricNumber) throws
+            AnswerNotFoundException, UserAlreadyVotedException {
+        if (polleesMatricNumbers.contains(polleeMatricNumber)) {
+            throw new UserAlreadyVotedException();
+        } else {
+            try {
+                answers.get(answerIndex.getZeroBased()).voteThisAnswer();
+            } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                throw new AnswerNotFoundException();
+            }
+            polleesMatricNumbers.add(polleeMatricNumber);
+        }
     }
 
     @Override

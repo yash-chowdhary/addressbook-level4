@@ -28,15 +28,12 @@ public class VoteCommand extends UndoableCommand {
             + "Parameters: POLL_INDEX (must be a positive integer) QUESTION_INDEX (must be a positive integer)";
 
     public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been received";
-    public static final String MESSAGE_VOTE_FAIL_NO_QUESTION = "No such question";
-    public static final String MESSAGE_VOTE_FAIL_NO_ANSWER = "No such answer";
     public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll";
 
     private final Index pollIndex;
     private final Index answerIndex;
 
     private Poll pollToVoteIn;
-    private Poll votedPoll;
 
     /**
      * @param pollIndex   of the poll in the filtered poll list to vote in
@@ -44,7 +41,7 @@ public class VoteCommand extends UndoableCommand {
      */
     public VoteCommand(Index pollIndex, Index answerIndex) {
         requireNonNull(pollIndex);
-        requireNonNull(answerIndex)
+        requireNonNull(answerIndex);
         this.pollIndex = pollIndex;
         this.answerIndex = answerIndex;
     }
@@ -52,13 +49,13 @@ public class VoteCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
-            model.voteInPoll(pollToVoteIn);
-        } catch (PollNotFoundException questionNotFoundException) {
-            throw new CommandException(MESSAGE_VOTE_FAIL_NO_QUESTION);
-        } catch (AnswerNotFoundException answerNotFoundException) {
-            throw new CommandException(MESSAGE_VOTE_FAIL_NO_ANSWER);
+            model.voteInPoll(pollToVoteIn, answerIndex);
         } catch (UserAlreadyVotedException userAlreadyVotedException) {
             throw new CommandException(MESSAGE_VOTE_FAIL_ALREADY_VOTED);
+        } catch (PollNotFoundException questionNotFoundException) {
+            throw new AssertionError("The target poll cannot be missing");
+        } catch (AnswerNotFoundException answerNotFoundException) {
+            throw new AssertionError("The target answer cannot be missing");
         }
         model.updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
         return new CommandResult(String.format(MESSAGE_VOTE_SUCCESS));
@@ -71,7 +68,9 @@ public class VoteCommand extends UndoableCommand {
         if (pollIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
         }
-
+        if (answerIndex.getZeroBased() >= pollToVoteIn.getAnswers().size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX);
+        }
         pollToVoteIn = lastShownList.get(pollIndex.getZeroBased());
     }
 
