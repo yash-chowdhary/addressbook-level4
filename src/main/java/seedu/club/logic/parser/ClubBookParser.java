@@ -144,7 +144,7 @@ public class ClubBookParser {
 
         case HideResultsCommand.COMMAND_WORD:
             return new HideResultsCommand();
-            
+
         case ViewAllTasksCommand.COMMAND_WORD:
             return new ViewAllTasksCommand();
 

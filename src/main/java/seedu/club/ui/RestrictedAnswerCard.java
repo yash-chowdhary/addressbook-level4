@@ -1,7 +1,6 @@
 package seedu.club.ui;
 
 import seedu.club.model.poll.Answer;
-import seedu.club.model.poll.Poll;
 
 /**
  * An UI component that displays information of a {@code answerValue} except the results.

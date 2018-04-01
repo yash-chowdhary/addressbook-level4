@@ -6,7 +6,6 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
-import seedu.club.model.poll.Poll;
 
 /**
  * An UI component that displays information of a {@code answerValue}.
