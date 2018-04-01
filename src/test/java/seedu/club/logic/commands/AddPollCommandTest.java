@@ -150,6 +150,12 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void signUpMember(Member member) {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
         public FilteredList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
             return null;
