@@ -30,11 +30,12 @@ public class PollListPanel extends UiPart<Region> {
 
     public PollListPanel(ObservableList<Poll> pollList) {
         super(FXML);
-        setPollListView(pollList);
+        this.pollList = pollList;
+        setPollListView();
         registerAsAnEventHandler(this);
     }
 
-    private void setPollListView(ObservableList<Poll> pollList) {
+    private void setPollListView() {
         ObservableList<PollCard> mappedList = EasyBind.map(
                 pollList, (poll) -> {
                 if (isDisplayingPollResults) {
@@ -53,7 +54,7 @@ public class PollListPanel extends UiPart<Region> {
     protected void showPollResults() {
         if (!isDisplayingPollResults) {
             isDisplayingPollResults = true;
-            setPollListView(pollList);
+            setPollListView();
         }
     }
 
@@ -63,7 +64,7 @@ public class PollListPanel extends UiPart<Region> {
     protected void hidePollResults() {
         if (isDisplayingPollResults) {
             isDisplayingPollResults = false;
-            setPollListView(pollList);
+            setPollListView();
         }
     }
 
