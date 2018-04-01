@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
 /**
  * A list of members that enforces uniqueness between its elements and does not allow nulls.
@@ -184,5 +185,21 @@ public class UniqueMemberList implements Iterable<Member> {
 
     public void setCurrentlyLogInMember(Member member) {
         currentlyLogInMember = member;
+    }
+
+    //@@authoer Song Weiyang
+    /**
+     * Changes the password of a member
+     */
+    public void changPassword (String username, String oldPassword, String newPassword)
+            throws PasswordIncorrectException {
+        Member checkMember = usernameCredentialsHashMap.get(username);
+        if (checkMember != null && usernamePasswordHashMap.get(username).equals(oldPassword)) {
+            internalList.get(internalList.indexOf(checkMember)).getCredentials().setPassword(new Password(newPassword));
+            usernamePasswordHashMap.remove(username);
+            usernamePasswordHashMap.put(username, newPassword);
+        } else {
+            throw new PasswordIncorrectException();
+        }
     }
 }

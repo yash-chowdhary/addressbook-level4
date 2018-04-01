@@ -20,6 +20,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.UniquePollList;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -395,6 +396,17 @@ public class ClubBook implements ReadOnlyClubBook {
             throw new AssertionError("Modifying a member's tags only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
+    }
+    //@@author Song Weiyang
+    /**
+     * Change the password of {@code member} in the ClubBook.
+     * @param username
+     * @param oldpassword
+     * @param newPassword
+     */
+    public void changePassword (String username, String oldpassword,
+                                String newPassword) throws PasswordIncorrectException {
+        members.changPassword(username, oldpassword, newPassword);
     }
 
     //// util methods
