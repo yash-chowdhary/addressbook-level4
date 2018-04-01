@@ -57,10 +57,11 @@ public class ProfilePhotoStorageTest {
      * @throws PhotoWriteException not expected
      */
     @Test
-    public void copyProfilePhoto_validPath_exceptionThrown() throws PhotoReadException, PhotoWriteException {
+    public void copyProfilePhoto_validPath_exceptionThrown() throws Exception {
         thrown.expect(PhotoWriteException.class);
         ProfilePhotoStorageExceptionThrowingStub profilePhotoStorage = new ProfilePhotoStorageExceptionThrowingStub();
-        profilePhotoStorage.copyOriginalPhotoFile(TEST_PHOTO_PATH, "testCopy");
+        String photoPath = testFolder.newFile("testPhoto.png").getAbsolutePath();
+        profilePhotoStorage.copyOriginalPhotoFile(photoPath, "testCopy");
     }
 
     /**
