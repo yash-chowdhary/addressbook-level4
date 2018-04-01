@@ -16,8 +16,6 @@ import seedu.club.commons.exceptions.PhotoWriteException;
 
 public class ProfilePhotoStorageTest {
 
-    private static final String TEST_PHOTO_PATH = new File("./photos/testPhoto.png").getAbsolutePath();
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -42,10 +40,11 @@ public class ProfilePhotoStorageTest {
     public void copyProfilePhoto_validPath_success() throws PhotoReadException, PhotoWriteException {
         Exception expectedException = null;
         try {
-            ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
-            profilePhotoStorage.copyOriginalPhotoFile(TEST_PHOTO_PATH, "testCopy");
+            ProfilePhotoStorageStubAcceptingCreateCopy profilePhotoStorage =
+                    new ProfilePhotoStorageStubAcceptingCreateCopy();
+            String photoPath = testFolder.newFile("testPhoto.png").getAbsolutePath();
+            profilePhotoStorage.copyOriginalPhotoFile(photoPath, "testCopy");
         } catch (Exception e) {
-
             expectedException = e;
         }
         assertEquals(null, expectedException);
@@ -65,6 +64,18 @@ public class ProfilePhotoStorageTest {
     }
 
     /**
+     * A Stub class that always accepts the createPhotoFileCopy method.
+     */
+    private class ProfilePhotoStorageStubAcceptingCreateCopy extends ProfilePhotoStorage {
+
+        @Override
+        public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
+            return;
+        }
+
+    }
+
+    /**
      * A Stub class to throw an exception when the createPhotoFileCopy method is called.
      */
     class ProfilePhotoStorageExceptionThrowingStub extends ProfilePhotoStorage {
@@ -73,5 +84,6 @@ public class ProfilePhotoStorageTest {
         public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
             throw new PhotoWriteException("dummy exception");
         }
+
     }
 }
