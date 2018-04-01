@@ -398,7 +398,7 @@ Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> 
 Format: 'export CSV_FILE_PATH`
 
 ****
-* CSV_FILE_PATH must be an absolute path to the photo.
+* CSV_FILE_PATH must be an absolute path to the CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
 * If the CSV file already exists, then the member data is added to the end of the file (i.e. it does not overwrite the existing file).
@@ -411,6 +411,25 @@ Examples:
 
 * `export C:/Users/John Doe/Desktop/club.csv` +
 Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
+
+=== Importing members into Club Connect: `import` (Since v1.4)
+
+Imports the details of all members in the specified CSV file into Club Connect.
+Format: 'import CSV_FILE_PATH`
+
+****
+* CSV_FILE_PATH must be an absolute path to the CSV file.
+* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
+* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+****
+
+[NOTE]
+You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
+
+Examples:
+
+* `import C:/Users/John Doe/Desktop/members.csv` +
+Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
 
 === Compressing member details : `compress` (Since v1.2)
 
@@ -595,6 +614,7 @@ Not satisfied with your productivity while using Club Connect? Can't remember th
 
 * *Command shortcuts*
 * Lorem Ipsum
+* CSV format for 'import'
 
 == Coming in v2.0
 
