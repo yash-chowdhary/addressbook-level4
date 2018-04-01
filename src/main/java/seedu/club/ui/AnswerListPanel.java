@@ -2,13 +2,11 @@ package seedu.club.ui;
 
 import java.util.logging.Logger;
 
-import org.fxmisc.easybind.EasyBind;
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.Node;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
@@ -24,51 +22,25 @@ public class AnswerListPanel extends UiPart<Region> {
     private boolean isShowingResults;
 
     @FXML
-    private ListView<AnswerCard> answerListView;
+    private VBox answersPlaceholder;
 
     public AnswerListPanel(ObservableList<Answer> answerList, Poll poll, boolean isShowingResults) {
         super(FXML);
         this.answerList = answerList;
         this.poll = poll;
         this.isShowingResults = isShowingResults;
-        setConnections(answerList);
-        registerAsAnEventHandler(this);
+        setAnswersPlaceholder(answerList);
     }
 
-    private void setConnections(ObservableList<Answer> answerList) {
-        setAnswerListView(answerList);
-    }
-
-    private void setAnswerListView(ObservableList<Answer> answerList) {
-        ObservableList<AnswerCard> mappedList = EasyBind.map(
-                answerList, answer -> {
-                if (isShowingResults) {
-                    return new AnswerCard(answer, answerList.indexOf(answer) + 1, poll);
-                } else {
-                    return new RestrictedAnswerCard(answer, answerList.indexOf(answer) + 1, poll);
-                }
-            });
-
-        answerListView.setItems(mappedList);
-        answerListView.setCellFactory(listView -> new AnswerListViewCell());
-        //TODO
-        answerListView.setMaxHeight(52 * 4);
-    }
-
-    /**
-     * Custom {@code ListCell} that displays the graphics of a {@code AnswerCard}.
-     */
-    class AnswerListViewCell extends ListCell<AnswerCard> {
-
-        @Override
-        protected void updateItem(AnswerCard answer, boolean empty) {
-            super.updateItem(answer, empty);
-
-            if (empty || answer == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                setGraphic(answer.getRoot());
+    private void setAnswersPlaceholder(ObservableList<Answer> answerList) {
+        ObservableList<Node> children = answersPlaceholder.getChildren();
+        if (isShowingResults) {
+            for (int index = 0; index < answerList.size(); index++) {
+                children.add(new AnswerCard(answerList.get(index), index + 1, poll).getRoot());
+            }
+        } else {
+            for (int index = 0; index < answerList.size(); index++) {
+                children.add(new RestrictedAnswerCard(answerList.get(index), index + 1, poll).getRoot());
             }
         }
     }

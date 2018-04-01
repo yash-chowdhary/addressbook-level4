@@ -3,7 +3,6 @@ package seedu.club.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
@@ -24,7 +23,7 @@ public class AnswerCard extends UiPart<Region> {
     private HBox cardPane;
 
     @FXML
-    private TextArea answerValue;
+    private Label answerValue;
 
     @FXML
     private Label choice;

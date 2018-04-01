@@ -2,12 +2,10 @@ package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.logic.commands.HelpCommand.SHOWING_HELP_MESSAGE;
 
 import org.junit.Rule;
 import org.junit.Test;
 
-import seedu.club.commons.events.ui.ShowHelpRequestEvent;
 import seedu.club.commons.events.ui.ShowResultsRequestEvent;
 import seedu.club.ui.testutil.EventsCollectorRule;
 

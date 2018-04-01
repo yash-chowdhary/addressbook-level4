@@ -6,10 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 
-import seedu.club.commons.events.ui.CompressMembersRequestEvent;
 import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
-import seedu.club.commons.events.ui.HideResultsRequestEvent;
-import seedu.club.commons.events.ui.ShowResultsRequestEvent;
 import seedu.club.ui.testutil.EventsCollectorRule;
 
 public class DecompressCommandTest {
