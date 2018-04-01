@@ -44,6 +44,8 @@ public class VoteCommand extends UndoableCommand {
         requireNonNull(answerIndex);
         this.pollIndex = pollIndex;
         this.answerIndex = answerIndex;
+        System.out.println("pollIndex = " + pollIndex.getOneBased());
+        System.out.println("answerIndex = " + answerIndex.getOneBased());
     }
 
     @Override
@@ -68,10 +70,12 @@ public class VoteCommand extends UndoableCommand {
         if (pollIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
         }
+
+        pollToVoteIn = lastShownList.get(pollIndex.getZeroBased());
+
         if (answerIndex.getZeroBased() >= pollToVoteIn.getAnswers().size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX);
         }
-        pollToVoteIn = lastShownList.get(pollIndex.getZeroBased());
     }
 
     @Override
