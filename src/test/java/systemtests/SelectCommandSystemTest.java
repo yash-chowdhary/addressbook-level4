@@ -11,15 +11,22 @@ import static seedu.club.testutil.TypicalMembers.getTypicalMembers;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.index.Index;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.member.Member;
 
 public class SelectCommandSystemTest extends ClubBookSystemTest {
     @Test
     public void select() {
+        ObservableList<Member> memberObservableList = getModel().getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
         /* ------------------------ Perform select operations on the shown unfiltered list -------------------------- */
 
         /* Case: select the first card in the member list, command with leading spaces and trailing spaces

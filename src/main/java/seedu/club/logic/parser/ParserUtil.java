@@ -2,18 +2,24 @@ package seedu.club.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.commons.util.StringUtil;
 
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
@@ -22,7 +28,12 @@ import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Question;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.Date;
+import seedu.club.model.task.Description;
+import seedu.club.model.task.Time;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -37,6 +48,9 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
+    public static final String MESSAGE_INVALID_PATH = "Path should be a valid absolute path to a file.";
+
+    private static final Logger logger = LogsCenter.getLogger(ParserUtil.class);
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -187,6 +201,7 @@ public class ParserUtil {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
 
+    //@@author amrut-prabhu
     /**
      * Parses a {@code String photo} into an {@code ProfilePhoto}.
      * Leading and trailing whitespaces will be trimmed.
@@ -210,6 +225,66 @@ public class ParserUtil {
         requireNonNull(photo);
         return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
     }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code path} is invalid.
+     */
+    public static File parsePath(String path) throws IllegalValueException {
+        requireNonNull(path);
+        String trimmedPath = path.trim();
+
+        if (trimmedPath.isEmpty()) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return new File(trimmedPath);
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     *
+     * @throws IllegalValueException if the given {@code path} is not absolute or is a directory.
+     */
+    public static File parseExportPath(String path) throws IllegalValueException, IOException {
+        File file = parsePath(path);
+
+        if (!file.isAbsolute() || file.isDirectory() || !validFileName(path)) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        file.createNewFile();
+        return file;
+    }
+
+    /**
+     * Returns true if {@code path} represents the path of a CSV (.csv) file.
+     */
+    private static boolean validFileName(String path) {
+        String csvFileExtension = ".csv";
+
+        int length = path.length();
+        String fileExtension = path.substring(length - 4);
+        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     *
+     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
+     */
+    public static File parseImportPath(String path) throws IllegalValueException {
+        File file = parsePath(path);
+
+        if (!file.isAbsolute() || file.isDirectory() || !file.exists() || !file.canRead()) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return file;
+    }
+    //@@author
 
     //@@author yash-chowdhary
     /**
@@ -271,6 +346,71 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String question} into a {@code Question}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code name} is invalid.
+     */
+    public static Question parseQuestion(String question) throws IllegalValueException {
+        requireNonNull(question);
+        String trimmedQuestion = question.trim();
+        if (!Question.isValidQuestion(trimmedQuestion)) {
+            throw new IllegalValueException(Question.MESSAGE_QUESTION_CONSTRAINTS);
+        }
+        return new Question(trimmedQuestion);
+    }
+
+    /**
+     * Parses a {@code Optional<String> question} into an {@code Optional<Question>} if {@code question} is present.
+     */
+    public static Optional<Question> parseQuestion(Optional<String> question) throws IllegalValueException {
+        requireNonNull(question);
+        return question.isPresent() ? Optional.of(parseQuestion(question.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String answer} into a {@code answer}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code answer} is invalid.
+     */
+    public static Answer parseAnswer(String answer) throws IllegalValueException {
+        requireNonNull(answer);
+        String trimmedAnswer = answer.trim();
+        if (!Answer.isValidAnswer(trimmedAnswer)) {
+            throw new IllegalValueException(Answer.MESSAGE_ANSWER_CONSTRAINTS);
+        }
+        return new Answer(trimmedAnswer);
+    }
+
+    /**
+     * Parses a {@code Optional<String> answer} into a {@code Optional<Answer>} if {@code group} is present
+     */
+    public static Optional<Answer> parseOptionalAnswer(Optional<String> answer) throws IllegalValueException {
+        requireNonNull(answer);
+        return answer.isPresent() ? Optional.of(parseAnswer(answer.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses {@code Collection<String> tags} into a {@code List<Answer>}.
+     * Removes any duplicates if any
+     */
+    public static List<Answer> parseAnswers(Collection<String> answers) throws IllegalValueException {
+        requireNonNull(answers);
+        final Set<Answer> answerSet = new HashSet<>();
+        final List<Answer> answerList = new ArrayList<>();
+        for (String answer : answers) {
+            if (!answerSet.contains(answer)) {
+                Answer parsedAnswer = parseAnswer(answer);
+                answerSet.add(parsedAnswer);
+                answerList.add(parsedAnswer);
+            }
+        }
+        return answerList;
+    }
+
+    //@@author yash-chowdhary
+    /**
      * Parses a {@code String client} into a {@code Client}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -326,10 +466,83 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> body} into a {@code Optional<Subject>} if {@code body} is present.
+     * Parses a {@code Optional<String> body} into a {@code Optional<Body>} if {@code body} is present.
      */
     public static Optional<Body> parseBody(Optional<String> body) {
         requireNonNull(body);
         return body.isPresent() ? Optional.of(parseBody(body.get())) : Optional.empty();
     }
+
+    /**
+     * Parses a {@code String description} into a {@code Description}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code description} is invalid.
+     */
+    public static Description parseDescription(String description) throws IllegalValueException {
+        logger.info(description);
+        requireNonNull(description);
+        String trimmedDescription = description.trim();
+        if (!Description.isValidDescription(trimmedDescription)) {
+            throw new IllegalValueException(Description.MESSAGE_DESCRIPTION_CONSTRAINTS);
+        }
+        return new Description(trimmedDescription);
+    }
+
+    /**
+     * Parses a {@code Optional<String> description} into a {@code Optional<Description>} if {@code description}
+     * is present.
+     */
+    public static Optional<Description> parseDescription(Optional<String> description) throws IllegalValueException {
+        requireNonNull(description);
+        return description.isPresent() ? Optional.of(parseDescription(description.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String date} into a {@code Date}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code date} is invalid.
+     */
+    public static Date parseDate(String date) throws IllegalValueException {
+        requireNonNull(date);
+        String trimmedDate = date.trim();
+        if (!Date.isValidDate(trimmedDate)) {
+            throw new IllegalValueException(Date.MESSAGE_DATE_CONSTRAINTS);
+        }
+        return new Date(trimmedDate);
+    }
+
+    /**
+     * Parses a {@code Optional<String> date} into a {@code Optional<Date>} if {@code date} is present.
+     */
+    public static Optional<Date> parseDate(Optional<String> date) throws IllegalValueException {
+        requireNonNull(date);
+        return date.isPresent() ? Optional.of(parseDate(date.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String time} into a {@code Date}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code time} is invalid.
+     */
+    public static Time parseTime(String time) throws IllegalValueException {
+        requireNonNull(time);
+        String trimmedTime = time.trim();
+        if (!Time.isValidTime(trimmedTime)) {
+            throw new IllegalValueException(Time.MESSAGE_TIME_CONSTRAINTS);
+        }
+        return new Time(trimmedTime);
+    }
+
+    /**
+     * Parses a {@code Optional<String> time} into a {@code Optional<Time>} if {@code time} is present.
+     */
+    public static Optional<Time> parseTime(Optional<String> time) throws IllegalValueException {
+        requireNonNull(time);
+        return time.isPresent() ? Optional.of(parseTime(time.get())) : Optional.empty();
+    }
+
+    //@@author
 }

@@ -1,5 +1,5 @@
 package seedu.club.logic.parser;
-
+//@@author yash-chowdhary
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 
@@ -10,14 +10,13 @@ import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.group.Group;
 
-//@@author yash-chowdhary
 /**
  * Parses input arguments and creates a new RemoveGroupCommand object
  */
 public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
     /**
-     * Parses the given {@code String} of arguments in the context of the AddCommand
-     * and returns an AddCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the RemoveGroupCommand
+     * and returns an RemoveGroupCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
     public RemoveGroupCommand parse(String args) throws ParseException {

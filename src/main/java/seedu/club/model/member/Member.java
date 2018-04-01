@@ -11,6 +11,8 @@ import java.util.Set;
 
 import seedu.club.model.group.Group;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.UniqueTaskList;
 
 /**
  * Represents a member in the club book.
@@ -21,35 +23,64 @@ public class Member {
     private final Name name;
     private final Phone phone;
     private final Email email;
-    private final Password password;
-    private final Username username;
+    private Credentials credentials;
     private boolean isLogIn = false;
     private final MatricNumber matricNumber;
     private Group group;
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
-
+    private final UniqueTaskList tasks;
     /**
      * Every field must be present and not null.
      */
 
-    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Username username, Password password) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags,
-                username, password);
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.matricNumber = matricNumber;
         this.group = group;
         this.tags = new HashMap<String, Tag>();
-        this.username = username;
-        this.password = password;
+        this.credentials = new Credentials(new Username(matricNumber.value));
         this.profilePhoto = new ProfilePhoto("");
         setTags(tags);
+        this.tasks = new UniqueTaskList();
+    }
+
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+                  Credentials credentials, ProfilePhoto profilePhoto, Set<Task> tasks) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags, credentials, tasks);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.matricNumber = matricNumber;
+        this.group = group;
+        this.tags = new HashMap<>();
+        this.profilePhoto = new ProfilePhoto("");
+        setTags(tags);
+        this.tasks = new UniqueTaskList(tasks);
+        this.credentials = credentials;
     }
 
     //@@author amrut-prabhu
+    /**
+     * Every field must be present and not null.
+     */
+    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
+                  Credentials credentials, ProfilePhoto profilePhoto) {
+        requireAllNonNull(name, phone, email, matricNumber, group, tags, credentials);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.matricNumber = matricNumber;
+        this.group = group;
+        this.tags = new HashMap<String, Tag>();
+        this.profilePhoto = profilePhoto;
+        setTags(tags);
+        this.tasks = new UniqueTaskList();
+        this.credentials = credentials;
+    }
 
     /**
      * Copy constructor
@@ -62,9 +93,9 @@ public class Member {
         this.matricNumber = member.matricNumber;
         this.group = member.group;
         this.tags = member.tags;
-        this.username = member.username;
-        this.password = member.password;
         this.profilePhoto = member.profilePhoto;
+        this.tasks = member.tasks;
+        this.credentials = member.credentials;
     }
     //@@author
 
@@ -97,18 +128,6 @@ public class Member {
         }
     }
 
-    public Username getUsername() {
-        return username;
-    }
-
-    public Password getPassword() {
-        return password;
-    }
-
-    public boolean isLogIn() {
-        return isLogIn;
-    }
-
     public ProfilePhoto getProfilePhoto() {
         return profilePhoto;
     }
@@ -137,6 +156,14 @@ public class Member {
         }
 
         return Collections.unmodifiableSet(memberTags);
+    }
+
+    /**
+     * Returns an immutable task set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Task> getTasks() {
+        return Collections.unmodifiableSet(tasks.toSet());
     }
 
     public boolean hasTag(Tag tag) {
@@ -180,6 +207,8 @@ public class Member {
                 .append(getGroup())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
+        builder.append("Tasks: ");
+        getTasks().forEach(builder::append);
         return builder.toString();
     }
 
@@ -193,5 +222,9 @@ public class Member {
         } else {
             isLogIn = false;
         }
+    }
+
+    public Credentials getCredentials() {
+        return credentials;
     }
 }

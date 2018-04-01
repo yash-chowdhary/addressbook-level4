@@ -7,7 +7,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PROFILE_PHOTO;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
@@ -22,9 +21,7 @@ import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.Username;
 import seedu.club.model.tag.Tag;
 
 /**
@@ -41,7 +38,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
                         PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG, PREFIX_USERNAME,
-                        PREFIX_PASSWORD, PREFIX_PROFILE_PHOTO);
+                        PREFIX_PASSWORD);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_MATRIC_NUMBER, PREFIX_PHONE, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -56,11 +53,8 @@ public class AddCommandParser implements Parser<AddCommand> {
             Group group = ParserUtil.parseGroup(argMultimap.getValue(PREFIX_GROUP))
                     .orElse(new Group(Group.DEFAULT_GROUP));
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-            Username username = ParserUtil.parseUsername(argMultimap.getValue(PREFIX_USERNAME)).get();
-            Password password = ParserUtil.parsePassword(argMultimap.getValue(PREFIX_PASSWORD)).get();
 
-            Member member = new Member(name, phone, email, matricNumber, group, tagList,
-                    username, password);
+            Member member = new Member(name, phone, email, matricNumber, group, tagList);
 
             return new AddCommand(member);
         } catch (IllegalValueException ive) {

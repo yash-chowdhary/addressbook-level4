@@ -1,9 +1,8 @@
 package seedu.club.model.group;
-
+//@@author yash-chowdhary
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
-//@@author yash-chowdhary
 /**
  * Represents a member's Group in the club book
  * Guarantees: immutable; is valid as declared in {@link #isValidGroup(String)}
@@ -19,6 +18,7 @@ public class Group {
     public static final String GROUP_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum}]*";
 
     public static final String DEFAULT_GROUP = "member";
+    public static final String GROUP_EXCO = "exco";
 
     public final String groupName;
 

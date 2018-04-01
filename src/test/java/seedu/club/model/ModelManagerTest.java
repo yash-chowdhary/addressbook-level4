@@ -14,6 +14,9 @@ import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.BOB;
+import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
+import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
+import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import java.util.Arrays;
 
@@ -21,9 +24,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
@@ -31,8 +34,14 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
+import seedu.club.testutil.TaskBuilder;
 
 public class ModelManagerTest {
     @Rule
@@ -45,6 +54,7 @@ public class ModelManagerTest {
         modelManager.getFilteredMemberList().remove(0);
     }
 
+    //@@author yash-chowdhary
     @Test
     public void removeGroup_nonExistentGroup_modelUnchanged() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
@@ -117,7 +127,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void emailTag_validGroup_success() throws Exception {
+    public void emailGroup_validGroup_success() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -145,6 +155,95 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void addTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.addTaskToTaskList(BUY_FOOD);
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder()
+                .withMember(amy)
+                .withTask(buyConfetti)
+                .withTask(buyFood)
+                .build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void addTask_duplicateTask_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        try {
+            modelManager.addTaskToTaskList(BUY_CONFETTI);
+        } catch (DuplicateTaskException dte) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+
+    @Test
+    public void deleteTask_invalidTask_throwsException() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        try {
+            modelManager.deleteTask(BOOK_AUDITORIUM);
+        } catch (TaskNotFoundException tnfe) {
+            assertEquals(expectedModel, modelManager);
+        } catch (TaskCannotBeDeletedException e) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+
+    @Test
+    public void viewAllTasks_validPermission_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        modelManager.viewAllTasks();
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void viewAllTasks_invalidPermission_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(BENSON.getCredentials().getUsername().value,
+                BENSON.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(BENSON.getCredentials().getUsername().value,
+                BENSON.getCredentials().getPassword().value);
+        try {
+            modelManager.viewAllTasks();
+        } catch (TasksCannotBeDisplayedException tdbde) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+    //@@author
+
+    @Test
     public void deleteTag_nonExistentTag_modelUnchanged() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
         UserPrefs userPrefs = new UserPrefs();
@@ -163,14 +262,16 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.updateFilteredMemberList(modelManager.PREDICATE_SHOW_ALL_MEMBERS);
         modelManager.deleteTag(new Tag(VALID_TAG_FRIEND));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withMember(amyWithoutFriendTag)
                 .withMember(bobWithoutFriendTag).build();
-
-        assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
+        assertEquals(expectedModel, modelManager);
     }
 
     @Test
@@ -182,6 +283,8 @@ public class ModelManagerTest {
         // same values -> returns true
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         ModelManager modelManagerCopy = new ModelManager(clubBook, userPrefs);
+        modelManager.updateFilteredMemberList(modelManager.PREDICATE_SHOW_ALL_MEMBERS);
+        modelManagerCopy.updateFilteredMemberList(modelManagerCopy.PREDICATE_SHOW_ALL_MEMBERS);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -207,6 +310,8 @@ public class ModelManagerTest {
         // different userPrefs -> returns true
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setClubBookName("differentName");
-        assertTrue(modelManager.equals(new ModelManager(clubBook, differentUserPrefs)));
+        ModelManager expectedMode1 = new ModelManager(clubBook, differentUserPrefs);
+        expectedMode1.updateFilteredMemberList(expectedMode1.PREDICATE_SHOW_ALL_MEMBERS);
+        assertTrue(modelManager.equals(expectedMode1));
     }
 }

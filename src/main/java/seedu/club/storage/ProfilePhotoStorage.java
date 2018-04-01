@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.exceptions.PhotoException;
+import seedu.club.commons.util.FileUtil;
 
 /**
  * To copy the profile photo to this application's resources.
@@ -20,7 +21,7 @@ import seedu.club.commons.exceptions.PhotoException;
 public class ProfilePhotoStorage implements  PhotoStorage {
 
     public static final String FILE_EXTENSION = ".png";
-    public static final String SAVE_PHOTO_DIRECTORY = "src/main/resources/photos/";
+    public static final String SAVE_PHOTO_DIRECTORY = "photos/";
 
     private static final String URL_PREFIX = "file:///";
 
@@ -38,7 +39,8 @@ public class ProfilePhotoStorage implements  PhotoStorage {
             originalPhoto = ImageIO.read(photoUrl);
 
             String saveAs = newPhotoName + FILE_EXTENSION;
-            File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
+            File newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
+            //File newPhotoPathhh = new File(MainApp.class.getResource(newPath.toString()).toURI());
 
             createPhotoFileCopy(originalPhoto, newPath);
         } catch (IOException ioe) {
@@ -63,6 +65,7 @@ public class ProfilePhotoStorage implements  PhotoStorage {
      */
     public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
         logger.info("Profile Photo is being copied to " + newPath);
+        FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
         ImageIO.write(originalPhoto, "png", newPath);
         logger.info("Profile Photo copying successful");
     }

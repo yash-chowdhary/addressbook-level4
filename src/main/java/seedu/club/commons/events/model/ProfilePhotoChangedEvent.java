@@ -24,8 +24,8 @@ public class ProfilePhotoChangedEvent extends BaseEvent {
         return isPhotoChanged;
     }
 
-    public void setPhotoChanged(boolean photoChanged) {
-        isPhotoChanged = photoChanged;
+    public void setPhotoChanged(boolean isPhotoChanged) {
+        this.isPhotoChanged = isPhotoChanged;
     }
 
 

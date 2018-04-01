@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
@@ -25,14 +26,15 @@ public class StorageManager extends ComponentManager implements Storage {
     private ClubBookStorage clubBookStorage;
     private UserPrefsStorage userPrefsStorage;
     private ProfilePhotoStorage profilePhotoStorage;
-
+    private  CsvClubBookStorage csvClubBookStorage;
 
     public StorageManager(ClubBookStorage clubBookStorage, UserPrefsStorage userPrefsStorage,
-                          ProfilePhotoStorage profilePhotoStorage) {
+                          ProfilePhotoStorage profilePhotoStorage, CsvClubBookStorage csvClubBookStorage) {
         super();
         this.clubBookStorage = clubBookStorage;
         this.userPrefsStorage = userPrefsStorage;
         this.profilePhotoStorage = profilePhotoStorage;
+        this.csvClubBookStorage = csvClubBookStorage;
     }
 
     // ================ UserPrefs methods ==============================
@@ -82,7 +84,6 @@ public class StorageManager extends ComponentManager implements Storage {
         clubBookStorage.saveClubBook(clubBook, filePath);
     }
 
-
     @Override
     @Subscribe
     public void handleClubBookChangedEvent(ClubBookChangedEvent event) {
@@ -101,12 +102,6 @@ public class StorageManager extends ComponentManager implements Storage {
         profilePhotoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
     }
 
-    /*@Override
-    public void createPhotoFileCopy(BufferedImage image, File newPath) throws IOException {
-        logger.fine("Attempting to write photo to file: " + newPath);
-        profilePhotoStorage.createPhotoFileCopy(image, newPath);
-    }*/
-
     @Override
     @Subscribe
     public void handleProfilePictureChangedEvent(ProfilePhotoChangedEvent event) {
@@ -118,4 +113,33 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(pe));
         }
     }
+
+    /**
+     * Writes {@code content} to the export file.
+     * @param content Data that is to be appended to the export file.
+     * @throws IOException when there is an error writing to the file.
+     */
+    private void exportData(String content) throws IOException {
+        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
+        csvClubBookStorage.saveData(content);
+    }
+
+    @Override
+    @Subscribe
+    public void handleExportMemberEvent(NewExportDataAvailableEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Adding member data to file"));
+
+        if (event.exportFile != null) {
+            csvClubBookStorage.setClubBookFilePath(event.exportFile);
+        }
+        try {
+            if (event.data != null) {
+                exportData(event.data);
+            }
+        } catch (IOException e) {
+            event.setFileChanged(false);
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+    //@@author
 }

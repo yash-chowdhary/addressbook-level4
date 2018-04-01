@@ -20,9 +20,17 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.UniquePollList;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.UniqueTaskList;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
  * Wraps all data at the club-book level
@@ -32,6 +40,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
     private final UniqueMemberList members;
     private final UniqueTagList tags;
+    private final UniquePollList polls;
+    private final UniqueTaskList tasks;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -43,6 +53,8 @@ public class ClubBook implements ReadOnlyClubBook {
     {
         members = new UniqueMemberList();
         tags = new UniqueTagList();
+        polls = new UniquePollList();
+        tasks = new UniqueTaskList();
     }
 
     public ClubBook() {}
@@ -59,6 +71,7 @@ public class ClubBook implements ReadOnlyClubBook {
     //// list overwrite operations
     public void setMembers(List<Member> members) throws DuplicateMemberException {
         this.members.setMembers(members);
+        this.members.fillHashMap();
     }
 
     public void setTags(Set<Tag> tags) {
@@ -71,6 +84,8 @@ public class ClubBook implements ReadOnlyClubBook {
     public void resetData(ReadOnlyClubBook newData) {
         requireNonNull(newData);
         setTags(new HashSet<>(newData.getTagList()));
+        setPolls(new HashSet<>(newData.getPollList()));
+        setTasks(new HashSet<>(newData.getTaskList()));
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
@@ -97,6 +112,18 @@ public class ClubBook implements ReadOnlyClubBook {
         // This can cause the tags master list to have additional tags that are not tagged to any member
         // in the member list.
         members.add(member);
+    }
+
+    /**
+     * Removes {@code key} from this {@code ClubBook}.
+     * @throws PollNotFoundException if the {@code key} is not in this {@code ClubBook}.
+     */
+    public boolean removePoll(Poll key) throws PollNotFoundException {
+        if (polls.remove(key)) {
+            return true;
+        } else {
+            throw new PollNotFoundException();
+        }
     }
 
     /**
@@ -159,7 +186,7 @@ public class ClubBook implements ReadOnlyClubBook {
         memberTags.forEach(tag -> correctTagReferences.add(masterTagObjects.get(tag.tagName)));
         return new Member(
                 member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(), member.getGroup(),
-                    correctTagReferences, member.getUsername(), member.getPassword());
+                    correctTagReferences, member.getCredentials(), member.getProfilePhoto());
     }
 
     /**
@@ -176,11 +203,34 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
+    public void setPolls(Set<Poll> polls) {
+        this.polls.setPolls(polls);
+    }
+
+    public void addPoll(Poll poll) throws DuplicatePollException {
+        polls.add(poll);
+    }
+
+
     /**
      * Logs in a member
      */
-    public boolean logInMember(String username, String password) {
-        return members.logInMemberSuccessful(username, password);
+    public void logInMember(String inputUsername, String inputPassword) {
+        members.fillHashMap();
+        members.logsInMember(inputUsername, inputPassword);
+    }
+    /**
+     * logs out a member
+     */
+    public void logOutMember() {
+        members.logout();
+    }
+
+    /**
+     * Get the member who is log in, if null, there are no one that is logged in.
+     */
+    public Member getLoggedInMember() {
+        return members.getCurrentlyLogInMember();
     }
     /** tag-level operation
      * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
@@ -259,7 +309,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                defaultGroup, member.getTags(), member.getUsername(), member.getPassword());
+                defaultGroup, member.getTags());
 
         try {
             updateMember(member, newMember);
@@ -268,7 +318,22 @@ public class ClubBook implements ReadOnlyClubBook {
             + "See member#equals(Object).");
         }
     }
-    //@@author yash-chowdhary
+
+    /**
+     * Adds {@code Task toAdd} to the list of tasks.
+     */
+    public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
+        tasks.add(taskToAdd);
+    }
+
+    public void deleteTask(Task targetTask) throws TaskNotFoundException {
+        tasks.remove(targetTask);
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks.setTasks(tasks);
+    }
+    //@@author
 
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
@@ -324,7 +389,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Member newMember = new Member(member.getName(), member.getPhone(),
                 member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags, member.getUsername(), member.getPassword());
+                member.getGroup(), memberTags);
 
         try {
             updateMember(member, newMember);
@@ -350,6 +415,16 @@ public class ClubBook implements ReadOnlyClubBook {
     @Override
     public ObservableList<Tag> getTagList() {
         return tags.asObservableList();
+    }
+
+    @Override
+    public ObservableList<Poll> getPollList() {
+        return polls.asObservableList();
+    }
+
+    @Override
+    public ObservableList<Task> getTaskList() {
+        return tasks.asObservableList();
     }
 
     @Override

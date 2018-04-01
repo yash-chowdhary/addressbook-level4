@@ -18,9 +18,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.email.Body;
-import seedu.club.logic.commands.email.Client;
-import seedu.club.logic.commands.email.Subject;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Name;

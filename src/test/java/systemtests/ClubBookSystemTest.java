@@ -4,6 +4,7 @@ import static guitests.guihandles.WebViewUtil.waitUntilBrowserLoaded;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.ui.BrowserPanel.DEFAULT_PAGE;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
@@ -148,7 +149,7 @@ public abstract class ClubBookSystemTest {
      * Displays all members with any parts of their names matching {@code keyword} (case-insensitive).
      */
     protected void showMembersWithName(String keyword) {
-        executeCommand(FindCommand.COMMAND_WORD + " " + keyword);
+        executeCommand(FindCommand.COMMAND_WORD + " " + PREFIX_NAME + " " + keyword);
         assertTrue(getModel().getFilteredMemberList().size() < getModel().getClubBook().getMemberList().size());
     }
 
