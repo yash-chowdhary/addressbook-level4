@@ -17,7 +17,7 @@ import seedu.club.model.poll.Poll;
 public class AnswerListPanel extends UiPart<Region> {
     private static final String FXML = "AnswerListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(AnswerListPanel.class);
-\   private final Poll poll;
+    private final Poll poll;
     private boolean isShowingResults;
 
     @FXML
