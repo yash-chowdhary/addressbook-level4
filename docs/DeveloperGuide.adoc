@@ -641,34 +641,6 @@ just for compress/decompress but for other events as well.
 ** Pros: Easy to implement.
 ** Cons: Increases coupling
 
-=== Account Management Mechanism
-==== Current Implementation
-Firstly, the ClubConnect will have no members.
-
-The user will sign up using their name, email, matric number, username and password to sign up for an account.
-
-There will only be one sign up for ClubConnect. The first sign up will be the administrator for ClubConnect.
-
-The administrator will then add members to the database with a default username and password allocated to them.
-
-Members will then log in using their username and password to view the task assign to them individually.
-With the implementation the log in and sign up function, the admin can allocated unique task to each individual.
-
-After the member logs in for the first time, they will be prompted to change their password in order to proceed.
-This will ensure security and privacy for each individual data.
-
-Lastly, after using ClubConnect, a logout function is available for them to logout of their account safetly.
-With this logout function, user will not need to restart the application frequently in order to log out of their own account.
-
-==== Design Considerations
-===== Aspect: Interaction from Storage to each unique users
-* **Alternative 1 (current choice)**: Use a command line approach to ensure data privacy between each user
-** Pros: Increases privacy and security.
-** Cons: Less intuitive then using a Login or Signup panel.
-* **Alternative 2**: Program a UI panel for Login and Signup.
-** Pros: More Intuitive for users to key in their username and password without any prefix or command word.
-** Cons: Hard to implement as you have to cater a lot of panels and change in activity after signing up or logging in.
-
 === Logging
 
 We are using `java.util.logging` package for logging.
