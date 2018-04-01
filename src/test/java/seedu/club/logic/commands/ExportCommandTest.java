@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,13 +18,12 @@ import org.junit.rules.TemporaryFolder;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
-import seedu.club.model.ModelManager;
 import seedu.club.model.ReadOnlyClubBook;
-import seedu.club.model.UserPrefs;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -52,12 +50,11 @@ public class ExportCommandTest {
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
-    private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
     private String currentDirectoryPath = ".";
     private File currentDirectory = new File(currentDirectoryPath);
 
     @Test
-    public void constructor_nullMember_throwsNullPointerException() {
+    public void constructor_nullFile_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         new ExportCommand(null);
     }
@@ -74,11 +71,11 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_duplicateMember_throwsCommandException() throws Exception {
+    public void execute_invalidFilePath_throwsCommandException() throws Exception {
         ModelStub modelStub = new ModelStubThrowingIoException();
 
-        String validFilePath = testFolder.getRoot().getPath() + "TempClubBook.csv";
-        File exportFile = new File(validFilePath);
+        String invalidFilePath = testFolder.getRoot().getPath();
+        File exportFile = new File(invalidFilePath);
 
         thrown.expect(CommandException.class);
         thrown.expectMessage(String.format(ExportCommand.MESSAGE_EXPORT_FAILURE, exportFile));
@@ -98,7 +95,7 @@ public class ExportCommandTest {
         // same object -> returns true
         assertTrue(exportCommand.equals(exportCommand));
 
-        // same values -> returns true
+        // same file -> returns true
         assertTrue(exportCommand.equals(sameFileExportCommand));
 
         // different types -> returns false
@@ -107,7 +104,7 @@ public class ExportCommandTest {
         // null -> returns false
         assertFalse(exportCommand.equals(null));
 
-        // different member -> returns false
+        // different file -> returns false
         assertFalse(exportCommand.equals(differentFileExportCommand));
     }
 
@@ -152,7 +149,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void addProfilePhoto(String originalPhotoPath) {
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called.");
         }
 
@@ -178,8 +175,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -227,7 +223,6 @@ public class ExportCommandTest {
         @Override
         public void sendEmail(String recipients, Client client, Subject subject, Body body) {
             fail("This method should not be called");
-            return;
         }
 
         @Override
@@ -250,7 +245,6 @@ public class ExportCommandTest {
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
-            return;
         }
 
         @Override
@@ -262,7 +256,6 @@ public class ExportCommandTest {
         @Override
         public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
-            return;
         }
     }
 

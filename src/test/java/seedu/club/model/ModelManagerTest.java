@@ -28,7 +28,6 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
-import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;

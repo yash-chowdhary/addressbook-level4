@@ -18,6 +18,7 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -141,7 +142,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void addProfilePhoto(String originalPhotoPath) {
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called.");
         }
 

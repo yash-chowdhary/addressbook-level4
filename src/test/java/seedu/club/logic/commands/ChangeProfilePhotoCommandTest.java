@@ -1,3 +1,4 @@
+//@@author amrut-prabhu
 package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -7,8 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
@@ -21,16 +21,15 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
-import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
@@ -42,70 +41,78 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
-import seedu.club.testutil.PollBuilder;
 
-public class AddPollCommandTest {
+public class ChangeProfilePhotoCommandTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    private String currentDirectoryPath = ".";
+    private File currentDirectory = new File(currentDirectoryPath);
+
+    private String testPhotoPath = "./src/test/resources/photos/testPhoto.png";
+    private File testPhotoFile = new File(testPhotoPath);
+
     @Test
-    public void constructor_nullPoll_throwsNullPointerException() {
+    public void constructor_nullProfilePhoto_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AddPollCommand(null);
+        new ChangeProfilePhotoCommand(null);
     }
 
     @Test
-    public void execute_pollAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingPollAdded modelStub = new ModelStubAcceptingPollAdded();
-        Poll validPoll = new PollBuilder().build();
+    public void execute_addProfilePhoto_success() throws Exception {
+        ModelStubAcceptingAddProfilePhoto modelStub = new ModelStubAcceptingAddProfilePhoto();
 
-        CommandResult commandResult = getAddPollCommandForPoll(validPoll, modelStub).execute();
+        String validPhotoPath = testPhotoFile.getAbsolutePath();
 
-        assertEquals(String.format(AddPollCommand.MESSAGE_SUCCESS, validPoll), commandResult.feedbackToUser);
-        assertEquals(Arrays.asList(validPoll), modelStub.pollsAdded);
+        CommandResult commandResult = getChangeProfilePhotoCommand(validPhotoPath, modelStub).execute();
+        assertEquals(ChangeProfilePhotoCommand.MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, commandResult.feedbackToUser);
     }
 
     @Test
-    public void execute_duplicatePoll_throwsCommandException() throws Exception {
-        ModelStub modelStub = new ModelStubThrowingDuplicatePollException();
-        Poll validPoll = new PollBuilder().build();
+    public void execute_invalidPath_throwsCommandException() throws Exception {
+        ModelStub modelStub = new ModelStubThrowingPhotoReadException();
+
+        String invalidPhotoPath = currentDirectory.getAbsolutePath();
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddPollCommand.MESSAGE_DUPLICATE_POLL);
+        thrown.expectMessage(String.format(ChangeProfilePhotoCommand.MESSAGE_INVALID_PHOTO_PATH, invalidPhotoPath));
 
-        getAddPollCommandForPoll(validPoll, modelStub).execute();
+        getChangeProfilePhotoCommand(invalidPhotoPath, modelStub).execute();
     }
 
     @Test
     public void equals() {
-        Poll lovePoll = new PollBuilder().withQuestion("What is love?").build();
-        Poll lifePoll = new PollBuilder().withQuestion("What is life?").build();
-        AddPollCommand addLovePollCommand = new AddPollCommand(lovePoll);
-        AddPollCommand addLifePollCommand = new AddPollCommand(lifePoll);
+        String photoFilePath = currentDirectory.getAbsolutePath() + "/testPhoto.png";
+        ProfilePhoto profilePhoto = new ProfilePhoto(photoFilePath);
+
+        ProfilePhoto diffProfilePhoto = new ProfilePhoto(testPhotoPath);
+
+        ChangeProfilePhotoCommand changeProfilePhotoCommand = new ChangeProfilePhotoCommand(profilePhoto);
+        ChangeProfilePhotoCommand samePathChangeProfilePhotoCommand = new ChangeProfilePhotoCommand(profilePhoto);
+        ChangeProfilePhotoCommand differentchangeProfilePhotoCommand = new ChangeProfilePhotoCommand(diffProfilePhoto);
 
         // same object -> returns true
-        assertTrue(addLovePollCommand.equals(addLovePollCommand));
+        assertTrue(changeProfilePhotoCommand.equals(changeProfilePhotoCommand));
 
-        // same values -> returns true
-        AddPollCommand addAliceCommandCopy = new AddPollCommand(lovePoll);
-        assertTrue(addLovePollCommand.equals(addAliceCommandCopy));
+        // same photo -> returns true
+        assertTrue(changeProfilePhotoCommand.equals(samePathChangeProfilePhotoCommand));
 
         // different types -> returns false
-        assertFalse(addLovePollCommand.equals(1));
+        assertFalse(changeProfilePhotoCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addLovePollCommand.equals(null));
+        assertFalse(changeProfilePhotoCommand.equals(null));
 
-        // different poll -> returns false
-        assertFalse(addLovePollCommand.equals(addLifePollCommand));
+        // different photo -> returns false
+        assertFalse(changeProfilePhotoCommand.equals(differentchangeProfilePhotoCommand));
     }
 
     /**
-     * Generates a new AddPollCommand with the details of the given poll.
+     * Generates a new ExportCommand with {@code exportFile}.
      */
-    private AddPollCommand getAddPollCommandForPoll(Poll poll, Model model) {
-        AddPollCommand command = new AddPollCommand(poll);
+    private ChangeProfilePhotoCommand getChangeProfilePhotoCommand(String photoPath, Model model) {
+        ChangeProfilePhotoCommand command = new ChangeProfilePhotoCommand(new ProfilePhoto(photoPath));
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -114,29 +121,9 @@ public class AddPollCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
-        @Override
-        public void exportClubConnectMembers(File exportFilePath) {
-            fail("This method should not be called.");
-        }
 
         @Override
-        public void logOutMember() {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void logsInMember(String username, String password) {
-            fail("This method should not be called");
-        }
-
-
-        @Override
-        public void updateFilteredTaskList(Predicate<Task> predicate) {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public FilteredList<Member> getFilteredMemberList() {
+        public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
         }
@@ -156,19 +143,17 @@ public class AddPollCommandTest {
             fail("This method should not be called.");
         }
 
+        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
+            fail("This method should not be called");
+        }
+
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called.");
         }
 
         @Override
-        public Member getLoggedInMember() {
-            fail("This method should not be called.");
-            return null;
-        }
-
-        @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void removeGroup(Group toRemove) {
             fail("This method should not be called.");
         }
 
@@ -184,13 +169,12 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void deleteMember(Member member) throws MemberNotFoundException {
+        public void deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateMember(Member member, Member editedMember)
-                throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -200,7 +184,7 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public ObservableList<Poll> getFilteredPollList() {
+        public ObservableList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
             return null;
         }
@@ -211,11 +195,20 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void logsInMember(String username, String password) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public Member getLoggedInMember() {
+            return null;
+        }
+
+        @Override
         public void updateFilteredPollList(Predicate<Poll> poll) {
             fail("This method should not be called.");
         }
 
-        @Override
         public void updateFilteredTagList(Predicate<Tag> predicate) {
             fail("This method should not be called.");
         }
@@ -233,6 +226,11 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void logOutMember() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException,
                 TagNotFoundException {
             fail("This method should not be called");
@@ -240,8 +238,14 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void exportClubConnectMembers(File exportFilePath) throws IOException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
+            return;
         }
 
         @Override
@@ -251,41 +255,29 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
+        public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
+            return;
         }
     }
 
     /**
-     * A Model stub that always throw a DuplicatePollException when trying to add a poll.
+     * A Model stub that always throw a PhotoReadException when trying to add a profile photo.
      */
-    private class ModelStubThrowingDuplicatePollException extends ModelStub {
+    private class ModelStubThrowingPhotoReadException extends ModelStub {
         @Override
-        public void addPoll(Poll poll) throws DuplicatePollException {
-            throw new DuplicatePollException();
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+            throw new PhotoReadException();
         }
     }
 
     /**
-     * A Model stub that always accept the poll being added.
+     * A Model stub that always accept the path of the profile photo to be added.
      */
-    private class ModelStubAcceptingPollAdded extends ModelStub {
-        private final ArrayList<Poll> pollsAdded = new ArrayList<>();
-
+    private class ModelStubAcceptingAddProfilePhoto extends ModelStub {
         @Override
-        public void addPoll(Poll poll) throws DuplicatePollException {
-            requireNonNull(poll);
-            pollsAdded.add(poll);
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+            requireNonNull(originalPhotoPath);
         }
     }
 

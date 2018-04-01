@@ -158,6 +158,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+        requireNonNull(originalPhotoPath);
+
         String newFileName = getLoggedInMember().getMatricNumber().toString();
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
 
