@@ -19,10 +19,6 @@ import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.junit.Rule;
@@ -30,8 +26,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
+import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
-import seedu.club.commons.util.FileUtil;
+import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -52,8 +49,6 @@ import seedu.club.testutil.TaskBuilder;
 import seedu.club.ui.testutil.EventsCollectorRule;
 
 public class ModelManagerTest {
-
-    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/CsvClubBookStorageTest/");
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -256,43 +251,38 @@ public class ModelManagerTest {
         assertEquals(expectedModel, modelManager);
     }
 
+    //@@author amrut-prabhu
     @Test
-    public void exportClubConnectMembers_validFile_success() throws Exception {
+    public void addProfilePhoto_eventRaised() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
-
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
 
-        //Expected content of CSV export file
-        String csvRecordSeparator = ",";
-        String csvHeaders = "\"Name\",\"Phone\",\"Email\",\"Matriculation Number\",\"Group\",\"Tags\"";
-        String csvAlice = "\"Alice Pauline\",\"85355255\",\"alice@example.com\",\"A9210701B\","
-                + "\"logistics\",\"friends,\"";
-        String csvBenson = "\"Benson Meier\",\"98765432\",\"johnd@example.com\",\"A8389539B\","
-                + "\"pr\",\"owesMoney, friends,\"";
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(csvHeaders).append(csvRecordSeparator)
-                .append(csvAlice).append(csvRecordSeparator)
-                .append(csvBenson).append(csvRecordSeparator);
-        String csvFileContent = builder.toString();
+        String photoDirectory = "./src/test/resources/photos/";
+        String photoFileName = "testPhoto.png";
+        modelManager.addProfilePhoto(photoDirectory + photoFileName);
 
+        //2 events are raised: ProfilePhotoChangedEvent and ClubBookChangedEvent
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
+        //Last event raised is ClubBookChangedEvent
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ClubBookChangedEvent);
+    }
 
+    @Test
+    public void exportClubConnectMembers_eventRaised() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
 
-        File expectedFile = new File(new File(TEST_DATA_FOLDER + "expected.csv").getAbsolutePath());
-        //File actualFile = new File(TEST_DATA_FOLDER + "actual.csv");
-        /*String filePath = new File(TEST_DATA_FOLDER + "actual.csv").getAbsolutePath();
-        File file = new File(filePath);
-        FileUtil.createIfMissing(file);
-        modelManager.exportClubConnectMembers(file);*/
+        File exportFile = temporaryFolder.newFile("actual.csv");
 
-
-        File output = temporaryFolder.newFile("actual.csv");
-
-        modelManager.exportClubConnectMembers(output);
+        modelManager.exportClubConnectMembers(exportFile);
 
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof NewExportDataAvailableEvent);
     }
+    //@@author
 
     @Test
     public void equals() {
