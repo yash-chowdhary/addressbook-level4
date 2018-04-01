@@ -496,6 +496,8 @@ To further increase your efficiency while using Club Connect, check out <<Tips>>
 e.g. `add n/James Jerome p/22224444 e/jamesjerome@example.com m/A1234567H g/publicity`
 * *Add Task* : `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME` +
 e.g. `addtask desc/Buy Confetti d/03.04.2018 ti/19:00`
+* *Assign Task* : `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME` +
+e.g. `assigntask desc/Buy Confetti d/03.04.2018 ti/19:00 n/Bernice Yu`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
@@ -505,11 +507,15 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 e.g. `removegroup g/publicity`
 * *Delete Tag* : `deletetag t/TAG` +
 e.g. `deletetag t/president`
+* *Delete Task* : `deletetask INDEX` +
+e.g. `deletetask 2`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
 * *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *List* : `list`
+* *View All Tasks* : `viewalltasks`
+* *View My Tasks* : `viewmytasks`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
