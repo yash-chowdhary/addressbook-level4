@@ -4,7 +4,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_NEWPASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
+import seedu.club.logic.CommandHistory;
+import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -41,7 +44,12 @@ public class ChangePasswordCommand extends Command {
             model.changePassword(username.value, oldPassword.value, newPassword.value);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (PasswordIncorrectException e) {
-            return new CommandResult(MESSAGE_FAILURE);
+            throw new CommandException(MESSAGE_FAILURE);
         }
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
+        super.setData(model, history, undoRedoStack);
     }
 }
