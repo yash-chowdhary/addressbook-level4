@@ -37,7 +37,7 @@ public class ProfilePhotoStorageTest {
      * @throws PhotoWriteException not expected
      */
     @Test
-    public void copyProfilePhoto_validPath_success() throws PhotoReadException, PhotoWriteException {
+    public void copyProfilePhoto_validPath_success() {
         Exception expectedException = null;
         try {
             ProfilePhotoStorageStubAcceptingCreateCopy profilePhotoStorage =
