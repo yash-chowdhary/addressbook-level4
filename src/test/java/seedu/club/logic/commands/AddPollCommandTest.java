@@ -42,6 +42,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.PollBuilder;
 
 public class AddPollCommandTest {
@@ -117,6 +118,11 @@ public class AddPollCommandTest {
         @Override
         public void exportClubConnectMembers(File exportFilePath) {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+            fail("This method should not be called");
         }
 
         @Override

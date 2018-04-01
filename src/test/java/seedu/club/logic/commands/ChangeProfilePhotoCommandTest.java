@@ -41,6 +41,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 public class ChangeProfilePhotoCommandTest {
 
@@ -144,6 +145,11 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void viewAllTasks() throws TasksCannotBeDisplayedException {
             fail("This method should not be called");
         }
 
