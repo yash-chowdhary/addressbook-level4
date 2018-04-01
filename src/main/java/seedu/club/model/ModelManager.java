@@ -30,6 +30,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -133,6 +134,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
+    //@@author Song Weiyang
     @Override
     public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
@@ -143,6 +145,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    //@@author Song Weiyang
     @Override
     public Member getLoggedInMember() {
         return clubBook.getLoggedInMember();
@@ -249,6 +252,7 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
@@ -404,6 +408,13 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredTaskList(Predicate<Task> predicate) {
         requireNonNull(predicate);
         filteredTasks.setPredicate(predicate);
+    }
+
+    //@@author Song Weiyang
+    @Override
+    public void signUpMember(Member member) throws MemberListNotEmptyException {
+        clubBook.signUpMember(member);
+        indicateClubBookChanged();
     }
 
     @Override

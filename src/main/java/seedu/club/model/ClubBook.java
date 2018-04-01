@@ -18,6 +18,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.UniquePollList;
@@ -205,6 +206,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
 
+    //@@author Song Weiyang
     /**
      * Logs in a member
      */
@@ -212,6 +214,8 @@ public class ClubBook implements ReadOnlyClubBook {
         members.fillHashMap();
         members.logsInMember(inputUsername, inputPassword);
     }
+
+
     /**
      * logs out a member
      */
@@ -224,6 +228,14 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
+    }
+
+    /**
+     * Sign up a member if it is a new clubbook
+     */
+    public void signUpMember(Member p) throws MemberListNotEmptyException {
+        Member member = syncWithMasterTagList(p);
+        members.signup(member);
     }
 
     //@@author amrut-prabhu
