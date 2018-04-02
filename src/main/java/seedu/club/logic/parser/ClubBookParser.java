@@ -150,7 +150,7 @@ public class ClubBookParser {
 
         case HideResultsCommand.COMMAND_WORD:
             return new HideResultsCommand();
-            
+
         case SignUpCommand.COMMAND_WORD:
             return new SignUpCommandParser().parse(arguments);
 
@@ -164,5 +164,4 @@ public class ClubBookParser {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
-
 }
