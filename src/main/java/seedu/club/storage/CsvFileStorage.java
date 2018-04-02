@@ -10,7 +10,7 @@ import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
- * Stores clubBook data in an CSV file.
+ * Stores ClubBook data in a CSV file.
  */
 public class CsvFileStorage {
 

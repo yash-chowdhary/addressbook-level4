@@ -15,7 +15,7 @@ import seedu.club.commons.util.FileUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
- * A class to manage storage of ClubBook data as an csv file on the hard disk.
+ * A class to manage storage of ClubBook data as a csv file on the hard disk.
  */
 public class CsvClubBookStorage {
 
@@ -44,16 +44,23 @@ public class CsvClubBookStorage {
         }
     }
 
-    public UniqueMemberList readClubBook() throws FileNotFoundException, DataConversionException {
+    /**
+     * Returns data from the file as a {@link UniqueMemberList}.
+     *
+     * @throws DataConversionException if the data in storage is not in the expected format.
+     * @throws IOException if there was any problem when reading from the storage.
+     */
+    public UniqueMemberList readClubBook() throws IOException, DataConversionException {
         return readClubBook(file);
     }
 
     /**
      * Similar to {@link #readClubBook()}
+     *
      * @param importFile location of the data. Cannot be null.
      * @throws DataConversionException if the file is not in the correct format.
      */
-    public UniqueMemberList readClubBook(File importFile) throws FileNotFoundException, DataConversionException {
+    public UniqueMemberList readClubBook(File importFile) throws IOException, DataConversionException {
 
         requireNonNull(importFile);
         UniqueMemberList importedMembers = new UniqueMemberList();
