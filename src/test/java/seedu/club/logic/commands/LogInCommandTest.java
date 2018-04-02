@@ -5,12 +5,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -157,6 +159,12 @@ public class LogInCommandTest {
         public void updateMember(Member target, Member editedMember)
                 throws DuplicateMemberException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public void importMembers(File importFile)
+                throws IOException, DuplicateMemberException, DataConversionException {
+            fail("This method should not be called");
         }
 
         @Override

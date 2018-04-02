@@ -9,6 +9,7 @@ import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -267,7 +269,14 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
         }
 
+        @Override
         public void exportClubConnectMembers(File exportFilePath) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void importMembers(File importFile)
+                throws IOException, DuplicateMemberException, DataConversionException {
             fail("This method should not be called");
         }
 

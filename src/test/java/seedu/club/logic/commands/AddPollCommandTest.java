@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -17,6 +18,7 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -263,6 +265,12 @@ public class AddPollCommandTest {
                 TagNotFoundException {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public void importMembers(File importFile)
+                throws IOException, DuplicateMemberException, DataConversionException {
+            fail("This method should not be called");
         }
 
         @Override

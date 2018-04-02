@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -148,6 +149,12 @@ public class SignUpCommandTest {
         @Override
         public void deleteTag(Tag tag) throws TagNotFoundException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public void importMembers(File importFile)
+                throws IOException, DuplicateMemberException, DataConversionException {
+            fail("This method should not be called");
         }
 
         @Override

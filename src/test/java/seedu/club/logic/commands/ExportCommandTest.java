@@ -18,6 +18,7 @@ import org.junit.rules.TemporaryFolder;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -264,6 +265,12 @@ public class ExportCommandTest {
 
         @Override
         public void exportClubConnectMembers(File exportFilePath) throws IOException {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void importMembers(File importFile)
+                throws IOException, DuplicateMemberException, DataConversionException {
             fail("This method should not be called");
         }
 
