@@ -21,6 +21,7 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.email.Body;
@@ -29,6 +30,7 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -127,6 +129,12 @@ public class ChangeProfilePhotoCommandTest {
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
+        }
+
+        @Override
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+                IllegalExecutionException {
+            fail("This method should not be called");
         }
 
         @Override

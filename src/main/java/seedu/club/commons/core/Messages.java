@@ -11,4 +11,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "The task index provided is invalid";
     public static final String MESSAGE_MEMBERS_LISTED_OVERVIEW = "%1$d members listed!";
     public static final String MESSAGE_INVALID_POLL_DISPLAYED_INDEX = "The poll index provided is invalid";
+    public static final String MESSAGE_INVALID_PERMISSIONS = "This command cannot be executed as you don't have EXCO "
+            + "privileges";
+
 }
