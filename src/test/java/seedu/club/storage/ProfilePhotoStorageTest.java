@@ -33,8 +33,6 @@ public class ProfilePhotoStorageTest {
 
     /**
      * Ensures no exception is thrown and command happens successfully.
-     * @throws PhotoReadException not expected
-     * @throws PhotoWriteException not expected
      */
     @Test
     public void copyProfilePhoto_validPath_success() {
@@ -52,8 +50,6 @@ public class ProfilePhotoStorageTest {
 
     /**
      * Ensures exception is thrown.
-     * @throws PhotoReadException not expected
-     * @throws PhotoWriteException not expected
      */
     @Test
     public void copyProfilePhoto_validPath_exceptionThrown() throws Exception {
