@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -11,6 +12,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -159,4 +161,7 @@ public interface Model {
     void signUpMember(Member member) throws MemberListNotEmptyException;
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
+
+    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+            IllegalExecutionException;
 }
