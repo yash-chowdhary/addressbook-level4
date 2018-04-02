@@ -597,6 +597,10 @@ e.g. `removegroup g/publicity`
 e.g. `deletetag t/president`
 * *Delete Task* : `deletetask INDEX` +
 e.g. `deletetask 2`
+* *Importing members into Club Connect* : `import` +
+e.g. `import C:/Users/Admin/Desktop/members.csv`
+* *Exporting Club Connect data* : `export` +
+e.g. `export C:/Users/John Doe/Downloads/ClubConnectMembers.csv`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
 * *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
