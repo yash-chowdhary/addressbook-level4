@@ -10,6 +10,7 @@ import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
 
@@ -27,7 +28,9 @@ public class ChangePasswordCommand extends Command {
             + PREFIX_PASSWORD + "oldpassword "
             + PREFIX_NEWPASSWORD + "newpassword";
     public static final String MESSAGE_SUCCESS = "Password changed successfully!";
-    public static final String MESSAGE_FAILURE = "Password is incorrect";
+    public static final String MESSAGE_PASSWORD_INCORRECT = "Password is incorrect";
+    public static final String MESSAGE_AUTHENTICATION_FAILED =
+            "You do not have the rights to change other member's password";
     private Username username;
     private Password oldPassword;
     private Password newPassword;
@@ -44,7 +47,9 @@ public class ChangePasswordCommand extends Command {
             model.changePassword(username.value, oldPassword.value, newPassword.value);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (PasswordIncorrectException e) {
-            throw new CommandException(MESSAGE_FAILURE);
+            throw new CommandException(MESSAGE_PASSWORD_INCORRECT);
+        } catch (DataToChangeIsNotCurrentlyLoggedInMember dataToChangeIsNotCurrentlyLoggedInMember) {
+            throw new CommandException(MESSAGE_AUTHENTICATION_FAILED);
         }
     }
 

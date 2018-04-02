@@ -18,6 +18,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -420,8 +421,8 @@ public class ClubBook implements ReadOnlyClubBook {
      * @param oldpassword
      * @param newPassword
      */
-    public void changePassword (String username, String oldpassword,
-                                String newPassword) throws PasswordIncorrectException {
+    public void changePassword (String username, String oldpassword, String newPassword)
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
         members.changPassword(username, oldpassword, newPassword);
     }
 

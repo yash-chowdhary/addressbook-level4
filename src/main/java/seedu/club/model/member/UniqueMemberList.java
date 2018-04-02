@@ -12,6 +12,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -193,8 +194,11 @@ public class UniqueMemberList implements Iterable<Member> {
      * Changes the password of a member
      */
     public void changPassword (String username, String oldPassword, String newPassword)
-            throws PasswordIncorrectException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
         Member checkMember = usernameCredentialsHashMap.get(username);
+        if (!checkMember.equals(currentlyLogInMember)) {
+            throw new DataToChangeIsNotCurrentlyLoggedInMember();
+        }
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(oldPassword)) {
             internalList.get(internalList.indexOf(checkMember)).getCredentials().setPassword(new Password(newPassword));
             usernamePasswordHashMap.remove(username);

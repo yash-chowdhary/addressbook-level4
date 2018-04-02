@@ -13,6 +13,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -161,7 +162,8 @@ public interface Model {
      * @param newPassword
      * @throws PasswordIncorrectException
      */
-    void changePassword(String username, String oldPassword, String newPassword) throws PasswordIncorrectException;
+    void changePassword(String username, String oldPassword, String newPassword)
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember;
 
     /**
      * Signs up a member if the clubbook is empty
