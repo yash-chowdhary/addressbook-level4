@@ -20,6 +20,7 @@ import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.util.CsvUtil;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -28,6 +29,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -318,12 +320,42 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+            IllegalExecutionException {
+        if (!clubBook.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+            throw new IllegalExecutionException();
+        }
+        boolean found = false;
+        for (Member member : clubBook.getMemberList()) {
+            if (member.getName().equals(name)) {
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new MemberNotFoundException();
+        }
+        try {
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
+            Assignee assignee = new Assignee(name.toString());
+            Status status = new Status(Status.NOT_STARTED_STATUS);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
+            clubBook.addTaskToTaskList(toAdd);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+            indicateClubBookChanged();
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    @Override
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
         String currentMember = getLoggedInMember().getName().toString();
         if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                || !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
             throw new TaskCannotBeDeletedException();
         }
         clubBook.deleteTask(targetTask);
