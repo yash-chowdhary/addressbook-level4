@@ -446,6 +446,11 @@ Changes the password of the member who is currently logged in
 
 Format: `changepass u/username pw/oldpassword npw/newpassword`
 
+****
+* Members are only able to change their own password.
+* Excos are able to change member's password.
+****
+
 Examples:
 
 * changepass u/A0123456H pw/password npw/pword
