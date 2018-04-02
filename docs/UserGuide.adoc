@@ -469,11 +469,6 @@ Format: `compress`
 * Use this to remove clutter in contact list
 ****
 
-Example:
-
-* `compress` +
-Compresses member details.
-
 === Decompressing member details : `decompress` (Since v1.2)
 
 Decompresses the details of members in the contact list +
@@ -483,11 +478,6 @@ Format: `decompress`
 * No changes if member details are already decompressed
 * Use this to see more detailed information of members in contact list
 ****
-
-Example:
-
-* `decompress` +
-Decompresses member details.
 
 === Auto-Complete Command (Since v1.3)
 Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
