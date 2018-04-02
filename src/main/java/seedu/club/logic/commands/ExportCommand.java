@@ -1,7 +1,10 @@
 //@@author amrut-prabhu
 package seedu.club.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
+import java.io.IOException;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -27,15 +30,17 @@ public class ExportCommand extends Command {
      * @param exportFile CSV file to be exported to.
      */
     public ExportCommand(File exportFile) {
+        requireNonNull(exportFile);
         this.exportFile = exportFile;
     }
 
     @Override
     public CommandResult execute() throws CommandException {
-        if (model.exportClubConnect(exportFile)) {
+        try {
+            model.exportClubConnectMembers(exportFile);
             return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
-        } else {
-            return new CommandResult(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
+        } catch (IOException ioe) {
+            throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
         }
     }
 

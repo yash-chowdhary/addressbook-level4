@@ -131,7 +131,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         Member targetMember = getMember(model, index);
         try {
             model.deleteMember(targetMember);
-        } catch (MemberNotFoundException pnfe) {
+        } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("targetMember is retrieved from model.");
         }
         return targetMember;
