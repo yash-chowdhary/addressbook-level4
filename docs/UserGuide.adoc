@@ -383,6 +383,23 @@ Examples:
 * `deletepoll 2` +
 Deletes the 2nd poll in the poll listing.
 
+=== Showing results of polls : `showresults` (Since v1.4)
+
+Displays the results of polls in Club Connect. This is a command that can be used by `EXCO` members to monitor all the polls in the club. +
+Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
+Format: `showresults`
+
+[NOTE]
+This command can only be invoked by `EXCO` members.
+
+=== Hiding results of polls : `hideresults` (Since v1.4)
+
+Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members to remove clutter from poll results. +
+Format: `hideresults`
+
+[NOTE]
+This command can only be invoked by `EXCO` members.
+
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo.
