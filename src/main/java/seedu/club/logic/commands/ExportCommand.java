@@ -18,10 +18,10 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Exports the members' information to the specified CSV file. "
-            + "Parameters: FILE_PATH (must be an absolute CSV file path)\n"
-            + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/members.csv";
+            + "Parameters: FILE_PATH (must be an absolute path to a CSV file)\n"
+            + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/Club Connect Members.csv";
 
-    public static final String MESSAGE_EXPORT_SUCCESS = "Members' details exported to %1$s";
+    public static final String MESSAGE_EXPORT_SUCCESS = "Details of members successfully exported to %1$s";
     public static final String MESSAGE_EXPORT_FAILURE = "Error occurred while exporting to the file: %1$s";
 
     private final File exportFile;
@@ -38,10 +38,11 @@ public class ExportCommand extends Command {
     public CommandResult execute() throws CommandException {
         try {
             model.exportClubConnectMembers(exportFile);
-            return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
         }
+
+        return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
     }
 
     @Override
@@ -51,4 +52,3 @@ public class ExportCommand extends Command {
                 && this.exportFile.equals(((ExportCommand) other).exportFile)); // state check
     }
 }
-//@@author amrut-prabhu
