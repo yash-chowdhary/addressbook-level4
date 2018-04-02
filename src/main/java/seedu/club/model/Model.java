@@ -27,6 +27,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 /**
@@ -167,4 +168,6 @@ public interface Model {
 
     void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
             IllegalExecutionException;
+
+    void viewMyTasks() throws TasksAlreadyListedException;
 }
