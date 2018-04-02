@@ -251,7 +251,7 @@ public class ParserUtil {
     public static File parseImportPath(String path) throws IllegalValueException {
         File file = parsePath(path);
 
-        if (isNotValidFileName(file) || isNotValidCsvFileName(path) || !file.exists() || !file.canRead()) {
+        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 

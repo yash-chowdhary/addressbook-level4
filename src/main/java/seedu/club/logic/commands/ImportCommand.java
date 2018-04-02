@@ -21,7 +21,7 @@ public class ImportCommand extends UndoableCommand {
             + "Parameters: FILE_PATH (must be an absolute path to a CSV file )\n"
             + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Downloads/members.csv";
 
-    public static final String MESSAGE_IMPORT_SUCCESS = "Details of members have been successfully imported from %1$s";
+    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported members from %1$s";
     public static final String MESSAGE_IMPORT_FAILURE = "Error occurred while importing from the file: %1$s";
 
     private final File importFile;

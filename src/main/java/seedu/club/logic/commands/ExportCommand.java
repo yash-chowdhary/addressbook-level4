@@ -21,7 +21,7 @@ public class ExportCommand extends Command {
             + "Parameters: FILE_PATH (must be an absolute path to a CSV file)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/Club Connect Members.csv";
 
-    public static final String MESSAGE_EXPORT_SUCCESS = "Details of members successfully exported to %1$s";
+    public static final String MESSAGE_EXPORT_SUCCESS = "Successfully exported details of members to %1$s";
     public static final String MESSAGE_EXPORT_FAILURE = "Error occurred while exporting to the file: %1$s";
 
     private final File exportFile;
