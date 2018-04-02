@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
@@ -110,7 +112,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void addMember(Member member) throws DuplicateMemberException {
-        //updateTagList(member.getTags());
         clubBook.addMember(member);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
@@ -120,9 +121,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateMember(Member target, Member editedMember)
             throws DuplicateMemberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
-
         clubBook.updateMember(target, editedMember);
-        deleteUnusedTags();
         indicateClubBookChanged();
     }
 
@@ -158,24 +157,25 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author amrut-prabhu
     /** Raises an event to indicate the profile photo of a member has changed */
-    private boolean indicateProfilePhotoChanged(String originalPath, String newFileName) {
+    private void indicateProfilePhotoChanged(String originalPath, String newFileName) throws PhotoReadException {
         ProfilePhotoChangedEvent profilePhotoChangedEvent = new ProfilePhotoChangedEvent(originalPath, newFileName);
         raise(profilePhotoChangedEvent);
-        return profilePhotoChangedEvent.isPhotoChanged();
+        if (!profilePhotoChangedEvent.isPhotoChanged()) {
+            throw new PhotoReadException();
+        }
     }
 
     @Override
-    public boolean addProfilePhoto(String originalPhotoPath) {
+    public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+        requireNonNull(originalPhotoPath);
+
         String newFileName = getLoggedInMember().getMatricNumber().toString();
-        if (!indicateProfilePhotoChanged(originalPhotoPath, newFileName)) {
-            return false;
-        }
+        indicateProfilePhotoChanged(originalPhotoPath, newFileName);
 
         String newProfilePhotoPath = ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName
                 + ProfilePhotoStorage.FILE_EXTENSION;
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
         indicateClubBookChanged();
-        return true;
     }
     //@@author
 
@@ -195,46 +195,6 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.deleteTag(tag);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
-    }
-
-    /**
-     * Removes those tags from the master tag list that no members in the club book are tagged with.
-     */
-    private void deleteUnusedTags() {
-        List<Tag> tags = new ArrayList<>(clubBook.getTagList());
-
-        for (Tag tag: tags) {
-            deleteTagIfUnused(tag);
-        }
-    }
-
-    /**
-     * Removes {@code tag} from the master tag list if no members in the club book are tagged with it.
-     *
-     * @param tag Tag to remove if no members are tagged with it
-     */
-    private void deleteTagIfUnused(Tag tag) {
-        if (isNotTaggedInMembers(tag)) {
-            try {
-                deleteTag(tag);
-            } catch (TagNotFoundException tnfe) {
-                throw new AssertionError("The tag cannot be missing.");
-            }
-        }
-    }
-
-    /**
-     * Returns true is no member in the club book is tagged with {@code tag}.
-     */
-    private boolean isNotTaggedInMembers(Tag tag) {
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
-        for (Member member : members) {
-            if (member.getTags().contains(tag)) {
-                return false;
-            }
-        }
-        return true;
     }
     //@@author
 
@@ -385,22 +345,27 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
      * @param data Member data to be added to the file.
+     * @throws IOException if there was an error writing to file.
      */
-    private boolean indicateNewExport(String data) {
+    private void indicateNewExport(String data) throws IOException {
         NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(data);
         raise(newExportDataAvailableEvent);
-        return newExportDataAvailableEvent.isFileChanged();
+        if (!newExportDataAvailableEvent.isFileChanged()) {
+            throw new IOException();
+        }
     }
 
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
      * @param exportFile CSV file to be exported to.
-     * @return true if no errors occur when exporting.
+     * @throws IOException if there was an error writing to file.
      */
-    private boolean indicateNewExport(File exportFile) {
+    private void indicateNewExport(File exportFile) throws IOException {
         NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile);
         raise(newExportDataAvailableEvent);
-        return newExportDataAvailableEvent.isFileChanged();
+        if (!newExportDataAvailableEvent.isFileChanged()) {
+            throw new IOException();
+        }
     }
 
     /**
@@ -411,34 +376,25 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public boolean exportClubConnect(File exportFile) {
-        if (!indicateNewExport(exportFile)) {
-            return false;
-        }
+    public void exportClubConnectMembers(File exportFile) throws IOException {
+        requireNonNull(exportFile);
+        indicateNewExport(exportFile);
 
-        if (!exportHeaders(exportFile)) {
-            return false;
-        }
-
+        exportHeaders(exportFile);
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         for (Member member: members) {
-            if (!exportMember(member)) {
-                return false;
-            }
+            exportMember(member);
         }
-        return true;
     }
 
     /**
      * Exports the header fields of {@code Member} object if the file is empty.
      */
-    private boolean exportHeaders(File exportFile) {
+    private void exportHeaders(File exportFile) throws IOException {
         if (isEmptyFile(exportFile)) {
             String headers = CsvUtil.getHeaders();
-            return indicateNewExport(headers);
-        } else {
-            return true;
+            indicateNewExport(headers);
         }
     }
 
@@ -446,9 +402,9 @@ public class ModelManager extends ComponentManager implements Model {
      * Exports the information of {@code member} to the file.
      * @param member Member whose data is to be exported.
      */
-    private boolean exportMember(Member member) {
+    private void exportMember(Member member) throws IOException {
         String memberData = convertMemberToCsv(member);
-        return indicateNewExport(memberData);
+        indicateNewExport(memberData);
     }
 
     /**

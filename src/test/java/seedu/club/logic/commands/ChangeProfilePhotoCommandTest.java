@@ -1,3 +1,4 @@
+//@@author amrut-prabhu
 package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -8,8 +9,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
@@ -23,7 +22,6 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
-import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.email.Body;
@@ -33,6 +31,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
@@ -44,72 +43,79 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
-import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
-import seedu.club.testutil.MemberBuilder;
 
-public class AddCommandTest {
+public class ChangeProfilePhotoCommandTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    private String currentDirectoryPath = ".";
+    private File currentDirectory = new File(currentDirectoryPath);
+
+    private String testPhotoPath = "./src/test/resources/photos/testPhoto.png";
+    private File testPhotoFile = new File(testPhotoPath);
+
     @Test
-    public void constructor_nullMember_throwsNullPointerException() {
+    public void constructor_nullProfilePhoto_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AddCommand(null);
+        new ChangeProfilePhotoCommand(null);
     }
 
     @Test
-    public void execute_memberAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingMemberAdded modelStub = new ModelStubAcceptingMemberAdded();
-        Member validMember = new MemberBuilder().build();
+    public void execute_addProfilePhoto_success() throws Exception {
+        ModelStubAcceptingAddProfilePhoto modelStub = new ModelStubAcceptingAddProfilePhoto();
 
-        CommandResult commandResult = getAddCommandForMember(validMember, modelStub).execute();
+        String validPhotoPath = testPhotoFile.getAbsolutePath();
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validMember), commandResult.feedbackToUser);
-        assertEquals(Arrays.asList(validMember), modelStub.membersAdded);
+        CommandResult commandResult = getChangeProfilePhotoCommand(validPhotoPath, modelStub).execute();
+        assertEquals(ChangeProfilePhotoCommand.MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, commandResult.feedbackToUser);
     }
 
     @Test
-    public void execute_duplicateMember_throwsCommandException() throws Exception {
-        ModelStub modelStub = new ModelStubThrowingDuplicateMemberException();
-        Member validMember = new MemberBuilder().build();
+    public void execute_invalidPath_throwsCommandException() throws Exception {
+        ModelStub modelStub = new ModelStubThrowingPhotoReadException();
+
+        String invalidPhotoPath = currentDirectory.getAbsolutePath();
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        thrown.expectMessage(String.format(ChangeProfilePhotoCommand.MESSAGE_INVALID_PHOTO_PATH, invalidPhotoPath));
 
-        getAddCommandForMember(validMember, modelStub).execute();
+        getChangeProfilePhotoCommand(invalidPhotoPath, modelStub).execute();
     }
 
     @Test
     public void equals() {
-        Member alice = new MemberBuilder().withName("Alice").build();
-        Member bob = new MemberBuilder().withName("Bob").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        String photoFilePath = currentDirectory.getAbsolutePath() + "/testPhoto.png";
+        ProfilePhoto profilePhoto = new ProfilePhoto(photoFilePath);
+
+        ProfilePhoto diffProfilePhoto = new ProfilePhoto(testPhotoPath);
+
+        ChangeProfilePhotoCommand changeProfilePhotoCommand = new ChangeProfilePhotoCommand(profilePhoto);
+        ChangeProfilePhotoCommand samePathChangeProfilePhotoCommand = new ChangeProfilePhotoCommand(profilePhoto);
+        ChangeProfilePhotoCommand differentchangeProfilePhotoCommand = new ChangeProfilePhotoCommand(diffProfilePhoto);
 
         // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        assertTrue(changeProfilePhotoCommand.equals(changeProfilePhotoCommand));
 
-        // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
+        // same photo -> returns true
+        assertTrue(changeProfilePhotoCommand.equals(samePathChangeProfilePhotoCommand));
 
         // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
+        assertFalse(changeProfilePhotoCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertFalse(changeProfilePhotoCommand.equals(null));
 
-        // different member -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        // different photo -> returns false
+        assertFalse(changeProfilePhotoCommand.equals(differentchangeProfilePhotoCommand));
     }
 
     /**
-     * Generates a new AddCommand with the details of the given member.
+     * Generates a new ExportCommand with {@code exportFile}.
      */
-    private AddCommand getAddCommandForMember(Member member, Model model) {
-        AddCommand command = new AddCommand(member);
+    private ChangeProfilePhotoCommand getChangeProfilePhotoCommand(String photoPath, Model model) {
+        ChangeProfilePhotoCommand command = new ChangeProfilePhotoCommand(new ProfilePhoto(photoPath));
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -126,18 +132,13 @@ public class AddCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void viewMyTasks() throws TasksAlreadyListedException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+                IllegalExecutionException {
             fail("This method should not be called");
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void signUpMember(Member member) {
             fail("This method should not be called");
         }
 
@@ -158,7 +159,11 @@ public class AddCommandTest {
 
         public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
             fail("This method should not be called");
-            return;
+        }
+
+        @Override
+        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+            fail("This method should not be called");
         }
 
         @Override
@@ -188,8 +193,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -274,44 +278,25 @@ public class AddCommandTest {
             fail("This method should not be called");
             return;
         }
+    }
 
+    /**
+     * A Model stub that always throw a PhotoReadException when trying to add a profile photo.
+     */
+    private class ModelStubThrowingPhotoReadException extends ModelStub {
         @Override
-        public void signUpMember(Member member) {
-            fail("This method should not be called");
-            return;
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+            throw new PhotoReadException();
         }
     }
 
     /**
-     * A Model stub that always throw a DuplicateMemberException when trying to add a member.
+     * A Model stub that always accept the path of the profile photo to be added.
      */
-    private class ModelStubThrowingDuplicateMemberException extends ModelStub {
+    private class ModelStubAcceptingAddProfilePhoto extends ModelStub {
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            throw new DuplicateMemberException();
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
-        }
-    }
-
-    /**
-     * A Model stub that always accept the member being added.
-     */
-    private class ModelStubAcceptingMemberAdded extends ModelStub {
-        final ArrayList<Member> membersAdded = new ArrayList<>();
-
-        @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            requireNonNull(member);
-            membersAdded.add(member);
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+            requireNonNull(originalPhotoPath);
         }
     }
 

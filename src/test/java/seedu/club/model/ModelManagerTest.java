@@ -19,12 +19,16 @@ import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 
+import seedu.club.commons.events.model.ClubBookChangedEvent;
+import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
@@ -49,10 +53,18 @@ import seedu.club.testutil.Assert;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TaskBuilder;
+import seedu.club.ui.testutil.EventsCollectorRule;
 
 public class ModelManagerTest {
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
     public void getFilteredMemberList_modifyList_throwsUnsupportedOperationException() {
@@ -426,6 +438,39 @@ public class ModelManagerTest {
         expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         assertEquals(expectedModel, modelManager);
     }
+
+    //@@author amrut-prabhu
+    @Test
+    public void addProfilePhoto_eventRaised() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+
+        String photoDirectory = "./src/test/resources/photos/";
+        String photoFileName = "testPhoto.png";
+        modelManager.addProfilePhoto(photoDirectory + photoFileName);
+
+        //2 events are raised: ProfilePhotoChangedEvent and ClubBookChangedEvent
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
+        //Last event raised is ClubBookChangedEvent
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ClubBookChangedEvent);
+    }
+
+    @Test
+    public void exportClubConnectMembers_eventRaised() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+
+        File exportFile = temporaryFolder.newFile("actual.csv");
+
+        modelManager.exportClubConnectMembers(exportFile);
+
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof NewExportDataAvailableEvent);
+    }
+    //@@author
 
     @Test
     public void equals() {

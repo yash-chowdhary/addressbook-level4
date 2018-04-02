@@ -11,6 +11,7 @@ import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -20,6 +21,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -249,9 +251,8 @@ public class AssignTaskCommandTest {
         }
 
         @Override
-        public boolean addProfilePhoto(String originalPhotoPath) {
-            fail("This method should not be called");
-            return false;
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
+            fail("This method should not be called.");
         }
 
         @Override
@@ -290,9 +291,9 @@ public class AssignTaskCommandTest {
             fail("This method should not be called");
         }
 
-        public boolean exportClubConnect(File exportFilePath) {
+        @Override
+        public void exportClubConnectMembers(File exportFilePath) throws IOException {
             fail("This method should not be called");
-            return false;
         }
 
         @Override
