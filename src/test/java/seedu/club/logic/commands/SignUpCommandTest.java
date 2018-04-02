@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import org.junit.Test;
@@ -39,30 +39,21 @@ import seedu.club.testutil.MemberBuilder;
 
 
 
-
-public class LogInCommandTest {
+public class SignUpCommandTest {
     private Member member = new MemberBuilder().build();
 
     @Test
-    public void executeMemberSuccessfullyLogIn() throws CommandException {
-        ModelStubAcceptingMemberLoggingIn modelStubAcceptingMemberLoggingIn = new ModelStubAcceptingMemberLoggingIn();
-        CommandResult commandResult = getLogInCommandForMember(member, modelStubAcceptingMemberLoggingIn).execute();
-        assertEquals(LogInCommand.MESSAGE_SUCCESS + member.getName().toString(), commandResult.feedbackToUser);
-    }
-
-    @Test
-    public void executeMemberUnsuccessfullyLogIn() throws CommandException {
-        ModelStubRejectingMemberLoggingIn modelStubRejectingMemberLoggingIn = new ModelStubRejectingMemberLoggingIn();
-        CommandResult commandResult = getLogInCommandForMember(member, modelStubRejectingMemberLoggingIn).execute();
-        assertEquals(LogInCommand.MESSAGE_FAILURE, commandResult.feedbackToUser);
+    public void executeMemberSuccessfullySigningUp() throws CommandException {
+        ModelStubAcceptingMemberSignUp modelStubAcceptingMemberSignUp = new ModelStubAcceptingMemberSignUp();
+        CommandResult commandResult = getSignUpCommandForMember(member, modelStubAcceptingMemberSignUp).execute();
+        assertEquals(SignUpCommand.MESSAGE_SUCCESS, commandResult.feedbackToUser);
     }
 
     /**
      * Generates a new LogInCommand with the details of the given member.
      */
-    private LogInCommand getLogInCommandForMember(Member member, Model model) {
-        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
-                member.getCredentials().getPassword());
+    private SignUpCommand getSignUpCommandForMember(Member member, Model model) {
+        SignUpCommand command = new SignUpCommand(member);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -91,17 +82,6 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
-            fail("This method should not be called");
-        }
-
-        @Override
         public void removeGroup(Group toRemove) {
             fail("This method should not be called.");
         }
@@ -124,6 +104,12 @@ public class LogInCommandTest {
         @Override
         public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
 
+        }
+
+        @Override
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+                IllegalExecutionException {
+            fail("This method should not be called");
         }
 
         @Override
@@ -164,7 +150,7 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void exportClubConnectMembers(File exportFile) {
+        public void exportClubConnectMembers(File exportFile) throws IOException {
             fail("This method should not be called.");
         }
 
@@ -220,79 +206,26 @@ public class LogInCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+            fail("This method should not be called");
+            return;
+        }
     }
     /**
      * A Model stub that always accept the member being added.
      */
-    private class ModelStubAcceptingMemberLoggingIn extends ModelStub {
-        private HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
-        private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
-        private Member currentlyLoggedIn = null;
-
+    private class ModelStubAcceptingMemberSignUp extends ModelStub {
+        private ReadOnlyClubBook clubBook = new ClubBook();
         @Override
-        public void logsInMember(String username, String password) {
-            requireNonNull(username, password);
-            addMember(member);
-            Member checkMember = usernameMemberHashMap.get(username);
-            if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
-                currentlyLoggedIn = checkMember;
-            }
-        }
-
-        @Override
-        public void addMember(Member member) {
+        public void signUpMember(Member member) {
             requireNonNull(member);
-            usernameMemberHashMap.put(member.getCredentials().getUsername().value, member);
-            usernamePasswordHashMap.put(member.getCredentials().getUsername().value,
-                    member.getCredentials().getPassword().value);
-        }
-
-        @Override
-        public Member getLoggedInMember() {
-            return currentlyLoggedIn;
         }
 
         @Override
         public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
-        }
-    }
-
-    /**
-     * A Model stub that always rejects the member to log in.
-     */
-    private class ModelStubRejectingMemberLoggingIn extends ModelStub {
-        private HashMap<String, Member> usernameMemberHashMap = new HashMap<>();
-        private HashMap<String, String> usernamePasswordHashMap = new HashMap<>();
-        private Member currentlyLoggedIn = null;
-
-        @Override
-        public void logsInMember(String username, String password) {
-            requireNonNull(username, password);
-            addMember(member);
-            Member checkMember = usernameMemberHashMap.get(username);
-            if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
-                currentlyLoggedIn = checkMember;
-            }
-        }
-
-        @Override
-        public void addMember(Member member) {
-            requireNonNull(member);
-            usernameMemberHashMap.put(member.getCredentials().getUsername().value, member);
-            usernamePasswordHashMap.put(member.getCredentials().getUsername().value,
-                    member.getCredentials().getUsername().value); //purposely to have a wrong password
-        }
-
-        @Override
-        public Member getLoggedInMember() {
-            return currentlyLoggedIn;
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+            return clubBook;
         }
     }
 }
-

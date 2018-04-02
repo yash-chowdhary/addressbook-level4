@@ -8,7 +8,8 @@ import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.exceptions.DataConversionException;
-import seedu.club.commons.exceptions.PhotoException;
+import seedu.club.commons.exceptions.PhotoReadException;
+import seedu.club.commons.exceptions.PhotoWriteException;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.UserPrefs;
 
@@ -40,7 +41,8 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
     void handleClubBookChangedEvent(ClubBookChangedEvent cbce);
 
     //@@author amrut-prabhu
-    void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException;
+    void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
+            throws PhotoReadException, PhotoWriteException;
 
     /**
      * Saves a copy of the newly added photo to Club Connect's resources.
@@ -52,6 +54,6 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
      * Writes data to a CSV file on the hard disk.
      * Raises {@link DataSavingExceptionEvent} if there was an error during writing.
      */
-    void handleExportMemberEvent(NewExportDataAvailableEvent event);
+    void handleExportDataEvent(NewExportDataAvailableEvent event);
     //@@author
 }

@@ -2,9 +2,9 @@ package systemtests;
 
 import static org.junit.Assert.assertEquals;
 import static seedu.club.testutil.EventsUtil.postLater;
-import static seedu.club.ui.UiManager.FILE_OPS_ERROR_DIALOG_CONTENT_MESSAGE;
-import static seedu.club.ui.UiManager.FILE_OPS_ERROR_DIALOG_HEADER_MESSAGE;
 import static seedu.club.ui.UiManager.FILE_OPS_ERROR_DIALOG_STAGE_TITLE;
+import static seedu.club.ui.UiManager.FILE_OPS_WRITE_ERROR_DIALOG_CONTENT_MESSAGE;
+import static seedu.club.ui.UiManager.FILE_OPS_WRITE_ERROR_DIALOG_HEADER_MESSAGE;
 
 import java.io.IOException;
 
@@ -26,8 +26,8 @@ public class ErrorDialogGuiTest extends ClubBookSystemTest {
         guiRobot.waitForEvent(() -> guiRobot.isWindowShown(FILE_OPS_ERROR_DIALOG_STAGE_TITLE));
 
         AlertDialogHandle alertDialog = new AlertDialogHandle(guiRobot.getStage(FILE_OPS_ERROR_DIALOG_STAGE_TITLE));
-        assertEquals(FILE_OPS_ERROR_DIALOG_HEADER_MESSAGE, alertDialog.getHeaderText());
-        assertEquals(FILE_OPS_ERROR_DIALOG_CONTENT_MESSAGE + ":\n" + IO_EXCEPTION_STUB.toString(),
+        assertEquals(FILE_OPS_WRITE_ERROR_DIALOG_HEADER_MESSAGE, alertDialog.getHeaderText());
+        assertEquals(FILE_OPS_WRITE_ERROR_DIALOG_CONTENT_MESSAGE + ":\n" + IO_EXCEPTION_STUB.toString(),
                 alertDialog.getContentText());
     }
 

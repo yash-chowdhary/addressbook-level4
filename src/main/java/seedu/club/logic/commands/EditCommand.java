@@ -85,7 +85,7 @@ public class EditCommand extends UndoableCommand {
             model.updateMember(memberToEdit, editedMember);
         } catch (DuplicateMemberException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
-        } catch (MemberNotFoundException pnfe) {
+        } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
