@@ -45,6 +45,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 public class ChangeProfilePhotoCommandTest {
@@ -131,6 +132,11 @@ public class ChangeProfilePhotoCommandTest {
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
+        }
+
+        @Override
+        public void viewMyTasks() throws TasksAlreadyListedException {
+            fail("This method should not be called");
         }
 
         @Override

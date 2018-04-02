@@ -29,6 +29,7 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
+import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -42,10 +43,13 @@ import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
+import seedu.club.testutil.Assert;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TaskBuilder;
@@ -331,7 +335,8 @@ public class ModelManagerTest {
 
     @Test
     public void viewAllTasks_validPermission_success() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
+                .withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -346,7 +351,8 @@ public class ModelManagerTest {
 
     @Test
     public void viewAllTasks_invalidPermission_throwsException() {
-        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
@@ -361,6 +367,45 @@ public class ModelManagerTest {
             assertEquals(expectedModel, modelManager);
         }
     }
+
+    @Test
+    public void viewMyTasks_validSwitch_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
+                .withTask(BOOK_AUDITORIUM).build();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        expectedModel.updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(ALICE));
+        modelManager.viewAllTasks();
+        modelManager.viewMyTasks();
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void viewMyTasks_tasksAlreadyListed_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
+                .withTask(BOOK_AUDITORIUM).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        modelManager.updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(ALICE));
+
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        expectedModel.updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(ALICE));
+
+        String expectedMessage = ViewMyTasksCommand.MESSAGE_ALREADY_LISTED;
+        Assert.assertThrows(TasksAlreadyListedException.class, modelManager::viewMyTasks);
+        Assert.assertThrows(TasksAlreadyListedException.class, expectedMessage, modelManager::viewMyTasks);
+    }
+
     //@@author
 
     @Test
