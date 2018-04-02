@@ -1,14 +1,17 @@
 package seedu.club.logic.commands;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.club.testutil.TypicalMembers.BENSON;
+import static seedu.club.testutil.TypicalMembers.CARL;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -35,6 +38,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -49,8 +53,7 @@ import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.TaskBuilder;
 
-//@@author yash-chowdhary
-public class AddTaskCommandTest {
+public class AssignTaskCommandTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -58,17 +61,19 @@ public class AddTaskCommandTest {
     @Test
     public void constructor_nullTask_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AddTaskCommand(null);
+        new AssignTaskCommand(null, null);
     }
 
     @Test
-    public void execute_taskAcceptedByModel_addSuccessful() throws Exception {
+    public void execute_taskAcceptedByModel_assignSuccessful() throws Exception {
         ModelStubAcceptingTaskAdded modelStub = new ModelStubAcceptingTaskAdded();
         Task validTask = new TaskBuilder().build();
+        Name validName = new Name(BENSON.getName().toString());
 
-        CommandResult commandResult = getAddTaskCommandForTask(validTask, modelStub).executeUndoableCommand();
+        CommandResult commandResult =  getAssignTaskCommandForTask(validTask, validName, modelStub)
+                .executeUndoableCommand();
 
-        assertEquals(AddTaskCommand.MESSAGE_SUCCESS, commandResult.feedbackToUser);
+        assertEquals(String.format(AssignTaskCommand.MESSAGE_SUCCESS, validName), commandResult.feedbackToUser);
         assertEquals(Arrays.asList(validTask), modelStub.tasksAdded);
     }
 
@@ -76,37 +81,51 @@ public class AddTaskCommandTest {
     public void execute_duplicateTask_throwsCommandException() throws Exception {
         ModelStub modelStub = new ModelStubThrowingDuplicateTaskException();
         Task validTask = new TaskBuilder().build();
+        Name validName = new Name(BENSON.getName().toString());
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddTaskCommand.MESSAGE_DUPLICATE_TASK);
+        thrown.expectMessage(AssignTaskCommand.MESSAGE_DUPLICATE_TASK);
 
-        getAddTaskCommandForTask(validTask, modelStub).executeUndoableCommand();
+        getAssignTaskCommandForTask(validTask, validName, modelStub).executeUndoableCommand();
+    }
+
+    @Test
+    public void execute_memberNotFound_throwsCommandException() throws Exception {
+        ModelStub modelStub = new ModelStubThrowingMemberNotFoundException();
+        Task validTask = new TaskBuilder().build();
+        Name validName = new Name(BENSON.getName().toString());
+
+        thrown.expect(CommandException.class);
+        thrown.expectMessage(AssignTaskCommand.MESSAGE_MEMBER_NOT_FOUND);
+
+        getAssignTaskCommandForTask(validTask, validName, modelStub).executeUndoableCommand();
     }
 
     @Test
     public void equals() {
         Task firstTask = BOOK_AUDITORIUM;
         Task secondTask = BUY_CONFETTI;
+        Name firstName = BENSON.getName();
+        Name secondName = CARL.getName();
 
-        AddTaskCommand firstAddTaskCommand = new AddTaskCommand(firstTask);
-        AddTaskCommand secondAddTaskCommand = new AddTaskCommand(secondTask);
+        AssignTaskCommand firstAssignTaskCommand = new AssignTaskCommand(firstTask, firstName);
+        AssignTaskCommand secondAssignTaskCommand = new AssignTaskCommand(secondTask, secondName);
 
-        assertTrue(firstAddTaskCommand.equals(firstAddTaskCommand));
-        assertFalse(firstAddTaskCommand.equals(null));
-        assertFalse(firstAddTaskCommand.equals(true));
+        assertTrue(firstAssignTaskCommand.equals(firstAssignTaskCommand));
+        assertFalse(firstAssignTaskCommand.equals(null));
+        assertFalse(firstAssignTaskCommand.equals(true));
 
-        AddTaskCommand firstCommandCopy = new AddTaskCommand(firstTask);
-        assertTrue(firstAddTaskCommand.equals(firstCommandCopy));
+        AssignTaskCommand firstCommandCopy = new AssignTaskCommand(firstTask, firstName);
+        assertTrue(firstAssignTaskCommand.equals(firstCommandCopy));
 
-        assertFalse(firstAddTaskCommand.equals(secondAddTaskCommand));
+        assertFalse(firstAssignTaskCommand.equals(secondAssignTaskCommand));
     }
-
 
     /**
      * Generates a new AddTaskCommand with the details of the given task.
      */
-    private AddTaskCommand getAddTaskCommandForTask(Task task, Model model) {
-        AddTaskCommand command = new AddTaskCommand(task);
+    private AssignTaskCommand getAssignTaskCommandForTask(Task task, Name name, Model model) {
+        AssignTaskCommand command = new AssignTaskCommand(task, name);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -132,11 +151,6 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void viewMyTasks() throws TasksAlreadyListedException {
-            fail("This method should not be called");
-        }
-
-        @Override
         public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
                 IllegalExecutionException {
             fail("This method should not be called");
@@ -149,6 +163,11 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void viewMyTasks() throws TasksAlreadyListedException {
+            fail("This should not be called");
+        }
+
+        @Override
         public void deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called");
             return;
@@ -158,6 +177,11 @@ public class AddTaskCommandTest {
         public void addMember(Member member) throws DuplicateMemberException {
             fail("This method should not be called");
             return;
+        }
+
+        @Override
+        public void signUpMember(Member member) throws MemberListNotEmptyException {
+            fail("This method should not be called");
         }
 
         @Override
@@ -228,7 +252,7 @@ public class AddTaskCommandTest {
 
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
-            fail("This method should not be called");
+            fail("This method should not be called.");
         }
 
         @Override
@@ -267,7 +291,8 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
         }
 
-        public void exportClubConnectMembers(File exportFilePath) {
+        @Override
+        public void exportClubConnectMembers(File exportFilePath) throws IOException {
             fail("This method should not be called");
         }
 
@@ -282,21 +307,31 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
             return;
         }
-
-        @Override
-        public void signUpMember(Member member) {
-            fail("This method should not be called");
-            return;
-        }
     }
+
 
     /**
      * A Model stub that always throw a DuplicateTaskException when trying to add a task.
      */
     private class ModelStubThrowingDuplicateTaskException extends ModelStub {
         @Override
-        public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
             throw new DuplicateTaskException();
+        }
+
+        @Override
+        public ReadOnlyClubBook getClubBook() {
+            return new ClubBook();
+        }
+    }
+
+    /**
+     * A Model stub that always throw a DuplicateTaskException when trying to add a task.
+     */
+    private class ModelStubThrowingMemberNotFoundException extends ModelStub {
+        @Override
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+            throw new MemberNotFoundException();
         }
 
         @Override
@@ -312,8 +347,8 @@ public class AddTaskCommandTest {
         final ArrayList<Task> tasksAdded = new ArrayList<>();
 
         @Override
-        public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
-            requireNonNull(toAdd);
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+            requireAllNonNull(toAdd, name);
             tasksAdded.add(toAdd);
         }
 
@@ -322,4 +357,5 @@ public class AddTaskCommandTest {
             return new ClubBook();
         }
     }
+
 }

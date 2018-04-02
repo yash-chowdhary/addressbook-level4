@@ -9,7 +9,7 @@ import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
-
+//@@author Song Weiyang
 /**
  * Logs in a member to ClubConnect
  */

@@ -64,7 +64,7 @@ public class UndoableCommandTest {
             Member memberToDelete = model.getFilteredMemberList().get(0);
             try {
                 model.deleteMember(memberToDelete);
-            } catch (MemberNotFoundException pnfe) {
+            } catch (MemberNotFoundException mnfe) {
                 fail("Impossible: memberToDelete was retrieved from model.");
             }
             return new CommandResult("");
