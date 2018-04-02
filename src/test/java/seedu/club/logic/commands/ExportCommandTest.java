@@ -32,8 +32,10 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -275,6 +277,13 @@ public class ExportCommandTest {
         @Override
         public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
+        }
+
+        @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
+            fail("This method should not be called");
+            return;
         }
     }
 
