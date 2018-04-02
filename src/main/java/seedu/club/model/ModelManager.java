@@ -2,6 +2,8 @@ package seedu.club.model;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.club.storage.ProfilePhotoStorage.PHOTO_FILE_EXTENSION;
+import static seedu.club.storage.ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.logic.commands.ViewMyTasksCommand;
@@ -32,6 +35,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -50,7 +54,7 @@ import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
-import seedu.club.storage.ProfilePhotoStorage;
+import seedu.club.storage.CsvClubBookStorage;
 
 /**
  * Represents the in-memory model of the club book data.
@@ -171,10 +175,11 @@ public class ModelManager extends ComponentManager implements Model {
 
         String newFileName = getLoggedInMember().getMatricNumber().toString();
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
+        String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
-        String newProfilePhotoPath = ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName
-                + ProfilePhotoStorage.FILE_EXTENSION;
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
+
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
     //@@author
@@ -421,7 +426,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void importMembers(File importFile) throws IOException {
+    public void importMembers(File importFile) throws IOException, DuplicateMemberException, DataConversionException {
+        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
+        UniqueMemberList importedMembers = storage.readClubBook();
+
+        for (Member member: importedMembers) {
+            clubBook.addMember(member);
+        }
     }
     //@@author
 

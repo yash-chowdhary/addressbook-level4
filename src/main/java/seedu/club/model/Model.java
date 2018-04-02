@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
@@ -116,7 +117,7 @@ public interface Model {
     void deleteTag(Tag tag) throws TagNotFoundException;
 
     /**
-     * Returns true if profile photo is successfully changed for the logged in member.
+     * Changes profile photo for the currently logged in member.
      *
      * @param originalPhotoPath Absolute file path of the original photo.
      * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
@@ -136,8 +137,9 @@ public interface Model {
      *
      * @param importFile File from which data is imported.
      * @throws IOException if there was an error reading from file.
+     * @throws DuplicateMemberException if a member's details is equivalent to another existing member in the list.
      */
-    void importMembers(File importFile) throws IOException;
+    void importMembers(File importFile) throws IOException, DuplicateMemberException, DataConversionException;
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */
