@@ -26,6 +26,7 @@ import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HistoryCommand;
+import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
@@ -113,6 +114,9 @@ public class ClubBookParser {
         case ExportCommand.COMMAND_WORD:
             return new ExportCommandParser().parse(arguments);
 
+        case ImportCommand.COMMAND_WORD:
+            return new ImportCommandParser().parse(arguments);
+
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
@@ -128,6 +132,9 @@ public class ClubBookParser {
         case LogInCommand.COMMAND_WORD:
             return new LoginCommandParser().parse(arguments);
 
+        case LogOutCommand.COMMAND_WORD:
+            return new LogOutCommand();
+
         case RedoCommand.COMMAND_WORD:
             return new RedoCommand();
 
@@ -137,14 +144,11 @@ public class ClubBookParser {
         case SelectCommand.COMMAND_WORD:
             return new SelectCommandParser().parse(arguments);
 
-        case UndoCommand.COMMAND_WORD:
-            return new UndoCommand();
-
-        case LogOutCommand.COMMAND_WORD:
-            return new LogOutCommand();
-
         case SignUpCommand.COMMAND_WORD:
             return new SignUpCommandParser().parse(arguments);
+
+        case UndoCommand.COMMAND_WORD:
+            return new UndoCommand();
 
         case ViewAllTasksCommand.COMMAND_WORD:
             return new ViewAllTasksCommand();

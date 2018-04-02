@@ -37,7 +37,7 @@ public class ImportCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
-            model.importClubConnectMembers(importFile);
+            model.importMembers(importFile);
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_IMPORT_FAILURE, importFile));
         }

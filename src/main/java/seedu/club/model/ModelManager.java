@@ -342,8 +342,22 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author
 
     //@@author amrut-prabhu
+    @Override
+    public void exportClubConnectMembers(File exportFile) throws IOException {
+        requireNonNull(exportFile);
+        indicateNewExport(exportFile);
+
+        exportHeaders(exportFile);
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+
+        for (Member member: members) {
+            exportMember(member);
+        }
+    }
+
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
+     *
      * @param data Member data to be added to the file.
      * @throws IOException if there was an error writing to file.
      */
@@ -357,6 +371,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
+     *
      * @param exportFile CSV file to be exported to.
      * @throws IOException if there was an error writing to file.
      */
@@ -375,19 +390,6 @@ public class ModelManager extends ComponentManager implements Model {
         return file.length() == 0;
     }
 
-    @Override
-    public void exportClubConnectMembers(File exportFile) throws IOException {
-        requireNonNull(exportFile);
-        indicateNewExport(exportFile);
-
-        exportHeaders(exportFile);
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
-        for (Member member: members) {
-            exportMember(member);
-        }
-    }
-
     /**
      * Exports the header fields of {@code Member} object if the file is empty.
      */
@@ -400,6 +402,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /**
      * Exports the information of {@code member} to the file.
+     *
      * @param member Member whose data is to be exported.
      */
     private void exportMember(Member member) throws IOException {
@@ -409,6 +412,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /**
      * Returns the CSV representation of {@code member}.
+     *
      * @param member Member who is to be converted to CSV format.
      * @return Member data in CSV format.
      */
@@ -416,12 +420,9 @@ public class ModelManager extends ComponentManager implements Model {
         return CsvUtil.toCsvFormat(member);
     }
 
-    /*@Override
-    public void importClubConnect(File exportFilePath) {
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        members.forEach(member -> exportMember(exportFilePath, member));
-        clubBook =
-    }*/
+    @Override
+    public void importMembers(File importFile) throws IOException {
+    }
     //@@author
 
     //=========== Filtered member List Accessors =============================================================
