@@ -6,6 +6,7 @@ import java.util.Collections;
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
+import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
@@ -57,6 +58,7 @@ public class CommandList {
         commandList.add(AddTaskCommand.COMMAND_FORMAT);
         commandList.add(DeleteTaskCommand.COMMAND_FORMAT);
         commandList.add(ViewAllTasksCommand.COMMAND_WORD);
+        commandList.add(AssignTaskCommand.COMMAND_FORMAT);
         commandList.add(AddPollCommand.COMMAND_FORMAT);
         commandList.add(DeletePollCommand.COMMAND_FORMAT);
         commandList.add(ExportCommand.COMMAND_FORMAT);

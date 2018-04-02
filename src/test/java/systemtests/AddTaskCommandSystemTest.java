@@ -11,17 +11,7 @@ import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_CO
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_FOOD;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_2;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_ASSIGNEE;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_ASSIGNOR;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DATE_1;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DATE_2;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DESCRIPTION_CONFETTI;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_STATUS_TO_BEGIN;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_TIME_1;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_TIME_2;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
-import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
-import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import org.junit.Test;
 
@@ -34,9 +24,7 @@ import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
-import seedu.club.model.task.Task;
 import seedu.club.model.task.Time;
-import seedu.club.testutil.TaskBuilder;
 
 public class AddTaskCommandSystemTest extends ClubBookSystemTest {
 
@@ -50,8 +38,6 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
         executeCommand(logInCommand);
         model = getModel();
         modelBeforeAdding = getModel();
-
-        Task toAdd = BUY_FOOD;
 
         /* Case: add a task to a non-empty address book,
          * command with leading spaces and trailing spaces -> added
@@ -74,50 +60,24 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: add task with all fields same as another task in address book except task description -> added */
-
-        toAdd = new TaskBuilder()
-                .withDescription(VALID_TASK_DESCRIPTION_CONFETTI)
-                .withDate(VALID_TASK_DATE_1)
-                .withTime(VALID_TASK_TIME_1)
-                .withAssignor(VALID_TASK_ASSIGNOR)
-                .withAssignee(VALID_TASK_ASSIGNEE)
-                .withStatus(VALID_TASK_STATUS_TO_BEGIN)
-                .build();
         command = AddTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_CONFETTI
                 + " " + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 +  " ";
         expectedMessage = AddTaskCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: add task with all fields same as another task in address book except task due date -> added */
-        toAdd = new TaskBuilder()
-                .withDescription(VALID_TASK_DESCRIPTION_CONFETTI)
-                .withDate(VALID_TASK_DATE_2)
-                .withTime(VALID_TASK_TIME_1)
-                .withAssignor(VALID_TASK_ASSIGNOR)
-                .withAssignee(VALID_TASK_ASSIGNEE)
-                .withStatus(VALID_TASK_STATUS_TO_BEGIN)
-                .build();
         command = AddTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_CONFETTI + " "
                 + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " ";
         expectedMessage = AddTaskCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: add task with all fields same as another task in address book except task time -> added */
-        toAdd = new TaskBuilder()
-                .withDescription(VALID_TASK_DESCRIPTION_CONFETTI)
-                .withDate(VALID_TASK_DATE_1)
-                .withTime(VALID_TASK_TIME_2)
-                .withAssignor(VALID_TASK_ASSIGNOR)
-                .withAssignee(VALID_TASK_ASSIGNEE)
-                .withStatus(VALID_TASK_STATUS_TO_BEGIN)
-                .build();
         command = AddTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_CONFETTI + " "
                 + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_2 + " ";
         expectedMessage = AddTaskCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedMessage);
 
-        /* CaseL add task with fields in random order -> added */
-        toAdd = BOOK_AUDITORIUM;
+        /* Case add task with fields in random order -> added */
         command = AddTaskCommand.COMMAND_WORD + " " + "desc/Book Auditorium "
                 + "d/02/04/2018 " + "ti/13:00 ";
         assertCommandSuccess(command, model, expectedMessage);
