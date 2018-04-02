@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.exceptions.DataConversionException;
+import seedu.club.commons.util.FileUtil;
 import seedu.club.model.ClubBook;
 import seedu.club.model.ReadOnlyClubBook;
 
@@ -31,8 +32,13 @@ public class CsvClubBookStorage {
         return this.file;
     }
 
-    public void setClubBookFilePath(File filePath) {
-        this.file = filePath;
+    public void setClubBookFile(File file) {
+        this.file = file;
+        try {
+            FileUtil.createIfMissing(file);
+        } catch (IOException ioe) {
+            logger.warning("Error creating file " + file.getAbsolutePath());
+        }
     }
 
     public Optional<ReadOnlyClubBook> readClubBook() throws DataConversionException, IOException {

@@ -1,3 +1,4 @@
+//@@author amrut-prabhu
 package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -8,13 +9,12 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -23,7 +23,6 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
-import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.email.Body;
@@ -35,7 +34,6 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
-import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -46,70 +44,78 @@ import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
-import seedu.club.testutil.MemberBuilder;
 
-public class AddCommandTest {
+public class ExportCommandTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
+
+    private String currentDirectoryPath = ".";
+    private File currentDirectory = new File(currentDirectoryPath);
+
     @Test
-    public void constructor_nullMember_throwsNullPointerException() {
+    public void constructor_nullFile_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AddCommand(null);
+        new ExportCommand(null);
     }
 
     @Test
-    public void execute_memberAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingMemberAdded modelStub = new ModelStubAcceptingMemberAdded();
-        Member validMember = new MemberBuilder().build();
+    public void execute_exportClubConnectMembers_success() throws Exception {
+        ModelStubAcceptingExport modelStub = new ModelStubAcceptingExport();
 
-        CommandResult commandResult = getAddCommandForMember(validMember, modelStub).execute();
+        String validFilePath = testFolder.getRoot().getPath() + "TempClubBook.csv";
+        File exportFile = new File(validFilePath);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validMember), commandResult.feedbackToUser);
-        assertEquals(Arrays.asList(validMember), modelStub.membersAdded);
+        CommandResult commandResult = getExportCommand(exportFile, modelStub).execute();
+        assertEquals(String.format(ExportCommand.MESSAGE_EXPORT_SUCCESS, exportFile), commandResult.feedbackToUser);
     }
 
     @Test
-    public void execute_duplicateMember_throwsCommandException() throws Exception {
-        ModelStub modelStub = new ModelStubThrowingDuplicateMemberException();
-        Member validMember = new MemberBuilder().build();
+    public void execute_invalidFilePath_throwsCommandException() throws Exception {
+        ModelStub modelStub = new ModelStubThrowingIoException();
+
+        String invalidFilePath = testFolder.getRoot().getPath();
+        File exportFile = new File(invalidFilePath);
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        thrown.expectMessage(String.format(ExportCommand.MESSAGE_EXPORT_FAILURE, exportFile));
 
-        getAddCommandForMember(validMember, modelStub).execute();
+        getExportCommand(exportFile, modelStub).execute();
     }
 
     @Test
     public void equals() {
-        Member alice = new MemberBuilder().withName("Alice").build();
-        Member bob = new MemberBuilder().withName("Bob").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        String exportFilePath = currentDirectory.getAbsolutePath() + "/exportEqualsTest.csv";
+        File exportFile = new File(exportFilePath);
+
+        ExportCommand exportCommand = new ExportCommand(exportFile);
+        ExportCommand sameFileExportCommand = new ExportCommand(exportFile);
+        ExportCommand differentFileExportCommand = new ExportCommand(currentDirectory);
 
         // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        assertTrue(exportCommand.equals(exportCommand));
 
-        // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
+        // same file -> returns true
+        assertTrue(exportCommand.equals(sameFileExportCommand));
 
         // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
+        assertFalse(exportCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertFalse(exportCommand.equals(null));
 
-        // different member -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        // different file -> returns false
+        assertFalse(exportCommand.equals(differentFileExportCommand));
     }
 
     /**
-     * Generates a new AddCommand with the details of the given member.
+     * Generates a new ExportCommand with {@code exportFile}.
      */
-    private AddCommand getAddCommandForMember(Member member, Model model) {
-        AddCommand command = new AddCommand(member);
+    private ExportCommand getExportCommand(File exportFile, Model model) {
+        ExportCommand command = new ExportCommand(exportFile);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -126,8 +132,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
-            fail("This method should not be called.");
+        public void signUpMember(Member member) {
+            fail("This method should not be called");
         }
 
         @Override
@@ -157,6 +163,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called.");
         }
@@ -183,8 +194,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
             fail("This method should not be called.");
         }
 
@@ -232,7 +242,6 @@ public class AddCommandTest {
         @Override
         public void sendEmail(String recipients, Client client, Subject subject, Body body) {
             fail("This method should not be called");
-            return;
         }
 
         @Override
@@ -255,7 +264,6 @@ public class AddCommandTest {
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
-            return;
         }
 
         @Override
@@ -267,52 +275,27 @@ public class AddCommandTest {
         @Override
         public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
-            return;
-        }
-
-        @Override
-        public void changePassword(String username, String oldPassword, String newPassword)
-                throws PasswordIncorrectException {
-            fail("This method should not be called");
-            return;
-        }
-
-        public void signUpMember(Member member) {
-            fail("This method should not be called");
-            return;
         }
     }
 
     /**
-     * A Model stub that always throw a DuplicateMemberException when trying to add a member.
+     * A Model stub that always throw a IOException when trying to export to a file.
      */
-    private class ModelStubThrowingDuplicateMemberException extends ModelStub {
+    private class ModelStubThrowingIoException extends ModelStub {
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            throw new DuplicateMemberException();
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+        public void exportClubConnectMembers(File exportFile) throws IOException {
+            throw new IOException();
         }
     }
 
     /**
-     * A Model stub that always accept the member being added.
+     * A Model stub that always accept the file being exported to.
      */
-    private class ModelStubAcceptingMemberAdded extends ModelStub {
-        final ArrayList<Member> membersAdded = new ArrayList<>();
+    private class ModelStubAcceptingExport extends ModelStub {
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            requireNonNull(member);
-            membersAdded.add(member);
-        }
-
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+        public void exportClubConnectMembers(File exportFile) throws IOException {
+            requireNonNull(exportFile);
         }
     }
 
