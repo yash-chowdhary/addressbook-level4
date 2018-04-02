@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -158,15 +159,13 @@ public class LogInCommandTest {
         }
 
         @Override
-        public boolean addProfilePhoto(String originalPhotoPath) {
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called.");
-            return false;
         }
 
         @Override
-        public boolean exportClubConnect(File exportFile) {
+        public void exportClubConnectMembers(File exportFile) {
             fail("This method should not be called.");
-            return false;
         }
 
         @Override

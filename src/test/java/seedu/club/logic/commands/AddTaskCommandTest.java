@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -220,9 +221,8 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public boolean addProfilePhoto(String originalPhotoPath) {
+        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called");
-            return false;
         }
 
         @Override
@@ -261,9 +261,8 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
         }
 
-        public boolean exportClubConnect(File exportFilePath) {
+        public void exportClubConnectMembers(File exportFilePath) {
             fail("This method should not be called");
-            return false;
         }
 
         @Override
