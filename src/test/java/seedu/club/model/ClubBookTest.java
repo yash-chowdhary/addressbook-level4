@@ -37,6 +37,7 @@ import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
@@ -112,6 +113,43 @@ public class ClubBookTest {
             Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
             ClubBook expectedClubBook = new ClubBookBuilder()
                     .withMember(amy)
+                    .withTask(buyFood)
+                    .withTask(buyConfetti)
+                    .build();
+            assertEquals(expectedClubBook, clubBook);
+        }
+    }
+
+    @Test
+    public void addTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY)
+                .withTask(BUY_FOOD).build();
+        clubBook.addTaskToTaskList(BUY_CONFETTI);
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood)
+                .withTask(buyConfetti).build();
+
+        assertEquals(expectedClubBook, clubBook);
+
+    }
+
+    @Test
+    public void addTask_duplicateTask_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(BOB)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+
+        Task toAdd = new TaskBuilder(BUY_CONFETTI).build();
+        try {
+            clubBook.addTaskToTaskList(toAdd);
+        } catch (DuplicateTaskException dte) {
+            Member bob = new MemberBuilder(BOB).build();
+            Task buyFood = new TaskBuilder(BUY_FOOD).build();
+            Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+            ClubBook expectedClubBook = new ClubBookBuilder()
+                    .withMember(bob)
                     .withTask(buyFood)
                     .withTask(buyConfetti)
                     .build();

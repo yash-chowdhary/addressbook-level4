@@ -40,7 +40,7 @@ public class DeleteCommand extends UndoableCommand {
         requireNonNull(memberToDelete);
         try {
             model.deleteMember(memberToDelete);
-        } catch (MemberNotFoundException pnfe) {
+        } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
 

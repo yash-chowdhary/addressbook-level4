@@ -42,13 +42,15 @@ public class CommandTestUtil {
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
+    public static final String VALID_NAME_BENSON = "Benson Meier";
+    public static final String VALID_NAME_CARL = "Carl Kurz";
     public static final String VALID_MATRIC_NUMBER_AMY = "A9210701B";
     public static final String VALID_MATRIC_NUMBER_BOB = "A8389539B";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
-    public static final String VALID_GROUP_AMY = "publicity";
+    public static final String VALID_GROUP_AMY = "exco";
     public static final String VALID_GROUP_BOB = "logistics";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friends";
@@ -89,6 +91,8 @@ public class CommandTestUtil {
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
+    public static final String NAME_DESC_BENSON = " " + PREFIX_NAME + VALID_NAME_BENSON;
+    public static final String NAME_DESC_CARL = " " + PREFIX_NAME + VALID_NAME_CARL;
     public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
     public static final String PHONE_DESC_BOB = " " + PREFIX_PHONE + VALID_PHONE_BOB;
     public static final String EMAIL_DESC_AMY = " " + PREFIX_EMAIL + VALID_EMAIL_AMY;
@@ -240,8 +244,8 @@ public class CommandTestUtil {
         Member firstMember = model.getFilteredMemberList().get(0);
         try {
             model.deleteMember(firstMember);
-        } catch (MemberNotFoundException pnfe) {
-            throw new AssertionError("member in filtered list must exist in model.", pnfe);
+        } catch (MemberNotFoundException mnfe) {
+            throw new AssertionError("member in filtered list must exist in model.", mnfe);
         }
     }
 

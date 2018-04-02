@@ -1,9 +1,12 @@
 package seedu.club.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.exceptions.PhotoReadException;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -11,6 +14,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -113,15 +117,16 @@ public interface Model {
     /**
      * Returns true if profile photo is successfully changed for the logged in member.
      * @param originalPhotoPath Absolute file path of the original photo.
+     * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
      */
-    boolean addProfilePhoto(String originalPhotoPath);
+    void addProfilePhoto(String originalPhotoPath) throws PhotoReadException;
 
     /**
      * Exports Club Connect's members' details to the specified file.
      * @param exportFilePath Absolute file path of the file to which the data is exported.
-     * @return true if no errors occur during exporting.
+     * @throws IOException if there was an error writing to file.
      */
-    boolean exportClubConnect(File exportFilePath);
+    void exportClubConnectMembers(File exportFilePath) throws IOException;
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */
@@ -159,4 +164,7 @@ public interface Model {
     void signUpMember(Member member) throws MemberListNotEmptyException;
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
+
+    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+            IllegalExecutionException;
 }
