@@ -604,9 +604,9 @@ e.g. `removegroup g/publicity`
 e.g. `deletetag t/president`
 * *Delete Task* : `deletetask INDEX` +
 e.g. `deletetask 2`
-* *Importing members into Club Connect* : `import` +
+* *Import members into Club Connect* : `import` +
 e.g. `import C:/Users/Admin/Desktop/members.csv`
-* *Exporting Club Connect data* : `export` +
+* *Export Club Connect data* : `export` +
 e.g. `export C:/Users/John Doe/Downloads/ClubConnectMembers.csv`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
@@ -622,6 +622,8 @@ e.g.`select 2`
 e.g. `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 * *Delete Poll* `deletepoll INDEX` +
 e.g. `deletepoll 2`
+* *Show results of polls* : `showresults`
+* *Hide results of polls* : `hideresults`
 * *Change Display Picture* : `changepic PHOTO_PATH` +
 e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 * *Compress Member Details* : `compress`
