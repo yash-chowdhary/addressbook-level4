@@ -42,8 +42,9 @@ public class CsvUtil {
     private static final String CSV_FIELD_SEPARATOR = ",";
     private static final String CSV_FIELD_SURROUNDER = "\"";
     private static final String CSV_VALUE_SEPARATOR = ",";
-    private static final String NEWLINE = System.lineSeparator();
     private static final String EMPTY_STRING = "";
+    private static final String NEWLINE = System.lineSeparator();
+    private static final String SPACE = " ";
 
     /**
      * Returns {@code this} Member's data in the format of a CSV record.
@@ -168,8 +169,8 @@ public class CsvUtil {
         String data = FileUtil.readFromFile(file);
         String[] membersData = data.split("\n");
 
-        for (String memberData: membersData) {
-            Member member = getMember(memberData);
+        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
+            Member member = getMember(membersData[i]);
             importedMembers.add(member);
         }
 
@@ -177,19 +178,117 @@ public class CsvUtil {
     }
 
     /**
-     * Returns a {@code Member} created using the given raw {@code data}.
+     * Returns a {@code Member} created using the given raw {@code rawData}.
      *
-     * @param data Contains all the data of the member extracted from the file.
-     * @throws DataConversionException Thrown if the data of the member is not in the specified format.
+     * @param rawData Contains all the rawData of the member extracted from the file.
+     * @throws DataConversionException Thrown if the rawData of the member is not in the specified format.
      */
-    private static Member getMember(String data) throws DataConversionException {
-        StringBuilder memberData = new StringBuilder();
+    private static Member getMember(String rawData) throws DataConversionException {
+        String remainingData = rawData;
+        String memberData = EMPTY_STRING;
+        String memberFieldValue;
+        String[] fieldValues;
+
+        /*fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        remainingData = fieldValues[1];
+        memberDataBuilder.append(PREFIX_NAME).append(memberFieldValue).append(SPACE);*/
+
+        fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        remainingData = fieldValues[1];
+        memberData = addMemberData(memberData, PREFIX_NAME.toString(), memberFieldValue);
+
+        fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        remainingData = fieldValues[1];
+        memberData = addMemberData(memberData, PREFIX_PHONE.toString(), memberFieldValue);
+
+        fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        remainingData = fieldValues[1];
+        memberData = addMemberData(memberData, PREFIX_EMAIL.toString(), memberFieldValue);
+
+        fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        remainingData = fieldValues[1];
+        memberData = addMemberData(memberData, PREFIX_MATRIC_NUMBER.toString(), memberFieldValue);
+
+        fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        remainingData = fieldValues[1];
+        memberData = addMemberData(memberData, PREFIX_GROUP.toString(), memberFieldValue);
+
+        fieldValues = nextValue(remainingData);
+        memberFieldValue = fieldValues[0];
+        memberData = addMemberData(memberData, PREFIX_TAG.toString(), memberFieldValue);
 
         try {
-            return parseMember(memberData.toString());
+            return parseMember(memberData);
         } catch (IllegalValueException ive) {
             throw new DataConversionException(ive);
         }
+    }
+
+    /**
+     * Returns the next data value of the member.
+     * @param data Raw member data.
+     * @return {@code String[]} with the next data value at index 0 and remaining data (if it exists) at index 1.
+     */
+    private static String[] nextValue(String data) {
+        String[] values;
+        if (data.charAt(0) == '\"') {
+            values = data.substring(1).split(CSV_FIELD_SURROUNDER + CSV_FIELD_SEPARATOR, 2);
+        } else {
+            values = data.split(CSV_FIELD_SEPARATOR, 2);
+        }
+
+        if (values.length == 1) {
+            values[0] = removeLastCharacter(values[0]);
+        }
+        return values;
+    }
+
+    private static String removeLastCharacter(String data) {
+        return data.substring(0, data.length() - 1);
+    }
+
+    /**
+     * Appends {@code dataToAdd} to {@code memberData} in the required format.
+     *
+     * @param memberData The current data of the member.
+     * @param prefix The prefix needed, depending on the type of {@code dataToAdd}.
+     * @param dataToAdd
+     * @return {@code memberData} appended with {@code dataToAdd} in the required format.
+     */
+    private static String addMemberData(String memberData, String prefix, String dataToAdd) {
+        StringBuilder builder = new StringBuilder(memberData);
+
+        if (prefix.equals(PREFIX_TAG.toString())) {
+            return addMemberTags(memberData, dataToAdd);
+        } else if (dataToAdd.length() != 0) {
+            builder.append(prefix).append(dataToAdd.trim()).append(SPACE);
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Appends the tags in {@code dataToAdd} to {@code memberData} in the required format.
+     *
+     * @param memberData The current data of the member.
+     * @param dataToAdd The tags to be added to {@code memberData}.
+     * @return {@code memberData} appended with {@code dataToAdd} in the required format.
+     */
+    private static String addMemberTags(String memberData, String dataToAdd) {
+        StringBuilder builder = new StringBuilder(memberData);
+        String[] tags = dataToAdd.split(",");
+
+        for (String tag: tags) {
+            builder.append(PREFIX_TAG).append(tag.trim()).append(SPACE);
+        }
+
+        return builder.toString();
     }
 
     /**
