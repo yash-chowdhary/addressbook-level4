@@ -23,8 +23,8 @@ import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 public class Poll {
 
     private final Question question;
-    private final ObservableList<Answer> answers;
-    private final Set<MatricNumber> polleesMatricNumbers;
+    private ObservableList<Answer> answers;
+    private Set<MatricNumber> polleesMatricNumbers;
 
     /**
      * Constructs a {@code Poll}.
@@ -37,14 +37,9 @@ public class Poll {
                 Set<MatricNumber> polleesMatricNumbers) {
         requireNonNull(question);
         requireNonNull(answers);
-
         this.question = question;
-        this.answers = FXCollections.observableArrayList(answers);
-        this.polleesMatricNumbers = new HashSet<>();
-        //TODO
-        if (polleesMatricNumbers != null) {
-            this.polleesMatricNumbers.addAll(polleesMatricNumbers);
-        }
+        setAnswers(answers);
+        setPolleesMatricNumbers(polleesMatricNumbers);
     }
 
     @Override
@@ -61,7 +56,7 @@ public class Poll {
     }
 
     public int getTotalVoteCount() {
-        return answers.stream().collect(Collectors.reducing(0, Answer::getVoteCount, Integer::sum));
+        return answers.stream().map(Answer::getVoteCount).reduce(0, Integer::sum);
     }
 
     /**
@@ -72,6 +67,14 @@ public class Poll {
         return FXCollections.unmodifiableObservableList(answers);
     }
 
+    private void setAnswers(List<Answer> answers) {
+        List<Answer> clonedAnswers = new ArrayList<>();
+        for (Answer answer : answers) {
+            clonedAnswers.add(new Answer(answer.getValue()));
+        }
+        this.answers = FXCollections.observableArrayList(clonedAnswers);
+    }
+
     /**
      * Returns an immutable poll set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
@@ -80,6 +83,24 @@ public class Poll {
         return Collections.unmodifiableSet(polleesMatricNumbers);
     }
 
+    private void setPolleesMatricNumbers(Set<MatricNumber> polleesMatricNumbers) {
+        this.polleesMatricNumbers = new HashSet<>();
+        if (polleesMatricNumbers != null) {
+            for (MatricNumber matricNumber : polleesMatricNumbers) {
+                this.polleesMatricNumbers.add(new MatricNumber(matricNumber.toString()));
+            }
+        }
+    }
+
+    /**
+     * Increases vote count of the answer specified by answerIndex.
+     * Pollee of the vote is specified by polleeMatricNumber.
+     *
+     * @param answerIndex        index of the answer of this poll to be voted for
+     * @param polleeMatricNumber matricNumber of the pollee that is voting for the answer
+     * @throws AnswerNotFoundException   if answerIndex is not answerIndex of any answers of this poll
+     * @throws UserAlreadyVotedException if pollee has already voted in the poll
+     */
     public void vote(Index answerIndex, MatricNumber polleeMatricNumber) throws
             AnswerNotFoundException, UserAlreadyVotedException {
         if (polleesMatricNumbers.contains(polleeMatricNumber)) {
@@ -106,19 +127,5 @@ public class Poll {
     public String toString() {
         return "[ " + question + " ]"
                 + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
-    }
-
-    @Override
-    public Poll clone() {
-        Question question = new Question(this.question.getValue());
-        List<Answer> answers = new ArrayList<>();
-        for (Answer answer : this.answers) {
-            answers.add(answer.clone());
-        }
-        Set<MatricNumber> polleesMatricNumbers = new HashSet<>();
-        for (MatricNumber matricNumber : this.polleesMatricNumbers) {
-            polleesMatricNumbers.add(matricNumber.clone());
-        }
-        return new Poll(question, answers, polleesMatricNumbers);
     }
 }

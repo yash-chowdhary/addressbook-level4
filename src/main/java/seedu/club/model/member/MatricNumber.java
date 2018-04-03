@@ -50,10 +50,4 @@ public class MatricNumber {
     public int hashCode() {
         return value.hashCode();
     }
-
-    @Override
-    public MatricNumber clone() {
-        return new MatricNumber(this.value);
-    }
-
 }

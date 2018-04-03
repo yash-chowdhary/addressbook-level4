@@ -66,9 +66,4 @@ public class Answer {
     public String toString() {
         return PREFIX_ANSWER + value;
     }
-
-    @Override
-    public Answer clone() {
-        return new Answer(this.value, this.voteCount);
-    }
 }
