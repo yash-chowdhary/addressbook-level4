@@ -446,7 +446,7 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
 
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value, ALICE.getCredentials().getPassword().value);
 
         String photoDirectory = "./src/test/resources/photos/";
         String photoFileName = "testPhoto.png";
