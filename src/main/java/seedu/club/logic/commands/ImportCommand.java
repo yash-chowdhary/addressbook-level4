@@ -23,11 +23,10 @@ public class ImportCommand extends UndoableCommand {
             + "Parameters: FILE_PATH (must be an absolute path to a CSV file )\n"
             + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Downloads/members.csv";
 
-    public static final String MESSAGE_DUPLICATE_MEMBER = "A member already exists in the club book.";
-    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported members from: %1$s";
+    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported %d members from: %s";
     public static final String MESSAGE_IMPORT_FAILURE = "Error occurred while importing from the file: %1$s";
-    public static final String MESSAGE_INCORRECT_FORMAT = "Data is not in the correct format in the file: %1$s";
-
+    public static final String MESSAGE_MEMBERS_NOT_IMPORTED = "0 members imported from %1$s. This may be due to "
+            + "duplicate members or incorrect data format";
 
     private final File importFile;
 
@@ -42,16 +41,14 @@ public class ImportCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
-            model.importMembers(importFile);
+            int numberImported = model.importMembers(importFile);
+            if (numberImported == 0) {
+                return new CommandResult(String.format(MESSAGE_MEMBERS_NOT_IMPORTED, numberImported, importFile));
+            }
+            return new CommandResult(String.format(MESSAGE_IMPORT_SUCCESS, numberImported, importFile));
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_IMPORT_FAILURE, importFile));
-        } catch (DataConversionException dce) {
-            throw new CommandException(String.format(MESSAGE_INCORRECT_FORMAT, importFile));
-        } catch (DuplicateMemberException dme) {
-            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
         }
-
-        return new CommandResult(String.format(MESSAGE_IMPORT_SUCCESS, importFile));
     }
 
     @Override

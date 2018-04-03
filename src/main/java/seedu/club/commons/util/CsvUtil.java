@@ -157,15 +157,13 @@ public class CsvUtil {
     /**
      * Loads a {@code UniqueMemberList} from the data in the csv file.
      * Assumes file exists.
+     * Ignores DataConversionException and DuplicateMemberException.
      *
      * @param file Points to a valid csv file containing data that match the {@code Member}.
      *             Cannot be null.
-     * @throws DataConversionException Thrown if the data in file is not in the specified format.
-     * @throws DuplicateMemberException Thhrown if there is a duplicate member in the file.
      * @throws IOException Thrown if there is an error reading from the file.
      */
-    public static UniqueMemberList getDataFromFile(File file)
-            throws DuplicateMemberException, IOException {
+    public static UniqueMemberList getDataFromFile(File file) throws IOException {
 
         UniqueMemberList importedMembers = new UniqueMemberList();
         String data = FileUtil.readFromFile(file);
@@ -177,6 +175,8 @@ public class CsvUtil {
                 importedMembers.add(member);
             } catch (DataConversionException dce) {
                 logger.warning("DataConversionException encountered while converting " + membersData[i]);
+            } catch (DuplicateMemberException dme) {
+                logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
             }
         }
 

@@ -136,10 +136,10 @@ public interface Model {
      * Imports details of members from the specified file.
      *
      * @param importFile File from which data is imported.
+     * @return Number of members added from the import file.
      * @throws IOException if there was an error reading from file.
-     * @throws DuplicateMemberException if a member's details is equivalent to another existing member in the list.
      */
-    void importMembers(File importFile) throws IOException, DuplicateMemberException, DataConversionException;
+    int importMembers(File importFile) throws IOException;
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */

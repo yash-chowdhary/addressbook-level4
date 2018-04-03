@@ -426,13 +426,21 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void importMembers(File importFile) throws IOException, DuplicateMemberException, DataConversionException {
+    public int importMembers(File importFile) throws IOException {
         CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
         UniqueMemberList importedMembers = storage.readClubBook();
+        int numberMembers = 0;
 
         for (Member member: importedMembers) {
-            clubBook.addMember(member);
+            try {
+                clubBook.addMember(member);
+                numberMembers++;
+            } catch (DuplicateMemberException dme) {
+                logger.info("DuplicateMemberException encountered due to " + member);
+            }
         }
+        indicateClubBookChanged();
+        return numberMembers;
     }
     //@@author
 
