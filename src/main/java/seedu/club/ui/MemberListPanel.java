@@ -42,7 +42,7 @@ public class MemberListPanel extends UiPart<Region> {
     /**
      * Compresses view of member details.
      */
-    protected void compressMemberCards() {
+    private void compressMemberCards() {
         if (!isDisplayingCompressedMembers) {
             isDisplayingCompressedMembers = true;
             setMemberListView(memberList);
@@ -52,7 +52,7 @@ public class MemberListPanel extends UiPart<Region> {
     /**
      * Decompresses view of member details.
      */
-    protected void decompressMemberCards() {
+    private void decompressMemberCards() {
         if (isDisplayingCompressedMembers) {
             isDisplayingCompressedMembers = false;
             setMemberListView(memberList);

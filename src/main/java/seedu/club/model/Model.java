@@ -1,10 +1,13 @@
 package seedu.club.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.club.commons.core.index.Index;
+import seedu.club.commons.exceptions.PhotoReadException;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -12,7 +15,9 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.AnswerNotFoundException;
@@ -25,6 +30,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 /**
@@ -35,7 +41,6 @@ public interface Model {
      * {@code Predicate} that always evaluate to true
      */
     Predicate<Member> PREDICATE_SHOW_ALL_MEMBERS = unused -> true;
-
 
     /**
      * {@code Predicate} that always evaluate to true
@@ -133,11 +138,13 @@ public interface Model {
      */
     void updateFilteredPollList(Predicate<Poll> predicate);
 
+    //@@author Song Weiyang
     /**
      * Logs In a member in the club
      */
     void logsInMember(String username, String password);
 
+    //@@author Song Weiyang
     /**
      * Returns the member who is currently logged in to Club Connect.
      */
@@ -154,16 +161,17 @@ public interface Model {
      * Returns true if profile photo is successfully changed for the logged in member.
      *
      * @param originalPhotoPath Absolute file path of the original photo.
+     * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
      */
-    boolean addProfilePhoto(String originalPhotoPath);
+    void addProfilePhoto(String originalPhotoPath) throws PhotoReadException;
 
     /**
      * Exports Club Connect's members' details to the specified file.
      *
      * @param exportFilePath Absolute file path of the file to which the data is exported.
-     * @return true if no errors occur during exporting.
+     * @throws IOException if there was an error writing to file.
      */
-    boolean exportClubConnect(File exportFilePath);
+    void exportClubConnectMembers(File exportFilePath) throws IOException;
     //@@author
 
     /**
@@ -184,6 +192,10 @@ public interface Model {
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
+    //@@author Song Weiyang
+    /**
+     * Logs out a member from clubbook
+     */
     void logOutMember();
 
     void addTaskToTaskList(Task toAdd) throws DuplicateTaskException;
@@ -192,5 +204,17 @@ public interface Model {
 
     void updateFilteredTaskList(Predicate<Task> predicate);
 
+    //@@author Song Weiyang
+    /**
+     * Signs up a member if the clubbook is empty
+     * @param member
+     */
+    void signUpMember(Member member) throws MemberListNotEmptyException;
+
     void viewAllTasks() throws TasksCannotBeDisplayedException;
+
+    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+            IllegalExecutionException;
+
+    void viewMyTasks() throws TasksAlreadyListedException;
 }

@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
+import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
@@ -33,8 +34,10 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
+import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.logic.commands.VoteCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
@@ -73,6 +76,9 @@ public class ClubBookParser {
 
         case AddTaskCommand.COMMAND_WORD:
             return new AddTaskCommandParser().parse(arguments);
+
+        case AssignTaskCommand.COMMAND_WORD:
+            return new AssignTaskCommandParser().parse(arguments);
 
         case ChangeProfilePhotoCommand.COMMAND_WORD:
             return new ChangeProfilePhotoCommandParser().parse(arguments);
@@ -146,15 +152,20 @@ public class ClubBookParser {
         case HideResultsCommand.COMMAND_WORD:
             return new HideResultsCommand();
 
+        case SignUpCommand.COMMAND_WORD:
+            return new SignUpCommandParser().parse(arguments);
+
         case ViewAllTasksCommand.COMMAND_WORD:
             return new ViewAllTasksCommand();
 
         case VoteCommand.COMMAND_WORD:
             return new VoteCommandParser().parse(arguments);
 
+        case ViewMyTasksCommand.COMMAND_WORD:
+            return new ViewMyTasksCommand();
+
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
-
 }

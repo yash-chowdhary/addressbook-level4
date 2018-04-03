@@ -70,7 +70,7 @@ public class Poll {
     private void setAnswers(List<Answer> answers) {
         List<Answer> clonedAnswers = new ArrayList<>();
         for (Answer answer : answers) {
-            clonedAnswers.add(new Answer(answer.getValue()));
+            clonedAnswers.add(new Answer(answer.getValue(), answer.getVoteCount()));
         }
         this.answers = FXCollections.observableArrayList(clonedAnswers);
     }

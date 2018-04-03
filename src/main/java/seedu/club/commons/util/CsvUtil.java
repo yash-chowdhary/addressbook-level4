@@ -43,9 +43,6 @@ public class CsvUtil {
         addCsvField(builder, "Matriculation Number");
         addCsvField(builder, "Group");
         addCsvField(builder, "Tags");
-        addCsvField(builder, "Profile Photo Path");
-        addCsvField(builder, "Username");
-        addFinalCsvField(builder, "Password");
 
         builder.append(newline);
 
@@ -75,9 +72,6 @@ public class CsvUtil {
         addCsvField(builder, memberToConvert.getMatricNumber().toString());
         addCsvField(builder, memberToConvert.getGroup().toString());
         addCsvTags(builder, memberToConvert);
-        addCsvField(builder, memberToConvert.getProfilePhoto().toString());
-        addCsvField(builder, memberToConvert.getCredentials().getUsername().toString());
-        addFinalCsvField(builder, memberToConvert.getCredentials().getPassword().toString());
 
         builder.append(newline);
 

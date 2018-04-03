@@ -1,8 +1,6 @@
 //@@author amrut-prabhu
 package seedu.club.storage;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_PHOTO_PATH;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +10,8 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.exceptions.PhotoException;
+import seedu.club.commons.exceptions.PhotoReadException;
+import seedu.club.commons.exceptions.PhotoWriteException;
 import seedu.club.commons.util.FileUtil;
 
 /**
@@ -29,8 +28,9 @@ public class ProfilePhotoStorage implements  PhotoStorage {
 
     @Override
     public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
-            throws PhotoException {
+            throws PhotoReadException, PhotoWriteException {
         BufferedImage originalPhoto = null;
+        File newPath = null;
 
         try {
             logger.info("Profile Photo is being read from " + originalPhotoPath);
@@ -39,34 +39,30 @@ public class ProfilePhotoStorage implements  PhotoStorage {
             originalPhoto = ImageIO.read(photoUrl);
 
             String saveAs = newPhotoName + FILE_EXTENSION;
-            File newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
-            //File newPhotoPathhh = new File(MainApp.class.getResource(newPath.toString()).toURI());
+            newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
 
             createPhotoFileCopy(originalPhoto, newPath);
+        } catch (PhotoWriteException pwe) {
+            logger.info("Error while writing photo file");
+            throw new PhotoWriteException(newPath.getAbsolutePath());
         } catch (IOException ioe) {
-            logger.info("Error while reading/writing photo file");
-            throw new PhotoException(String.format(MESSAGE_INVALID_PHOTO_PATH, originalPhotoPath));
+            logger.info("Error while reading photo file");
+            throw new PhotoReadException(originalPhotoPath);
         }
     }
 
     /**
-     * Returns the absolute file path of the current directory.
-     */
-    public static String getCurrentDirectory() {
-        File file = new File(".");
-        String currentDirectory = file.getAbsolutePath();
-        currentDirectory = currentDirectory.replace('\\', (char) 47); //ASCII 47 = '/'
-        return currentDirectory.substring(0, currentDirectory.length() - 1); //To get rid of "." at end of file path
-    }
-
-    /**
      * Creates a copy the given {@code originalPhoto} in the application's resources.
-     * @throws IOException if there was any problem writing to the file.
+     * @throws PhotoWriteException if there was any problem writing to the file.
      */
-    public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
+    public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
         logger.info("Profile Photo is being copied to " + newPath);
-        FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
-        ImageIO.write(originalPhoto, "png", newPath);
+        try {
+            FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
+            ImageIO.write(originalPhoto, "png", newPath);
+        } catch (IOException ioe) {
+            throw new PhotoWriteException(newPath.getAbsolutePath());
+        }
         logger.info("Profile Photo copying successful");
     }
 }

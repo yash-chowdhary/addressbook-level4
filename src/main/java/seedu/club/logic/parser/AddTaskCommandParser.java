@@ -18,7 +18,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.Time;
 
 /**
- * Parses input arguments and creates a new AddCommand object
+ * Parses input arguments and creates a new AddTaskCommand object
  */
 public class AddTaskCommandParser implements Parser<AddTaskCommand> {
 

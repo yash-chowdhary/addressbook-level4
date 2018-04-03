@@ -30,7 +30,7 @@ public abstract class NodeHandle<T extends Node> {
      * @param query name of the CSS selector for the node to retrieve.
      * @throws NodeNotFoundException if no such node exists.
      */
-    protected <Q extends Node> Q getChildNode(String query) {
+    protected <Q extends Node> Q getChildNode(String query) throws NodeNotFoundException {
         Optional<Q> node = guiRobot.from(rootNode).lookup(query).tryQuery();
         return node.orElseThrow(NodeNotFoundException::new);
     }

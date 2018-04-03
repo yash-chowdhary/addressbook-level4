@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class GuiRobot extends FxRobot {
 
     private static final int PAUSE_FOR_HUMAN_DELAY_MILLISECONDS = 250;
-    private static final int DEFAULT_WAIT_FOR_EVENT_TIMEOUT_MILLISECONDS = 5000;
+    private static final int DEFAULT_WAIT_FOR_EVENT_TIMEOUT_MILLISECONDS = 7500;
 
     private static final String PROPERTY_TESTFX_HEADLESS = "testfx.headless";
 
@@ -87,7 +87,7 @@ public class GuiRobot extends FxRobot {
      *
      * @throws StageNotFoundException if the stage is not found.
      */
-    public Stage getStage(String stageTitle) {
+    public Stage getStage(String stageTitle) throws StageNotFoundException {
         Optional<Stage> targetStage = listTargetWindows().stream()
                 .filter(Stage.class::isInstance)    // checks that the window is of type Stage
                 .map(Stage.class::cast)

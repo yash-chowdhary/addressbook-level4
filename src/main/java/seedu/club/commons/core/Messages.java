@@ -14,5 +14,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX = "The answer index provided is invalid";
     public static final String MESSAGE_INVALID_PHOTO_PATH = "Unable to read profile photo from the path: %1$s";
     public static final String MESSAGE_SAME_PHOTO_PATH = "Profile photo path entered is same as the current photo";
-
+    public static final String MESSAGE_INVALID_PERMISSIONS = "This command cannot be executed as you don't have EXCO "
+            + "privileges";
 }

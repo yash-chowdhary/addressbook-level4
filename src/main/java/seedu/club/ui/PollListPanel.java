@@ -51,7 +51,7 @@ public class PollListPanel extends UiPart<Region> {
     /**
      * Shows results of polls
      */
-    protected void showPollResults() {
+    private void showPollResults() {
         if (!isDisplayingPollResults) {
             isDisplayingPollResults = true;
             setPollListView();
@@ -61,7 +61,7 @@ public class PollListPanel extends UiPart<Region> {
     /**
      * Hides results of polls
      */
-    protected void hidePollResults() {
+    private void hidePollResults() {
         if (isDisplayingPollResults) {
             isDisplayingPollResults = false;
             setPollListView();

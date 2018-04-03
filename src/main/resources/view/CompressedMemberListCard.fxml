@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.ImageView?>
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <!--@@author amrut-prabhu-->
-  <Rectangle fx:id="profilePhoto" width="57" height="75">
+  <ImageView fx:id="profilePhoto" fitWidth="57" fitHeight="75">
     <HBox.margin>
       <Insets left="5" bottom="2.5" right="5.0" top="2.5" />
     </HBox.margin>
-  </Rectangle>
+  </ImageView>
   <!--@@author-->
 
   <GridPane HBox.hgrow="ALWAYS">

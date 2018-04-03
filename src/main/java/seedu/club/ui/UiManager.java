@@ -13,6 +13,7 @@ import seedu.club.MainApp;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.Config;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.events.storage.DataSavingExceptionEvent;
 import seedu.club.commons.util.StringUtil;
 import seedu.club.logic.Logic;
@@ -25,9 +26,11 @@ public class UiManager extends ComponentManager implements Ui {
 
     public static final String ALERT_DIALOG_PANE_FIELD_ID = "alertDialogPane";
 
-    public static final String FILE_OPS_ERROR_DIALOG_STAGE_TITLE = "File Op Error";
-    public static final String FILE_OPS_ERROR_DIALOG_HEADER_MESSAGE = "Could not save data";
-    public static final String FILE_OPS_ERROR_DIALOG_CONTENT_MESSAGE = "Could not save data to file";
+    public static final String FILE_OPS_ERROR_DIALOG_STAGE_TITLE = "File Operation Error";
+    public static final String FILE_OPS_WRITE_ERROR_DIALOG_HEADER_MESSAGE = "Could not save data";
+    public static final String FILE_OPS_WRITE_ERROR_DIALOG_CONTENT_MESSAGE = "Could not save data to file";
+    public static final String FILE_OPS_READ_ERROR_DIALOG_HEADER_MESSAGE = "Could not read data";
+    public static final String FILE_OPS_READ_ERROR_DIALOG_CONTENT_MESSAGE = "Could not read data from file";
 
     private static final Logger logger = LogsCenter.getLogger(UiManager.class);
     private static final String ICON_APPLICATION = "/images/club_connect_256.png";
@@ -114,7 +117,14 @@ public class UiManager extends ComponentManager implements Ui {
     @Subscribe
     private void handleDataSavingExceptionEvent(DataSavingExceptionEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        showFileOperationAlertAndWait(FILE_OPS_ERROR_DIALOG_HEADER_MESSAGE, FILE_OPS_ERROR_DIALOG_CONTENT_MESSAGE,
-                event.exception);
+        showFileOperationAlertAndWait(FILE_OPS_WRITE_ERROR_DIALOG_HEADER_MESSAGE,
+                FILE_OPS_WRITE_ERROR_DIALOG_CONTENT_MESSAGE, event.exception);
+    }
+
+    @Subscribe
+    private void handlePhotoExceptionEvent(DataReadingExceptionEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        showFileOperationAlertAndWait(FILE_OPS_READ_ERROR_DIALOG_HEADER_MESSAGE,
+                FILE_OPS_READ_ERROR_DIALOG_CONTENT_MESSAGE, event.exception);
     }
 }
