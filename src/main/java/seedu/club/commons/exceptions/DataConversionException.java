@@ -5,10 +5,6 @@ package seedu.club.commons.exceptions;
  */
 public class DataConversionException extends Exception {
 
-    public DataConversionException() {
-        super();
-    }
-
     public DataConversionException(Exception cause) {
         super(cause);
     }
