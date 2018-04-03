@@ -52,13 +52,17 @@ public class UniquePollList implements Iterable<Poll> {
         assert CollectionUtil.elementsAreUnique(internalList);
     }
 
+    /**
+     *
+     */
     public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         int pollIndex = internalList.indexOf(poll);
         if (pollIndex == -1) {
             throw new PollNotFoundException();
         } else {
-            Poll votedPoll = new Poll(new Question(poll.getQuestion().getValue()), poll.getAnswers(), poll.getPolleesMatricNumbers());
+            Poll votedPoll = new Poll(new Question(poll.getQuestion().getValue()),
+                    poll.getAnswers(), poll.getPolleesMatricNumbers());
             votedPoll.vote(answerIndex, polleeMatricNumber);
             internalList.set(pollIndex, votedPoll);
         }

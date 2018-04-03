@@ -47,13 +47,13 @@ public class ClubBook implements ReadOnlyClubBook {
     private final UniquePollList polls;
     private final UniqueTaskList tasks;
 
-    /*
-     * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
-     * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     *
-     * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
-     *   among constructors.
-     */ {
+        /*
+        * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
+        * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
+        *
+        * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
+        *   among constructors.
+        */ {
         members = new UniqueMemberList();
         tags = new UniqueTagList();
         polls = new UniquePollList();

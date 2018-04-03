@@ -40,7 +40,9 @@ public class Poll {
         this.question = question;
         this.answers = FXCollections.observableArrayList(answers);
         this.polleesMatricNumbers = new HashSet<>();
-        this.polleesMatricNumbers.addAll(polleesMatricNumbers);
+        if (polleesMatricNumbers != null) {
+            this.polleesMatricNumbers.addAll(polleesMatricNumbers);
+        }
     }
 
     @Override
@@ -48,6 +50,7 @@ public class Poll {
         return other == this // short circuit if same object
                 || (other instanceof Poll // instanceof handles nulls
                 && this.question.equals(((Poll) other).question) // state check
+                && this.polleesMatricNumbers.equals(((Poll) other).polleesMatricNumbers)
                 && this.answers.equals(((Poll) other).answers));
     }
 

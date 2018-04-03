@@ -91,7 +91,8 @@ public interface Model {
      * Votes current user in the given {@code poll} for the answer
      * specified by {@code answerIndex} in the answer list of the poll.
      */
-    void voteInPoll(Poll poll, Index answerIndex) throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException;
+    void voteInPoll(Poll poll, Index answerIndex) throws
+            PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException;
 
     /**
      * Replaces the given member {@code target} with {@code editedMember}.
