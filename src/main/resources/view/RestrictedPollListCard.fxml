@@ -36,7 +36,6 @@
         </padding>
         <StackPane fx:id="answerListPanelPlaceholder" VBox.vgrow="ALWAYS" />
       </VBox>
-      <Label fx:id="totalVoteCount" styleClass="cell_big_label" />
     </VBox>
     <rowConstraints>
       <RowConstraints />

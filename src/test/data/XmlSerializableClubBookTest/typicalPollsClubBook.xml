@@ -5,32 +5,32 @@
     <polls>
         <question>What are you?</question>
         <pollerMatricNumber>A1111111A</pollerMatricNumber>
-        <answers noOfMembersAnswered="0">A vampire</answers>
-        <answers noOfMembersAnswered="0">A zombie</answers>
+        <answers voteCount="0">A vampire</answers>
+        <answers voteCount="0">A zombie</answers>
         <polleesMatricNumber>A1234567A</polleesMatricNumber>
         <polleesMatricNumber>A3333333A</polleesMatricNumber>
     </polls>
     <polls>
         <question>How are you?</question>
         <pollerMatricNumber>A1234567A</pollerMatricNumber>
-        <answers noOfMembersAnswered="0">I'm fine</answers>
-        <answers noOfMembersAnswered="0">Not good man</answers>
+        <answers voteCount="0">I'm fine</answers>
+        <answers voteCount="0">Not good man</answers>
         <polleesMatricNumber>A3333333A</polleesMatricNumber>
         <polleesMatricNumber>A2222222A</polleesMatricNumber>
     </polls>
     <polls>
         <question>When are you?</question>
         <pollerMatricNumber>A3333333A</pollerMatricNumber>
-        <answers noOfMembersAnswered="0">I don't get it</answers>
-        <answers noOfMembersAnswered="0">Umm..</answers>
+        <answers voteCount="0">I don't get it</answers>
+        <answers voteCount="0">Umm..</answers>
         <polleesMatricNumber>A2222222A</polleesMatricNumber>
         <polleesMatricNumber>A1234567A</polleesMatricNumber>
     </polls>
     <polls>
         <question>Who are you?</question>
         <pollerMatricNumber>A2222222A</pollerMatricNumber>
-        <answers noOfMembersAnswered="0">Your father</answers>
-        <answers noOfMembersAnswered="0">Your mom</answers>
+        <answers voteCount="0">Your father</answers>
+        <answers voteCount="0">Your mom</answers>
         <polleesMatricNumber>A3333333A</polleesMatricNumber>
         <polleesMatricNumber>A1111111A</polleesMatricNumber>
     </polls>

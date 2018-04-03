@@ -82,6 +82,6 @@ public class AnswerTest {
 
     private boolean assertVoteIncreasedAfterVoting(Answer answer, int initialVote) {
         answer.voteThisAnswer();
-        return ++initialVote == answer.getNoOfMembersAnswered();
+        return ++initialVote == answer.getVoteCount();
     }
 }
