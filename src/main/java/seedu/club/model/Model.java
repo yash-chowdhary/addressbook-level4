@@ -58,9 +58,9 @@ public interface Model {
     Predicate<Member> PREDICATE_NOT_SHOW_ALL_MEMBERS = unused -> false;
 
     /**
-     * {@code Predicate} that always evaluate to true
+     * {@code Predicate} that always evaluate to false
      */
-    Predicate<Poll> PREDICATE_SHOW_ALL_POLLS = unused -> true;
+    Predicate<Poll> PREDICATE_NOT_SHOW_ALL_POLLS = unused -> false;
 
     /**
      * Clears existing backing model and replaces with the provided new data.

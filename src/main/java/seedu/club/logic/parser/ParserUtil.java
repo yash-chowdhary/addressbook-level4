@@ -70,7 +70,7 @@ public class ParserUtil {
      * whitespaces will be trimmed.
      * @throws IllegalValueException if any of the specified index is invalid (not non-zero unsigned integer).
      */
-    public static List<Index> parseIndexes(String oneBasedIndexes) throws IllegalValueException {
+    public static List<Index> parseIndices(String oneBasedIndexes) throws IllegalValueException {
         String trimmedIndexes = oneBasedIndexes.trim();
         String[] stringIndexes = trimmedIndexes.split(" ");
         List<Index> indexes = new ArrayList<>();

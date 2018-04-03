@@ -28,6 +28,7 @@ public class LogOutCommand extends Command {
             model.logOutMember();
             model.updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
             model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+            model.updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
             return new CommandResult(MESSAGE_SUCCESS);
         }
     }

@@ -6,7 +6,6 @@ import java.util.List;
 
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.VoteCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
@@ -25,7 +24,7 @@ public class VoteCommandParser implements Parser<VoteCommand> {
      */
     public VoteCommand parse(String args) throws ParseException {
         try {
-            List<Index> indexes = ParserUtil.parseIndexes(args);
+            List<Index> indexes = ParserUtil.parseIndices(args);
             if (indexes.size() != 2) {
                 throw new IllegalValueException(MESSAGE_INVALID_COMMAND_FORMAT);
             }

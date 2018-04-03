@@ -37,6 +37,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.PollIsRelevantPredicate;
 import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -84,6 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
         updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         updateFilteredTaskList(PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(PREDICATE_NOT_SHOW_ALL_POLLS);
     }
 
     public ModelManager() {
@@ -131,7 +133,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
         clubBook.addPoll(poll);
-        updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
+        updateFilteredPollList(new PollIsRelevantPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
@@ -157,6 +159,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+            updateFilteredPollList(new PollIsRelevantPredicate(getLoggedInMember()));
             updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
@@ -517,6 +520,10 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTags.setPredicate(predicate);
     }
 
+    @Override
+    public String toString() {
+        return filteredPolls.toString();
+    }
 
 
 }
