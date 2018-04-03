@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.exceptions.DataConversionException;
-import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
 
 /**
  * A class to manage storage of ClubBook data as a csv file on the hard disk.
@@ -48,9 +48,10 @@ public class CsvClubBookStorage {
      * Returns data from the file as a {@link UniqueMemberList}.
      *
      * @throws DataConversionException if the data in storage is not in the expected format.
+     * @throws DuplicateMemberException Thhrown if there is a duplicate member in the file.
      * @throws IOException if there was any problem when reading from the storage.
      */
-    public UniqueMemberList readClubBook() throws IOException, DataConversionException {
+    public UniqueMemberList readClubBook() throws DataConversionException, DuplicateMemberException, IOException {
         return readClubBook(file);
     }
 
@@ -60,7 +61,8 @@ public class CsvClubBookStorage {
      * @param importFile location of the data. Cannot be null.
      * @throws DataConversionException if the file is not in the correct format.
      */
-    public UniqueMemberList readClubBook(File importFile) throws IOException, DataConversionException {
+    public UniqueMemberList readClubBook(File importFile)
+            throws DataConversionException, DuplicateMemberException, IOException {
 
         requireNonNull(importFile);
         UniqueMemberList importedMembers = new UniqueMemberList();
@@ -72,9 +74,9 @@ public class CsvClubBookStorage {
 
         try {
             importedMembers = CsvFileStorage.readClubBook(importFile);
-        } catch (IllegalValueException ive) {
-            logger.warning("Illegal values found in " + importFile + ": " + ive.getMessage());
-            throw new DataConversionException(ive);
+        } catch (DataConversionException dce) {
+            logger.warning("Illegal values found in " + importFile + ": " + dce.getMessage());
+            throw new DataConversionException(dce);
         }
         return importedMembers;
     }

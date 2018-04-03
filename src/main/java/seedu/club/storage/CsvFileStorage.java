@@ -2,12 +2,12 @@
 package seedu.club.storage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.model.member.exceptions.DuplicateMemberException;
 
 /**
  * Stores ClubBook data in a CSV file.
@@ -28,7 +28,8 @@ public class CsvFileStorage {
     /**
      * Returns club book in the file or an empty club book
      */
-    public static UniqueMemberList readClubBook(File file) throws FileNotFoundException, IllegalValueException {
+    public static UniqueMemberList readClubBook(File file)
+            throws IOException, DataConversionException, DuplicateMemberException {
         return CsvUtil.getDataFromFile(file);
     }
 }
