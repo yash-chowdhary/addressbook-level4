@@ -7,10 +7,8 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
 import java.io.File;
 import java.io.IOException;
@@ -182,7 +180,7 @@ public class CsvUtil {
             }
         }
 
-        return new UniqueMemberList();
+        return importedMembers;
     }
 
     /**
@@ -193,7 +191,7 @@ public class CsvUtil {
      */
     private static Member getMember(String rawData) throws DataConversionException {
         String remainingData = rawData;
-        String memberData = EMPTY_STRING;
+        String memberData = SPACE;
         String memberFieldValue;
         String[] fieldValues;
 
@@ -262,9 +260,9 @@ public class CsvUtil {
 
         data = data.trim();
         //Remove double quotes(")
-        if (data.charAt(0) == '\"') { //First character is "
+        if (data.length() > 0 && data.charAt(0) == '\"') { //First character is "
             data = data.substring(1);
-        } else if  (data.charAt(data.length() - 1) == '\"') { //Last character is "
+        } else if (data.length() > 0 && data.charAt(data.length() - 1) == '\"') { //Last character is "
             data = data.substring(0, data.length() - 1);
         }
 
@@ -300,10 +298,13 @@ public class CsvUtil {
      */
     private static String addMemberTags(String memberData, String dataToAdd) {
         StringBuilder builder = new StringBuilder(memberData);
-        String[] tags = dataToAdd.split(",");
 
-        for (String tag: tags) {
-            builder.append(PREFIX_TAG).append(removeExcessCharacters(tag)).append(SPACE);
+        if (dataToAdd.length() != 0) {
+            String[] tags = dataToAdd.split(",");
+
+            for (String tag : tags) {
+                builder.append(PREFIX_TAG).append(removeExcessCharacters(tag)).append(SPACE);
+            }
         }
 
         return builder.toString();
@@ -318,7 +319,7 @@ public class CsvUtil {
     private static Member parseMember(String memberData) throws IllegalValueException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(memberData, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                        PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG, PREFIX_USERNAME, PREFIX_PASSWORD);
+                        PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_MATRIC_NUMBER, PREFIX_PHONE, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
