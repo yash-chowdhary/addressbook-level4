@@ -30,7 +30,7 @@ import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
-import seedu.club.logic.commands.exceptions.VoteCommand;
+import seedu.club.logic.commands.VoteCommand;
 
 /**
  * Stores list of commands

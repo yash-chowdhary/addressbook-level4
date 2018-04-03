@@ -41,6 +41,7 @@ public class Poll {
         this.question = question;
         this.answers = FXCollections.observableArrayList(answers);
         this.polleesMatricNumbers = new HashSet<>();
+        //TODO
         if (polleesMatricNumbers != null) {
             this.polleesMatricNumbers.addAll(polleesMatricNumbers);
         }

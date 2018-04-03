@@ -1,15 +1,13 @@
-package seedu.club.logic.commands.exceptions;
+package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_POLLS;
 
 import java.util.List;
 import java.util.Objects;
 
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
-import seedu.club.logic.commands.CommandResult;
-import seedu.club.logic.commands.UndoableCommand;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;

@@ -66,8 +66,8 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code oneBasedIndex} into a list of {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into a list of {@code Index} and returns it. Leading and trailing
+     * whitespaces will be trimmed.
      * @throws IllegalValueException if any of the specified index is invalid (not non-zero unsigned integer).
      */
     public static List<Index> parseIndexes(String oneBasedIndexes) throws IllegalValueException {

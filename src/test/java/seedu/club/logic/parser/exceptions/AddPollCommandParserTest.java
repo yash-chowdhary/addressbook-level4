@@ -33,7 +33,7 @@ public class AddPollCommandParserTest {
     @Test
     public void parse_allFieldsPresent_success() {
         Poll expectedPoll = new PollBuilder().withQuestion(VALID_QUESTION_LIFE)
-                .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_THREE).build();
+                .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_THREE).withNoPollessMatricNumbers().build();
 
         // whitespace only preamble
         assertParseSuccess(parser, QUESTION_DESC_LIFE + ANSWER_DESC_ONE + ANSWER_DESC_THREE,
@@ -45,7 +45,8 @@ public class AddPollCommandParserTest {
 
         // multiple answers - all accepted
         Poll expectedPollMultipleAnswers = new PollBuilder().withQuestion(VALID_QUESTION_LOVE)
-                .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO, VALID_ANSWER_THREE, VALID_ANSWER_FOUR).build();
+                .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO, VALID_ANSWER_THREE, VALID_ANSWER_FOUR)
+                .withNoPollessMatricNumbers().build();
         assertParseSuccess(parser, QUESTION_DESC_LOVE + ANSWER_DESC_ONE + ANSWER_DESC_TWO
                 + ANSWER_DESC_THREE + ANSWER_DESC_FOUR, new AddPollCommand(expectedPollMultipleAnswers));
     }

@@ -7,7 +7,7 @@ import java.util.List;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.exceptions.VoteCommand;
+import seedu.club.logic.commands.VoteCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
