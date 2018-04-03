@@ -32,7 +32,7 @@ public class VoteCommandParser implements Parser<VoteCommand> {
             return new VoteCommand(indexes.get(INDEX_ARGUMENT_POLL), indexes.get(INDEX_ARGUMENT_ANSWER));
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, VoteCommand.MESSAGE_USAGE));
         }
     }
 }

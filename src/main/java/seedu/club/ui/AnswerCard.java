@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import seedu.club.model.poll.Answer;
 
 /**
@@ -40,7 +41,9 @@ public class AnswerCard extends UiPart<Region> {
     }
 
     /**
-     * A constructor to initialize AnswerCard using {@param fxml} without results
+     * A constructor to initialize AnswerCard using without results
+     *
+     * @param fxml file configure layout of this AnswerCard
      */
     public AnswerCard(Answer answer, int displayedIndex, int totalVoteCount, String fxml) {
         super(fxml);
