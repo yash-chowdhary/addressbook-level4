@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
-import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
