@@ -15,8 +15,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.parser.ArgumentMultimap;
@@ -45,6 +47,8 @@ public class CsvUtil {
     private static final String EMPTY_STRING = "";
     private static final String NEWLINE = System.lineSeparator();
     private static final String SPACE = " ";
+
+    private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
     /**
      * Returns {@code this} Member's data in the format of a CSV record.
@@ -163,15 +167,19 @@ public class CsvUtil {
      * @throws IOException Thrown if there is an error reading from the file.
      */
     public static UniqueMemberList getDataFromFile(File file)
-            throws DataConversionException, DuplicateMemberException, IOException {
+            throws DuplicateMemberException, IOException {
 
         UniqueMemberList importedMembers = new UniqueMemberList();
         String data = FileUtil.readFromFile(file);
         String[] membersData = data.split("\n");
 
         for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
-            Member member = getMember(membersData[i]);
-            importedMembers.add(member);
+            try {
+                Member member = getMember(membersData[i]);
+                importedMembers.add(member);
+            } catch (DataConversionException dce) {
+                logger.warning("DataConversionException encountered while converting " + membersData[i]);
+            }
         }
 
         return new UniqueMemberList();
@@ -243,14 +251,24 @@ public class CsvUtil {
             values = data.split(CSV_FIELD_SEPARATOR, 2);
         }
 
-        if (values.length == 1) {
-            values[0] = removeLastCharacter(values[0]);
-        }
         return values;
     }
 
-    private static String removeLastCharacter(String data) {
-        return data.substring(0, data.length() - 1);
+    /**
+     * Removes leading and trailing whitespaces and double quotes (") from {@code data}.
+     */
+    private static String removeExcessCharacters(String data) {
+        requireNonNull(data);
+
+        data = data.trim();
+        //Remove double quotes(")
+        if (data.charAt(0) == '\"') { //First character is "
+            data = data.substring(1);
+        } else if  (data.charAt(data.length() - 1) == '\"') { //Last character is "
+            data = data.substring(0, data.length() - 1);
+        }
+
+        return data;
     }
 
     /**
@@ -267,7 +285,7 @@ public class CsvUtil {
         if (prefix.equals(PREFIX_TAG.toString())) {
             return addMemberTags(memberData, dataToAdd);
         } else if (dataToAdd.length() != 0) {
-            builder.append(prefix).append(dataToAdd.trim()).append(SPACE);
+            builder.append(prefix).append(removeExcessCharacters(dataToAdd)).append(SPACE);
         }
 
         return builder.toString();
@@ -285,7 +303,7 @@ public class CsvUtil {
         String[] tags = dataToAdd.split(",");
 
         for (String tag: tags) {
-            builder.append(PREFIX_TAG).append(tag.trim()).append(SPACE);
+            builder.append(PREFIX_TAG).append(removeExcessCharacters(tag)).append(SPACE);
         }
 
         return builder.toString();
