@@ -81,7 +81,7 @@ public class MemberCard extends UiPart<Region> {
 
     //@@author amrut-prabhu
     /**
-     * Sets the profile photo to the displayed photo shape.
+     * Sets the profile photo of {@code member} to the displayed photo shape.
      */
     private void setProfilePhoto(Member member) {
         Image photo;

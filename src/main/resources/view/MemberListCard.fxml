@@ -13,11 +13,13 @@
 <?import javafx.scene.image.ImageView?>
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <!--@@author amrut-prabhu-->
-  <ImageView fx:id="profilePhoto" fitWidth="90" fitHeight="120">
-    <HBox.margin>
-      <Insets left="7.5" bottom="7.5" right="5.0" top="7.5" />
-    </HBox.margin>
-  </ImageView>
+  <HBox alignment="CENTER_LEFT">
+    <ImageView fx:id="profilePhoto" fitWidth="90" fitHeight="120">
+      <HBox.margin>
+        <Insets left="7.5" bottom="7.5" right="5.0" top="7.5" />
+      </HBox.margin>
+    </ImageView>
+  </HBox>
   <!--@@author-->
 
   <GridPane HBox.hgrow="ALWAYS">
