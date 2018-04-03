@@ -6,18 +6,18 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 
-import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
 import seedu.club.ui.testutil.EventsCollectorRule;
 
-public class DecompressCommandTest {
+public class HideResultsCommandTest {
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
     public void execute_help_success() {
-        CommandResult result = new DecompressCommand().execute();
-        assertEquals(DecompressCommand.MESSAGE_SUCCESS, result.feedbackToUser);
-        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DecompressMembersRequestEvent);
+        CommandResult result = new HideResultsCommand().execute();
+        assertEquals(HideResultsCommand.MESSAGE_SUCCESS, result.feedbackToUser);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof HideResultsRequestEvent);
         assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
     }
 }

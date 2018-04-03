@@ -89,7 +89,6 @@ public class XmlSerializableClubBookTest {
                 XmlSerializableClubBook.class);
         thrown.expect(IllegalValueException.class);
         dataFromFile.toModelType();
-        System.out.println("dataFromFile.toModelType() = " + dataFromFile.toModelType());
     }
 
     @Test
