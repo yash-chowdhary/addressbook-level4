@@ -22,6 +22,7 @@ import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
+import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -49,6 +50,7 @@ import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.ProfilePhotoStorage;
 
@@ -329,6 +331,14 @@ public class ModelManager extends ComponentManager implements Model {
         }
         updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         indicateClubBookChanged();
+    }
+
+    @Override
+    public void viewMyTasks() throws TasksAlreadyListedException {
+        if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
+            throw new TasksAlreadyListedException(ViewMyTasksCommand.MESSAGE_ALREADY_LISTED);
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
     //@@author

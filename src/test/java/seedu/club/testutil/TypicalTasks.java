@@ -22,8 +22,8 @@ public class TypicalTasks {
             .withDescription("Book Auditorium")
             .withDate("02/04/2018")
             .withTime("13:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("Benson Meier")
+            .withAssignee("Benson Meier")
             .withStatus("Yet To Begin")
             .build();
 
