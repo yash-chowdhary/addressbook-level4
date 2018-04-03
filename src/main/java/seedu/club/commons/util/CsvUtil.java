@@ -195,34 +195,38 @@ public class CsvUtil {
         String memberFieldValue;
         String[] fieldValues;
 
-        fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        remainingData = fieldValues[1];
-        memberData = addMemberData(memberData, PREFIX_NAME.toString(), memberFieldValue);
+        try {
+            fieldValues = nextValue(remainingData);
+            memberFieldValue = fieldValues[0];
+            remainingData = fieldValues[1];
+            memberData = addMemberData(memberData, PREFIX_NAME.toString(), memberFieldValue);
 
-        fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        remainingData = fieldValues[1];
-        memberData = addMemberData(memberData, PREFIX_PHONE.toString(), memberFieldValue);
+            fieldValues = nextValue(remainingData);
+            memberFieldValue = fieldValues[0];
+            remainingData = fieldValues[1];
+            memberData = addMemberData(memberData, PREFIX_PHONE.toString(), memberFieldValue);
 
-        fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        remainingData = fieldValues[1];
-        memberData = addMemberData(memberData, PREFIX_EMAIL.toString(), memberFieldValue);
+            fieldValues = nextValue(remainingData);
+            memberFieldValue = fieldValues[0];
+            remainingData = fieldValues[1];
+            memberData = addMemberData(memberData, PREFIX_EMAIL.toString(), memberFieldValue);
 
-        fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        remainingData = fieldValues[1];
-        memberData = addMemberData(memberData, PREFIX_MATRIC_NUMBER.toString(), memberFieldValue);
+            fieldValues = nextValue(remainingData);
+            memberFieldValue = fieldValues[0];
+            remainingData = fieldValues[1];
+            memberData = addMemberData(memberData, PREFIX_MATRIC_NUMBER.toString(), memberFieldValue);
 
-        fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        remainingData = fieldValues[1];
-        memberData = addMemberData(memberData, PREFIX_GROUP.toString(), memberFieldValue);
+            fieldValues = nextValue(remainingData);
+            memberFieldValue = fieldValues[0];
+            remainingData = fieldValues[1];
+            memberData = addMemberData(memberData, PREFIX_GROUP.toString(), memberFieldValue);
 
-        fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        memberData = addMemberData(memberData, PREFIX_TAG.toString(), memberFieldValue);
+            fieldValues = nextValue(remainingData);
+            memberFieldValue = fieldValues[0];
+            memberData = addMemberData(memberData, PREFIX_TAG.toString(), memberFieldValue);
+        } catch (ArrayIndexOutOfBoundsException aioobe) {
+            throw new DataConversionException(aioobe);
+        }
 
         try {
             return parseMember(memberData);
