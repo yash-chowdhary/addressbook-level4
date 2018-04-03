@@ -4,12 +4,10 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -41,7 +39,7 @@ public class BrowserPanel extends UiPart<Region> {
     private static final String DEFAULT_PHOTO = "/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
-            "orange", "blue", "violet"};
+                                                "orange", "blue", "violet"};
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -56,11 +54,21 @@ public class BrowserPanel extends UiPart<Region> {
     @FXML
     private Label matricNumber;
     @FXML
-    private Label groups;
+    private Label group;
     @FXML
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label nameText;
+    @FXML
+    private Label phoneText;
+    @FXML
+    private Label matricNumberText;
+    @FXML
+    private Label emailText;
+    @FXML
+    private Label groupText;
 
 
 
@@ -69,6 +77,7 @@ public class BrowserPanel extends UiPart<Region> {
 
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
+        loadBlankMemberPage();
         registerAsAnEventHandler(this);
     }
 
@@ -123,16 +132,42 @@ public class BrowserPanel extends UiPart<Region> {
     }
     //@@author
 
+    //@@author th14thmusician
+    /**
+     * Loads the details of member into a new panel with more details
+     * @param member
+     */
     private void loadMemberPage(Member member) {
+        nameText.setText("Name");
+        phoneText.setText("Mobile");
+        matricNumberText.setText("Matric Number");
+        groupText.setText("Group");
+        emailText.setText("E-Mail");
         name.setText(member.getName().fullName);
         setProfilePhoto(member);
         phone.setText(member.getPhone().value);
         matricNumber.setText(member.getMatricNumber().value);
         email.setText(member.getEmail().value);
-        groups.setText(member.getGroup().groupName);
+        group.setText(member.getGroup().groupName);
         createTags(member);
     }
 
+    /**
+     * Loads a blank member page if no one is selected
+     */
+    private void loadBlankMemberPage() {
+        name.setText("");
+        phone.setText("");
+        matricNumber.setText("");
+        email.setText("");
+        group.setText("");
+        nameText.setText("");
+        phoneText.setText("");
+        matricNumberText.setText("");
+        groupText.setText("");
+        emailText.setText("");
+    }
+    //@@author
 
     /**
      * Frees resources allocated to the browser.
