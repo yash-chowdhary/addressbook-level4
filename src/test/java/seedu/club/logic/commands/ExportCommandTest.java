@@ -269,9 +269,9 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void importMembers(File importFile)
-                throws IOException, DuplicateMemberException, DataConversionException {
+        public int importMembers(File importFile) throws IOException {
             fail("This method should not be called");
+            return 0;
         }
 
         @Override

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
-import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;

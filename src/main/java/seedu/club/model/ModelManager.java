@@ -22,7 +22,6 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
-import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.logic.commands.ViewMyTasksCommand;

@@ -6,9 +6,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.File;
 import java.io.IOException;
 
-import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
 
 /**
  * Exports members' information from the specified file into Club Connect.
