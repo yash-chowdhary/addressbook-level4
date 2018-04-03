@@ -9,6 +9,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.club.model.member.MatricNumber;
 
 /**
@@ -17,7 +19,7 @@ import seedu.club.model.member.MatricNumber;
 public class Poll {
 
     private final Question question;
-    private final List<Answer> answers;
+    private final ObservableList<Answer> answers;
     private final Set<MatricNumber> polleesMatricNumbers;
 
     /**
@@ -33,7 +35,7 @@ public class Poll {
         requireNonNull(answers);
 
         this.question = question;
-        this.answers = answers;
+        this.answers = FXCollections.observableArrayList(answers);
         if (polleesMatricNumbers == null) {
             this.polleesMatricNumbers = new HashSet<>();
         } else {
@@ -53,12 +55,16 @@ public class Poll {
         return question;
     }
 
+    public int getTotalVoteCount() {
+        return answers.stream().collect(Collectors.reducing(0, Answer::getVoteCount, Integer::sum));
+    }
+
     /**
      * Returns an immutable answer list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public List<Answer> getAnswers() {
-        return Collections.unmodifiableList(answers);
+    public ObservableList<Answer> getAnswers() {
+        return FXCollections.unmodifiableObservableList(answers);
     }
 
     /**

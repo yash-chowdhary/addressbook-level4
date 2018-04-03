@@ -26,6 +26,7 @@ import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.HideResultsCommand;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
@@ -33,6 +34,7 @@ import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
+import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
@@ -147,6 +149,12 @@ public class ClubBookParser {
         case ChangePasswordCommand.COMMAND_WORD:
             return new ChangePasswordCommandParser().parse(arguments);
 
+        case ShowResultsCommand.COMMAND_WORD:
+            return new ShowResultsCommand();
+
+        case HideResultsCommand.COMMAND_WORD:
+            return new HideResultsCommand();
+
         case SignUpCommand.COMMAND_WORD:
             return new SignUpCommandParser().parse(arguments);
 
@@ -160,5 +168,4 @@ public class ClubBookParser {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
-
 }
