@@ -195,11 +195,6 @@ public class CsvUtil {
         String memberFieldValue;
         String[] fieldValues;
 
-        /*fieldValues = nextValue(remainingData);
-        memberFieldValue = fieldValues[0];
-        remainingData = fieldValues[1];
-        memberDataBuilder.append(PREFIX_NAME).append(memberFieldValue).append(SPACE);*/
-
         fieldValues = nextValue(remainingData);
         memberFieldValue = fieldValues[0];
         remainingData = fieldValues[1];
@@ -303,7 +298,10 @@ public class CsvUtil {
             String[] tags = dataToAdd.split(",");
 
             for (String tag : tags) {
-                builder.append(PREFIX_TAG).append(removeExcessCharacters(tag)).append(SPACE);
+                tag = removeExcessCharacters(tag);
+                if (tag.length() > 0) {
+                    builder.append(PREFIX_TAG).append(tag).append(SPACE);
+                }
             }
         }
 
