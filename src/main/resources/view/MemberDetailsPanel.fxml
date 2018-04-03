@@ -19,23 +19,24 @@
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
     </ImageView>
-   <Label styleClass="cell_big_label" text="Name" GridPane.rowIndex="1" />
-    <FlowPane fx:id="tags" GridPane.rowIndex="1">
+   <Label fx:id="nameText" styleClass="cell_big_label" text="Name" GridPane.rowIndex="1" />
+   <Label fx:id="name" styleClass="cell_small_label" text="/$name" GridPane.rowIndex="2" />
+    <FlowPane fx:id="tags" GridPane.rowIndex="3">
         <padding>
             <Insets bottom="5" top="5" />
         </padding>
     </FlowPane>
-   <Label fx:id="name" styleClass="cell_big_label" text="/$name" GridPane.rowIndex="2" />
-   <Label styleClass="cell_big_label" text="Matric Number" GridPane.rowIndex="3" />
-   <Label styleClass="cell_big_label" text="E-mail" GridPane.rowIndex="7" />
-   <Label styleClass="cell_big_label" text="Groups" GridPane.rowIndex="9" />
-   <Label fx:id="matricnumber" styleClass="cell_big_label" text="/$matricnumber" GridPane.rowIndex="4" />
-   <Label fx:id="email" styleClass="cell_big_label" text="/$email" GridPane.rowIndex="8" />
-   <Label fx:id="groups" styleClass="cell_big_label" text="/$groups" GridPane.rowIndex="10" />
-   <Label styleClass="cell_big_label" text="Mobile" GridPane.rowIndex="5" />
-   <Label fx:id="name1" layoutX="10.0" layoutY="227.0" styleClass="cell_big_label" text="/$mobile" GridPane.rowIndex="6" />
+   <Label fx:id="matricNumberText" styleClass="cell_big_label" text="Matric Number" GridPane.rowIndex="4" />
+   <Label fx:id="emailText" styleClass="cell_big_label" text="E-mail" GridPane.rowIndex="8" />
+   <Label fx:id="groupText" styleClass="cell_small_label" text="Group" GridPane.rowIndex="10" />
+   <Label fx:id="matricNumber" styleClass="cell_small_label" text="/$matricnumber" GridPane.rowIndex="5" />
+   <Label fx:id="email" styleClass="cell_small_label" text="/$email" GridPane.rowIndex="9" />
+   <Label fx:id="group" styleClass="cell_small_label" text="/$groups" GridPane.rowIndex="11" />
+   <Label fx:id="phoneText" styleClass="cell_big_label" text="Mobile" GridPane.rowIndex="6" />
+   <Label fx:id="phone" layoutX="10.0" layoutY="227.0" styleClass="cell_small_label" text="/$mobile" GridPane.rowIndex="7" />
     <rowConstraints>
         <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
