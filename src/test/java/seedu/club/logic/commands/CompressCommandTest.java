@@ -1,34 +1,23 @@
 package seedu.club.logic.commands;
 
-import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
-import seedu.club.model.Model;
-import seedu.club.model.ModelManager;
-import seedu.club.model.UserPrefs;
+import seedu.club.commons.events.ui.CompressMembersRequestEvent;
+import seedu.club.ui.testutil.EventsCollectorRule;
 
-/**
- * Contains integration tests (interaction with the Model) and unit tests for CompressCommand.
- */
 public class CompressCommandTest {
-
-    private Model model;
-    private Model expectedModel;
-    private CompressCommand compressCommand;
-
-    @Before
-    public void setUp() {
-        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
-        compressCommand = new CompressCommand();
-    }
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
-    public void execute() {
-        assertCommandSuccess(compressCommand, model, CompressCommand.MESSAGE_SUCCESS, expectedModel);
+    public void execute_help_success() {
+        CommandResult result = new CompressCommand().execute();
+        assertEquals(CompressCommand.MESSAGE_SUCCESS, result.feedbackToUser);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof CompressMembersRequestEvent);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
     }
 }

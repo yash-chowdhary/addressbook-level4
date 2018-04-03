@@ -397,12 +397,12 @@ public class ParserUtil {
      */
     public static List<Answer> parseAnswers(Collection<String> answers) throws IllegalValueException {
         requireNonNull(answers);
-        final Set<Answer> answerSet = new HashSet<>();
+        final Set<String> answerStringSet = new HashSet<>();
         final List<Answer> answerList = new ArrayList<>();
         for (String answer : answers) {
-            if (!answerSet.contains(answer)) {
+            if (!answerStringSet.contains(answer)) {
                 Answer parsedAnswer = parseAnswer(answer);
-                answerSet.add(parsedAnswer);
+                answerStringSet.add(answer);
                 answerList.add(parsedAnswer);
             }
         }

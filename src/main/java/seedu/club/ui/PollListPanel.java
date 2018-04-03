@@ -6,15 +6,14 @@ import org.fxmisc.easybind.EasyBind;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.ui.JumpToPollListRequestEvent;
-import seedu.club.commons.events.ui.PollPanelSelectionChangedEvent;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.ShowResultsRequestEvent;
 import seedu.club.model.poll.Poll;
 
 /**
@@ -23,53 +22,62 @@ import seedu.club.model.poll.Poll;
 public class PollListPanel extends UiPart<Region> {
     private static final String FXML = "PollListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PollListPanel.class);
+    private boolean isDisplayingPollResults;
+    private ObservableList<Poll> pollList;
 
     @FXML
     private ListView<PollCard> pollListView;
 
     public PollListPanel(ObservableList<Poll> pollList) {
         super(FXML);
-        setConnections(pollList);
+        this.pollList = pollList;
+        setPollListView();
         registerAsAnEventHandler(this);
     }
 
-
-    private void setConnections(ObservableList<Poll> pollList) {
-        setPollListView(pollList);
-        setEventHandlerForSelectionChangeEvent();
-    }
-
-    private void setPollListView(ObservableList<Poll> pollList) {
+    private void setPollListView() {
         ObservableList<PollCard> mappedList = EasyBind.map(
-                pollList, (poll) -> new PollCard(poll, pollList.indexOf(poll) + 1));
+                pollList, (poll) -> {
+                if (isDisplayingPollResults) {
+                    return new PollCard(poll, pollList.indexOf(poll) + 1);
+                } else {
+                    return new RestrictedPollCard(poll, pollList.indexOf(poll) + 1);
+                }
+            });
         pollListView.setItems(mappedList);
         pollListView.setCellFactory(listView -> new PollListViewCell());
     }
 
-    private void setEventHandlerForSelectionChangeEvent() {
-        pollListView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        logger.fine("Selection in poll list panel changed to : '" + newValue + "'");
-                        raise(new PollPanelSelectionChangedEvent(newValue));
-                    }
-                });
+    /**
+     * Shows results of polls
+     */
+    private void showPollResults() {
+        if (!isDisplayingPollResults) {
+            isDisplayingPollResults = true;
+            setPollListView();
+        }
     }
 
     /**
-     * Scrolls to the {@code PollCard} at the {@code index} and selects it.
+     * Hides results of polls
      */
-    private void scrollTo(int index) {
-        Platform.runLater(() -> {
-            pollListView.scrollTo(index);
-            pollListView.getSelectionModel().clearAndSelect(index);
-        });
+    private void hidePollResults() {
+        if (isDisplayingPollResults) {
+            isDisplayingPollResults = false;
+            setPollListView();
+        }
     }
 
     @Subscribe
-    private void handleJumpToPollListRequestEvent(JumpToPollListRequestEvent event) {
+    private void handleShowResultsEvent(ShowResultsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        scrollTo(event.targetIndex);
+        showPollResults();
+    }
+
+    @Subscribe
+    private void handleHideResultsEvent(HideResultsRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        hidePollResults();
     }
 
     /**
