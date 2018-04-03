@@ -3,7 +3,9 @@ package seedu.club.model.poll;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javafx.collections.FXCollections;
@@ -61,10 +63,9 @@ public class UniquePollList implements Iterable<Poll> {
         if (pollIndex == -1) {
             throw new PollNotFoundException();
         } else {
-            Poll votedPoll = new Poll(new Question(poll.getQuestion().getValue()),
-                    poll.getAnswers(), poll.getPolleesMatricNumbers());
-            votedPoll.vote(answerIndex, polleeMatricNumber);
-            internalList.set(pollIndex, votedPoll);
+            Poll pollDeepCopy = poll.clone();
+            pollDeepCopy.vote(answerIndex, polleeMatricNumber);
+            internalList.set(pollIndex, pollDeepCopy);
         }
     }
 

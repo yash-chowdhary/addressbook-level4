@@ -44,8 +44,6 @@ public class VoteCommand extends UndoableCommand {
         requireNonNull(answerIndex);
         this.pollIndex = pollIndex;
         this.answerIndex = answerIndex;
-        System.out.println("pollIndex = " + pollIndex.getOneBased());
-        System.out.println("answerIndex = " + answerIndex.getOneBased());
     }
 
     @Override
@@ -59,7 +57,6 @@ public class VoteCommand extends UndoableCommand {
         } catch (AnswerNotFoundException answerNotFoundException) {
             throw new AssertionError("The target answer cannot be missing");
         }
-        model.updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
         return new CommandResult(String.format(MESSAGE_VOTE_SUCCESS));
     }
 

@@ -51,4 +51,9 @@ public class MatricNumber {
         return value.hashCode();
     }
 
+    @Override
+    public MatricNumber clone() {
+        return new MatricNumber(this.value);
+    }
+
 }

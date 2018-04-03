@@ -2,6 +2,7 @@ package seedu.club.model.poll;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -104,5 +105,19 @@ public class Poll {
     public String toString() {
         return "[ " + question + " ]"
                 + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
+    }
+
+    @Override
+    public Poll clone() {
+        Question question = new Question(this.question.getValue());
+        List<Answer> answers = new ArrayList<>();
+        for (Answer answer : this.answers) {
+            answers.add(answer.clone());
+        }
+        Set<MatricNumber> polleesMatricNumbers = new HashSet<>();
+        for (MatricNumber matricNumber : this.polleesMatricNumbers) {
+            polleesMatricNumbers.add(matricNumber.clone());
+        }
+        return new Poll(question, answers, polleesMatricNumbers);
     }
 }

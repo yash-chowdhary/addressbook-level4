@@ -37,6 +37,7 @@ public abstract class UndoableCommand extends Command {
      * show all members.
      */
     protected final void undo() {
+        System.out.println("HELLOSADDDDDDASasdasdasdasdasd");
         requireAllNonNull(model, previousClubBook);
         model.resetData(previousClubBook);
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
