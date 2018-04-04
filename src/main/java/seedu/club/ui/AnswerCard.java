@@ -2,7 +2,7 @@ package seedu.club.ui;
 //@@author MuhdNurKamal
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
 
@@ -14,6 +14,7 @@ public class AnswerCard extends UiPart<Region> {
     private static final String FXML = "AnswerListCard.fxml";
     private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
     private final int totalVoteCount;
+    private static final String PERCENTAGE_SYMBOL = "%";
 
     @FXML
     private Label answerValue;
@@ -25,7 +26,10 @@ public class AnswerCard extends UiPart<Region> {
     private Label voteCount;
 
     @FXML
-    private ProgressIndicator voteCountIndicator;
+    private ProgressBar votePercentageBar;
+
+    @FXML
+    private Label votePercentage;
 
     /**
      * A constructor to initialize AnswerCard using {@value FXML} with results
@@ -36,7 +40,7 @@ public class AnswerCard extends UiPart<Region> {
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
         voteCount.setText(DESCRIPTION_VOTE_COUNT + answer.getVoteCount());
-        setVoteCountIndicator(answer);
+        setVotePercentage(answer);
     }
 
     /**
@@ -51,11 +55,13 @@ public class AnswerCard extends UiPart<Region> {
         answerValue.setText(answer.getValue());
     }
 
-    private void setVoteCountIndicator(Answer answer) {
+    private void setVotePercentage(Answer answer) {
         int voteCount = answer.getVoteCount();
-        double progress = totalVoteCount == 0
+        double voteFraction = totalVoteCount == 0
                 ? 0 : ((double) voteCount) / totalVoteCount;
-        voteCountIndicator.setProgress(progress);
+        votePercentageBar.setProgress(voteFraction);
+        votePercentage.setText(voteFraction * 100 + PERCENTAGE_SYMBOL);
+
     }
 
     @Override
