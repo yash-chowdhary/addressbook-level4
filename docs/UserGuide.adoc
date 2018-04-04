@@ -114,7 +114,7 @@ Aliases: `a`, `insert` +
 A member can have any number of tags (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
-A member will be assigned to the default group `member` if no group is specified in the command.
+A member will be assigned to the default group `Member` if no group is specified in the command.
 [TIP]
 A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
@@ -297,8 +297,8 @@ Aliases: `rmtag`, `deltag`
 
 Examples:
 
-* `deletetag t/treasurer` +
-Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
+* `deletetag t/Treasurer` +
+Deletes the `Treasurer` tag for all members tagged with `Treasurer` in Club Connect.
 
 === Deleting a task : `deletetask` (Since v1.3)
 
@@ -328,10 +328,10 @@ Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 Alias: `mail`
 
 [NOTE]
-ClubConnect currently only supports GMail and Outlook mail clients.
+Club Connect currently only supports Gmail and Outlook mail clients.
 
 [NOTE]
-Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+Emails can only be sent to members belonging to EITHER a Group OR a Tag. Club Connect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
 
 ****
 * Opens up the mail client's URL in the default web browser e.g. Google Chrome
@@ -343,7 +343,7 @@ Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubCon
 Examples:
 
 * `email g/logistics c/gmail s/Meeting Minutes` +
-Opens up the Compose Message page of GMail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
+Opens up the Compose Message page of Gmail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
 * `email t/projectHead c/outlook` +
 Opens up the Compose Message page of Outlook with blank `Subject` and `Body` fields. The recipients are all the members that are tagged with `projectHead`.
 
@@ -673,9 +673,9 @@ e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Delete Group* : `removegroup g/GROUP` +
-e.g. `removegroup g/publicity`
+e.g. `removegroup g/Publicity`
 * *Delete Tag* : `deletetag t/TAG` +
-e.g. `deletetag t/president`
+e.g. `deletetag t/EventHelper`
 * *Delete Task* : `deletetask INDEX` +
 e.g. `deletetask 2`
 * *Import members into Club Connect* : `import` +

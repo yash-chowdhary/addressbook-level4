@@ -22,7 +22,8 @@ public class AddPollCommand extends UndoableCommand {
             Arrays.asList(COMMAND_WORD, "addp", "poll")
     );
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a poll to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Adds a poll for members to respond to on Club Connect.\n"
             + "Parameters: "
             + PREFIX_QUESTION + "QUESTION "
             + PREFIX_ANSWER + "ANSWER...\n"

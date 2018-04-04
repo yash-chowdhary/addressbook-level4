@@ -32,7 +32,7 @@ public class AddCommand extends UndoableCommand {
             + "[" + PREFIX_GROUP + " ] "
             + "[" + PREFIX_TAG + " ] ";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a member to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a member to Club Connect.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "

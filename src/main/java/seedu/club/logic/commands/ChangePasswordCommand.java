@@ -26,16 +26,16 @@ public class ChangePasswordCommand extends Command {
             Arrays.asList(COMMAND_WORD, "changepw")
     );
     public static final String COMMAND_FORMAT = "changepass u/ pw/ npw/";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your password. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your password.\n"
             + "Parameters: "
-            + PREFIX_USERNAME + "username "
-            + PREFIX_PASSWORD + "oldpassword "
-            + PREFIX_NEWPASSWORD + "newpassword\n"
+            + PREFIX_USERNAME + "USERNAME "
+            + PREFIX_PASSWORD + "OLD_PASSWORD "
+            + PREFIX_NEWPASSWORD + "NEW_PASSWORD\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_USERNAME + "A0164589X "
             + PREFIX_PASSWORD + "password "
             + PREFIX_NEWPASSWORD + "iLovecats18";
-    public static final String MESSAGE_SUCCESS = "Password changed successfully!";
+    public static final String MESSAGE_SUCCESS = "Password changed successfully.";
     public static final String MESSAGE_PASSWORD_INCORRECT = "The old password entered is incorrect.";
     public static final String MESSAGE_AUTHENTICATION_FAILED = "You can only change your own password.";
     private Username username;
