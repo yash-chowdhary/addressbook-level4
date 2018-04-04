@@ -18,6 +18,7 @@ import java.util.List;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.DeleteCommand;
 import seedu.club.logic.commands.FindCommand;
@@ -158,12 +159,13 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardDeselected();
 
-        /* Case: find member in empty club book -> 0 members found */
+        /* Case: find member in empty club book -> requires to sign up to continue */
         deleteAllMembers();
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
         expectedModel = getModel();
         ModelHelper.setFilteredList(expectedModel, DANIEL);
-        assertCommandSuccess(command, expectedModel);
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", Messages.MESSAGE_REQUIRE_SIGN_UP, expectedModel);
         assertSelectedCardUnchanged();
 
         /* Case: mixed case command word -> rejected */

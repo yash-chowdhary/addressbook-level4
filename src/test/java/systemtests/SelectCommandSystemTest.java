@@ -12,6 +12,7 @@ import static seedu.club.testutil.TypicalMembers.getTypicalMembers;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
@@ -100,8 +101,9 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: select from empty club book -> rejected */
         deleteAllMembers();
-        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased(),
-                MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX);
+        command = SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased();
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", Messages.MESSAGE_REQUIRE_SIGN_UP, getModel());
     }
 
     /**

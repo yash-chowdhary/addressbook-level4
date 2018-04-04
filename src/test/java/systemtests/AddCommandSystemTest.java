@@ -31,7 +31,13 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
@@ -42,10 +48,13 @@ import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.member.Email;
@@ -59,10 +68,17 @@ import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
 
 public class AddCommandSystemTest extends ClubBookSystemTest {
-
+    private ObservableList<Member> observableList;
+    private Member member;
     @Test
     public void add() throws Exception {
         Model model = getModel();
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        String logInCommand = LogInCommand.COMMAND_WORD + " "
+                + PREFIX_USERNAME + member.getCredentials().getUsername().value + " "
+                + PREFIX_PASSWORD + member.getCredentials().getPassword().value;
+        executeCommand(logInCommand);
 
         /* ------------------------ Perform add operations on the shown unfiltered list ----------------------------- */
 
@@ -123,6 +139,18 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: add to empty club book -> added */
         deleteAllMembers();
+        String signUpCommand = SignUpCommand.COMMAND_WORD + " "
+                + PREFIX_NAME + "John Doe "
+                + PREFIX_PHONE + "98765432 "
+                + PREFIX_EMAIL + "johnd@example.com "
+                + PREFIX_MATRIC_NUMBER + "A0123456H "
+                + PREFIX_TAG + "friends "
+                + PREFIX_TAG + "owesMoney ";
+        executeCommand(signUpCommand);
+        logInCommand = LogInCommand.COMMAND_WORD + " "
+                + PREFIX_USERNAME + "A0123456H" + " "
+                + PREFIX_PASSWORD + "password";
+        executeCommand(logInCommand);
         assertCommandSuccess(ALICE);
 
         /* Case: add a member with tags, command with parameters in random order -> added */
