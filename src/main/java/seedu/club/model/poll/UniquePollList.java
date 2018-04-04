@@ -52,6 +52,7 @@ public class UniquePollList implements Iterable<Poll> {
         assert CollectionUtil.elementsAreUnique(internalList);
     }
 
+    //@@author MuhdNurKamal
     /**
      * Replaces the specified poll with a deep copy except that the copy has the specified answer
      * increased it's vote count by 1.
@@ -76,6 +77,7 @@ public class UniquePollList implements Iterable<Poll> {
             internalList.set(pollIndex, pollDeepCopy);
         }
     }
+    //@@author
 
     /**
      * Returns true if the list contains an equivalent Poll as the given argument.

@@ -130,6 +130,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
+    //@@author MuhdNurKamal
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
         clubBook.addPoll(poll);
@@ -151,6 +152,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
+    //@@author
 
     //@@author Song Weiyang
     @Override

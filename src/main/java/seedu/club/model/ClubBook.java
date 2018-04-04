@@ -119,6 +119,7 @@ public class ClubBook implements ReadOnlyClubBook {
         members.add(member);
     }
 
+    //@@author MuhdNurKamal
     /**
      * Removes {@code key} from this {@code ClubBook}.
      *
@@ -131,6 +132,7 @@ public class ClubBook implements ReadOnlyClubBook {
             throw new PollNotFoundException();
         }
     }
+    //@@author
 
     /**
      * Replaces the given member {@code target} in the list with {@code editedMember}.
@@ -204,6 +206,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
+    //@@author MuhdNurKamal
     public void setPolls(Set<Poll> polls) {
         this.polls.setPolls(polls);
     }
@@ -216,6 +219,7 @@ public class ClubBook implements ReadOnlyClubBook {
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
     }
+    //@@author
 
     //@@author Song Weiyang
     /**

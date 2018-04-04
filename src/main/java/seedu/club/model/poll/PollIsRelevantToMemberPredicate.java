@@ -1,4 +1,5 @@
 package seedu.club.model.poll;
+//@@author MuhdNurKamal
 import java.util.function.Predicate;
 
 import seedu.club.model.member.Member;

@@ -40,7 +40,7 @@ public class StringUtil {
         }
         return false;
     }
-
+    //@@author MuhdNurKamal
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
      *   Ignores case and finds partial match.
@@ -63,6 +63,7 @@ public class StringUtil {
 
         return sentence.toLowerCase().contains(preppedWord.toLowerCase());
     }
+    //@@author
 
     /**
      * Returns a detailed message of the t, including the stack trace.

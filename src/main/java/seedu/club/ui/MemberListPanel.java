@@ -38,7 +38,7 @@ public class MemberListPanel extends UiPart<Region> {
         setConnections(memberList);
         registerAsAnEventHandler(this);
     }
-
+    //@@author MuhdNurKamal
     /**
      * Compresses view of member details.
      */
@@ -58,6 +58,7 @@ public class MemberListPanel extends UiPart<Region> {
             setMemberListView(memberList);
         }
     }
+    //@@author
 
     private void setConnections(ObservableList<Member> memberList) {
         setMemberListView(memberList);
@@ -120,7 +121,7 @@ public class MemberListPanel extends UiPart<Region> {
             }
         }
     }
-
+    //@@author MuhdNurKamal
     @Subscribe
     private void handleCompressMembersEvent(CompressMembersRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -136,4 +137,5 @@ public class MemberListPanel extends UiPart<Region> {
     public boolean isDisplayingCompressedMembers() {
         return isDisplayingCompressedMembers;
     }
+    //@@author
 }

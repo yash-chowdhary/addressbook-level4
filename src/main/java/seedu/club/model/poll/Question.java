@@ -1,5 +1,5 @@
 package seedu.club.model.poll;
-
+//@@author MuhdNurKamal
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
