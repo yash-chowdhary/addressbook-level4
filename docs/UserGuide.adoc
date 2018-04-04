@@ -19,7 +19,7 @@ By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective.
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier and more effective.
 
 Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
@@ -368,7 +368,7 @@ Selects the 2nd member in the address book.
 `select 1` +
 Selects the 1st member in the results of the `find` command.
 
-=== Adding a poll: `addpoll`
+=== Adding a poll: `addpoll` (Since v1.3)
 
 Adds a poll to Club Connect. +
 Format: `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
@@ -382,13 +382,13 @@ Aliases: `addp`, `poll`
 Examples:
 
 * `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
-Creates a poll asking members to select which day Free Ice-Cream Day should be.
+Creates a poll asking members to vote which day Free Ice-Cream Day should be.
 The options to choose from are Monday, Wednesday and Friday.
-* `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7` +
-Creates a poll asking members to choose where the annual meeting should be held.
+* `addpoll n/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+Creates a poll asking members to vote where the annual sports meeting should be held.
 The answers to choose from are I-Cube and LT7.
 
-=== Deleting a poll : `deletepoll`
+=== Deleting a poll : `deletepoll` (Since v1.3)
 
 Deletes the specified poll from the Club Connect. +
 Format: `deletepoll INDEX` +
@@ -405,7 +405,7 @@ Examples:
 * `deletepoll 2` +
 Deletes the 2nd poll in the poll listing.
 
-=== Voting in a poll : `vote`
+=== Voting in a poll : `vote` (Since v1.4)
 
 Votes for the specified answer in the specified poll in Club Connect . +
 Format: `vote POLL_INDEX ANSWER_INDEX` +
@@ -415,7 +415,7 @@ Alias: `vpoll`
 * The POLL_INDEX refers to the index number shown in the most recent poll listing.
 * The ANSWER_INDEX refers to one of the index number of the answers of the specified poll.
 * The indices *must be positive integers* 1, 2, 3, ...
-* Polls voted by logged in member will not be visible in the poll list unless logged in as an `EXCO` member
+* Polls voted by current logged in member will not be visible in the poll list unless logged in as an `EXCO` member
 ****
 
 Examples:
@@ -427,22 +427,16 @@ Votes for the 1st answer in the 5th poll of the poll listing
 
 === Showing results of polls : `showresults` (Since v1.4)
 
-Displays the results of polls in Club Connect. This is a command that can be used by `EXCO` members to monitor all the polls in the club. +
+Displays the results of polls in Club Connect. This is a command that can be used to monitor polls in the Club Connect. +
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
 Format: `showresults` +
 Alias: `showres`
 
-[NOTE]
-This command can only be invoked by `EXCO` members.
-
 === Hiding results of polls : `hideresults` (Since v1.4)
 
-Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members to remove clutter from poll results. +
+Hides the results of all polls in Club Connect. This is a command that can be used to remove clutter from poll results. +
 Format: `hideresults` +
 Alias: `hideres`
-
-[NOTE]
-This command can only be invoked by `EXCO` members.
 
 === Changing your profile photo : `changepic` (Since v1.2)
 
@@ -508,7 +502,7 @@ Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
 
 === Compressing member details : `compress` (Since v1.2)
 
-Compresses the details of members in the contact list +
+Compresses the details of members in the member list +
 Format: `compress` +
 Alias: `comp`
 
@@ -520,7 +514,7 @@ Alias: `comp`
 
 === Decompressing member details : `decompress` (Since v1.2)
 
-Decompresses the details of members in the contact list +
+Decompresses the details of members in the member list +
 Format: `decompress` +
 Alias: `decomp`
 
