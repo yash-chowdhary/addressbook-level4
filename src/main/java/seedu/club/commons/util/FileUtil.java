@@ -1,5 +1,6 @@
 package seedu.club.commons.util;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
 import java.io.File;
@@ -7,10 +8,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
+import seedu.club.commons.exceptions.IllegalValueException;
+
 /**
  * Writes and reads files
  */
 public class FileUtil {
+
+    public static final String MESSAGE_INVALID_PATH = "Path should be a valid absolute path to a file.";
 
     private static final String CHARSET = "UTF-8";
 
@@ -88,8 +93,31 @@ public class FileUtil {
     public static void appendToFile(File file, String content) throws IOException {
         Files.write(file.toPath(), content.getBytes(CHARSET), StandardOpenOption.APPEND);
     }
-    //@@author
 
+    /**
+     * Returns true if {@code file} does not represent the absolute path of a file.
+     */
+    public static boolean isNotValidFileName(File file) {
+        return !file.isAbsolute() || file.isDirectory();
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code path} is invalid.
+     */
+    public static File parsePath(String path) throws IllegalValueException {
+        requireNonNull(path);
+        String trimmedPath = path.trim();
+
+        if (trimmedPath.isEmpty()) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return new File(trimmedPath);
+    }
+    //@@author
     /**
      * Converts a string to a platform-specific file path
      * @param pathWithForwardSlash A String representing a file path but using '/' as the separator

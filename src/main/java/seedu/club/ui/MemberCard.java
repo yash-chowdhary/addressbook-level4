@@ -93,7 +93,7 @@ public class MemberCard extends UiPart<Region> {
      */
     private void setProfilePhoto(Member member) {
         Image photo;
-        String photoPath = member.getProfilePhoto().getProfilePhotoPath();
+        String photoPath = member.getProfilePhoto().getPhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {
             photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
                     false, true);

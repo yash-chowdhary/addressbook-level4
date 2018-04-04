@@ -19,7 +19,7 @@ By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier are more effective.
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier and more effective.
 
 Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
@@ -95,6 +95,8 @@ A member can have any number of tags (including 0).
 * The member who signed up will be automatically be added to a group named exco.
 ****
 
+Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
+
 === Logging in a member: `login` (Since v1.3)
 Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD` +
@@ -112,14 +114,14 @@ Aliases: `a`, `insert` +
 A member can have any number of tags (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
-A member will be assigned to the default group `member` if no group is specified in the command.
+A member will be assigned to the default group `Member` if no group is specified in the command.
 [TIP]
 A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
-* `add n/Betsy Crowe p/1234567 t/Head e/betsycrowe@example.com m/A2345678K g/Logistics`
+* `add n/Betsy Crowe p/95462159 e/betsycrowe@u.nus.edu m/A0145625K g/Logistics t/Head`
 
 === Adding a task: `addtask` (Since v1.3)
 
@@ -295,8 +297,8 @@ Aliases: `rmtag`, `deltag`
 
 Examples:
 
-* `deletetag t/treasurer` +
-Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
+* `deletetag t/Treasurer` +
+Deletes the `Treasurer` tag for all members tagged with `Treasurer` in Club Connect.
 
 === Deleting a task : `deletetask` (Since v1.3)
 
@@ -326,10 +328,10 @@ Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 Alias: `mail`
 
 [NOTE]
-ClubConnect currently only supports GMail and Outlook mail clients.
+Club Connect currently only supports Gmail and Outlook mail clients.
 
 [NOTE]
-Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+Emails can only be sent to members belonging to EITHER a Group OR a Tag. Club Connect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
 
 ****
 * Opens up the mail client's URL in the default web browser e.g. Google Chrome
@@ -341,7 +343,7 @@ Emails can only be sent to members belonging to EITHER a Group OR a Tag. ClubCon
 Examples:
 
 * `email g/logistics c/gmail s/Meeting Minutes` +
-Opens up the Compose Message page of GMail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
+Opens up the Compose Message page of Gmail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
 * `email t/projectHead c/outlook` +
 Opens up the Compose Message page of Outlook with blank `Subject` and `Body` fields. The recipients are all the members that are tagged with `projectHead`.
 
@@ -366,7 +368,7 @@ Selects the 2nd member in the address book.
 `select 1` +
 Selects the 1st member in the results of the `find` command.
 
-=== Adding a poll: `addpoll`
+=== Adding a poll: `addpoll` (Since v1.3)
 
 Adds a poll to Club Connect. +
 Format: `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
@@ -379,12 +381,14 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Tuesday ans/Wednesday` +
-Adds a poll asking which day Free Ice-Cream Day should be. Answers for the poll would be Monday, Tuesday and Wednesday.
-* `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7` +
-Adds a poll asking where the annual meeting should be held. Answers for the poll would be I-Cube or LT7.
+* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+Creates a poll asking members to vote which day Free Ice-Cream Day should be.
+The options to choose from are Monday, Wednesday and Friday.
+* `addpoll n/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+Creates a poll asking members to vote where the annual sports meeting should be held.
+The answers to choose from are I-Cube and LT7.
 
-=== Deleting a poll : `deletepoll`
+=== Deleting a poll : `deletepoll` (Since v1.3)
 
 Deletes the specified poll from the Club Connect. +
 Format: `deletepoll INDEX` +
@@ -401,7 +405,7 @@ Examples:
 * `deletepoll 2` +
 Deletes the 2nd poll in the poll listing.
 
-=== Voting in a poll : `vote`
+=== Voting in a poll : `vote` (Since v1.4)
 
 Votes for the specified answer in the specified poll in Club Connect . +
 Format: `vote POLL_INDEX ANSWER_INDEX` +
@@ -411,7 +415,7 @@ Alias: `vpoll`
 * The POLL_INDEX refers to the index number shown in the most recent poll listing.
 * The ANSWER_INDEX refers to one of the index number of the answers of the specified poll.
 * The indices *must be positive integers* 1, 2, 3, ...
-* Polls voted by logged in member will not be visible in the poll list unless logged in as an `EXCO` member
+* Polls voted by current logged in member will not be visible in the poll list unless logged in as an `EXCO` member
 ****
 
 Examples:
@@ -423,22 +427,16 @@ Votes for the 1st answer in the 5th poll of the poll listing
 
 === Showing results of polls : `showresults` (Since v1.4)
 
-Displays the results of polls in Club Connect. This is a command that can be used by `EXCO` members to monitor all the polls in the club. +
+Displays the results of polls in Club Connect. This is a command that can be used to monitor polls in the Club Connect. +
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
 Format: `showresults` +
 Alias: `showres`
 
-[NOTE]
-This command can only be invoked by `EXCO` members.
-
 === Hiding results of polls : `hideresults` (Since v1.4)
 
-Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members to remove clutter from poll results. +
+Hides the results of all polls in Club Connect. This is a command that can be used to remove clutter from poll results. +
 Format: `hideresults` +
 Alias: `hideres`
-
-[NOTE]
-This command can only be invoked by `EXCO` members.
 
 === Changing your profile photo : `changepic` (Since v1.2)
 
@@ -461,6 +459,26 @@ Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Deskto
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
 
+=== Importing members into Club Connect: `import` (Since v1.4)
+
+Imports the details of all members in the specified CSV file into Club Connect.
+Format: 'import CSV_FILE_PATH` +
+Alias: `imp`
+
+****
+* CSV_FILE_PATH must be an absolute path to the CSV file.
+* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
+* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+****
+
+[NOTE]
+You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
+
+Examples:
+
+* `import C:/Users/John Doe/Desktop/members.csv` +
+Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
+
 === Exporting Club Connect data: `export` (Since v1.3)
 
 Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
@@ -482,29 +500,9 @@ Examples:
 * `export C:/Users/John Doe/Desktop/club.csv` +
 Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
 
-=== Importing members into Club Connect: `import` (Since v1.4)
-
-Imports the details of all members in the specified CSV file into Club Connect.
-Format: 'import CSV_FILE_PATH` +
-Alias: `imp`
-
-****
-* CSV_FILE_PATH must be an absolute path to the CSV file.
-* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
-* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
-****
-
-[NOTE]
-You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
-
-Examples:
-
-* `import C:/Users/John Doe/Desktop/members.csv` +
-Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
-
 === Compressing member details : `compress` (Since v1.2)
 
-Compresses the details of members in the contact list +
+Compresses the details of members in the member list +
 Format: `compress` +
 Alias: `comp`
 
@@ -516,7 +514,7 @@ Alias: `comp`
 
 === Decompressing member details : `decompress` (Since v1.2)
 
-Decompresses the details of members in the contact list +
+Decompresses the details of members in the member list +
 Format: `decompress` +
 Alias: `decomp`
 
@@ -593,21 +591,20 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 === Changing password : `changepass`
 
-Changes the password of the member who is currently logged in
+Changes your password, if you are logged in.
 
-Format: `changepass u/username pw/oldpassword npw/newpassword` +
+Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
 Alias: `changepw`
 
 ****
 * Members are only able to change their own password.
-* Excos are able to change member's password.
+* Exco members can change the password of any member. The member is indicated by their username.
 ****
 
 Examples:
 
 * changepass u/A0123456H pw/password npw/pword
-
-The changepassword command will change the old password, password, to the new password, pword.
+Changes the password of the member with username `A0123456H` to `pword`.
 
 
 === Clearing all entries : `clear`
@@ -670,9 +667,9 @@ e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Delete Group* : `removegroup g/GROUP` +
-e.g. `removegroup g/publicity`
+e.g. `removegroup g/Publicity`
 * *Delete Tag* : `deletetag t/TAG` +
-e.g. `deletetag t/president`
+e.g. `deletetag t/EventHelper`
 * *Delete Task* : `deletetask INDEX` +
 e.g. `deletetask 2`
 * *Import members into Club Connect* : `import` +
