@@ -327,10 +327,10 @@ public class AddPollCommandTest {
      * A Model stub that always throw a DuplicatePollException when trying to add a poll.
      */
     private class ModelStubThrowingDuplicatePollException extends ModelStub {
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
@@ -361,10 +361,10 @@ public class AddPollCommandTest {
      */
     private class ModelStubAcceptingPollAdded extends ModelStub {
         private final ArrayList<Poll> pollsAdded = new ArrayList<>();
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
             requireNonNull(poll);

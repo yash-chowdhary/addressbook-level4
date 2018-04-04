@@ -334,11 +334,10 @@ public class ChangeProfilePhotoCommandTest {
      * A Model stub that always throw a PhotoReadException when trying to add a profile photo.
      */
     private class ModelStubThrowingPhotoReadException extends ModelStub {
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
-
+                getTagSet("friends"));
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             throw new PhotoReadException();
@@ -366,10 +365,10 @@ public class ChangeProfilePhotoCommandTest {
      * A Model stub that always accept the path of the profile photo to be added.
      */
     private class ModelStubAcceptingAddProfilePhoto extends ModelStub {
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
-            new Phone("87438807"), new Email("alexyeoh@example.com"),
-            new MatricNumber("A5215090A"), new Group("logistics"),
-            getTagSet("friends")));
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends"));
 
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {

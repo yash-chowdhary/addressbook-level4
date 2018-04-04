@@ -326,10 +326,10 @@ public class AddCommandTest {
      * A Model stub that always throw a DuplicateMemberException when trying to add a member.
      */
     private class ModelStubThrowingDuplicateMemberException extends ModelStub {
-        final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void addMember(Member member) throws DuplicateMemberException {
@@ -360,11 +360,10 @@ public class AddCommandTest {
      */
     private class ModelStubAcceptingMemberAdded extends ModelStub {
         final ArrayList<Member> membersAdded = new ArrayList<>();
-        final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
-
+                getTagSet("friends"));
         @Override
         public void addMember(Member member) throws DuplicateMemberException {
             requireNonNull(member);

@@ -336,10 +336,10 @@ public class AddTaskCommandTest {
      * A Model stub that always throw a DuplicateTaskException when trying to add a task.
      */
     private class ModelStubThrowingDuplicateTaskException extends ModelStub {
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
@@ -370,10 +370,10 @@ public class AddTaskCommandTest {
      */
     private class ModelStubAcceptingTaskAdded extends ModelStub {
         final ArrayList<Task> tasksAdded = new ArrayList<>();
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
