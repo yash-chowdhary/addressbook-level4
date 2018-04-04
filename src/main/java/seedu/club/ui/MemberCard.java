@@ -5,11 +5,10 @@ import java.io.InputStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import seedu.club.MainApp;
 import seedu.club.model.member.Member;
 
@@ -23,7 +22,7 @@ public class MemberCard extends UiPart<Region> {
     private static final Integer PHOTO_HEIGHT = 120;
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
         "orange", "blue", "violet"};
-    private static final String DEFAULT_PHOTO = "/images/defaultProfilePhoto.png";
+    private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 
     /**
@@ -53,7 +52,7 @@ public class MemberCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Rectangle profilePhoto;
+    private ImageView profilePhoto;
 
     public MemberCard(Member member, int displayedIndex) {
         super(FXML);
@@ -82,24 +81,25 @@ public class MemberCard extends UiPart<Region> {
 
     //@@author amrut-prabhu
     /**
-     * Sets the profile photo to the displayed photo shape.
+     * Sets the profile photo of {@code member} to the displayed photo shape.
      */
     private void setProfilePhoto(Member member) {
         Image photo;
         String photoPath = member.getProfilePhoto().getProfilePhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH),
                     PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
         } else {
             try {
                 InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
                 photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
             } catch (NullPointerException npe) {
-                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
+                //Different path (instead of DEFAULT_PHOTO_PATH) used for testing purposes: indicates exception
+                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO_PATH),
                         PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
             }
         }
-        profilePhoto.setFill(new ImagePattern(photo));
+        profilePhoto.setImage(photo);
     }
     //@@author
 

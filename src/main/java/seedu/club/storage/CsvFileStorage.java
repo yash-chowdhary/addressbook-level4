@@ -2,14 +2,13 @@
 package seedu.club.storage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import seedu.club.commons.util.CsvUtil;
-import seedu.club.model.ReadOnlyClubBook;
+import seedu.club.model.member.UniqueMemberList;
 
 /**
- * Stores clubBook data in an CSV file.
+ * Stores ClubBook data in a CSV file.
  */
 public class CsvFileStorage {
 
@@ -27,7 +26,7 @@ public class CsvFileStorage {
     /**
      * Returns club book in the file or an empty club book
      */
-    public static ReadOnlyClubBook loadDataFromSaveFile(File file) throws FileNotFoundException {
+    public static UniqueMemberList readClubBook(File file) throws IOException {
         return CsvUtil.getDataFromFile(file);
     }
 }

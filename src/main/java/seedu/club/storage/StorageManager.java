@@ -97,6 +97,7 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+
     //@@author amrut-prabhu
     // ================ ProfilePhoto methods ==============================
 
@@ -120,9 +121,8 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(pwe));
         }
     }
-    //@@author
 
-    //@@author amrut-prabhu
+
     // ================ CSV Storage methods ==============================
 
     /**

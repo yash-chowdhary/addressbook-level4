@@ -2,6 +2,8 @@ package seedu.club.model;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.club.storage.ProfilePhotoStorage.PHOTO_FILE_EXTENSION;
+import static seedu.club.storage.ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -50,7 +53,7 @@ import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
-import seedu.club.storage.ProfilePhotoStorage;
+import seedu.club.storage.CsvClubBookStorage;
 
 /**
  * Represents the in-memory model of the club book data.
@@ -171,10 +174,11 @@ public class ModelManager extends ComponentManager implements Model {
 
         String newFileName = getLoggedInMember().getMatricNumber().toString();
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
+        String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
-        String newProfilePhotoPath = ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + newFileName
-                + ProfilePhotoStorage.FILE_EXTENSION;
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
+
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
     //@@author
@@ -342,8 +346,22 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author
 
     //@@author amrut-prabhu
+    @Override
+    public void exportClubConnectMembers(File exportFile) throws IOException {
+        requireNonNull(exportFile);
+        indicateNewExport(exportFile);
+
+        exportHeaders(exportFile);
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+
+        for (Member member: members) {
+            exportMember(member);
+        }
+    }
+
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
+     *
      * @param data Member data to be added to the file.
      * @throws IOException if there was an error writing to file.
      */
@@ -357,6 +375,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /**
      * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
+     *
      * @param exportFile CSV file to be exported to.
      * @throws IOException if there was an error writing to file.
      */
@@ -375,19 +394,6 @@ public class ModelManager extends ComponentManager implements Model {
         return file.length() == 0;
     }
 
-    @Override
-    public void exportClubConnectMembers(File exportFile) throws IOException {
-        requireNonNull(exportFile);
-        indicateNewExport(exportFile);
-
-        exportHeaders(exportFile);
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
-        for (Member member: members) {
-            exportMember(member);
-        }
-    }
-
     /**
      * Exports the header fields of {@code Member} object if the file is empty.
      */
@@ -400,6 +406,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /**
      * Exports the information of {@code member} to the file.
+     *
      * @param member Member whose data is to be exported.
      */
     private void exportMember(Member member) throws IOException {
@@ -409,6 +416,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /**
      * Returns the CSV representation of {@code member}.
+     *
      * @param member Member who is to be converted to CSV format.
      * @return Member data in CSV format.
      */
@@ -416,12 +424,23 @@ public class ModelManager extends ComponentManager implements Model {
         return CsvUtil.toCsvFormat(member);
     }
 
-    /*@Override
-    public void importClubConnect(File exportFilePath) {
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        members.forEach(member -> exportMember(exportFilePath, member));
-        clubBook =
-    }*/
+    @Override
+    public int importMembers(File importFile) throws IOException {
+        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
+        UniqueMemberList importedMembers = storage.readClubBook();
+        int numberMembers = 0;
+
+        for (Member member: importedMembers) {
+            try {
+                clubBook.addMember(member);
+                numberMembers++;
+            } catch (DuplicateMemberException dme) {
+                logger.info("DuplicateMemberException encountered due to " + member);
+            }
+        }
+        indicateClubBookChanged();
+        return numberMembers;
+    }
     //@@author
 
     //=========== Filtered member List Accessors =============================================================
