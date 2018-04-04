@@ -4,6 +4,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_NEWPASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -21,6 +24,9 @@ import seedu.club.model.member.exceptions.PasswordIncorrectException;
  */
 public class ChangePasswordCommand extends Command {
     public static final String COMMAND_WORD = "changepass";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "changepw")
+    );
     public static final String COMMAND_FORMAT = "changepass u/ pw/ npw/";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes the password of a member in the ClubBook"
             + "Parameters: "
