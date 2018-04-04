@@ -183,7 +183,6 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
-    //@@author
 
     //@@author yash-chowdhary
     @Override
@@ -193,7 +192,6 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
-    //@@author
 
     //@@author amrut-prabhu
     @Override
@@ -202,7 +200,6 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
-    //@@author
 
     //@@author yash-chowdhary
     @Override
@@ -345,9 +342,25 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
-    //@@author
-
     //@@author amrut-prabhu
+    @Override
+    public int importMembers(File importFile) throws IOException {
+        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
+        UniqueMemberList importedMembers = storage.readClubBook();
+        int numberMembers = 0;
+
+        for (Member member: importedMembers) {
+            try {
+                clubBook.addMember(member);
+                numberMembers++;
+            } catch (DuplicateMemberException dme) {
+                logger.info("DuplicateMemberException encountered due to " + member);
+            }
+        }
+        indicateClubBookChanged();
+        return numberMembers;
+    }
+
     @Override
     public void exportClubConnectMembers(File exportFile) throws IOException {
         requireNonNull(exportFile);
@@ -438,31 +451,26 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.changePassword(username, oldPassword, newPassword);
         indicateClubBookChanged();
     }
-    /*@Override
-    public void importClubConnect(File exportFilePath) {
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-        members.forEach(member -> exportMember(exportFilePath, member));
-        clubBook =
-    }*/
+
+    //@@author amrut-prabhu
+    //=========== Filtered Tag List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Tag} backed by the internal list of
+     * {@code clubBook}
+     */
     @Override
-    public int importMembers(File importFile) throws IOException {
-        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
-        UniqueMemberList importedMembers = storage.readClubBook();
-        int numberMembers = 0;
-
-        for (Member member: importedMembers) {
-            try {
-                clubBook.addMember(member);
-                numberMembers++;
-            } catch (DuplicateMemberException dme) {
-                logger.info("DuplicateMemberException encountered due to " + member);
-            }
-        }
-        indicateClubBookChanged();
-        return numberMembers;
+    public ObservableList<Tag> getFilteredTagList() {
+        return FXCollections.unmodifiableObservableList(filteredTags);
     }
-    //@@author
 
+    @Override
+    public void updateFilteredTagList(Predicate<Tag> predicate) {
+        requireNonNull(predicate);
+        filteredTags.setPredicate(predicate);
+    }
+
+    //@@author
     //=========== Filtered member List Accessors =============================================================
 
     /**
@@ -526,24 +534,5 @@ public class ModelManager extends ComponentManager implements Model {
         return clubBook.equals(other.clubBook)
                 && filteredMembers.equals(other.filteredMembers);
     }
-
-    //=========== Filtered Tag List Accessors =============================================================
-
-    /**
-     * Returns an unmodifiable view of the list of {@code Tag} backed by the internal list of
-     * {@code clubBook}
-     */
-    @Override
-    public ObservableList<Tag> getFilteredTagList() {
-        return FXCollections.unmodifiableObservableList(filteredTags);
-    }
-
-    @Override
-    public void updateFilteredTagList(Predicate<Tag> predicate) {
-        requireNonNull(predicate);
-        filteredTags.setPredicate(predicate);
-    }
-
-
 
 }

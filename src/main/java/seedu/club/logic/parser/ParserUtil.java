@@ -200,7 +200,6 @@ public class ParserUtil {
     public static Optional<Password> parsePassword(Optional<String> password) {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
-    //@@author
 
     //@@author amrut-prabhu
     /**
@@ -216,15 +215,6 @@ public class ParserUtil {
             throw new IllegalValueException(ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
         }
         return new ProfilePhoto(trimmedProfilePhoto);
-    }
-
-    /**
-     * Parses a {@code Optional<String> photo} into an {@code Optional<ProfilePhoto>} if {@code photo} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<ProfilePhoto> parseProfilePhoto(Optional<String> photo) throws IllegalValueException {
-        requireNonNull(photo);
-        return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
     }
 
     /**
@@ -292,7 +282,6 @@ public class ParserUtil {
         String fileExtension = path.substring(length - 4);
         return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
     }
-    //@@author
 
     //@@author yash-chowdhary
     /**
