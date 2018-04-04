@@ -28,19 +28,19 @@ public class FindCommand extends Command {
             + " || [g/  ] || [t/  ]";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all members whose field contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Insert field prefix after 'find' to search by field, otherwise all fields will be searched.\n"
+            + "the specified keywords (case-insensitive) and displays them as a list with index numbers. "
+            + "Insert the field prefix after 'find' to search by field. Otherwise, all fields will be searched.\n"
             + "Parameters: "
             + "[ "
-            + PREFIX_NAME + " | "
-            + PREFIX_PHONE + " | "
-            + PREFIX_EMAIL + " | "
-            + PREFIX_MATRIC_NUMBER + " | "
-            + PREFIX_GROUP + " | "
+            + PREFIX_NAME + " or "
+            + PREFIX_PHONE + " or "
+            + PREFIX_EMAIL + " or "
+            + PREFIX_MATRIC_NUMBER + " or "
+            + PREFIX_GROUP + " or "
             + PREFIX_TAG
             + " ]"
             + " KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_GROUP + " logistics";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_GROUP + " Logistics";
 
     private final FieldContainsKeywordsPredicate predicate;
 

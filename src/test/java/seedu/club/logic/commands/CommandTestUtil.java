@@ -50,7 +50,7 @@ public class CommandTestUtil {
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
-    public static final String VALID_GROUP_AMY = "exco";
+    public static final String VALID_GROUP_AMY = "Exco";
     public static final String VALID_GROUP_BOB = "logistics";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friends";
@@ -135,7 +135,7 @@ public class CommandTestUtil {
 
     public static final String NON_EXISTENT_GROUP = "broadcasting";
     public static final String NON_EXISTENT_GROUP_DESC = PREFIX_GROUP + NON_EXISTENT_GROUP;
-    public static final String MANDATORY_GROUP = "member";
+    public static final String MANDATORY_GROUP = "Member";
     public static final String MANDATORY_GROUP_DESC = PREFIX_GROUP + MANDATORY_GROUP;
 
     public static final String INVALID_TASK_DESCRIPTION = "Buy* Books"; // no special characters allowed

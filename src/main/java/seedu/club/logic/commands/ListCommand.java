@@ -15,7 +15,7 @@ public class ListCommand extends Command {
             Arrays.asList(COMMAND_WORD, "l")
     );
 
-    public static final String MESSAGE_SUCCESS = "Listed all members";
+    public static final String MESSAGE_SUCCESS = "Listed all members.";
 
 
     @Override

@@ -68,13 +68,13 @@ public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + MANDATORY_GROUP_DESC + " ";
         deletedGroup = deleteGroup(expectedModel, MANDATORY_GROUP);
         assertEquals(null, deletedGroup);
-        assertCommandFailure(command, MESSAGE_MANDATORY_GROUP);
+        assertCommandFailure(command, String.format(MESSAGE_MANDATORY_GROUP, MANDATORY_GROUP));
 
         /* Case: delete a non-existent group */
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + NON_EXISTENT_GROUP_DESC + " ";
         deletedGroup = deleteGroup(expectedModel, NON_EXISTENT_GROUP);
         assertEquals(null, deletedGroup);
-        assertCommandFailure(command, MESSAGE_NON_EXISTENT_GROUP);
+        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP));
     }
 
     /**

@@ -52,7 +52,8 @@ public class LogInCommandTest {
     public void executeMemberSuccessfullyLogIn() throws CommandException {
         ModelStubAcceptingMemberLoggingIn modelStubAcceptingMemberLoggingIn = new ModelStubAcceptingMemberLoggingIn();
         CommandResult commandResult = getLogInCommandForMember(member, modelStubAcceptingMemberLoggingIn).execute();
-        assertEquals(LogInCommand.MESSAGE_SUCCESS + member.getName().toString(), commandResult.feedbackToUser);
+        assertEquals(String.format(LogInCommand.MESSAGE_SUCCESS, member.getName().toString()),
+                commandResult.feedbackToUser);
     }
 
     @Test
