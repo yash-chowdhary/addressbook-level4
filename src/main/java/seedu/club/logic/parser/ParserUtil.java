@@ -247,12 +247,27 @@ public class ParserUtil {
     /**
      * Parses a {@code path} into a {@code File}.
      *
+     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
+     */
+    public static File parseImportPath(String path) throws IllegalValueException {
+        File file = parsePath(path);
+
+        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return file;
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     *
      * @throws IllegalValueException if the given {@code path} is not absolute or is a directory.
      */
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = parsePath(path);
 
-        if (!file.isAbsolute() || file.isDirectory() || !validFileName(path)) {
+        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -261,29 +276,21 @@ public class ParserUtil {
     }
 
     /**
-     * Returns true if {@code path} represents the path of a CSV (.csv) file.
+     * Returns true if {@code file} does not represent the absolute path of a file.
      */
-    private static boolean validFileName(String path) {
+    private static boolean isNotValidFileName(File file) {
+        return !file.isAbsolute() || file.isDirectory();
+    }
+
+    /**
+     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
+     */
+    private static boolean isNotValidCsvFileName(String path) {
         String csvFileExtension = ".csv";
 
         int length = path.length();
         String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
-    }
-
-    /**
-     * Parses a {@code path} into a {@code File}.
-     *
-     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
-     */
-    public static File parseImportPath(String path) throws IllegalValueException {
-        File file = parsePath(path);
-
-        if (!file.isAbsolute() || file.isDirectory() || !file.exists() || !file.canRead()) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
-        }
-
-        return file;
+        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
     }
     //@@author
 

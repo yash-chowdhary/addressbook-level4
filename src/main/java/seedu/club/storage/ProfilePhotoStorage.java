@@ -19,7 +19,7 @@ import seedu.club.commons.util.FileUtil;
  */
 public class ProfilePhotoStorage implements  PhotoStorage {
 
-    public static final String FILE_EXTENSION = ".png";
+    public static final String PHOTO_FILE_EXTENSION = ".png";
     public static final String SAVE_PHOTO_DIRECTORY = "photos/";
 
     private static final String URL_PREFIX = "file:///";
@@ -38,7 +38,7 @@ public class ProfilePhotoStorage implements  PhotoStorage {
             URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
             originalPhoto = ImageIO.read(photoUrl);
 
-            String saveAs = newPhotoName + FILE_EXTENSION;
+            String saveAs = newPhotoName + PHOTO_FILE_EXTENSION;
             newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
 
             createPhotoFileCopy(originalPhoto, newPath);

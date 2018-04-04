@@ -232,7 +232,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         Model expectedModel = getModel();
         try {
             expectedModel.addMember(toAdd);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new IllegalArgumentException("toAdd already exists in the model.");
         }
         String expectedResultMessage = String.format(AddCommand.MESSAGE_SUCCESS, toAdd);

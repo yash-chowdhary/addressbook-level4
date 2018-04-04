@@ -9,6 +9,7 @@ import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -268,8 +269,15 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
         }
 
+        @Override
         public void exportClubConnectMembers(File exportFilePath) {
             fail("This method should not be called");
+        }
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
         }
 
         @Override

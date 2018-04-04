@@ -82,7 +82,7 @@ public class CommandBox extends UiPart<Region> {
                 oldInput = input;
                 completeCommandIndex = 0;
             }
-            List<String> completedCommands = LogicManager.commandList.stream().filter(s -> s.startsWith(oldInput))
+            List<String> completedCommands = LogicManager.COMMAND_LIST.stream().filter(s -> s.startsWith(oldInput))
                     .collect(Collectors.toList());
 
             if (!completedCommands.isEmpty()) {
