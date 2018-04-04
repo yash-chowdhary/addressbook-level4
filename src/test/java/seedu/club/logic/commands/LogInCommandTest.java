@@ -28,6 +28,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -229,6 +230,12 @@ public class LogInCommandTest {
         }
 
         @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException {
+            fail("This method should not be called.");
+            return;
+        }
+
         public void signUpMember(Member member) {
             fail("This method should not be called");
             return;

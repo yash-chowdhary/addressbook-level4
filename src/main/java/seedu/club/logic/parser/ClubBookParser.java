@@ -10,6 +10,7 @@ import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
+import seedu.club.logic.commands.ChangePasswordCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
@@ -148,6 +149,9 @@ public class ClubBookParser {
 
         case SelectCommand.COMMAND_WORD:
             return new SelectCommandParser().parse(arguments);
+
+        case ChangePasswordCommand.COMMAND_WORD:
+            return new ChangePasswordCommandParser().parse(arguments);
 
         case ShowResultsCommand.COMMAND_WORD:
             return new ShowResultsCommand();
