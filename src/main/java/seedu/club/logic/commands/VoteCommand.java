@@ -24,7 +24,7 @@ public class VoteCommand extends UndoableCommand {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD + "vpoll")
     );
-    public static final String COMMAND_FORMAT = "edit POLL_INDEX ANWER_INDEX";
+    public static final String COMMAND_FORMAT = "vote POLL_INDEX ANWER_INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Votes in the poll identified "
             + "by the index number used in the last poll listing. \n"
