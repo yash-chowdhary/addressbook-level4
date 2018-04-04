@@ -560,6 +560,24 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 // end::undoredo[]
 
+=== Changing password : `changepass`
+
+Changes the password of the member who is currently logged in
+
+Format: `changepass u/username pw/oldpassword npw/newpassword`
+
+****
+* Members are only able to change their own password.
+* Excos are able to change member's password.
+****
+
+Examples:
+
+* changepass u/A0123456H pw/password npw/pword
+
+The changepassword command will change the old password, password, to the new password, pword.
+
+
 === Clearing all entries : `clear`
 
 Clears all entries from Club Connect. +
