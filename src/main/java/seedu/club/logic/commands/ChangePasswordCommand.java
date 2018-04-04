@@ -10,7 +10,7 @@ import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
-import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
 
@@ -48,7 +48,7 @@ public class ChangePasswordCommand extends Command {
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (PasswordIncorrectException e) {
             throw new CommandException(MESSAGE_PASSWORD_INCORRECT);
-        } catch (DataToChangeIsNotCurrentlyLoggedInMember dataToChangeIsNotCurrentlyLoggedInMember) {
+        } catch (DataToChangeIsNotCurrentlyLoggedInMemberException dataToChangeIsNotCurrentlyLoggedInMemberException) {
             throw new CommandException(MESSAGE_AUTHENTICATION_FAILED);
         }
     }

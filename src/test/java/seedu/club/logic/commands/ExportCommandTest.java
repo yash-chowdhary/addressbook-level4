@@ -32,7 +32,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -287,7 +287,7 @@ public class ExportCommandTest {
 
         @Override
         public void changePassword(String username, String oldPassword, String newPassword)
-                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
             fail("This method should not be called");
             return;
         }

@@ -15,7 +15,7 @@ import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Password;
-import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
 public class ChangePasswordCommandTest {
@@ -40,7 +40,7 @@ public class ChangePasswordCommandTest {
 
     @Test
     public void excecute_changepassword_success ()
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
         expectedModel.changePassword(this.member.getCredentials().getUsername().value,
                 this.member.getCredentials().getPassword().value, newPassword.value);
         assertCommandSuccess(prepareCommand(this.member, model), model,

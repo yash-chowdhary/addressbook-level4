@@ -37,7 +37,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMember;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -312,7 +312,7 @@ public class AssignTaskCommandTest {
 
         @Override
         public void changePassword(String username, String oldPassword, String newPassword)
-                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
             fail("This method should not be called");
             return;
         }
