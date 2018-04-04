@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
@@ -157,6 +158,12 @@ public class LogInCommandTest {
         public void updateMember(Member target, Member editedMember)
                 throws DuplicateMemberException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
         }
 
         @Override

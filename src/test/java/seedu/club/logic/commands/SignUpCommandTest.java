@@ -151,6 +151,12 @@ public class SignUpCommandTest {
         }
 
         @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
+        }
+
+        @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             fail("This method should not be called.");
         }

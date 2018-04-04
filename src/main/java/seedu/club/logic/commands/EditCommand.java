@@ -83,7 +83,7 @@ public class EditCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
             model.updateMember(memberToEdit, editedMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");

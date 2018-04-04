@@ -147,7 +147,7 @@ public class ClubBook implements ReadOnlyClubBook {
         // in the member list.
         try {
             members.setMember(target, syncedEditedMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             addTargetMemberTags(target);
             throw new DuplicateMemberException();
         }
@@ -312,7 +312,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
@@ -362,7 +362,7 @@ public class ClubBook implements ReadOnlyClubBook {
                     deleteTagFromMember(tagToDelete, member);
                 }
             }
-        } catch (MemberNotFoundException pnfe) {
+        } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
         }
     }
@@ -396,7 +396,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 member.getGroup(), memberTags);
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new AssertionError("Modifying a member's tags only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
