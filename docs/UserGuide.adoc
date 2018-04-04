@@ -124,7 +124,8 @@ Examples:
 === Adding a task: `addtask` (Since v1.3)
 
 Adds a task to Club Connect. +
-Format: `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME`
+Format: `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME` +
+Aliases: `addt`, `task`
 
 *****
 * The `date` and `time` attributes must be valid dates and time (in 24-hour format).
@@ -144,7 +145,8 @@ Examples:
 === Adding a task: `assigntask` (Since v1.4)
 
 Adds a task to Club Connect and assigns it to a member. +
-Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME`
+Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME` +
+Alias: `assignt`
 
 *****
 * The `date` and `time` attributes must be valid dates and time (in 24-hour format).
@@ -228,7 +230,8 @@ Returns any member having phone number containing 123.
 === Viewing all tasks in Club Connect : `viewalltasks` (Since v1.4)
 
 Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
-Format: `viewalltasks`
+Format: `viewalltasks` +
+Alias: `alltasks`
 
 [NOTE]
 This command can only be invoked by `EXCO` members.
@@ -237,7 +240,8 @@ This command can only be invoked by `EXCO` members.
 
 Display all tasks created/assigned by the currently member in Club Connect. +
 The main purpose of this command is to enable `EXCO` members to toggle between all tasks and those related to them. +
-Format: `viewmytasks`
+Format: `viewmytasks` +
+Alias: `mytasks`
 
 === Deleting a member : `delete`
 
@@ -297,7 +301,8 @@ Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Conn
 === Deleting a task : `deletetask` (Since v1.3)
 
 Deletes the specified task from the club book. +
-Format: `deletetask INDEX`
+Format: `deletetask INDEX` +
+Aliases: `deltask`, `rmtask`
 
 ****
 * Deletes the task at the specified `INDEX`.
@@ -399,7 +404,8 @@ Deletes the 2nd poll in the poll listing.
 === Voting in a poll : `vote`
 
 Votes for the specified answer in the specified poll in Club Connect . +
-Format: `vote POLL_INDEX ANSWER_INDEX`
+Format: `vote POLL_INDEX ANSWER_INDEX` +
+Alias: `vpoll`
 
 ****
 * The POLL_INDEX refers to the index number shown in the most recent poll listing.
@@ -419,7 +425,8 @@ Votes for the 1st answer in the 5th poll of the poll listing
 
 Displays the results of polls in Club Connect. This is a command that can be used by `EXCO` members to monitor all the polls in the club. +
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
-Format: `showresults`
+Format: `showresults` +
+Alias: `showres`
 
 [NOTE]
 This command can only be invoked by `EXCO` members.
@@ -427,7 +434,8 @@ This command can only be invoked by `EXCO` members.
 === Hiding results of polls : `hideresults` (Since v1.4)
 
 Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members to remove clutter from poll results. +
-Format: `hideresults`
+Format: `hideresults` +
+Alias: `hideres`
 
 [NOTE]
 This command can only be invoked by `EXCO` members.
@@ -477,7 +485,8 @@ Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
 === Importing members into Club Connect: `import` (Since v1.4)
 
 Imports the details of all members in the specified CSV file into Club Connect.
-Format: 'import CSV_FILE_PATH`
+Format: 'import CSV_FILE_PATH` +
+Alias: `imp`
 
 ****
 * CSV_FILE_PATH must be an absolute path to the CSV file.
@@ -586,7 +595,8 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 Changes the password of the member who is currently logged in
 
-Format: `changepass u/username pw/oldpassword npw/newpassword`
+Format: `changepass u/username pw/oldpassword npw/newpassword` +
+Alias: `changepw`
 
 ****
 * Members are only able to change their own password.
