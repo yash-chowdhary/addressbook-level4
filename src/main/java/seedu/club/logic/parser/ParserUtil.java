@@ -33,6 +33,7 @@ import seedu.club.model.poll.Question;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
+import seedu.club.model.task.Status;
 import seedu.club.model.task.Time;
 
 /**
@@ -560,6 +561,29 @@ public class ParserUtil {
     public static Optional<Time> parseTime(Optional<String> time) throws IllegalValueException {
         requireNonNull(time);
         return time.isPresent() ? Optional.of(parseTime(time.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> status} into a {@code Optional<Status>} if {@code status} is present.
+     */
+    public static Optional<Status> parseStatus(Optional<String> status) throws IllegalValueException {
+        requireNonNull(status);
+        return status.isPresent() ? Optional.of(parseStatus(status.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String status} into a {@code Name}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code status} is invalid.
+     */
+    public static Status parseStatus(String status) throws IllegalValueException {
+        requireNonNull(status);
+        String trimmedStatus = status.trim();
+        if (!Status.isValidStatus(trimmedStatus)) {
+            throw new IllegalValueException(Status.MESSAGE_INVALID_STATUS);
+        }
+        return new Status(trimmedStatus);
     }
 
     //@@author

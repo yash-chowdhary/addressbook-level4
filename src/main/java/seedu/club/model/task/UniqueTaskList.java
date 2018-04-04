@@ -58,6 +58,27 @@ public class UniqueTaskList implements Iterable<Task> {
     }
 
     /**
+     * Replaces the task {@code target} in the list with {@code editedTask}.
+     *
+     * @throws DuplicateTaskException if the replacement is equivalent to an existing task in the list.
+     * @throws TaskNotFoundException if {@code target} could not be found in the list.
+     */
+    public void setTask(Task target, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
+        requireNonNull(editedTask);
+
+        int index = internalList.indexOf(target);
+        if (index == -1) {
+            throw new TaskNotFoundException();
+        }
+
+        if (internalList.contains(editedTask)) {
+            throw new DuplicateTaskException();
+        }
+
+        internalList.set(index, editedTask);
+    }
+
+    /**
      * Ensures every task in the argument list exists in this object.
      */
     public void mergeFrom(UniqueTaskList from) {

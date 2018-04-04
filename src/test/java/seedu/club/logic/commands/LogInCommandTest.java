@@ -81,6 +81,12 @@ public class LogInCommandTest {
         }
 
         @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void updateFilteredPollList(Predicate<Poll> predicate) {
             fail("This method should not be called.");
         }

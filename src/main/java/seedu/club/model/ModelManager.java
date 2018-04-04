@@ -209,6 +209,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
+    //@@author
 
     //@@author amrut-prabhu
     @Override
@@ -276,12 +277,23 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    @Override
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException {
+        requireAllNonNull(taskToEdit, editedTask);
+        clubBook.updateTask(taskToEdit, editedTask);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+    //@@author
+
     //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
     }
+    //@@author
 
+    //@@author yash-chowdhary
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
@@ -358,6 +370,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
+    //@@author
 
     //@@author amrut-prabhu
     @Override
