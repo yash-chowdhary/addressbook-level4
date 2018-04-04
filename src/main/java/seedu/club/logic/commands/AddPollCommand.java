@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -42,6 +43,11 @@ public class AddPollCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.addPoll(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (DuplicatePollException e) {

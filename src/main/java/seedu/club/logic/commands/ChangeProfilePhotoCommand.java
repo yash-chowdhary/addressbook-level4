@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.ProfilePhoto;
@@ -39,6 +40,11 @@ public class ChangeProfilePhotoCommand extends Command {
         assert newProfilePhoto.getProfilePhotoPath() != null : "Photo path should not be null.";
 
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath());
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));
         } catch (PhotoReadException pre) {

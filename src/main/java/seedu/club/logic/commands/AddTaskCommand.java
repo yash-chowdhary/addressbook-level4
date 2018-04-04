@@ -5,6 +5,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -46,6 +47,11 @@ public class AddTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.addTaskToTaskList(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateTaskException dte) {

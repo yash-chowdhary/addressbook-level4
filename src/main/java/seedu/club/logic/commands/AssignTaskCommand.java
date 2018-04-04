@@ -7,6 +7,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.member.Name;
@@ -55,6 +56,11 @@ public class AssignTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.assignTask(toAdd, name);
             return new CommandResult(String.format(MESSAGE_SUCCESS, name));
         } catch (MemberNotFoundException mnfe) {
