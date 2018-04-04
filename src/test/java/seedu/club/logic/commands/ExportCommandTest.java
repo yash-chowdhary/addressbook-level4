@@ -156,6 +156,11 @@ public class ExportCommandTest {
         }
 
         @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
                 IllegalExecutionException {
             fail("This method should not be called");

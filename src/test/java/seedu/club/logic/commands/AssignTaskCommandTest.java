@@ -202,6 +202,11 @@ public class AssignTaskCommandTest {
         }
 
         @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void updateMember(Member target, Member editedMember) throws DuplicateMemberException,
                 MemberNotFoundException {
             fail("This method should not be called");

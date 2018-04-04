@@ -178,6 +178,11 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
             return null;

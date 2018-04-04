@@ -226,6 +226,11 @@ public class LogInCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
     }
     /**
      * A Model stub that always accept the member being added.

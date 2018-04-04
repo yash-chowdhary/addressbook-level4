@@ -305,6 +305,11 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
     }
 
     /**

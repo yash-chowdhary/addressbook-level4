@@ -23,6 +23,7 @@ public class ClearCommand extends UndoableCommand {
             return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
         }
         model.resetData(new ClubBook());
+        model.clearClubBook();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
