@@ -95,7 +95,7 @@ A member can have any number of tags (including 0).
 * The member who signed up will be automatically be added to a group named exco.
 ****
 
-=== Logging in a member: `login`
+=== Logging in a member: `login` (Since v1.3)
 Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD` +
 Alias: `signin`
@@ -120,6 +120,48 @@ Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
 * `add n/Betsy Crowe p/1234567 t/Head e/betsycrowe@example.com m/A2345678K g/Logistics`
+
+=== Adding a task: `addtask` (Since v1.3)
+
+Adds a task to Club Connect. +
+Format: `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME` +
+Aliases: `addt`, `task`
+
+*****
+* The `date` and `time` attributes must be valid dates and time (in 24-hour format).
+* By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in. This cannot be changed.
+* If you wish to assign taks to other members in the capacity of an Exco member, use the `assigntask` command.
+* The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
+*****
+
+[NOTE]
+Duplicate tasks are not allowed.
+
+Examples:
+
+* `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00`
+* `addtask desc/Buy Food d/03.04.2018 ti/15:00`
+
+=== Adding a task: `assigntask` (Since v1.4)
+
+Adds a task to Club Connect and assigns it to a member. +
+Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME` +
+Alias: `assignt`
+
+*****
+* The `date` and `time` attributes must be valid dates and time (in 24-hour format).
+* The member who the task is meant to be assigned to must exist in the club book.
+* The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
+*****
+[NOTE]
+Duplicate tasks are not allowed.
+
+This command assigns the task to the member based on the entered `NAME`.
+
+Examples:
+
+* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 n/Bernice Yu`
+* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 n/David Li`
 
 === Listing all members : `list`
 
@@ -152,7 +194,7 @@ Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
 Edits the group of the 3rd member to be `finance`.
 
-=== Locating members by name: `find`
+=== Locating members: `find` (Since v1.2)
 
 Finds members whose names contain any of the given keywords. +
 Format: `find [PREFIX] KEYWORD [MORE_KEYWORDS]` +
@@ -185,6 +227,22 @@ Returns all members in the logistics `group`
 * `find p/ 123` +
 Returns any member having phone number containing 123.
 
+=== Viewing all tasks in Club Connect : `viewalltasks` (Since v1.4)
+
+Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
+Format: `viewalltasks` +
+Alias: `alltasks`
+
+[NOTE]
+This command can only be invoked by `EXCO` members.
+
+=== Viewing tasks assigned to or assigned by you : `viewmytasks` (Since v1.4)
+
+Display all tasks created/assigned by the currently member in Club Connect. +
+The main purpose of this command is to enable `EXCO` members to toggle between all tasks and those related to them. +
+Format: `viewmytasks` +
+Alias: `mytasks`
+
 === Deleting a member : `delete`
 
 Deletes the specified member from the address book. +
@@ -206,7 +264,7 @@ Deletes the 2nd member in the member listing.
 `delete 1` +
 Deletes the 1st member in the results of the `find` command.
 
-=== Deleting a group : `removegroup`
+=== Deleting a group : `removegroup` (Since v1.1)
 
 Deletes the specified group from the address book. +
 Format: `removegroup g/GROUP` +
@@ -224,8 +282,7 @@ Examples:
 * `removegroup g/logistics` +
 Deletes the `logistics` group in the address book.
 
-=== Deleting a tag : `deletetag`
-
+=== Deleting a tag : `deletetag` (Since v1.1)
 
 Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG` +
@@ -241,7 +298,28 @@ Examples:
 * `deletetag t/treasurer` +
 Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
 
-=== Emailing club members: `email`
+=== Deleting a task : `deletetask` (Since v1.3)
+
+Deletes the specified task from the club book. +
+Format: `deletetask INDEX` +
+Aliases: `deltask`, `rmtask`
+
+****
+* Deletes the task at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+Examples:
+
+* `viewmytasks` +
+`deletetask 2` +
+Deletes the 2nd task in the results of the `viewmytasks` command.
+* `viewalltasks` +
+`deletetask 1` +
+Deletes the 1st task in the results of the `viewalltasks` command.
+
+=== Emailing club members: `email` (Since v1.2)
 
 Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
 Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
@@ -323,6 +401,45 @@ Examples:
 * `deletepoll 2` +
 Deletes the 2nd poll in the poll listing.
 
+=== Voting in a poll : `vote`
+
+Votes for the specified answer in the specified poll in Club Connect . +
+Format: `vote POLL_INDEX ANSWER_INDEX` +
+Alias: `vpoll`
+
+****
+* The POLL_INDEX refers to the index number shown in the most recent poll listing.
+* The ANSWER_INDEX refers to one of the index number of the answers of the specified poll.
+* The indices *must be positive integers* 1, 2, 3, ...
+* Polls voted by logged in member will not be visible in the poll list unless logged in as an `EXCO` member
+****
+
+Examples:
+
+* `vote 1 2` +
+Votes for the 2nd answer in the 1st poll of the poll listing
+* `vote 5 1` +
+Votes for the 1st answer in the 5th poll of the poll listing
+
+=== Showing results of polls : `showresults` (Since v1.4)
+
+Displays the results of polls in Club Connect. This is a command that can be used by `EXCO` members to monitor all the polls in the club. +
+Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
+Format: `showresults` +
+Alias: `showres`
+
+[NOTE]
+This command can only be invoked by `EXCO` members.
+
+=== Hiding results of polls : `hideresults` (Since v1.4)
+
+Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members to remove clutter from poll results. +
+Format: `hideresults` +
+Alias: `hideres`
+
+[NOTE]
+This command can only be invoked by `EXCO` members.
+
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo.
@@ -351,7 +468,7 @@ Format: 'export CSV_FILE_PATH` +
 Alias: `exp`
 
 ****
-* CSV_FILE_PATH must be an absolute path to the photo.
+* CSV_FILE_PATH must be an absolute path to the CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
 * If the CSV file already exists, then the member data is added to the end of the file (i.e. it does not overwrite the existing file).
@@ -365,6 +482,26 @@ Examples:
 * `export C:/Users/John Doe/Desktop/club.csv` +
 Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
 
+=== Importing members into Club Connect: `import` (Since v1.4)
+
+Imports the details of all members in the specified CSV file into Club Connect.
+Format: 'import CSV_FILE_PATH` +
+Alias: `imp`
+
+****
+* CSV_FILE_PATH must be an absolute path to the CSV file.
+* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
+* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+****
+
+[NOTE]
+You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
+
+Examples:
+
+* `import C:/Users/John Doe/Desktop/members.csv` +
+Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
+
 === Compressing member details : `compress` (Since v1.2)
 
 Compresses the details of members in the contact list +
@@ -377,11 +514,6 @@ Alias: `comp`
 * Use this to remove clutter in contact list
 ****
 
-Example:
-
-* `compress` +
-Compresses member details.
-
 === Decompressing member details : `decompress` (Since v1.2)
 
 Decompresses the details of members in the contact list +
@@ -393,10 +525,8 @@ Alias: `decomp`
 * Use this to see more detailed information of members in contact list
 ****
 
-Example:
-
-* `decompress` +
-Decompresses member details.
+=== Auto-Complete Command (Since v1.3)
+Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
 
 === Listing entered commands : `history`
 
@@ -465,7 +595,8 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 Changes the password of the member who is currently logged in
 
-Format: `changepass u/username pw/oldpassword npw/newpassword`
+Format: `changepass u/username pw/oldpassword npw/newpassword` +
+Alias: `changepw`
 
 ****
 * Members are only able to change their own password.
@@ -529,6 +660,10 @@ To further increase your efficiency while using Club Connect, check out <<Tips>>
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER g/GROUP [t/TAG]...` +
 e.g. `add n/James Jerome p/22224444 e/jamesjerome@example.com m/A1234567H g/publicity`
+* *Add Task* : `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME` +
+e.g. `addtask desc/Buy Confetti d/03.04.2018 ti/19:00`
+* *Assign Task* : `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME` +
+e.g. `assigntask desc/Buy Confetti d/03.04.2018 ti/19:00 n/Bernice Yu`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
@@ -538,11 +673,19 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 e.g. `removegroup g/publicity`
 * *Delete Tag* : `deletetag t/TAG` +
 e.g. `deletetag t/president`
+* *Delete Task* : `deletetask INDEX` +
+e.g. `deletetask 2`
+* *Import members into Club Connect* : `import` +
+e.g. `import C:/Users/Admin/Desktop/members.csv`
+* *Export Club Connect data* : `export` +
+e.g. `export C:/Users/John Doe/Downloads/ClubConnectMembers.csv`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
 * *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *List* : `list`
+* *View All Tasks* : `viewalltasks`
+* *View My Tasks* : `viewmytasks`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
@@ -550,6 +693,10 @@ e.g.`select 2`
 e.g. `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 * *Delete Poll* `deletepoll INDEX` +
 e.g. `deletepoll 2`
+* *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
+e.g. `vote 10 2`
+* *Show results of polls* : `showresults`
+* *Hide results of polls* : `hideresults`
 * *Change Display Picture* : `changepic PHOTO_PATH` +
 e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 * *Compress Member Details* : `compress`
@@ -564,6 +711,7 @@ Not satisfied with your productivity while using Club Connect? Can't remember th
 
 * *Command shortcuts*
 * Lorem Ipsum
+* CSV format for 'import'
 
 == Coming in v2.0
 
