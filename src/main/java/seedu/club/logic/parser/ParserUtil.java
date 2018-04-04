@@ -161,7 +161,7 @@ public class ParserUtil {
         requireNonNull(email);
         return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
     }
-
+    //@@author Song Weiyang
     /**
      * Parses a {@code String username} into an {@code Username}.
      * Leading and trailing whitespaces will be trimmed.
@@ -200,6 +200,7 @@ public class ParserUtil {
     public static Optional<Password> parsePassword(Optional<String> password) {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
+    //@@author
 
     //@@author amrut-prabhu
     /**

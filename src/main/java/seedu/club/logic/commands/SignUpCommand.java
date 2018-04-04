@@ -35,7 +35,7 @@ public class SignUpCommand extends Command {
     public static final String MESSAGE_FAILURE =
             "Club Connect already has members of the club."
             + " Log in to start using Club Connect.";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + "Sign up for Club Connect."
+    public static final String MESSAGE_USAGE = "Sign up for Club Connect."
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
