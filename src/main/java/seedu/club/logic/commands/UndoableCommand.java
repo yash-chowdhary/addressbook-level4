@@ -7,7 +7,7 @@ import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.ReadOnlyClubBook;
-import seedu.club.model.poll.PollIsRelevantPredicate;
+import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
 
 /**
  * Represents a command which can be undone and redone.
@@ -41,7 +41,7 @@ public abstract class UndoableCommand extends Command {
         requireAllNonNull(model, previousClubBook);
         model.resetData(previousClubBook);
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        model.updateFilteredPollList(new PollIsRelevantPredicate(model.getLoggedInMember()));
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(model.getLoggedInMember()));
     }
 
     /**
@@ -57,7 +57,7 @@ public abstract class UndoableCommand extends Command {
                     + "it should not fail now");
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        model.updateFilteredPollList(new PollIsRelevantPredicate(model.getLoggedInMember()));
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(model.getLoggedInMember()));
     }
 
     @Override

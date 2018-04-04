@@ -8,12 +8,12 @@ import seedu.club.model.member.Member;
  * If member is null, no polls will be shown
  * If member is an exco, all polls are relevant else only polls that have not been answered by member will be shown
  */
-public class PollIsRelevantPredicate implements Predicate<Poll> {
+public class PollIsRelevantToMemberPredicate implements Predicate<Poll> {
 
     private static final String GROUP_EXCO = "exco";
     private final Member member;
 
-    public PollIsRelevantPredicate(Member member) {
+    public PollIsRelevantToMemberPredicate(Member member) {
         this.member = member;
     }
 
@@ -35,7 +35,7 @@ public class PollIsRelevantPredicate implements Predicate<Poll> {
     @Override
     public boolean equals(Object other) {
         return (other == this)  // short circuit if same object
-                || (other instanceof PollIsRelevantPredicate     // handles nulls
-                && this.member.equals(((PollIsRelevantPredicate) other).getMember()));   // state check
+                || (other instanceof PollIsRelevantToMemberPredicate     // handles nulls
+                && this.member.equals(((PollIsRelevantToMemberPredicate) other).getMember()));   // state check
     }
 }

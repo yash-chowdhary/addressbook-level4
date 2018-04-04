@@ -31,7 +31,7 @@ import seedu.club.model.poll.Poll;
  */
 public class DeletePollCommandTest {
 
-    private static String ALICE_DEFAULT_PASSWORD = "password";
+    private static final String ALICE_DEFAULT_PASSWORD = "password";
     private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
 
     @Before
@@ -47,6 +47,7 @@ public class DeletePollCommandTest {
         String expectedMessage = String.format(deletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         expectedModel.deletePoll(pollToDelete);
 
         assertCommandSuccess(deletePollCommand, model, expectedMessage, expectedModel);
@@ -70,6 +71,7 @@ public class DeletePollCommandTest {
         String expectedMessage = String.format(deletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         expectedModel.deletePoll(pollToDelete);
         showNoPoll(expectedModel);
 
@@ -97,6 +99,7 @@ public class DeletePollCommandTest {
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
         DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
 
         // delete -> first poll deleted
         deletePollCommand.execute();
@@ -140,6 +143,7 @@ public class DeletePollCommandTest {
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
 
         showPollAtIndex(model, INDEX_SECOND_POLL);
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());

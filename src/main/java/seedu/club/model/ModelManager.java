@@ -37,7 +37,7 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
-import seedu.club.model.poll.PollIsRelevantPredicate;
+import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
 import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -133,7 +133,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
         clubBook.addPoll(poll);
-        updateFilteredPollList(new PollIsRelevantPredicate(getLoggedInMember()));
+        updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
@@ -159,7 +159,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-            updateFilteredPollList(new PollIsRelevantPredicate(getLoggedInMember()));
+            updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
             updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
@@ -519,11 +519,4 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
         filteredTags.setPredicate(predicate);
     }
-
-    @Override
-    public String toString() {
-        return filteredPolls.toString();
-    }
-
-
 }

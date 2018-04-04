@@ -72,6 +72,8 @@ public class XmlSerializableClubBookTest {
                 XmlSerializableClubBook.class);
         ClubBook clubBookFromFile = dataFromFile.toModelType();
         ClubBook typicalPollsClubBook = TypicalPolls.getTypicalClubBook();
+        System.out.println("clubBookFromFile = " + clubBookFromFile);
+        System.out.println("typicalPollsClubBook = " + typicalPollsClubBook);
         assertEquals(clubBookFromFile, typicalPollsClubBook);
     }
 
