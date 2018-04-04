@@ -38,9 +38,11 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -303,6 +305,12 @@ public class AssignTaskCommandTest {
         }
 
         @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
+        }
+
+        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
             return;
@@ -310,6 +318,13 @@ public class AssignTaskCommandTest {
 
         @Override
         public void updateFilteredTaskList(Predicate<Task> predicate) {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
             fail("This method should not be called");
             return;
         }

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -36,6 +37,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -162,6 +164,12 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void changePassword(String username,
+                                   String oldPassword, String newPassword)
+                throws PasswordIncorrectException {
+            fail("This method should not be called.");
+        }
+
         public void signUpMember(Member member) {
             fail("This method should not be called");
             return;
@@ -269,6 +277,12 @@ public class AddPollCommandTest {
                 TagNotFoundException {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
         }
 
         @Override

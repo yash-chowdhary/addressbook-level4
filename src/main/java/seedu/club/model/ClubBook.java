@@ -19,9 +19,11 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.UniquePollList;
 import seedu.club.model.poll.exceptions.AnswerNotFoundException;
@@ -154,7 +156,7 @@ public class ClubBook implements ReadOnlyClubBook {
         // in the member list.
         try {
             members.setMember(target, syncedEditedMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             addTargetMemberTags(target);
             throw new DuplicateMemberException();
         }
@@ -327,7 +329,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
@@ -377,7 +379,7 @@ public class ClubBook implements ReadOnlyClubBook {
                     deleteTagFromMember(tagToDelete, member);
                 }
             }
-        } catch (MemberNotFoundException pnfe) {
+        } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
         }
     }
@@ -411,10 +413,21 @@ public class ClubBook implements ReadOnlyClubBook {
                 member.getGroup(), memberTags);
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new AssertionError("Modifying a member's tags only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
+    }
+    //@@author Song Weiyang
+    /**
+     * Change the password of {@code member} in the ClubBook.
+     * @param username
+     * @param oldpassword
+     * @param newPassword
+     */
+    public void changePassword (String username, String oldpassword, String newPassword)
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+        members.changePassword(username, oldpassword, newPassword);
     }
     //@@author
 

@@ -16,9 +16,11 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -158,7 +160,7 @@ public interface Model {
     void deleteTag(Tag tag) throws TagNotFoundException;
 
     /**
-     * Returns true if profile photo is successfully changed for the logged in member.
+     * Changes profile photo for the currently logged in member.
      *
      * @param originalPhotoPath Absolute file path of the original photo.
      * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
@@ -168,10 +170,19 @@ public interface Model {
     /**
      * Exports Club Connect's members' details to the specified file.
      *
-     * @param exportFilePath Absolute file path of the file to which the data is exported.
+     * @param exportFile File to which data is exported.
      * @throws IOException if there was an error writing to file.
      */
-    void exportClubConnectMembers(File exportFilePath) throws IOException;
+    void exportClubConnectMembers(File exportFile) throws IOException;
+
+    /**
+     * Imports details of members from the specified file.
+     *
+     * @param importFile File from which data is imported.
+     * @return Number of members added from the import file.
+     * @throws IOException if there was an error reading from file.
+     */
+    int importMembers(File importFile) throws IOException;
     //@@author
 
     /**
@@ -203,8 +214,17 @@ public interface Model {
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
     void updateFilteredTaskList(Predicate<Task> predicate);
-
     //@@author Song Weiyang
+    /**
+     * Changes the password of the member in that list
+     * @param username
+     * @param oldPassword
+     * @param newPassword
+     * @throws PasswordIncorrectException
+     */
+    void changePassword(String username, String oldPassword, String newPassword)
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException;
+
     /**
      * Signs up a member if the clubbook is empty
      * @param member

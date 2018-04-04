@@ -28,7 +28,7 @@ public class ProfilePhoto {
      * Constructs a {@code ProfilePhoto}.
      */
     public ProfilePhoto() {
-        this(ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + DEFAULT_PHOTO_NAME + ProfilePhotoStorage.FILE_EXTENSION);
+        this(ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + DEFAULT_PHOTO_NAME + ProfilePhotoStorage.PHOTO_FILE_EXTENSION);
     }
 
     /**

@@ -9,6 +9,7 @@ import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -37,6 +38,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -273,8 +275,15 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
         }
 
+        @Override
         public void exportClubConnectMembers(File exportFilePath) {
             fail("This method should not be called");
+        }
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
         }
 
         @Override
@@ -290,6 +299,11 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException {
+            fail("This method should not be called");
+            return;
+        }
         public void signUpMember(Member member) {
             fail("This method should not be called");
             return;

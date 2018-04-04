@@ -30,10 +30,10 @@ public class Member {
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
     private final UniqueTaskList tasks;
+
     /**
      * Every field must be present and not null.
      */
-
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags);
         this.name = name;
@@ -63,7 +63,6 @@ public class Member {
         this.credentials = credentials;
     }
 
-    //@@author amrut-prabhu
     /**
      * Every field must be present and not null.
      */
@@ -97,7 +96,6 @@ public class Member {
         this.tasks = member.tasks;
         this.credentials = member.credentials;
     }
-    //@@author
 
     public Name getName() {
         return name;
