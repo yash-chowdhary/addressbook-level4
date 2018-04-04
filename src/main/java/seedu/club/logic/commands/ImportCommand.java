@@ -29,7 +29,7 @@ public class ImportCommand extends UndoableCommand {
     public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported %d member(s) from %s";
     public static final String MESSAGE_IMPORT_FAILURE = "Error occurred while importing from %1$s";
     public static final String MESSAGE_MEMBERS_NOT_IMPORTED = "0 members imported from %1$s. This may be due to "
-            + "duplicate members or incorrect format of the data in the file.";
+            + "incorrect format of the data or duplicate members in the file.";
 
     private final File importFile;
 

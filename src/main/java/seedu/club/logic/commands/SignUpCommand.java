@@ -31,20 +31,16 @@ public class SignUpCommand extends Command {
 
     public static final String COMMAND_FORMAT = "login n/ p/ e/ m/ [pic/ ] ";
 
-    public static final String MESSAGE_SUCCESS = "Sign up successful! Please proceed to log in";
-    public static final String MESSAGE_FAILURE =
-            "Club Connect already has members of the club."
-            + " Log in to start using Club Connect.";
-    public static final String MESSAGE_USAGE = "Sign up for Club Connect."
+    public static final String MESSAGE_SUCCESS = "Sign up successful! Please log in to start using Club Connect.";
+    public static final String MESSAGE_FAILURE = "Club Connect is already set up. Please log in to start.";
+    public static final String MESSAGE_USAGE = "Lets you sign up for Club Connect.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER "
             + "[" + PREFIX_GROUP + "GROUP] "
-            + "[" + PREFIX_TAG + "TAG]... "
-            + PREFIX_USERNAME + "username "
-            + PREFIX_PASSWORD + "password\n"
+            + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "

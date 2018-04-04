@@ -15,7 +15,7 @@ public class ShowResultsCommand extends Command {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "showres")
     );
-    public static final String MESSAGE_SUCCESS = "Showing poll results";
+    public static final String MESSAGE_SUCCESS = "Showing poll results.";
 
 
     @Override
