@@ -95,6 +95,8 @@ A member can have any number of tags (including 0).
 * The member who signed up will be automatically be added to a group named exco.
 ****
 
+Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
+
 === Logging in a member: `login` (Since v1.3)
 Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD` +
@@ -119,7 +121,7 @@ A group must be non-empty and should only contain alphanumeric characters, witho
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
-* `add n/Betsy Crowe p/1234567 t/Head e/betsycrowe@example.com m/A2345678K g/Logistics`
+* `add n/Betsy Crowe p/95462159 e/betsycrowe@u.nus.edu m/A0145625K g/Logistics t/Head`
 
 === Adding a task: `addtask` (Since v1.3)
 
@@ -379,10 +381,12 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Tuesday ans/Wednesday` +
-Adds a poll asking which day Free Ice-Cream Day should be. Answers for the poll would be Monday, Tuesday and Wednesday.
+* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+Creates a poll asking members to select which day Free Ice-Cream Day should be.
+The options to choose from are Monday, Wednesday and Friday.
 * `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7` +
-Adds a poll asking where the annual meeting should be held. Answers for the poll would be I-Cube or LT7.
+Creates a poll asking members to choose where the annual meeting should be held.
+The answers to choose from are I-Cube and LT7.
 
 === Deleting a poll : `deletepoll`
 
@@ -461,6 +465,26 @@ Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Deskto
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
 
+=== Importing members into Club Connect: `import` (Since v1.4)
+
+Imports the details of all members in the specified CSV file into Club Connect.
+Format: 'import CSV_FILE_PATH` +
+Alias: `imp`
+
+****
+* CSV_FILE_PATH must be an absolute path to the CSV file.
+* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
+* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+****
+
+[NOTE]
+You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
+
+Examples:
+
+* `import C:/Users/John Doe/Desktop/members.csv` +
+Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
+
 === Exporting Club Connect data: `export` (Since v1.3)
 
 Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
@@ -481,26 +505,6 @@ Examples:
 
 * `export C:/Users/John Doe/Desktop/club.csv` +
 Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
-
-=== Importing members into Club Connect: `import` (Since v1.4)
-
-Imports the details of all members in the specified CSV file into Club Connect.
-Format: 'import CSV_FILE_PATH` +
-Alias: `imp`
-
-****
-* CSV_FILE_PATH must be an absolute path to the CSV file.
-* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
-* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
-****
-
-[NOTE]
-You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
-
-Examples:
-
-* `import C:/Users/John Doe/Desktop/members.csv` +
-Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
 
 === Compressing member details : `compress` (Since v1.2)
 
@@ -593,21 +597,20 @@ The `redo` command fails as there are no `undo` commands executed previously.
 
 === Changing password : `changepass`
 
-Changes the password of the member who is currently logged in
+Changes your password, if you are logged in.
 
-Format: `changepass u/username pw/oldpassword npw/newpassword` +
+Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
 Alias: `changepw`
 
 ****
 * Members are only able to change their own password.
-* Excos are able to change member's password.
+* Exco members can change the password of any member. The member is indicated by their username.
 ****
 
 Examples:
 
 * changepass u/A0123456H pw/password npw/pword
-
-The changepassword command will change the old password, password, to the new password, pword.
+Changes the password of the member with username `A0123456H` to `pword`.
 
 
 === Clearing all entries : `clear`
