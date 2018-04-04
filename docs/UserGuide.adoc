@@ -392,6 +392,7 @@ Format: `vote POLL_INDEX ANSWER_INDEX`
 * The POLL_INDEX refers to the index number shown in the most recent poll listing.
 * The ANSWER_INDEX refers to one of the index number of the answers of the specified poll.
 * The indices *must be positive integers* 1, 2, 3, ...
+* Polls voted by logged in member will not be visible in the poll list unless logged in as an `EXCO` member
 ****
 
 Examples:
