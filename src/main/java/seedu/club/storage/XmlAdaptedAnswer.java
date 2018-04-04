@@ -1,5 +1,5 @@
 package seedu.club.storage;
-
+//@@author MuhdNurKamal
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 

@@ -68,6 +68,14 @@ public class PollBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code pollesMatricNumbers} of the {@code poll} that we are building to null for non-voted new polls
+     */
+    public PollBuilder withNoPollessMatricNumbers() {
+        this.polleesMatricNumbers = null;
+        return this;
+    }
+
     public Poll build() {
         return new Poll(question, answers, polleesMatricNumbers);
     }

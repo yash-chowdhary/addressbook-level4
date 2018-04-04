@@ -65,6 +65,7 @@ public class MemberListPanelTest extends GuiUnitTest {
         assertCardEquals(expectedCard, selectedCard);
     }
 
+    //@@author MuhdNurKamal
     @Test
     public void handleCompressMembersRequestEvent() {
         postNow(COMPRESS_MEMBERS_REQUEST_EVENT);
@@ -76,4 +77,5 @@ public class MemberListPanelTest extends GuiUnitTest {
         postNow(DECOMPRESS_MEMBERS_REQUEST_EVENT);
         assertFalse(memberListPanel.isDisplayingCompressedMembers());
     }
+    //@@author
 }

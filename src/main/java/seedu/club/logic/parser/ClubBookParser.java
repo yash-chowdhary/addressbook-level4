@@ -40,6 +40,7 @@ import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
+import seedu.club.logic.commands.VoteCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
 /**
