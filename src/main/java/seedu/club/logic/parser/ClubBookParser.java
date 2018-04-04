@@ -52,6 +52,7 @@ public class ClubBookParser {
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+    private boolean isClearing = false;
 
     /**
      * Parses user input into command for execution.
@@ -68,77 +69,86 @@ public class ClubBookParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
-
-        if (isAddCommand(commandWord)) {
-            return new AddCommandParser().parse(arguments);
-        } else if (isAddPollCommand(commandWord)) {
-            return new AddPollCommandParser().parse(arguments);
-        } else if (isAddTaskCommand(commandWord)) {
-            return new AddTaskCommandParser().parse(arguments);
-        } else if (isAssignTaskCommand(commandWord)) {
-            return new AssignTaskCommandParser().parse(arguments);
-        } else if (isChangePasswordCommand(commandWord)) {
-            return new ChangePasswordCommandParser().parse(arguments);
-        } else if (isChangePicCommand(commandWord)) {
-            return new ChangeProfilePhotoCommandParser().parse(arguments);
-        } else if (isClearCommand(commandWord)) {
-            return new ClearCommand();
-        } else if (isCompressCommand(commandWord)) {
-            return new CompressCommand();
-        } else if (isDecompressCommand(commandWord)) {
-            return new DecompressCommand();
-        } else if (isDeleteCommand(commandWord)) {
-            return new DeleteCommandParser().parse(arguments);
-        } else if (isDeletePollCommand(commandWord)) {
-            return new DeletePollCommandParser().parse(arguments);
-        } else if (isDeleteTagCommand(commandWord)) {
-            return new DeleteTagCommandParser().parse(arguments);
-        } else if (isDeleteTaskCommand(commandWord)) {
-            return new DeleteTaskCommandParser().parse(arguments);
-        } else if (isEditCommand(commandWord)) {
-            return new EditCommandParser().parse(arguments);
-        } else if (isEmailCommand(commandWord)) {
-            return new EmailCommandParser().parse(arguments);
-        } else if (isExitCommand(commandWord)) {
-            return new ExitCommand();
-        } else if (isExportCommand(commandWord)) {
-            return new ExportCommandParser().parse(arguments);
-        } else if (isImportCommand(commandWord)) {
-            return new ImportCommandParser().parse(arguments);
-        } else if (isFindCommand(commandWord)) {
-            return new FindCommandParser().parse(arguments);
-        } else if (isHelpCommand(commandWord)) {
-            return new HelpCommand();
-        } else if (isHideResults(commandWord)) {
-            return new HideResultsCommand();
-        } else if (isHistoryCommand(commandWord)) {
-            return new HistoryCommand();
-        } else if (isListCommand(commandWord)) {
-            return new ListCommand();
-        } else if (isLoginCommand(commandWord)) {
-            return new LoginCommandParser().parse(arguments);
-        } else if (isLogoutCommand(commandWord)) {
-            return new LogOutCommand();
-        } else if (isRedoCommand(commandWord)) {
-            return new RedoCommand();
-        } else if (isRemoveGroupCommand(commandWord)) {
-            return new RemoveGroupCommandParser().parse(arguments);
-        } else if (isSelectCommand(commandWord)) {
-            return new SelectCommandParser().parse(arguments);
-        } else if (isShowResultsCommand(commandWord)) {
-            return new ShowResultsCommand();
-        } else if (isSignUpCommand(commandWord)) {
-            return new SignUpCommandParser().parse(arguments);
-        } else if (isUndoCommand(commandWord)) {
-            return new UndoCommand();
-        } else if (isViewAllTasksCommand(commandWord)) {
-            return new ViewAllTasksCommand();
-        } else if (isViewMyTasksCommand(commandWord)) {
-            return new ViewMyTasksCommand();
-        } else if (isVoteCommand(commandWord)) {
-            return new VoteCommandParser().parse(arguments);
+        if (!isClearing) {
+            if (isAddCommand(commandWord)) {
+                return new AddCommandParser().parse(arguments);
+            } else if (isAddPollCommand(commandWord)) {
+                return new AddPollCommandParser().parse(arguments);
+            } else if (isAddTaskCommand(commandWord)) {
+                return new AddTaskCommandParser().parse(arguments);
+            } else if (isAssignTaskCommand(commandWord)) {
+                return new AssignTaskCommandParser().parse(arguments);
+            } else if (isChangePasswordCommand(commandWord)) {
+                return new ChangePasswordCommandParser().parse(arguments);
+            } else if (isChangePicCommand(commandWord)) {
+                return new ChangeProfilePhotoCommandParser().parse(arguments);
+            } else if (isClearCommand(commandWord)) {
+                isClearing = true;
+                throw new ParseException("Are you sure you want to remove the Entire Clubbook? (Y/N)?");
+            } else if (isCompressCommand(commandWord)) {
+                return new CompressCommand();
+            } else if (isDecompressCommand(commandWord)) {
+                return new DecompressCommand();
+            } else if (isDeleteCommand(commandWord)) {
+                return new DeleteCommandParser().parse(arguments);
+            } else if (isDeletePollCommand(commandWord)) {
+                return new DeletePollCommandParser().parse(arguments);
+            } else if (isDeleteTagCommand(commandWord)) {
+                return new DeleteTagCommandParser().parse(arguments);
+            } else if (isDeleteTaskCommand(commandWord)) {
+                return new DeleteTaskCommandParser().parse(arguments);
+            } else if (isEditCommand(commandWord)) {
+                return new EditCommandParser().parse(arguments);
+            } else if (isEmailCommand(commandWord)) {
+                return new EmailCommandParser().parse(arguments);
+            } else if (isExitCommand(commandWord)) {
+                return new ExitCommand();
+            } else if (isExportCommand(commandWord)) {
+                return new ExportCommandParser().parse(arguments);
+            } else if (isImportCommand(commandWord)) {
+                return new ImportCommandParser().parse(arguments);
+            } else if (isFindCommand(commandWord)) {
+                return new FindCommandParser().parse(arguments);
+            } else if (isHelpCommand(commandWord)) {
+                return new HelpCommand();
+            } else if (isHideResults(commandWord)) {
+                return new HideResultsCommand();
+            } else if (isHistoryCommand(commandWord)) {
+                return new HistoryCommand();
+            } else if (isListCommand(commandWord)) {
+                return new ListCommand();
+            } else if (isLoginCommand(commandWord)) {
+                return new LoginCommandParser().parse(arguments);
+            } else if (isLogoutCommand(commandWord)) {
+                return new LogOutCommand();
+            } else if (isRedoCommand(commandWord)) {
+                return new RedoCommand();
+            } else if (isRemoveGroupCommand(commandWord)) {
+                return new RemoveGroupCommandParser().parse(arguments);
+            } else if (isSelectCommand(commandWord)) {
+                return new SelectCommandParser().parse(arguments);
+            } else if (isShowResultsCommand(commandWord)) {
+                return new ShowResultsCommand();
+            } else if (isSignUpCommand(commandWord)) {
+                return new SignUpCommandParser().parse(arguments);
+            } else if (isUndoCommand(commandWord)) {
+                return new UndoCommand();
+            } else if (isViewAllTasksCommand(commandWord)) {
+                return new ViewAllTasksCommand();
+            } else if (isViewMyTasksCommand(commandWord)) {
+                return new ViewMyTasksCommand();
+            } else if (isVoteCommand(commandWord)) {
+                return new VoteCommandParser().parse(arguments);
+            } else {
+                throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+            }
         } else {
-            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+            isClearing = false;
+            if (commandWord.equals("Y") || commandWord.equals("y")) {
+                return new ClearCommand();
+            } else {
+                throw new ParseException("Clear Command has been cancelled");
+            }
         }
     }
 
