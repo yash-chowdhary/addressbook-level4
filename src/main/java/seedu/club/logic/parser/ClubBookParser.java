@@ -76,6 +76,8 @@ public class ClubBookParser {
             return new AddTaskCommandParser().parse(arguments);
         } else if (isAssignTaskCommand(commandWord)) {
             return new AssignTaskCommandParser().parse(arguments);
+        } else if (isChangePasswordCommand(commandWord)) {
+            return new ChangePasswordCommandParser().parse(arguments);
         } else if (isChangePicCommand(commandWord)) {
             return new ChangeProfilePhotoCommandParser().parse(arguments);
         } else if (isClearCommand(commandWord)) {
@@ -135,6 +137,18 @@ public class ClubBookParser {
         } else {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangePasswordCommand's aliases
+     */
+    private boolean isChangePasswordCommand(String commandWord) {
+        for (String commandAlias : ChangePasswordCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
