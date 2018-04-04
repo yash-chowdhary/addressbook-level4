@@ -1,7 +1,6 @@
 package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
@@ -10,11 +9,9 @@ import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.showPollAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
-import static seedu.club.testutil.TypicalPolls.getTypicalClubBook;
+import static seedu.club.testutil.TypicalMembers.ALICE;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import org.junit.Before;
 import org.junit.Test;
 
 import seedu.club.commons.core.Messages;
@@ -24,14 +21,9 @@ import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.group.Group;
-import seedu.club.model.member.Email;
-import seedu.club.model.member.MatricNumber;
-import seedu.club.model.member.Member;
-import seedu.club.model.member.Name;
-import seedu.club.model.member.Phone;
 import seedu.club.model.poll.Poll;
-import seedu.club.model.tag.Tag;
+import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
+import seedu.club.testutil.TypicalPolls;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -39,41 +31,24 @@ import seedu.club.model.tag.Tag;
  */
 public class DeletePollCommandTest {
 
-    private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-    private final Member memberStub = new Member(new Name("Alex Yeoh"),
-            new Phone("87438807"), new Email("alexyeoh@example.com"),
-            new MatricNumber("A5215090A"), new Group("logistics"),
-            getTagSet("friends"));
+    private static final String ALICE_DEFAULT_PASSWORD = "password";
+    private Model model = new ModelManager(TypicalPolls.getTypicalClubBook(), new UserPrefs());
+
+    @Before
+    public void setUp() {
+        model.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
+    }
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
-        //Commence Sign up and log in command
-        SignUpCommand signUpCommand = new SignUpCommand(memberStub);
-        signUpCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        signUpCommand.execute();
-        LogInCommand logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
-                memberStub.getCredentials().getPassword());
-        logInCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        logInCommand.execute();
-        //end
-
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
         DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
 
-        String expectedMessage = String.format(deletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
+        String expectedMessage = String.format(DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
-        //Commence Sign up and log in command
-        signUpCommand = new SignUpCommand(memberStub);
-        signUpCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
-        signUpCommand.execute();
-        logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
-                memberStub.getCredentials().getPassword());
-        logInCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
-        logInCommand.execute();
-        //end
-
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         expectedModel.deletePoll(pollToDelete);
 
         assertCommandSuccess(deletePollCommand, model, expectedMessage, expectedModel);
@@ -89,35 +64,15 @@ public class DeletePollCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
-        //Commence Sign up and log in command
-        SignUpCommand signUpCommand = new SignUpCommand(memberStub);
-        signUpCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        signUpCommand.execute();
-        LogInCommand logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
-                memberStub.getCredentials().getPassword());
-        logInCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        logInCommand.execute();
-        //end
-
         showPollAtIndex(model, INDEX_FIRST_POLL);
 
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
         DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
 
-        String expectedMessage = String.format(deletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
+        String expectedMessage = String.format(DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
-        //Commence signup and loging command
-        signUpCommand = new SignUpCommand(memberStub);
-        signUpCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
-        signUpCommand.execute();
-        logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
-                memberStub.getCredentials().getPassword());
-        logInCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
-        logInCommand.execute();
-        //end
-
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         expectedModel.deletePoll(pollToDelete);
         showNoPoll(expectedModel);
 
@@ -138,27 +93,6 @@ public class DeletePollCommandTest {
     }
 
     @Test
-    public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
-        UndoRedoStack undoRedoStack = new UndoRedoStack();
-        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
-        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
-        DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
-        // delete -> first poll deleted
-        deletePollCommand.execute();
-        undoRedoStack.push(deletePollCommand);
-
-        // undo -> reverts clubbook back to previous state and filtered poll list to show all polls
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
-
-        // redo -> same first poll deleted again
-        expectedModel.deletePoll(pollToDelete);
-        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
-    }
-
-    @Test
     public void executeUndoRedo_invalidIndexUnfilteredList_failure() {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
@@ -174,35 +108,6 @@ public class DeletePollCommandTest {
         assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
     }
 
-    /**
-     * 1. Deletes a {@code poll} from a filtered list.
-     * 2. Undo the deletion.
-     * 3. The unfiltered list should be shown now. Verify that the index of the previously deleted poll in the
-     * unfiltered list is different from the index at the filtered list.
-     * 4. Redo the deletion. This ensures {@code RedoCommand} deletes the poll object regardless of indexing.
-     */
-    @Test
-    public void executeUndoRedo_validIndexFilteredList_samePollDeleted() throws Exception {
-        UndoRedoStack undoRedoStack = new UndoRedoStack();
-        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
-        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-
-        showPollAtIndex(model, INDEX_SECOND_POLL);
-        Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
-        // delete -> deletes second poll in unfiltered poll list / first poll in filtered poll list
-        deletePollCommand.execute();
-        undoRedoStack.push(deletePollCommand);
-        // undo -> reverts clubbook back to previous state and filtered poll list to show all polls
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
-
-        expectedModel.deletePoll(pollToDelete);
-        assertNotEquals(pollToDelete, model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased()));
-        // redo -> deletes same second poll in unfiltered poll list
-        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
-    }
-
     @Test
     public void equals() throws Exception {
         DeletePollCommand deleteFirstCommand = prepareCommand(INDEX_FIRST_POLL);
@@ -216,6 +121,7 @@ public class DeletePollCommandTest {
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // one command preprocessed when previously equal -> returns false
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
         deleteFirstCommandCopy.preprocessUndoableCommand();
         assertFalse(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
@@ -239,23 +145,11 @@ public class DeletePollCommandTest {
     }
 
     /**
-     * Updates {@code model}'s filtered list to show no one.
+     * Updates {@code model}'s filtered list to show no polls.
      */
     private void showNoPoll(Model model) {
         model.updateFilteredPollList(p -> false);
 
         assertTrue(model.getFilteredPollList().isEmpty());
-    }
-
-    /**
-     * Returns a tag set containing the list of strings given.
-     */
-    private static Set<Tag> getTagSet(String... strings) {
-        HashSet<Tag> tags = new HashSet<>();
-        for (String s : strings) {
-            tags.add(new Tag(s));
-        }
-
-        return tags;
     }
 }
