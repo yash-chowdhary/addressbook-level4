@@ -49,6 +49,17 @@ public class CsvUtil {
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
     /**
+     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
+     */
+    public static boolean isNotValidCsvFileName(String path) {
+        String csvFileExtension = ".csv";
+
+        int length = path.length();
+        String fileExtension = path.substring(length - 4);
+        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
+    }
+
+    /**
      * Returns {@code this} Member's data in the format of a CSV record.
      *
      * @return {@code String} containing the data in CSV format.

@@ -69,7 +69,8 @@ public class RemoveGroupCommandTest {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
-        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
+        assertCommandFailure(removeGroupCommand, model,
+                String.format(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup.toString()));
     }
 
     @Test
@@ -77,7 +78,8 @@ public class RemoveGroupCommandTest {
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
 
-        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_MANDATORY_GROUP);
+        assertCommandFailure(removeGroupCommand, model,
+                String.format(RemoveGroupCommand.MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
     }
 
     @Test
@@ -110,7 +112,8 @@ public class RemoveGroupCommandTest {
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
+        assertCommandFailure(removeGroupCommand, model,
+                String.format(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup.toString()));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
@@ -127,7 +130,8 @@ public class RemoveGroupCommandTest {
         RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model, RemoveGroupCommand.MESSAGE_MANDATORY_GROUP);
+        assertCommandFailure(removeGroupCommand, model,
+                String.format(RemoveGroupCommand.MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);

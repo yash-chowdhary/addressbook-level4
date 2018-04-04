@@ -19,10 +19,10 @@ public class ViewAllTasksCommand extends Command {
             Arrays.asList(COMMAND_WORD, "alltasks")
     );
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Displays all the tasks in the club book";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Displays all tasks in Club Connect.";
 
-    public static final String MESSAGE_SUCCESS = "Listed all tasks";
-    public static final String MESSAGE_CANNOT_VIEW = "You do not have permission to view tasks";
+    public static final String MESSAGE_SUCCESS = "All tasks are displayed.";
+    public static final String MESSAGE_CANNOT_VIEW = "You do not have permission to view all tasks.";
 
     @Override
     public CommandResult execute() throws CommandException {

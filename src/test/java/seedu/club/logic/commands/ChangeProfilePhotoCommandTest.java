@@ -81,7 +81,8 @@ public class ChangeProfilePhotoCommandTest {
         String validPhotoPath = testPhotoFile.getAbsolutePath();
 
         CommandResult commandResult = getChangeProfilePhotoCommand(validPhotoPath, modelStub).execute();
-        assertEquals(ChangeProfilePhotoCommand.MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, commandResult.feedbackToUser);
+        assertEquals(String.format(ChangeProfilePhotoCommand.MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, validPhotoPath),
+                commandResult.feedbackToUser);
     }
 
     @Test
