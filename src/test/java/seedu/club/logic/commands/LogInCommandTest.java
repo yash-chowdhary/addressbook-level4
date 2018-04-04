@@ -12,6 +12,8 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -73,6 +75,11 @@ public class LogInCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+        }
+
         @Override
         public void updateFilteredPollList(Predicate<Poll> predicate) {
             fail("This method should not be called.");

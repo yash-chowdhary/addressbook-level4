@@ -49,7 +49,7 @@ public abstract class StageHandle {
      * @param query name of the CSS selector for the node to retrieve.
      * @throws NodeNotFoundException if no such node exists.
      */
-    protected <T extends Node> T getChildNode(String query) {
+    protected <T extends Node> T getChildNode(String query) throws NodeNotFoundException {
         Optional<T> node = guiRobot.from(stage.getScene().getRoot()).lookup(query).tryQuery();
         return node.orElseThrow(NodeNotFoundException::new);
     }

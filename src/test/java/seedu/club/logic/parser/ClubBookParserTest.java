@@ -79,7 +79,7 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_addPoll() throws Exception {
-        Poll poll = new PollBuilder().build();
+        Poll poll = new PollBuilder().withNoPollessMatricNumbers().build();
         AddPollCommand command = (AddPollCommand) parser.parseCommand(PollUtil.getAddPollCommand(poll));
         assertEquals(new AddPollCommand(poll), command);
     }

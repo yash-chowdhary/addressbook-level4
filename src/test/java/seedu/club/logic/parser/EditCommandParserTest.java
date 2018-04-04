@@ -1,5 +1,7 @@
 package seedu.club.logic.parser;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
@@ -36,6 +38,7 @@ import org.junit.Test;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
+import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Name;
@@ -209,5 +212,18 @@ public class EditCommandParserTest {
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    /**
+     * Asserts that the parsing of {@code userInput} by {@code parser} is unsuccessful and the error message
+     * equals to {@code expectedMessage}.
+     */
+    public static void assertParseFailure(Parser parser, String userInput, String expectedMessage) {
+        try {
+            parser.parse(userInput);
+            fail("The expected ParseException was not thrown.");
+        } catch (ParseException pe) {
+            assertEquals(expectedMessage, pe.getMessage());
+        }
     }
 }

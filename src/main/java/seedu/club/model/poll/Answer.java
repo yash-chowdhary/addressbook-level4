@@ -1,5 +1,5 @@
 package seedu.club.model.poll;
-
+//@@author MuhdNurKamal
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
@@ -53,7 +53,8 @@ public class Answer {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Answer // instanceof handles nulls
-                && this.value.equals(((Answer) other).value)); // state check
+                && this.value.equals(((Answer) other).value) // state check
+                && this.voteCount == ((Answer) other).voteCount); // state check
     }
 
     @Override
