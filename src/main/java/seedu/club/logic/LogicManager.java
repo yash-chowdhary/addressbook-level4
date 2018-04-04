@@ -21,7 +21,7 @@ import seedu.club.model.task.Task;
  * The main LogicManager of the app.
  */
 public class LogicManager extends ComponentManager implements Logic {
-    public static final List<String> commandList = new CommandList().getCommandList();
+    public static final List<String> COMMAND_LIST = new CommandList().getCommandList();
 
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 

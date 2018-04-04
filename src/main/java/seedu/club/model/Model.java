@@ -116,7 +116,8 @@ public interface Model {
     void deleteTag(Tag tag) throws TagNotFoundException;
 
     /**
-     * Returns true if profile photo is successfully changed for the logged in member.
+     * Changes profile photo for the currently logged in member.
+     *
      * @param originalPhotoPath Absolute file path of the original photo.
      * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
      */
@@ -124,10 +125,20 @@ public interface Model {
 
     /**
      * Exports Club Connect's members' details to the specified file.
-     * @param exportFilePath Absolute file path of the file to which the data is exported.
+     *
+     * @param exportFile File to which data is exported.
      * @throws IOException if there was an error writing to file.
      */
-    void exportClubConnectMembers(File exportFilePath) throws IOException;
+    void exportClubConnectMembers(File exportFile) throws IOException;
+
+    /**
+     * Imports details of members from the specified file.
+     *
+     * @param importFile File from which data is imported.
+     * @return Number of members added from the import file.
+     * @throws IOException if there was an error reading from file.
+     */
+    int importMembers(File importFile) throws IOException;
     //@@author
 
     /** Returns an unmodifiable view of the filtered tag list */

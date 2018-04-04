@@ -1,7 +1,7 @@
 //@@author amrut-prabhu
 package seedu.club.commons.events.model;
 
-import static seedu.club.storage.ProfilePhotoStorage.FILE_EXTENSION;
+import static seedu.club.storage.ProfilePhotoStorage.PHOTO_FILE_EXTENSION;
 
 import seedu.club.commons.events.BaseEvent;
 
@@ -31,7 +31,7 @@ public class ProfilePhotoChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return originalPhotoPath + " is being stored as " + newFileName + FILE_EXTENSION;
+        return originalPhotoPath + " is being stored as " + newFileName + PHOTO_FILE_EXTENSION;
     }
 
 }
