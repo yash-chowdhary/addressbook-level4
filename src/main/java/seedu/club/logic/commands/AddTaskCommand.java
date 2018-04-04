@@ -37,8 +37,8 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_DATE + "02/04/2018 "
             + PREFIX_TIME + "17:00";
 
-    public static final String MESSAGE_SUCCESS = "New task created";
-    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
+    public static final String MESSAGE_SUCCESS = "New task created.";
+    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists.";
 
     private final Task toAdd;
 

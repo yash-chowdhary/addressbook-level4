@@ -12,7 +12,7 @@ import seedu.club.commons.events.ui.CompressMembersRequestEvent;
 public class CompressCommand extends Command {
 
     public static final String COMMAND_WORD = "compress";
-    public static final String MESSAGE_SUCCESS = "View Compressed";
+    public static final String MESSAGE_SUCCESS = "Member list view compressed.";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "comp")
     );
