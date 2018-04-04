@@ -3,8 +3,6 @@ package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.club.storage.ProfilePhotoStorage;
-
 /**
  * Represents a member's profile photo in the club book.
  */
@@ -13,7 +11,6 @@ public class ProfilePhoto {
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
     public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
-    public static final String DEFAULT_PHOTO_NAME = "default";
 
     private String profilePhotoPath;
 
