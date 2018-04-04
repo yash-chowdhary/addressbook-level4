@@ -73,6 +73,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -83,7 +86,9 @@ import seedu.club.model.task.exceptions.DuplicateTaskException;
 public class AddTaskCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addtask";
-
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "addt", "task")
+    );
     public static final String COMMAND_FORMAT = COMMAND_WORD + " "
             + PREFIX_DESCRIPTION + "  "
             + PREFIX_TIME + "  "
@@ -134,6 +139,8 @@ public class AddTaskCommand extends UndoableCommand {
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -149,6 +156,9 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
  */
 public class DeleteTaskCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "deletetask";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "deltask", "rmtask")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the task identified by the index number used in the last task listing.\n"
@@ -215,6 +225,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_SUBJECT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -230,6 +243,9 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "mail")
+    );
     public static final String COMMAND_FORMAT = "email [g/ ] [t/ ] c/ [s/ ] [b/ ]";
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) "
@@ -292,6 +308,9 @@ public class EmailCommand extends Command {
 import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
@@ -304,6 +323,9 @@ public class RemoveGroupCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "removegroup";
     public static final String COMMAND_FORMAT = "removegroup g/ ";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Book. "
             + "Parameters: "
@@ -349,6 +371,9 @@ public class RemoveGroupCommand extends UndoableCommand {
 ``` java
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 
@@ -357,6 +382,9 @@ import seedu.club.model.task.exceptions.TasksAlreadyListedException;
  */
 public class ViewMyTasksCommand extends Command {
     public static final String  COMMAND_WORD = "viewmytasks";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "mytasks")
+    );
 
     public static final String MESSAGE_SUCCESS = "Listed all your tasks.";
     public static final String MESSAGE_ALREADY_LISTED = "All your tasks are already listed.";
@@ -463,6 +491,7 @@ import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
+import seedu.club.logic.commands.VoteCommand;
 
 /**
  * Stores list of commands
@@ -501,6 +530,7 @@ public class CommandList {
         commandList.add(DeletePollCommand.COMMAND_FORMAT);
         commandList.add(ExportCommand.COMMAND_FORMAT);
         commandList.add(LogOutCommand.COMMAND_WORD);
+        commandList.add(VoteCommand.COMMAND_WORD);
 
         Collections.sort(commandList);
         return commandList;
@@ -818,6 +848,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
 ```
 ###### \java\seedu\club\model\ClubBook.java
 ``` java
+
     /**
      * Removes the Group {@code toRemove} from the Club Book. Every member who was once a part of {@code toRemove}
      * will be assigned the default group - "member".

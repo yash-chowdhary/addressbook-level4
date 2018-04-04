@@ -6,6 +6,9 @@
  */
 public class ChangePasswordCommand extends Command {
     public static final String COMMAND_WORD = "changepass";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "changepw")
+    );
     public static final String COMMAND_FORMAT = "changepass u/ pw/ npw/";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes the password of a member in the ClubBook"
             + "Parameters: "
@@ -52,6 +55,9 @@ public class ChangePasswordCommand extends Command {
 public class LogInCommand extends Command {
 
     public static final String COMMAND_WORD = "login";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "signin")
+    );
 
     public static final String COMMAND_FORMAT = "login u/ pw/ ";
 
@@ -95,6 +101,9 @@ public class LogInCommand extends Command {
  */
 public class SignUpCommand extends Command {
     public static final String COMMAND_WORD = "signup";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "register", "enroll")
+    );
 
     public static final String COMMAND_FORMAT = "login n/ p/ e/ m/ [pic/ ] ";
 
@@ -414,6 +423,7 @@ public class SignUpCommandParser {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+            updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
             updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
@@ -563,6 +573,5 @@ public class SignUpCommandParser {
         return clubBook.equals(other.clubBook)
                 && filteredMembers.equals(other.filteredMembers);
     }
-
 }
 ```

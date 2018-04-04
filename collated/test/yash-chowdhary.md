@@ -87,6 +87,11 @@ public class AddTaskCommandTest {
      */
     private class ModelStub implements Model {
         @Override
+        public void voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called");
         }
@@ -262,6 +267,11 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException {
+            fail("This method should not be called");
+            return;
+        }
         public void signUpMember(Member member) {
             fail("This method should not be called");
             return;

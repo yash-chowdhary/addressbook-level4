@@ -521,6 +521,9 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.ProfilePhoto;
@@ -531,6 +534,9 @@ import seedu.club.model.member.ProfilePhoto;
 public class ChangeProfilePhotoCommand extends Command {
 
     public static final String COMMAND_WORD = "changepic";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "pic", "profilepic")
+    );
     public static final String COMMAND_FORMAT = "changepic PATH";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo. "
@@ -590,6 +596,7 @@ package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -603,6 +610,9 @@ public class DeleteTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "deletetag";
     public static final String COMMAND_FORMAT = "deletetag t/ ";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "deltag", "rmtag")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes the tag from all members. "
@@ -662,6 +672,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -672,6 +684,9 @@ public class ExportCommand extends Command {
 
     public static final String COMMAND_WORD = "export";
     public static final String COMMAND_FORMAT = "export FILE_PATH";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "exp")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Exports the members' information to the specified CSV file. "
@@ -718,6 +733,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -728,6 +745,9 @@ public class ImportCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "import";
     public static final String COMMAND_FORMAT = "import FILE_PATH";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "imp")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Imports the members' information from the specified CSV file into Club Connect. "
@@ -1170,8 +1190,6 @@ package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.club.storage.ProfilePhotoStorage;
-
 /**
  * Represents a member's profile photo in the club book.
  */
@@ -1180,7 +1198,6 @@ public class ProfilePhoto {
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
     public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
-    public static final String DEFAULT_PHOTO_NAME = "default";
 
     private String profilePhotoPath;
 
@@ -1238,7 +1255,10 @@ public class ProfilePhoto {
 ```
 ###### \java\seedu\club\model\Model.java
 ``` java
-    /** Removes the given tag {@code tag} for all members in the club book. */
+
+    /**
+     * Removes the given tag {@code tag} for all members in the club book.
+     */
     void deleteTag(Tag tag) throws TagNotFoundException;
 
     /**
@@ -1266,11 +1286,14 @@ public class ProfilePhoto {
      */
     int importMembers(File importFile) throws IOException;
 
-    /** Returns an unmodifiable view of the filtered tag list */
+    /**
+     * Returns an unmodifiable view of the filtered tag list
+     */
     ObservableList<Tag> getFilteredTagList();
 
     /**
      * Updates the filter of the filtered tag list to filter by the given {@code predicate}.
+     *
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredTagList(Predicate<Tag> predicate);
