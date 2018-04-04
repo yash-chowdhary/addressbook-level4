@@ -26,7 +26,7 @@ public class VoteCommand extends UndoableCommand {
     );
     public static final String COMMAND_FORMAT = "vote POLL_INDEX ANSWER_INDEX";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Votes in the poll identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds your vote to the poll identified "
             + "by the index number used in the last poll listing. \n"
             + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 3 2";
