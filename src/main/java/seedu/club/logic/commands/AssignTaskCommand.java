@@ -7,6 +7,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
@@ -20,6 +23,9 @@ import seedu.club.model.task.exceptions.DuplicateTaskException;
  */
 public class AssignTaskCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "assigntask";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "assignt")
+    );
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " "
             + PREFIX_DESCRIPTION + " "

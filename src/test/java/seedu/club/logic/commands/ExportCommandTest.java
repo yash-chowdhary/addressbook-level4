@@ -20,6 +20,7 @@ import org.junit.rules.TemporaryFolder;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -38,11 +39,15 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -143,6 +148,12 @@ public class ExportCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) throws
+                PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+            fail("This method should not be called.");
+        }
 
         @Override
         public FilteredList<Poll> getFilteredPollList() {
@@ -291,6 +302,12 @@ public class ExportCommandTest {
         }
 
         @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
+        }
+
+        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
         }
@@ -305,16 +322,23 @@ public class ExportCommandTest {
         public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
         }
+
+        @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            fail("This method should not be called");
+            return;
+        }
     }
 
     /**
      * A Model stub that always throw a IOException when trying to export to a file.
      */
     private class ModelStubThrowingIoException extends ModelStub {
-        final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void exportClubConnectMembers(File exportFile) throws IOException {
@@ -343,10 +367,10 @@ public class ExportCommandTest {
      * A Model stub that always accept the file being exported to.
      */
     private class ModelStubAcceptingExport extends ModelStub {
-        final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
         @Override
         public void exportClubConnectMembers(File exportFile) throws IOException {
             requireNonNull(exportFile);

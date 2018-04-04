@@ -4,6 +4,8 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +21,9 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
  */
 public class DeleteTaskCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "deletetask";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "deltask", "rmtask")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the task identified by the index number used in the last task listing.\n"

@@ -18,13 +18,15 @@ import seedu.club.model.member.Member;
 public class MemberCard extends UiPart<Region> {
 
     private static final String FXML = "MemberListCard.fxml";
-    private static final Integer PHOTO_WIDTH = 90;
-    private static final Integer PHOTO_HEIGHT = 120;
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
         "orange", "blue", "violet"};
-    private static final String DEFAULT_PHOTO = "/images/defaultProfilePhoto.png";
+    //@@author amrut-prabhu
+    private static final Integer PHOTO_WIDTH = 90;
+    private static final Integer PHOTO_HEIGHT = 120;
+    private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 
+    //@@author
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -67,6 +69,12 @@ public class MemberCard extends UiPart<Region> {
         createTags(member);
     }
 
+    //@@author MuhdNurKamal
+    /**
+     * A constructor to initialize MemberCard using without matricNumber
+     *
+     * @param fxml file configure layout of this MemberCard
+     */
     public MemberCard(Member member, int displayedIndex, String fxml) {
         super(fxml);
         this.member = member;
@@ -77,30 +85,30 @@ public class MemberCard extends UiPart<Region> {
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
     }
-
+    //@@author
 
     //@@author amrut-prabhu
     /**
-     * Sets the profile photo to the displayed photo shape.
+     * Sets the profile photo of {@code member} to the displayed photo shape.
      */
     private void setProfilePhoto(Member member) {
         Image photo;
         String photoPath = member.getProfilePhoto().getProfilePhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
-                    PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
+                    false, true);
         } else {
             try {
                 InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
                 photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
             } catch (NullPointerException npe) {
-                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
-                        PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+                //Different path (instead of DEFAULT_PHOTO_PATH) used for testing purposes: indicates exception
+                photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
+                        false, true);
             }
         }
         profilePhoto.setImage(photo);
     }
-    //@@author
 
     //@@author yash-chowdhary
     /**

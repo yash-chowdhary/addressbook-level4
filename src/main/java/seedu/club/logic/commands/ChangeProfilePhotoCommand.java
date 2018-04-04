@@ -3,6 +3,9 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -14,6 +17,9 @@ import seedu.club.model.member.ProfilePhoto;
 public class ChangeProfilePhotoCommand extends Command {
 
     public static final String COMMAND_WORD = "changepic";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "pic", "profilepic")
+    );
     public static final String COMMAND_FORMAT = "changepic PATH";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo. "

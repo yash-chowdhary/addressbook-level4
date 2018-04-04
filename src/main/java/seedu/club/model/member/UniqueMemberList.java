@@ -12,9 +12,11 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
 /**
  * A list of members that enforces uniqueness between its elements and does not allow nulls.
@@ -187,6 +189,24 @@ public class UniqueMemberList implements Iterable<Member> {
         currentlyLogInMember = member;
     }
 
+    //@@author Song Weiyang
+    /**
+     * Changes the password of a member
+     */
+    public void changePassword (String username, String oldPassword, String newPassword)
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+        Member checkMember = usernameCredentialsHashMap.get(username);
+        if (!checkMember.equals(currentlyLogInMember)) {
+            throw new DataToChangeIsNotCurrentlyLoggedInMemberException();
+        }
+        if (checkMember != null && usernamePasswordHashMap.get(username).equals(oldPassword)) {
+            internalList.get(internalList.indexOf(checkMember)).getCredentials().setPassword(new Password(newPassword));
+            usernamePasswordHashMap.remove(username);
+            usernamePasswordHashMap.put(username, newPassword);
+        } else {
+            throw new PasswordIncorrectException();
+        }
+    }
     /**
      * Sign up a user when the clubbook is empty
      */

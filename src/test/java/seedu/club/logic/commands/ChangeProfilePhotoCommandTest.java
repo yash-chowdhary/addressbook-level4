@@ -19,6 +19,7 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -38,11 +39,15 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -141,6 +146,11 @@ public class ChangeProfilePhotoCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) throws
+                PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+            fail("This method should not be called.");
+        }
 
         @Override
         public FilteredList<Poll> getFilteredPollList() {
@@ -289,6 +299,12 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
+        }
+
+        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
             return;
@@ -302,6 +318,13 @@ public class ChangeProfilePhotoCommandTest {
 
         @Override
         public void updateFilteredTaskList(Predicate<Task> predicate) {
+            fail("This method should not be called");
+            return;
+        }
+
+        @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
             fail("This method should not be called");
             return;
         }

@@ -3,6 +3,9 @@ package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
@@ -16,6 +19,9 @@ public class RemoveGroupCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "removegroup";
     public static final String COMMAND_FORMAT = "removegroup g/ ";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Book. "
             + "Parameters: "

@@ -1,5 +1,8 @@
 package seedu.club.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ShowHelpRequestEvent;
 
@@ -9,6 +12,9 @@ import seedu.club.commons.events.ui.ShowHelpRequestEvent;
 public class HelpCommand extends Command {
 
     public static final String COMMAND_WORD = "help";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "h", "info")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows program usage instructions.\n"
             + "Example: " + COMMAND_WORD;

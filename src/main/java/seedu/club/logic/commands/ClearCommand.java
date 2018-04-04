@@ -2,6 +2,9 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.Messages;
 import seedu.club.model.ClubBook;
 
@@ -12,6 +15,9 @@ public class ClearCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "Club Connect data has been cleared!";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "c", "erase")
+    );
 
 
     @Override

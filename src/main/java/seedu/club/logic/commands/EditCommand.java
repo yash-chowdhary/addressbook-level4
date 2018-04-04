@@ -10,6 +10,8 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TO;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +41,9 @@ import seedu.club.model.tag.Tag;
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "e", "update")
+    );
     public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ]"
             + " [pic/ ] [g/ ] [t/ ]";
 
@@ -88,7 +93,7 @@ public class EditCommand extends UndoableCommand {
                 return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
             }
             model.updateMember(memberToEdit, editedMember);
-        } catch (DuplicateMemberException dpe) {
+        } catch (DuplicateMemberException dme) {
             throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");

@@ -65,6 +65,27 @@ public class ParserUtil {
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
 
+    //@@author MuhdNurKamal
+    /**
+     * Parses {@code oneBasedIndex} into a list of {@code Index} and returns it. Leading and trailing
+     * whitespaces will be trimmed.
+     * @throws IllegalValueException if any of the specified index is invalid (not non-zero unsigned integer).
+     */
+    public static List<Index> parseIndices(String oneBasedIndexes) throws IllegalValueException {
+        String trimmedIndexes = oneBasedIndexes.trim();
+        String[] stringIndexes = trimmedIndexes.split(" ");
+        List<Index> indexes = new ArrayList<>();
+        for (String s : stringIndexes) {
+            if (!StringUtil.isNonZeroUnsignedInteger(s)) {
+                throw new IllegalValueException(MESSAGE_INVALID_INDEX);
+            } else {
+                indexes.add(Index.fromOneBased((Integer.parseInt(s))));
+            }
+        }
+        return indexes;
+    }
+    //@@author
+
     /**
      * Parses a {@code String name} into a {@code Name}.
      * Leading and trailing whitespaces will be trimmed.
@@ -161,7 +182,7 @@ public class ParserUtil {
         requireNonNull(email);
         return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
     }
-
+    //@@author Song Weiyang
     /**
      * Parses a {@code String username} into an {@code Username}.
      * Leading and trailing whitespaces will be trimmed.
@@ -218,15 +239,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> photo} into an {@code Optional<ProfilePhoto>} if {@code photo} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<ProfilePhoto> parseProfilePhoto(Optional<String> photo) throws IllegalValueException {
-        requireNonNull(photo);
-        return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
-    }
-
-    /**
      * Parses a {@code path} into a {@code File}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -246,12 +258,27 @@ public class ParserUtil {
     /**
      * Parses a {@code path} into a {@code File}.
      *
+     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
+     */
+    public static File parseImportPath(String path) throws IllegalValueException {
+        File file = parsePath(path);
+
+        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return file;
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     *
      * @throws IllegalValueException if the given {@code path} is not absolute or is a directory.
      */
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = parsePath(path);
 
-        if (!file.isAbsolute() || file.isDirectory() || !validFileName(path)) {
+        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -260,31 +287,22 @@ public class ParserUtil {
     }
 
     /**
-     * Returns true if {@code path} represents the path of a CSV (.csv) file.
+     * Returns true if {@code file} does not represent the absolute path of a file.
      */
-    private static boolean validFileName(String path) {
+    private static boolean isNotValidFileName(File file) {
+        return !file.isAbsolute() || file.isDirectory();
+    }
+
+    /**
+     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
+     */
+    private static boolean isNotValidCsvFileName(String path) {
         String csvFileExtension = ".csv";
 
         int length = path.length();
         String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
+        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
     }
-
-    /**
-     * Parses a {@code path} into a {@code File}.
-     *
-     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
-     */
-    public static File parseImportPath(String path) throws IllegalValueException {
-        File file = parsePath(path);
-
-        if (!file.isAbsolute() || file.isDirectory() || !file.exists() || !file.canRead()) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
-        }
-
-        return file;
-    }
-    //@@author
 
     //@@author yash-chowdhary
     /**

@@ -40,10 +40,10 @@ import seedu.club.model.tag.Tag;
 public class DeletePollCommandTest {
 
     private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-    private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+    private final Member memberStub = new Member(new Name("Alex Yeoh"),
             new Phone("87438807"), new Email("alexyeoh@example.com"),
             new MatricNumber("A5215090A"), new Group("logistics"),
-            getTagSet("friends")));
+            getTagSet("friends"));
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {

@@ -1,5 +1,7 @@
 package seedu.club.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.commons.core.EventsCenter;
@@ -15,6 +17,9 @@ import seedu.club.model.member.Member;
 public class SelectCommand extends Command {
 
     public static final String COMMAND_WORD = "select";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "s", "show")
+    );
     public static final String COMMAND_FORMAT = "select INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD

@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -42,9 +43,11 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -151,6 +154,11 @@ public class AssignTaskCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+        }
+
         @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called");
@@ -319,6 +327,12 @@ public class AssignTaskCommandTest {
         }
 
         @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
+        }
+
+        @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
             return;
@@ -329,6 +343,13 @@ public class AssignTaskCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            fail("This method should not be called");
+            return;
+        }
     }
 
 
@@ -336,10 +357,10 @@ public class AssignTaskCommandTest {
      * A Model stub that always throw a DuplicateTaskException when trying to add a task.
      */
     private class ModelStubThrowingDuplicateTaskException extends ModelStub {
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
@@ -369,10 +390,10 @@ public class AssignTaskCommandTest {
      * A Model stub that always throw a DuplicateTaskException when trying to add a task.
      */
     private class ModelStubThrowingMemberNotFoundException extends ModelStub {
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
@@ -403,10 +424,10 @@ public class AssignTaskCommandTest {
      */
     private class ModelStubAcceptingTaskAdded extends ModelStub {
         final ArrayList<Task> tasksAdded = new ArrayList<>();
-        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends")));
+                getTagSet("friends"));
 
         @Override
         public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {

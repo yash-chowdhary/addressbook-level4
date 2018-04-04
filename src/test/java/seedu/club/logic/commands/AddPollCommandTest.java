@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import org.junit.rules.ExpectedException;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -40,6 +42,7 @@ import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -135,6 +138,11 @@ public class AddPollCommandTest {
      */
     private class ModelStub implements Model {
         @Override
+        public void voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void exportClubConnectMembers(File exportFilePath) {
             fail("This method should not be called.");
         }
@@ -172,6 +180,12 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void changePassword(String username,
+                                   String oldPassword, String newPassword)
+                throws PasswordIncorrectException {
+            fail("This method should not be called.");
+        }
+
         public void signUpMember(Member member) {
             fail("This method should not be called");
             return;
@@ -284,6 +298,12 @@ public class AddPollCommandTest {
                 TagNotFoundException {
             fail("This method should not be called");
             return null;
+        }
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
         }
 
         @Override

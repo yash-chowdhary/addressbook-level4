@@ -6,17 +6,14 @@ import static java.util.Objects.requireNonNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.exceptions.DataConversionException;
 import seedu.club.commons.util.FileUtil;
-import seedu.club.model.ClubBook;
-import seedu.club.model.ReadOnlyClubBook;
+import seedu.club.model.member.UniqueMemberList;
 
 /**
- * A class to manage storage of ClubBook data as an csv file on the hard disk.
+ * A class to manage storage of ClubBook data as a csv file on the hard disk.
  */
 public class CsvClubBookStorage {
 
@@ -26,6 +23,10 @@ public class CsvClubBookStorage {
 
     public CsvClubBookStorage() {
         this.file = null;
+    }
+
+    public CsvClubBookStorage(File file) {
+        setClubBookFile(file);
     }
 
     public File getClubBookFile() {
@@ -41,35 +42,30 @@ public class CsvClubBookStorage {
         }
     }
 
-    public Optional<ReadOnlyClubBook> readClubBook() throws DataConversionException, IOException {
+    /**
+     * Returns data from the file as a {@link UniqueMemberList}.
+     *
+     * @throws IOException if there was any problem when reading from the storage.
+     */
+    public UniqueMemberList readClubBook() throws IOException {
         return readClubBook(file);
     }
 
     /**
      * Similar to {@link #readClubBook()}
-     * @param clubBookFile location of the data. Cannot be null.
-     * @throws DataConversionException if the file is not in the correct format.
+     *
+     * @param importFile location of the data. Cannot be null.
      */
-    public Optional<ReadOnlyClubBook> readClubBook(File clubBookFile)
-            throws DataConversionException, FileNotFoundException {
+    public UniqueMemberList readClubBook(File importFile) throws IOException {
 
-        requireNonNull(clubBookFile);
+        requireNonNull(importFile);
 
-        if (!clubBookFile.exists()) {
-            logger.info("ClubBook import file "  + clubBookFile + " not found");
-            return Optional.empty();
+        if (!importFile.exists()) {
+            logger.info("ClubBook import file "  + importFile + " not found");
+            throw new FileNotFoundException();
         }
 
-        //XmlSerializableClubBook xmlClubBook = XmlFileStorage.loadDataFromSaveFile(new File(file));
-        ClubBook newClubBook = new ClubBook();
-        //try {
-        return Optional.of(newClubBook);
-        /*
-        } catch (IllegalValueException ive) {
-            logger.info("Illegal values found in " + clubBookFile + ": " + ive.getMessage());
-            throw new DataConversionException(ive);
-        }
-        */
+        return CsvFileStorage.readClubBook(importFile);
     }
 
     public void saveData(String data) throws IOException {

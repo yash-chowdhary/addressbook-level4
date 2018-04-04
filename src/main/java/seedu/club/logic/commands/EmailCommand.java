@@ -7,6 +7,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_SUBJECT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.email.Body;
@@ -23,6 +26,9 @@ import seedu.club.model.tag.exceptions.TagNotFoundException;
 public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "mail")
+    );
     public static final String COMMAND_FORMAT = "email [g/ ] [t/ ] c/ [s/ ] [b/ ]";
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) "

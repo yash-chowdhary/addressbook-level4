@@ -9,6 +9,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -22,6 +25,9 @@ import seedu.club.model.member.exceptions.MemberListNotEmptyException;
  */
 public class SignUpCommand extends Command {
     public static final String COMMAND_WORD = "signup";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "register", "enroll")
+    );
 
     public static final String COMMAND_FORMAT = "login n/ p/ e/ m/ [pic/ ] ";
 
@@ -29,7 +35,7 @@ public class SignUpCommand extends Command {
     public static final String MESSAGE_FAILURE =
             "Club Connect already has members of the club."
             + " Log in to start using Club Connect.";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + "Sign up for Club Connect."
+    public static final String MESSAGE_USAGE = "Sign up for Club Connect."
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
