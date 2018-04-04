@@ -198,8 +198,6 @@ public class CommandTestUtil {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         ClubBook expectedClubBook = new ClubBook(actualModel.getClubBook());
-        System.out.println("expectedClubBook = " + expectedClubBook);
-        System.out.println("actualModel = " + actualModel.getClubBook());
         List<Member> expectedFilteredList = new ArrayList<>(actualModel.getFilteredMemberList());
 
         try {
@@ -207,8 +205,6 @@ public class CommandTestUtil {
             fail("The expected CommandException was not thrown.");
         } catch (CommandException e) {
             assertEquals(expectedMessage, e.getMessage());
-            System.out.println("expectedClubBook = " + expectedClubBook);
-            System.out.println("actualModel = " + actualModel.getClubBook());
             assertEquals(expectedClubBook, actualModel.getClubBook());
             assertEquals(expectedFilteredList, actualModel.getFilteredMemberList());
         }
