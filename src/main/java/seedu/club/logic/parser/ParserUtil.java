@@ -65,6 +65,7 @@ public class ParserUtil {
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
 
+    //@@author MuhdNurKamal
     /**
      * Parses {@code oneBasedIndex} into a list of {@code Index} and returns it. Leading and trailing
      * whitespaces will be trimmed.
@@ -83,6 +84,7 @@ public class ParserUtil {
         }
         return indexes;
     }
+    //@@author
 
     /**
      * Parses a {@code String name} into a {@code Name}.
