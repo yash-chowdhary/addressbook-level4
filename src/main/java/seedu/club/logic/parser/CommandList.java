@@ -32,6 +32,7 @@ import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
+import seedu.club.logic.commands.VoteCommand;
 
 /**
  * Stores list of commands
@@ -70,6 +71,7 @@ public class CommandList {
         commandList.add(DeletePollCommand.COMMAND_FORMAT);
         commandList.add(ExportCommand.COMMAND_FORMAT);
         commandList.add(LogOutCommand.COMMAND_WORD);
+        commandList.add(VoteCommand.COMMAND_WORD);
 
         Collections.sort(commandList);
         return commandList;

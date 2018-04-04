@@ -69,6 +69,12 @@ public class MemberCard extends UiPart<Region> {
         createTags(member);
     }
 
+    //@@author MuhdNurKamal
+    /**
+     * A constructor to initialize MemberCard using without matricNumber
+     *
+     * @param fxml file configure layout of this MemberCard
+     */
     public MemberCard(Member member, int displayedIndex, String fxml) {
         super(fxml);
         this.member = member;
@@ -79,6 +85,7 @@ public class MemberCard extends UiPart<Region> {
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
     }
+    //@@author
 
     //@@author amrut-prabhu
     /**
