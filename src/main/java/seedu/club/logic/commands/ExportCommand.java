@@ -5,6 +5,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -15,6 +17,9 @@ public class ExportCommand extends Command {
 
     public static final String COMMAND_WORD = "export";
     public static final String COMMAND_FORMAT = "export FILE_PATH";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "exp")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Exports the members' information to the specified CSV file. "

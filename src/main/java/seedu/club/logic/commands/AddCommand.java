@@ -10,6 +10,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
@@ -20,6 +23,9 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "a", "insert")
+    );
     public static final String COMMAND_FORMAT = "add n/ p/ e/ m/ [pic/ ] "
             + "[g/ ] [t/ ]";
 

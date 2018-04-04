@@ -66,107 +66,458 @@ public class ClubBookParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
-        switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
+        if (isAddCommand(commandWord)) {
             return new AddCommandParser().parse(arguments);
-
-        case AddPollCommand.COMMAND_WORD:
+        } else if (isAddPollCommand(commandWord)) {
             return new AddPollCommandParser().parse(arguments);
-
-        case AddTaskCommand.COMMAND_WORD:
+        } else if (isAddTaskCommand(commandWord)) {
             return new AddTaskCommandParser().parse(arguments);
-
-        case AssignTaskCommand.COMMAND_WORD:
+        } else if (isAssignTaskCommand(commandWord)) {
             return new AssignTaskCommandParser().parse(arguments);
-
-        case ChangeProfilePhotoCommand.COMMAND_WORD:
+        } else if (isChangePicCommand(commandWord)) {
             return new ChangeProfilePhotoCommandParser().parse(arguments);
-
-        case ClearCommand.COMMAND_WORD:
+        } else if (isClearCommand(commandWord)) {
             return new ClearCommand();
-
-        case CompressCommand.COMMAND_WORD:
+        } else if (isCompressCommand(commandWord)) {
             return new CompressCommand();
-
-        case DecompressCommand.COMMAND_WORD:
+        } else if (isDecompressCommand(commandWord)) {
             return new DecompressCommand();
-
-        case DeleteCommand.COMMAND_WORD:
+        } else if (isDeleteCommand(commandWord)) {
             return new DeleteCommandParser().parse(arguments);
-
-        case DeletePollCommand.COMMAND_WORD:
+        } else if (isDeletePollCommand(commandWord)) {
             return new DeletePollCommandParser().parse(arguments);
-
-        case DeleteTagCommand.COMMAND_WORD:
+        } else if (isDeleteTagCommand(commandWord)) {
             return new DeleteTagCommandParser().parse(arguments);
-
-        case DeleteTaskCommand.COMMAND_WORD:
+        } else if (isDeleteTaskCommand(commandWord)) {
             return new DeleteTaskCommandParser().parse(arguments);
-
-        case EditCommand.COMMAND_WORD:
+        } else if (isEditCommand(commandWord)) {
             return new EditCommandParser().parse(arguments);
-
-        case EmailCommand.COMMAND_WORD:
+        } else if (isEmailCommand(commandWord)) {
             return new EmailCommandParser().parse(arguments);
-
-        case ExitCommand.COMMAND_WORD:
+        } else if (isExitCommand(commandWord)) {
             return new ExitCommand();
-
-        case ExportCommand.COMMAND_WORD:
+        } else if (isExportCommand(commandWord)) {
             return new ExportCommandParser().parse(arguments);
-
-        case ImportCommand.COMMAND_WORD:
+        } else if (isImportCommand(commandWord)) {
             return new ImportCommandParser().parse(arguments);
-
-        case FindCommand.COMMAND_WORD:
+        } else if (isFindCommand(commandWord)) {
             return new FindCommandParser().parse(arguments);
-
-        case HelpCommand.COMMAND_WORD:
+        } else if (isHelpCommand(commandWord)) {
             return new HelpCommand();
-
-        case HideResultsCommand.COMMAND_WORD:
+        } else if (isHideResults(commandWord)) {
             return new HideResultsCommand();
-
-        case HistoryCommand.COMMAND_WORD:
+        } else if (isHistoryCommand(commandWord)) {
             return new HistoryCommand();
-
-        case ListCommand.COMMAND_WORD:
+        } else if (isListCommand(commandWord)) {
             return new ListCommand();
-
-        case LogInCommand.COMMAND_WORD:
+        } else if (isLoginCommand(commandWord)) {
             return new LoginCommandParser().parse(arguments);
-
-        case LogOutCommand.COMMAND_WORD:
+        } else if (isLogoutCommand(commandWord)) {
             return new LogOutCommand();
-
-        case RedoCommand.COMMAND_WORD:
+        } else if (isRedoCommand(commandWord)) {
             return new RedoCommand();
-
-        case RemoveGroupCommand.COMMAND_WORD:
+        } else if (isRemoveGroupCommand(commandWord)) {
             return new RemoveGroupCommandParser().parse(arguments);
-
-        case SelectCommand.COMMAND_WORD:
+        } else if (isSelectCommand(commandWord)) {
             return new SelectCommandParser().parse(arguments);
-
-        case ShowResultsCommand.COMMAND_WORD:
+        } else if (isShowResultsCommand(commandWord)) {
             return new ShowResultsCommand();
-
-        case SignUpCommand.COMMAND_WORD:
+        } else if (isSignUpCommand(commandWord)) {
             return new SignUpCommandParser().parse(arguments);
-
-        case UndoCommand.COMMAND_WORD:
+        } else if (isUndoCommand(commandWord)) {
             return new UndoCommand();
-
-        case ViewAllTasksCommand.COMMAND_WORD:
+        } else if (isViewAllTasksCommand(commandWord)) {
             return new ViewAllTasksCommand();
-
-        case ViewMyTasksCommand.COMMAND_WORD:
+        } else if (isViewMyTasksCommand(commandWord)) {
             return new ViewMyTasksCommand();
-
-        default:
+        } else {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ViewMyTasksCommand's aliases
+     */
+    private boolean isViewMyTasksCommand(String commandWord) {
+        for (String commandAlias : ViewMyTasksCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ViewAllTasksCommand's aliases
+     */
+    private boolean isViewAllTasksCommand(String commandWord) {
+        for (String commandAlias : ViewAllTasksCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of UndoCommand's aliases
+     */
+    private boolean isUndoCommand(String commandWord) {
+        for (String commandAlias : UndoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of SignUpCommand's aliases
+     */
+    private boolean isSignUpCommand(String commandWord) {
+        for (String commandAlias : SignUpCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ShowResultsCommand's aliases
+     */
+    private boolean isShowResultsCommand(String commandWord) {
+        for (String commandAlias : ShowResultsCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of SelectCommand's aliases
+     */
+    private boolean isSelectCommand(String commandWord) {
+        for (String commandAlias : SelectCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of RemoveGroupCommand's aliases
+     */
+    private boolean isRemoveGroupCommand(String commandWord) {
+        for (String commandAlias : RemoveGroupCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of RedoCommand's aliases
+     */
+    private boolean isRedoCommand(String commandWord) {
+        for (String commandAlias : RedoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of LogoutCommand's aliases
+     */
+    private boolean isLogoutCommand(String commandWord) {
+        for (String commandAlias : LogOutCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of LoginCommand's aliases
+     */
+    private boolean isLoginCommand(String commandWord) {
+        for (String commandAlias : LogInCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ListCommand's aliases
+     */
+    private boolean isListCommand(String commandWord) {
+        for (String commandAlias : ListCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of HistoryCommand's aliases
+     */
+    private boolean isHistoryCommand(String commandWord) {
+        for (String commandAlias : HistoryCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of HideResultsCommand's aliases
+     */
+    private boolean isHideResults(String commandWord) {
+        for (String commandAlias : HideResultsCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of HelpCommand's aliases
+     */
+    private boolean isHelpCommand(String commandWord) {
+        for (String commandAlias : HelpCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of FindCommand's aliases
+     */
+    private boolean isFindCommand(String commandWord) {
+        for (String commandAlias : FindCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ImportCommand's aliases
+     */
+    private boolean isImportCommand(String commandWord) {
+        for (String commandAlias : ImportCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ExportCommand's aliases
+     */
+    private boolean isExportCommand(String commandWord) {
+        for (String commandAlias : ExportCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ExitCommand's aliases
+     */
+    private boolean isExitCommand(String commandWord) {
+        for (String commandAlias : ExitCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of EmailCommand's aliases
+     */
+    private boolean isEmailCommand(String commandWord) {
+        for (String commandAlias : EmailCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of EditCommand's aliases
+     */
+    private boolean isEditCommand(String commandWord) {
+        for (String commandAlias : EditCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DeleteTaskCommand's aliases
+     */
+    private boolean isDeleteTaskCommand(String commandWord) {
+        for (String commandAlias : DeleteTaskCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DeleteTagCommand's aliases
+     */
+    private boolean isDeleteTagCommand(String commandWord) {
+        for (String commandAlias : DeleteTagCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DeletePollCommand's aliases
+     */
+    private boolean isDeletePollCommand(String commandWord) {
+        for (String commandAlias : DeletePollCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DecompressCommand's aliases
+     */
+    private boolean isDeleteCommand(String commandWord) {
+        for (String commandAlias : DeleteCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DecompressCommand's aliases
+     */
+    private boolean isDecompressCommand(String commandWord) {
+        for (String commandAlias : DecompressCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of CompressCommand's aliases
+     */
+    private boolean isCompressCommand(String commandWord) {
+        for (String commandAlias : CompressCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ClearCommand's aliases
+     */
+    private boolean isClearCommand(String commandWord) {
+        for (String commandAlias : ClearCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangeProfilePhotoCommand's aliases
+     */
+    private boolean isChangePicCommand(String commandWord) {
+        for (String commandAlias : ChangeProfilePhotoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AssignTaskCommand's aliases
+     */
+    private boolean isAssignTaskCommand(String commandWord) {
+        for (String commandAlias : AssignTaskCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AddPollCommand's aliases
+     */
+    private boolean isAddTaskCommand(String commandWord) {
+        for (String commandAlias : AddTaskCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AddPollCommand's aliases
+     */
+    private boolean isAddPollCommand(String commandWord) {
+        for (String commandAlias : AddPollCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AddCommand's aliases
+     */
+    private boolean isAddCommand(String commandWord) {
+        for (String commandAlias : AddCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
