@@ -17,14 +17,15 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
-import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
@@ -37,19 +38,33 @@ import seedu.club.testutil.MemberBuilder;
  */
 public class EditCommandTest {
 
-    private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+    }
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         Member editedMember = new MemberBuilder().build();
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
 
-        Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.updateMember(model.getFilteredMemberList().get(0), editedMember);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -57,7 +72,6 @@ public class EditCommandTest {
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         Index indexLastMember = Index.fromOneBased(model.getFilteredMemberList().size());
         Member lastMember = model.getFilteredMemberList().get(indexLastMember.getZeroBased());
 
@@ -71,8 +85,6 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
 
-        Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.updateMember(lastMember, editedMember);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -80,21 +92,16 @@ public class EditCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, new EditMemberDescriptor());
         Member editedMember = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
-
-        Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_filteredList_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Member memberInFilteredList = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
@@ -104,8 +111,6 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
 
-        Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.updateMember(model.getFilteredMemberList().get(0), editedMember);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -113,7 +118,6 @@ public class EditCommandTest {
 
     @Test
     public void execute_duplicateMemberUnfilteredList_failure() {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         Member firstMember = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(firstMember).build();
         EditCommand editCommand = prepareCommand(INDEX_SECOND_MEMBER, descriptor);
@@ -123,7 +127,6 @@ public class EditCommandTest {
 
     @Test
     public void execute_duplicateMemberFilteredList_failure() {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         // edit member in filtered list into a duplicate in club book
@@ -149,7 +152,6 @@ public class EditCommandTest {
      */
     @Test
     public void execute_invalidMemberIndexFilteredList_failure() {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
         Index outOfBoundIndex = INDEX_SECOND_MEMBER;
         // ensures that outOfBoundIndex is still in bounds of club book list
@@ -163,7 +165,6 @@ public class EditCommandTest {
 
     @Test
     public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -171,8 +172,6 @@ public class EditCommandTest {
         Member memberToEdit = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, descriptor);
-        Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         // edit -> first member edited
         editCommand.execute();
@@ -212,15 +211,12 @@ public class EditCommandTest {
      */
     @Test
     public void executeUndoRedo_validIndexFilteredList_sameMemberEdited() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Member editedMember = new MemberBuilder().build();
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, descriptor);
-        Model expectedModel = new ModelManager(new ClubBook(model.getClubBook()), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         showMemberAtIndex(model, INDEX_SECOND_MEMBER);
         Member memberToEdit = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
@@ -239,7 +235,6 @@ public class EditCommandTest {
 
     @Test
     public void equals() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         final EditCommand standardCommand = prepareCommand(INDEX_FIRST_MEMBER, DESC_AMY);
 
         // same values -> returns true

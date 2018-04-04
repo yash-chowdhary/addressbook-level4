@@ -23,8 +23,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.parser.Prefix;
@@ -43,7 +45,20 @@ public class FindCommandTest {
     private static final Prefix[] prefixes = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
         PREFIX_MATRIC_NUMBER, PREFIX_TAG, PREFIX_GROUP};
 
-    private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+    private Model model;
+    private ObservableList<Member> observableList;
+    private Member member;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+    }
 
     @Test
     public void equals_namePrefix() {

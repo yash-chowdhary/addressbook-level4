@@ -12,8 +12,10 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
@@ -28,19 +30,32 @@ import seedu.club.model.member.Member;
  * {@code DeleteCommand}.
  */
 public class DeleteCommandTest {
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
 
-    private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+    }
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
-        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
 
-        ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         expectedModel.deleteMember(memberToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -56,7 +71,6 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
@@ -64,7 +78,6 @@ public class DeleteCommandTest {
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
 
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.deleteMember(memberToDelete);
         showNoMember(expectedModel);
 
@@ -73,7 +86,6 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Index outOfBoundIndex = INDEX_SECOND_MEMBER;
@@ -87,13 +99,11 @@ public class DeleteCommandTest {
 
     @Test
     public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         // delete -> first member deleted

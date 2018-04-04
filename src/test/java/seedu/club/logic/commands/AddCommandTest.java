@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -122,7 +121,7 @@ public class AddCommandTest {
     /**
      * Returns a tag set containing the list of strings given.
      */
-    public static Set<Tag> getTagSet(String... strings) {
+    private static Set<Tag> getTagSet(String... strings) {
         HashSet<Tag> tags = new HashSet<>();
         for (String s : strings) {
             tags.add(new Tag(s));
@@ -332,7 +331,6 @@ public class AddCommandTest {
         //@@author
     }
 
-    //@@author th14thmusician
     /**
      * A Model stub that always accept the member being added.
      */
@@ -349,6 +347,7 @@ public class AddCommandTest {
             membersAdded.add(member);
         }
 
+        //@@author th14thmusician
         @Override
         public ReadOnlyClubBook getClubBook() {
             ClubBook clubBook = new ClubBook();
@@ -364,7 +363,7 @@ public class AddCommandTest {
         public Member getLoggedInMember() {
             return memberStub;
         }
+        //@@author
     }
-    //@@author
 
 }

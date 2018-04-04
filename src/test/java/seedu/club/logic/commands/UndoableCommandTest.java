@@ -7,8 +7,12 @@ import static seedu.club.logic.commands.CommandTestUtil.showMemberAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
+import seedu.club.logic.CommandHistory;
+import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
@@ -17,11 +21,26 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 public class UndoableCommandTest {
-    private final Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-    private final DummyCommand dummyCommand = new DummyCommand(model);
+    private DummyCommand dummyCommand;
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
 
-    private Model expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
-
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        dummyCommand = new DummyCommand(model);
+    }
     @Test
     public void executeUndo() throws Exception {
         model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);

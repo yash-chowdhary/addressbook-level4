@@ -119,7 +119,7 @@ public class AddTaskCommandTest {
     /**
      * Returns a tag set containing the list of strings given.
      */
-    public static Set<Tag> getTagSet(String... strings) {
+    private static Set<Tag> getTagSet(String... strings) {
         HashSet<Tag> tags = new HashSet<>();
         for (String s : strings) {
             tags.add(new Tag(s));

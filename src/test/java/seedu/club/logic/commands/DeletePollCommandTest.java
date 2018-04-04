@@ -12,6 +12,9 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
 import static seedu.club.testutil.TypicalPolls.getTypicalClubBook;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 import seedu.club.commons.core.Messages;
@@ -21,7 +24,14 @@ import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
+import seedu.club.model.group.Group;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.tag.Tag;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -30,15 +40,40 @@ import seedu.club.model.poll.Poll;
 public class DeletePollCommandTest {
 
     private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+    private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+            new Phone("87438807"), new Email("alexyeoh@example.com"),
+            new MatricNumber("A5215090A"), new Group("logistics"),
+            getTagSet("friends")));
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
+        //Commence Sign up and log in command
+        SignUpCommand signUpCommand = new SignUpCommand(memberStub);
+        signUpCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        signUpCommand.execute();
+        LogInCommand logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
+                memberStub.getCredentials().getPassword());
+        logInCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        logInCommand.execute();
+        //end
+
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
         DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
 
         String expectedMessage = String.format(deletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+
+        //Commence Sign up and log in command
+        signUpCommand = new SignUpCommand(memberStub);
+        signUpCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        signUpCommand.execute();
+        logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
+                memberStub.getCredentials().getPassword());
+        logInCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        logInCommand.execute();
+        //end
+
         expectedModel.deletePoll(pollToDelete);
 
         assertCommandSuccess(deletePollCommand, model, expectedMessage, expectedModel);
@@ -54,6 +89,16 @@ public class DeletePollCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
+        //Commence Sign up and log in command
+        SignUpCommand signUpCommand = new SignUpCommand(memberStub);
+        signUpCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        signUpCommand.execute();
+        LogInCommand logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
+                memberStub.getCredentials().getPassword());
+        logInCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        logInCommand.execute();
+        //end
+
         showPollAtIndex(model, INDEX_FIRST_POLL);
 
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
@@ -62,6 +107,17 @@ public class DeletePollCommandTest {
         String expectedMessage = String.format(deletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+
+        //Commence signup and loging command
+        signUpCommand = new SignUpCommand(memberStub);
+        signUpCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        signUpCommand.execute();
+        logInCommand = new LogInCommand(memberStub.getCredentials().getUsername(),
+                memberStub.getCredentials().getPassword());
+        logInCommand.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        logInCommand.execute();
+        //end
+
         expectedModel.deletePoll(pollToDelete);
         showNoPoll(expectedModel);
 
@@ -189,5 +245,17 @@ public class DeletePollCommandTest {
         model.updateFilteredPollList(p -> false);
 
         assertTrue(model.getFilteredPollList().isEmpty());
+    }
+
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    private static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
     }
 }
