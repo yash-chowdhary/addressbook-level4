@@ -35,9 +35,11 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
@@ -424,6 +426,24 @@ public class ModelManager extends ComponentManager implements Model {
         return CsvUtil.toCsvFormat(member);
     }
 
+    //@@author Song Weiyang
+    /**
+     * Changes the password of {@code member} in the clubBook
+      * @param username
+     * @param oldPassword
+     * @param newPassword
+     */
+    public void changePassword (String username, String oldPassword, String newPassword)
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+        clubBook.changePassword(username, oldPassword, newPassword);
+        indicateClubBookChanged();
+    }
+    /*@Override
+    public void importClubConnect(File exportFilePath) {
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+        members.forEach(member -> exportMember(exportFilePath, member));
+        clubBook =
+    }*/
     @Override
     public int importMembers(File importFile) throws IOException {
         CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
