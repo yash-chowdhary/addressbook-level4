@@ -31,7 +31,7 @@ public abstract class GuiUnitTest {
      * @param query name of the CSS selector of the node to retrieve.
      * @throws NodeNotFoundException if no such node exists.
      */
-    protected <T extends Node> T getChildNode(Node rootNode, String query) {
+    protected <T extends Node> T getChildNode(Node rootNode, String query) throws NodeNotFoundException {
         Optional<T> node = guiRobot.from(rootNode).lookup(query).tryQuery();
         return node.orElseThrow(NodeNotFoundException::new);
     }

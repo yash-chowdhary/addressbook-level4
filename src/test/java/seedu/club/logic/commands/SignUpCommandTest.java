@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -29,6 +30,9 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -38,7 +42,6 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.MemberBuilder;
-
 
 
 public class SignUpCommandTest {
@@ -59,10 +62,17 @@ public class SignUpCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
+
     /**
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) throws
+                PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+            fail("This method should not be called.");
+        }
+
         @Override
         public void updateFilteredPollList(Predicate<Poll> predicate) {
             fail("This method should not be called.");
@@ -233,11 +243,13 @@ public class SignUpCommandTest {
             return;
         }
     }
+
     /**
      * A Model stub that always accept the member being added.
      */
     private class ModelStubAcceptingMemberSignUp extends ModelStub {
         private ReadOnlyClubBook clubBook = new ClubBook();
+
         @Override
         public void signUpMember(Member member) {
             requireNonNull(member);

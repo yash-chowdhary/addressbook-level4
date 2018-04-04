@@ -4,6 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
@@ -16,6 +19,9 @@ import seedu.club.model.member.Username;
 public class LogInCommand extends Command {
 
     public static final String COMMAND_WORD = "login";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "signin")
+    );
 
     public static final String COMMAND_FORMAT = "login u/ pw/ ";
 

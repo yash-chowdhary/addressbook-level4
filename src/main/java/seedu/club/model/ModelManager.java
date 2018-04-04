@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
@@ -41,8 +42,11 @@ import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Assignee;
@@ -86,6 +90,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
         updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         updateFilteredTaskList(PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
     }
 
     public ModelManager() {
@@ -130,10 +135,20 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
+    //@@author MuhdNurKamal
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
         clubBook.addPoll(poll);
-        updateFilteredPollList(PREDICATE_SHOW_ALL_POLLS);
+        updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public void voteInPoll(Poll poll, Index answerIndex)
+            throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+        requireAllNonNull(poll, answerIndex);
+
+        clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
         indicateClubBookChanged();
     }
 
@@ -142,6 +157,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
+    //@@author
 
     //@@author Song Weiyang
     @Override
@@ -150,6 +166,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.logInMember(username, password);
         if (getLoggedInMember() != null) {
             updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+            updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
             updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         }
     }
@@ -544,6 +561,8 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTags.setPredicate(predicate);
     }
 
-
-
+    @Override
+    public String toString() {
+        return clubBook.toString() + "\n" + filteredMembers;
+    }
 }

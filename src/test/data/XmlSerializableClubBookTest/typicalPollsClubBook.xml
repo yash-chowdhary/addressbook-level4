@@ -2,6 +2,14 @@
 <!-- ClubBook save file which contains the same member values as in
 {@code TypicalMembers#getTypicalClubBook()}-->
 <clubbook>
+    <members>
+        <name>Alice Pauline</name>
+        <phone>85355255</phone>
+        <email>alice@example.com</email>
+        <matricNumber>A9210701B</matricNumber>
+        <group>logistics</group>
+        <tagged>friends</tagged>
+    </members>
     <polls>
         <question>What are you?</question>
         <pollerMatricNumber>A1111111A</pollerMatricNumber>
