@@ -7,6 +7,9 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 
 /**
@@ -18,6 +21,9 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "f", "search")
+    );
     public static final String COMMAND_FORMAT = "find [n/  ] || [p/  ] || [e/  ] || [m/  ]"
             + " || [g/  ] || [t/  ]";
 

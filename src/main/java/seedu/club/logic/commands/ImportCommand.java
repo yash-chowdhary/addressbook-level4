@@ -5,6 +5,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -15,6 +17,9 @@ public class ImportCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "import";
     public static final String COMMAND_FORMAT = "import FILE_PATH";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "imp")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Imports the members' information from the specified CSV file into Club Connect. "

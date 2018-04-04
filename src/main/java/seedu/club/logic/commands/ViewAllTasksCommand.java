@@ -2,6 +2,9 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
@@ -11,6 +14,9 @@ import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 public class ViewAllTasksCommand extends Command {
 
     public static final String COMMAND_WORD = "viewalltasks";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "alltasks")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Displays all the tasks in the club book";
 

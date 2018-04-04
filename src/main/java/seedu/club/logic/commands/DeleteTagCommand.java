@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -16,6 +17,9 @@ public class DeleteTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "deletetag";
     public static final String COMMAND_FORMAT = "deletetag t/ ";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "deltag", "rmtag")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Removes the tag from all members. "

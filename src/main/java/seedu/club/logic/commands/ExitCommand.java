@@ -1,5 +1,8 @@
 package seedu.club.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ExitAppRequestEvent;
 
@@ -9,6 +12,9 @@ import seedu.club.commons.events.ui.ExitAppRequestEvent;
 public class ExitCommand extends Command {
 
     public static final String COMMAND_WORD = "exit";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "q", "quit")
+    );
 
     public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT = "Exiting Club Connect as requested ...";
 

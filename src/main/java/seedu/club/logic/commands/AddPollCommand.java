@@ -4,6 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -15,6 +18,9 @@ public class AddPollCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addpoll";
     public static final String COMMAND_FORMAT = "addpoll q/ ans/ [ans/...]";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "addp", "poll")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a poll to the club book. "
             + "Parameters: "
