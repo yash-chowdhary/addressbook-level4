@@ -1,5 +1,6 @@
 package seedu.club.model.task;
 //@@author yash-chowdhary
+import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 /**
@@ -22,6 +23,16 @@ public class Task {
         this.assignor = new Assignor("");
         this.assignee = new Assignee("");
         this.status = new Status(Status.NOT_STARTED_STATUS);
+    }
+
+    public Task(Task other) {
+        requireNonNull(other);
+        this.description = other.description;
+        this.time = other.time;
+        this.date = other.date;
+        this.assignor = other.assignor;
+        this.assignee = other.assignee;
+        this.status = other.status;
     }
 
     public Task(Description description, Time time, Date date, Assignor assignor, Assignee assignee,

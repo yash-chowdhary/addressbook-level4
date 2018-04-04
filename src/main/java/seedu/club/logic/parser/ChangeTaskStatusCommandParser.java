@@ -26,7 +26,7 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ChangeTaskStatusCommand.COMMAND_USAGE));
+                    ChangeTaskStatusCommand.MESSAGE_USAGE));
         }
 
         try {

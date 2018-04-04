@@ -42,6 +42,7 @@ import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -326,10 +327,54 @@ public class ModelManagerTest {
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
             modelManager.deleteTask(BOOK_AUDITORIUM);
+        } catch (TaskNotFoundException | TaskCannotBeDeletedException e) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+
+    @Test
+    public void changeTaskStatus_validTask_success() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(AMY).withTask(editedTask).withTask(BUY_CONFETTI)
+                .build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+        try {
+            modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (TaskNotFoundException | DuplicateTaskException e) {
+            fail("This will not be executed");
+        }
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void changeTaskStatus_noChangeToStatus_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            assertEquals(expectedModel, modelManager);
         } catch (TaskNotFoundException tnfe) {
-            assertEquals(expectedModel, modelManager);
-        } catch (TaskCannotBeDeletedException e) {
-            assertEquals(expectedModel, modelManager);
+            fail("This will not be executed");
         }
     }
 

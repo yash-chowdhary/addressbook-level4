@@ -32,7 +32,7 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
     );
     public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX s/STATUS";
 
-    public static final String COMMAND_USAGE = COMMAND_WORD + ": Modifies the status of the task identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Modifies the status of the task identified "
             + "by the index number used in the last task listing. "
             + "The existing status will be overwritten by the input status.\n"
             + "Parameters: INDEX (must be a positive integer) "
@@ -95,5 +95,13 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
         Time time = new Time(taskToEdit.getTime().getTime());
 
         return new Task(description, time, date, assignor, assignee, newStatus);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other == this
+                || (other instanceof ChangeTaskStatusCommand
+                && index.equals(((ChangeTaskStatusCommand) other).index)
+                && newStatus.equals(((ChangeTaskStatusCommand) other).newStatus)));
     }
 }
