@@ -50,7 +50,6 @@ public class DeletePollCommand extends UndoableCommand {
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
         List<Poll> lastShownList = model.getFilteredPollList();
-
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
         }

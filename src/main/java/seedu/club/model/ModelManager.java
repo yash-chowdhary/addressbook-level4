@@ -90,7 +90,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTasks = new FilteredList<>(this.clubBook.getTaskList());
         updateFilteredMemberList(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         updateFilteredTaskList(PREDICATE_NOT_SHOW_ALL_TASKS);
-        updateFilteredPollList(PREDICATE_NOT_SHOW_ALL_POLLS);
+        updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
     }
 
     public ModelManager() {
@@ -559,5 +559,10 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredTagList(Predicate<Tag> predicate) {
         requireNonNull(predicate);
         filteredTags.setPredicate(predicate);
+    }
+
+    @Override
+    public String toString() {
+        return clubBook.toString() + "\n" + filteredMembers;
     }
 }
