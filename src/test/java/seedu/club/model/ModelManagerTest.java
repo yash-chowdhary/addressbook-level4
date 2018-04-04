@@ -334,35 +334,61 @@ public class ModelManagerTest {
 
     @Test
     public void changeTaskStatus_validTask_success() {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withTask(editedTask).withTask(BUY_CONFETTI)
+                .build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (TaskNotFoundException | DuplicateTaskException | IllegalExecutionException e) {
+            assertEquals(expectedModel, modelManager);
+        }
+
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void changeTaskStatus_noChangeToStatus_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         Task taskToEdit = new Task(BUY_FOOD);
         Task editedTask = new Task(taskToEdit);
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(AMY).withTask(editedTask).withTask(BUY_CONFETTI)
-                .build();
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
 
-        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (TaskNotFoundException | DuplicateTaskException e) {
-            fail("This will not be executed");
+        } catch (DuplicateTaskException | IllegalExecutionException | TaskNotFoundException e) {
+            assertEquals(expectedModel, modelManager);
         }
-        assertEquals(expectedModel, modelManager);
     }
 
     @Test
-    public void changeTaskStatus_noChangeToStatus_throwsException() {
+    public void changeTaskStatus_invalidPermission_throwsException() {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         Task taskToEdit = new Task(BUY_FOOD);
         Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
@@ -371,9 +397,9 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (DuplicateTaskException dte) {
+        } catch (IllegalExecutionException iee) {
             assertEquals(expectedModel, modelManager);
-        } catch (TaskNotFoundException tnfe) {
+        } catch (TaskNotFoundException | DuplicateTaskException e) {
             fail("This will not be executed");
         }
     }

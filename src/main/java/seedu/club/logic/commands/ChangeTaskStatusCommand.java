@@ -11,6 +11,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Date;
@@ -40,7 +41,8 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_STATUS + "Completed";
 
-    public static final String MESSAGE_TASK_NOT_FOUND = "This task doesn't exist in Club Book";
+    public static final String MESSAGE_INVALID_PERMISSION = "This task's status cannot be updated "
+            + "as you are not the assignee!";
     public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s successfully changed!";
     public static final String MESSAGE_NOT_CHANGED = "Status of task unchanged!";
 
@@ -77,6 +79,8 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
             throw new AssertionError("The target task cannot be missing");
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_NOT_CHANGED);
+        } catch (IllegalExecutionException iee) {
+            throw new CommandException(MESSAGE_INVALID_PERMISSION);
         }
         return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription()));
     }

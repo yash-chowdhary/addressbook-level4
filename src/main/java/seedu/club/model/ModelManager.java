@@ -278,11 +278,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException {
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+        IllegalExecutionException {
         requireAllNonNull(taskToEdit, editedTask);
+        checkIfUserCanModifyTask(taskToEdit);
         clubBook.updateTask(taskToEdit, editedTask);
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
+    }
+
+    private void checkIfUserCanModifyTask(Task task) throws IllegalExecutionException {
+        if (!getLoggedInMember().getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee())) {
+            throw new IllegalExecutionException();
+        }
     }
     //@@author
 
