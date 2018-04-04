@@ -135,9 +135,23 @@ public class ClubBookParser {
             return new ViewAllTasksCommand();
         } else if (isViewMyTasksCommand(commandWord)) {
             return new ViewMyTasksCommand();
+        } else if (isVoteCommand(commandWord)) {
+            return new VoteCommandParser().parse(arguments);
         } else {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of VoteCommand's aliases
+     */
+    private boolean isVoteCommand(String commandWord) {
+        for (String commandAlias : VoteCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
