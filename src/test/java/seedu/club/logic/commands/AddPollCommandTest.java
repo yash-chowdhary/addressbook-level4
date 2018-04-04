@@ -9,6 +9,8 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
@@ -31,8 +33,11 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
 import seedu.club.model.member.exceptions.DuplicateMemberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
@@ -114,6 +119,17 @@ public class AddPollCommandTest {
         return command;
     }
 
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    public static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
+    }
     /**
      * A default model stub that have all of the methods failing.
      */
@@ -286,15 +302,33 @@ public class AddPollCommandTest {
      * A Model stub that always throw a DuplicatePollException when trying to add a poll.
      */
     private class ModelStubThrowingDuplicatePollException extends ModelStub {
+        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends")));
+
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
             throw new DuplicatePollException();
         }
 
+        //@@author th14thmusician
         @Override
         public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMemberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
         }
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+        //@@author
     }
 
     /**
@@ -302,17 +336,33 @@ public class AddPollCommandTest {
      */
     private class ModelStubAcceptingPollAdded extends ModelStub {
         private final ArrayList<Poll> pollsAdded = new ArrayList<>();
-
+        private final Member memberStub = new Member(new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends")));
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
             requireNonNull(poll);
             pollsAdded.add(poll);
         }
 
+        //@@author th14thmusician
         @Override
         public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMemberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
         }
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+        //@@author
     }
 
 }
