@@ -412,7 +412,7 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public void changePassword (String username, String oldpassword, String newPassword)
             throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
-        members.changPassword(username, oldpassword, newPassword);
+        members.changePassword(username, oldpassword, newPassword);
     }
     //@@author
 

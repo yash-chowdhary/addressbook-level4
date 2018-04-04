@@ -193,7 +193,7 @@ public class UniqueMemberList implements Iterable<Member> {
     /**
      * Changes the password of a member
      */
-    public void changPassword (String username, String oldPassword, String newPassword)
+    public void changePassword (String username, String oldPassword, String newPassword)
             throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMember {
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (!checkMember.equals(currentlyLogInMember)) {
