@@ -5,12 +5,12 @@ import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
-import javafx.collections.ObservableList;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
