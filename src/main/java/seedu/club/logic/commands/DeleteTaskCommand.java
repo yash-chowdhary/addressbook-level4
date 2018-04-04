@@ -45,6 +45,11 @@ public class DeleteTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(taskToDelete);
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.deleteTask(taskToDelete);
         } catch (TaskNotFoundException tnfe) {
             throw new CommandException(MESSAGE_TASK_NOT_FOUND);

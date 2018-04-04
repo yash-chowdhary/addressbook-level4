@@ -2,6 +2,7 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.model.ClubBook;
 
 /**
@@ -16,6 +17,11 @@ public class ClearCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() {
         requireNonNull(model);
+        if (requireToSignUp()) {
+            return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+        } else if (requireToLogIn()) {
+            return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+        }
         model.resetData(new ClubBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }

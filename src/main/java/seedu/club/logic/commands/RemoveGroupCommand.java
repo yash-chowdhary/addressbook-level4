@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
@@ -38,6 +39,11 @@ public class RemoveGroupCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.removeGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
         } catch (GroupNotFoundException gnfe) {

@@ -1,6 +1,7 @@
 package seedu.club.logic.commands;
 
 import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 
 /**
@@ -15,6 +16,11 @@ public class DecompressCommand extends Command {
     @Override
     public CommandResult execute() {
         EventsCenter.getInstance().post(new DecompressMembersRequestEvent());
+        if (requireToSignUp()) {
+            return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+        } else if (requireToLogIn()) {
+            return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+        }
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

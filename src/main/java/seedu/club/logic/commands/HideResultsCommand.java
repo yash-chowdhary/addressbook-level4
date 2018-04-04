@@ -1,6 +1,7 @@
 package seedu.club.logic.commands;
 
 import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
 
 /**
@@ -14,6 +15,11 @@ public class HideResultsCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        if (requireToSignUp()) {
+            return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+        } else if (requireToLogIn()) {
+            return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+        }
         EventsCenter.getInstance().post(new HideResultsRequestEvent());
         return new CommandResult(MESSAGE_SUCCESS);
     }

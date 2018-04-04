@@ -6,6 +6,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.File;
 import java.io.IOException;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
@@ -37,6 +38,11 @@ public class ExportCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            if (requireToSignUp()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
+            } else if (requireToLogIn()) {
+                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+            }
             model.exportClubConnectMembers(exportFile);
             return new CommandResult(String.format(MESSAGE_EXPORT_SUCCESS, exportFile));
         } catch (IOException ioe) {
