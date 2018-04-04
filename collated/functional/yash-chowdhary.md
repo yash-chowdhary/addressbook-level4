@@ -1075,6 +1075,15 @@ public class Group {
     }
 }
 ```
+###### \java\seedu\club\model\Model.java
+``` java
+    void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
+
+    String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
+
+    void sendEmail(String recipients, Client client, Subject subject, Body body);
+
+```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
     @Override
@@ -1084,6 +1093,7 @@ public class Group {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java

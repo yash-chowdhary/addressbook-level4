@@ -141,8 +141,6 @@ import java.io.IOException;
  */
 public class PhotoWriteException extends IOException {
 
-    public PhotoWriteException() {}
-
     public PhotoWriteException(String message) {
         super(message);
     }
@@ -585,6 +583,77 @@ public class ChangeProfilePhotoCommand extends Command {
     }
 }
 ```
+###### \java\seedu\club\logic\commands\DeleteTagCommand.java
+``` java
+package seedu.club.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.tag.Tag;
+import seedu.club.model.tag.exceptions.TagNotFoundException;
+
+/**
+ * Removes a tag from all members in the club book.
+ */
+public class DeleteTagCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "deletetag";
+    public static final String COMMAND_FORMAT = "deletetag t/ ";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Removes the tag from all members. "
+            + "Parameters: TAG (must be an existing tag)\n"
+            + "Example: " + COMMAND_WORD + " t/treasurer";
+
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Tag Removed: %1$s";
+    public static final String MESSAGE_NON_EXISTENT_TAG = "The tag name provided does not exist";
+
+    private Tag tagToDelete;
+
+    public DeleteTagCommand(Tag tagToDelete) {
+        this.tagToDelete = tagToDelete;
+    }
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(tagToDelete);
+
+        try {
+            model.deleteTag(tagToDelete);
+            return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
+        } catch (TagNotFoundException tnfe) {
+            throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
+        }
+    }
+
+    @Override
+    protected void preprocessUndoableCommand() throws CommandException {
+        List<Tag> lastShownList = model.getFilteredTagList();
+
+        if (!getMasterTagList().contains(tagToDelete)) {
+            throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
+        }
+
+        int targetIndex = lastShownList.indexOf(tagToDelete);
+        tagToDelete = lastShownList.get(targetIndex);
+    }
+
+    private List<Tag> getMasterTagList() {
+        return new ArrayList<>(model.getClubBook().getTagList());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DeleteTagCommand // instanceof handles nulls
+                && this.tagToDelete.equals(((DeleteTagCommand) other).tagToDelete));
+    }
+}
+```
 ###### \java\seedu\club\logic\commands\ExportCommand.java
 ``` java
 package seedu.club.logic.commands;
@@ -732,8 +801,61 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
 
         return new ChangeProfilePhotoCommand(new ProfilePhoto(path));
     }
-}
 
+}
+```
+###### \java\seedu\club\logic\parser\DeleteTagCommandParser.java
+``` java
+package seedu.club.logic.parser;
+
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.club.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
+
+import java.util.stream.Stream;
+
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.DeleteTagCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.tag.Tag;
+
+/**
+ * Parses input arguments and creates a new DeleteTagCommand object
+ */
+public class DeleteTagCommandParser implements Parser<DeleteTagCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the DeleteTagCommand
+     * and returns an DeleteTagCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public DeleteTagCommand parse(String args) throws ParseException {
+        ArgumentMultimap argumentMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_TAG);
+
+        if (!arePrefixesPresent(argumentMultimap, PREFIX_TAG)
+                || !argumentMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteTagCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            Tag tag = ParserUtil.parseTag(argumentMultimap.getValue(PREFIX_TAG).get());
+            return new DeleteTagCommand(tag);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(
+                    String.format(MESSAGE_TAG_CONSTRAINTS, DeleteTagCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty values in the given
+     * {@code ArgumentMultimap}
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+}
 ```
 ###### \java\seedu\club\logic\parser\ExportCommandParser.java
 ``` java
@@ -826,15 +948,6 @@ public class ImportCommandParser implements Parser<ImportCommand> {
     }
 
     /**
-     * Parses a {@code Optional<String> photo} into an {@code Optional<ProfilePhoto>} if {@code photo} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<ProfilePhoto> parseProfilePhoto(Optional<String> photo) throws IllegalValueException {
-        requireNonNull(photo);
-        return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
-    }
-
-    /**
      * Parses a {@code path} into a {@code File}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -899,6 +1012,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         String fileExtension = path.substring(length - 4);
         return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
     }
+
 ```
 ###### \java\seedu\club\model\ClubBook.java
 ``` java
@@ -929,9 +1043,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         }
         return true;
     }
-```
-###### \java\seedu\club\model\ClubBook.java
-``` java
+
     /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
      *
@@ -992,6 +1104,65 @@ public class ImportCommandParser implements Parser<ImportCommand> {
                     + "See member#equals(Object).");
         }
     }
+
+```
+###### \java\seedu\club\model\member\Member.java
+``` java
+    private final HashMap<String, Tag> tags;
+    private ProfilePhoto profilePhoto;
+    private final String emptyString = "";
+```
+###### \java\seedu\club\model\member\Member.java
+``` java
+
+    /**
+     * Adds {@code memberTags} to {@code this} member's {@code tags}.
+     *
+     * @param memberTags Tags to be added to {@code this} member.
+     */
+    private void setTags(Set<Tag> memberTags) {
+        Iterator itr = memberTags.iterator();
+
+        while (itr.hasNext()) {
+            Tag tag = (Tag) itr.next();
+            tags.put(tag.tagName, tag);
+        }
+    }
+
+    /**
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Tag> getTags() {
+        Set<Tag> memberTags = new HashSet<Tag>();
+
+        Set<String> tagNames = tags.keySet();
+        Iterator itr = tagNames.iterator();
+
+        while (itr.hasNext()) {
+            String key = (String) itr.next();
+            memberTags.add(tags.get(key));
+        }
+
+        return Collections.unmodifiableSet(memberTags);
+    }
+
+    public boolean hasTag(Tag tag) {
+        return getTags().contains(tag);
+    }
+
+    public ProfilePhoto getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(ProfilePhoto profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public void setProfilePhotoPath(String newPath) {
+        profilePhoto.setNewPhotoPath(newPath);
+    }
+
 ```
 ###### \java\seedu\club\model\member\ProfilePhoto.java
 ``` java
@@ -1008,24 +1179,10 @@ public class ProfilePhoto {
 
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
-
-    /*
-     * The first character of the club must be a single alphabet. It is followed by ":", then "\\",
-     * a directory whose name consists of alphabets and/or digits, followed by a "." and the file type.
-     */
     public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
-    //Matches C:/Users/Amrut Prabhu/Desktop/My Timetable (1).png
-    //https://www.freeformatter.com/java-regex-tester.html#ad-output
     public static final String DEFAULT_PHOTO_NAME = "default";
 
     private String profilePhotoPath;
-
-    /**
-     * Constructs a {@code ProfilePhoto}.
-     */
-    public ProfilePhoto() {
-        this(ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY + DEFAULT_PHOTO_NAME + ProfilePhotoStorage.PHOTO_FILE_EXTENSION);
-    }
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -1036,7 +1193,6 @@ public class ProfilePhoto {
         //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
-
 
     /**
      * Returns true if a given string is a valid photo path.
@@ -1109,6 +1265,16 @@ public class ProfilePhoto {
      * @throws IOException if there was an error reading from file.
      */
     int importMembers(File importFile) throws IOException;
+
+    /** Returns an unmodifiable view of the filtered tag list */
+    ObservableList<Tag> getFilteredTagList();
+
+    /**
+     * Updates the filter of the filtered tag list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredTagList(Predicate<Tag> predicate);
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -1134,6 +1300,7 @@ public class ProfilePhoto {
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -1143,9 +1310,28 @@ public class ProfilePhoto {
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
+    @Override
+    public int importMembers(File importFile) throws IOException {
+        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
+        UniqueMemberList importedMembers = storage.readClubBook();
+        int numberMembers = 0;
+
+        for (Member member: importedMembers) {
+            try {
+                clubBook.addMember(member);
+                numberMembers++;
+            } catch (DuplicateMemberException dme) {
+                logger.info("DuplicateMemberException encountered due to " + member);
+            }
+        }
+        indicateClubBookChanged();
+        return numberMembers;
+    }
+
     @Override
     public void exportClubConnectMembers(File exportFile) throws IOException {
         requireNonNull(exportFile);
@@ -1224,23 +1410,35 @@ public class ProfilePhoto {
         return CsvUtil.toCsvFormat(member);
     }
 
-    @Override
-    public int importMembers(File importFile) throws IOException {
-        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
-        UniqueMemberList importedMembers = storage.readClubBook();
-        int numberMembers = 0;
+```
+###### \java\seedu\club\model\ModelManager.java
+``` java
+    //=========== Filtered Tag List Accessors =============================================================
 
-        for (Member member: importedMembers) {
-            try {
-                clubBook.addMember(member);
-                numberMembers++;
-            } catch (DuplicateMemberException dme) {
-                logger.info("DuplicateMemberException encountered due to " + member);
-            }
-        }
-        indicateClubBookChanged();
-        return numberMembers;
+    /**
+     * Returns an unmodifiable view of the list of {@code Tag} backed by the internal list of
+     * {@code clubBook}
+     */
+    @Override
+    public ObservableList<Tag> getFilteredTagList() {
+        return FXCollections.unmodifiableObservableList(filteredTags);
     }
+
+    @Override
+    public void updateFilteredTagList(Predicate<Tag> predicate) {
+        requireNonNull(predicate);
+        filteredTags.setPredicate(predicate);
+    }
+
+```
+###### \java\seedu\club\model\tag\exceptions\TagNotFoundException.java
+``` java
+package seedu.club.model.tag.exceptions;
+
+/**
+ * Signals that the operation is unable to find the specified tag.
+ */
+public class TagNotFoundException extends Exception {}
 ```
 ###### \java\seedu\club\storage\CsvClubBookStorage.java
 ``` java
@@ -1535,6 +1733,14 @@ public class ProfilePhotoStorage implements  PhotoStorage {
 ```
 ###### \java\seedu\club\ui\MemberCard.java
 ``` java
+    private static final Integer PHOTO_WIDTH = 90;
+    private static final Integer PHOTO_HEIGHT = 120;
+    private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
+    private static final String EMPTY_STRING = "";
+
+```
+###### \java\seedu\club\ui\MemberCard.java
+``` java
     /**
      * Sets the profile photo of {@code member} to the displayed photo shape.
      */
@@ -1542,28 +1748,31 @@ public class ProfilePhotoStorage implements  PhotoStorage {
         Image photo;
         String photoPath = member.getProfilePhoto().getProfilePhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH),
-                    PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
+                    false, true);
         } else {
             try {
                 InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
                 photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
             } catch (NullPointerException npe) {
                 //Different path (instead of DEFAULT_PHOTO_PATH) used for testing purposes: indicates exception
-                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO_PATH),
-                        PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+                photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
+                        false, true);
             }
         }
         profilePhoto.setImage(photo);
     }
+
 ```
 ###### \resources\view\CompressedMemberListCard.fxml
 ``` fxml
-  <ImageView fx:id="profilePhoto" fitWidth="57" fitHeight="75">
-    <HBox.margin>
-      <Insets left="5" bottom="2.5" right="5.0" top="2.5" />
-    </HBox.margin>
-  </ImageView>
+  <HBox alignment="CENTER_LEFT">
+    <ImageView fx:id="profilePhoto" fitWidth="57" fitHeight="75">
+      <HBox.margin>
+        <Insets left="5" bottom="2.5" right="5.0" top="2.5" />
+      </HBox.margin>
+    </ImageView>
+  </HBox>
 ```
 ###### \resources\view\MemberListCard.fxml
 ``` fxml
