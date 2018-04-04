@@ -28,5 +28,5 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
 
         return new ChangeProfilePhotoCommand(new ProfilePhoto(path));
     }
-}
 
+}

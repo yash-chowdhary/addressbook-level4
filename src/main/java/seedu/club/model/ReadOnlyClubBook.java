@@ -43,8 +43,4 @@ public interface ReadOnlyClubBook {
 
     void setTasks(Set<Task> tasks);
 
-    /**
-     * Returns true if tag is present in the tags list.
-     */
-    //boolean containsTag(Tag tag);
 }

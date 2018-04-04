@@ -21,7 +21,6 @@
     </ImageView>
   </HBox>
   <!--@@author-->
-
   <GridPane HBox.hgrow="ALWAYS">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
