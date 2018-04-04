@@ -2,6 +2,8 @@ package seedu.club.logic.commands;
 //@@author MuhdNurKamal
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +21,10 @@ import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 public class VoteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "vote";
-    public static final String COMMAND_FORMAT = "edit POLL_INDEX ANWER_INDEX";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD + "vpoll")
+    );
+    public static final String COMMAND_FORMAT = "vote POLL_INDEX ANWER_INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Votes in the poll identified "
             + "by the index number used in the last poll listing. \n"

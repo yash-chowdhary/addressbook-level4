@@ -80,11 +80,13 @@ image::help-window.png[height="450"]
 === Viewing help : `help`
 
 Opens the Club Connect help window (see <<help-window,Figure 2>>). +
-[format] : `help`
+Format : `help` +
+Aliases : `h`, `info`
 
 === Signing up a member: `signup`
 Signs up a member to Club Connect. +
-Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...`
+Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
+Alias: `register` +
 [TIP]
 A member can have any number of tags (including 0).
 
@@ -95,14 +97,16 @@ A member can have any number of tags (including 0).
 
 === Logging in a member: `login`
 Logs in a member to Club Connect. +
-Format: `login u/USERNAME pw/PASSWORD`
+Format: `login u/USERNAME pw/PASSWORD` +
+Alias: `signin`
 
 Example: `login u/JohnDoe pw/pass1234`
 
 === Adding a member: `add`
 
 Adds a member to Club Connect. +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [g/GROUP] [t/TAG]...`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [g/GROUP] [t/TAG]...` +
+Aliases: `a`, `insert` +
 
 [TIP]
 A member can have any number of tags (including 0).
@@ -120,12 +124,14 @@ Examples:
 === Listing all members : `list`
 
 Shows a list of all members in Club Connect. +
-Format: `list`
+Format: `list` +
+Alias: `l`
 
 === Editing a member : `edit`
 
 Edits the details of an existing member in Club Connect. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
+Aliases: `e`, `update`
 
 ****
 * Edits the member at the specified `INDEX`. The index refers to the index number shown in the last member listing. The index *must be a positive integer* 1, 2, 3, ...
@@ -150,6 +156,7 @@ Edits the group of the 3rd member to be `finance`.
 
 Finds members whose names contain any of the given keywords. +
 Format: `find [PREFIX] KEYWORD [MORE_KEYWORDS]` +
+Aliases: `f`, `search` +
 Allowed `PREFIX`: +
 n/ = `NAME` +
 p/ = `PHONE NUMBER` +
@@ -181,7 +188,8 @@ Returns any member having phone number containing 123.
 === Deleting a member : `delete`
 
 Deletes the specified member from the address book. +
-Format: `delete INDEX`
+Format: `delete INDEX` +
+Aliases: `del`, `rm`, `remove`
 
 ****
 * Deletes the member at the specified `INDEX`.
@@ -201,8 +209,8 @@ Deletes the 1st member in the results of the `find` command.
 === Deleting a group : `removegroup`
 
 Deletes the specified group from the address book. +
-Format: `removegroup g/GROUP`
-
+Format: `removegroup g/GROUP` +
+Aliases: `rmgroup`, `delgroup`
 ****
 * Deletes the specified group from the addressbook.
 * Once the group is deleted, all members who were part of the group will be assigned to the default group `member`.
@@ -220,7 +228,8 @@ Deletes the `logistics` group in the address book.
 
 
 Deletes the specified tag for all members in the Club Connect. +
-Format: `deletetag t/TAG`
+Format: `deletetag t/TAG` +
+Aliases: `rmtag`, `deltag`
 
 ****
 * Deletes the specified tag from Club Connect.
@@ -232,10 +241,11 @@ Examples:
 * `deletetag t/treasurer` +
 Deletes the `treasurer` tag for all members tagged with `treasurer` in Club Connect.
 
-=== Emailing club members belonging to a particular group or tag: `email`
+=== Emailing club members: `email`
 
 Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
-Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]`
+Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
+Alias: `mail`
 
 [NOTE]
 ClubConnect currently only supports GMail and Outlook mail clients.
@@ -260,7 +270,8 @@ Opens up the Compose Message page of Outlook with blank `Subject` and `Body` fie
 === Selecting a member : `select`
 
 Selects the member identified by the index number used in the most recent member listing. +
-Format: `select INDEX`
+Format: `select INDEX` +
+Aliases: `s`, `show`
 
 ****
 * Selects the member and loads the Google search page the member at the specified `INDEX`.
@@ -280,7 +291,8 @@ Selects the 1st member in the results of the `find` command.
 === Adding a poll: `addpoll`
 
 Adds a poll to Club Connect. +
-Format: `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...`
+Format: `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
+Aliases: `addp`, `poll`
 
 ****
 * A poll must have 1 question.
@@ -297,7 +309,8 @@ Adds a poll asking where the annual meeting should be held. Answers for the poll
 === Deleting a poll : `deletepoll`
 
 Deletes the specified poll from the Club Connect. +
-Format: `deletepoll INDEX`
+Format: `deletepoll INDEX` +
+Aliases: `rmpoll`, `delpoll`
 
 ****
 * Deletes the poll at the specified `INDEX`.
@@ -313,7 +326,8 @@ Deletes the 2nd poll in the poll listing.
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo.
-Format: 'changepic PHOTO_PATH`
+Format: 'changepic PHOTO_PATH` +
+Aliases: `pic`, `profilepic`
 
 ****
 * PHOTO_PATH must be an absolute path to the photo.
@@ -333,7 +347,8 @@ Changes your profile picture to the "CathyRay.png" image in your Downloads folde
 === Exporting Club Connect data: `export` (Since v1.3)
 
 Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
-Format: 'export CSV_FILE_PATH`
+Format: 'export CSV_FILE_PATH` +
+Alias: `exp`
 
 ****
 * CSV_FILE_PATH must be an absolute path to the photo.
@@ -353,7 +368,9 @@ Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
 === Compressing member details : `compress` (Since v1.2)
 
 Compresses the details of members in the contact list +
-Format: `compress`
+Format: `compress` +
+Alias: `comp`
+
 
 ****
 * No changes if member details are already compressed
@@ -368,7 +385,8 @@ Compresses member details.
 === Decompressing member details : `decompress` (Since v1.2)
 
 Decompresses the details of members in the contact list +
-Format: `decompress`
+Format: `decompress` +
+Alias: `decomp`
 
 ****
 * No changes if member details are already decompressed
@@ -383,7 +401,8 @@ Decompresses member details.
 === Listing entered commands : `history`
 
 Lists all the commands that you have entered in reverse chronological order. +
-Format: `history`
+Format: `history` +
+Alias: `his`
 
 [NOTE]
 ====
@@ -394,7 +413,8 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 === Undoing previous command : `undo`
 
 Restores Club Connect to the state before the previous _undoable_ command was executed. +
-Format: `undo`
+Format: `undo` +
+Alias: `u`
 
 [NOTE]
 ====
@@ -420,7 +440,8 @@ The `undo` command fails as there are no undoable commands executed previously.
 === Redoing the previously undone command : `redo`
 
 Reverses the most recent `undo` command. +
-Format: `redo`
+Format: `redo` +
+Alias: `r`
 
 Examples:
 
@@ -461,17 +482,20 @@ The changepassword command will change the old password, password, to the new pa
 === Clearing all entries : `clear`
 
 Clears all entries from Club Connect. +
-Format: `clear`
+Format: `clear` +
+Aliases: `c`, `erase`
 
 === Exiting the application : `logout`
 
 Logouts out the user from Club Connect. +
-Format: `logout`
+Format: `logout` +
+Alias: `signout`
 
 === Exiting the application : `exit`
 
 Exits the Club Connect application. +
-Format: `exit`
+Format: `exit` +
+Aliases: `q`, `quit`
 
 === Saving the data
 
