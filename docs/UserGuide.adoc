@@ -177,8 +177,8 @@ Changes the password of the member with username `A0123456H` to `pword`.
 
 === Changing your profile photo : `changepic` (Since v1.2)
 
-Changes the photo displayed on your profile to the specified photo.
-Format: 'changepic PHOTO_PATH` +
+Changes the photo displayed on your profile to the specified photo. +
+Format: `changepic PHOTO_PATH` +
 Aliases: `pic`, `profilepic`
 
 ****
@@ -195,6 +195,32 @@ Examples:
 Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+
+=== Changing the status of your task : `changetaskstatus` (Since v1.5rc)
+
+Changes the status of a task in Club Connect. +
+Format: `changetaskstatus INDEX st/STATUS` +
+Alias: `status`
+
+****
+* `INDEX` *must be a positive integer* 1, 2, 3, ...
+* The `STATUS` can be one of ```Yet To Begin```, ```In Progress```, and ```Completed```.
+* You can only change the status of a task that you have been assigned.
+* Club Connect detects if there is no change in the `STATUS`.
+****
+
+[TIP]
+Tasks are color-coded by task status: +
+[red]#Yet To Begin# +
+[yellow]#In Progress# +
+[green]#Completed#
+
+Examples:
+
+* `changetaskstatus 1 st/In Progress` +
+Changes the status of the 1st task to `In Progress` in the task listing.
+* `status 3 st/Completed` +
+Changes the status of the 3rd task to `Completed` in the task listing.
 
 === Clearing all entries : `clear`
 
