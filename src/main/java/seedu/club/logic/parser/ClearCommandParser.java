@@ -3,6 +3,7 @@ package seedu.club.logic.parser;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
+//@@author th14thmusician
 /**
  * Parses input arguments and creates a new ClearCommand object
  */
@@ -19,3 +20,4 @@ public class ClearCommandParser implements Parser<ClearCommand> {
         }
     }
 }
+//@@author

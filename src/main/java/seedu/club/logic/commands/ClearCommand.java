@@ -8,7 +8,7 @@ import java.util.Arrays;
 import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
-
+//@@author th14thmusician
 /**
  * Clears the club book.
  */
@@ -58,3 +58,4 @@ public class ClearCommand extends Command {
         }
     }
 }
+//@@author
