@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 
@@ -19,6 +20,8 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_CONFRIMATION = "Confirm clearing all data in Club Connect?"
             + " Type 'clear Y' to confirm and 'clear N' to cancel."
             + " \nWARNING: THIS IS NOT A UNDOABLE COMMAND";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " "
+            + "Y/N";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "c", "erase")
     );
@@ -40,13 +43,17 @@ public class ClearCommand extends Command {
             model.setClearConfirmation(true);
             return new CommandResult(MESSAGE_CONFRIMATION);
         } else {
-            if (args.equals(" Y")) {
-                model.resetData(new ClubBook());
-                model.clearClubBook();
-                return new CommandResult(MESSAGE_SUCCESS);
-            } else {
-                model.setClearConfirmation(false);
-                return new CommandResult(MESSAGE_FAILURE);
+            try {
+                if (args.equals(" Y")) {
+                    model.resetData(new ClubBook());
+                    model.clearClubBook();
+                    return new CommandResult(MESSAGE_SUCCESS);
+                } else {
+                    model.setClearConfirmation(false);
+                    return new CommandResult(MESSAGE_FAILURE);
+                }
+            } catch (NullPointerException e) {
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, COMMAND_FORMAT));
             }
         }
     }
