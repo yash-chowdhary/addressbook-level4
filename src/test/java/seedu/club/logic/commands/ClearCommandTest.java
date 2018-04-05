@@ -1,5 +1,6 @@
 package seedu.club.logic.commands;
 
+import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
@@ -10,6 +11,7 @@ import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
@@ -21,7 +23,7 @@ public class ClearCommandTest {
     private Member member;
 
     @Before
-    public void setUp() {
+    public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
         member = observableList.get(0);
@@ -34,7 +36,7 @@ public class ClearCommandTest {
     @Test
     public void execute_emptyClubBook_success() {
         Model emptyModel = new ModelManager();
-        assertCommandSuccess(prepareCommand(emptyModel), emptyModel, Messages.MESSAGE_REQUIRE_SIGN_UP, emptyModel);
+        assertCommandFailure(prepareCommand(emptyModel), emptyModel, Messages.MESSAGE_REQUIRE_SIGN_UP);
     }
 
     @Test

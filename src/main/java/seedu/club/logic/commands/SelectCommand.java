@@ -37,11 +37,8 @@ public class SelectCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        if (requireToSignUp()) {
-            return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-        } else if (requireToLogIn()) {
-            return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-        }
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
@@ -43,11 +42,8 @@ public class ExportCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
-            if (requireToSignUp()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-            } else if (requireToLogIn()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-            }
+            requireToSignUp();
+            requireToLogIn();
             model.exportClubConnectMembers(exportFile);
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -42,11 +41,8 @@ public class DeleteTagCommand extends UndoableCommand {
         requireNonNull(tagToDelete);
 
         try {
-            if (requireToSignUp()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-            } else if (requireToLogIn()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-            }
+            requireToSignUp();
+            requireToLogIn();
             model.deleteTag(tagToDelete);
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {

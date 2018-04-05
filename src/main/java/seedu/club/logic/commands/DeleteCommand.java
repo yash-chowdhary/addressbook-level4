@@ -41,14 +41,11 @@ public class DeleteCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(memberToDelete);
         try {
-            if (requireToSignUp()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-            } else if (requireToLogIn()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-            }
+            requireToSignUp();
+            requireToLogIn();
             model.deleteMember(memberToDelete);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");

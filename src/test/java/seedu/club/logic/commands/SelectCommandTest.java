@@ -38,7 +38,7 @@ public class SelectCommandTest {
     private Member member;
 
     @Before
-    public void setUp() {
+    public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
         member = observableList.get(0);

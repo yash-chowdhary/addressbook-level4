@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import seedu.club.commons.core.Messages;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 
 /**
@@ -32,25 +32,21 @@ public class ClearCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         requireNonNull(model);
-        if (requireToSignUp()) {
-            return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-        } else if (requireToLogIn()) {
-            return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
+        requireToSignUp();
+        requireToLogIn();
+        if (!model.getClearConfirmation()) {
+            model.setClearConfirmation(true);
+            return new CommandResult(MESSAGE_CONFRIMATION);
         } else {
-            if (!model.getClearConfirmation()) {
-                model.setClearConfirmation(true);
-                return new CommandResult(MESSAGE_CONFRIMATION);
+            if (args.equals(" Y")) {
+                model.resetData(new ClubBook());
+                model.clearClubBook();
+                return new CommandResult(MESSAGE_SUCCESS);
             } else {
-                if (args.equals(" Y")) {
-                    model.resetData(new ClubBook());
-                    model.clearClubBook();
-                    return new CommandResult(MESSAGE_SUCCESS);
-                } else {
-                    model.setClearConfirmation(false);
-                    return new CommandResult(MESSAGE_FAILURE + args);
-                }
+                model.setClearConfirmation(false);
+                return new CommandResult(MESSAGE_FAILURE + args);
             }
         }
     }
