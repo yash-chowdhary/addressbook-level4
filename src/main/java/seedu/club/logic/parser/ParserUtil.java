@@ -421,7 +421,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code Collection<String> tags} into a {@code List<Answer>}.
+     * Parses {@code Collection<String> answers} into a {@code List<Answer>}.
      * Removes any duplicates if any
      */
     public static List<Answer> parseAnswers(Collection<String> answers) throws IllegalValueException {

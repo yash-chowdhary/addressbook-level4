@@ -514,6 +514,7 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.signUpMember(member);
         indicateClubBookChanged();
     }
+    //@@author
 
     @Override
     public ObservableList<Poll> getFilteredPollList() {

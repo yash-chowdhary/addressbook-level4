@@ -1,5 +1,5 @@
 package seedu.club.logic.parser;
-
+//@@author MuhdNurKamal
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
@@ -19,7 +19,7 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    private static Prefix[] prefixes = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
+    private static final Prefix[] VALID_SEARCH_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
         PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG};
 
     /**
@@ -40,7 +40,7 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         } else if (findArgs.length > 1) {
-            for (Prefix prefix : prefixes) {
+            for (Prefix prefix : VALID_SEARCH_PREFIXES) {
                 if (findArgs[0].equalsIgnoreCase(prefix.toString())) {
                     return new FindCommand(new FieldContainsKeywordsPredicate(
                             Arrays.asList(findArgs).subList(1, findArgs.length), prefix));

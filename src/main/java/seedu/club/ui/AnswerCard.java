@@ -13,8 +13,8 @@ public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
     private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
-    private final int totalVoteCount;
     private static final String PERCENTAGE_SYMBOL = "%";
+    private final int totalVoteCount;
 
     @FXML
     private Label answerValue;
@@ -60,7 +60,7 @@ public class AnswerCard extends UiPart<Region> {
         double voteFraction = totalVoteCount == 0
                 ? 0 : ((double) voteCount) / totalVoteCount;
         votePercentageBar.setProgress(voteFraction);
-        votePercentage.setText( (Math.round(voteFraction * 1000)) / 10 + PERCENTAGE_SYMBOL);
+        votePercentage.setText((Math.round(voteFraction * 1000)) / 10 + PERCENTAGE_SYMBOL);
     }
 
     @Override

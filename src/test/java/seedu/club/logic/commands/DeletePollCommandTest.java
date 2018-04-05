@@ -1,4 +1,5 @@
 package seedu.club.logic.commands;
+//@@author MuhdNurKamal
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +33,7 @@ import seedu.club.testutil.TypicalPolls;
 public class DeletePollCommandTest {
 
     private static final String ALICE_DEFAULT_PASSWORD = "password";
-    private Model model = new ModelManager(TypicalPolls.getTypicalClubBook(), new UserPrefs());
+    private Model model = new ModelManager(TypicalPolls.getTypicalClubBookWithPolls(), new UserPrefs());
 
     @Before
     public void setUp() {
