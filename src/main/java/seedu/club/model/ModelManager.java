@@ -37,7 +37,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -121,7 +121,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addMember(Member member) throws DuplicateMemberException {
+    public synchronized void addMember(Member member) throws DuplicateMatricNumberException {
         clubBook.addMember(member);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
@@ -129,7 +129,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateMember(Member target, Member editedMember)
-            throws DuplicateMemberException, MemberNotFoundException {
+            throws DuplicateMatricNumberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
         indicateClubBookChanged();
@@ -276,12 +276,29 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    @Override
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+        IllegalExecutionException {
+        requireAllNonNull(taskToEdit, editedTask);
+        checkIfUserCanModifyTask(taskToEdit);
+        clubBook.updateTask(taskToEdit, editedTask);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+    private void checkIfUserCanModifyTask(Task task) throws IllegalExecutionException {
+        if (!getLoggedInMember().getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee())) {
+            throw new IllegalExecutionException();
+        }
+    }
+
     //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
     }
 
+    //@@author yash-chowdhary
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
@@ -370,7 +387,7 @@ public class ModelManager extends ComponentManager implements Model {
             try {
                 clubBook.addMember(member);
                 numberMembers++;
-            } catch (DuplicateMemberException dme) {
+            } catch (DuplicateMatricNumberException dmne) {
                 logger.info("DuplicateMemberException encountered due to " + member);
             }
         }
@@ -520,7 +537,13 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void signUpMember(Member member) throws MemberListNotEmptyException {
         clubBook.signUpMember(member);
+        filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
+    }
+
+    @Override
+    public void clearClubBook() {
+        clubBook.clearClubBook();
     }
 
     @Override

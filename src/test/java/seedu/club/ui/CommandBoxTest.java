@@ -1,6 +1,7 @@
 package seedu.club.ui;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import java.util.ArrayList;
 
@@ -8,14 +9,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import guitests.guihandles.CommandBoxHandle;
+import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
+import seedu.club.logic.CommandHistory;
 import seedu.club.logic.Logic;
 import seedu.club.logic.LogicManager;
+import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ListCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
+import seedu.club.model.UserPrefs;
+import seedu.club.model.member.Member;
 
 public class CommandBoxTest extends GuiUnitTest {
 
@@ -33,8 +41,14 @@ public class CommandBoxTest extends GuiUnitTest {
     private CommandBoxHandle commandBoxHandle;
 
     @Before
-    public void setUp() {
-        Model model = new ModelManager();
+    public void setUp() throws CommandException {
+        Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        ObservableList<Member> observableList = model.getClubBook().getMemberList();
+        Member member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
         Logic logic = new LogicManager(model);
 
         CommandBox commandBox = new CommandBox(logic);

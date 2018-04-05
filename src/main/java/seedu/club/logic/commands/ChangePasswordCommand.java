@@ -51,6 +51,8 @@ public class ChangePasswordCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.changePassword(username.value, oldPassword.value, newPassword.value);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (PasswordIncorrectException e) {

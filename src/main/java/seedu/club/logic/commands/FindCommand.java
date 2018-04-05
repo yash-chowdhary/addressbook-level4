@@ -10,6 +10,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.FieldContainsKeywordsPredicate;
 
 /**
@@ -49,7 +50,9 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         model.updateFilteredMemberList(predicate);
         return new CommandResult(getMessageForMemberListShownSummary(model.getFilteredMemberList().size()));
     }

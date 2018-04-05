@@ -41,6 +41,8 @@ public class DeleteTagCommand extends UndoableCommand {
         requireNonNull(tagToDelete);
 
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.deleteTag(tagToDelete);
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
@@ -50,6 +52,8 @@ public class DeleteTagCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Tag> lastShownList = model.getFilteredTagList();
 
         if (!getMasterTagList().contains(tagToDelete)) {

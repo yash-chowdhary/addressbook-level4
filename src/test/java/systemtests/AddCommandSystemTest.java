@@ -31,7 +31,13 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
@@ -42,10 +48,13 @@ import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.AddCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.member.Email;
@@ -53,16 +62,23 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.tag.Tag;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
 
 public class AddCommandSystemTest extends ClubBookSystemTest {
-
+    private ObservableList<Member> observableList;
+    private Member member;
     @Test
     public void add() throws Exception {
         Model model = getModel();
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        String logInCommand = LogInCommand.COMMAND_WORD + " "
+                + PREFIX_USERNAME + member.getCredentials().getUsername().value + " "
+                + PREFIX_PASSWORD + member.getCredentials().getPassword().value;
+        executeCommand(logInCommand);
 
         /* ------------------------ Perform add operations on the shown unfiltered list ----------------------------- */
 
@@ -87,33 +103,31 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
         assertCommandSuccess(command, model, expectedResultMessage);
 
-        /* Case: add a member with all fields same as another member in the club book except name -> added */
+        /* Case: add a member with all fields same as another member in the club book except name -> rejected */
         toAdd = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_BOB + PASSWORD_DESC;
-        assertCommandSuccess(command, toAdd);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
-        /* Case: add a member with all fields same as another member in the club book except phone -> added */
+        /* Case: add a member with all fields same as another member in the club book except phone -> rejected */
         toAdd = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
-        assertCommandSuccess(command, toAdd);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
-        /* Case: add a member with all fields same as another member in the club book except email -> added */
+        /* Case: add a member with all fields same as another member in the club book except email -> rejected */
         toAdd = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_BOB)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_AMY
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
-        assertCommandSuccess(command, toAdd);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
-        /* Case: add a member with all fields same as another member in the club book
-         * except matric number -> added
-         */
+        /* Case: add a member with all fields same as another member in the club book except matric number -> added */
         toAdd = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_AMY)
                 .withTags(VALID_TAG_FRIEND).build();
@@ -123,6 +137,18 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: add to empty club book -> added */
         deleteAllMembers();
+        String signUpCommand = SignUpCommand.COMMAND_WORD + " "
+                + PREFIX_NAME + "John Doe "
+                + PREFIX_PHONE + "98765432 "
+                + PREFIX_EMAIL + "johnd@example.com "
+                + PREFIX_MATRIC_NUMBER + "A0123456H "
+                + PREFIX_TAG + "friends "
+                + PREFIX_TAG + "owesMoney ";
+        executeCommand(signUpCommand);
+        logInCommand = LogInCommand.COMMAND_WORD + " "
+                + PREFIX_USERNAME + "A0123456H" + " "
+                + PREFIX_PASSWORD + "password";
+        executeCommand(logInCommand);
         assertCommandSuccess(ALICE);
 
         /* Case: add a member with tags, command with parameters in random order -> added */
@@ -150,14 +176,14 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: add a duplicate member -> rejected */
         command = MemberUtil.getAddCommand(HOON);
-        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         /* Case: add a duplicate member except with different tags -> rejected */
         // "friends" is an existing tag used in the default model, see TypicalMembers#ALICE
         // This test will fail if a new tag that is not in the model is used, see the bug documented in
         // ClubBook#addMember(member)
         command = MemberUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "friends";
-        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         /* Case: missing name -> rejected */
         command = AddCommand.COMMAND_WORD + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY;
@@ -232,7 +258,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         Model expectedModel = getModel();
         try {
             expectedModel.addMember(toAdd);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dmne) {
             throw new IllegalArgumentException("toAdd already exists in the model.");
         }
         String expectedResultMessage = String.format(AddCommand.MESSAGE_SUCCESS, toAdd);

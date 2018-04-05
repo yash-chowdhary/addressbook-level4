@@ -10,6 +10,7 @@ public class Status {
     public static final String NOT_STARTED_STATUS = "Yet To Begin";
     public static final String IN_PROGRESS_STATUS = "In Progress";
     public static final String COMPLETED_STATUS = "Completed";
+    public static final String MESSAGE_INVALID_STATUS = "Invalid status entered!";
 
     private String status;
 
@@ -32,5 +33,14 @@ public class Status {
         return other == this        //short circuit if same object
                 || (other instanceof Status   //handles nulls
                 && this.status.equalsIgnoreCase(((Status) other).status));    //state check
+    }
+
+    /**
+     * Checks if the given status {@code test} is a valid status
+     */
+    public static boolean isValidStatus(String test) {
+        return test.equalsIgnoreCase(NOT_STARTED_STATUS)
+                || test.equalsIgnoreCase(IN_PROGRESS_STATUS)
+                || test.equalsIgnoreCase(COMPLETED_STATUS);
     }
 }

@@ -41,9 +41,11 @@ public class DeletePollCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(pollToDelete);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.deletePoll(pollToDelete);
         } catch (PollNotFoundException pnfe) {
             throw new AssertionError("The target poll cannot be missing");
@@ -54,6 +56,8 @@ public class DeletePollCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Poll> lastShownList = model.getFilteredPollList();
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);

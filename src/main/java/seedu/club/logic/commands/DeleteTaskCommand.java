@@ -50,6 +50,8 @@ public class DeleteTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(taskToDelete);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.deleteTask(taskToDelete);
         } catch (TaskNotFoundException tnfe) {
             throw new CommandException(MESSAGE_TASK_NOT_FOUND);
@@ -63,6 +65,8 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

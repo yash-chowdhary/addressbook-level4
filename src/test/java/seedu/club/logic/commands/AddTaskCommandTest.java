@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
@@ -34,9 +36,12 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.Phone;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -115,11 +120,29 @@ public class AddTaskCommandTest {
     }
 
     /**
+     * Returns a tag set containing the list of strings given.
+     */
+    private static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
+    }
+
+    /**
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
         @Override
         public void voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -163,13 +186,13 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called");
             return;
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException,
+        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
                 MemberNotFoundException {
             fail("This method should not be called");
             return;
@@ -308,21 +331,45 @@ public class AddTaskCommandTest {
             fail("This method should not be called");
             return;
         }
+
+        @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
     }
 
     /**
      * A Model stub that always throw a DuplicateTaskException when trying to add a task.
      */
     private class ModelStubThrowingDuplicateTaskException extends ModelStub {
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends"));
+
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             throw new DuplicateTaskException();
         }
 
+        //@@author th14thmusician
         @Override
         public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
         }
+
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+        //@@author
     }
 
     /**
@@ -330,16 +377,33 @@ public class AddTaskCommandTest {
      */
     private class ModelStubAcceptingTaskAdded extends ModelStub {
         final ArrayList<Task> tasksAdded = new ArrayList<>();
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends"));
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             requireNonNull(toAdd);
             tasksAdded.add(toAdd);
         }
-
+        //@@author th14thmusician
         @Override
         public ReadOnlyClubBook getClubBook() {
-            return new ClubBook();
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
         }
+
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+        //@@author
     }
 }

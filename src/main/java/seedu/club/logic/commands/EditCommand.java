@@ -30,7 +30,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 
@@ -61,7 +61,8 @@ public class EditCommand extends UndoableCommand {
 
     public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book.";
+    public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "
+            + "exists in Club Connect.";
 
     private final Index index;
     private final EditMemberDescriptor editMemberDescriptor;
@@ -84,9 +85,11 @@ public class EditCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.updateMember(memberToEdit, editedMember);
-        } catch (DuplicateMemberException dme) {
-            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
+        } catch (DuplicateMatricNumberException dmne) {
+            throw new CommandException(MESSAGE_DUPLICATE_MATRIC_NUMBER);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
@@ -96,6 +99,8 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (index.getZeroBased() >= lastShownList.size()) {

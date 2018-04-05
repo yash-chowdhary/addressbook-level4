@@ -10,8 +10,8 @@ import static seedu.club.logic.commands.CommandTestUtil.showPollAtIndex;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
 import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalPolls.getTypicalClubBookWithPolls;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import seedu.club.commons.core.Messages;
@@ -23,7 +23,6 @@ import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
-import seedu.club.testutil.TypicalPolls;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -31,31 +30,30 @@ import seedu.club.testutil.TypicalPolls;
  */
 public class DeletePollCommandTest {
 
-    private static final String ALICE_DEFAULT_PASSWORD = "password";
-    private Model model = new ModelManager(TypicalPolls.getTypicalClubBook(), new UserPrefs());
-
-    @Before
-    public void setUp() {
-        model.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
-        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
-    }
+    private Model model = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
         DeletePollCommand deletePollCommand = prepareCommand(INDEX_FIRST_POLL);
 
         String expectedMessage = String.format(DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
-        ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
+        Model expectedModel = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        expectedModel.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
         expectedModel.deletePoll(pollToDelete);
-
         assertCommandSuccess(deletePollCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPollList().size() + 1);
         DeletePollCommand deletePollCommand = prepareCommand(outOfBoundIndex);
 
@@ -64,6 +62,9 @@ public class DeletePollCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
         showPollAtIndex(model, INDEX_FIRST_POLL);
 
         Poll pollToDelete = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
@@ -71,16 +72,19 @@ public class DeletePollCommandTest {
 
         String expectedMessage = String.format(DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
+        Model expectedModel = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        expectedModel.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
         expectedModel.deletePoll(pollToDelete);
-        showNoPoll(expectedModel);
-
         assertCommandSuccess(deletePollCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
         showPollAtIndex(model, INDEX_FIRST_POLL);
 
         Index outOfBoundIndex = INDEX_SECOND_POLL;
@@ -94,6 +98,8 @@ public class DeletePollCommandTest {
 
     @Test
     public void executeUndoRedo_invalidIndexUnfilteredList_failure() {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -110,6 +116,8 @@ public class DeletePollCommandTest {
 
     @Test
     public void equals() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         DeletePollCommand deleteFirstCommand = prepareCommand(INDEX_FIRST_POLL);
         DeletePollCommand deleteSecondCommand = prepareCommand(INDEX_SECOND_POLL);
 
