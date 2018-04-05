@@ -28,7 +28,6 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -176,8 +175,8 @@ public class AssignTaskCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -359,7 +358,7 @@ public class AssignTaskCommandTest {
     private class ModelStubThrowingDuplicateTaskException extends ModelStub {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("A5215090A"), new Group("logistics"),
+                new MatricNumber("A5215090A"), new Group("exco"),
                 getTagSet("friends"));
 
         @Override
@@ -392,7 +391,7 @@ public class AssignTaskCommandTest {
     private class ModelStubThrowingMemberNotFoundException extends ModelStub {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("A5215090A"), new Group("logistics"),
+                new MatricNumber("A5215090A"), new Group("exco"),
                 getTagSet("friends"));
 
         @Override
@@ -426,7 +425,7 @@ public class AssignTaskCommandTest {
         final ArrayList<Task> tasksAdded = new ArrayList<>();
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("A5215090A"), new Group("logistics"),
+                new MatricNumber("A5215090A"), new Group("exco"),
                 getTagSet("friends"));
 
         @Override

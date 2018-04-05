@@ -1,7 +1,6 @@
 package systemtests;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_PERMISSIONS;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.CommandTestUtil.EMPTY_STRING;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
@@ -23,6 +22,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
@@ -118,7 +118,7 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
                 + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_CARL;
 
-        assertCommandFailure(command, MESSAGE_INVALID_PERMISSIONS);
+        assertCommandFailure(command, Messages.MESSAGE_REQUIRE_EXCO_LOG_IN);
 
         logoutCommand = " " + LogOutCommand.COMMAND_WORD;
         executeCommand(logoutCommand);
