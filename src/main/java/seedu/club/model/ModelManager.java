@@ -275,12 +275,23 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    @Override
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+            DuplicateTaskException {
+        requireAllNonNull(taskToEdit, editedTask);
+        clubBook.updateTask(taskToEdit, editedTask);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+
     //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
     }
 
+    //@@author yash-chowdhary
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {

@@ -57,6 +57,8 @@ public class DeleteCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

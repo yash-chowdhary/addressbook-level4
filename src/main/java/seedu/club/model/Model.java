@@ -238,4 +238,6 @@ public interface Model {
     void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException;
 
     void viewMyTasks() throws TasksAlreadyListedException;
+
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException;
 }

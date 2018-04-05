@@ -457,6 +457,543 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
     }
 }
 ```
+###### \java\seedu\club\logic\parser\ChangeTaskStatusCommandParser.java
+``` java
+import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_STATUS;
+
+import seedu.club.commons.core.index.Index;
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.ChangeTaskStatusCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.task.Status;
+
+/**
+ * Parses input arguments and creates a new ChangeTaskStatus object
+ */
+public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCommand> {
+
+    @Override
+    public ChangeTaskStatusCommand parse(String args) throws ParseException {
+        requireNonNull(args);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STATUS);
+
+        Index index;
+
+        try {
+            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (IllegalValueException ive) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ChangeTaskStatusCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            Status status = ParserUtil.parseStatus(argMultimap.getValue(PREFIX_STATUS)).get();
+            return new ChangeTaskStatusCommand(index, status);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+    }
+}
+```
+###### \java\seedu\club\logic\parser\ClubBookParser.java
+``` java
+        if (isAddCommand(commandWord)) {
+            return new AddCommandParser().parse(arguments);
+        } else if (isAddPollCommand(commandWord)) {
+            return new AddPollCommandParser().parse(arguments);
+        } else if (isAddTaskCommand(commandWord)) {
+            return new AddTaskCommandParser().parse(arguments);
+        } else if (isAssignTaskCommand(commandWord)) {
+            return new AssignTaskCommandParser().parse(arguments);
+        } else if (isChangePasswordCommand(commandWord)) {
+            return new ChangePasswordCommandParser().parse(arguments);
+        } else if (isChangePicCommand(commandWord)) {
+            return new ChangeProfilePhotoCommandParser().parse(arguments);
+        } else if (isChangeTaskStatusCommand(commandWord)) {
+            return new ChangeTaskStatusCommandParser().parse(arguments);
+        } else if (isClearCommand(commandWord)) {
+            return new ClearCommand();
+        } else if (isCompressCommand(commandWord)) {
+            return new CompressCommand();
+        } else if (isDecompressCommand(commandWord)) {
+            return new DecompressCommand();
+        } else if (isDeleteCommand(commandWord)) {
+            return new DeleteCommandParser().parse(arguments);
+        } else if (isDeletePollCommand(commandWord)) {
+            return new DeletePollCommandParser().parse(arguments);
+        } else if (isDeleteTagCommand(commandWord)) {
+            return new DeleteTagCommandParser().parse(arguments);
+        } else if (isDeleteTaskCommand(commandWord)) {
+            return new DeleteTaskCommandParser().parse(arguments);
+        } else if (isEditCommand(commandWord)) {
+            return new EditCommandParser().parse(arguments);
+        } else if (isEmailCommand(commandWord)) {
+            return new EmailCommandParser().parse(arguments);
+        } else if (isExitCommand(commandWord)) {
+            return new ExitCommand();
+        } else if (isExportCommand(commandWord)) {
+            return new ExportCommandParser().parse(arguments);
+        } else if (isImportCommand(commandWord)) {
+            return new ImportCommandParser().parse(arguments);
+        } else if (isFindCommand(commandWord)) {
+            return new FindCommandParser().parse(arguments);
+        } else if (isHelpCommand(commandWord)) {
+            return new HelpCommand();
+        } else if (isHideResults(commandWord)) {
+            return new HideResultsCommand();
+        } else if (isHistoryCommand(commandWord)) {
+            return new HistoryCommand();
+        } else if (isListCommand(commandWord)) {
+            return new ListCommand();
+        } else if (isLoginCommand(commandWord)) {
+            return new LoginCommandParser().parse(arguments);
+        } else if (isLogoutCommand(commandWord)) {
+            return new LogOutCommand();
+        } else if (isRedoCommand(commandWord)) {
+            return new RedoCommand();
+        } else if (isRemoveGroupCommand(commandWord)) {
+            return new RemoveGroupCommandParser().parse(arguments);
+        } else if (isSelectCommand(commandWord)) {
+            return new SelectCommandParser().parse(arguments);
+        } else if (isShowResultsCommand(commandWord)) {
+            return new ShowResultsCommand();
+        } else if (isSignUpCommand(commandWord)) {
+            return new SignUpCommandParser().parse(arguments);
+        } else if (isUndoCommand(commandWord)) {
+            return new UndoCommand();
+        } else if (isViewAllTasksCommand(commandWord)) {
+            return new ViewAllTasksCommand();
+        } else if (isViewMyTasksCommand(commandWord)) {
+            return new ViewMyTasksCommand();
+        } else if (isVoteCommand(commandWord)) {
+            return new VoteCommandParser().parse(arguments);
+        } else {
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangeTaskStatusCommand's aliases
+     */
+    private boolean isChangeTaskStatusCommand(String commandWord) {
+        for (String commandAlias : ChangeTaskStatusCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of VoteCommand's aliases
+     */
+    private boolean isVoteCommand(String commandWord) {
+        for (String commandAlias : VoteCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangePasswordCommand's aliases
+     */
+    private boolean isChangePasswordCommand(String commandWord) {
+        for (String commandAlias : ChangePasswordCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ViewMyTasksCommand's aliases
+     */
+    private boolean isViewMyTasksCommand(String commandWord) {
+        for (String commandAlias : ViewMyTasksCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ViewAllTasksCommand's aliases
+     */
+    private boolean isViewAllTasksCommand(String commandWord) {
+        for (String commandAlias : ViewAllTasksCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of UndoCommand's aliases
+     */
+    private boolean isUndoCommand(String commandWord) {
+        for (String commandAlias : UndoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of SignUpCommand's aliases
+     */
+    private boolean isSignUpCommand(String commandWord) {
+        for (String commandAlias : SignUpCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ShowResultsCommand's aliases
+     */
+    private boolean isShowResultsCommand(String commandWord) {
+        for (String commandAlias : ShowResultsCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of SelectCommand's aliases
+     */
+    private boolean isSelectCommand(String commandWord) {
+        for (String commandAlias : SelectCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of RemoveGroupCommand's aliases
+     */
+    private boolean isRemoveGroupCommand(String commandWord) {
+        for (String commandAlias : RemoveGroupCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of RedoCommand's aliases
+     */
+    private boolean isRedoCommand(String commandWord) {
+        for (String commandAlias : RedoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of LogoutCommand's aliases
+     */
+    private boolean isLogoutCommand(String commandWord) {
+        for (String commandAlias : LogOutCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of LoginCommand's aliases
+     */
+    private boolean isLoginCommand(String commandWord) {
+        for (String commandAlias : LogInCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ListCommand's aliases
+     */
+    private boolean isListCommand(String commandWord) {
+        for (String commandAlias : ListCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of HistoryCommand's aliases
+     */
+    private boolean isHistoryCommand(String commandWord) {
+        for (String commandAlias : HistoryCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of HideResultsCommand's aliases
+     */
+    private boolean isHideResults(String commandWord) {
+        for (String commandAlias : HideResultsCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of HelpCommand's aliases
+     */
+    private boolean isHelpCommand(String commandWord) {
+        for (String commandAlias : HelpCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of FindCommand's aliases
+     */
+    private boolean isFindCommand(String commandWord) {
+        for (String commandAlias : FindCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ImportCommand's aliases
+     */
+    private boolean isImportCommand(String commandWord) {
+        for (String commandAlias : ImportCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ExportCommand's aliases
+     */
+    private boolean isExportCommand(String commandWord) {
+        for (String commandAlias : ExportCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ExitCommand's aliases
+     */
+    private boolean isExitCommand(String commandWord) {
+        for (String commandAlias : ExitCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of EmailCommand's aliases
+     */
+    private boolean isEmailCommand(String commandWord) {
+        for (String commandAlias : EmailCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of EditCommand's aliases
+     */
+    private boolean isEditCommand(String commandWord) {
+        for (String commandAlias : EditCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DeleteTaskCommand's aliases
+     */
+    private boolean isDeleteTaskCommand(String commandWord) {
+        for (String commandAlias : DeleteTaskCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DeleteTagCommand's aliases
+     */
+    private boolean isDeleteTagCommand(String commandWord) {
+        for (String commandAlias : DeleteTagCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DeletePollCommand's aliases
+     */
+    private boolean isDeletePollCommand(String commandWord) {
+        for (String commandAlias : DeletePollCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DecompressCommand's aliases
+     */
+    private boolean isDeleteCommand(String commandWord) {
+        for (String commandAlias : DeleteCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of DecompressCommand's aliases
+     */
+    private boolean isDecompressCommand(String commandWord) {
+        for (String commandAlias : DecompressCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of CompressCommand's aliases
+     */
+    private boolean isCompressCommand(String commandWord) {
+        for (String commandAlias : CompressCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ClearCommand's aliases
+     */
+    private boolean isClearCommand(String commandWord) {
+        for (String commandAlias : ClearCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangeProfilePhotoCommand's aliases
+     */
+    private boolean isChangePicCommand(String commandWord) {
+        for (String commandAlias : ChangeProfilePhotoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AssignTaskCommand's aliases
+     */
+    private boolean isAssignTaskCommand(String commandWord) {
+        for (String commandAlias : AssignTaskCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AddPollCommand's aliases
+     */
+    private boolean isAddTaskCommand(String commandWord) {
+        for (String commandAlias : AddTaskCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AddPollCommand's aliases
+     */
+    private boolean isAddPollCommand(String commandWord) {
+        for (String commandAlias : AddPollCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of AddCommand's aliases
+     */
+    private boolean isAddCommand(String commandWord) {
+        for (String commandAlias : AddCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+```
 ###### \java\seedu\club\logic\parser\CommandList.java
 ``` java
 import java.util.ArrayList;
@@ -797,6 +1334,29 @@ public class EmailCommandParser implements Parser<EmailCommand> {
         return time.isPresent() ? Optional.of(parseTime(time.get())) : Optional.empty();
     }
 
+    /**
+     * Parses a {@code Optional<String> status} into a {@code Optional<Status>} if {@code status} is present.
+     */
+    public static Optional<Status> parseStatus(Optional<String> status) throws IllegalValueException {
+        requireNonNull(status);
+        return status.isPresent() ? Optional.of(parseStatus(status.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String status} into a {@code Name}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code status} is invalid.
+     */
+    public static Status parseStatus(String status) throws IllegalValueException {
+        requireNonNull(status);
+        String trimmedStatus = status.trim();
+        if (!Status.isValidStatus(trimmedStatus)) {
+            throw new IllegalValueException(Status.MESSAGE_INVALID_STATUS);
+        }
+        return new Status(trimmedStatus);
+    }
+
 ```
 ###### \java\seedu\club\logic\parser\RemoveGroupCommandParser.java
 ``` java
@@ -911,6 +1471,19 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks.setTasks(tasks);
+    }
+```
+###### \java\seedu\club\model\ClubBook.java
+``` java
+    /**
+     * Replaces the given task {@code target} in the list with {@code editedMember}.
+     * @throws DuplicateTaskException if updating the tasks's details causes the task to be equivalent to
+     *                                  another existing task in the list.
+     * @throws TaskNotFoundException if {@code target} could not be found in the list.
+     */
+    public void updateTask(Task taskToEdit, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
+        requireNonNull(editedTask);
+        tasks.setTask(taskToEdit, editedTask);
     }
 ```
 ###### \java\seedu\club\model\email\Body.java
@@ -1124,7 +1697,6 @@ public class Group {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
-
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -1185,6 +1757,100 @@ public class Group {
         raise(new SendEmailRequestEvent(recipients, subject, body, client));
     }
 
+    @Override
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+        IllegalExecutionException {
+        requireAllNonNull(taskToEdit, editedTask);
+        checkIfUserCanModifyTask(taskToEdit);
+        clubBook.updateTask(taskToEdit, editedTask);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+    private void checkIfUserCanModifyTask(Task task) throws IllegalExecutionException {
+        if (!getLoggedInMember().getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee())) {
+            throw new IllegalExecutionException();
+        }
+    }
+```
+###### \java\seedu\club\model\ModelManager.java
+``` java
+    @Override
+    public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+        try {
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
+            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getName().toString());
+            Status status = new Status(Status.NOT_STARTED_STATUS);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
+            clubBook.addTaskToTaskList(toAdd);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+            indicateClubBookChanged();
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    @Override
+    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
+            IllegalExecutionException {
+        if (!clubBook.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+            throw new IllegalExecutionException();
+        }
+        boolean found = false;
+        for (Member member : clubBook.getMemberList()) {
+            if (member.getName().equals(name)) {
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new MemberNotFoundException();
+        }
+        try {
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
+            Assignee assignee = new Assignee(name.toString());
+            Status status = new Status(Status.NOT_STARTED_STATUS);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
+            clubBook.addTaskToTaskList(toAdd);
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+            indicateClubBookChanged();
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    @Override
+    public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
+        Assignor assignor = targetTask.getAssignor();
+        Assignee assignee = targetTask.getAssignee();
+        String currentMember = getLoggedInMember().getName().toString();
+        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
+                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+            throw new TaskCannotBeDeletedException();
+        }
+        clubBook.deleteTask(targetTask);
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+            throw new TasksCannotBeDisplayedException();
+        }
+        updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+        indicateClubBookChanged();
+    }
+
+    @Override
+    public void viewMyTasks() throws TasksAlreadyListedException {
+        if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
+            throw new TasksAlreadyListedException(ViewMyTasksCommand.MESSAGE_ALREADY_LISTED);
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    }
 ```
 ###### \java\seedu\club\model\task\Assignee.java
 ``` java
@@ -1408,6 +2074,7 @@ public class Status {
     public static final String NOT_STARTED_STATUS = "Yet To Begin";
     public static final String IN_PROGRESS_STATUS = "In Progress";
     public static final String COMPLETED_STATUS = "Completed";
+    public static final String MESSAGE_INVALID_STATUS = "Invalid status entered!";
 
     private String status;
 
@@ -1431,10 +2098,20 @@ public class Status {
                 || (other instanceof Status   //handles nulls
                 && this.status.equalsIgnoreCase(((Status) other).status));    //state check
     }
+
+    /**
+     * Checks if the given status {@code test} is a valid status
+     */
+    public static boolean isValidStatus(String test) {
+        return test.equalsIgnoreCase(NOT_STARTED_STATUS)
+                || test.equalsIgnoreCase(IN_PROGRESS_STATUS)
+                || test.equalsIgnoreCase(COMPLETED_STATUS);
+    }
 }
 ```
 ###### \java\seedu\club\model\task\Task.java
 ``` java
+import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 /**
@@ -1457,6 +2134,16 @@ public class Task {
         this.assignor = new Assignor("");
         this.assignee = new Assignee("");
         this.status = new Status(Status.NOT_STARTED_STATUS);
+    }
+
+    public Task(Task other) {
+        requireNonNull(other);
+        this.description = other.description;
+        this.time = other.time;
+        this.date = other.date;
+        this.assignor = other.assignor;
+        this.assignee = other.assignee;
+        this.status = other.status;
     }
 
     public Task(Description description, Time time, Date date, Assignor assignor, Assignee assignee,
@@ -1701,6 +2388,27 @@ public class UniqueTaskList implements Iterable<Task> {
         requireAllNonNull(tasks);
         internalList.setAll(tasks);
         assert CollectionUtil.elementsAreUnique(internalList);
+    }
+
+    /**
+     * Replaces the task {@code target} in the list with {@code editedTask}.
+     *
+     * @throws DuplicateTaskException if the replacement is equivalent to an existing task in the list.
+     * @throws TaskNotFoundException if {@code target} could not be found in the list.
+     */
+    public void setTask(Task target, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
+        requireNonNull(editedTask);
+
+        int index = internalList.indexOf(target);
+        if (index == -1) {
+            throw new TaskNotFoundException();
+        }
+
+        if (internalList.contains(editedTask)) {
+            throw new DuplicateTaskException();
+        }
+
+        internalList.set(index, editedTask);
     }
 
     /**
