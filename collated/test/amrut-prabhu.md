@@ -139,6 +139,12 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
@@ -471,6 +477,12 @@ public class ExportCommandTest {
         public void voteInPoll(Poll poll, Index answerIndex) throws
                 PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
         }
 
         @Override
