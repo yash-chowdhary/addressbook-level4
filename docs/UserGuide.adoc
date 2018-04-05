@@ -71,6 +71,8 @@ image::help-window.png[height="450"]
 [[Features]]
 == Features
 
+This section describes the various features that Club Connect puts at your disposal.
+
 ====
 *Command Format*
 
@@ -107,6 +109,7 @@ Alias: `signin`
 
 Example: `login u/JohnDoe pw/pass1234`
 
+[[add-command]]
 === Adding a member: `add`
 
 Adds a member to Club Connect. +
@@ -118,8 +121,8 @@ A member can have any number of tags (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
 A member will be assigned to the default group `Member` if no group is specified in the command.
-[TIP]
-A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
+[NOTE]
+A group must be non-empty and should only contain alphanumeric characters, without whitespaces.
 
 Examples:
 
@@ -725,9 +728,11 @@ In order to successfully import data of members from the specified file, it has 
 +
 [[csv-format]]
 .Required format of data in the file
-image::CSV_format.png[height="450"]
+image::CSV_format.png[height="350"]
 +
-The columns in the file should be in the same order as shown in the figure above.
+The columns in the import file should be in the same order as shown in the figure above.
+All the tags of a member should be in a single cell, separated by commas (",").
+Also, to successfully import the data of a member, you have to make sure that their details conform to the constraints of the <<add-command,`add` command>>.
 
 == Coming in v2.0
 
