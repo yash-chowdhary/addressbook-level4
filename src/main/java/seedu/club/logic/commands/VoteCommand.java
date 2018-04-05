@@ -22,7 +22,7 @@ public class VoteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "vote";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
-            Arrays.asList(COMMAND_WORD + "vpoll")
+            Arrays.asList(COMMAND_WORD, "vpoll")
     );
     public static final String COMMAND_FORMAT = "vote POLL_INDEX ANWER_INDEX";
 
