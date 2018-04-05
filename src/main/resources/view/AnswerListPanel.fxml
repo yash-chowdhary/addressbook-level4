@@ -2,6 +2,6 @@
 
 <?import javafx.scene.layout.VBox?>
 
-<VBox fillWidth="false" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-  <VBox fx:id="answersPlaceholder" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+<VBox fillWidth="false" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+  <VBox fx:id="answersPlaceholder" maxHeight="1.7976931348623157E308" prefWidth="250.0" VBox.vgrow="ALWAYS" />
 </VBox>
