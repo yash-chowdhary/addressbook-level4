@@ -19,4 +19,5 @@ public class Messages {
             + "privileges";
     public static final String MESSAGE_REQUIRE_LOG_IN = "Please log in to Club Connect.";
     public static final String MESSAGE_REQUIRE_SIGN_UP = "Please sign up to use Club Connect";
+    public static final String MESSAGE_REQUIRE_EXCO_LOG_IN = "Only excos are authorised to execute current command";
 }
