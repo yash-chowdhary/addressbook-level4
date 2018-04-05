@@ -16,7 +16,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 
 import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
@@ -74,7 +74,7 @@ public class SampleDataUtil {
                 sampleCb.addPoll(samplePoll);
             }
             return sampleCb;
-        } catch (DuplicateMemberException e) {
+        } catch (DuplicateMatricNumberException e) {
             throw new AssertionError("sample data cannot contain duplicate members", e);
         } catch (DuplicatePollException e) {
             throw new AssertionError("sample data cannot contain duplicate polls", e);

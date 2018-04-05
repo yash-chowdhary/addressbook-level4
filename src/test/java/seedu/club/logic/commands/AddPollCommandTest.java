@@ -40,7 +40,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -133,6 +133,7 @@ public class AddPollCommandTest {
 
         return tags;
     }
+
     /**
      * A default model stub that have all of the methods failing.
      */
@@ -209,7 +210,7 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -257,7 +258,7 @@ public class AddPollCommandTest {
 
         @Override
         public void updateMember(Member member, Member editedMember)
-                throws DuplicateMemberException {
+                throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -350,11 +351,12 @@ public class AddPollCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;
@@ -371,6 +373,7 @@ public class AddPollCommandTest {
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
                 getTagSet("friends"));
+
         @Override
         public void addPoll(Poll poll) throws DuplicatePollException {
             requireNonNull(poll);
@@ -384,11 +387,12 @@ public class AddPollCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;

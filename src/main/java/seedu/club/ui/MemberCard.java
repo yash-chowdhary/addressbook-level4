@@ -85,7 +85,6 @@ public class MemberCard extends UiPart<Region> {
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
     }
-    //@@author
 
     //@@author amrut-prabhu
     /**

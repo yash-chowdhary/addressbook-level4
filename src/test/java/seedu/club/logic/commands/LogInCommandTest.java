@@ -33,7 +33,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -118,7 +118,7 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -186,7 +186,7 @@ public class LogInCommandTest {
 
         @Override
         public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+                throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -311,11 +311,12 @@ public class LogInCommandTest {
             ClubBook clubBook = new ClubBook();
             try {
                 clubBook.addMember(memberStub);
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;
@@ -359,11 +360,12 @@ public class LogInCommandTest {
             ClubBook clubBook = new ClubBook();
             try {
                 clubBook.addMember(memberStub);
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return null;
