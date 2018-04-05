@@ -26,7 +26,6 @@ import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.logic.commands.ViewMyTasksCommand;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -300,11 +299,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-            IllegalExecutionException {
-        if (!clubBook.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new IllegalExecutionException();
-        }
+    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+            DuplicateTaskException {
         boolean found = false;
         for (Member member : clubBook.getMemberList()) {
             if (member.getName().equals(name)) {
