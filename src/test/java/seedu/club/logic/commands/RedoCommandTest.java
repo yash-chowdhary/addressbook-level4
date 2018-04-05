@@ -14,11 +14,14 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
+import seedu.club.model.member.Member;
 
 public class RedoCommandTest {
     private static final CommandHistory EMPTY_COMMAND_HISTORY = new CommandHistory();
@@ -27,10 +30,21 @@ public class RedoCommandTest {
     private final Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
     private final DeleteCommand deleteCommandOne = new DeleteCommand(INDEX_FIRST_MEMBER);
     private final DeleteCommand deleteCommandTwo = new DeleteCommand(INDEX_SECOND_MEMBER);
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
 
     @Before
-    public void setUp() throws Exception {
-        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
+    public void setUp() throws CommandException {
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
         deleteCommandOne.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_STACK);
         deleteCommandTwo.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_STACK);
         deleteCommandOne.preprocessUndoableCommand();
@@ -39,13 +53,10 @@ public class RedoCommandTest {
 
     @Test
     public void execute() {
-
         UndoRedoStack undoRedoStack = prepareStack(
                 Collections.emptyList(), Arrays.asList(deleteCommandTwo, deleteCommandOne));
         RedoCommand redoCommand = new RedoCommand();
         redoCommand.setData(model, EMPTY_COMMAND_HISTORY, undoRedoStack);
-        Model expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         // multiple commands in redoStack
         deleteFirstMember(expectedModel);

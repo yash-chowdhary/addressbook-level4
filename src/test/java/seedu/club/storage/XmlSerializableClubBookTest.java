@@ -3,6 +3,7 @@ package seedu.club.storage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.testutil.TypicalPolls.getTypicalClubBookWithPolls;
 
 import java.io.File;
 
@@ -15,7 +16,6 @@ import seedu.club.commons.util.FileUtil;
 import seedu.club.commons.util.XmlUtil;
 import seedu.club.model.ClubBook;
 import seedu.club.testutil.TypicalMembers;
-import seedu.club.testutil.TypicalPolls;
 import seedu.club.testutil.TypicalTasks;
 
 public class XmlSerializableClubBookTest {
@@ -71,7 +71,7 @@ public class XmlSerializableClubBookTest {
         XmlSerializableClubBook dataFromFile = XmlUtil.getDataFromFile(TYPICAL_POLLS_FILE,
                 XmlSerializableClubBook.class);
         ClubBook clubBookFromFile = dataFromFile.toModelType();
-        ClubBook typicalPollsClubBook = TypicalPolls.getTypicalClubBook();
+        ClubBook typicalPollsClubBook = getTypicalClubBookWithPolls();
         assertEquals(clubBookFromFile, typicalPollsClubBook);
     }
 
