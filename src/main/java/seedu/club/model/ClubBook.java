@@ -483,5 +483,4 @@ public class ClubBook implements ReadOnlyClubBook {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
     }
-    //@@author
 }

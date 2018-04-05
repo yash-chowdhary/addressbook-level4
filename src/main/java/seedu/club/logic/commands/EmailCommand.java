@@ -71,7 +71,7 @@ public class EmailCommand extends Command {
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);
         } catch (GroupNotFoundException gnfe) {
-            throw new CommandException(MESSAGE_NON_EXISTENT_GROUP);
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, group));
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG);
         }

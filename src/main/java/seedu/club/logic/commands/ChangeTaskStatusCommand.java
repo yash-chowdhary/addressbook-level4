@@ -31,7 +31,7 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "status")
     );
-    public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX s/STATUS";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX " + PREFIX_STATUS + "STATUS";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Modifies the status of the task identified "
             + "by the index number used in the last task listing. "
@@ -42,9 +42,10 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
             + PREFIX_STATUS + "Completed";
 
     public static final String MESSAGE_INVALID_PERMISSION = "This task's status cannot be updated "
-            + "as you are not the assignee!";
-    public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s successfully changed!";
-    public static final String MESSAGE_NOT_CHANGED = "Status of task unchanged!";
+            + "as you are not assigned to the task!";
+    public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s, successfully changed!";
+    public static final String MESSAGE_NOT_CHANGED = "Status of task unchanged as the input status is "
+            + "same as the identified task's status!";
 
     private final Index index;
     private Task taskToEdit;

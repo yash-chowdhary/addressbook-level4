@@ -47,9 +47,9 @@ public class RemoveGroupCommand extends UndoableCommand {
             model.removeGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
         } catch (GroupNotFoundException gnfe) {
-            throw new CommandException(MESSAGE_NON_EXISTENT_GROUP);
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, toRemove));
         } catch (GroupCannotBeRemovedException gcbre) {
-            throw new CommandException(MESSAGE_MANDATORY_GROUP);
+            throw new CommandException(String.format(MESSAGE_MANDATORY_GROUP, toRemove.toString()));
         }
 
     }

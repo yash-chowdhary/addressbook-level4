@@ -8,6 +8,7 @@ import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
+import seedu.club.logic.commands.ChangeTaskStatusCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
@@ -46,6 +47,7 @@ public class CommandList {
         commandList.add(ChangeProfilePhotoCommand.COMMAND_FORMAT);
         commandList.add(ClearCommand.COMMAND_WORD);
         commandList.add(CompressCommand.COMMAND_WORD);
+        commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
         commandList.add(DecompressCommand.COMMAND_WORD);
         commandList.add(DeleteCommand.COMMAND_FORMAT);
         commandList.add(DeleteTagCommand.COMMAND_FORMAT);

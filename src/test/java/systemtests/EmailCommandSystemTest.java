@@ -52,7 +52,7 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         command = "  " + EmailCommand.COMMAND_WORD + "  " + PREFIX_GROUP + NON_EXISTENT_GROUP + " "
                 + PREFIX_CLIENT + VALID_CLIENT + " " + PREFIX_SUBJECT + Subject.TEST_SUBJECT_STRING
                 + " " + PREFIX_BODY + Body.TEST_BODY_STRING;
-        expectedResultMessage = MESSAGE_NON_EXISTENT_GROUP;
+        expectedResultMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP);
         assertCommandFailure(command, expectedResultMessage);
 
         /* Case: valid command entered -> email client opened */

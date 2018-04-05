@@ -116,7 +116,7 @@ public class EmailCommandTest {
 
         EmailCommand emailCommand = prepareCommand(nonExistentGroup, tagToEmail, gmailClient,
                 testSubject, testBody);
-        String expectedMessage = MESSAGE_NON_EXISTENT_GROUP;
+        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
 
         assertCommandFailure(emailCommand, model, expectedMessage);
     }

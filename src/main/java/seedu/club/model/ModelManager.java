@@ -209,7 +209,6 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
-    //@@author
 
     //@@author amrut-prabhu
     @Override
@@ -292,14 +291,12 @@ public class ModelManager extends ComponentManager implements Model {
             throw new IllegalExecutionException();
         }
     }
-    //@@author
 
     //@@author Song Weiyang
     @Override
     public void logOutMember() {
         clubBook.logOutMember();
     }
-    //@@author
 
     //@@author yash-chowdhary
     @Override
@@ -378,7 +375,6 @@ public class ModelManager extends ComponentManager implements Model {
         }
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
-    //@@author
 
     //@@author amrut-prabhu
     @Override

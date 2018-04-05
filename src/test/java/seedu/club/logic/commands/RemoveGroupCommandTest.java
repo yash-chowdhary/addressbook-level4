@@ -54,15 +54,16 @@ public class RemoveGroupCommandTest {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
-        assertCommandFailure(removeGroupCommand, model, MESSAGE_NON_EXISTENT_GROUP);
+        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
+        assertCommandFailure(removeGroupCommand, model, expectedMessage);
     }
 
     @Test
     public void execute_mandatoryGroup_throwsCommandException() {
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
-
-        assertCommandFailure(removeGroupCommand, model, MESSAGE_MANDATORY_GROUP);
+        String expectedMessage = String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString());
+        assertCommandFailure(removeGroupCommand, model, expectedMessage);
     }
 
     @Test
@@ -98,7 +99,8 @@ public class RemoveGroupCommandTest {
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model, MESSAGE_NON_EXISTENT_GROUP);
+        assertCommandFailure(removeGroupCommand, model,
+                String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
@@ -115,7 +117,8 @@ public class RemoveGroupCommandTest {
         RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model, MESSAGE_MANDATORY_GROUP);
+        assertCommandFailure(removeGroupCommand, model,
+                String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
