@@ -33,11 +33,14 @@ public class DeletePollCommandTest {
 
     private static final String ALICE_DEFAULT_PASSWORD = "password";
     private Model model = new ModelManager(TypicalPolls.getTypicalClubBook(), new UserPrefs());
+    private Model expectedModel = new ModelManager(TypicalPolls.getTypicalClubBook(), new UserPrefs());
 
     @Before
     public void setUp() {
         model.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
+        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
+        expectedModel.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
     }
 
     @Test
@@ -47,9 +50,8 @@ public class DeletePollCommandTest {
 
         String expectedMessage = String.format(DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
-        ModelManager expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         expectedModel.deletePoll(pollToDelete);
+        System.out.println(expectedModel.getLoggedInMember());
 
         assertCommandSuccess(deletePollCommand, model, expectedMessage, expectedModel);
     }
@@ -71,8 +73,6 @@ public class DeletePollCommandTest {
 
         String expectedMessage = String.format(DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS, pollToDelete);
 
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
         expectedModel.deletePoll(pollToDelete);
         showNoPoll(expectedModel);
 
