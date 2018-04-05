@@ -231,8 +231,22 @@ Changes the status of the 3rd task to `Completed` in the task listing.
 === Clearing all entries : `clear`
 
 Clears all entries from Club Connect. +
-Format: `clear` +
+Format A: `clear` +
+Format B: `clear LETTER`
 Aliases: `c`, `erase`
+
+****
+* Firstly, execute Clear Command by entering Format A into the command line.
+* A confirmation message will be shown.
+* To confirm clearing all entries from Club Connect, enter Format B into the command line.
+****
+
+Examples:
+
+* `Clear` -> `Clear Y`
+Execute the clear command, and confirming it.
+* `Clear` -> `Clear N`
+Execute the clear command, and cancelling it.
 
 === Compressing member details : `compress` (Since v1.2)
 
