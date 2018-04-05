@@ -336,7 +336,7 @@ Aliases: `e`, `update`
 * Edits the member at the specified `INDEX`. The index refers to the index number shown in the last member listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* You can remove a member from a group by editing the person's group to `member` as it is the default group in Club Connect.
+* You can remove a member from a group by editing the member's group to `member` as it is the default group in Club Connect.
 * You cannot remove a member from a group by typing `g/` without specifying any group after it as GROUP must comply with the requirements of a valid group name.
 * When editing tags, the existing tags of the member will be removed i.e adding of tags is not cumulative.
 * You can remove all the member's tags by typing `t/` without specifying any tags after it.
@@ -423,7 +423,7 @@ t/ = `TAG` +
 * The search is case insensitive. e.g `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
 * Partial matches will be matched e.g. `Han` will match `Hans`.
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
+* Members matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 ****
 
 Examples:
