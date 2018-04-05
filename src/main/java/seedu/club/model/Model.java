@@ -232,6 +232,10 @@ public interface Model {
     void signUpMember(Member member) throws MemberListNotEmptyException;
 
     void clearClubBook();
+
+    boolean getClearConfirmation();
+
+    void setClearConfirmation(Boolean b);
     //@@author
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;

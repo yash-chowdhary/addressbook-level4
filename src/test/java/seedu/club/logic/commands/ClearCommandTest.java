@@ -41,7 +41,7 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyClubBook_success() {
-        assertCommandSuccess(prepareCommand(model), model, ClearCommand.MESSAGE_SUCCESS, model);
+        assertCommandSuccess(prepareCommand(model), model, ClearCommand.MESSAGE_CONFRIMATION, model);
     }
 
     /**

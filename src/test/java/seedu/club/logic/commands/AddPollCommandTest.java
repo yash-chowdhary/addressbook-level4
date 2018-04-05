@@ -204,6 +204,17 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Member> getFilteredMemberList() {
             fail("This method should not be called.");
             return null;

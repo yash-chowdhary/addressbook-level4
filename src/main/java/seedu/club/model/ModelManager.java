@@ -73,6 +73,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<Tag> filteredTags;
     private final FilteredList<Poll> filteredPolls;
     private final FilteredList<Task> filteredTasks;
+    private boolean isConfirmedClear;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -84,6 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with club book: " + clubBook + " and user prefs " + userPrefs);
 
         this.clubBook = new ClubBook(clubBook);
+        isConfirmedClear = false;
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
         filteredPolls = new FilteredList<>(this.clubBook.getPollList());
@@ -544,7 +546,20 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void clearClubBook() {
         clubBook.clearClubBook();
+        setClearConfirmation(false);
+        indicateClubBookChanged();
     }
+
+    @Override
+    public boolean getClearConfirmation() {
+        return isConfirmedClear;
+    }
+
+    @Override
+    public void setClearConfirmation(Boolean b) {
+        isConfirmedClear = b;
+    }
+
 
     @Override
     public ObservableList<Poll> getFilteredPollList() {

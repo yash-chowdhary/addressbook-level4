@@ -29,7 +29,8 @@ public class ClearCommandSystemTest extends ClubBookSystemTest {
         /* Case: clear non-empty club book, command with leading spaces and trailing alphanumeric characters and
          * spaces -> cleared
          */
-        assertCommandSuccess("   " + ClearCommand.COMMAND_WORD + " ab12   ");
+        executeCommand("   " + ClearCommand.COMMAND_WORD + " ab12   ");
+        assertCommandSuccess(ClearCommand.COMMAND_WORD + " Y");
         assertSelectedCardUnchanged();
 
         /* Case: undo clearing club book -> original club book restored */

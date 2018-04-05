@@ -221,8 +221,18 @@ public class AssignTaskCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
-                MemberNotFoundException {
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void updateMember(Member target, Member editedMember) throws MemberNotFoundException {
             fail("This method should not be called");
             return;
         }
