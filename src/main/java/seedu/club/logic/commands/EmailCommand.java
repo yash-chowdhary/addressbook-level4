@@ -1,6 +1,7 @@
 package seedu.club.logic.commands;
 //@@author yash-chowdhary
 
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_BODY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
@@ -69,7 +70,7 @@ public class EmailCommand extends Command {
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);
         } catch (GroupNotFoundException gnfe) {
-            throw new CommandException(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
+            throw new CommandException(MESSAGE_NON_EXISTENT_GROUP);
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG);
         }

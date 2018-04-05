@@ -1,6 +1,8 @@
 package seedu.club.logic.commands;
 //@@author yash-chowdhary
 import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 
 import java.util.ArrayList;
@@ -27,8 +29,6 @@ public class RemoveGroupCommand extends UndoableCommand {
             + PREFIX_GROUP + "GROUP";
 
     public static final String MESSAGE_SUCCESS = "Group deleted from Club Book: %1$s";
-    public static final String MESSAGE_NON_EXISTENT_GROUP = "This group does not exist in the Club Book";
-    public static final String MESSAGE_MANDATORY_GROUP = "This group cannot be deleted as it is a mandatory group.";
 
     private final Group toRemove;
 

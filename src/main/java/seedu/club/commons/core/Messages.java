@@ -11,6 +11,8 @@ public class Messages {
     public static final String MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX = "The member index provided is invalid";
     public static final String MESSAGE_INVALID_TASK_DISPLAYED_INDEX = "The task index provided is invalid";
     public static final String MESSAGE_MEMBERS_LISTED_OVERVIEW = "%1$d members listed!";
+    public static final String MESSAGE_NON_EXISTENT_GROUP = "This group does not exist in the Club Book";
+    public static final String MESSAGE_MANDATORY_GROUP = "This group cannot be deleted as it is a mandatory group.";
     public static final String MESSAGE_INVALID_POLL_DISPLAYED_INDEX = "The poll index provided is invalid";
     public static final String MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX = "The answer index provided is invalid";
     public static final String MESSAGE_INVALID_PHOTO_PATH = "Unable to read profile photo from the path: %1$s";

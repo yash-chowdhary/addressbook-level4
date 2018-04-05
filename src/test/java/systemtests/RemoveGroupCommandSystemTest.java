@@ -1,6 +1,8 @@
 package systemtests;
-
+//@@author yash-chowdhary
 import static org.junit.Assert.assertEquals;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
@@ -9,8 +11,6 @@ import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_MANDATORY_GROUP;
-import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
 
 import org.junit.Test;
