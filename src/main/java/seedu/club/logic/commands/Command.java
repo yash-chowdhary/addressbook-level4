@@ -40,4 +40,22 @@ public abstract class Command {
     public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
         this.model = model;
     }
+
+    /**
+     * Requires user to login before proceeding
+     */
+    protected void requireToLogIn () throws CommandException {
+        if (model.getLoggedInMember() == null) {
+            throw new CommandException(Messages.MESSAGE_REQUIRE_LOG_IN);
+        }
+    }
+
+    /**
+     * Requires user to Sign Up
+     */
+    protected void requireToSignUp () throws CommandException {
+        if (model.getClubBook().getMemberList().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_REQUIRE_SIGN_UP);
+        }
+    }
 }

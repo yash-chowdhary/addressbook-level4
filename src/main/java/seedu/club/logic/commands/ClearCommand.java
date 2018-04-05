@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 
 /**
@@ -20,9 +21,12 @@ public class ClearCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         model.resetData(new ClubBook());
+        model.clearClubBook();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

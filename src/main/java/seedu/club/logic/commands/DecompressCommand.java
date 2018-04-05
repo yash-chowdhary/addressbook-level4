@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
  * Lists all members in the club book to the user.
@@ -19,8 +20,10 @@ public class DecompressCommand extends Command {
 
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         EventsCenter.getInstance().post(new DecompressMembersRequestEvent());
+        requireToSignUp();
+        requireToLogIn();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

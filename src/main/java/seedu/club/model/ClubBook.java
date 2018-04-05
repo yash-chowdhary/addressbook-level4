@@ -431,6 +431,9 @@ public class ClubBook implements ReadOnlyClubBook {
     }
     //@@author
 
+    public void clearClubBook() {
+        members.clear();
+    }
     //// util methods
 
     @Override

@@ -38,7 +38,7 @@ public class TypicalPolls {
     /**
      * Returns an {@code ClubBook} with all the typical polls.
      */
-    public static ClubBook getTypicalClubBook() {
+    public static ClubBook getTypicalClubBookWithPolls() {
         ClubBook ab = new ClubBook();
         for (Poll poll : getTypicalPolls()) {
             try {

@@ -231,6 +231,9 @@ public interface Model {
      */
     void signUpMember(Member member) throws MemberListNotEmptyException;
 
+    void clearClubBook();
+    //@@author
+
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 
     void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
