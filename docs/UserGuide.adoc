@@ -73,6 +73,7 @@ image::help-window.png[height="450"]
 
 This section describes the various features that Club Connect puts at your disposal.
 
+This bubble describes how you should interpret the commands in this user guide.
 ====
 *Command Format*
 
@@ -80,6 +81,15 @@ This section describes the various features that Club Connect puts at your dispo
 * Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/President` or as `n/John Doe`.
 * Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/Treasurer`, `t/Captain t/Goalkeeper` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+====
+
+Here are some things to take note of before you begin using Club Connect.
+====
+*Valid Entries*
+
+* *Names* of members should only contain alphanumeric characters and spaces, and it should not be blank.
+Also, they cannot begin with a space (" ").
+
 ====
 
 === Viewing help : `help`
