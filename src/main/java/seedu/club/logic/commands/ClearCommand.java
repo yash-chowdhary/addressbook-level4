@@ -43,17 +43,15 @@ public class ClearCommand extends Command {
             model.setClearConfirmation(true);
             return new CommandResult(MESSAGE_CONFRIMATION);
         } else {
-            try {
-                if (args.equals(" Y")) {
-                    model.resetData(new ClubBook());
-                    model.clearClubBook();
-                    return new CommandResult(MESSAGE_SUCCESS);
-                } else {
-                    model.setClearConfirmation(false);
-                    return new CommandResult(MESSAGE_FAILURE);
-                }
-            } catch (NullPointerException e) {
-                throw new CommandException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, COMMAND_FORMAT));
+            if (args == null) {
+                return new CommandResult(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, COMMAND_FORMAT));
+            } else if (args.equals(" Y")) {
+                model.resetData(new ClubBook());
+                model.clearClubBook();
+                return new CommandResult(MESSAGE_SUCCESS);
+            } else {
+                model.setClearConfirmation(false);
+                return new CommandResult(MESSAGE_FAILURE);
             }
         }
     }
