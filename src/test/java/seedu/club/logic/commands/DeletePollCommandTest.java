@@ -13,6 +13,7 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalPolls.getTypicalClubBookWithPolls;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import seedu.club.commons.core.Messages;
@@ -32,7 +33,7 @@ import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
 public class DeletePollCommandTest {
 
     private static final String ALICE_DEFAULT_PASSWORD = "password";
-    private Model model = new ModelManager(TypicalPolls.getTypicalClubBookWithPolls(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
 
     @Before
     public void setUp() {
