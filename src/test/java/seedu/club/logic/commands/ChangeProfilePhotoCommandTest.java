@@ -181,6 +181,17 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void addMember(Member member) throws DuplicateMemberException {
             fail("This method should not be called.");
         }

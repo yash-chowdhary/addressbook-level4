@@ -243,6 +243,17 @@ public class SignUpCommandTest {
         }
 
         @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void viewAllTasks() throws TasksCannotBeDisplayedException {
             fail("This method should not be called");
             return;
