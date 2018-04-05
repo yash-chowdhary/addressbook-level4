@@ -28,7 +28,7 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -97,7 +97,7 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -165,7 +165,7 @@ public class LogInCommandTest {
 
         @Override
         public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+                throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 

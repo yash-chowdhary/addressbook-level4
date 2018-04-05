@@ -19,7 +19,7 @@ import java.util.List;
 
 import seedu.club.model.ClubBook;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 
 /**
  * A utility class containing a list of {@code member} objects
@@ -102,7 +102,7 @@ public class TypicalMembers {
         for (Member member : getTypicalMembers()) {
             try {
                 ab.addMember(member);
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 throw new AssertionError("not possible");
             }
         }

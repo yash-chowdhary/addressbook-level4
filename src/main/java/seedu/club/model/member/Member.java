@@ -179,6 +179,7 @@ public class Member {
                 .append(getPhone())
                 .append(" Email: ")
                 .append(getEmail())
+
                 .append(" MatricNumber: ")
                 .append(getMatricNumber())
                 .append(" Group: ")
@@ -188,18 +189,6 @@ public class Member {
         builder.append("Tasks: ");
         getTasks().forEach(builder::append);
         return builder.toString();
-    }
-
-    /**
-     * change the status of the member loggin in
-     */
-
-    public void changeLogInStatus() {
-        if (!isLogIn) {
-            isLogIn = true;
-        } else {
-            isLogIn = false;
-        }
     }
 
     public Credentials getCredentials() {

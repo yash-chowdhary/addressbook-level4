@@ -35,7 +35,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -79,7 +79,7 @@ public class AddCommandTest {
         Member validMember = new MemberBuilder().build();
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         getAddCommandForMember(validMember, modelStub).execute();
     }
@@ -149,7 +149,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -196,7 +196,7 @@ public class AddCommandTest {
 
         @Override
         public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+                throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -306,8 +306,8 @@ public class AddCommandTest {
      */
     private class ModelStubThrowingDuplicateMemberException extends ModelStub {
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            throw new DuplicateMemberException();
+        public void addMember(Member member) throws DuplicateMatricNumberException {
+            throw new DuplicateMatricNumberException();
         }
 
         @Override
@@ -323,7 +323,7 @@ public class AddCommandTest {
         final ArrayList<Member> membersAdded = new ArrayList<>();
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             requireNonNull(member);
             membersAdded.add(member);
         }

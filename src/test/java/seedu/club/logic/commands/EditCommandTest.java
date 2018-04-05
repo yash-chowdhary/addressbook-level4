@@ -118,7 +118,7 @@ public class EditCommandTest {
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(firstMember).build();
         EditCommand editCommand = prepareCommand(INDEX_SECOND_MEMBER, descriptor);
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_MEMBER);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class EditCommandTest {
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER,
                 new EditMemberDescriptorBuilder(memberInList).build());
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_MEMBER);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
     }
 
     @Test
