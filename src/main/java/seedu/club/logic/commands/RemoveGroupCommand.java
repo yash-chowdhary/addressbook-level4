@@ -43,9 +43,9 @@ public class RemoveGroupCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.removeGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
         } catch (GroupNotFoundException gnfe) {

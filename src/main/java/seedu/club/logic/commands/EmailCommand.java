@@ -65,9 +65,9 @@ public class EmailCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             String emailRecipients = model.generateEmailRecipients(group, tag);
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);

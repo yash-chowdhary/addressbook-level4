@@ -60,9 +60,9 @@ public class AssignTaskCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.assignTask(toAdd, name);
             return new CommandResult(String.format(MESSAGE_SUCCESS, name));
         } catch (MemberNotFoundException mnfe) {
