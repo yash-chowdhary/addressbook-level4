@@ -45,6 +45,7 @@ public class DeleteCommand extends UndoableCommand {
         requireNonNull(memberToDelete);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.deleteMember(memberToDelete);
         } catch (MemberNotFoundException mnfe) {

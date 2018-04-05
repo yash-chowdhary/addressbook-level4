@@ -45,6 +45,7 @@ public class DeletePollCommand extends UndoableCommand {
         requireNonNull(pollToDelete);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.deletePoll(pollToDelete);
         } catch (PollNotFoundException pnfe) {

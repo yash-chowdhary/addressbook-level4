@@ -51,6 +51,7 @@ public class AddPollCommand extends UndoableCommand {
         requireNonNull(model);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.addPoll(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));

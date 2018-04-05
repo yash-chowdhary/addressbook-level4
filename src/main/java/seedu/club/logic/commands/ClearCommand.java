@@ -25,6 +25,7 @@ public class ClearCommand extends UndoableCommand {
         requireNonNull(model);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         model.resetData(new ClubBook());
         model.clearClubBook();
         return new CommandResult(MESSAGE_SUCCESS);

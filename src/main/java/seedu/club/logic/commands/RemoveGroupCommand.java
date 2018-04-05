@@ -45,6 +45,7 @@ public class RemoveGroupCommand extends UndoableCommand {
         requireNonNull(model);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.removeGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));

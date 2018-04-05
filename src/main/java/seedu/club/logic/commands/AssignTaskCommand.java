@@ -62,6 +62,7 @@ public class AssignTaskCommand extends UndoableCommand {
         requireNonNull(model);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.assignTask(toAdd, name);
             return new CommandResult(String.format(MESSAGE_SUCCESS, name));

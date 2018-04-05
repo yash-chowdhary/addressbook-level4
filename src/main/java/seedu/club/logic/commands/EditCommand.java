@@ -85,6 +85,7 @@ public class EditCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.updateMember(memberToEdit, editedMember);
         } catch (DuplicateMemberException dme) {

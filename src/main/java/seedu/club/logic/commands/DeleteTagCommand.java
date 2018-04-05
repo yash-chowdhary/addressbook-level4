@@ -41,6 +41,7 @@ public class DeleteTagCommand extends UndoableCommand {
         requireNonNull(tagToDelete);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.deleteTag(tagToDelete);
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));

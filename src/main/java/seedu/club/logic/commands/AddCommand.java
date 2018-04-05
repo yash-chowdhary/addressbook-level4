@@ -67,6 +67,7 @@ public class AddCommand extends UndoableCommand {
         requireNonNull(model);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             model.addMember(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));

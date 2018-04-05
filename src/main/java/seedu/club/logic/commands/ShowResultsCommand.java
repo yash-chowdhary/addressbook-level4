@@ -23,6 +23,7 @@ public class ShowResultsCommand extends Command {
     public CommandResult execute() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         EventsCenter.getInstance().post(new ShowResultsRequestEvent());
         return new CommandResult(MESSAGE_SUCCESS);
     }
