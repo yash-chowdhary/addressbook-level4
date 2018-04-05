@@ -3,27 +3,50 @@ package seedu.club.logic;
 import static org.junit.Assert.assertEquals;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.commands.CommandResult;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
+import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
+import seedu.club.model.member.Member;
 
 
 public class LogicManagerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private Model model = new ModelManager();
-    private Logic logic = new LogicManager(model);
+    private Logic logic;
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
+
+    @Before
+    public void setUp() throws CommandException {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        logic = new LogicManager(model);
+    }
 
     @Test
     public void execute_invalidCommandFormat_throwsParseException() {
@@ -88,7 +111,6 @@ public class LogicManagerTest {
      * @see #assertCommandBehavior(Class, String, String, Model)
      */
     private void assertCommandFailure(String inputCommand, Class<?> expectedException, String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         assertCommandBehavior(expectedException, inputCommand, expectedMessage, expectedModel);
     }
 

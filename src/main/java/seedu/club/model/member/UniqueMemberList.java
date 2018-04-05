@@ -219,4 +219,12 @@ public class UniqueMemberList implements Iterable<Member> {
         usernamePasswordHashMap.put(member.getCredentials().getUsername().value,
                 member.getCredentials().getPassword().value);
     }
+
+    /**
+     * Clears the clubbook
+     */
+    public void clear() {
+        internalList.clear();
+        setCurrentlyLogInMember(null);
+    }
 }

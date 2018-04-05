@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
  * Shows all poll results in the club book to the user.
@@ -19,7 +20,9 @@ public class ShowResultsCommand extends Command {
 
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         EventsCenter.getInstance().post(new ShowResultsRequestEvent());
         return new CommandResult(MESSAGE_SUCCESS);
     }

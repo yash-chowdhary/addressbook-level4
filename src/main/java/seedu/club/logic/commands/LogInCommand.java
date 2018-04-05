@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
@@ -43,8 +44,9 @@ public class LogInCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
         model.logsInMember(username.value, password.value);
         if (model.getLoggedInMember() != null) {
             return new CommandResult(String.format(MESSAGE_SUCCESS, model.getLoggedInMember().getName().toString()));
