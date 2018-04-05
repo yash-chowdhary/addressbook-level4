@@ -38,7 +38,22 @@ public class UniqueMemberList implements Iterable<Member> {
      */
     public boolean contains(Member toCheck) {
         requireNonNull(toCheck);
-        return internalList.contains(toCheck);
+        return containsMatricNumber(toCheck.getMatricNumber());
+    }
+
+    /**
+     * Returns true if {@code internalList} of members contains a member with the same {@code MatricNumber}.
+     *
+     * @param toCheck Matric Number that is to be checked for uniqueness.
+     */
+    private boolean containsMatricNumber(MatricNumber toCheck) {
+        requireNonNull(toCheck);
+        for (Member member: internalList) {
+            if (member.getMatricNumber().equals(toCheck)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -48,7 +63,7 @@ public class UniqueMemberList implements Iterable<Member> {
      */
     public void add(Member toAdd) throws DuplicateMatricNumberException {
         requireNonNull(toAdd);
-        if (contains(toAdd)) {
+        if (this.containsMatricNumber(toAdd.getMatricNumber())) {
             throw new DuplicateMatricNumberException();
         }
         internalList.add(toAdd);
@@ -73,7 +88,8 @@ public class UniqueMemberList implements Iterable<Member> {
             throw new MemberNotFoundException();
         }
 
-        if (!target.equals(editedMember) && internalList.contains(editedMember)) {
+        if (!target.equals(editedMember) && this.containsMatricNumber(editedMember.getMatricNumber())
+                && !target.getMatricNumber().equals(editedMember.getMatricNumber())) {
             throw new DuplicateMatricNumberException();
         }
 

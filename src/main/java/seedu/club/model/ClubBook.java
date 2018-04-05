@@ -114,10 +114,6 @@ public class ClubBook implements ReadOnlyClubBook {
      * @throws DuplicateMatricNumberException if a member with the same matriculation number already exists.
      */
     public void addMember(Member m) throws DuplicateMatricNumberException {
-        //@@author amrut-prabhu
-        if (isNotUniqueMatricNumber(m.getMatricNumber())) {
-            throw new DuplicateMatricNumberException();
-        }
         Member member = syncWithMasterTagList(m);
         try {
             members.add(member);
@@ -125,20 +121,6 @@ public class ClubBook implements ReadOnlyClubBook {
             deleteTagsUniqueToMember(m);
             throw dmne;
         }
-    }
-
-    /**
-     * Returns true if an existing member has the same {@code MatricNumber}.
-     *
-     * @param matricNumber Matric Number that is to be checked for uniqueness.
-     */
-    private boolean isNotUniqueMatricNumber(MatricNumber matricNumber) {
-        for (Member member: members) {
-            if (member.getMatricNumber().equals(matricNumber)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     //@@author MuhdNurKamal
@@ -175,15 +157,15 @@ public class ClubBook implements ReadOnlyClubBook {
         try {
             members.setMember(target, syncedEditedMember);
         } catch (DuplicateMatricNumberException dme) {
-            addTargetMemberTags(target);
+            addMemberTags(target);
             throw new DuplicateMatricNumberException();
         }
     }
 
     /**
-     * Re-adds the tags of {@code target} that were removed from {@code tags}.
+     * Adds back the tags of {@code target} member that were removed from {@code tags}.
      */
-    private void addTargetMemberTags(Member target) {
+    private void addMemberTags(Member target) {
         Set<Tag> allTags = new HashSet<>(tags.asObservableList());
         allTags.addAll(target.getTags());
         tags.setTags(allTags);
