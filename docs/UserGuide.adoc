@@ -31,8 +31,8 @@ Interested? Continue on to <<Quick Start>> to get started.
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
   💡  : Tip +
-`code`: Technical keywords or Commands that can be entered into *Club Connect* +
-kbd:[key]: Key on your keyboard +
+`code`: Commands that can be entered into *Club Connect* or Technical keywords +
+kbd:[key]: Button on your keyboard +
 
 == Quick Start
 
@@ -470,7 +470,7 @@ Alias: `imp`
 
 ****
 * CSV_FILE_PATH must be an absolute path to the CSV file.
-* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
+* The CSV file should organise its data in the format required by the Club Connect application (see <<csv-data-format, CSV file format>>).
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 ****
 
@@ -651,11 +651,6 @@ Encrypting Club Connect's data files ensures that others will not be able to rea
 [TIP]
 To further increase your efficiency while using Club Connect, check out <<Tips>>.
 
-== FAQ
-
-*Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Club Connect folder.
-
 == Command Summary
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER g/GROUP [t/TAG]...` +
@@ -707,20 +702,32 @@ e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
 == Tips
 
-Not satisfied with your productivity while using Club Connect? Can't remember the command names? Here are some tips to fix that:
+Not satisfied with your productivity while using Club Connect?
+Can't remember the command names?
+Here are some tips and tricks:
+
+* *Transferring data to another computer* +
+Install the Club Connect app on the other computer.
+Then, overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
 
 * *Alternative command names*
 If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
 +
 Example: The `changepic` command uses `pic` as an alias.
-So, both commands shown below can be used change your profile picture to the "john_doe.jpg" image on John Doe's Desktop.
-+
+So, both commands shown below can be used change your profile picture to the "john_doe.jpg" image on John Doe's Desktop. +
 `changepic C:/Users/John Doe/Desktop/john_doe.jpg`
 +
 `pic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
-* Lorem Ipsum
-* CSV format for 'import'
+[[csv-data-format]]
+* *CSV format for `import`* +
+In order to successfully import data of members from the specified file, it has to follow the format shown in <<csv-format,Figure 3>>.
++
+[[csv-format]]
+.Required format of data in the file
+image::CSV_format.png[height="450"]
++
+The columns in the file should be in the same order as shown in the figure above.
 
 == Coming in v2.0
 
