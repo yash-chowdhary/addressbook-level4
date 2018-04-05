@@ -12,6 +12,7 @@ import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.ChangePasswordCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
+import seedu.club.logic.commands.ChangeTaskStatusCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.Command;
 import seedu.club.logic.commands.CompressCommand;
@@ -68,6 +69,7 @@ public class ClubBookParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
+        //@@author yash-chowdhary
         if (isAddCommand(commandWord)) {
             return new AddCommandParser().parse(arguments);
         } else if (isAddPollCommand(commandWord)) {
@@ -80,6 +82,8 @@ public class ClubBookParser {
             return new ChangePasswordCommandParser().parse(arguments);
         } else if (isChangePicCommand(commandWord)) {
             return new ChangeProfilePhotoCommandParser().parse(arguments);
+        } else if (isChangeTaskStatusCommand(commandWord)) {
+            return new ChangeTaskStatusCommandParser().parse(arguments);
         } else if (isClearCommand(commandWord)) {
             return new ClearCommandParser().parse(arguments);
         } else if (isCompressCommand(commandWord)) {
@@ -139,6 +143,18 @@ public class ClubBookParser {
         } else {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangeTaskStatusCommand's aliases
+     */
+    private boolean isChangeTaskStatusCommand(String commandWord) {
+        for (String commandAlias : ChangeTaskStatusCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -548,5 +564,5 @@ public class ClubBookParser {
         }
         return false;
     }
-
+    //@@author
 }

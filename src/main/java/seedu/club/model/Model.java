@@ -245,5 +245,6 @@ public interface Model {
 
     void viewMyTasks() throws TasksAlreadyListedException;
 
-
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+            IllegalExecutionException;
 }

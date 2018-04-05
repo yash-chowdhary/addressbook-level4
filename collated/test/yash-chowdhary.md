@@ -92,6 +92,12 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called");
         }
@@ -309,6 +315,162 @@ public class AddTaskCommandTest {
         public ReadOnlyClubBook getClubBook() {
             return new ClubBook();
         }
+    }
+}
+```
+###### \java\seedu\club\logic\commands\ChangeTaskStatusCommandTest.java
+``` java
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
+import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_TASK;
+import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalTasks.getTypicalClubBookWithTasks;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
+import seedu.club.commons.core.index.Index;
+import seedu.club.logic.CommandHistory;
+import seedu.club.logic.UndoRedoStack;
+import seedu.club.model.Model;
+import seedu.club.model.ModelManager;
+import seedu.club.model.UserPrefs;
+import seedu.club.model.member.Member;
+import seedu.club.model.task.Status;
+import seedu.club.model.task.Task;
+
+public class ChangeTaskStatusCommandTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Task> taskList;
+    private ObservableList<Member> memberList;
+    private Member member;
+
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+    }
+
+    @Test
+    public void constructor_nullTask_throwsNullPointerException() {
+        thrown.expect(NullPointerException.class);
+        new AssignTaskCommand(null, null);
+    }
+
+    @Test
+    public void execute_taskAccepted_changeSuccessful() throws Exception {
+        Task taskToEdit = model.getFilteredTaskList().get(INDEX_FIRST_TASK.getZeroBased());
+        ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(INDEX_FIRST_TASK,
+                new Status(Status.IN_PROGRESS_STATUS));
+        changeTaskStatusCommand.preprocessUndoableCommand();
+
+        expectedModel = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        String expectedMessage = String.format(ChangeTaskStatusCommand.MESSAGE_CHANGE_SUCCESS,
+                taskToEdit.getDescription().getDescription());
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+        expectedModel.changeStatus(taskToEdit, editedTask);
+
+        assertCommandSuccess(changeTaskStatusCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
+        ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(outOfBoundIndex,
+                new Status(Status.IN_PROGRESS_STATUS));
+
+        assertCommandFailure(changeTaskStatusCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+        Task taskToEdit = model.getClubBook().getTaskList().get(INDEX_FIRST_TASK.getZeroBased());
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.COMPLETED_STATUS));
+        ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(INDEX_FIRST_TASK,
+                new Status(Status.IN_PROGRESS_STATUS));
+        expectedModel = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        changeTaskStatusCommand.execute();
+        undoRedoStack.push(changeTaskStatusCommand);
+
+        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+
+        expectedModel.changeStatus(taskToEdit, editedTask);
+        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void executeUndoRedo_invalidIndexUnfilteredList_failure() {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
+        ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(outOfBoundIndex,
+                new Status(Status.IN_PROGRESS_STATUS));
+
+        assertCommandFailure(changeTaskStatusCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+
+        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
+        assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
+    }
+
+    private ChangeTaskStatusCommand prepareCommand(Index index, Status status) {
+        ChangeTaskStatusCommand changeTaskStatusCommand = new ChangeTaskStatusCommand(index, status);
+        changeTaskStatusCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return changeTaskStatusCommand;
+    }
+
+    @Test
+    public void equals() throws Exception {
+        ChangeTaskStatusCommand changeTaskStatusFirstCommand = prepareCommand(INDEX_FIRST_TASK,
+                new Status(Status.IN_PROGRESS_STATUS));
+        ChangeTaskStatusCommand changeTaskStatusSecondCommand = prepareCommand(INDEX_SECOND_TASK,
+                new Status(Status.COMPLETED_STATUS));
+
+        changeTaskStatusFirstCommand.preprocessUndoableCommand();
+        changeTaskStatusSecondCommand.preprocessUndoableCommand();
+
+        // same object -> returns true
+        assertTrue(changeTaskStatusFirstCommand.equals(changeTaskStatusFirstCommand));
+
+        // same values -> returns true
+        ChangeTaskStatusCommand changeTaskStatusFirstCommandCopy = prepareCommand(INDEX_FIRST_TASK,
+                new Status(Status.IN_PROGRESS_STATUS));
+        assertTrue(changeTaskStatusFirstCommand.equals(changeTaskStatusFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(changeTaskStatusFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(changeTaskStatusFirstCommand.equals(null));
+
+        // different member -> returns false
+        assertFalse(changeTaskStatusFirstCommand.equals(changeTaskStatusSecondCommand));
     }
 }
 ```
@@ -980,6 +1142,162 @@ public class RemoveGroupCommandParserTest {
     }
 }
 ```
+###### \java\seedu\club\model\ClubBookTest.java
+``` java
+    @Test
+    public void removeGroup_nonExistentGroup_unchangedClubBook() throws Exception {
+        try {
+            clubBookWithBobAndAmy.removeGroup(new Group(NON_EXISTENT_GROUP));
+        } catch (GroupNotFoundException gnfe) {
+            ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
+            assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+        }
+    }
+
+    @Test
+    public void removeGroup_mandatoryGroup_unchangedClubBook() throws Exception {
+        try {
+            clubBookWithBobAndAmy.removeGroup(new Group(MANDATORY_GROUP));
+        } catch (GroupCannotBeRemovedException e) {
+            ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
+            assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+        }
+    }
+
+    @Test
+    public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
+        clubBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
+
+        Member bobNotInLogistics = new MemberBuilder(BOB).withGroup().build();
+        Member amyNotInLogistics = new MemberBuilder(AMY).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bobNotInLogistics)
+                .withMember(amyNotInLogistics).build();
+
+        assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+    }
+
+    @Test
+    public void deleteTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        clubBook.deleteTask(BUY_CONFETTI);
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood).build();
+
+        assertEquals(expectedClubBook, clubBook);
+    }
+
+    @Test
+    public void deleteTask_taskNotFound_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        try {
+            clubBook.deleteTask(BOOK_AUDITORIUM);
+        } catch (TaskNotFoundException tnfe) {
+            Member amy = new MemberBuilder(AMY).build();
+            Task buyFood = new TaskBuilder(BUY_FOOD).build();
+            Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+            ClubBook expectedClubBook = new ClubBookBuilder()
+                    .withMember(amy)
+                    .withTask(buyFood)
+                    .withTask(buyConfetti)
+                    .build();
+            assertEquals(expectedClubBook, clubBook);
+        }
+    }
+
+    @Test
+    public void addTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY)
+                .withTask(BUY_FOOD).build();
+        clubBook.addTaskToTaskList(BUY_CONFETTI);
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood)
+                .withTask(buyConfetti).build();
+
+        assertEquals(expectedClubBook, clubBook);
+
+    }
+
+    @Test
+    public void addTask_duplicateTask_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(BOB)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+
+        Task toAdd = new TaskBuilder(BUY_CONFETTI).build();
+        try {
+            clubBook.addTaskToTaskList(toAdd);
+        } catch (DuplicateTaskException dte) {
+            Member bob = new MemberBuilder(BOB).build();
+            Task buyFood = new TaskBuilder(BUY_FOOD).build();
+            Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+            ClubBook expectedClubBook = new ClubBookBuilder()
+                    .withMember(bob)
+                    .withTask(buyFood)
+                    .withTask(buyConfetti)
+                    .build();
+            assertEquals(expectedClubBook, clubBook);
+        }
+    }
+
+    @Test
+    public void updateTask_validTask_success() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder()
+                .withDescription(BUY_FOOD.getDescription().getDescription())
+                .withAssignor(BUY_FOOD.getAssignor().getAssignor())
+                .withAssignee(BUY_FOOD.getAssignee().getAssignee())
+                .withDate(BUY_FOOD.getDate().getDate())
+                .withTime(BUY_FOOD.getTime().getTime())
+                .withStatus(Status.IN_PROGRESS_STATUS)
+                .build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood)
+                .withTask(buyConfetti).build();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+
+        try {
+            clubBook.updateTask(taskToEdit, editedTask);
+        } catch (DuplicateTaskException | TaskNotFoundException e) {
+            fail("This will not be executed");
+        }
+
+        assertEquals(expectedClubBook, clubBook);
+    }
+
+    @Test
+    public void updateTask_duplicateTask_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood)
+                .withTask(buyConfetti).build();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(BUY_FOOD);
+
+        try {
+            clubBook.updateTask(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            assertEquals(expectedClubBook, clubBook);
+        } catch (TaskNotFoundException tnfe) {
+            fail("This will not be executed");
+        }
+    }
+```
 ###### \java\seedu\club\model\ModelManagerTest.java
 ``` java
     @Test
@@ -1234,10 +1552,80 @@ public class RemoveGroupCommandParserTest {
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
             modelManager.deleteTask(BOOK_AUDITORIUM);
-        } catch (TaskNotFoundException tnfe) {
+        } catch (TaskNotFoundException | TaskCannotBeDeletedException e) {
             assertEquals(expectedModel, modelManager);
-        } catch (TaskCannotBeDeletedException e) {
+        }
+    }
+
+    @Test
+    public void changeTaskStatus_validTask_success() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withTask(editedTask).withTask(BUY_CONFETTI)
+                .build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (TaskNotFoundException | DuplicateTaskException | IllegalExecutionException e) {
             assertEquals(expectedModel, modelManager);
+        }
+
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void changeTaskStatus_noChangeToStatus_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (DuplicateTaskException | IllegalExecutionException | TaskNotFoundException e) {
+            assertEquals(expectedModel, modelManager);
+        }
+    }
+
+    @Test
+    public void changeTaskStatus_invalidPermission_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (IllegalExecutionException iee) {
+            assertEquals(expectedModel, modelManager);
+        } catch (TaskNotFoundException | DuplicateTaskException e) {
+            fail("This will not be executed");
         }
     }
 
