@@ -46,7 +46,7 @@ public class ClearCommand extends Command {
                 return new CommandResult(MESSAGE_SUCCESS);
             } else {
                 model.setClearConfirmation(false);
-                return new CommandResult(MESSAGE_FAILURE + args);
+                return new CommandResult(MESSAGE_FAILURE);
             }
         }
     }
