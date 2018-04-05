@@ -22,7 +22,7 @@ public class ExportCommand extends Command {
     );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Exports the members' information to the specified CSV file. "
+            + ": Exports the members' information to the specified CSV file.\n"
             + "Parameters: FILE_PATH (must be an absolute path to a CSV file)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/Club Connect Members.csv";
 
@@ -42,6 +42,8 @@ public class ExportCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.exportClubConnectMembers(exportFile);
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));

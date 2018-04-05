@@ -7,7 +7,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_TO;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
 import java.util.ArrayList;
@@ -44,18 +43,16 @@ public class EditCommand extends UndoableCommand {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "e", "update")
     );
-    public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ]"
-            + " [pic/ ] [g/ ] [t/ ]";
+    public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ] [g/ ] [t/ ]";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the member identified "
-            + "by the index number used in the last member listing. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Edits the details of the member identified by the index number used in the last member listing. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
-            + "[" + PREFIX_TO + "PHOTO PATH] "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -87,6 +84,8 @@ public class EditCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.updateMember(memberToEdit, editedMember);
         } catch (DuplicateMemberException dme) {
             throw new CommandException(MESSAGE_DUPLICATE_MEMBER);

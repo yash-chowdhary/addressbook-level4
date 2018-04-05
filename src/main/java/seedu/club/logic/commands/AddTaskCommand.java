@@ -26,8 +26,7 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_TIME + "  "
             + PREFIX_DATE + " ";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Task to the currently logged-in member's"
-            + "task list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to your task list.\n"
             + "Parameters: "
             + PREFIX_DESCRIPTION + "DESCRIPTION "
             + PREFIX_DATE + "DATE "
@@ -37,8 +36,8 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_DATE + "02/04/2018 "
             + PREFIX_TIME + "17:00";
 
-    public static final String MESSAGE_SUCCESS = "New task created";
-    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
+    public static final String MESSAGE_SUCCESS = "New task created.";
+    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists.";
 
     private final Task toAdd;
 
@@ -51,6 +50,8 @@ public class AddTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.addTaskToTaskList(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateTaskException dte) {

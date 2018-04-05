@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.commons.util.CsvUtil;
+import seedu.club.commons.util.FileUtil;
 import seedu.club.commons.util.StringUtil;
 
 import seedu.club.model.email.Body;
@@ -221,7 +223,6 @@ public class ParserUtil {
     public static Optional<Password> parsePassword(Optional<String> password) {
         return password.isPresent() ? Optional.of(parsePassword(password.get())) : Optional.empty();
     }
-    //@@author
 
     //@@author amrut-prabhu
     /**
@@ -240,40 +241,14 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> photo} into an {@code Optional<ProfilePhoto>} if {@code photo} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<ProfilePhoto> parseProfilePhoto(Optional<String> photo) throws IllegalValueException {
-        requireNonNull(photo);
-        return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
-    }
-
-    /**
-     * Parses a {@code path} into a {@code File}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws IllegalValueException if the given {@code path} is invalid.
-     */
-    public static File parsePath(String path) throws IllegalValueException {
-        requireNonNull(path);
-        String trimmedPath = path.trim();
-
-        if (trimmedPath.isEmpty()) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
-        }
-
-        return new File(trimmedPath);
-    }
-
-    /**
      * Parses a {@code path} into a {@code File}.
      *
      * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
      */
     public static File parseImportPath(String path) throws IllegalValueException {
-        File file = parsePath(path);
+        File file = FileUtil.parsePath(path);
 
-        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -286,9 +261,9 @@ public class ParserUtil {
      * @throws IllegalValueException if the given {@code path} is not absolute or is a directory.
      */
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
-        File file = parsePath(path);
+        File file = FileUtil.parsePath(path);
 
-        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -296,24 +271,7 @@ public class ParserUtil {
         return file;
     }
 
-    /**
-     * Returns true if {@code file} does not represent the absolute path of a file.
-     */
-    private static boolean isNotValidFileName(File file) {
-        return !file.isAbsolute() || file.isDirectory();
-    }
 
-    /**
-     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
-     */
-    private static boolean isNotValidCsvFileName(String path) {
-        String csvFileExtension = ".csv";
-
-        int length = path.length();
-        String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
-    }
-    //@@author
 
     //@@author yash-chowdhary
     /**

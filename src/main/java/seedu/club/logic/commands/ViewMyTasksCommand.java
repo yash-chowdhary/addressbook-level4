@@ -17,13 +17,15 @@ public class ViewMyTasksCommand extends Command {
             Arrays.asList(COMMAND_WORD, "mytasks")
     );
 
-    public static final String MESSAGE_SUCCESS = "Listed all your tasks.";
-    public static final String MESSAGE_ALREADY_LISTED = "All your tasks are already listed.";
+    public static final String MESSAGE_SUCCESS = "Your tasks have been listed.";
+    public static final String MESSAGE_ALREADY_LISTED = "All your tasks have already been listed.";
 
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.viewMyTasks();
         } catch (TasksAlreadyListedException tale) {
             throw new CommandException(MESSAGE_ALREADY_LISTED);

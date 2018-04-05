@@ -32,7 +32,7 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_DATE + " "
             + PREFIX_NAME + " ";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds and assigns a task to a member in the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Assigns a task to a member in Club Connect.\n"
             + "Parameters: "
             + PREFIX_DESCRIPTION + "DESCRIPTION "
             + PREFIX_TIME + "TIME "
@@ -61,6 +61,8 @@ public class AssignTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.assignTask(toAdd, name);
             return new CommandResult(String.format(MESSAGE_SUCCESS, name));
         } catch (MemberNotFoundException mnfe) {

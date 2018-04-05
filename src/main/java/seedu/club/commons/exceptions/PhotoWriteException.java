@@ -8,8 +8,6 @@ import java.io.IOException;
  */
 public class PhotoWriteException extends IOException {
 
-    public PhotoWriteException() {}
-
     public PhotoWriteException(String message) {
         super(message);
     }

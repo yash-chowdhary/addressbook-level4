@@ -183,7 +183,6 @@ public interface Model {
      * @throws IOException if there was an error reading from file.
      */
     int importMembers(File importFile) throws IOException;
-    //@@author
 
     /**
      * Returns an unmodifiable view of the filtered tag list
@@ -197,6 +196,7 @@ public interface Model {
      */
     void updateFilteredTagList(Predicate<Tag> predicate);
 
+    //@@author yash-chowdhary
     void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
@@ -230,6 +230,9 @@ public interface Model {
      * @param member
      */
     void signUpMember(Member member) throws MemberListNotEmptyException;
+
+    void clearClubBook();
+    //@@author
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 

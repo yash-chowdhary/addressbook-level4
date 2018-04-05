@@ -19,8 +19,8 @@ public class UndoCommand extends Command {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "u")
     );
-    public static final String MESSAGE_SUCCESS = "Undo success!";
-    public static final String MESSAGE_FAILURE = "No more commands to undo!";
+    public static final String MESSAGE_SUCCESS = "Undo successful.";
+    public static final String MESSAGE_FAILURE = "No more commands to undo.";
 
     @Override
     public CommandResult execute() throws CommandException {

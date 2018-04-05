@@ -23,7 +23,7 @@ public class SelectCommand extends Command {
     public static final String COMMAND_FORMAT = "select INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects the member identified by the index number used in the last member listing.\n"
+            + ": Opens the profile of the member identified by the index number used in the last member listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
@@ -37,7 +37,8 @@ public class SelectCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

@@ -31,7 +31,7 @@ public class EmailCommand extends Command {
     public static final String COMMAND_FORMAT = "email [g/ ] [t/ ] c/ [s/ ] [b/ ]";
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) "
-            + "in EITHER a particular group OR a particular tag of the club book. "
+            + "in EITHER a particular group OR a particular tag of the club book.\n"
             + "Parameters: " + " "
             + PREFIX_GROUP + "GROUP" + " [OR] "
             + PREFIX_TAG + "TAG" + " "
@@ -39,10 +39,11 @@ public class EmailCommand extends Command {
             + PREFIX_SUBJECT + "SUBJECT" + " "
             + PREFIX_BODY + "BODY\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_GROUP + "logistics "
+            + PREFIX_GROUP + "Member "
             + PREFIX_CLIENT + "gmail "
-            + PREFIX_SUBJECT + "Test Subject "
-            + PREFIX_BODY + "Test Body ";
+            + PREFIX_SUBJECT + "New Club Management application "
+            + PREFIX_BODY + "Hi all, I hope you have enjoyed using Club Connect so far. "
+            + "Please do share your experience with us. Regards, John Doe";
 
     public static final String EMAIL_CLIENT_OPENED = "Email client opened!";
     public static final String MESSAGE_NOT_SENT = "Please adhere to the command usage.";
@@ -65,6 +66,8 @@ public class EmailCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             String emailRecipients = model.generateEmailRecipients(group, tag);
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);

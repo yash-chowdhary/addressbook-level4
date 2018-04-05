@@ -41,9 +41,11 @@ public class DeletePollCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(pollToDelete);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.deletePoll(pollToDelete);
         } catch (PollNotFoundException pnfe) {
             throw new AssertionError("The target poll cannot be missing");

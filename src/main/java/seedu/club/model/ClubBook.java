@@ -150,11 +150,9 @@ public class ClubBook implements ReadOnlyClubBook {
             throws DuplicateMemberException, MemberNotFoundException {
         requireNonNull(editedMember);
 
+        //@author amrut-prabhu
         deleteMemberTags(target);
         Member syncedEditedMember = syncWithMasterTagList(editedMember);
-        // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any member
-        // in the member list.
         try {
             members.setMember(target, syncedEditedMember);
         } catch (DuplicateMemberException dme) {
@@ -172,6 +170,7 @@ public class ClubBook implements ReadOnlyClubBook {
         tags.setTags(allTags);
     }
 
+    //@@author
     /**
      * Updates the master tag list to include tags in {@code member} that are not in the list.
      *
@@ -255,36 +254,6 @@ public class ClubBook implements ReadOnlyClubBook {
         members.signup(member);
     }
 
-    //@@author amrut-prabhu
-    /**
-     * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
-     *
-     * @param member Member whose tags may be removed from {@code tags}.
-     */
-    private void deleteMemberTags(Member member) {
-        List<Tag> tagsToCheck = new ArrayList<>(getTagList());
-        Set<Tag> newTags = tagsToCheck.stream()
-                .filter(t -> !isTagUniqueToMember(t, member))
-                .collect(Collectors.toSet());
-        tags.setTags(newTags);
-    }
-
-    /**
-     * Returns true if only {@code member} is tagged with {@code tag}.
-     *
-     * @param tag Tag that is to be checked.
-     * @param member Member whose tags are to be checked.
-     */
-    private boolean isTagUniqueToMember(Tag tag, Member member) {
-        for (Member m : members) {
-            if (m.hasTag(tag) && !m.equals(member)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    //@@author
-
     //@@author yash-chowdhary
 
     /**
@@ -360,6 +329,34 @@ public class ClubBook implements ReadOnlyClubBook {
 
     //@@author amrut-prabhu
     /**
+     * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
+     *
+     * @param member Member whose tags may be removed from {@code tags}.
+     */
+    private void deleteMemberTags(Member member) {
+        List<Tag> tagsToCheck = new ArrayList<>(getTagList());
+        Set<Tag> newTags = tagsToCheck.stream()
+                .filter(t -> !isTagUniqueToMember(t, member))
+                .collect(Collectors.toSet());
+        tags.setTags(newTags);
+    }
+
+    /**
+     * Returns true if only {@code member} is tagged with {@code tag}.
+     *
+     * @param tag Tag that is to be checked.
+     * @param member Member whose tags are to be checked.
+     */
+    private boolean isTagUniqueToMember(Tag tag, Member member) {
+        for (Member m : members) {
+            if (m.hasTag(tag) && !m.equals(member)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Removes {@code tagToDelete} for all members in this {@code ClubBook}.
      *
      * @param tagToDelete Tag to be removed
@@ -419,6 +416,7 @@ public class ClubBook implements ReadOnlyClubBook {
                     + "See member#equals(Object).");
         }
     }
+
     //@@author Song Weiyang
     /**
      * Change the password of {@code member} in the ClubBook.
@@ -432,6 +430,9 @@ public class ClubBook implements ReadOnlyClubBook {
     }
     //@@author
 
+    public void clearClubBook() {
+        members.clear();
+    }
     //// util methods
 
     @Override
