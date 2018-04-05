@@ -11,6 +11,8 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
@@ -25,6 +27,7 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
+import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.email.Body;
@@ -32,11 +35,14 @@ import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -77,7 +83,8 @@ public class ChangeProfilePhotoCommandTest {
         String validPhotoPath = testPhotoFile.getAbsolutePath();
 
         CommandResult commandResult = getChangeProfilePhotoCommand(validPhotoPath, modelStub).execute();
-        assertEquals(ChangeProfilePhotoCommand.MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, commandResult.feedbackToUser);
+        assertEquals(String.format(ChangeProfilePhotoCommand.MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, validPhotoPath),
+                commandResult.feedbackToUser);
     }
 
     @Test
@@ -127,6 +134,17 @@ public class ChangeProfilePhotoCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    private static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
+    }
 
     /**
      * A default model stub that have all of the methods failing.
@@ -167,8 +185,13 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            fail("This method should not be called.");
+        public void addMember(Member member) throws DuplicateMatricNumberException  {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
         }
 
         @Override
@@ -217,7 +240,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -321,23 +344,15 @@ public class ChangeProfilePhotoCommandTest {
      * A Model stub that always throw a PhotoReadException when trying to add a profile photo.
      */
     private class ModelStubThrowingPhotoReadException extends ModelStub {
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends"));
+
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             throw new PhotoReadException();
         }
-    }
-
-    /**
-     * A Model stub that always accept the path of the profile photo to be added.
-     */
-    private class ModelStubAcceptingAddProfilePhoto extends ModelStub {
-        @Override
-        public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
-            requireNonNull(originalPhotoPath);
-        }
-    }
-
-}
 ```
 ###### \java\seedu\club\logic\commands\ExportCommandTest.java
 ``` java
@@ -351,6 +366,8 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
@@ -366,6 +383,7 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.commands.exceptions.IllegalExecutionException;
+import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
 import seedu.club.model.email.Body;
@@ -373,10 +391,13 @@ import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Email;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.Phone;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -469,6 +490,18 @@ public class ExportCommandTest {
     }
 
     /**
+     * Returns a tag set containing the list of strings given.
+     */
+    private static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
+    }
+
+    /**
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
@@ -497,6 +530,11 @@ public class ExportCommandTest {
         }
 
         @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
                 IllegalExecutionException {
             fail("This method should not be called");
@@ -508,7 +546,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -559,7 +597,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -660,24 +698,15 @@ public class ExportCommandTest {
      * A Model stub that always throw a IOException when trying to export to a file.
      */
     private class ModelStubThrowingIoException extends ModelStub {
+        final Member memberStub = new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("logistics"),
+                getTagSet("friends"));
+
         @Override
         public void exportClubConnectMembers(File exportFile) throws IOException {
             throw new IOException();
         }
-    }
-
-    /**
-     * A Model stub that always accept the file being exported to.
-     */
-    private class ModelStubAcceptingExport extends ModelStub {
-
-        @Override
-        public void exportClubConnectMembers(File exportFile) throws IOException {
-            requireNonNull(exportFile);
-        }
-    }
-
-}
 ```
 ###### \java\seedu\club\logic\parser\ExportCommandParserTest.java
 ``` java

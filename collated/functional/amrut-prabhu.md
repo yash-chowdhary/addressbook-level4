@@ -185,7 +185,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.UniqueMemberList;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.tag.Tag;
 
 
@@ -202,6 +202,17 @@ public class CsvUtil {
     private static final String SPACE = " ";
 
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
+
+    /**
+     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
+     */
+    public static boolean isNotValidCsvFileName(String path) {
+        String csvFileExtension = ".csv";
+
+        int length = path.length();
+        String fileExtension = path.substring(length - 4);
+        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
+    }
 
     /**
      * Returns {@code this} Member's data in the format of a CSV record.
@@ -330,7 +341,7 @@ public class CsvUtil {
                 importedMembers.add(member);
             } catch (DataConversionException dce) {
                 logger.warning("DataConversionException encountered while converting " + membersData[i]);
-            } catch (DuplicateMemberException dme) {
+            } catch (DuplicateMatricNumberException dmne) {
                 logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
             }
         }
@@ -514,6 +525,30 @@ public class CsvUtil {
     public static void appendToFile(File file, String content) throws IOException {
         Files.write(file.toPath(), content.getBytes(CHARSET), StandardOpenOption.APPEND);
     }
+
+    /**
+     * Returns true if {@code file} does not represent the absolute path of a file.
+     */
+    public static boolean isNotValidFileName(File file) {
+        return !file.isAbsolute() || file.isDirectory();
+    }
+
+    /**
+     * Parses a {@code path} into a {@code File}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code path} is invalid.
+     */
+    public static File parsePath(String path) throws IllegalValueException {
+        requireNonNull(path);
+        String trimmedPath = path.trim();
+
+        if (trimmedPath.isEmpty()) {
+            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+        }
+
+        return new File(trimmedPath);
+    }
 ```
 ###### \java\seedu\club\logic\commands\ChangeProfilePhotoCommand.java
 ``` java
@@ -539,35 +574,36 @@ public class ChangeProfilePhotoCommand extends Command {
     );
     public static final String COMMAND_FORMAT = "changepic PATH";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
-            + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Desktop/john_doe.jpg";
+            + "Example: " + COMMAND_WORD
+            + " C:/Users/John Doe/Desktop/john_doe.jpg";
 
     public static final String MESSAGE_INVALID_PHOTO_PATH = "Invalid photo path: %1$s";
-    public static final String MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS =
-            "Your profile photo has been changed successfully.";
+    public static final String MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS = "Your profile photo has been changed to: %1$s";
 
-    private ProfilePhoto newProfilePhoto;
+    private ProfilePhoto profilePhoto;
 
     /**
      * @param profilePhoto of the member
      */
     public ChangeProfilePhotoCommand(ProfilePhoto profilePhoto) {
         requireNonNull(profilePhoto);
-        this.newProfilePhoto = profilePhoto;
+        this.profilePhoto = profilePhoto;
     }
 
     @Override
     public CommandResult execute() throws CommandException {
         //Defensive programming
-        assert newProfilePhoto.getProfilePhotoPath() != null : "Photo path should not be null.";
+        assert profilePhoto.getPhotoPath() != null : "Photo path should not be null.";
 
         try {
-            model.addProfilePhoto(newProfilePhoto.getProfilePhotoPath());
-            return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS));
+            requireToSignUp();
+            requireToLogIn();
+            model.addProfilePhoto(profilePhoto.getPhotoPath());
+            return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {
-            throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH,
-                    newProfilePhoto.getProfilePhotoPath()));
+            throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH, profilePhoto.getPhotoPath()));
         }
     }
 
@@ -585,7 +621,7 @@ public class ChangeProfilePhotoCommand extends Command {
 
         // state check
         ChangeProfilePhotoCommand e = (ChangeProfilePhotoCommand) other;
-        return this.newProfilePhoto.equals(e.newProfilePhoto);
+        return this.profilePhoto.equals(e.profilePhoto);
     }
 }
 ```
@@ -615,12 +651,12 @@ public class DeleteTagCommand extends UndoableCommand {
     );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Removes the tag from all members. "
+            + ": Deletes the specified tag from all members.\n"
             + "Parameters: TAG (must be an existing tag)\n"
-            + "Example: " + COMMAND_WORD + " t/treasurer";
+            + "Example: " + COMMAND_WORD + " t/EventHelper";
 
-    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Tag Removed: %1$s";
-    public static final String MESSAGE_NON_EXISTENT_TAG = "The tag name provided does not exist";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted Tag: %1$s";
+    public static final String MESSAGE_NON_EXISTENT_TAG = "This tag does not exist in Club Connect.";
 
     private Tag tagToDelete;
 
@@ -633,6 +669,8 @@ public class DeleteTagCommand extends UndoableCommand {
         requireNonNull(tagToDelete);
 
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.deleteTag(tagToDelete);
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
@@ -642,6 +680,8 @@ public class DeleteTagCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Tag> lastShownList = model.getFilteredTagList();
 
         if (!getMasterTagList().contains(tagToDelete)) {
@@ -689,7 +729,7 @@ public class ExportCommand extends Command {
     );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Exports the members' information to the specified CSV file. "
+            + ": Exports the members' information to the specified CSV file.\n"
             + "Parameters: FILE_PATH (must be an absolute path to a CSV file)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/Jane Doe/Desktop/Club Connect Members.csv";
 
@@ -709,6 +749,8 @@ public class ExportCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.exportClubConnectMembers(exportFile);
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
@@ -750,14 +792,14 @@ public class ImportCommand extends UndoableCommand {
     );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Imports the members' information from the specified CSV file into Club Connect. "
-            + "Parameters: FILE_PATH (must be an absolute path to a CSV file )\n"
-            + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Downloads/members.csv";
+            + ": Imports the members' information from the specified CSV file into Club Connect.\n"
+            + "Parameters: FILE_PATH (must be an absolute path to a CSV file)\n"
+            + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Downloads/new_members.csv";
 
-    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported %d members from: %s";
-    public static final String MESSAGE_IMPORT_FAILURE = "Error occurred while importing from the file: %1$s";
+    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported %d member(s) from %s";
+    public static final String MESSAGE_IMPORT_FAILURE = "Error occurred while importing from %1$s";
     public static final String MESSAGE_MEMBERS_NOT_IMPORTED = "0 members imported from %1$s. This may be due to "
-            + "duplicate members or incorrect format of the data in the file.";
+            + "incorrect format of the data or duplicate members in the file.";
 
     private final File importFile;
 
@@ -771,6 +813,8 @@ public class ImportCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
             int numberImported = model.importMembers(importFile);
             if (numberImported == 0) {
@@ -969,30 +1013,13 @@ public class ImportCommandParser implements Parser<ImportCommand> {
 
     /**
      * Parses a {@code path} into a {@code File}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws IllegalValueException if the given {@code path} is invalid.
-     */
-    public static File parsePath(String path) throws IllegalValueException {
-        requireNonNull(path);
-        String trimmedPath = path.trim();
-
-        if (trimmedPath.isEmpty()) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
-        }
-
-        return new File(trimmedPath);
-    }
-
-    /**
-     * Parses a {@code path} into a {@code File}.
      *
      * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
      */
     public static File parseImportPath(String path) throws IllegalValueException {
-        File file = parsePath(path);
+        File file = FileUtil.parsePath(path);
 
-        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -1005,9 +1032,9 @@ public class ImportCommandParser implements Parser<ImportCommand> {
      * @throws IllegalValueException if the given {@code path} is not absolute or is a directory.
      */
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
-        File file = parsePath(path);
+        File file = FileUtil.parsePath(path);
 
-        if (isNotValidFileName(file) || isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -1015,33 +1042,31 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         return file;
     }
 
-    /**
-     * Returns true if {@code file} does not represent the absolute path of a file.
-     */
-    private static boolean isNotValidFileName(File file) {
-        return !file.isAbsolute() || file.isDirectory();
-    }
 
-    /**
-     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
-     */
-    private static boolean isNotValidCsvFileName(String path) {
-        String csvFileExtension = ".csv";
 
-        int length = path.length();
-        String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
+```
+###### \java\seedu\club\model\ClubBook.java
+``` java
+        // TODO: the tags master list will be updated even though the below line fails.
+        // This can cause the tags master list to have additional tags that are not tagged to any member
+        // in the member list.
+        try {
+            members.add(member);
+        } catch (DuplicateMatricNumberException dmne) {
+            deleteTagsUniqueToMember(m);
+            throw dmne;
+        }
     }
 
 ```
 ###### \java\seedu\club\model\ClubBook.java
 ``` java
     /**
-     * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
+     * Removes tags from master {@code tags} list that are unique to {@code member}.
      *
      * @param member Member whose tags may be removed from {@code tags}.
      */
-    private void deleteMemberTags(Member member) {
+    private void deleteTagsUniqueToMember(Member member) {
         List<Tag> tagsToCheck = new ArrayList<>(getTagList());
         Set<Tag> newTags = tagsToCheck.stream()
                 .filter(t -> !isTagUniqueToMember(t, member))
@@ -1119,12 +1144,27 @@ public class ImportCommandParser implements Parser<ImportCommand> {
                 member.getGroup(), memberTags);
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dme) {
             throw new AssertionError("Modifying a member's tags only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
     }
 
+```
+###### \java\seedu\club\model\member\exceptions\DuplicateMatricNumberException.java
+``` java
+package seedu.club.model.member.exceptions;
+
+import seedu.club.commons.exceptions.DuplicateDataException;
+
+/**
+ * Signals that the operation will result in a member object with a non-unique matric number.
+ */
+public class DuplicateMatricNumberException extends DuplicateDataException {
+    public DuplicateMatricNumberException() {
+        super("Operation would result in a member with duplicate matric number");
+    }
+}
 ```
 ###### \java\seedu\club\model\member\Member.java
 ``` java
@@ -1230,7 +1270,7 @@ public class ProfilePhoto {
         this.profilePhotoPath = path;
     }
 
-    public String getProfilePhotoPath() {
+    public String getPhotoPath() {
         return profilePhotoPath;
     }
 
@@ -1238,7 +1278,7 @@ public class ProfilePhoto {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ProfilePhoto // instanceof handles nulls
-                && this.getProfilePhotoPath().equals(((ProfilePhoto) other).getProfilePhotoPath())); // state check
+                && this.getPhotoPath().equals(((ProfilePhoto) other).getPhotoPath())); // state check
     }
 
     @Override
@@ -1252,6 +1292,41 @@ public class ProfilePhoto {
     }
 
 }
+```
+###### \java\seedu\club\model\member\UniqueMemberList.java
+``` java
+    /**
+     * Returns true if {@code internalList} of members contains a member with the same {@code MatricNumber}.
+     *
+     * @param toCheck Matric Number that is to be checked for uniqueness.
+     */
+    private boolean containsMatricNumber(MatricNumber toCheck) {
+        requireNonNull(toCheck);
+        for (Member member: internalList) {
+            if (member.getMatricNumber().equals(toCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Adds a member to the list.
+     *
+     * @throws DuplicateMatricNumberException if a member with the same matriculation number as member to add exists.
+     */
+    public void add(Member toAdd) throws DuplicateMatricNumberException {
+        requireNonNull(toAdd);
+        if (this.containsMatricNumber(toAdd.getMatricNumber())) {
+            throw new DuplicateMatricNumberException();
+        }
+```
+###### \java\seedu\club\model\member\UniqueMemberList.java
+``` java
+        if (!target.equals(editedMember) && this.containsMatricNumber(editedMember.getMatricNumber())
+                && !target.getMatricNumber().equals(editedMember.getMatricNumber())) {
+            throw new DuplicateMatricNumberException();
+        }
 ```
 ###### \java\seedu\club\model\Model.java
 ``` java
@@ -1347,7 +1422,7 @@ public class ProfilePhoto {
             try {
                 clubBook.addMember(member);
                 numberMembers++;
-            } catch (DuplicateMemberException dme) {
+            } catch (DuplicateMatricNumberException dmne) {
                 logger.info("DuplicateMemberException encountered due to " + member);
             }
         }
@@ -1501,11 +1576,6 @@ public class CsvClubBookStorage {
 
     public void setClubBookFile(File file) {
         this.file = file;
-        try {
-            FileUtil.createIfMissing(file);
-        } catch (IOException ioe) {
-            logger.warning("Error creating file " + file.getAbsolutePath());
-        }
     }
 
     /**
@@ -1545,6 +1615,7 @@ public class CsvClubBookStorage {
         requireNonNull(data);
         requireNonNull(file);
 
+        FileUtil.createIfMissing(file);
         assert file.exists() : "ClubBook export file " + file + " is guaranteed to exist";
 
         CsvFileStorage.saveDataToFile(file, data);
@@ -1769,7 +1840,7 @@ public class ProfilePhotoStorage implements  PhotoStorage {
      */
     private void setProfilePhoto(Member member) {
         Image photo;
-        String photoPath = member.getProfilePhoto().getProfilePhotoPath();
+        String photoPath = member.getProfilePhoto().getPhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {
             photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
                     false, true);

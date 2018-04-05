@@ -10,15 +10,18 @@ public class ChangePasswordCommand extends Command {
             Arrays.asList(COMMAND_WORD, "changepw")
     );
     public static final String COMMAND_FORMAT = "changepass u/ pw/ npw/";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes the password of a member in the ClubBook"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your password.\n"
             + "Parameters: "
-            + PREFIX_USERNAME + "username "
-            + PREFIX_PASSWORD + "oldpassword "
-            + PREFIX_NEWPASSWORD + "newpassword";
-    public static final String MESSAGE_SUCCESS = "Password changed successfully!";
-    public static final String MESSAGE_PASSWORD_INCORRECT = "Password is incorrect";
-    public static final String MESSAGE_AUTHENTICATION_FAILED =
-            "You do not have the rights to change other member's password";
+            + PREFIX_USERNAME + "USERNAME "
+            + PREFIX_PASSWORD + "OLD_PASSWORD "
+            + PREFIX_NEWPASSWORD + "NEW_PASSWORD\n"
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_USERNAME + "A0164589X "
+            + PREFIX_PASSWORD + "password "
+            + PREFIX_NEWPASSWORD + "iLovecats18";
+    public static final String MESSAGE_SUCCESS = "Password changed successfully.";
+    public static final String MESSAGE_PASSWORD_INCORRECT = "The old password entered is incorrect.";
+    public static final String MESSAGE_AUTHENTICATION_FAILED = "You can only change your own password.";
     private Username username;
     private Password oldPassword;
     private Password newPassword;
@@ -32,6 +35,8 @@ public class ChangePasswordCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.changePassword(username.value, oldPassword.value, newPassword.value);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (PasswordIncorrectException e) {
@@ -61,14 +66,14 @@ public class LogInCommand extends Command {
 
     public static final String COMMAND_FORMAT = "login u/ pw/ ";
 
-    public static final String MESSAGE_SUCCESS = "login successful!";
-    public static final String MESSAGE_FAILURE = "login unsuccessful!";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Logs in a member to ClubConnect. "
+    public static final String MESSAGE_SUCCESS = "Hi %1$s. Welcome to Club Connect!";
+    public static final String MESSAGE_FAILURE = "Login unsuccessful. Please try again.";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Allows you to log in to Club Connect.\n"
             + "Parameters: "
-            + PREFIX_USERNAME + "username "
-            + PREFIX_PASSWORD + "password\n"
+            + PREFIX_USERNAME + "USERNAME "
+            + PREFIX_PASSWORD + "PASSWORD\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_USERNAME + "JohnDoe" + " "
+            + PREFIX_USERNAME + "A0167855F" + " "
             + PREFIX_PASSWORD + "password";
     private final Username username;
     private final Password password;
@@ -79,11 +84,12 @@ public class LogInCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
         model.logsInMember(username.value, password.value);
         if (model.getLoggedInMember() != null) {
-            return new CommandResult(MESSAGE_SUCCESS + model.getLoggedInMember().getName().toString());
+            return new CommandResult(String.format(MESSAGE_SUCCESS, model.getLoggedInMember().getName().toString()));
         }
         return new CommandResult(MESSAGE_FAILURE);
     }
@@ -105,29 +111,23 @@ public class SignUpCommand extends Command {
             Arrays.asList(COMMAND_WORD, "register", "enroll")
     );
 
-    public static final String COMMAND_FORMAT = "login n/ p/ e/ m/ [pic/ ] ";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " n/ p/ e/ m/ [pic/ ] ";
 
-    public static final String MESSAGE_SUCCESS = "Sign up successful! Please proceed to log in";
-    public static final String MESSAGE_FAILURE =
-            "Club Connect already has members of the club."
-            + " Log in to start using Club Connect.";
-    public static final String MESSAGE_USAGE = "Sign up for Club Connect."
+    public static final String MESSAGE_SUCCESS = "Sign up successful! Please log in to start using Club Connect.";
+    public static final String MESSAGE_FAILURE = "Club Connect is already set up. Please log in to start.";
+    public static final String MESSAGE_USAGE = "Lets you sign up for Club Connect.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER "
-            + "[" + PREFIX_GROUP + "GROUP] "
-            + "[" + PREFIX_TAG + "TAG]... "
-            + PREFIX_USERNAME + "username "
-            + PREFIX_PASSWORD + "password\n"
+            + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_MATRIC_NUMBER + "A0123456H "
-            + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney ";
+            + PREFIX_TAG + "president ";
     private final Member toSignUp;
 
     public SignUpCommand(Member member) {
@@ -358,6 +358,14 @@ public class SignUpCommandParser {
         usernamePasswordHashMap.put(member.getCredentials().getUsername().value,
                 member.getCredentials().getPassword().value);
     }
+
+    /**
+     * Clears the clubbook
+     */
+    public void clear() {
+        internalList.clear();
+        setCurrentlyLogInMember(null);
+    }
 }
 ```
 ###### \java\seedu\club\model\Model.java
@@ -407,16 +415,7 @@ public class SignUpCommandParser {
      */
     void signUpMember(Member member) throws MemberListNotEmptyException;
 
-    void viewAllTasks() throws TasksCannotBeDisplayedException;
-
-    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-            IllegalExecutionException;
-
-    void viewMyTasks() throws TasksAlreadyListedException;
-
-    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
-            IllegalExecutionException;
-}
+    void clearClubBook();
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -446,6 +445,7 @@ public class SignUpCommandParser {
     public void logOutMember() {
         clubBook.logOutMember();
     }
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -467,7 +467,13 @@ public class SignUpCommandParser {
     @Override
     public void signUpMember(Member member) throws MemberListNotEmptyException {
         clubBook.signUpMember(member);
+        filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
+    }
+
+    @Override
+    public void clearClubBook() {
+        clubBook.clearClubBook();
     }
 
     @Override
