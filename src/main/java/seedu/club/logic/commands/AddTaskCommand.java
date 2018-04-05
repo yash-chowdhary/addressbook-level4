@@ -50,6 +50,8 @@ public class AddTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.addTaskToTaskList(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateTaskException dte) {

@@ -52,6 +52,8 @@ public class VoteCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
             model.voteInPoll(pollToVoteIn, answerIndex);
         } catch (UserAlreadyVotedException userAlreadyVotedException) {

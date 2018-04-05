@@ -537,7 +537,13 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void signUpMember(Member member) throws MemberListNotEmptyException {
         clubBook.signUpMember(member);
+        filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
+    }
+
+    @Override
+    public void clearClubBook() {
+        clubBook.clearClubBook();
     }
 
     @Override
