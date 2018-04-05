@@ -115,6 +115,10 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public void addMember(Member m) throws DuplicateMatricNumberException {
         Member member = syncWithMasterTagList(m);
+        // @@author amrut-prabhu
+        // TODO: the tags master list will be updated even though the below line fails.
+        // This can cause the tags master list to have additional tags that are not tagged to any member
+        // in the member list.
         try {
             members.add(member);
         } catch (DuplicateMatricNumberException dmne) {
@@ -154,11 +158,14 @@ public class ClubBook implements ReadOnlyClubBook {
         //@author amrut-prabhu
         deleteTagsUniqueToMember(target);
         Member syncedEditedMember = syncWithMasterTagList(editedMember);
+        // TODO: the tags master list will be updated even though the below line fails.
+        // This can cause the tags master list to have additional tags that are not tagged to any person
+        // in the person list.
         try {
             members.setMember(target, syncedEditedMember);
         } catch (DuplicateMatricNumberException dme) {
             addMemberTags(target);
-            throw new DuplicateMatricNumberException();
+            throw dme;
         }
     }
 

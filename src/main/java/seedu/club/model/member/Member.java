@@ -179,7 +179,6 @@ public class Member {
                 .append(getPhone())
                 .append(" Email: ")
                 .append(getEmail())
-
                 .append(" MatricNumber: ")
                 .append(getMatricNumber())
                 .append(" Group: ")

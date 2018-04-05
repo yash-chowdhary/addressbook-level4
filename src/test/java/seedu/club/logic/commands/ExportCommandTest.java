@@ -351,7 +351,7 @@ public class ExportCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
@@ -383,7 +383,7 @@ public class ExportCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;

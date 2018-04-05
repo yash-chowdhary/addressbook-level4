@@ -1,0 +1,7 @@
+diff a/src/main/java/seedu/club/logic/commands/DeleteTagCommand.java b/src/main/java/seedu/club/logic/commands/DeleteTagCommand.java	(rejected hunks)
+@@ -1,4 +0,4 @@
+-//@@author amrut-prabhu
++// @@author amrut-prabhu
+ package seedu.club.logic.commands;
+ 
+ import static java.util.Objects.requireNonNull;

@@ -41,6 +41,7 @@ public class UniqueMemberList implements Iterable<Member> {
         return containsMatricNumber(toCheck.getMatricNumber());
     }
 
+    // @@author amrut-prabhu
     /**
      * Returns true if {@code internalList} of members contains a member with the same {@code MatricNumber}.
      *
@@ -66,6 +67,7 @@ public class UniqueMemberList implements Iterable<Member> {
         if (this.containsMatricNumber(toAdd.getMatricNumber())) {
             throw new DuplicateMatricNumberException();
         }
+        // @@author
         internalList.add(toAdd);
         usernameCredentialsHashMap.put(toAdd.getCredentials().getUsername().value, toAdd);
         usernamePasswordHashMap.put(toAdd.getCredentials().getUsername().value,
@@ -88,10 +90,12 @@ public class UniqueMemberList implements Iterable<Member> {
             throw new MemberNotFoundException();
         }
 
+        // @@author amrut-prabhu
         if (!target.equals(editedMember) && this.containsMatricNumber(editedMember.getMatricNumber())
                 && !target.getMatricNumber().equals(editedMember.getMatricNumber())) {
             throw new DuplicateMatricNumberException();
         }
+        // @@author
 
         internalList.set(index, editedMember);
         usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
