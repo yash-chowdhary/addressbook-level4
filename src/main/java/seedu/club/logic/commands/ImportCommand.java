@@ -43,6 +43,8 @@ public class ImportCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
             int numberImported = model.importMembers(importFile);
             if (numberImported == 0) {

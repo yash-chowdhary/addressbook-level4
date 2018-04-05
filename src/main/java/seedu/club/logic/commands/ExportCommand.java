@@ -42,6 +42,8 @@ public class ExportCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.exportClubConnectMembers(exportFile);
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));

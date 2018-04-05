@@ -24,6 +24,8 @@ public class ViewMyTasksCommand extends Command {
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.viewMyTasks();
         } catch (TasksAlreadyListedException tale) {
             throw new CommandException(MESSAGE_ALREADY_LISTED);
