@@ -19,11 +19,14 @@ By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier and more effective.
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+It aims to make the tedious process of club management easier and more effective.
 
-Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
+Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI).
+So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
-The faster you type, the faster Club Connect gets your club-management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
+The faster you type, the faster Club Connect gets your club-management tasks done.
+Interested? Continue on to <<Quick Start>> to get started.
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
@@ -706,7 +709,16 @@ e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
 Not satisfied with your productivity while using Club Connect? Can't remember the command names? Here are some tips to fix that:
 
-* *Command shortcuts*
+* *Alternative command names*
+If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
++
+Example: The `changepic` command uses `pic` as an alias.
+So, both commands shown below can be used change your profile picture to the "john_doe.jpg" image on John Doe's Desktop.
++
+`changepic C:/Users/John Doe/Desktop/john_doe.jpg`
++
+`pic C:/Users/John Doe/Desktop/john_doe.jpg` +
+
 * Lorem Ipsum
 * CSV format for 'import'
 
