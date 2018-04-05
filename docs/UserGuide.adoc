@@ -239,6 +239,7 @@ Aliases: `c`, `erase`
 * Firstly, execute Clear Command by entering Format A into the command line.
 * A confirmation message will be shown.
 * To confirm clearing all entries from Club Connect, enter Format B into the command line.
+* Format B has to be executed immediately after executing Format A.
 ****
 
 Examples:
