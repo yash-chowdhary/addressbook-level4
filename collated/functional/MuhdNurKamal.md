@@ -80,13 +80,14 @@ public class VoteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "vote";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
-            Arrays.asList(COMMAND_WORD + "vpoll")
+            Arrays.asList(COMMAND_WORD, "vpoll")
     );
-    public static final String COMMAND_FORMAT = "vote POLL_INDEX ANWER_INDEX";
+    public static final String COMMAND_FORMAT = "vote POLL_INDEX ANSWER_INDEX";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Votes in the poll identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds your vote to the poll identified "
             + "by the index number used in the last poll listing. \n"
-            + "Parameters: POLL_INDEX (must be a positive integer) QUESTION_INDEX (must be a positive integer)";
+            + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " 3 2";
 
     public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been received";
     public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll";
@@ -109,6 +110,8 @@ public class VoteCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
             model.voteInPoll(pollToVoteIn, answerIndex);
         } catch (UserAlreadyVotedException userAlreadyVotedException) {
@@ -123,6 +126,8 @@ public class VoteCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Poll> lastShownList = model.getFilteredPollList();
 
         if (pollIndex.getZeroBased() >= lastShownList.size()) {
@@ -1103,6 +1108,7 @@ public class CompressedMemberCard extends MemberCard {
         email.setText(member.getEmail().value);
         setProfilePhoto(member);
     }
+
 ```
 ###### \java\seedu\club\ui\MemberListPanel.java
 ``` java
@@ -1218,7 +1224,6 @@ public class RestrictedAnswerCard extends AnswerCard {
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <HBox xmlns:fx="http://javafx.com/fxml/1" id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.121">
-
     <GridPane HBox.hgrow="ALWAYS">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150"/>

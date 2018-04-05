@@ -445,7 +445,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
     @Override
     public String toString() {
-        return members.asObservableList().size() + " members, " + tags.asObservableList().size() + " tags";
+        return members.asObservableList().size() + " members, " + tags.asObservableList().size() + " tags, "
+                + polls.asObservableList().size() + " polls, " + tasks.asObservableList().size() + "tasks";
         // TODO: refine later
     }
 
