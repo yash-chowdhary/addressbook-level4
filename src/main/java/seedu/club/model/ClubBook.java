@@ -483,4 +483,16 @@ public class ClubBook implements ReadOnlyClubBook {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(members, tags);
     }
+
+    //@@author yash-chowdhary
+    /**
+     * Replaces the given task {@code target} in the list with {@code editedMember}.
+     * @throws DuplicateTaskException if updating the tasks's details causes the task to be equivalent to
+     *                                  another existing task in the list.
+     * @throws TaskNotFoundException if {@code target} could not be found in the list.
+     */
+    public void updateTask(Task taskToEdit, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
+        requireNonNull(editedTask);
+        tasks.setTask(taskToEdit, editedTask);
+    }
 }

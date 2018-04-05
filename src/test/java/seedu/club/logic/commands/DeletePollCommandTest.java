@@ -52,6 +52,8 @@ public class DeletePollCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPollList().size() + 1);
         DeletePollCommand deletePollCommand = prepareCommand(outOfBoundIndex);
 
@@ -96,6 +98,8 @@ public class DeletePollCommandTest {
 
     @Test
     public void executeUndoRedo_invalidIndexUnfilteredList_failure() {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
@@ -112,6 +116,8 @@ public class DeletePollCommandTest {
 
     @Test
     public void equals() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         DeletePollCommand deleteFirstCommand = prepareCommand(INDEX_FIRST_POLL);
         DeletePollCommand deleteSecondCommand = prepareCommand(INDEX_SECOND_POLL);
 

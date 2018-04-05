@@ -413,6 +413,9 @@ public class SignUpCommandParser {
             IllegalExecutionException;
 
     void viewMyTasks() throws TasksAlreadyListedException;
+
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+            IllegalExecutionException;
 }
 ```
 ###### \java\seedu\club\model\ModelManager.java
@@ -443,84 +446,6 @@ public class SignUpCommandParser {
     public void logOutMember() {
         clubBook.logOutMember();
     }
-
-    @Override
-    public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
-        try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getName().toString());
-            Status status = new Status(Status.NOT_STARTED_STATUS);
-            toAdd.setAssignor(assignor);
-            toAdd.setAssignee(assignee);
-            toAdd.setStatus(status);
-            clubBook.addTaskToTaskList(toAdd);
-            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-            indicateClubBookChanged();
-        } catch (DuplicateTaskException dte) {
-            throw new DuplicateTaskException();
-        }
-    }
-
-    @Override
-    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-            IllegalExecutionException {
-        if (!clubBook.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new IllegalExecutionException();
-        }
-        boolean found = false;
-        for (Member member : clubBook.getMemberList()) {
-            if (member.getName().equals(name)) {
-                found = true;
-            }
-        }
-        if (!found) {
-            throw new MemberNotFoundException();
-        }
-        try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(name.toString());
-            Status status = new Status(Status.NOT_STARTED_STATUS);
-            toAdd.setAssignor(assignor);
-            toAdd.setAssignee(assignee);
-            toAdd.setStatus(status);
-            clubBook.addTaskToTaskList(toAdd);
-            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-            indicateClubBookChanged();
-        } catch (DuplicateTaskException dte) {
-            throw new DuplicateTaskException();
-        }
-    }
-
-    @Override
-    public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
-        Assignor assignor = targetTask.getAssignor();
-        Assignee assignee = targetTask.getAssignee();
-        String currentMember = getLoggedInMember().getName().toString();
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
-            throw new TaskCannotBeDeletedException();
-        }
-        clubBook.deleteTask(targetTask);
-        indicateClubBookChanged();
-    }
-
-    @Override
-    public void viewAllTasks() throws TasksCannotBeDisplayedException {
-        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new TasksCannotBeDisplayedException();
-        }
-        updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
-        indicateClubBookChanged();
-    }
-
-    @Override
-    public void viewMyTasks() throws TasksAlreadyListedException {
-        if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
-            throw new TasksAlreadyListedException(ViewMyTasksCommand.MESSAGE_ALREADY_LISTED);
-        }
-        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-    }
-
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java

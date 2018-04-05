@@ -65,6 +65,8 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
