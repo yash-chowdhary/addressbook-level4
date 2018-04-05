@@ -19,17 +19,20 @@ By: `Team W15-B4`      Since: `Feb 2018`      Licence: `MIT`
 
 == Introduction
 
-*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS). It aims to make the tedious process of club management easier and more effective.
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+It aims to make the tedious process of club management easier and more effective.
 
-Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI). So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
+Currently, Club Connect is a desktop app that makes use of a *Command Line Interface* (<<DeveloperGuide#cli,CLI>>) for increased productivity, while still having the benefits of a Graphical User Interface (GUI).
+So, you can have increased productivity (owing to the CLI) without having to give up the beauty and aesthetics of a traditional GUI application.
 
-The faster you type, the faster Club Connect gets your club-management tasks done. Interested? Continue on to <<Quick Start>> to get started. Enjoy!
+The faster you type, the faster Club Connect gets your club-management tasks done.
+Interested? Continue on to <<Quick Start>> to get started.
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
   💡  : Tip +
-`code`: Technical keywords or Commands that can be entered into *Club Connect* +
-kbd:[key]: Key on your keyboard +
+`code`: Commands that can be entered into *Club Connect* or Technical keywords +
+kbd:[key]: Button on your keyboard +
 
 == Quick Start
 
@@ -68,6 +71,9 @@ image::help-window.png[height="450"]
 [[Features]]
 == Features
 
+This section describes the various features that Club Connect puts at your disposal.
+
+This is how you should interpret the commands in this user guide.
 ====
 *Command Format*
 
@@ -75,6 +81,25 @@ image::help-window.png[height="450"]
 * Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/President` or as `n/John Doe`.
 * Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/Treasurer`, `t/Captain t/Goalkeeper` etc.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+====
+
+Here are some things to take note of before you begin using Club Connect.
+====
+*Valid Entries*
+
+* *Names* of members should only contain alphabets, numbers and spaces.
+The name should not be blank and cannot begin with a space (" ").
+
+* *Phone numbers* can only contain numbers, and should be at least 3 digits long.
+
+* *Email IDs* of members should be of the format: username@emailservice.com and should not contain spaces.
+
+* *Matriculation Numbers* should follow the format of those at NUS.
+So, they must begin with a letter, followed by 7 digits and should end with a letter.
+
+* *Groups* should only contain letters and digits. They must not be empty.
+
+* *Tags* should also only contain letters and digits. They cannot be empty.
 ====
 
 === Adding a member: `add`
@@ -88,8 +113,6 @@ A member can have any number of tags (including 0).
 [TIP]
 The `group` attribute is an optional attribute.
 A member will be assigned to the default group `Member` if no group is specified in the command.
-[TIP]
-A group must be non-empty and should only contain alphanumeric characters, without white-spaces.
 
 Examples:
 
@@ -189,11 +212,13 @@ Aliases: `pic`, `profilepic`
 
 ****
 * PHOTO_PATH must be an absolute path to the photo.
-  To get the abolute path, right-click on the photo file and select Properties.
-  The location field specifies the absolute location of the photo.
-  To meet the correct format for this command, add the complete name of the photo file to this location.
 * This command is only guaranteed to work for ,jpeg, .jpg, and .png files.
 ****
+
+[TIP]
+To get the abolute path, right-click on the photo file and select `Properties`.
+The `Location` field specifies the absolute location of the photo.
+Finally, add the complete name of the photo file to this location.
 
 Examples:
 
@@ -216,7 +241,7 @@ Aliases: `cts`, `changestatus`, `status`
 ****
 
 [TIP]
-Tasks are color-coded by task status: +
+Tasks are color-coded by status: +
 [red]#Yet To Begin# +
 [yellow]#In Progress# +
 [green]#Completed#
@@ -305,7 +330,7 @@ Aliases: `rmtag`, `deltag`
 
 ****
 * Deletes the specified tag from Club Connect.
-* Deletes the specified tag for all members tagged with it in Club Connect.
+* Deletes the specified tag for all members who are tagged with it.
 ****
 
 Examples:
@@ -400,6 +425,7 @@ Format: 'export CSV_FILE_PATH` +
 Alias: `exp`
 
 ****
+* Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members added to Club Connect.
 * CSV_FILE_PATH must be an absolute path to the CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
@@ -407,7 +433,7 @@ Alias: `exp`
 ****
 
 [NOTE]
-You can import the exported CSV file in Microsoft Excel to get an even better view of the data.
+You can import the generated CSV file on Microsoft Excel to get an even better view of the data.
 
 Examples:
 
@@ -480,8 +506,8 @@ Alias: `imp`
 
 ****
 * CSV_FILE_PATH must be an absolute path to the CSV file.
-* The CSV file should organise its data in the format required by the Club Connect application (see <<Tips>>).
-* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+* The CSV file should organise its data in the format required by this application (see <<csv-data-format, CSV file format>>).
+* In order for this command to work correctly, ensure that none of the data values contain double quoutes (").
 ****
 
 [NOTE]
@@ -690,11 +716,6 @@ Encrypting Club Connect's data files ensures that others will not be able to rea
 [TIP]
 To further increase your efficiency while using Club Connect, check out <<Tips>>.
 
-== FAQ
-
-*Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Club Connect folder.
-
 == Command Summary
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER g/GROUP [t/TAG]...` +
@@ -746,11 +767,34 @@ e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
 == Tips
 
-Not satisfied with your productivity while using Club Connect? Can't remember the command names? Here are some tips to fix that:
+Not satisfied with your productivity while using Club Connect?
+Can't remember the command names?
+Here are some tips and tricks:
 
-* *Command shortcuts*
-* Lorem Ipsum
-* CSV format for 'import'
+* *Transferring data to another computer* +
+Install the Club Connect app on the other computer.
+Then, overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
+
+* *Alternative command names*
+If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
++
+Example: The `changepic` command uses `pic` as an alias.
+So, both commands shown below can be used change your profile picture to the "john_doe.jpg" image on John Doe's Desktop. +
+`changepic C:/Users/John Doe/Desktop/john_doe.jpg`
++
+`pic C:/Users/John Doe/Desktop/john_doe.jpg` +
+
+[[csv-data-format]]
+* *CSV format for `import`* +
+In order to successfully import data of members from the specified file, it has to follow the format shown in <<csv-format,Figure 3>>.
++
+[[csv-format]]
+.Required format of data in the file
+image::CSV_format.png[height="350"]
++
+The columns in the import file should be in the same order as shown in the figure above.
+All the tags of a member should be in a single cell, separated by commas (",").
+Also, to successfully import the data of a member, you have to make sure that their details conform to the constraints of the <<add-command,`add` command>>.
 
 == Coming in v2.0
 

@@ -13,8 +13,7 @@ public class Name {
             "member names should only contain alphanumeric characters and spaces, and it should not be blank";
 
     /*
-     * The first character of the club must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
+     * The first character of the name must not be a whitespace, otherwise " " (a blank string) becomes a valid input.
      */
     public static final String NAME_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
 

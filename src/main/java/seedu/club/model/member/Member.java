@@ -24,7 +24,6 @@ public class Member {
     private final Phone phone;
     private final Email email;
     private Credentials credentials;
-    private boolean isLogIn = false;
     private final MatricNumber matricNumber;
     private Group group;
     private final UniqueTaskList tasks;
