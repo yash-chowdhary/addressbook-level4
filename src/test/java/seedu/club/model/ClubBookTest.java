@@ -36,6 +36,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
@@ -58,6 +59,7 @@ public class ClubBookTest {
         assertEquals(Collections.emptyList(), clubBook.getTagList());
     }
 
+    //@@author yash-chowdhary
     @Test
     public void removeGroup_nonExistentGroup_unchangedClubBook() throws Exception {
         try {
@@ -156,6 +158,62 @@ public class ClubBookTest {
             assertEquals(expectedClubBook, clubBook);
         }
     }
+
+    @Test
+    public void updateTask_validTask_success() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder()
+                .withDescription(BUY_FOOD.getDescription().getDescription())
+                .withAssignor(BUY_FOOD.getAssignor().getAssignor())
+                .withAssignee(BUY_FOOD.getAssignee().getAssignee())
+                .withDate(BUY_FOOD.getDate().getDate())
+                .withTime(BUY_FOOD.getTime().getTime())
+                .withStatus(Status.IN_PROGRESS_STATUS)
+                .build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood)
+                .withTask(buyConfetti).build();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
+
+        try {
+            clubBook.updateTask(taskToEdit, editedTask);
+        } catch (DuplicateTaskException | TaskNotFoundException e) {
+            fail("This will not be executed");
+        }
+
+        assertEquals(expectedClubBook, clubBook);
+    }
+
+    @Test
+    public void updateTask_duplicateTask_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(AMY)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+
+        Member amy = new MemberBuilder(AMY).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amy).withTask(buyFood)
+                .withTask(buyConfetti).build();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(BUY_FOOD);
+
+        try {
+            clubBook.updateTask(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            assertEquals(expectedClubBook, clubBook);
+        } catch (TaskNotFoundException tnfe) {
+            fail("This will not be executed");
+        }
+    }
+    //@@author
 
     @Test
     public void updateMember_detailsChanged_memberUpdated() throws Exception {

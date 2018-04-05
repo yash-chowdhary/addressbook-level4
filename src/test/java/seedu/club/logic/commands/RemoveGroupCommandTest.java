@@ -3,6 +3,8 @@ package seedu.club.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
@@ -70,17 +72,16 @@ public class RemoveGroupCommandTest {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
 
-        assertCommandFailure(removeGroupCommand, model,
-                String.format(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup.toString()));
+        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
+        assertCommandFailure(removeGroupCommand, model, expectedMessage);
     }
 
     @Test
     public void execute_mandatoryGroup_throwsCommandException() {
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
         RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
-
-        assertCommandFailure(removeGroupCommand, model,
-                String.format(RemoveGroupCommand.MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
+        String expectedMessage = String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString());
+        assertCommandFailure(removeGroupCommand, model, expectedMessage);
     }
 
     @Test
@@ -114,7 +115,7 @@ public class RemoveGroupCommandTest {
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
         assertCommandFailure(removeGroupCommand, model,
-                String.format(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup.toString()));
+                String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
@@ -132,7 +133,7 @@ public class RemoveGroupCommandTest {
 
         // execution failed -> removeGroupCommand not pushed onto undoRedoStack
         assertCommandFailure(removeGroupCommand, model,
-                String.format(RemoveGroupCommand.MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
+                String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
