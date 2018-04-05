@@ -23,6 +23,7 @@ import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HideResultsCommand;
+import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
@@ -77,6 +78,7 @@ public class CommandList {
         commandList.add(VoteCommand.COMMAND_WORD);
         commandList.add(SignUpCommand.COMMAND_FORMAT);
         commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
+        commandList.add(ImportCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;

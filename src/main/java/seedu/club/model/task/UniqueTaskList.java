@@ -152,6 +152,10 @@ public class UniqueTaskList implements Iterable<Task> {
             @Override
             public int compare(Task task1, Task task2) {
                 if (task1.getDate().getDate().compareTo(task2.getDate().getDate()) == 0) {
+                    if (task1.getTime().getTime().compareTo(task2.getTime().getTime()) == 0) {
+                        return task1.getDescription().getDescription()
+                                .compareTo(task2.getDescription().getDescription());
+                    }
                     return task1.getTime().getTime().compareTo(task2.getTime().getTime());
                 }
                 return task1.getDate().getDate().compareTo(task2.getDate().getDate());

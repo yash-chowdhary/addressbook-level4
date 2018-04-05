@@ -134,8 +134,10 @@ Duplicate tasks are not allowed.
 
 Examples:
 
-* `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00`
-* `addtask desc/Buy Food d/03.04.2018 ti/15:00`
+* `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00` +
+Adds a task with description `Book PGP Function Room 3` due on `02/04/2018` at `19:00`.
+* `addtask desc/Buy Food d/03.04.2018 ti/15:00` +
+Adds a task with description `Buy Food` due on `03/04/2018` at `15:00`.
 
 === Adding a task: `assigntask` (Since v1.4)
 
@@ -155,8 +157,10 @@ This command assigns the task to the member based on the entered `NAME`.
 
 Examples:
 
-* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 n/Bernice Yu`
-* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 n/David Li`
+* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 n/Bernice Yu` +
+Assigns a task to `Bernice Yu` with description `Book PGP Function Room 3` due on `02/04/2018` at `19:00`.
+* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 n/David Li` +
+Assigns a task to `David Li` with description `Buy Food` due on `03/04/2018` at `15:00`.
 
 === Changing password : `changepass` (Since v1.4)
 
@@ -172,8 +176,10 @@ Alias: `changepw`
 
 Examples:
 
-* changepass u/A0123456H pw/password npw/pword
+* `changepass u/A0123456H pw/password npw/pword` +
 Changes the password of the member with username `A0123456H` to `pword`.
+* `changepass u/A1234567H pw/password npw/brandnewpassword` +
+Changes the password of the member with username `A1234567H` to `brandnewpassword`.
 
 === Changing your profile photo : `changepic` (Since v1.2)
 
@@ -288,6 +294,8 @@ Examples:
 
 * `deletepoll 2` +
 Deletes the 2nd poll in the poll listing.
+* `deletepoll 4` +
+Deletes the 4th poll in the poll listing.
 
 === Deleting a tag : `deletetag` (Since v1.1)
 
@@ -304,6 +312,8 @@ Examples:
 
 * `deletetag t/Treasurer` +
 Deletes the `Treasurer` tag for all members tagged with `Treasurer` in Club Connect.
+* `deletetag t/EventInCharge` +
+Deletes the `EventInCharge` tag for all members tagged with `EventInCharge` in Club Connect.
 
 === Deleting a task : `deletetask` (Since v1.3)
 
@@ -401,8 +411,10 @@ You can import the exported CSV file in Microsoft Excel to get an even better vi
 
 Examples:
 
-* `export C:/Users/John Doe/Desktop/club.csv` +
-Exports all members in Club Connect to "club.csv" file on `John Doe` 's Desktop.
+* `export C:/Users/John Doe/Desktop/members.csv` +
+Exports all members in Club Connect to "members.csv" file on `John Doe` 's Desktop.
+* `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
+Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
 
 === Locating members: `find` (Since v1.2)
 
@@ -478,7 +490,9 @@ You can save a Microsoft Excel spreadsheet as a CSV file by changing the file ex
 Examples:
 
 * `import C:/Users/John Doe/Desktop/members.csv` +
-Imports all members in the "club.csv" file on `John Doe` 's Desktop to Club Connect.
+Imports all members in the "members.csv" file on `John Doe` 's Desktop to Club Connect.
+* `import /Users/Jane Doe/Desktop/clubbook.csv` +
+Imports all members in the "clubbook.csv" file on `Jane Doe` 's Desktop to Club Connect.
 
 === Listing all members : `list`
 
@@ -539,6 +553,9 @@ Examples:
 
 * `removegroup g/logistics` +
 Deletes the `logistics` group from Club Connect.
+
+* `removegroup g/pr` +
+Deletes the `pr` group from Club Connect.
 
 === Selecting a member : `select`
 
