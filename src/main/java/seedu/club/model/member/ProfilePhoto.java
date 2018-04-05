@@ -43,7 +43,7 @@ public class ProfilePhoto {
         this.profilePhotoPath = path;
     }
 
-    public String getProfilePhotoPath() {
+    public String getPhotoPath() {
         return profilePhotoPath;
     }
 
@@ -51,7 +51,7 @@ public class ProfilePhoto {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ProfilePhoto // instanceof handles nulls
-                && this.getProfilePhotoPath().equals(((ProfilePhoto) other).getProfilePhotoPath())); // state check
+                && this.getPhotoPath().equals(((ProfilePhoto) other).getPhotoPath())); // state check
     }
 
     @Override

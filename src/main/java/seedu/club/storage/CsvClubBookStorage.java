@@ -35,11 +35,6 @@ public class CsvClubBookStorage {
 
     public void setClubBookFile(File file) {
         this.file = file;
-        try {
-            FileUtil.createIfMissing(file);
-        } catch (IOException ioe) {
-            logger.warning("Error creating file " + file.getAbsolutePath());
-        }
     }
 
     /**
@@ -79,6 +74,7 @@ public class CsvClubBookStorage {
         requireNonNull(data);
         requireNonNull(file);
 
+        FileUtil.createIfMissing(file);
         assert file.exists() : "ClubBook export file " + file + " is guaranteed to exist";
 
         CsvFileStorage.saveDataToFile(file, data);

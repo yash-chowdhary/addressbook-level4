@@ -24,11 +24,11 @@ public class RemoveGroupCommand extends UndoableCommand {
             Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
     );
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Connect.\n"
             + "Parameters: "
             + PREFIX_GROUP + "GROUP";
 
-    public static final String MESSAGE_SUCCESS = "Group deleted from Club Book: %1$s";
+    public static final String MESSAGE_SUCCESS = "Group deleted from Club Connect: %1$s";
 
     private final Group toRemove;
 

@@ -12,7 +12,7 @@ import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 public class DecompressCommand extends Command {
 
     public static final String COMMAND_WORD = "decompress";
-    public static final String MESSAGE_SUCCESS = "View Decompressed";
+    public static final String MESSAGE_SUCCESS = "Member list view decompressed.";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "decomp")
     );

@@ -22,18 +22,19 @@ public class AddPollCommand extends UndoableCommand {
             Arrays.asList(COMMAND_WORD, "addp", "poll")
     );
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a poll to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Adds a poll for members to respond to on Club Connect.\n"
             + "Parameters: "
             + PREFIX_QUESTION + "QUESTION "
             + PREFIX_ANSWER + "ANSWER...\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_QUESTION + "When should the annual sports meeting be held? "
-            + PREFIX_ANSWER + "12th March "
-            + PREFIX_ANSWER + "13th March "
-            + PREFIX_ANSWER + "29th March ";
+            + PREFIX_QUESTION + "When should the annual Appreciation Dinner be held? "
+            + PREFIX_ANSWER + "April 13 "
+            + PREFIX_ANSWER + "April 14 "
+            + PREFIX_ANSWER + "April 21 ";
 
     public static final String MESSAGE_SUCCESS = "New poll added: %1$s";
-    public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in the club book";
+    public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in the club book.";
 
     private final Poll toAdd;
 

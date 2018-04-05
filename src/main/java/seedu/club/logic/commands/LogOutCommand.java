@@ -19,8 +19,8 @@ public class LogOutCommand extends Command {
             Arrays.asList(COMMAND_WORD, "signout")
     );
 
-    public static final String MESSAGE_SUCCESS = "logout successful!";
-    public static final String MESSAGE_FAILURE = "There are no member currently logged in";
+    public static final String MESSAGE_SUCCESS = "Logout successful.";
+    public static final String MESSAGE_FAILURE = "You are not logged in.";
 
     public LogOutCommand(){
     }
