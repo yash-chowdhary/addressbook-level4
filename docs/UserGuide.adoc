@@ -571,7 +571,7 @@ Alias: `showres`
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
 Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
-Alias: `register` +
+Aliases: `register`, `enroll` +
 [TIP]
 A member can have any number of tags (including 0).
 
