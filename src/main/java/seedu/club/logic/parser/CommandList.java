@@ -30,6 +30,7 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
@@ -74,6 +75,8 @@ public class CommandList {
         commandList.add(ExportCommand.COMMAND_FORMAT);
         commandList.add(LogOutCommand.COMMAND_WORD);
         commandList.add(VoteCommand.COMMAND_WORD);
+        commandList.add(SignUpCommand.COMMAND_FORMAT);
+        commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;

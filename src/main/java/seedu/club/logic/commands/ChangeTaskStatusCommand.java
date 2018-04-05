@@ -27,9 +27,9 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
  */
 public class ChangeTaskStatusCommand extends UndoableCommand {
 
-    public static final String COMMAND_WORD = "changestatus";
+    public static final String COMMAND_WORD = "changetaskstatus";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
-            Arrays.asList(COMMAND_WORD, "status")
+            Arrays.asList(COMMAND_WORD, "status", "changestatus", "cts")
     );
     public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX " + PREFIX_STATUS + "STATUS";
 

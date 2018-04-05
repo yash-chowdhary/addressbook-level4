@@ -200,7 +200,7 @@ Changes your profile picture to the "CathyRay.png" image in your Downloads folde
 
 Changes the status of a task in Club Connect. +
 Format: `changetaskstatus INDEX st/STATUS` +
-Alias: `status`
+Aliases: `cts`, `changestatus`, `status`
 
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
