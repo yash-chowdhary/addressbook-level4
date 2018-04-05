@@ -42,5 +42,7 @@ public class HistoryCommand extends Command {
     public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
         requireNonNull(history);
         this.history = history;
+        this.model = model;
+        this.undoRedoStack = undoRedoStack;
     }
 }
