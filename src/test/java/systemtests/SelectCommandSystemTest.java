@@ -103,7 +103,7 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         deleteAllMembers();
         command = SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased();
         executeCommand(command);
-        assertApplicationDisplaysExpected("", Messages.MESSAGE_REQUIRE_SIGN_UP, getModel());
+        assertCommandFailure(command, Messages.MESSAGE_REQUIRE_SIGN_UP);
     }
 
     /**

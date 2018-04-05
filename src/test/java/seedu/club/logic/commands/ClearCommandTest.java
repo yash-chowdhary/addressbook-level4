@@ -1,5 +1,6 @@
 package seedu.club.logic.commands;
 
+import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
@@ -35,7 +36,7 @@ public class ClearCommandTest {
     @Test
     public void execute_emptyClubBook_success() {
         Model emptyModel = new ModelManager();
-        assertCommandSuccess(prepareCommand(emptyModel), emptyModel, Messages.MESSAGE_REQUIRE_SIGN_UP, emptyModel);
+        assertCommandFailure(prepareCommand(emptyModel), emptyModel, Messages.MESSAGE_REQUIRE_SIGN_UP);
     }
 
     @Test

@@ -165,7 +165,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
         expectedModel = getModel();
         ModelHelper.setFilteredList(expectedModel, DANIEL);
         executeCommand(command);
-        assertApplicationDisplaysExpected("", Messages.MESSAGE_REQUIRE_SIGN_UP, expectedModel);
+        assertCommandFailure(command, Messages.MESSAGE_REQUIRE_SIGN_UP);
         assertSelectedCardUnchanged();
 
         /* Case: mixed case command word -> rejected */
