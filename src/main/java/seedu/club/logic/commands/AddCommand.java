@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 
 /**
  * Adds a member to the club book.
@@ -50,7 +50,8 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_TAG + "EventCoordinator";
 
     public static final String MESSAGE_SUCCESS = "New member added: %1$s";
-    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in Club Connect.";
+    public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "
+            + "exists in Club Connect.";
 
     private final Member toAdd;
 
@@ -70,8 +71,8 @@ public class AddCommand extends UndoableCommand {
             requireToLogIn();
             model.addMember(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
-        } catch (DuplicateMemberException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
+        } catch (DuplicateMatricNumberException e) {
+            throw new CommandException(MESSAGE_DUPLICATE_MATRIC_NUMBER);
         }
 
     }

@@ -190,18 +190,6 @@ public class Member {
         return builder.toString();
     }
 
-    /**
-     * change the status of the member loggin in
-     */
-
-    public void changeLogInStatus() {
-        if (!isLogIn) {
-            isLogIn = true;
-        } else {
-            isLogIn = false;
-        }
-    }
-
     public Credentials getCredentials() {
         return credentials;
     }

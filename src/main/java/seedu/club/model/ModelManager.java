@@ -37,7 +37,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -123,7 +123,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addMember(Member member) throws DuplicateMemberException {
+    public synchronized void addMember(Member member) throws DuplicateMatricNumberException {
         clubBook.addMember(member);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
@@ -131,7 +131,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateMember(Member target, Member editedMember)
-            throws DuplicateMemberException, MemberNotFoundException {
+            throws DuplicateMatricNumberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
         indicateClubBookChanged();
@@ -389,7 +389,7 @@ public class ModelManager extends ComponentManager implements Model {
             try {
                 clubBook.addMember(member);
                 numberMembers++;
-            } catch (DuplicateMemberException dme) {
+            } catch (DuplicateMatricNumberException dmne) {
                 logger.info("DuplicateMemberException encountered due to " + member);
             }
         }

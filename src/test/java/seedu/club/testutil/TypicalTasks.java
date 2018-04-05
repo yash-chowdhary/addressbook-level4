@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.model.ClubBook;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 
@@ -68,7 +68,7 @@ public class TypicalTasks {
 
         try {
             clubBook.addMember(ALICE);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dmne) {
             throw new AssertionError("not possible");
         }
 
