@@ -62,6 +62,8 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -75,6 +77,8 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.changeStatus(taskToEdit, editedTask);
         } catch (TaskNotFoundException tnfe) {
             throw new AssertionError("The target task cannot be missing");

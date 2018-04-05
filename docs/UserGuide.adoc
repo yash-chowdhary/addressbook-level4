@@ -486,7 +486,7 @@ Shows a list of all members in Club Connect. +
 Format: `list` +
 Alias: `l`
 
-=== Logging in a member: `login` (Since v1.3)
+=== Logging in to the application: `login` (Since v1.3)
 Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD` +
 Alias: `signin`
