@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
@@ -26,7 +27,7 @@ public class DecompressCommandTest {
     private Member member;
 
     @Before
-    public void setUp() {
+    public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
         member = observableList.get(0);
@@ -37,7 +38,7 @@ public class DecompressCommandTest {
     }
 
     @Test
-    public void execute_help_success() {
+    public void execute_help_success() throws CommandException {
         DecompressCommand decompressCommand = new DecompressCommand();
         decompressCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         CommandResult result = decompressCommand.execute();

@@ -28,7 +28,7 @@ public class UndoableCommandTest {
     private Member member;
 
     @Before
-    public void setUp() {
+    public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();

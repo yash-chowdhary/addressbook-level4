@@ -29,6 +29,7 @@ import org.junit.Test;
 import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.logic.parser.Prefix;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
@@ -50,7 +51,7 @@ public class FindCommandTest {
     private Member member;
 
     @Before
-    public void setUp() {
+    public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
         member = observableList.get(0);
@@ -245,7 +246,7 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_zeroKeywords_noMemberFound() {
+    public void execute_zeroKeywords_noMemberFound() throws CommandException {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 0);
         for (Prefix prefix : prefixes) {
             assertCommandSuccess(prepareCommand(" ", prefix), expectedMessage, Collections.emptyList());
@@ -253,7 +254,7 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_multipleKeywords_multipleMembersFound() {
+    public void execute_multipleKeywords_multipleMembersFound() throws CommandException {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 3);
         FindCommand command = prepareCommand("Kurz Elle Kunz", PREFIX_NAME);
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
@@ -293,7 +294,8 @@ public class FindCommandTest {
      *     - the {@code FilteredList<member>} is equal to {@code expectedList}<br>
      *     - the {@code ClubBook} in model remains the same after executing the {@code command}
      */
-    private void assertCommandSuccess(FindCommand command, String expectedMessage, List<Member> expectedList) {
+    private void assertCommandSuccess(FindCommand command, String expectedMessage, List<Member> expectedList)
+            throws CommandException {
         ClubBook expectedClubBook = new ClubBook(model.getClubBook());
         CommandResult commandResult = command.execute();
 
