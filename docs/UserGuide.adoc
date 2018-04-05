@@ -240,6 +240,8 @@ Aliases: `c`, `erase`
 * A confirmation message will be shown.
 * To confirm clearing all entries from Club Connect, enter Format B into the command line.
 * Format B has to be executed immediately after executing Format A.
+* LETTER must be equals to "Y" to confirm clearing data from Club Connect
+* Any other LETTER will cancell the execution
 ****
 
 Examples:
