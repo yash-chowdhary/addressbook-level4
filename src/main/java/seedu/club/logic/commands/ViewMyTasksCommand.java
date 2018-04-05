@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 
@@ -25,11 +24,8 @@ public class ViewMyTasksCommand extends Command {
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
         try {
-            if (requireToSignUp()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-            } else if (requireToLogIn()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-            }
+            requireToSignUp();
+            requireToLogIn();
             model.viewMyTasks();
         } catch (TasksAlreadyListedException tale) {
             throw new CommandException(MESSAGE_ALREADY_LISTED);

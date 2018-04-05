@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
-import seedu.club.commons.core.Messages;
 import seedu.club.commons.events.ui.CompressMembersRequestEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
  * Lists all members in the club book to the user.
@@ -20,13 +20,10 @@ public class CompressCommand extends Command {
 
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         EventsCenter.getInstance().post(new CompressMembersRequestEvent());
-        if (requireToSignUp()) {
-            return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-        } else if (requireToLogIn()) {
-            return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-        }
+        requireToSignUp();
+        requireToLogIn();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

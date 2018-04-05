@@ -10,7 +10,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -67,11 +66,8 @@ public class EmailCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
-            if (requireToSignUp()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_SIGN_UP);
-            } else if (requireToLogIn()) {
-                return new CommandResult(Messages.MESSAGE_REQUIRE_LOG_IN);
-            }
+            requireToSignUp();
+            requireToLogIn();
             String emailRecipients = model.generateEmailRecipients(group, tag);
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);

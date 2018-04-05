@@ -44,22 +44,18 @@ public abstract class Command {
     /**
      * Requires user to login before proceeding
      */
-    protected Boolean requireToLogIn () {
+    protected void requireToLogIn () throws CommandException {
         if (model.getLoggedInMember() == null) {
-            return true;
-        } else {
-            return false;
+            throw new CommandException(Messages.MESSAGE_REQUIRE_LOG_IN);
         }
     }
 
     /**
      * Requires user to Sign Up
      */
-    protected Boolean requireToSignUp () {
+    protected void requireToSignUp () throws CommandException {
         if (model.getClubBook().getMemberList().isEmpty()) {
-            return true;
-        } else {
-            return false;
+            throw new CommandException(Messages.MESSAGE_REQUIRE_SIGN_UP);
         }
     }
 }
