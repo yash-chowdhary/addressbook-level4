@@ -9,7 +9,7 @@ import seedu.club.logic.parser.exceptions.ParseException;
 public class ClearCommandParser implements Parser<ClearCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the ClearCommand
-     * and returns an ClearCommand object for execution.
+     * and returns a ClearCommand object for execution.
      */
     public ClearCommand parse(String args) throws ParseException {
         if (args.equals("")) {
