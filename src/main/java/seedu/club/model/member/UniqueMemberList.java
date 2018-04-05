@@ -225,6 +225,9 @@ public class UniqueMemberList implements Iterable<Member> {
      */
     public void clear() {
         internalList.clear();
+        usernamePasswordHashMap.clear();
+        usernameCredentialsHashMap.clear();
         setCurrentlyLogInMember(null);
+        System.out.println(getCurrentlyLogInMember());
     }
 }
