@@ -39,7 +39,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -82,7 +82,7 @@ public class AddCommandTest {
         Member validMember = new MemberBuilder().build();
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MEMBER);
+        thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         getAddCommandForMember(validMember, modelStub).execute();
     }
@@ -170,7 +170,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -217,7 +217,7 @@ public class AddCommandTest {
 
         @Override
         public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+                throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -325,6 +325,17 @@ public class AddCommandTest {
         public void clearClubBook() {
             fail("This method should not be called");
         }
+
+        @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
     }
 
     /**
@@ -337,8 +348,8 @@ public class AddCommandTest {
                 getTagSet("friends"));
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            throw new DuplicateMemberException();
+        public void addMember(Member member) throws DuplicateMatricNumberException {
+            throw new DuplicateMatricNumberException();
         }
 
         //@@author th14thmusician
@@ -348,11 +359,12 @@ public class AddCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;
@@ -369,8 +381,9 @@ public class AddCommandTest {
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("exco"),
                 getTagSet("friends"));
+
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             requireNonNull(member);
             membersAdded.add(member);
         }
@@ -382,11 +395,12 @@ public class AddCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;

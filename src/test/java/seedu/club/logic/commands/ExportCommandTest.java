@@ -39,7 +39,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -176,9 +176,18 @@ public class ExportCommandTest {
             fail("This method should not be called");
         }
 
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
-                DuplicateTaskException {
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -188,7 +197,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -239,7 +248,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -356,7 +365,7 @@ public class ExportCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
@@ -388,7 +397,7 @@ public class ExportCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;

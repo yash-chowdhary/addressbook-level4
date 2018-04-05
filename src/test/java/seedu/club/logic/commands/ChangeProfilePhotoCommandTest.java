@@ -39,7 +39,7 @@ import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -142,6 +142,7 @@ public class ChangeProfilePhotoCommandTest {
 
         return tags;
     }
+
     /**
      * A default model stub that have all of the methods failing.
      */
@@ -181,13 +182,24 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void clearClubBook() {
+        public void addMember(Member member) throws DuplicateMatricNumberException  {
             fail("This method should not be called");
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
-            fail("This method should not be called.");
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
         }
 
         @Override
@@ -236,7 +248,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException {
+        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -344,6 +356,7 @@ public class ChangeProfilePhotoCommandTest {
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
                 getTagSet("friends"));
+
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             throw new PhotoReadException();
@@ -355,11 +368,12 @@ public class ChangeProfilePhotoCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;
@@ -388,7 +402,7 @@ public class ChangeProfilePhotoCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;

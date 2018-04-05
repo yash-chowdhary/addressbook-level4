@@ -166,6 +166,7 @@ public abstract class ClubBookSystemTest {
      */
     protected void deleteAllMembers() {
         executeCommand(ClearCommand.COMMAND_WORD);
+        executeCommand(ClearCommand.COMMAND_WORD + " Y");
         assertEquals(0, getModel().getClubBook().getMemberList().size());
     }
 

@@ -13,7 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -38,19 +38,36 @@ public class UniqueMemberList implements Iterable<Member> {
      */
     public boolean contains(Member toCheck) {
         requireNonNull(toCheck);
-        return internalList.contains(toCheck);
+        return containsMatricNumber(toCheck.getMatricNumber());
+    }
+
+    // @@author amrut-prabhu
+    /**
+     * Returns true if {@code internalList} of members contains a member with the same {@code MatricNumber}.
+     *
+     * @param toCheck Matric Number that is to be checked for uniqueness.
+     */
+    private boolean containsMatricNumber(MatricNumber toCheck) {
+        requireNonNull(toCheck);
+        for (Member member: internalList) {
+            if (member.getMatricNumber().equals(toCheck)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * Adds a member to the list.
      *
-     * @throws DuplicateMemberException if the member to add is a duplicate of an existing member in the list.
+     * @throws DuplicateMatricNumberException if a member with the same matriculation number as member to add exists.
      */
-    public void add(Member toAdd) throws DuplicateMemberException {
+    public void add(Member toAdd) throws DuplicateMatricNumberException {
         requireNonNull(toAdd);
-        if (contains(toAdd)) {
-            throw new DuplicateMemberException();
+        if (this.containsMatricNumber(toAdd.getMatricNumber())) {
+            throw new DuplicateMatricNumberException();
         }
+        // @@author
         internalList.add(toAdd);
         usernameCredentialsHashMap.put(toAdd.getCredentials().getUsername().value, toAdd);
         usernamePasswordHashMap.put(toAdd.getCredentials().getUsername().value,
@@ -60,11 +77,12 @@ public class UniqueMemberList implements Iterable<Member> {
     /**
      * Replaces the member {@code target} in the list with {@code editedMember}.
      *
-     * @throws DuplicateMemberException if the replacement is equivalent to another existing member in the list.
+     * @throws DuplicateMatricNumberException if the replacement's matriculation number is equivalent to that of
+     *  `                               another existing member in the list.
      * @throws MemberNotFoundException if {@code target} could not be found in the list.
      */
     public void setMember(Member target, Member editedMember)
-            throws DuplicateMemberException, MemberNotFoundException {
+            throws DuplicateMatricNumberException, MemberNotFoundException {
         requireNonNull(editedMember);
 
         int index = internalList.indexOf(target);
@@ -72,9 +90,12 @@ public class UniqueMemberList implements Iterable<Member> {
             throw new MemberNotFoundException();
         }
 
-        if (!target.equals(editedMember) && internalList.contains(editedMember)) {
-            throw new DuplicateMemberException();
+        // @@author amrut-prabhu
+        if (!target.equals(editedMember) && this.containsMatricNumber(editedMember.getMatricNumber())
+                && !target.getMatricNumber().equals(editedMember.getMatricNumber())) {
+            throw new DuplicateMatricNumberException();
         }
+        // @@author
 
         internalList.set(index, editedMember);
         usernamePasswordHashMap.remove(target.getCredentials().getUsername().value);
@@ -102,7 +123,7 @@ public class UniqueMemberList implements Iterable<Member> {
         this.internalList.setAll(replacement.internalList);
     }
 
-    public void setMembers(List<Member> members) throws DuplicateMemberException {
+    public void setMembers(List<Member> members) throws DuplicateMatricNumberException {
         requireAllNonNull(members);
         final UniqueMemberList replacement = new UniqueMemberList();
         for (final Member member : members) {
@@ -225,6 +246,9 @@ public class UniqueMemberList implements Iterable<Member> {
      */
     public void clear() {
         internalList.clear();
+        usernamePasswordHashMap.clear();
+        usernameCredentialsHashMap.clear();
         setCurrentlyLogInMember(null);
+        System.out.println(getCurrentlyLogInMember());
     }
 }

@@ -44,8 +44,8 @@ public class CommandTestUtil {
     public static final String VALID_NAME_BOB = "Bob Choo";
     public static final String VALID_NAME_BENSON = "Benson Meier";
     public static final String VALID_NAME_CARL = "Carl Kurz";
-    public static final String VALID_MATRIC_NUMBER_AMY = "A9210701B";
-    public static final String VALID_MATRIC_NUMBER_BOB = "A8389539B";
+    public static final String VALID_MATRIC_NUMBER_AMY = "A0214701B";
+    public static final String VALID_MATRIC_NUMBER_BOB = "A0784539B";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_EMAIL_AMY = "amy@example.com";

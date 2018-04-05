@@ -53,7 +53,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.testutil.MemberBuilder;
@@ -204,12 +204,12 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         assertFalse(getModel().getFilteredMemberList().get(index.getZeroBased()).equals(BOB));
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + TAG_DESC_FRIEND + TAG_DESC_HUSBAND;
-        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MEMBER);
+        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         /* Case: edit a member with new values same as another member's values but with different tags -> rejected */
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + MATRIC_NUMBER_DESC_BOB + TAG_DESC_HUSBAND;
-        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MEMBER);
+        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
     }
 
     /**
@@ -239,7 +239,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
             expectedModel.updateMember(
                     expectedModel.getFilteredMemberList().get(toEdit.getZeroBased()), editedMember);
             expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        } catch (DuplicateMemberException | MemberNotFoundException e) {
+        } catch (DuplicateMatricNumberException | MemberNotFoundException e) {
             throw new IllegalArgumentException(
                     "editedMember is a duplicate in expectedModel, or it isn't found in the model.");
         }

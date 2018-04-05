@@ -3,7 +3,7 @@ package seedu.club.testutil;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -31,7 +31,7 @@ public class ClubBookBuilder {
     public ClubBookBuilder withMember(Member member) {
         try {
             clubBook.addMember(member);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dmne) {
             throw new IllegalArgumentException("member is expected to be unique.");
         }
         return this;

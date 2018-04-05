@@ -30,7 +30,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.UniqueMemberList;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.tag.Tag;
 
 
@@ -186,7 +186,7 @@ public class CsvUtil {
                 importedMembers.add(member);
             } catch (DataConversionException dce) {
                 logger.warning("DataConversionException encountered while converting " + membersData[i]);
-            } catch (DuplicateMemberException dme) {
+            } catch (DuplicateMatricNumberException dmne) {
                 logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
             }
         }

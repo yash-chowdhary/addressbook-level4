@@ -16,7 +16,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -81,7 +81,7 @@ public interface Model {
     /**
      * Adds the given member
      */
-    void addMember(Member member) throws DuplicateMemberException;
+    void addMember(Member member) throws DuplicateMatricNumberException;
 
     /**
      * Adds the given poll
@@ -103,12 +103,12 @@ public interface Model {
     /**
      * Replaces the given member {@code target} with {@code editedMember}.
      *
-     * @throws DuplicateMemberException if updating the member's details causes the member to be equivalent to
-     *                                  another existing member in the list.
+     * @throws DuplicateMatricNumberException if updating the member's details causes the member's matriculation number
+     *                                  to be equivalent to that of another existing member in the list.
      * @throws MemberNotFoundException  if {@code target} could not be found in the list.
      */
     void updateMember(Member target, Member editedMember)
-            throws DuplicateMemberException, MemberNotFoundException;
+            throws DuplicateMatricNumberException, MemberNotFoundException;
 
     /**
      * Returns an unmodifiable view of the filtered member list
@@ -231,6 +231,10 @@ public interface Model {
     void signUpMember(Member member) throws MemberListNotEmptyException;
 
     void clearClubBook();
+
+    boolean getClearConfirmation();
+
+    void setClearConfirmation(Boolean b);
     //@@author
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;

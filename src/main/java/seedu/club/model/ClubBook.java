@@ -20,7 +20,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -75,7 +75,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
 
     //// list overwrite operations
-    public void setMembers(List<Member> members) throws DuplicateMemberException {
+    public void setMembers(List<Member> members) throws DuplicateMatricNumberException {
         this.members.setMembers(members);
         this.members.fillHashMap();
     }
@@ -98,7 +98,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         try {
             setMembers(syncedMemberList);
-        } catch (DuplicateMemberException e) {
+        } catch (DuplicateMatricNumberException e) {
             throw new AssertionError("ClubConnect should not have duplicate members");
         }
     }
@@ -111,14 +111,20 @@ public class ClubBook implements ReadOnlyClubBook {
      * Also checks the new member's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the member to point to those in {@link #tags}.
      *
-     * @throws DuplicateMemberException if an equivalent member already exists.
+     * @throws DuplicateMatricNumberException if a member with the same matriculation number already exists.
      */
-    public void addMember(Member p) throws DuplicateMemberException {
-        Member member = syncWithMasterTagList(p);
+    public void addMember(Member m) throws DuplicateMatricNumberException {
+        Member member = syncWithMasterTagList(m);
+        // @@author amrut-prabhu
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any member
         // in the member list.
-        members.add(member);
+        try {
+            members.add(member);
+        } catch (DuplicateMatricNumberException dmne) {
+            deleteTagsUniqueToMember(m);
+            throw dmne;
+        }
     }
 
     //@@author MuhdNurKamal
@@ -140,30 +146,33 @@ public class ClubBook implements ReadOnlyClubBook {
      * Replaces the given member {@code target} in the list with {@code editedMember}.
      * {@code ClubBook}'s tag list will be updated with the tags of {@code editedMember}.
      *
-     * @throws DuplicateMemberException if updating the member's details causes the member to be equivalent to
-     *                                  another existing member in the list.
+     * @throws DuplicateMatricNumberException if updating the member's details causes the member's matriculation number
+     *                                  to be equivalent to that of another existing member in the list.
      * @throws MemberNotFoundException  if {@code target} could not be found in the list.
      * @see #syncWithMasterTagList(Member)
      */
     public void updateMember(Member target, Member editedMember)
-            throws DuplicateMemberException, MemberNotFoundException {
+            throws DuplicateMatricNumberException, MemberNotFoundException {
         requireNonNull(editedMember);
 
         //@author amrut-prabhu
-        deleteMemberTags(target);
+        deleteTagsUniqueToMember(target);
         Member syncedEditedMember = syncWithMasterTagList(editedMember);
+        // TODO: the tags master list will be updated even though the below line fails.
+        // This can cause the tags master list to have additional tags that are not tagged to any person
+        // in the person list.
         try {
             members.setMember(target, syncedEditedMember);
-        } catch (DuplicateMemberException dme) {
-            addTargetMemberTags(target);
-            throw new DuplicateMemberException();
+        } catch (DuplicateMatricNumberException dme) {
+            addMemberTags(target);
+            throw dme;
         }
     }
 
     /**
-     * Re-adds the tags of {@code target} that were removed from {@code tags}.
+     * Adds back the tags of {@code target} member that were removed from {@code tags}.
      */
-    private void addTargetMemberTags(Member target) {
+    private void addMemberTags(Member target) {
         Set<Tag> allTags = new HashSet<>(tags.asObservableList());
         allTags.addAll(target.getTags());
         tags.setTags(allTags);
@@ -199,7 +208,7 @@ public class ClubBook implements ReadOnlyClubBook {
      * @throws MemberNotFoundException if the {@code key} is not in this {@code ClubBook}.
      */
     public boolean removeMember(Member key) throws MemberNotFoundException {
-        deleteMemberTags(key);
+        deleteTagsUniqueToMember(key);
         if (members.remove(key)) {
             return true;
         } else {
@@ -298,7 +307,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dme) {
             throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
@@ -328,11 +337,11 @@ public class ClubBook implements ReadOnlyClubBook {
 
     //@@author amrut-prabhu
     /**
-     * Removes tags from master tag list {@code tags} that are unique to member {@code member}.
+     * Removes tags from master {@code tags} list that are unique to {@code member}.
      *
      * @param member Member whose tags may be removed from {@code tags}.
      */
-    private void deleteMemberTags(Member member) {
+    private void deleteTagsUniqueToMember(Member member) {
         List<Tag> tagsToCheck = new ArrayList<>(getTagList());
         Set<Tag> newTags = tagsToCheck.stream()
                 .filter(t -> !isTagUniqueToMember(t, member))
@@ -410,7 +419,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 member.getGroup(), memberTags);
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dme) {
             throw new AssertionError("Modifying a member's tags only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
@@ -436,7 +445,8 @@ public class ClubBook implements ReadOnlyClubBook {
 
     @Override
     public String toString() {
-        return members.asObservableList().size() + " members, " + tags.asObservableList().size() + " tags";
+        return members.asObservableList().size() + " members, " + tags.asObservableList().size() + " tags, "
+                + polls.asObservableList().size() + " polls, " + tasks.asObservableList().size() + "tasks";
         // TODO: refine later
     }
 
