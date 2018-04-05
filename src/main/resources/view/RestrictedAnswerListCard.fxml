@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- @@author MuhdNurKamal -->
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -8,27 +10,28 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.121">
 
-    <GridPane HBox.hgrow="ALWAYS">
+<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+
+    <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
         </columnConstraints>
-        <VBox alignment="CENTER_LEFT" minHeight="33.0" prefHeight="106.0" prefWidth="213.0" GridPane.columnIndex="0">
+        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="33.0" prefWidth="213.0" GridPane.columnIndex="0">
             <padding>
-                <Insets bottom="5" left="15" right="5" top="5"/>
+                <Insets bottom="5" left="15" right="5" top="5" />
             </padding>
-            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
-                <Label fx:id="choice" styleClass="cell_big_label">
+            <HBox maxHeight="1.7976931348623157E308" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
+                <Label fx:id="choice" maxHeight="1.7976931348623157E308" styleClass="cell_big_label">
                     <minWidth>
-                        <Region fx:constant="USE_PREF_SIZE"/>
+                        <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" wrapText="true"/>
+                <Label fx:id="answerValue" maxHeight="1.7976931348623157E308" wrapText="true" />
             </HBox>
         </VBox>
         <rowConstraints>
-            <RowConstraints/>
+            <RowConstraints />
         </rowConstraints>
     </GridPane>
 </HBox>

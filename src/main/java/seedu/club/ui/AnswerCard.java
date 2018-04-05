@@ -60,7 +60,7 @@ public class AnswerCard extends UiPart<Region> {
         double voteFraction = totalVoteCount == 0
                 ? 0 : ((double) voteCount) / totalVoteCount;
         votePercentageBar.setProgress(voteFraction);
-        votePercentage.setText(voteFraction * 100 + PERCENTAGE_SYMBOL);
+        votePercentage.setText(Math.floor(voteFraction * 100) + PERCENTAGE_SYMBOL);
 
     }
 
