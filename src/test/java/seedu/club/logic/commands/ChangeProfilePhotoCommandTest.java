@@ -154,6 +154,12 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;

@@ -2,6 +2,7 @@ package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -128,7 +129,7 @@ public class EmailCommandTest {
 
         EmailCommand emailCommand = prepareCommand(nonExistentGroup, tagToEmail, gmailClient,
                 testSubject, testBody);
-        String expectedMessage = RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP;
+        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
 
         assertCommandFailure(emailCommand, model, expectedMessage);
     }

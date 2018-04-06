@@ -68,6 +68,8 @@ public class VoteCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Poll> lastShownList = model.getFilteredPollList();
 
         if (pollIndex.getZeroBased() >= lastShownList.size()) {
