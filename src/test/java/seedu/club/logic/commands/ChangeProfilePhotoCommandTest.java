@@ -171,7 +171,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
                 DuplicateTaskException {
             fail("This method should not be called");
         }

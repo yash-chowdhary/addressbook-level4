@@ -85,18 +85,19 @@ public class ChangeTaskStatusCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
         Task taskToEdit = model.getClubBook().getTaskList().get(INDEX_FIRST_TASK.getZeroBased());
         Task editedTask = new Task(taskToEdit);
         editedTask.setStatus(new Status(Status.COMPLETED_STATUS));
         ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(INDEX_FIRST_TASK,
                 new Status(Status.IN_PROGRESS_STATUS));
+
         expectedModel = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
 
         changeTaskStatusCommand.execute();
         undoRedoStack.push(changeTaskStatusCommand);
-
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.changeStatus(taskToEdit, editedTask);
