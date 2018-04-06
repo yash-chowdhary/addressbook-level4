@@ -329,7 +329,7 @@ public class LogInCommandTest {
 
         @Override
         public Member getLoggedInMember() {
-            return null;
+            return currentlyLoggedIn;
         }
         //@@author
     }
