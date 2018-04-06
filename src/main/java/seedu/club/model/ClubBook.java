@@ -270,17 +270,15 @@ public class ClubBook implements ReadOnlyClubBook {
      * will be assigned the default group - "member".
      */
     public void removeGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
-        Group notToBeDeleted = new Group("member");
-        if (toRemove.equals(notToBeDeleted)) {
-            throw new GroupCannotBeRemovedException();
-        }
-        Boolean isPresent = false;
+        checkIfGroupIsMember(toRemove);
+        checkIfGroupIsPresent(toRemove);
+        removeGroupFromClubBook(toRemove);
+    }
 
-        for (Member member : members) {
-            if (member.getGroup().equals(toRemove)) {
-                isPresent = true;
-            }
-        }
+    /**
+     * Removes the Group {@code toRemove} from Club Connect.
+     */
+    private void removeGroupFromClubBook(Group toRemove) {
         try {
             for (Member member : members) {
                 removeGroupFromMember(toRemove, member);
@@ -288,8 +286,33 @@ public class ClubBook implements ReadOnlyClubBook {
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
         }
+    }
+
+    /**
+     * Checks if {@code toRemove} exists in Club Connect.
+     * @throws GroupNotFoundException if {@code toRemove} is not found.
+     */
+    private void checkIfGroupIsPresent(Group toRemove) throws GroupNotFoundException {
+        Boolean isPresent = false;
+
+        for (Member member : members) {
+            if (member.getGroup().equals(toRemove)) {
+                isPresent = true;
+            }
+        }
         if (!isPresent) {
             throw new GroupNotFoundException();
+        }
+    }
+
+    /**
+     * Checks if {@code toRemove} is "member".
+     * @throws GroupCannotBeRemovedException if {@code toRemove} is "member".
+     */
+    private void checkIfGroupIsMember(Group toRemove) throws GroupCannotBeRemovedException {
+        Group notToBeDeleted = new Group("member");
+        if (toRemove.equals(notToBeDeleted)) {
+            throw new GroupCannotBeRemovedException();
         }
     }
 
