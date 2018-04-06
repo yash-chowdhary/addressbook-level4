@@ -183,15 +183,7 @@ public class ModelManagerTest {
                 ALICE.getCredentials().getPassword().value);
         modelManager.addTaskToTaskList(BUY_FOOD);
 
-        Member alice = new MemberBuilder(ALICE).build();
-        Task buyFood = new TaskBuilder(BUY_FOOD).build();
-        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
-        ClubBook expectedClubBook = new ClubBookBuilder()
-                .withMember(alice)
-                .withTask(buyConfetti)
-                .withTask(buyFood)
-                .build();
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
         assertEquals(expectedModel, modelManager);
@@ -225,30 +217,12 @@ public class ModelManagerTest {
                 ALICE.getCredentials().getPassword().value);
         modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
 
-        Member alice = new MemberBuilder(ALICE).build();
-        Member bob = new MemberBuilder(BOB).build();
-        Task buyFood = new TaskBuilder()
-                .withDescription("Buy Food")
-                .withDate("02/05/2018")
-                .withTime("19:00")
-                .withAssignor("A9210701B")
-                .withAssignee("A0784539B")
-                .withStatus("Yet To Begin")
-                .build();
-        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
-        ClubBook expectedClubBook = new ClubBookBuilder()
-                .withMember(alice)
-                .withMember(bob)
-                .withTask(buyConfetti)
-                .withTask(buyFood)
-                .build();
 
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
         boolean isEqual = expectedModel.equals(modelManager);
-        assertTrue(expectedModel.equals(modelManager));
-        // assertEquals(expectedModel, modelManager);
+        assertEquals(expectedModel, modelManager);
     }
 
     @Test
