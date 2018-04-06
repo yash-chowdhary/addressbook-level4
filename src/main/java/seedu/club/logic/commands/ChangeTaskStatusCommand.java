@@ -63,7 +63,6 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
     protected void preprocessUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
-        requireExcoLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (index.getZeroBased() >= lastShownList.size()) {

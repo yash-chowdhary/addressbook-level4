@@ -26,9 +26,9 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final Model model;
-    private final CommandHistory history;
+    private CommandHistory history;
     private final ClubBookParser clubBookParser;
-    private final UndoRedoStack undoRedoStack;
+    private UndoRedoStack undoRedoStack;
 
     public LogicManager(Model model) {
         this.model = model;
