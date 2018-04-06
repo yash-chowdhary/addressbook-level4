@@ -532,6 +532,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
+    //@@author
 
     @Override
     public void clearClubBook() {

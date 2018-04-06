@@ -1,4 +1,5 @@
 package seedu.club.testutil;
+//@@author MuhdNurKamal
 
 import static seedu.club.testutil.TypicalMembers.ALICE;
 

@@ -1,5 +1,5 @@
 package seedu.club.ui;
-
+//@@author MuhdNurKamal
 import seedu.club.model.poll.Poll;
 
 /**

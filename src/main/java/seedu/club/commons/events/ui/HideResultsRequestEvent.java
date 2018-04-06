@@ -1,5 +1,5 @@
 package seedu.club.commons.events.ui;
-
+//@@author MuhdNurKamal
 import seedu.club.commons.events.BaseEvent;
 
 /**
