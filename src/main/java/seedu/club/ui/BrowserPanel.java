@@ -1,6 +1,6 @@
 package seedu.club.ui;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -10,11 +10,16 @@ import com.google.common.eventbus.Subscribe;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
@@ -34,9 +39,11 @@ public class BrowserPanel extends UiPart<Region> {
 
     private static final String FXML = "MemberDetailsPanel.fxml";
 
-    private static final Integer PHOTO_WIDTH = 90;
-    private static final Integer PHOTO_HEIGHT = 120;
+    private static final Integer PHOTO_WIDTH = 130;
+    private static final Integer PHOTO_HEIGHT = 152;
     private static final String DEFAULT_PHOTO = "/images/defaultProfilePhoto.png";
+    private static final String PHONE_ICON = "/images/phone_icon.png";
+    private static final String EMAIL_ICON = "/images/email_icon.png";
     private static final String EMPTY_STRING = "";
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
                                                 "orange", "blue", "violet"};
@@ -60,15 +67,9 @@ public class BrowserPanel extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private Label nameText;
+    private ImageView phoneIcon;
     @FXML
-    private Label phoneText;
-    @FXML
-    private Label matricNumberText;
-    @FXML
-    private Label emailText;
-    @FXML
-    private Label groupText;
+    private ImageView emailIcon;
 
 
 
@@ -138,11 +139,6 @@ public class BrowserPanel extends UiPart<Region> {
      * @param member
      */
     private void loadMemberPage(Member member) {
-        nameText.setText("Name");
-        phoneText.setText("Mobile");
-        matricNumberText.setText("Matric Number");
-        groupText.setText("Group");
-        emailText.setText("E-Mail");
         name.setText(member.getName().fullName);
         setProfilePhoto(member);
         phone.setText(member.getPhone().value);
@@ -150,6 +146,7 @@ public class BrowserPanel extends UiPart<Region> {
         email.setText(member.getEmail().value);
         group.setText(member.getGroup().groupName);
         createTags(member);
+        setIcons();
     }
 
     /**
@@ -159,13 +156,19 @@ public class BrowserPanel extends UiPart<Region> {
         name.setText("");
         phone.setText("");
         matricNumber.setText("");
-        email.setText("");
         group.setText("");
-        nameText.setText("");
-        phoneText.setText("");
-        matricNumberText.setText("");
-        groupText.setText("");
-        emailText.setText("");
+        email.setText("");
+    }
+
+    /**
+     * Set Icon pictures
+     */
+    private void setIcons(){
+        Image phoneImg;
+        Image emailImg;
+        phoneImg = new Image(MainApp.class.getResourceAsStream(PHONE_ICON),
+                21, 21, false, true);
+        phoneIcon.setImage(phoneImg);
     }
     //@@author
 
@@ -219,6 +222,7 @@ public class BrowserPanel extends UiPart<Region> {
      * Creates the labels for tags by randomly generating a color from `TAG_COLORS`
      */
     private void createTags(Member member) {
+        tags.getChildren().clear();
         member.getTags().forEach(tag -> {
             Label tagLabel = new Label(tag.tagName);
             tagLabel.getStyleClass().add(returnColor(tag.tagName));
