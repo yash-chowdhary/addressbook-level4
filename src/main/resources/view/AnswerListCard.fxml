@@ -39,7 +39,7 @@
                     </Label>
                <HBox>
                   <children>
-                          <ProgressBar fx:id="votePercentageBar" prefHeight="18.0" prefWidth="200.0" progress="0.0">
+                          <ProgressBar fx:id="votePercentageBar" maxWidth="160.0" prefHeight="18.0" prefWidth="160.0" progress="0.0">
                         <HBox.margin>
                            <Insets />
                         </HBox.margin></ProgressBar>
