@@ -25,7 +25,6 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -177,7 +176,6 @@ public class ExportCommandTest {
             fail("This method should not be called");
         }
 
-        @Override
         public boolean getClearConfirmation() {
             fail("This method should not be called");
             return false;
@@ -189,8 +187,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
             fail("This method should not be called");
         }
 

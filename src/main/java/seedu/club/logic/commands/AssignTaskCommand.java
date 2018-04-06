@@ -1,7 +1,6 @@
 package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_PERMISSIONS;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.task.Task;
@@ -60,17 +58,16 @@ public class AssignTaskCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.assignTask(toAdd, name);
             return new CommandResult(String.format(MESSAGE_SUCCESS, name));
         } catch (MemberNotFoundException mnfe) {
             throw new CommandException(MESSAGE_MEMBER_NOT_FOUND);
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
-        } catch (IllegalExecutionException iee) {
-            throw new CommandException(MESSAGE_INVALID_PERMISSIONS);
         }
     }
 

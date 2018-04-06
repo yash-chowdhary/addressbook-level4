@@ -39,6 +39,7 @@ public class ClearCommand extends Command {
         requireNonNull(model);
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         if (!model.getClearConfirmation()) {
             model.setClearConfirmation(true);
             return new CommandResult(MESSAGE_CONFRIMATION);

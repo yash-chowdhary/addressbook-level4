@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -240,11 +239,9 @@ public interface Model {
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 
-    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-            IllegalExecutionException;
+    void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException;
 
     void viewMyTasks() throws TasksAlreadyListedException;
 
-    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
-            IllegalExecutionException;
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException;
 }

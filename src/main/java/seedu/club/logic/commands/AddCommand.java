@@ -66,9 +66,10 @@ public class AddCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.addMember(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (DuplicateMatricNumberException e) {

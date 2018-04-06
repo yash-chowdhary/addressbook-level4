@@ -26,9 +26,9 @@ public class ViewAllTasksCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.viewAllTasks();
         } catch (TasksCannotBeDisplayedException tcbde) {
             throw new CommandException(MESSAGE_CANNOT_VIEW);

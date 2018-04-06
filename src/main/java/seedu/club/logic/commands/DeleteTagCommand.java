@@ -39,10 +39,10 @@ public class DeleteTagCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(tagToDelete);
-
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.deleteTag(tagToDelete);
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {

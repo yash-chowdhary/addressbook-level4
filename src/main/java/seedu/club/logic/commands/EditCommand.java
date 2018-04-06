@@ -84,9 +84,10 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.updateMember(memberToEdit, editedMember);
         } catch (DuplicateMatricNumberException dmne) {
             throw new CommandException(MESSAGE_DUPLICATE_MATRIC_NUMBER);
