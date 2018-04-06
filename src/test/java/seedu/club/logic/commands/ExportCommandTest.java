@@ -187,7 +187,8 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 

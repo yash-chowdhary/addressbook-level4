@@ -32,8 +32,8 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.Name;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
@@ -297,8 +297,8 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getName().toString());
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getMatricNumber().toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
@@ -312,11 +312,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+    public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
             DuplicateTaskException {
         boolean found = false;
         for (Member member : clubBook.getMemberList()) {
-            if (member.getName().equals(name)) {
+            if (member.getMatricNumber().equals(matricNumber)) {
                 found = true;
             }
         }
@@ -324,8 +324,8 @@ public class ModelManager extends ComponentManager implements Model {
             throw new MemberNotFoundException();
         }
         try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(name.toString());
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+            Assignee assignee = new Assignee(matricNumber.toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
@@ -342,7 +342,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
-        String currentMember = getLoggedInMember().getName().toString();
+        String currentMember = getLoggedInMember().getMatricNumber().toString();
         if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
                 && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
             throw new TaskCannotBeDeletedException();

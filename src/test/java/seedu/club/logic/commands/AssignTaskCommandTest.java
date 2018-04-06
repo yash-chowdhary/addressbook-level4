@@ -75,12 +75,12 @@ public class AssignTaskCommandTest {
     public void execute_taskAcceptedByModel_assignSuccessful() throws Exception {
         ModelStubAcceptingTaskAdded modelStub = new ModelStubAcceptingTaskAdded();
         Task validTask = new TaskBuilder().build();
-        Name validName = new Name(BENSON.getName().toString());
+        MatricNumber validMatricNumber = new MatricNumber(BENSON.getMatricNumber().toString());
 
-        CommandResult commandResult =  getAssignTaskCommandForTask(validTask, validName, modelStub)
+        CommandResult commandResult =  getAssignTaskCommandForTask(validTask, validMatricNumber, modelStub)
                 .executeUndoableCommand();
 
-        assertEquals(String.format(AssignTaskCommand.MESSAGE_SUCCESS, validName), commandResult.feedbackToUser);
+        assertEquals(String.format(AssignTaskCommand.MESSAGE_SUCCESS, validMatricNumber), commandResult.feedbackToUser);
         assertEquals(Arrays.asList(validTask), modelStub.tasksAdded);
     }
 
@@ -88,41 +88,41 @@ public class AssignTaskCommandTest {
     public void execute_duplicateTask_throwsCommandException() throws Exception {
         ModelStub modelStub = new ModelStubThrowingDuplicateTaskException();
         Task validTask = new TaskBuilder().build();
-        Name validName = new Name(BENSON.getName().toString());
+        MatricNumber validMatricNumber = new MatricNumber(BENSON.getMatricNumber().toString());
 
         thrown.expect(CommandException.class);
         thrown.expectMessage(AssignTaskCommand.MESSAGE_DUPLICATE_TASK);
 
-        getAssignTaskCommandForTask(validTask, validName, modelStub).executeUndoableCommand();
+        getAssignTaskCommandForTask(validTask, validMatricNumber, modelStub).executeUndoableCommand();
     }
 
     @Test
     public void execute_memberNotFound_throwsCommandException() throws Exception {
         ModelStub modelStub = new ModelStubThrowingMemberNotFoundException();
         Task validTask = new TaskBuilder().build();
-        Name validName = new Name(BENSON.getName().toString());
+        MatricNumber validMatricNumber = new MatricNumber(BENSON.getMatricNumber().toString());
 
         thrown.expect(CommandException.class);
         thrown.expectMessage(AssignTaskCommand.MESSAGE_MEMBER_NOT_FOUND);
 
-        getAssignTaskCommandForTask(validTask, validName, modelStub).executeUndoableCommand();
+        getAssignTaskCommandForTask(validTask, validMatricNumber, modelStub).executeUndoableCommand();
     }
 
     @Test
     public void equals() {
         Task firstTask = BOOK_AUDITORIUM;
         Task secondTask = BUY_CONFETTI;
-        Name firstName = BENSON.getName();
-        Name secondName = CARL.getName();
+        MatricNumber firstMatricNumber = BENSON.getMatricNumber();
+        MatricNumber secondMatricNumber = CARL.getMatricNumber();
 
-        AssignTaskCommand firstAssignTaskCommand = new AssignTaskCommand(firstTask, firstName);
-        AssignTaskCommand secondAssignTaskCommand = new AssignTaskCommand(secondTask, secondName);
+        AssignTaskCommand firstAssignTaskCommand = new AssignTaskCommand(firstTask, firstMatricNumber);
+        AssignTaskCommand secondAssignTaskCommand = new AssignTaskCommand(secondTask, secondMatricNumber);
 
         assertTrue(firstAssignTaskCommand.equals(firstAssignTaskCommand));
         assertFalse(firstAssignTaskCommand.equals(null));
         assertFalse(firstAssignTaskCommand.equals(true));
 
-        AssignTaskCommand firstCommandCopy = new AssignTaskCommand(firstTask, firstName);
+        AssignTaskCommand firstCommandCopy = new AssignTaskCommand(firstTask, firstMatricNumber);
         assertTrue(firstAssignTaskCommand.equals(firstCommandCopy));
 
         assertFalse(firstAssignTaskCommand.equals(secondAssignTaskCommand));
@@ -131,8 +131,8 @@ public class AssignTaskCommandTest {
     /**
      * Generates a new AddTaskCommand with the details of the given task.
      */
-    private AssignTaskCommand getAssignTaskCommandForTask(Task task, Name name, Model model) {
-        AssignTaskCommand command = new AssignTaskCommand(task, name);
+    private AssignTaskCommand getAssignTaskCommandForTask(Task task, MatricNumber matricNumber, Model model) {
+        AssignTaskCommand command = new AssignTaskCommand(task, matricNumber);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -181,7 +181,7 @@ public class AssignTaskCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
                 DuplicateTaskException {
             fail("This method should not be called");
         }
@@ -378,7 +378,8 @@ public class AssignTaskCommandTest {
                 getTagSet("friends"));
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
             throw new DuplicateTaskException();
         }
 
@@ -412,7 +413,8 @@ public class AssignTaskCommandTest {
                 getTagSet("friends"));
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
             throw new MemberNotFoundException();
         }
 
@@ -447,8 +449,9 @@ public class AssignTaskCommandTest {
                 getTagSet("friends"));
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException {
-            requireAllNonNull(toAdd, name);
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
+            requireAllNonNull(toAdd, matricNumber);
             tasksAdded.add(toAdd);
         }
 

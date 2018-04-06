@@ -22,8 +22,8 @@ public class TypicalTasks {
             .withDescription("Book Auditorium")
             .withDate("02/04/2018")
             .withTime("13:00")
-            .withAssignor("Benson Meier")
-            .withAssignee("Benson Meier")
+            .withAssignor("A8389539B")
+            .withAssignee("A8389539B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -31,8 +31,8 @@ public class TypicalTasks {
             .withDescription("Buy Confetti")
             .withDate("01/04/2018")
             .withTime("17:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("A9210701B")
+            .withAssignee("A9210701B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -40,8 +40,8 @@ public class TypicalTasks {
             .withDescription("Advertise event")
             .withDate("31/03/2018")
             .withTime("19:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("A9210701B")
+            .withAssignee("A9210701B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -49,8 +49,8 @@ public class TypicalTasks {
             .withDescription("Buy Food")
             .withDate("02/05/2018")
             .withTime("19:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("A9210701B")
+            .withAssignee("A9210701B")
             .withStatus("Yet To Begin")
             .build();
 

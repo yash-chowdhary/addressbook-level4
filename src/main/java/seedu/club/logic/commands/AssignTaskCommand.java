@@ -3,6 +3,7 @@ package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.member.Name;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -28,7 +29,7 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_DESCRIPTION + " "
             + PREFIX_TIME + " "
             + PREFIX_DATE + " "
-            + PREFIX_NAME + " ";
+            + PREFIX_MATRIC_NUMBER + " ";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Assigns a task to a member in Club Connect.\n"
             + "Parameters: "
@@ -40,19 +41,19 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_DESCRIPTION + "Arrange DJ for Music Night "
             + PREFIX_DATE + "10/05/2018 "
             + PREFIX_TIME + "16:00 "
-            + PREFIX_NAME + "Bernice Yu";
+            + PREFIX_MATRIC_NUMBER + "A1234567H";
 
     public static final String MESSAGE_SUCCESS = "New task created and assigned to %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
     public static final String MESSAGE_MEMBER_NOT_FOUND = "This member doesn't exist in the club book";
 
     private final Task toAdd;
-    private final Name name;
+    private final MatricNumber matricNumber;
 
-    public AssignTaskCommand(Task toAdd, Name name) {
+    public AssignTaskCommand(Task toAdd, MatricNumber matricNumber) {
         requireNonNull(toAdd);
         this.toAdd = toAdd;
-        this.name = name;
+        this.matricNumber = matricNumber;
     }
 
     @Override
@@ -62,8 +63,8 @@ public class AssignTaskCommand extends UndoableCommand {
         requireToLogIn();
         requireExcoLogIn();
         try {
-            model.assignTask(toAdd, name);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, name));
+            model.assignTask(toAdd, matricNumber);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, matricNumber));
         } catch (MemberNotFoundException mnfe) {
             throw new CommandException(MESSAGE_MEMBER_NOT_FOUND);
         } catch (DuplicateTaskException dte) {
@@ -76,6 +77,6 @@ public class AssignTaskCommand extends UndoableCommand {
         return (other == this)
                 || (other instanceof AssignTaskCommand // instanceof handles nulls
                 && toAdd.equals(((AssignTaskCommand) other).toAdd)
-                && name.equals(((AssignTaskCommand) other).name));
+                && matricNumber.equals(((AssignTaskCommand) other).matricNumber));
     }
 }
