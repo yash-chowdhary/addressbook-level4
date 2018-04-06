@@ -51,7 +51,7 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_GROUP_AMY = "Exco";
-    public static final String VALID_GROUP_BOB = "logistic";
+    public static final String VALID_GROUP_BOB = "logistics";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friends";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member
