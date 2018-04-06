@@ -114,6 +114,9 @@ A member can have any number of tags (including 0).
 The `group` attribute is an optional attribute.
 A member will be assigned to the default group `Member` if no group is specified in the command.
 
+[NOTE]
+This command is for `EXCO` members only.
+
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
@@ -138,6 +141,9 @@ The options to choose from are Monday, Wednesday and Friday.
 * `addpoll n/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
 Creates a poll asking members to vote where the annual sports meeting should be held.
 The answers to choose from are I-Cube and LT7.
+
+[NOTE]
+This command is for `EXCO` members only.
 
 === Adding a task: `addtask` (Since v1.3)
 
@@ -175,6 +181,8 @@ Alias: `assignt`
 *****
 [NOTE]
 Duplicate tasks are not allowed.
+[NOTE]
+This command is for `EXCO` members only.
 
 This command assigns the task to the member based on the entered `NAME`.
 
@@ -268,6 +276,8 @@ Aliases: `c`, `erase`
 * LETTER must be equals to "Y" to confirm clearing data from Club Connect
 * Any other LETTER will cancell the execution
 ****
+[NOTE]
+This command is for `EXCO` members only.
 
 Examples:
 
@@ -310,6 +320,8 @@ Aliases: `del`, `rm`, `remove`
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
+[NOTE]
+This command is for `EXCO` members only.
 
 Examples:
 
@@ -331,6 +343,8 @@ Aliases: `rmpoll`, `delpoll`
 * The index refers to the index number shown in the most recent poll listing.
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
+[NOTE]
+This command is for `EXCO` members only.
 
 Examples:
 
@@ -344,6 +358,8 @@ Deletes the 4th poll in the poll listing.
 Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG` +
 Aliases: `rmtag`, `deltag`
+[NOTE]
+This command is for `EXCO` members only.
 
 ****
 * Deletes the specified tag from Club Connect.
@@ -393,6 +409,8 @@ Aliases: `e`, `update`
 * When editing tags, the existing tags of the member will be removed i.e adding of tags is not cumulative.
 * You can remove all the member's tags by typing `t/` without specifying any tags after it.
 ****
+[NOTE]
+This command is for `EXCO` members only.
 
 Examples:
 
@@ -503,6 +521,9 @@ Aliases : `h`, `info`
 Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members only to remove clutter from poll results. +
 Format: `hideresults` +
 Alias: `hideres`
+[NOTE]
+This command is for `EXCO` members only.
+
 
 === Listing entered commands : `history`
 
@@ -529,6 +550,9 @@ Alias: `imp`
 
 [NOTE]
 You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
+
+[NOTE]
+This command is for `EXCO` members only.
 
 Examples:
 
@@ -591,6 +615,8 @@ Aliases: `rmgroup`, `delgroup`
 * The group must exist in Club Connect.
 * The group must be in valid format (i.e. no white-spaces and non-empty).
 ****
+[NOTE]
+This command is for `EXCO` members only.
 
 Examples:
 
@@ -627,6 +653,10 @@ Displays the results of polls in Club Connect. This is a command that can be use
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
 Format: `showresults` +
 Alias: `showres`
+
+[NOTE]
+This command is for `EXCO` members only.
+
 
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
@@ -676,6 +706,8 @@ The `undo` command fails as there are no undoable commands executed previously.
 Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
 Format: `viewalltasks` +
 Alias: `alltasks`
+[NOTE]
+This command is for `EXCO` members only.
 
 [NOTE]
 This command can only be invoked by `EXCO` members.
