@@ -68,4 +68,13 @@ public abstract class Command {
             throw new CommandException(Messages.MESSAGE_REQUIRE_EXCO_LOG_IN);
         }
     }
+
+    /**
+     * Requires user to logout
+     */
+    protected void requireToLogOut () throws CommandException {
+        if (model.getLoggedInMember() != null) {
+            throw new CommandException(Messages.MESSAGE_REQUIRE_LOG_OUT);
+        }
+    }
 }
