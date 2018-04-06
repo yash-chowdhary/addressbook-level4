@@ -11,6 +11,7 @@ import com.google.common.eventbus.Subscribe;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
@@ -78,7 +79,6 @@ public class BrowserPanel extends UiPart<Region> {
 
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
-        loadBlankMemberPage();
         registerAsAnEventHandler(this);
     }
 
@@ -145,30 +145,23 @@ public class BrowserPanel extends UiPart<Region> {
         matricNumber.setText(member.getMatricNumber().value);
         email.setText(member.getEmail().value);
         group.setText(member.getGroup().groupName);
+        group.setAlignment(Pos.CENTER);
         createTags(member);
         setIcons();
     }
 
     /**
-     * Loads a blank member page if no one is selected
-     */
-    private void loadBlankMemberPage() {
-        name.setText("");
-        phone.setText("");
-        matricNumber.setText("");
-        group.setText("");
-        email.setText("");
-    }
-
-    /**
      * Set Icon pictures
      */
-    private void setIcons(){
+    private void setIcons() {
         Image phoneImg;
         Image emailImg;
         phoneImg = new Image(MainApp.class.getResourceAsStream(PHONE_ICON),
                 21, 21, false, true);
         phoneIcon.setImage(phoneImg);
+        emailImg = new Image(MainApp.class.getResourceAsStream(EMAIL_ICON),
+                21, 21, false, true);
+        emailIcon.setImage(emailImg);
     }
     //@@author
 
@@ -200,7 +193,7 @@ public class BrowserPanel extends UiPart<Region> {
      */
     private void setProfilePhoto(Member member) {
         Image photo;
-        String photoPath = member.getProfilePhoto().getProfilePhotoPath();
+        String photoPath = member.getProfilePhoto().getPhotoPath();
         if (photoPath.equals(EMPTY_STRING)) {
             photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
                     PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
