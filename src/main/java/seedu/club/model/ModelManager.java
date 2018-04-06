@@ -26,7 +26,6 @@ import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.logic.commands.ViewMyTasksCommand;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -37,7 +36,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -73,6 +72,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<Tag> filteredTags;
     private final FilteredList<Poll> filteredPolls;
     private final FilteredList<Task> filteredTasks;
+    private boolean isConfirmedClear;
 
     /**
      * Initializes a ModelManager with the given clubBook and userPrefs.
@@ -84,6 +84,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with club book: " + clubBook + " and user prefs " + userPrefs);
 
         this.clubBook = new ClubBook(clubBook);
+        isConfirmedClear = false;
         filteredMembers = new FilteredList<>(this.clubBook.getMemberList());
         filteredTags = new FilteredList<>(this.clubBook.getTagList());
         filteredPolls = new FilteredList<>(this.clubBook.getPollList());
@@ -121,7 +122,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addMember(Member member) throws DuplicateMemberException {
+    public synchronized void addMember(Member member) throws DuplicateMatricNumberException {
         clubBook.addMember(member);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
@@ -129,7 +130,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateMember(Member target, Member editedMember)
-            throws DuplicateMemberException, MemberNotFoundException {
+            throws DuplicateMatricNumberException, MemberNotFoundException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
         indicateClubBookChanged();
@@ -277,20 +278,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
-        IllegalExecutionException {
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+            DuplicateTaskException {
         requireAllNonNull(taskToEdit, editedTask);
-        checkIfUserCanModifyTask(taskToEdit);
         clubBook.updateTask(taskToEdit, editedTask);
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
-    private void checkIfUserCanModifyTask(Task task) throws IllegalExecutionException {
-        if (!getLoggedInMember().getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee())) {
-            throw new IllegalExecutionException();
-        }
-    }
 
     //@@author Song Weiyang
     @Override
@@ -317,11 +312,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-            IllegalExecutionException {
-        if (!clubBook.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new IllegalExecutionException();
-        }
+    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+            DuplicateTaskException {
         boolean found = false;
         for (Member member : clubBook.getMemberList()) {
             if (member.getName().equals(name)) {
@@ -387,7 +379,7 @@ public class ModelManager extends ComponentManager implements Model {
             try {
                 clubBook.addMember(member);
                 numberMembers++;
-            } catch (DuplicateMemberException dme) {
+            } catch (DuplicateMatricNumberException dmne) {
                 logger.info("DuplicateMemberException encountered due to " + member);
             }
         }
@@ -545,7 +537,20 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void clearClubBook() {
         clubBook.clearClubBook();
+        setClearConfirmation(false);
+        indicateClubBookChanged();
     }
+
+    @Override
+    public boolean getClearConfirmation() {
+        return isConfirmedClear;
+    }
+
+    @Override
+    public void setClearConfirmation(Boolean b) {
+        isConfirmedClear = b;
+    }
+
 
     @Override
     public ObservableList<Poll> getFilteredPollList() {

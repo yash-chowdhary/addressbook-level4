@@ -24,7 +24,6 @@ public class Member {
     private final Phone phone;
     private final Email email;
     private Credentials credentials;
-    private boolean isLogIn = false;
     private final MatricNumber matricNumber;
     private Group group;
     private final UniqueTaskList tasks;
@@ -188,18 +187,6 @@ public class Member {
         builder.append("Tasks: ");
         getTasks().forEach(builder::append);
         return builder.toString();
-    }
-
-    /**
-     * change the status of the member loggin in
-     */
-
-    public void changeLogInStatus() {
-        if (!isLogIn) {
-            isLogIn = true;
-        } else {
-            isLogIn = false;
-        }
     }
 
     public Credentials getCredentials() {

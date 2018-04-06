@@ -30,7 +30,6 @@ import org.junit.rules.TemporaryFolder;
 import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.commons.events.model.NewExportDataAvailableEvent;
 import seedu.club.logic.commands.ViewMyTasksCommand;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
@@ -269,8 +268,6 @@ public class ModelManagerTest {
             assertEquals(expectedModel, modelManager);
         } catch (MemberNotFoundException mnfe) {
             fail("This exception should not be caught");
-        } catch (IllegalExecutionException iee) {
-            fail("This exception should not be caught");
         }
     }
 
@@ -289,8 +286,6 @@ public class ModelManagerTest {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
             assertEquals(expectedModel, modelManager);
-        } catch (IllegalExecutionException iee) {
-            fail("This exception should not be caught");
         }
     }
 
@@ -305,15 +300,12 @@ public class ModelManagerTest {
         expectedModel.logsInMember(BOB.getCredentials().getUsername().value, BOB.getCredentials().getPassword().value);
 
         try {
-            modelManager.assignTask(BUY_CONFETTI, AMY.getName());
+            modelManager.assignTask(BUY_CONFETTI, BOB.getName());
         } catch (DuplicateTaskException dte) {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
             fail("This exception should not be caught");
-        } catch (IllegalExecutionException iee) {
-            assertEquals(expectedModel, modelManager);
         }
-
     }
 
     @Test
@@ -352,7 +344,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (TaskNotFoundException | DuplicateTaskException | IllegalExecutionException e) {
+        } catch (TaskNotFoundException | DuplicateTaskException e) {
             assertEquals(expectedModel, modelManager);
         }
 
@@ -376,7 +368,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (DuplicateTaskException | IllegalExecutionException | TaskNotFoundException e) {
+        } catch (DuplicateTaskException | TaskNotFoundException e) {
             assertEquals(expectedModel, modelManager);
         }
     }
@@ -397,8 +389,6 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (IllegalExecutionException iee) {
-            assertEquals(expectedModel, modelManager);
         } catch (TaskNotFoundException | DuplicateTaskException e) {
             fail("This will not be executed");
         }

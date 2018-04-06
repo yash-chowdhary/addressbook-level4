@@ -94,8 +94,7 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_TIME + "  "
             + PREFIX_DATE + " ";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Task to the currently logged-in member's"
-            + "task list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to your task list.\n"
             + "Parameters: "
             + PREFIX_DESCRIPTION + "DESCRIPTION "
             + PREFIX_DATE + "DATE "
@@ -105,8 +104,8 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_DATE + "02/04/2018 "
             + PREFIX_TIME + "17:00";
 
-    public static final String MESSAGE_SUCCESS = "New task created";
-    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
+    public static final String MESSAGE_SUCCESS = "New task created.";
+    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists.";
 
     private final Task toAdd;
 
@@ -119,6 +118,8 @@ public class AddTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.addTaskToTaskList(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateTaskException dte) {
@@ -162,15 +163,15 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the task identified by the index number used in the last task listing.\n"
-            + "Parameters: INDEX(must be a positive integer)\n"
+            + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX";
 
     public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: %1$s";
     public static final String MESSAGE_TASK_CANNOT_BE_DELETED = "This task cannot be deleted as you are "
-            + " neither the assignor nor the assignee";
-    public static final String MESSAGE_TASK_NOT_FOUND = "This task doesn't exist in Club Book";
+            + " neither the assignor nor the assignee of the task.";
+    public static final String MESSAGE_TASK_NOT_FOUND = "This task does not exist in Club Connect.";
 
     private final Index targetIndex;
 
@@ -185,6 +186,8 @@ public class DeleteTaskCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(taskToDelete);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.deleteTask(taskToDelete);
         } catch (TaskNotFoundException tnfe) {
             throw new CommandException(MESSAGE_TASK_NOT_FOUND);
@@ -198,6 +201,8 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -219,6 +224,7 @@ public class DeleteTaskCommand extends UndoableCommand {
 ###### \java\seedu\club\logic\commands\EmailCommand.java
 ``` java
 
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_BODY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
@@ -249,7 +255,7 @@ public class EmailCommand extends Command {
     public static final String COMMAND_FORMAT = "email [g/ ] [t/ ] c/ [s/ ] [b/ ]";
 
     public static final String COMMAND_USAGE = COMMAND_WORD + ": Sends an email to the desired recipients(s) "
-            + "in EITHER a particular group OR a particular tag of the club book. "
+            + "in EITHER a particular group OR a particular tag of the club book.\n"
             + "Parameters: " + " "
             + PREFIX_GROUP + "GROUP" + " [OR] "
             + PREFIX_TAG + "TAG" + " "
@@ -257,10 +263,11 @@ public class EmailCommand extends Command {
             + PREFIX_SUBJECT + "SUBJECT" + " "
             + PREFIX_BODY + "BODY\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_GROUP + "logistics "
+            + PREFIX_GROUP + "Member "
             + PREFIX_CLIENT + "gmail "
-            + PREFIX_SUBJECT + "Test Subject "
-            + PREFIX_BODY + "Test Body ";
+            + PREFIX_SUBJECT + "New Club Management application "
+            + PREFIX_BODY + "Hi all, I hope you have enjoyed using Club Connect so far. "
+            + "Please do share your experience with us. Regards, John Doe";
 
     public static final String EMAIL_CLIENT_OPENED = "Email client opened!";
     public static final String MESSAGE_NOT_SENT = "Please adhere to the command usage.";
@@ -283,11 +290,13 @@ public class EmailCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         try {
+            requireToSignUp();
+            requireToLogIn();
             String emailRecipients = model.generateEmailRecipients(group, tag);
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);
         } catch (GroupNotFoundException gnfe) {
-            throw new CommandException(RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP);
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, group));
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(DeleteTagCommand.MESSAGE_NON_EXISTENT_TAG);
         }
@@ -306,6 +315,8 @@ public class EmailCommand extends Command {
 ###### \java\seedu\club\logic\commands\RemoveGroupCommand.java
 ``` java
 import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 
 import java.util.ArrayList;
@@ -327,13 +338,11 @@ public class RemoveGroupCommand extends UndoableCommand {
             Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
     );
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Connect.\n"
             + "Parameters: "
             + PREFIX_GROUP + "GROUP";
 
-    public static final String MESSAGE_SUCCESS = "Group deleted from Club Book: %1$s";
-    public static final String MESSAGE_NON_EXISTENT_GROUP = "This group does not exist in the Club Book";
-    public static final String MESSAGE_MANDATORY_GROUP = "This group cannot be deleted as it is a mandatory group.";
+    public static final String MESSAGE_SUCCESS = "Group deleted from Club Connect: %1$s";
 
     private final Group toRemove;
 
@@ -349,12 +358,14 @@ public class RemoveGroupCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.removeGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
         } catch (GroupNotFoundException gnfe) {
-            throw new CommandException(MESSAGE_NON_EXISTENT_GROUP);
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, toRemove));
         } catch (GroupCannotBeRemovedException gcbre) {
-            throw new CommandException(MESSAGE_MANDATORY_GROUP);
+            throw new CommandException(String.format(MESSAGE_MANDATORY_GROUP, toRemove.toString()));
         }
 
     }
@@ -386,13 +397,15 @@ public class ViewMyTasksCommand extends Command {
             Arrays.asList(COMMAND_WORD, "mytasks")
     );
 
-    public static final String MESSAGE_SUCCESS = "Listed all your tasks.";
-    public static final String MESSAGE_ALREADY_LISTED = "All your tasks are already listed.";
+    public static final String MESSAGE_SUCCESS = "Your tasks have been listed.";
+    public static final String MESSAGE_ALREADY_LISTED = "All your tasks have already been listed.";
 
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
         try {
+            requireToSignUp();
+            requireToLogIn();
             model.viewMyTasks();
         } catch (TasksAlreadyListedException tale) {
             throw new CommandException(MESSAGE_ALREADY_LISTED);
@@ -1004,6 +1017,7 @@ import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
+import seedu.club.logic.commands.ChangeTaskStatusCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
@@ -1018,6 +1032,7 @@ import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HideResultsCommand;
+import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
@@ -1025,6 +1040,7 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
@@ -1042,6 +1058,7 @@ public class CommandList {
         commandList.add(ChangeProfilePhotoCommand.COMMAND_FORMAT);
         commandList.add(ClearCommand.COMMAND_WORD);
         commandList.add(CompressCommand.COMMAND_WORD);
+        commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
         commandList.add(DecompressCommand.COMMAND_WORD);
         commandList.add(DeleteCommand.COMMAND_FORMAT);
         commandList.add(DeleteTagCommand.COMMAND_FORMAT);
@@ -1068,6 +1085,9 @@ public class CommandList {
         commandList.add(ExportCommand.COMMAND_FORMAT);
         commandList.add(LogOutCommand.COMMAND_WORD);
         commandList.add(VoteCommand.COMMAND_WORD);
+        commandList.add(SignUpCommand.COMMAND_FORMAT);
+        commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
+        commandList.add(ImportCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;
@@ -1452,7 +1472,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
 
         try {
             updateMember(member, newMember);
-        } catch (DuplicateMemberException dme) {
+        } catch (DuplicateMatricNumberException dme) {
             throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
                     + "See member#equals(Object).");
         }
@@ -1485,6 +1505,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
     }
+}
 ```
 ###### \java\seedu\club\model\email\Body.java
 ``` java
@@ -1638,8 +1659,8 @@ public class Group {
      */
     public static final String GROUP_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum}]*";
 
-    public static final String DEFAULT_GROUP = "member";
-    public static final String GROUP_EXCO = "exco";
+    public static final String DEFAULT_GROUP = "Member";
+    public static final String GROUP_EXCO = "Exco";
 
     public final String groupName;
 
@@ -1697,6 +1718,7 @@ public class Group {
         clubBook.removeGroup(toRemove);
         indicateClubBookChanged();
     }
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -1772,6 +1794,7 @@ public class Group {
             throw new IllegalExecutionException();
         }
     }
+
 ```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
@@ -1851,6 +1874,7 @@ public class Group {
         }
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
+
 ```
 ###### \java\seedu\club\model\task\Assignee.java
 ``` java
@@ -2485,6 +2509,10 @@ public class UniqueTaskList implements Iterable<Task> {
             @Override
             public int compare(Task task1, Task task2) {
                 if (task1.getDate().getDate().compareTo(task2.getDate().getDate()) == 0) {
+                    if (task1.getTime().getTime().compareTo(task2.getTime().getTime()) == 0) {
+                        return task1.getDescription().getDescription()
+                                .compareTo(task2.getDescription().getDescription());
+                    }
                     return task1.getTime().getTime().compareTo(task2.getTime().getTime());
                 }
                 return task1.getDate().getDate().compareTo(task2.getDate().getDate());
@@ -3007,24 +3035,23 @@ public class TaskListPanel extends UiPart<Region> {
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.geometry.Insets?>
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-    <GridPane HBox.hgrow="ALWAYS">
+<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
         </columnConstraints>
-        <VBox alignment="CENTER_LEFT" minHeight="105" GridPane.columnIndex="0">
+        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="105" GridPane.columnIndex="0">
             <padding>
                 <Insets bottom="5" left="15" right="5" top="5" />
             </padding>
-            <HBox alignment="CENTER_LEFT" spacing="5">
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" spacing="5">
                 <Label fx:id="id" styleClass="cell_big_label">
                     <minWidth>
                         <!-- Ensures that the label text is never truncated -->
                         <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="description" styleClass="cell_big_label" text="\$first" />
+                <Label fx:id="description" maxHeight="1.7976931348623157E308" wrapText="true" styleClass="cell_big_label" text="\$first" />
             </HBox>
             <Label fx:id="date" styleClass="cell_small_label" text="\$date" />
             <Label fx:id="time" styleClass="cell_small_label" text="\$time" />
@@ -3043,7 +3070,7 @@ public class TaskListPanel extends UiPart<Region> {
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <ListView fx:id="taskListView" VBox.vgrow="ALWAYS" />
+<VBox xmlns="http://javafx.com/javafx/8" maxHeight="1.7976931348623157E308" xmlns:fx="http://javafx.com/fxml/1">
+    <ListView fx:id="taskListView" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 </VBox>
 ```

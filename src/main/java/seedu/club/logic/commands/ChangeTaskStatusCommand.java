@@ -11,7 +11,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Date;
@@ -64,6 +63,7 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
     protected void preprocessUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -84,8 +84,6 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
             throw new AssertionError("The target task cannot be missing");
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_NOT_CHANGED);
-        } catch (IllegalExecutionException iee) {
-            throw new CommandException(MESSAGE_INVALID_PERMISSION);
         }
         return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription()));
     }

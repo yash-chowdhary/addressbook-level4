@@ -26,7 +26,6 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -41,7 +40,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
@@ -168,8 +167,8 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -186,13 +185,13 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called");
             return;
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMemberException,
+        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
                 MemberNotFoundException {
             fail("This method should not be called");
             return;
@@ -336,6 +335,17 @@ public class AddTaskCommandTest {
         public void clearClubBook() {
             fail("This method should not be called");
         }
+
+        @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
     }
 
     /**
@@ -359,11 +369,12 @@ public class AddTaskCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;
@@ -393,11 +404,12 @@ public class AddTaskCommandTest {
             try {
                 clubBook.addMember(memberStub);
                 clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMemberException e) {
+            } catch (DuplicateMatricNumberException e) {
                 e.printStackTrace();
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;

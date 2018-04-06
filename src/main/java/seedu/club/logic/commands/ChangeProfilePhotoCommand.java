@@ -43,10 +43,9 @@ public class ChangeProfilePhotoCommand extends Command {
     public CommandResult execute() throws CommandException {
         //Defensive programming
         assert profilePhoto.getPhotoPath() != null : "Photo path should not be null.";
-
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.addProfilePhoto(profilePhoto.getPhotoPath());
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {

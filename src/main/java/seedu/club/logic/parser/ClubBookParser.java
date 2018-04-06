@@ -69,7 +69,6 @@ public class ClubBookParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
-
         //@@author yash-chowdhary
         if (isAddCommand(commandWord)) {
             return new AddCommandParser().parse(arguments);
@@ -86,7 +85,7 @@ public class ClubBookParser {
         } else if (isChangeTaskStatusCommand(commandWord)) {
             return new ChangeTaskStatusCommandParser().parse(arguments);
         } else if (isClearCommand(commandWord)) {
-            return new ClearCommand();
+            return new ClearCommandParser().parse(arguments);
         } else if (isCompressCommand(commandWord)) {
             return new CompressCommand();
         } else if (isDecompressCommand(commandWord)) {

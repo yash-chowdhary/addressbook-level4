@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.model.ClubBook;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 
@@ -51,7 +51,7 @@ public class TypicalPolls {
         try {
             // Alice is an exco member
             ab.addMember(ALICE);
-        } catch (DuplicateMemberException e) {
+        } catch (DuplicateMatricNumberException e) {
             throw new AssertionError("not possible");
         }
         return ab;
