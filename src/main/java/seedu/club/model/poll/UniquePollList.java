@@ -8,9 +8,13 @@ import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.CollectionUtil;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 
 /**
  * A list of polls that enforces no nulls and uniqueness between its elements.
@@ -47,6 +51,33 @@ public class UniquePollList implements Iterable<Poll> {
         internalList.setAll(polls);
         assert CollectionUtil.elementsAreUnique(internalList);
     }
+
+    //@@author MuhdNurKamal
+    /**
+     * Replaces the specified poll with a deep copy except that the copy has the specified answer
+     * increased it's vote count by 1.
+     *
+     * @param poll to be copied
+     * @param answerIndex of poll to be voted for
+     * @param polleeMatricNumber of pollee who wants to vote for the answer of the poll
+     *
+     * @throws PollNotFoundException if poll is not in this list
+     * @throws AnswerNotFoundException if answerIndex is not answerIndex of any answers of poll
+     * @throws UserAlreadyVotedException if pollee has already voted in the poll
+     */
+    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+            throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+        int pollIndex = internalList.indexOf(poll);
+        if (pollIndex == -1) {
+            throw new PollNotFoundException();
+        } else {
+            Poll pollDeepCopy = new Poll(new Question(poll.getQuestion().getValue()),
+                    poll.getAnswers(), poll.getPolleesMatricNumbers());
+            pollDeepCopy.vote(answerIndex, polleeMatricNumber);
+            internalList.set(pollIndex, pollDeepCopy);
+        }
+    }
+    //@@author
 
     /**
      * Returns true if the list contains an equivalent Poll as the given argument.

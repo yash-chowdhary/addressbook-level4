@@ -1,5 +1,5 @@
 package seedu.club.model.poll;
-
+//@@author MuhdNurKamal
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
@@ -13,24 +13,24 @@ public class Answer {
             "Number answered for an answer should be non-negative";
     public static final String ANSWER_VALIDATION_REGEX = ".*\\S.*";
     public static final String PREFIX_ANSWER = "Ans: ";
-    public static final int NUMBER_NO_MEMBERS_ANSWERED = 0;
+    public static final int NUMBER_ZERO_VOTE_COUNT = 0;
 
     private String value;
-    private int noOfMembersAnswered;
+    private int voteCount;
 
     public Answer(String value) {
-        this(value, NUMBER_NO_MEMBERS_ANSWERED);
+        this(value, NUMBER_ZERO_VOTE_COUNT);
     }
 
-    public Answer(String value, int noOfMembersAnswered) {
+    public Answer(String value, int voteCount) {
         requireNonNull(value);
         checkArgument(isValidAnswer(value), MESSAGE_ANSWER_CONSTRAINTS);
         this.value = value;
-        this.noOfMembersAnswered = noOfMembersAnswered;
+        this.voteCount = voteCount;
     }
 
-    public int getNoOfMembersAnswered() {
-        return noOfMembersAnswered;
+    public int getVoteCount() {
+        return voteCount;
     }
 
     public String getValue() {
@@ -38,7 +38,7 @@ public class Answer {
     }
 
     public void voteThisAnswer() {
-        noOfMembersAnswered++;
+        voteCount++;
     }
 
     public static boolean isValidAnswer(String value) {
@@ -46,14 +46,15 @@ public class Answer {
     }
 
     public static boolean isValidNoOfMembersAnswered(int noOfMembersAnswered) {
-        return noOfMembersAnswered >= NUMBER_NO_MEMBERS_ANSWERED;
+        return noOfMembersAnswered >= NUMBER_ZERO_VOTE_COUNT;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Answer // instanceof handles nulls
-                && this.value.equals(((Answer) other).value)); // state check
+                && this.value.equals(((Answer) other).value) // state check
+                && this.voteCount == ((Answer) other).voteCount); // state check
     }
 
     @Override

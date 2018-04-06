@@ -13,7 +13,7 @@
     <polls>
         <question> </question>
         <pollerMatricNumber>A3333333A</pollerMatricNumber>
-        <answers noOfMembersAnswered="0">I don't get it</answers>
-        <answers noOfMembersAnswered="0">Umm..</answers>
+        <answers voteCount="0">I don't get it</answers>
+        <answers voteCount="0">Umm..</answers>
     </polls>
 </clubbook>

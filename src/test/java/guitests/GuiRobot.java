@@ -42,7 +42,7 @@ public class GuiRobot extends FxRobot {
     /**
      * Waits for {@code event} to be true by {@code DEFAULT_WAIT_FOR_EVENT_TIMEOUT_MILLISECONDS} milliseconds.
      *
-     * @throws EventTimeoutException if the time taken exceeds {@code DEFAULT_WAIT_FOR_EVENT_TIMEOUT_MILLISECONDS}
+     * @throws  EventTimeoutException if the time taken exceeds {@code DEFAULT_WAIT_FOR_EVENT_TIMEOUT_MILLISECONDS}
      * milliseconds.
      */
     public void waitForEvent(BooleanSupplier event) {
@@ -87,7 +87,7 @@ public class GuiRobot extends FxRobot {
      *
      * @throws StageNotFoundException if the stage is not found.
      */
-    public Stage getStage(String stageTitle) {
+    public Stage getStage(String stageTitle) throws StageNotFoundException {
         Optional<Stage> targetStage = listTargetWindows().stream()
                 .filter(Stage.class::isInstance)    // checks that the window is of type Stage
                 .map(Stage.class::cast)

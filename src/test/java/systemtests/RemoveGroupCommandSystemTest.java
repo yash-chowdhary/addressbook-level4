@@ -1,6 +1,8 @@
 package systemtests;
-
+//@@author yash-chowdhary
 import static org.junit.Assert.assertEquals;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
@@ -9,8 +11,6 @@ import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_MANDATORY_GROUP;
-import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
 
 import org.junit.Test;
@@ -68,13 +68,13 @@ public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + MANDATORY_GROUP_DESC + " ";
         deletedGroup = deleteGroup(expectedModel, MANDATORY_GROUP);
         assertEquals(null, deletedGroup);
-        assertCommandFailure(command, MESSAGE_MANDATORY_GROUP);
+        assertCommandFailure(command, String.format(MESSAGE_MANDATORY_GROUP, MANDATORY_GROUP));
 
         /* Case: delete a non-existent group */
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + NON_EXISTENT_GROUP_DESC + " ";
         deletedGroup = deleteGroup(expectedModel, NON_EXISTENT_GROUP);
         assertEquals(null, deletedGroup);
-        assertCommandFailure(command, MESSAGE_NON_EXISTENT_GROUP);
+        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP));
     }
 
     /**

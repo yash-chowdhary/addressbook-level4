@@ -24,16 +24,18 @@ public class Member {
     private final Phone phone;
     private final Email email;
     private Credentials credentials;
-    private boolean isLogIn = false;
     private final MatricNumber matricNumber;
     private Group group;
+    private final UniqueTaskList tasks;
+    //@@author amrut-prabhu
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
-    private final UniqueTaskList tasks;
+    private final String emptyString = "";
+    //@@author
+
     /**
      * Every field must be present and not null.
      */
-
     public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, matricNumber, group, tags);
         this.name = name;
@@ -41,29 +43,13 @@ public class Member {
         this.email = email;
         this.matricNumber = matricNumber;
         this.group = group;
-        this.tags = new HashMap<String, Tag>();
         this.credentials = new Credentials(new Username(matricNumber.value));
-        this.profilePhoto = new ProfilePhoto("");
-        setTags(tags);
+        this.profilePhoto = new ProfilePhoto(emptyString);
         this.tasks = new UniqueTaskList();
-    }
-
-    public Member(Name name, Phone phone, Email email, MatricNumber matricNumber, Group group, Set<Tag> tags,
-                  Credentials credentials, ProfilePhoto profilePhoto, Set<Task> tasks) {
-        requireAllNonNull(name, phone, email, matricNumber, group, tags, credentials, tasks);
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.matricNumber = matricNumber;
-        this.group = group;
-        this.tags = new HashMap<>();
-        this.profilePhoto = new ProfilePhoto("");
+        this.tags = new HashMap<String, Tag>();
         setTags(tags);
-        this.tasks = new UniqueTaskList(tasks);
-        this.credentials = credentials;
     }
 
-    //@@author amrut-prabhu
     /**
      * Every field must be present and not null.
      */
@@ -81,23 +67,6 @@ public class Member {
         this.tasks = new UniqueTaskList();
         this.credentials = credentials;
     }
-
-    /**
-     * Copy constructor
-     * @param member Member whose attributes are to be copied to (@code this}.
-     */
-    public Member(Member member) {
-        this.name = member.name;
-        this.phone = member.phone;
-        this.email = member.email;
-        this.matricNumber = member.matricNumber;
-        this.group = member.group;
-        this.tags = member.tags;
-        this.profilePhoto = member.profilePhoto;
-        this.tasks = member.tasks;
-        this.credentials = member.credentials;
-    }
-    //@@author
 
     public Name getName() {
         return name;
@@ -119,6 +88,13 @@ public class Member {
         return group;
     }
 
+    //@@author amrut-prabhu
+
+    /**
+     * Adds {@code memberTags} to {@code this} member's {@code tags}.
+     *
+     * @param memberTags Tags to be added to {@code this} member.
+     */
     private void setTags(Set<Tag> memberTags) {
         Iterator itr = memberTags.iterator();
 
@@ -126,18 +102,6 @@ public class Member {
             Tag tag = (Tag) itr.next();
             tags.put(tag.tagName, tag);
         }
-    }
-
-    public ProfilePhoto getProfilePhoto() {
-        return profilePhoto;
-    }
-
-    public void setProfilePhoto(ProfilePhoto profilePhoto) {
-        this.profilePhoto = profilePhoto;
-    }
-
-    public void setProfilePhotoPath(String newPath) {
-        profilePhoto.setNewPhotoPath(newPath);
     }
 
     /**
@@ -158,16 +122,29 @@ public class Member {
         return Collections.unmodifiableSet(memberTags);
     }
 
+    public boolean hasTag(Tag tag) {
+        return getTags().contains(tag);
+    }
+
+    public ProfilePhoto getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(ProfilePhoto profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public void setProfilePhotoPath(String newPath) {
+        profilePhoto.setNewPhotoPath(newPath);
+    }
+
+    //@@author
     /**
      * Returns an immutable task set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Task> getTasks() {
         return Collections.unmodifiableSet(tasks.toSet());
-    }
-
-    public boolean hasTag(Tag tag) {
-        return getTags().contains(tag);
     }
 
     @Override
@@ -210,18 +187,6 @@ public class Member {
         builder.append("Tasks: ");
         getTasks().forEach(builder::append);
         return builder.toString();
-    }
-
-    /**
-     * change the status of the member loggin in
-     */
-
-    public void changeLogInStatus() {
-        if (!isLogIn) {
-            isLogIn = true;
-        } else {
-            isLogIn = false;
-        }
     }
 
     public Credentials getCredentials() {

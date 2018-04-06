@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.commons.util.CsvUtil;
+import seedu.club.commons.util.FileUtil;
 import seedu.club.commons.util.StringUtil;
 
 import seedu.club.model.email.Body;
@@ -33,6 +35,7 @@ import seedu.club.model.poll.Question;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
+import seedu.club.model.task.Status;
 import seedu.club.model.task.Time;
 
 /**
@@ -64,6 +67,27 @@ public class ParserUtil {
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
+
+    //@@author MuhdNurKamal
+    /**
+     * Parses {@code oneBasedIndex} into a list of {@code Index} and returns it. Leading and trailing
+     * whitespaces will be trimmed.
+     * @throws IllegalValueException if any of the specified index is invalid (not non-zero unsigned integer).
+     */
+    public static List<Index> parseIndices(String oneBasedIndexes) throws IllegalValueException {
+        String trimmedIndexes = oneBasedIndexes.trim();
+        String[] stringIndexes = trimmedIndexes.split(" ");
+        List<Index> indexes = new ArrayList<>();
+        for (String s : stringIndexes) {
+            if (!StringUtil.isNonZeroUnsignedInteger(s)) {
+                throw new IllegalValueException(MESSAGE_INVALID_INDEX);
+            } else {
+                indexes.add(Index.fromOneBased((Integer.parseInt(s))));
+            }
+        }
+        return indexes;
+    }
+    //@@author
 
     /**
      * Parses a {@code String name} into a {@code Name}.
@@ -161,7 +185,7 @@ public class ParserUtil {
         requireNonNull(email);
         return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
     }
-
+    //@@author Song Weiyang
     /**
      * Parses a {@code String username} into an {@code Username}.
      * Leading and trailing whitespaces will be trimmed.
@@ -218,29 +242,18 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> photo} into an {@code Optional<ProfilePhoto>} if {@code photo} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<ProfilePhoto> parseProfilePhoto(Optional<String> photo) throws IllegalValueException {
-        requireNonNull(photo);
-        return photo.isPresent() ? Optional.of(parseProfilePhoto(photo.get())) : Optional.empty();
-    }
-
-    /**
      * Parses a {@code path} into a {@code File}.
-     * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws IllegalValueException if the given {@code path} is invalid.
+     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
      */
-    public static File parsePath(String path) throws IllegalValueException {
-        requireNonNull(path);
-        String trimmedPath = path.trim();
+    public static File parseImportPath(String path) throws IllegalValueException {
+        File file = FileUtil.parsePath(path);
 
-        if (trimmedPath.isEmpty()) {
+        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
-        return new File(trimmedPath);
+        return file;
     }
 
     /**
@@ -249,9 +262,9 @@ public class ParserUtil {
      * @throws IllegalValueException if the given {@code path} is not absolute or is a directory.
      */
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
-        File file = parsePath(path);
+        File file = FileUtil.parsePath(path);
 
-        if (!file.isAbsolute() || file.isDirectory() || !validFileName(path)) {
+        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_PATH);
         }
 
@@ -259,32 +272,7 @@ public class ParserUtil {
         return file;
     }
 
-    /**
-     * Returns true if {@code path} represents the path of a CSV (.csv) file.
-     */
-    private static boolean validFileName(String path) {
-        String csvFileExtension = ".csv";
 
-        int length = path.length();
-        String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
-    }
-
-    /**
-     * Parses a {@code path} into a {@code File}.
-     *
-     * @throws IllegalValueException if the given {@code path} is is not an absolute file path or does not exist.
-     */
-    public static File parseImportPath(String path) throws IllegalValueException {
-        File file = parsePath(path);
-
-        if (!file.isAbsolute() || file.isDirectory() || !file.exists() || !file.canRead()) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
-        }
-
-        return file;
-    }
-    //@@author
 
     //@@author yash-chowdhary
     /**
@@ -397,12 +385,12 @@ public class ParserUtil {
      */
     public static List<Answer> parseAnswers(Collection<String> answers) throws IllegalValueException {
         requireNonNull(answers);
-        final Set<Answer> answerSet = new HashSet<>();
+        final Set<String> answerStringSet = new HashSet<>();
         final List<Answer> answerList = new ArrayList<>();
         for (String answer : answers) {
-            if (!answerSet.contains(answer)) {
+            if (!answerStringSet.contains(answer)) {
                 Answer parsedAnswer = parseAnswer(answer);
-                answerSet.add(parsedAnswer);
+                answerStringSet.add(answer);
                 answerList.add(parsedAnswer);
             }
         }
@@ -542,6 +530,29 @@ public class ParserUtil {
     public static Optional<Time> parseTime(Optional<String> time) throws IllegalValueException {
         requireNonNull(time);
         return time.isPresent() ? Optional.of(parseTime(time.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> status} into a {@code Optional<Status>} if {@code status} is present.
+     */
+    public static Optional<Status> parseStatus(Optional<String> status) throws IllegalValueException {
+        requireNonNull(status);
+        return status.isPresent() ? Optional.of(parseStatus(status.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code String status} into a {@code Name}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws IllegalValueException if the given {@code status} is invalid.
+     */
+    public static Status parseStatus(String status) throws IllegalValueException {
+        requireNonNull(status);
+        String trimmedStatus = status.trim();
+        if (!Status.isValidStatus(trimmedStatus)) {
+            throw new IllegalValueException(Status.MESSAGE_INVALID_STATUS);
+        }
+        return new Status(trimmedStatus);
     }
 
     //@@author

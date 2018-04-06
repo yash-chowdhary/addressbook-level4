@@ -2,6 +2,8 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +20,9 @@ public class DeletePollCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "deletepoll";
     public static final String COMMAND_FORMAT = "deletepoll INDEX";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "delpoll", "rmpoll")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the poll identified by the index number used in the last poll listing.\n"
@@ -36,8 +41,11 @@ public class DeletePollCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(pollToDelete);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
             model.deletePoll(pollToDelete);
         } catch (PollNotFoundException pnfe) {
@@ -49,8 +57,9 @@ public class DeletePollCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Poll> lastShownList = model.getFilteredPollList();
-
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
         }

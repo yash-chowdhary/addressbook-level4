@@ -50,5 +50,4 @@ public class MatricNumber {
     public int hashCode() {
         return value.hashCode();
     }
-
 }

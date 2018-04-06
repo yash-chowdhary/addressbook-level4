@@ -1,5 +1,7 @@
 package seedu.club.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.commons.core.EventsCenter;
@@ -15,10 +17,13 @@ import seedu.club.model.member.Member;
 public class SelectCommand extends Command {
 
     public static final String COMMAND_WORD = "select";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "s", "show")
+    );
     public static final String COMMAND_FORMAT = "select INDEX";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects the member identified by the index number used in the last member listing.\n"
+            + ": Opens the profile of the member identified by the index number used in the last member listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
@@ -32,7 +37,8 @@ public class SelectCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

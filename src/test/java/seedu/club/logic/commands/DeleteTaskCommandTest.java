@@ -104,6 +104,8 @@ public class DeleteTaskCommandTest {
 
     @Test
     public void equals() throws Exception {
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         model.updateFilteredTaskList(Model.PREDICATE_SHOW_ALL_TASKS);
         DeleteTaskCommand deleteTaskFirstCommand = prepareCommand(INDEX_FIRST_TASK);
         DeleteTaskCommand deleteTaskSecondCommand = prepareCommand(INDEX_SECOND_TASK);

@@ -4,6 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
@@ -15,18 +18,23 @@ public class AddPollCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addpoll";
     public static final String COMMAND_FORMAT = "addpoll q/ ans/ [ans/...]";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "addp", "poll")
+    );
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a poll to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Adds a poll for members to respond to on Club Connect.\n"
             + "Parameters: "
             + PREFIX_QUESTION + "QUESTION "
             + PREFIX_ANSWER + "ANSWER...\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_QUESTION + "What is love? "
-            + PREFIX_ANSWER + "Baby don't hurt me "
-            + PREFIX_ANSWER + "42 ";
+            + PREFIX_QUESTION + "When should the annual Appreciation Dinner be held? "
+            + PREFIX_ANSWER + "April 13 "
+            + PREFIX_ANSWER + "April 14 "
+            + PREFIX_ANSWER + "April 21 ";
 
     public static final String MESSAGE_SUCCESS = "New poll added: %1$s";
-    public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in the club book";
+    public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in the club book.";
 
     private final Poll toAdd;
 
@@ -41,6 +49,9 @@ public class AddPollCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
             model.addPoll(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));

@@ -8,6 +8,7 @@ import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
+import seedu.club.logic.commands.ChangeTaskStatusCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
@@ -21,15 +22,20 @@ import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.HideResultsCommand;
+import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
+import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
+import seedu.club.logic.commands.VoteCommand;
 
 /**
  * Stores list of commands
@@ -43,6 +49,7 @@ public class CommandList {
         commandList.add(ChangeProfilePhotoCommand.COMMAND_FORMAT);
         commandList.add(ClearCommand.COMMAND_WORD);
         commandList.add(CompressCommand.COMMAND_WORD);
+        commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
         commandList.add(DecompressCommand.COMMAND_WORD);
         commandList.add(DeleteCommand.COMMAND_FORMAT);
         commandList.add(DeleteTagCommand.COMMAND_FORMAT);
@@ -59,6 +66,8 @@ public class CommandList {
         commandList.add(UndoCommand.COMMAND_WORD);
         commandList.add(AddTaskCommand.COMMAND_FORMAT);
         commandList.add(DeleteTaskCommand.COMMAND_FORMAT);
+        commandList.add(ShowResultsCommand.COMMAND_WORD);
+        commandList.add(HideResultsCommand.COMMAND_WORD);
         commandList.add(ViewAllTasksCommand.COMMAND_WORD);
         commandList.add(ViewMyTasksCommand.COMMAND_WORD);
         commandList.add(AssignTaskCommand.COMMAND_FORMAT);
@@ -66,6 +75,10 @@ public class CommandList {
         commandList.add(DeletePollCommand.COMMAND_FORMAT);
         commandList.add(ExportCommand.COMMAND_FORMAT);
         commandList.add(LogOutCommand.COMMAND_WORD);
+        commandList.add(VoteCommand.COMMAND_WORD);
+        commandList.add(SignUpCommand.COMMAND_FORMAT);
+        commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
+        commandList.add(ImportCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;

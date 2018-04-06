@@ -4,6 +4,8 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,18 +21,21 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
  */
 public class DeleteTaskCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "deletetask";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "deltask", "rmtask")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the task identified by the index number used in the last task listing.\n"
-            + "Parameters: INDEX(must be a positive integer)\n"
+            + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX";
 
     public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: %1$s";
     public static final String MESSAGE_TASK_CANNOT_BE_DELETED = "This task cannot be deleted as you are "
-            + " neither the assignor nor the assignee";
-    public static final String MESSAGE_TASK_NOT_FOUND = "This task doesn't exist in Club Book";
+            + " neither the assignor nor the assignee of the task.";
+    public static final String MESSAGE_TASK_NOT_FOUND = "This task does not exist in Club Connect.";
 
     private final Index targetIndex;
 
@@ -44,6 +49,8 @@ public class DeleteTaskCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(taskToDelete);
+        requireToSignUp();
+        requireToLogIn();
         try {
             model.deleteTask(taskToDelete);
         } catch (TaskNotFoundException tnfe) {
@@ -58,6 +65,8 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

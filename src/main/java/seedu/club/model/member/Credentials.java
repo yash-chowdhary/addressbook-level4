@@ -9,7 +9,7 @@ public class Credentials {
 
     public Credentials(Username username) {
         this.username = username;
-        password = new Password("password");
+        this.password = new Password("password");
     }
 
     public boolean isValid(String username, String password) {
@@ -22,5 +22,9 @@ public class Credentials {
 
     public Password getPassword() {
         return password;
+    }
+
+    public void setPassword(Password password) {
+        this.password = password;
     }
 }

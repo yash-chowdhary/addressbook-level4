@@ -1,5 +1,5 @@
 package seedu.club.storage;
-
+//@@author MuhdNurKamal
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -37,7 +37,7 @@ public class XmlAdaptedAnswer {
      */
     public XmlAdaptedAnswer(Answer source) {
         value = source.getValue();
-        noOfMembersAnswered = source.getNoOfMembersAnswered();
+        noOfMembersAnswered = source.getVoteCount();
     }
 
     /**

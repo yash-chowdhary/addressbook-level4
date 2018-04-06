@@ -1,5 +1,5 @@
 package seedu.club.model.member;
-
+//@@author MuhdNurKamal
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;

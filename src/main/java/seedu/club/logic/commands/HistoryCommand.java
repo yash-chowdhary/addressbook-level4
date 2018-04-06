@@ -2,11 +2,14 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 
 /**
@@ -15,11 +18,16 @@ import seedu.club.model.Model;
 public class HistoryCommand extends Command {
 
     public static final String COMMAND_WORD = "history";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "his")
+    );
     public static final String MESSAGE_SUCCESS = "Entered commands (from most recent to earliest):\n%1$s";
     public static final String MESSAGE_NO_HISTORY = "You have not yet entered any commands.";
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<String> previousCommands = history.getHistory();
 
         if (previousCommands.isEmpty()) {
@@ -34,5 +42,7 @@ public class HistoryCommand extends Command {
     public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
         requireNonNull(history);
         this.history = history;
+        this.model = model;
+        this.undoRedoStack = undoRedoStack;
     }
 }

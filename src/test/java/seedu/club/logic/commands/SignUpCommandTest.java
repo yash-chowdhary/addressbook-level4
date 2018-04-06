@@ -11,11 +11,11 @@ import java.util.function.Predicate;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -25,9 +25,13 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.AnswerNotFoundException;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
+import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -37,7 +41,6 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.MemberBuilder;
-
 
 
 public class SignUpCommandTest {
@@ -58,10 +61,23 @@ public class SignUpCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
+
     /**
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void voteInPoll(Poll poll, Index answerIndex) throws
+                PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
+        }
+
         @Override
         public void updateFilteredPollList(Predicate<Poll> predicate) {
             fail("This method should not be called.");
@@ -78,7 +94,7 @@ public class SignUpCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMemberException {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
@@ -113,8 +129,8 @@ public class SignUpCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -141,13 +157,19 @@ public class SignUpCommandTest {
 
         @Override
         public void updateMember(Member target, Member editedMember)
-                throws DuplicateMemberException {
+                throws DuplicateMatricNumberException {
             fail("This method should not be called.");
         }
 
         @Override
         public void deleteTag(Tag tag) throws TagNotFoundException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            fail("This method should not be called");
+            return 0;
         }
 
         @Override
@@ -208,9 +230,32 @@ public class SignUpCommandTest {
         }
 
         @Override
+        public void changePassword(String username, String oldPassword, String newPassword)
+                throws PasswordIncorrectException {
+            fail("This method should not be called.");
+            return;
+        }
+
+        @Override
         public void signUpMember(Member member) {
             fail("This method should not be called");
             return;
+        }
+
+        @Override
+        public void clearClubBook() {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
         }
 
         @Override
@@ -219,11 +264,13 @@ public class SignUpCommandTest {
             return;
         }
     }
+
     /**
      * A Model stub that always accept the member being added.
      */
     private class ModelStubAcceptingMemberSignUp extends ModelStub {
         private ReadOnlyClubBook clubBook = new ClubBook();
+
         @Override
         public void signUpMember(Member member) {
             requireNonNull(member);

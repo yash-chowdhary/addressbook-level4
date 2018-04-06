@@ -5,14 +5,15 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 
 /**
  * Adds a member to the club book.
@@ -20,31 +21,37 @@ import seedu.club.model.member.exceptions.DuplicateMemberException;
 public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
-    public static final String COMMAND_FORMAT = "add n/ p/ e/ m/ [pic/ ] "
-            + "[g/ ] [t/ ]";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "a", "insert")
+    );
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " "
+            + PREFIX_NAME + " "
+            + PREFIX_PHONE + " "
+            + PREFIX_EMAIL + " "
+            + PREFIX_MATRIC_NUMBER + " "
+            + "[" + PREFIX_GROUP + " ] "
+            + "[" + PREFIX_TAG + " ] ";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a member to the club book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a member to Club Connect.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER "
             + "[" + PREFIX_GROUP + "GROUP] "
-            + "[" + PREFIX_TAG + "TAG]... "
-            + PREFIX_USERNAME + "username "
-            + PREFIX_PASSWORD + "password\n"
+            + "[" + PREFIX_TAG + "TAG]... \n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_MATRIC_NUMBER + "A0123456H "
-            + PREFIX_GROUP + "logistics "
-            + PREFIX_TAG + "friends "
-            + PREFIX_TAG + "owesMoney ";
+            + PREFIX_GROUP + "Logistics "
+            + PREFIX_TAG + "Head "
+            + PREFIX_TAG + "EventCoordinator";
 
     public static final String MESSAGE_SUCCESS = "New member added: %1$s";
-    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book";
-    public static final String MESSAGE_NOT_LOGGED_IN = "You have yet to log in";
+    public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "
+            + "exists in Club Connect.";
 
     private final Member toAdd;
 
@@ -59,11 +66,14 @@ public class AddCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
             model.addMember(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
-        } catch (DuplicateMemberException e) {
-            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
+        } catch (DuplicateMatricNumberException e) {
+            throw new CommandException(MESSAGE_DUPLICATE_MATRIC_NUMBER);
         }
 
     }

@@ -2,6 +2,8 @@ package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +20,9 @@ public class DeleteCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
     public static final String COMMAND_FORMAT = "delete INDEX";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "del", "rm", "remove")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the member identified by the index number used in the last member listing.\n"
@@ -36,8 +41,11 @@ public class DeleteCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() {
+    public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(memberToDelete);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
             model.deleteMember(memberToDelete);
         } catch (MemberNotFoundException mnfe) {
@@ -49,6 +57,8 @@ public class DeleteCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {

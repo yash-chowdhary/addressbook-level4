@@ -2,6 +2,7 @@ package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -11,10 +12,13 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TAG;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
@@ -22,6 +26,7 @@ import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
+import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 
 //@@author yash-chowdhary
@@ -30,7 +35,6 @@ import seedu.club.model.tag.Tag;
  */
 public class EmailCommandTest {
 
-    private Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
     private Client gmailClient = new Client(Client.VALID_CLIENT_GMAIL);
     private Client outlookClient = new Client(Client.VALID_CLIENT_OUTLOOK);
     private Subject testSubject = new Subject(Subject.TEST_SUBJECT_STRING);
@@ -39,10 +43,27 @@ public class EmailCommandTest {
     private Body emptyBody = new Body(Body.EMPTY_BODY_STRING);
     private Group groupToEmail;
     private Tag tagToEmail;
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
+
+    @Before
+    public void setUp() throws CommandException {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+    }
 
     @Test
     public void execute_validCommandToEmailGroupGmail_success() throws Exception {
-        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         groupToEmail = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         tagToEmail = null;
 
@@ -50,8 +71,6 @@ public class EmailCommandTest {
                 testSubject, testBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, gmailClient, testSubject, testBody);
 
@@ -60,7 +79,6 @@ public class EmailCommandTest {
 
     @Test
     public void execute_validCommandToEmailGroupOutlook_success() throws Exception {
-        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         groupToEmail = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         tagToEmail = null;
 
@@ -68,8 +86,6 @@ public class EmailCommandTest {
                 testSubject, testBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, gmailClient, testSubject, testBody);
 
@@ -85,7 +101,6 @@ public class EmailCommandTest {
                 testSubject, testBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, outlookClient, testSubject, testBody);
 
@@ -101,7 +116,6 @@ public class EmailCommandTest {
                 testSubject, testBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, outlookClient, testSubject, testBody);
 
@@ -115,7 +129,7 @@ public class EmailCommandTest {
 
         EmailCommand emailCommand = prepareCommand(nonExistentGroup, tagToEmail, gmailClient,
                 testSubject, testBody);
-        String expectedMessage = RemoveGroupCommand.MESSAGE_NON_EXISTENT_GROUP;
+        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
 
         assertCommandFailure(emailCommand, model, expectedMessage);
     }
@@ -134,7 +148,6 @@ public class EmailCommandTest {
 
     @Test
     public void execute_optionalSubject_success() throws Exception {
-        model.updateFilteredMemberList(Model.PREDICATE_SHOW_ALL_MEMBERS);
         groupToEmail = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         tagToEmail = null;
 
@@ -142,8 +155,6 @@ public class EmailCommandTest {
                 testBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, gmailClient, emptySubject, testBody);
 
@@ -159,7 +170,6 @@ public class EmailCommandTest {
                 emptyBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, gmailClient, testSubject, emptyBody);
 
@@ -175,7 +185,6 @@ public class EmailCommandTest {
                 emptyBody);
 
         String expectedMessage = EmailCommand.EMAIL_CLIENT_OPENED;
-        Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         String expectedRecipients = expectedModel.generateEmailRecipients(groupToEmail, tagToEmail);
         expectedModel.sendEmail(expectedRecipients, gmailClient, emptySubject, emptyBody);
 
@@ -184,7 +193,6 @@ public class EmailCommandTest {
 
     @Test
     public void equals() {
-        model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         Group groupToEmailOne = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         Group groupToEmailTwo = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
         Tag tagToEmailOne = new Tag(VALID_TAG_UNUSED);

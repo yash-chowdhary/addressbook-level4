@@ -40,4 +40,32 @@ public abstract class Command {
     public void setData(Model model, CommandHistory history, UndoRedoStack undoRedoStack) {
         this.model = model;
     }
+
+    //@@author th14thmusician
+    /**
+     * Requires user to login before proceeding
+     */
+    protected void requireToLogIn () throws CommandException {
+        if (model.getLoggedInMember() == null) {
+            throw new CommandException(Messages.MESSAGE_REQUIRE_LOG_IN);
+        }
+    }
+
+    /**
+     * Requires user to Sign Up
+     */
+    protected void requireToSignUp () throws CommandException {
+        if (model.getClubBook().getMemberList().isEmpty()) {
+            throw new CommandException(Messages.MESSAGE_REQUIRE_SIGN_UP);
+        }
+    }
+
+    /**
+     * Requires exco access to use the command
+     */
+    protected void requireExcoLogIn () throws CommandException {
+        if (!model.getLoggedInMember().getGroup().groupName.equals("exco")) {
+            throw new CommandException(Messages.MESSAGE_REQUIRE_EXCO_LOG_IN);
+        }
+    }
 }

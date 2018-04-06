@@ -2,6 +2,9 @@ package seedu.club.logic.commands;
 //@@author yash-chowdhary
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 
@@ -10,13 +13,18 @@ import seedu.club.model.task.exceptions.TasksAlreadyListedException;
  */
 public class ViewMyTasksCommand extends Command {
     public static final String  COMMAND_WORD = "viewmytasks";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "mytasks")
+    );
 
-    public static final String MESSAGE_SUCCESS = "Listed all your tasks.";
-    public static final String MESSAGE_ALREADY_LISTED = "All your tasks are already listed.";
+    public static final String MESSAGE_SUCCESS = "Your tasks have been listed.";
+    public static final String MESSAGE_ALREADY_LISTED = "All your tasks have already been listed.";
 
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         try {
             model.viewMyTasks();
         } catch (TasksAlreadyListedException tale) {

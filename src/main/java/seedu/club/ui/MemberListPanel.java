@@ -38,11 +38,11 @@ public class MemberListPanel extends UiPart<Region> {
         setConnections(memberList);
         registerAsAnEventHandler(this);
     }
-
+    //@@author MuhdNurKamal
     /**
-     * Compress view of member details.
+     * Compresses view of member details.
      */
-    protected void compressMemberCards() {
+    private void compressMemberCards() {
         if (!isDisplayingCompressedMembers) {
             isDisplayingCompressedMembers = true;
             setMemberListView(memberList);
@@ -50,14 +50,15 @@ public class MemberListPanel extends UiPart<Region> {
     }
 
     /**
-     * Decompress view of member details.
+     * Decompresses view of member details.
      */
-    protected void decompressMemberCards() {
+    private void decompressMemberCards() {
         if (isDisplayingCompressedMembers) {
             isDisplayingCompressedMembers = false;
             setMemberListView(memberList);
         }
     }
+    //@@author
 
     private void setConnections(ObservableList<Member> memberList) {
         setMemberListView(memberList);
@@ -120,7 +121,7 @@ public class MemberListPanel extends UiPart<Region> {
             }
         }
     }
-
+    //@@author MuhdNurKamal
     @Subscribe
     private void handleCompressMembersEvent(CompressMembersRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -136,4 +137,5 @@ public class MemberListPanel extends UiPart<Region> {
     public boolean isDisplayingCompressedMembers() {
         return isDisplayingCompressedMembers;
     }
+    //@@author
 }

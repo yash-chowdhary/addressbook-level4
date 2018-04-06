@@ -7,9 +7,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_TO;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +30,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
-import seedu.club.model.member.exceptions.DuplicateMemberException;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 
@@ -39,18 +40,19 @@ import seedu.club.model.tag.Tag;
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
-    public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ]"
-            + " [pic/ ] [g/ ] [t/ ]";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "e", "update")
+    );
+    public static final String COMMAND_FORMAT = "edit [n/ ] [p/ ] [e/ ] [m/ ] [g/ ] [t/ ]";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the member identified "
-            + "by the index number used in the last member listing. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Edits the details of the member identified by the index number used in the last member listing. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER] "
-            + "[" + PREFIX_TO + "PHOTO PATH] "
             + "[" + PREFIX_GROUP + "GROUP] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -59,7 +61,8 @@ public class EditCommand extends UndoableCommand {
 
     public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_MEMBER = "This member already exists in the club book.";
+    public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "
+            + "exists in Club Connect.";
 
     private final Index index;
     private final EditMemberDescriptor editMemberDescriptor;
@@ -81,10 +84,13 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
             model.updateMember(memberToEdit, editedMember);
-        } catch (DuplicateMemberException dpe) {
-            throw new CommandException(MESSAGE_DUPLICATE_MEMBER);
+        } catch (DuplicateMatricNumberException dmne) {
+            throw new CommandException(MESSAGE_DUPLICATE_MATRIC_NUMBER);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
@@ -94,6 +100,8 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Member> lastShownList = model.getFilteredMemberList();
 
         if (index.getZeroBased() >= lastShownList.size()) {

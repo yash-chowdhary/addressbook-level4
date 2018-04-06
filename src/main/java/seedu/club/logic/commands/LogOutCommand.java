@@ -1,6 +1,9 @@
 package seedu.club.logic.commands;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
@@ -12,9 +15,12 @@ import seedu.club.model.Model;
  */
 public class LogOutCommand extends Command {
     public static final String COMMAND_WORD = "logout";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "signout")
+    );
 
-    public static final String MESSAGE_SUCCESS = "logout successful!";
-    public static final String MESSAGE_FAILURE = "There are no member currently logged in";
+    public static final String MESSAGE_SUCCESS = "Logout successful.";
+    public static final String MESSAGE_FAILURE = "You are not logged in.";
 
     public LogOutCommand(){
     }
@@ -28,6 +34,7 @@ public class LogOutCommand extends Command {
             model.logOutMember();
             model.updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
             model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+            model.updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
             return new CommandResult(MESSAGE_SUCCESS);
         }
     }

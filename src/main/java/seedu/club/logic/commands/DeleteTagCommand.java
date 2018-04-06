@@ -1,8 +1,10 @@
+//@@author amrut-prabhu
 package seedu.club.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -16,14 +18,17 @@ public class DeleteTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "deletetag";
     public static final String COMMAND_FORMAT = "deletetag t/ ";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "deltag", "rmtag")
+    );
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Removes the tag from all members. "
+            + ": Deletes the specified tag from all members.\n"
             + "Parameters: TAG (must be an existing tag)\n"
-            + "Example: " + COMMAND_WORD + " t/treasurer";
+            + "Example: " + COMMAND_WORD + " t/EventHelper";
 
-    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Tag Removed: %1$s";
-    public static final String MESSAGE_NON_EXISTENT_TAG = "The tag name provided does not exist";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted Tag: %1$s";
+    public static final String MESSAGE_NON_EXISTENT_TAG = "This tag does not exist in Club Connect.";
 
     private Tag tagToDelete;
 
@@ -34,7 +39,9 @@ public class DeleteTagCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(tagToDelete);
-
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
             model.deleteTag(tagToDelete);
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
@@ -45,6 +52,8 @@ public class DeleteTagCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         List<Tag> lastShownList = model.getFilteredTagList();
 
         if (!getMasterTagList().contains(tagToDelete)) {

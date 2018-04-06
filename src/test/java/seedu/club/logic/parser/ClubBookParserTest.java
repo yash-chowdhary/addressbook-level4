@@ -37,11 +37,13 @@ import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
+import seedu.club.logic.commands.HideResultsCommand;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
+import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
@@ -77,7 +79,7 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_addPoll() throws Exception {
-        Poll poll = new PollBuilder().build();
+        Poll poll = new PollBuilder().withNoPollessMatricNumbers().build();
         AddPollCommand command = (AddPollCommand) parser.parseCommand(PollUtil.getAddPollCommand(poll));
         assertEquals(new AddPollCommand(poll), command);
     }
@@ -234,5 +236,15 @@ public class ClubBookParserTest {
     @Test
     public void parseCommand_decompress() throws Exception {
         assertTrue(parser.parseCommand(DecompressCommand.COMMAND_WORD) instanceof DecompressCommand);
+    }
+
+    @Test
+    public void parseCommand_showResults() throws Exception {
+        assertTrue(parser.parseCommand(ShowResultsCommand.COMMAND_WORD) instanceof ShowResultsCommand);
+    }
+
+    @Test
+    public void parseCommand_hideResults() throws Exception {
+        assertTrue(parser.parseCommand(HideResultsCommand.COMMAND_WORD) instanceof HideResultsCommand);
     }
 }
