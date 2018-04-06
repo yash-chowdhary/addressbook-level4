@@ -33,6 +33,17 @@
     -fx-font-size: 13;
 }
 
+.label-group-panel {
+    -fx-text-fill: white;
+    -fx-background-color: blue;
+    -fx-alignment: center;
+    -fx-padding: 2 5 2 5;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 18;
+    -fx-font-style: bold;
+}
+
 .text-field {
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
