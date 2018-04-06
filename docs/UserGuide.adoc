@@ -618,7 +618,7 @@ Examples:
 `select 2` +
 Selects the 2nd member in Club Connect.
 * `find Betsy` +
-`select 1` +
+`s 1` +
 Selects the 1st member in the results of the `find` command.
 
 === Showing results of polls : `showresults` (Since v1.4)
