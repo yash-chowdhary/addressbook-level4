@@ -42,10 +42,6 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
             Command command = clubBookParser.parseCommand(commandText);
-            if (commandText.equals("logout")) {
-                history = new CommandHistory();
-                undoRedoStack = new UndoRedoStack();
-            }
             command.setData(model, history, undoRedoStack);
             CommandResult result = command.execute();
             undoRedoStack.push(command);
