@@ -21,6 +21,7 @@ import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 
 public class DeleteTaskCommandTest {
     private Model model = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
@@ -56,16 +57,18 @@ public class DeleteTaskCommandTest {
     @Test
     public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
         model.logsInMember(ALICE.getCredentials().getUsername().value, ALICE.getCredentials().getPassword().value);
-        model.updateFilteredTaskList(Model.PREDICATE_SHOW_ALL_TASKS);
+        model.updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(ALICE));
+
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
         Task taskToDelete = model.getFilteredTaskList().get(INDEX_FIRST_TASK.getZeroBased());
         DeleteTaskCommand deleteTaskCommand = prepareCommand(INDEX_FIRST_TASK);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
-        expectedModel.updateFilteredTaskList(expectedModel.PREDICATE_SHOW_ALL_TASKS);
+        expectedModel.updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(ALICE));
 
         // delete -> first task deleted
         deleteTaskCommand.execute();
