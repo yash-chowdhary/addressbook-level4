@@ -30,7 +30,6 @@ public class LogOutCommand extends Command {
         requireNonNull(model);
         requireToLogIn();
 
-        new HideResultsCommand().execute();
         model.logOutMember();
         return new CommandResult(MESSAGE_SUCCESS);
     }

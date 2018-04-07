@@ -2,6 +2,7 @@ package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertEquals;
 import static seedu.club.commons.core.Messages.MESSAGE_REQUIRE_LOG_IN;
+import static seedu.club.testutil.Assert.assertThrows;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
@@ -29,8 +30,8 @@ public class LogOutCommandTest {
     @Test
     public void executeMemberAlreadyLogOut() throws CommandException {
         Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-        CommandResult commandResult = getLogOutCommandForMember(model).execute();
-        assertEquals(MESSAGE_REQUIRE_LOG_IN, commandResult.feedbackToUser);
+        LogOutCommand logOutCommand = getLogOutCommandForMember(model);
+        assertThrows(CommandException.class, () -> logOutCommand.execute());
     }
 
     /**
