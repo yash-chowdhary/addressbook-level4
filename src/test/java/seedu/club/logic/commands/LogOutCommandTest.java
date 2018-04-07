@@ -1,6 +1,7 @@
 package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.club.commons.core.Messages.MESSAGE_REQUIRE_LOG_IN;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import javafx.collections.ObservableList;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
@@ -15,7 +17,7 @@ import seedu.club.model.member.Member;
 
 public class LogOutCommandTest {
     @Test
-    public void executeMemberSuccessfullyLogOut() {
+    public void executeMemberSuccessfullyLogOut() throws CommandException {
         Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         ObservableList<Member> observableList = model.getClubBook().getMemberList();
         model.logsInMember(observableList.get(0).getCredentials().getUsername().value,
@@ -25,10 +27,10 @@ public class LogOutCommandTest {
     }
 
     @Test
-    public void executeMemberAlreadyLogOut() {
+    public void executeMemberAlreadyLogOut() throws CommandException {
         Model model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         CommandResult commandResult = getLogOutCommandForMember(model).execute();
-        assertEquals(LogOutCommand.MESSAGE_FAILURE, commandResult.feedbackToUser);
+        assertEquals(MESSAGE_REQUIRE_LOG_IN, commandResult.feedbackToUser);
     }
 
     /**
