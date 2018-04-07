@@ -248,8 +248,9 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
+        public int updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override

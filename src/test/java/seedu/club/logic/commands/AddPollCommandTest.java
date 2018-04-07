@@ -267,9 +267,10 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void updateMember(Member member, Member editedMember)
+        public int updateMember(Member member, Member editedMember)
                 throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override

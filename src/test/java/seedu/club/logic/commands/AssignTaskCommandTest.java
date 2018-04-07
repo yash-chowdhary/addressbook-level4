@@ -231,9 +231,10 @@ public class AssignTaskCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws MemberNotFoundException {
+        public int updateMember(Member target, Member editedMember) throws MemberNotFoundException,
+                DuplicateTaskException, DuplicateMatricNumberException {
             fail("This method should not be called");
-            return;
+            return -1;
         }
 
         @Override

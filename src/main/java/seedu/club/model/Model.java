@@ -107,8 +107,8 @@ public interface Model {
      *                                  to be equivalent to that of another existing member in the list.
      * @throws MemberNotFoundException  if {@code target} could not be found in the list.
      */
-    void updateMember(Member target, Member editedMember)
-            throws DuplicateMatricNumberException, MemberNotFoundException;
+    int updateMember(Member target, Member editedMember)
+            throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException;
 
     /**
      * Returns an unmodifiable view of the filtered member list

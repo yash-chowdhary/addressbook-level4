@@ -191,10 +191,10 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
+        public int updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
                 MemberNotFoundException {
             fail("This method should not be called");
-            return;
+            return -1;
         }
 
         @Override

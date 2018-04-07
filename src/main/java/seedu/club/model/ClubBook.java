@@ -34,6 +34,8 @@ import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.UniqueTaskList;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -96,6 +98,11 @@ public class ClubBook implements ReadOnlyClubBook {
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
+        if (newData.getLogInMember() != null) {
+            setLogInMember(newData.getLogInMember());
+        } else {
+            setLogInMember(null);
+        }
 
         try {
             setMembers(syncedMemberList);
@@ -354,6 +361,16 @@ public class ClubBook implements ReadOnlyClubBook {
     //@@author
 
 
+    @Override
+    public void setLogInMember(Member target) {
+        members.setCurrentlyLogInMember(target);
+    }
+
+    @Override
+    public Member getLogInMember() {
+        return members.getCurrentlyLogInMember();
+    }
+
     //// tag-level operations
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
@@ -519,5 +536,52 @@ public class ClubBook implements ReadOnlyClubBook {
     public void updateTask(Task taskToEdit, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+    }
+
+    /**
+     * Updates the task if there is a change in Matric Number of the target member.
+     * @return number of tasks updated.
+     * @throws DuplicateTaskException if there is already a task with similar attributes (regardless of status).
+     */
+    public int updateTask(Member target, Member editedMember) throws DuplicateTaskException {
+        ObservableList<Task> taskObservableList = tasks.asObservableList();
+        if (target.getMatricNumber().equals(editedMember.getMatricNumber())) {
+            return 0;
+        }
+
+        int numberOfTasksUpdated = 0;
+
+        for (Task task : taskObservableList) {
+            Task editedTask = null;
+            String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
+            String targetMemberMatricNumberString = target.getMatricNumber().toString();
+
+            if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
+                    && task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+
+                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        newAssignor, newAssignee, task.getStatus());
+                tasks.setTaskEdited(task, editedTask);
+                numberOfTasksUpdated++;
+            } else if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+
+                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        newAssignor, task.getAssignee(), task.getStatus());
+                tasks.setTaskEdited(task, editedTask);
+                numberOfTasksUpdated++;
+            } else if (task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        task.getAssignor(), newAssignee, task.getStatus());
+                tasks.setTaskEdited(task, editedTask);
+                numberOfTasksUpdated++;
+            }
+        }
+
+        return numberOfTasksUpdated;
     }
 }

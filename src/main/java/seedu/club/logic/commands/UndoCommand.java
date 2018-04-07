@@ -9,6 +9,7 @@ import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 
 /**
  * Undo the previous {@code UndoableCommand}.
@@ -31,6 +32,7 @@ public class UndoCommand extends Command {
         }
 
         undoRedoStack.popUndo().undo();
+        model.updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(model.getLoggedInMember()));
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

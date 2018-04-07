@@ -56,6 +56,7 @@ import seedu.club.model.member.Phone;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
 
@@ -239,13 +240,15 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
             expectedModel.updateMember(
                     expectedModel.getFilteredMemberList().get(toEdit.getZeroBased()), editedMember);
             expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        } catch (DuplicateMatricNumberException | MemberNotFoundException e) {
+        } catch (DuplicateMatricNumberException | MemberNotFoundException | DuplicateTaskException e) {
             throw new IllegalArgumentException(
                     "editedMember is a duplicate in expectedModel, or it isn't found in the model.");
         }
 
+        int numberOfTasksUpdated = 0;
         assertCommandSuccess(command, expectedModel,
-                String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember), expectedSelectedCardIndex);
+                String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember, numberOfTasksUpdated),
+                expectedSelectedCardIndex);
     }
 
     /**
