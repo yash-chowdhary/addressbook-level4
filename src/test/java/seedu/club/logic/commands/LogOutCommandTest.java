@@ -1,7 +1,6 @@
 package seedu.club.logic.commands;
 
 import static org.junit.Assert.assertEquals;
-import static seedu.club.commons.core.Messages.MESSAGE_REQUIRE_LOG_IN;
 import static seedu.club.testutil.Assert.assertThrows;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 

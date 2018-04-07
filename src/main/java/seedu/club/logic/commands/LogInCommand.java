@@ -50,7 +50,6 @@ public class LogInCommand extends Command {
         requireToLogOut();
         model.logsInMember(username.value, password.value);
         if (model.getLoggedInMember() != null) {
-            new HideResultsCommand().execute();
             return new CommandResult(String.format(MESSAGE_SUCCESS, model.getLoggedInMember().getName().toString()));
         }
         return new CommandResult(MESSAGE_FAILURE);

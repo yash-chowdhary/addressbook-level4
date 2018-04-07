@@ -5,6 +5,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -29,7 +31,7 @@ public class LogOutCommand extends Command {
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
         requireToLogIn();
-
+        EventsCenter.getInstance().post(new HideResultsRequestEvent());
         model.logOutMember();
         return new CommandResult(MESSAGE_SUCCESS);
     }
