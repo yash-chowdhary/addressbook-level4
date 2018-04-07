@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -55,7 +56,7 @@ public class ViewAllTasksCommandTest {
         model.logsInMember(BENSON.getCredentials().getUsername().value,
                 BENSON.getCredentials().getPassword().value);
         model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
-        String expectedMessage = ViewAllTasksCommand.MESSAGE_CANNOT_VIEW;
+        String expectedMessage = Messages.MESSAGE_REQUIRE_EXCO_LOG_IN;
         assertCommandFailure(viewAllTasksCommand, model, expectedMessage);
     }
 
