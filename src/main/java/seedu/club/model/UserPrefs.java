@@ -14,7 +14,7 @@ public class UserPrefs {
     private String clubBookName = "TypicalClubBookName";
 
     public UserPrefs() {
-        this.setGuiSettings(500, 500, 0, 0);
+        this.setGuiSettings(1936, 1036, -8, 1);
     }
 
     public GuiSettings getGuiSettings() {
