@@ -1,8 +1,6 @@
 //@@author amrut-prabhu
 package seedu.club.logic.parser;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import java.io.File;
 
 import seedu.club.commons.exceptions.IllegalValueException;
