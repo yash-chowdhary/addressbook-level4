@@ -98,6 +98,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
                 getModel().getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()), editedMember);
         assertCommandSuccess(command, model, expectedResultMessage);
 
+        model = getModel();
         /* Case: edit a member with new values same as existing values -> edited */
         index = INDEX_SECOND_MEMBER;
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB

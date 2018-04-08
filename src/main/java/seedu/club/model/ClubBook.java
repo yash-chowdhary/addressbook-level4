@@ -557,7 +557,7 @@ public class ClubBook implements ReadOnlyClubBook {
             String targetMemberMatricNumberString = target.getMatricNumber().toString();
 
             if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
-                    && task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);

@@ -78,7 +78,7 @@ public class CommandBox extends UiPart<Region> {
         if (!input.equals("")) {
             if (oldInput == null) {
                 oldInput = input;
-            } else if (input.indexOf(oldInput) == -1) {
+            } else if (!input.startsWith(oldInput)) {
                 oldInput = input;
                 completeCommandIndex = 0;
             }
