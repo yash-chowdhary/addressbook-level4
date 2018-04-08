@@ -135,10 +135,10 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+* `addpoll q/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
 Creates a poll asking members to vote which day Free Ice-Cream Day should be.
 The options to choose from are Monday, Wednesday and Friday.
-* `addpoll n/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+* `addpoll q/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
 Creates a poll asking members to vote where the annual sports meeting should be held.
 The answers to choose from are I-Cube and LT7.
 
@@ -799,7 +799,7 @@ e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *Add Poll* `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
-e.g. `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
+e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 * *Delete Poll* `deletepoll INDEX` +
 e.g. `deletepoll 2`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
