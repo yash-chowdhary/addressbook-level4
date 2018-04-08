@@ -40,9 +40,9 @@ public class FindCommandParser implements Parser<FindCommand> {
                 if (trimmedArgs.substring(0, FINDABLE_PREFIX_STRING_LENGTH)
                         .equalsIgnoreCase(prefix.toString())) {
                     String[] findArgs = trimmedArgs.substring(FINDABLE_PREFIX_STRING_LENGTH, trimmedArgs.length())
-                            .split("\\s+");
+                            .trim().split("\\s+");
                     return new FindCommand(new FieldContainsKeywordsPredicate(
-                            Arrays.asList(findArgs).subList(1, findArgs.length), prefix));
+                            Arrays.asList(findArgs), prefix));
                 }
             }
         }
