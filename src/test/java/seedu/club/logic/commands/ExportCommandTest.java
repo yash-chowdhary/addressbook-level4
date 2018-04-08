@@ -244,8 +244,9 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public int deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override

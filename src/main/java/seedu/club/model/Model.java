@@ -76,7 +76,7 @@ public interface Model {
     /**
      * Deletes the given member.
      */
-    void deleteMember(Member target) throws MemberNotFoundException;
+    int deleteMember(Member target) throws MemberNotFoundException;
 
     /**
      * Adds the given member

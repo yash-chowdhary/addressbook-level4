@@ -10,6 +10,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
+import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
@@ -90,6 +91,20 @@ public class ClubBookTest {
                 .withMember(amyNotInLogistics).build();
 
         assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+    }
+
+    @Test
+    public void deleteMember_validMemberWithTasks_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BOOK_AUDITORIUM)
+                .withTask(BUY_CONFETTI).build();
+        clubBook.removeMember(BENSON);
+        clubBook.removeTasksOfMember(BENSON);
+
+        Member alice = new MemberBuilder(ALICE).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withTask(buyConfetti).build();
+
+        assertEquals(expectedClubBook, clubBook);
     }
 
     @Test
@@ -339,7 +354,7 @@ public class ClubBookTest {
         }
 
         @Override
-        public void setLogInMember(Member target) {
+        public void setLoggedInMember(Member target) {
             fail("This method should not be called.");
         }
 

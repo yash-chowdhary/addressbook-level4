@@ -262,8 +262,9 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void deleteMember(Member member) throws MemberNotFoundException {
+        public int deleteMember(Member member) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override

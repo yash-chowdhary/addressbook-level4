@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -99,9 +100,9 @@ public class ClubBook implements ReadOnlyClubBook {
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
         if (newData.getLoggedInMember() != null) {
-            setLogInMember(newData.getLoggedInMember());
+            setLoggedInMember(newData.getLoggedInMember());
         } else {
-            setLogInMember(null);
+            setLoggedInMember(null);
         }
 
         try {
@@ -354,17 +355,8 @@ public class ClubBook implements ReadOnlyClubBook {
     //@@author
 
 
-    @Override
-    public void setLogInMember(Member target) {
-        members.setCurrentlyLogInMember(target);
-    }
-
-    @Override
-    public Member getLoggedInMember() {
-        return members.getCurrentlyLogInMember();
-    }
-
     //// tag-level operations
+
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
     }
@@ -382,7 +374,6 @@ public class ClubBook implements ReadOnlyClubBook {
                 .collect(Collectors.toSet());
         tags.setTags(newTags);
     }
-
     /**
      * Returns true if only {@code member} is tagged with {@code tag}.
      *
@@ -459,6 +450,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
+
     //@@author Song Weiyang
     /**
      * Change the password of {@code member} in the ClubBook.
@@ -471,12 +463,11 @@ public class ClubBook implements ReadOnlyClubBook {
         members.changePassword(username, oldpassword, newPassword);
     }
     //@@author
-
     public void clearClubBook() {
         members.clear();
     }
-    //// util methods
 
+    //// util methods
     @Override
     public String toString() {
         return members.asObservableList().size() + " members, " + tags.asObservableList().size() + " tags, "
@@ -512,6 +503,15 @@ public class ClubBook implements ReadOnlyClubBook {
                 && this.tags.equalsOrderInsensitive(((ClubBook) other).tags));
     }
 
+    @Override
+    public void setLoggedInMember(Member target) {
+        members.setCurrentlyLogInMember(target);
+    }
+
+    @Override
+    public Member getLoggedInMember() {
+        return members.getCurrentlyLogInMember();
+    }
 
     @Override
     public int hashCode() {
@@ -576,5 +576,23 @@ public class ClubBook implements ReadOnlyClubBook {
         }
 
         return numberOfTasksUpdated;
+
+    }
+
+    /**
+     * Removes all tasks that have been assigned to {@code member}.
+     */
+    public int removeTasksOfMember(Member member) {
+
+        int numberOfTasksRemoved = 0;
+        Iterator<Task> it = tasks.iterator();
+        while (it.hasNext()) {
+            Task task = it.next();
+            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+                it.remove();
+                numberOfTasksRemoved++;
+            }
+        }
+        return numberOfTasksRemoved;
     }
 }
