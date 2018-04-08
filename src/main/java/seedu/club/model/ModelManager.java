@@ -140,7 +140,7 @@ public class ModelManager extends ComponentManager implements Model {
         int numberOfTasksUpdated = clubBook.updateTask(target, editedMember);
         indicateClubBookChanged();
         if (target.equals(getLoggedInMember())) {
-            clubBook.setLogInMember(editedMember);
+            clubBook.setLoggedInMember(editedMember);
         }
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         return numberOfTasksUpdated;
