@@ -134,7 +134,7 @@ public class XmlUtilTest {
 
         ClubBookBuilder builder = new ClubBookBuilder(new ClubBook());
         dataToWrite = new XmlSerializableClubBook(
-                builder.withMember(new MemberBuilder().build()).withTag("Friends").build());
+                builder.withMember(new MemberBuilder().build()).build());
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableClubBook.class);

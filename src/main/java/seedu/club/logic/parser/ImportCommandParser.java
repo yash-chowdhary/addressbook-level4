@@ -25,7 +25,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
             return new ImportCommand(importFile);
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ImportCommand.MESSAGE_USAGE));
+                    String.format(ive.getMessage(), ImportCommand.MESSAGE_USAGE));
         }
     }
 
