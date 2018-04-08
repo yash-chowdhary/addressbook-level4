@@ -45,5 +45,5 @@ public interface ReadOnlyClubBook {
 
     void setLogInMember(Member target);
 
-    Member getLogInMember();
+    Member getLoggedInMember();
 }

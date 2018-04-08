@@ -98,8 +98,8 @@ public class ClubBook implements ReadOnlyClubBook {
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
-        if (newData.getLogInMember() != null) {
-            setLogInMember(newData.getLogInMember());
+        if (newData.getLoggedInMember() != null) {
+            setLogInMember(newData.getLoggedInMember());
         } else {
             setLogInMember(null);
         }
@@ -256,13 +256,6 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     * Get the member who is log in, if null, there are no one that is logged in.
-     */
-    public Member getLoggedInMember() {
-        return members.getCurrentlyLogInMember();
-    }
-
-    /**
      * Sign up a member if it is a new clubbook
      */
     public void signUpMember(Member p) throws MemberListNotEmptyException {
@@ -367,7 +360,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
-    public Member getLogInMember() {
+    public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
 

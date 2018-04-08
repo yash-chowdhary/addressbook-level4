@@ -139,7 +139,6 @@ public class ModelManager extends ComponentManager implements Model {
         if (target.equals(getLoggedInMember())) {
             clubBook.setLogInMember(editedMember);
         }
-        Member m = getLoggedInMember();
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         return numberOfTasksUpdated;
     }

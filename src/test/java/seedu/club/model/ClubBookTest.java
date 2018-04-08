@@ -344,7 +344,7 @@ public class ClubBookTest {
         }
 
         @Override
-        public Member getLogInMember() {
+        public Member getLoggedInMember() {
             fail("This method should not be called.");
             return null;
         }
