@@ -97,10 +97,10 @@ public class ClubBook implements ReadOnlyClubBook {
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
-        if (newData.getLogInMember() != null) {
-            setLogInMember(newData.getLogInMember());
+        if (newData.getLoggedInMember() != null) {
+            setLoggedInMember(newData.getLoggedInMember());
         } else {
-            setLogInMember(null);
+            setLoggedInMember(null);
         }
 
         try {
@@ -252,13 +252,6 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public void logOutMember() {
         members.logout();
-    }
-
-    /**
-     * Get the member who is log in, if null, there are no one that is logged in.
-     */
-    public Member getLoggedInMember() {
-        return members.getCurrentlyLogInMember();
     }
 
     /**
@@ -509,12 +502,12 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     @Override
-    public void setLogInMember(Member target) {
+    public void setLoggedInMember(Member target) {
         members.setCurrentlyLogInMember(target);
     }
 
     @Override
-    public Member getLogInMember() {
+    public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
 

@@ -354,12 +354,12 @@ public class ClubBookTest {
         }
 
         @Override
-        public void setLogInMember(Member target) {
+        public void setLoggedInMember(Member target) {
             fail("This method should not be called.");
         }
 
         @Override
-        public Member getLogInMember() {
+        public Member getLoggedInMember() {
             fail("This method should not be called.");
             return null;
         }

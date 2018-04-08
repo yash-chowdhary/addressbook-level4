@@ -43,8 +43,8 @@ public interface ReadOnlyClubBook {
 
     void setTasks(Set<Task> tasks);
 
-    void setLogInMember(Member target);
+    void setLoggedInMember(Member target);
 
-    Member getLogInMember();
+    Member getLoggedInMember();
 
 }
