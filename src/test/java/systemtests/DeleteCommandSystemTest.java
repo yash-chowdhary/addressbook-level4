@@ -40,7 +40,9 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         expectedModel = getModel();
         String command = "     " + DeleteCommand.COMMAND_WORD + "      " + INDEX_FIRST_MEMBER.getOneBased() + "       ";
         Member deletedMember = removeMember(expectedModel, INDEX_FIRST_MEMBER);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
+        int numberOfTasksDeleted = 0;
+        String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember,
+                numberOfTasksDeleted);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 
         /* Case: delete the last member in the list -> deleted */
@@ -94,7 +96,9 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         selectMember(selectedIndex);
         command = DeleteCommand.COMMAND_WORD + " " + selectedIndex.getOneBased();
         deletedMember = removeMember(expectedModel, selectedIndex);
-        expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
+        numberOfTasksDeleted = 0;
+        expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember,
+                numberOfTasksDeleted);
         assertCommandSuccess(command, expectedModel, expectedResultMessage, expectedIndex);
 
         /* --------------------------------- Performing invalid delete operation ------------------------------------ */
@@ -145,7 +149,9 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
     private void assertCommandSuccess(Index toDelete) {
         Model expectedModel = getModel();
         Member deletedMember = removeMember(expectedModel, toDelete);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember);
+        int numberOfTasksDeleted = 0;
+        String expectedResultMessage = String.format(MESSAGE_DELETE_MEMBER_SUCCESS, deletedMember,
+                numberOfTasksDeleted);
 
         assertCommandSuccess(
                 DeleteCommand.COMMAND_WORD + " " + toDelete.getOneBased(), expectedModel, expectedResultMessage);

@@ -115,10 +115,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deleteMember(Member target) throws MemberNotFoundException {
+    public synchronized int deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
+        int numberOfTasksRemoved = clubBook.removeTasksOfMember(target);
         filteredMembers.remove(target);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksRemoved;
     }
 
     @Override

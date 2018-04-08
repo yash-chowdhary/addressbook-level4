@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,11 @@ public class ClubBook implements ReadOnlyClubBook {
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
+        if (newData.getLogInMember() != null) {
+            setLogInMember(newData.getLogInMember());
+        } else {
+            setLogInMember(null);
+        }
 
         try {
             setMembers(syncedMemberList);
@@ -502,6 +508,15 @@ public class ClubBook implements ReadOnlyClubBook {
                 && this.tags.equalsOrderInsensitive(((ClubBook) other).tags));
     }
 
+    @Override
+    public void setLogInMember(Member target) {
+        members.setCurrentlyLogInMember(target);
+    }
+
+    @Override
+    public Member getLogInMember() {
+        return members.getCurrentlyLogInMember();
+    }
 
     @Override
     public int hashCode() {
@@ -519,5 +534,22 @@ public class ClubBook implements ReadOnlyClubBook {
     public void updateTask(Task taskToEdit, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+    }
+
+    /**
+     * Removes all tasks that have been assigned to {@code member}.
+     */
+    public int removeTasksOfMember(Member member) {
+
+        int numberOfTasksRemoved = 0;
+        Iterator<Task> it = tasks.iterator();
+        while (it.hasNext()) {
+            Task task = it.next();
+            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+                it.remove();
+                numberOfTasksRemoved++;
+            }
+        }
+        return numberOfTasksRemoved;
     }
 }
