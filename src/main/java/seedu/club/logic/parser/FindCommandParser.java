@@ -19,8 +19,9 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    private static final Prefix[] VALID_SEARCH_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
+    private static final Prefix[] FINDABLE_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
         PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG};
+    private static final int FINDABLE_PREFIX_STRING_LENGTH = 2;
 
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
@@ -34,20 +35,18 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        String[] findArgs = trimmedArgs.split("\\s+");
-
-        if (findArgs.length < 1) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        } else if (findArgs.length > 1) {
-            for (Prefix prefix : VALID_SEARCH_PREFIXES) {
-                if (findArgs[0].equalsIgnoreCase(prefix.toString())) {
+        if (trimmedArgs.length() > FINDABLE_PREFIX_STRING_LENGTH) {
+            for (Prefix prefix : FINDABLE_PREFIXES) {
+                if (trimmedArgs.substring(0, FINDABLE_PREFIX_STRING_LENGTH)
+                        .equalsIgnoreCase(prefix.toString())) {
+                    String[] findArgs = trimmedArgs.substring(FINDABLE_PREFIX_STRING_LENGTH, trimmedArgs.length())
+                            .split("\\s+");
                     return new FindCommand(new FieldContainsKeywordsPredicate(
                             Arrays.asList(findArgs).subList(1, findArgs.length), prefix));
                 }
             }
         }
         return new FindCommand(new FieldContainsKeywordsPredicate(
-                Arrays.asList(findArgs), null));
+                Arrays.asList(trimmedArgs.split("\\s+")), null));
     }
 }
