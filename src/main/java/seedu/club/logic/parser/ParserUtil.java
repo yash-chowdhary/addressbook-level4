@@ -287,7 +287,7 @@ public class ParserUtil {
         if (!Group.isValidGroup(trimmedGroup)) {
             throw new IllegalValueException(Group.MESSAGE_GROUP_CONSTRAINTS);
         }
-        return new Group(trimmedGroup);
+        return new Group(trimmedGroup.toLowerCase());
     }
 
     /**
@@ -310,7 +310,7 @@ public class ParserUtil {
         if (!Tag.isValidTagName(trimmedTag)) {
             throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
         }
-        return new Tag(trimmedTag);
+        return new Tag(trimmedTag.toLowerCase());
     }
 
     /**
