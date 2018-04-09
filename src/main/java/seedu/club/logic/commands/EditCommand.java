@@ -33,6 +33,7 @@ import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 
 /**
  * Edits the details of an existing member in the club book.
@@ -59,9 +60,12 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s";
+    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s.\n"
+            + "Number of tasks updated = %2$d";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "
+            + "exists in Club Connect.";
+    public static final String MESSAGE_DUPLICATE_TASK = "A task with the same attributes already "
             + "exists in Club Connect.";
 
     private final Index index;
@@ -69,6 +73,7 @@ public class EditCommand extends UndoableCommand {
 
     private Member memberToEdit;
     private Member editedMember;
+    private int numberOfTasksUpdated;
 
     /**
      * @param index of the member in the filtered member list to edit
@@ -88,14 +93,16 @@ public class EditCommand extends UndoableCommand {
         requireToLogIn();
         requireExcoLogIn();
         try {
-            model.updateMember(memberToEdit, editedMember);
+            numberOfTasksUpdated = model.updateMember(memberToEdit, editedMember);
         } catch (DuplicateMatricNumberException dmne) {
             throw new CommandException(MESSAGE_DUPLICATE_MATRIC_NUMBER);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
+        } catch (DuplicateTaskException dte) {
+            throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        return new CommandResult(String.format(MESSAGE_EDIT_MEMBER_SUCCESS, editedMember));
+        return new CommandResult(String.format(MESSAGE_EDIT_MEMBER_SUCCESS, editedMember, numberOfTasksUpdated));
     }
 
     @Override
@@ -150,6 +157,7 @@ public class EditCommand extends UndoableCommand {
         EditCommand e = (EditCommand) other;
         return index.equals(e.index)
                 && editMemberDescriptor.equals(e.editMemberDescriptor)
+                && numberOfTasksUpdated == e.numberOfTasksUpdated
                 && Objects.equals(memberToEdit, e.memberToEdit);
     }
 

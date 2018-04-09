@@ -1,4 +1,5 @@
 package seedu.club.logic.commands;
+//@@author MuhdNurKamal
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +13,7 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalPolls.getTypicalClubBookWithPolls;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import seedu.club.commons.core.Messages;
@@ -30,7 +32,14 @@ import seedu.club.model.poll.PollIsRelevantToMemberPredicate;
  */
 public class DeletePollCommandTest {
 
+    private static final String ALICE_DEFAULT_PASSWORD = "password";
     private Model model = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
+
+    @Before
+    public void setUp() {
+        model.logsInMember(ALICE.getMatricNumber().toString(), ALICE_DEFAULT_PASSWORD);
+        model.updateFilteredPollList(new PollIsRelevantToMemberPredicate(ALICE));
+    }
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {

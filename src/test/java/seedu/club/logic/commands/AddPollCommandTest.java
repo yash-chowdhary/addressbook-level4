@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author MuhdNurKamal
 import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -164,7 +164,7 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
                 DuplicateTaskException {
             fail("This method should not be called");
         }
@@ -262,14 +262,16 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void deleteMember(Member member) throws MemberNotFoundException {
+        public int deleteMember(Member member) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
-        public void updateMember(Member member, Member editedMember)
+        public int updateMember(Member member, Member editedMember)
                 throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override

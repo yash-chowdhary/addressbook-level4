@@ -3,6 +3,7 @@ package seedu.club.logic;
 import java.util.Stack;
 
 import seedu.club.logic.commands.Command;
+import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.UndoableCommand;
@@ -30,11 +31,24 @@ public class UndoRedoStack {
         }
 
         if (!(command instanceof UndoableCommand)) {
+            if (command instanceof LogOutCommand) {
+                clear();
+            }
             return;
         }
 
         undoStack.add((UndoableCommand) command);
     }
+
+    //@@author th14thmusician
+    /**
+     * Clear the stacks if it logouts
+     */
+    private void clear() {
+        redoStack.clear();
+        undoStack.clear();
+    }
+    //@@author
 
     /**
      * Pops and returns the next {@code UndoableCommand} to be undone in the stack.

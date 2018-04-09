@@ -10,7 +10,8 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
 public class MatricNumber {
 
     public static final String MESSAGE_MATRIC_NUMBER_CONSTRAINTS =
-            "member matric number must begin with one letter, 7 digits in the middle and a letter at the end";
+            "Member matric number must be non-empty, begin with a letter, have 7 digits in the middle, "
+                    + "and end with a letter";
 
     public static final String MATRIC_NUMBER_VALIDATION_REGEX = "^[aA]\\d{7}[a-zA-Z]$";
 

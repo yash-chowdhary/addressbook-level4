@@ -4,19 +4,19 @@ import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.CommandTestUtil.EMPTY_STRING;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_MATRIC_NUMBER_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_BENSON;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_CARL;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BENSON;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_CARL;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_2;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_CONFETTI;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_FOOD;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_2;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BENSON;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_CARL;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BENSON;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_CARL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 
 import org.junit.Test;
@@ -29,8 +29,8 @@ import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.Name;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
 import seedu.club.model.task.Time;
@@ -52,9 +52,9 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
          * command with leading spaces and trailing spaces -> added
          */
         String command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
 
-        String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+        String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case:undo assigning BUY_FOOD to Benson -> BUY_FOOD deleted */
@@ -69,37 +69,37 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: assign task with all fields same as another task in address book except task description -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_CONFETTI + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: assign task with all fields same as another task in address book except task date -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: assign task with all fields same as another task in address book except task time -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_2 + " " + NAME_DESC_BENSON;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_2 + " " + MATRIC_NUMBER_DESC_BENSON;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: assign task with all fields same as another task in address book except task assignee -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_CARL;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_CARL);
+                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_CARL;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_CARL);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* --------------------------------- Perform invalid assigntask operations ------------------------------ */
         /* Case: member not found -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BOB;
+                + MATRIC_NUMBER_DESC_BOB;
         assertCommandFailure(command, AssignTaskCommand.MESSAGE_MEMBER_NOT_FOUND);
 
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, AssignTaskCommand.MESSAGE_DUPLICATE_TASK);
 
         /* --------------------- Perform assigntask operations on the shown filtered list ----------------------- */
@@ -108,6 +108,7 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
         String logoutCommand = " " + LogOutCommand.COMMAND_WORD;
         executeCommand(logoutCommand);
 
+        // login Benson
         logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(1).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
@@ -116,13 +117,14 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
          * command with leading spaces and trailing spaces -> REJECTED because Benson is not an EXCO member.
          */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_CARL;
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_CARL;
 
         assertCommandFailure(command, Messages.MESSAGE_REQUIRE_EXCO_LOG_IN);
 
         logoutCommand = " " + LogOutCommand.COMMAND_WORD;
         executeCommand(logoutCommand);
 
+        // login Alice
         logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
@@ -130,17 +132,17 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: missing description -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
         /* Case: missing date -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_TIME_DESC_1 + " " + TASK_DESCRIPTION_DESC_FOOD + " " + NAME_DESC_BENSON;
+                + TASK_TIME_DESC_1 + " " + TASK_DESCRIPTION_DESC_FOOD + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
         /* Case: missing time -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_DATE_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
         /* Case: missing assignee -> rejected */
@@ -148,38 +150,36 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
                 + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + TASK_DESCRIPTION_DESC_FOOD;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
-        /* Case: missing description -> rejected */
+        /* Case: invalid command word -> rejected */
         command = "assignatask" + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, MESSAGE_UNKNOWN_COMMAND);
 
         /* Case: invalid description -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + PREFIX_DESCRIPTION + EMPTY_STRING + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BENSON;
+                + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, Description.MESSAGE_DESCRIPTION_CONSTRAINTS);
 
         /* Case: invalid date -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + INVALID_DATE_DESC + " "
-                + NAME_DESC_BENSON;
+                + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, Date.MESSAGE_DATE_CONSTRAINTS);
 
         /* Case: invalid time -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + INVALID_TIME_DESC + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BENSON;
+                + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, Time.MESSAGE_TIME_CONSTRAINTS
 
         );
 
-        /* Case: invalid name -> rejected */
+        /* Case: invalid matric number -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + INVALID_NAME_DESC;
-        assertCommandFailure(command, Name.MESSAGE_NAME_CONSTRAINTS);
-
-
+                + INVALID_MATRIC_NUMBER_DESC;
+        assertCommandFailure(command, MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
 
     }
 

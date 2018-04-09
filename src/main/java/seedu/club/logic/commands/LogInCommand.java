@@ -47,6 +47,7 @@ public class LogInCommand extends Command {
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
         requireToSignUp();
+        requireToLogOut();
         model.logsInMember(username.value, password.value);
         if (model.getLoggedInMember() != null) {
             return new CommandResult(String.format(MESSAGE_SUCCESS, model.getLoggedInMember().getName().toString()));

@@ -175,35 +175,31 @@ public class ModelManagerTest {
 
     @Test
     public void addTask_validTask_success() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         modelManager.addTaskToTaskList(BUY_FOOD);
 
-        Member amy = new MemberBuilder(AMY).build();
-        Task buyFood = new TaskBuilder(BUY_FOOD).build();
-        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
-        ClubBook expectedClubBook = new ClubBookBuilder()
-                .withMember(amy)
-                .withTask(buyConfetti)
-                .withTask(buyFood)
-                .build();
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         assertEquals(expectedModel, modelManager);
     }
 
     @Test
     public void addTask_duplicateTask_throwsException() {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         try {
             modelManager.addTaskToTaskList(BUY_CONFETTI);
         } catch (DuplicateTaskException dte) {
@@ -212,36 +208,20 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void assignTask_validTask_throwsException() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).withTask(BUY_CONFETTI).build();
+    public void assignTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BOB).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value,
-                AMY.getCredentials().getPassword().value);
-        modelManager.assignTask(BUY_FOOD, BOB.getName());
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
 
-        Member amy = new MemberBuilder(AMY).build();
-        Member bob = new MemberBuilder(BOB).build();
-        Task buyFood = new TaskBuilder()
-                .withDescription("Buy Food")
-                .withDate("02/05/2018")
-                .withTime("19:00")
-                .withAssignor("Alice Pauline")
-                .withAssignee("Bob Choo")
-                .withStatus("Yet To Begin")
-                .build();
-        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
-        ClubBook expectedClubBook = new ClubBookBuilder()
-                .withMember(amy)
-                .withMember(bob)
-                .withTask(buyConfetti)
-                .withTask(buyFood)
-                .build();
 
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value,
-                AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        boolean isEqual = expectedModel.equals(modelManager);
         assertEquals(expectedModel, modelManager);
     }
 
@@ -263,7 +243,7 @@ public class ModelManagerTest {
         ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
-            modelManager.assignTask(BUY_FOOD, BOB.getName());
+            modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedModel, modelManager);
         } catch (MemberNotFoundException mnfe) {
@@ -281,7 +261,7 @@ public class ModelManagerTest {
         ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
-            modelManager.assignTask(BUY_CONFETTI, BOB.getName());
+            modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
         } catch (DuplicateTaskException dte) {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
@@ -300,7 +280,7 @@ public class ModelManagerTest {
         expectedModel.logsInMember(BOB.getCredentials().getUsername().value, BOB.getCredentials().getPassword().value);
 
         try {
-            modelManager.assignTask(BUY_CONFETTI, BOB.getName());
+            modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
         } catch (DuplicateTaskException dte) {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
@@ -465,6 +445,26 @@ public class ModelManagerTest {
         String expectedMessage = ViewMyTasksCommand.MESSAGE_ALREADY_LISTED;
         Assert.assertThrows(TasksAlreadyListedException.class, modelManager::viewMyTasks);
         Assert.assertThrows(TasksAlreadyListedException.class, expectedMessage, modelManager::viewMyTasks);
+    }
+
+    @Test
+    public void deleteMember_validMemberWithTasks_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BOOK_AUDITORIUM)
+                .withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        modelManager.deleteMember(BENSON);
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        assertEquals(expectedModel, modelManager);
     }
 
     //@@author

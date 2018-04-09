@@ -17,8 +17,8 @@ public class TaskIsRelatedToMemberPredicate implements Predicate<Task> {
 
     @Override
     public boolean test(Task task) {
-        return member.getName().toString().equalsIgnoreCase(task.getAssignor().getAssignor())
-                || member.getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
+        return member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignor().getAssignor())
+                || member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
     }
 
     public Member getMember() {

@@ -46,12 +46,15 @@ public class CommandTestUtil {
     public static final String VALID_NAME_CARL = "Carl Kurz";
     public static final String VALID_MATRIC_NUMBER_AMY = "A0214701B";
     public static final String VALID_MATRIC_NUMBER_BOB = "A0784539B";
+    public static final String VALID_MATRIC_NUMBER_BENSON = "A8389539B";
+    public static final String VALID_MATRIC_NUMBER_CARL = "A6076201A";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_GROUP_AMY = "Exco";
-    public static final String VALID_GROUP_BOB = "logistics";
+    public static final String VALID_GROUP_BOB = "EXCO";
+    public static final String VALID_GROUP_TEST = "pr";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friends";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member
@@ -99,6 +102,8 @@ public class CommandTestUtil {
     public static final String EMAIL_DESC_BOB = " " + PREFIX_EMAIL + VALID_EMAIL_BOB;
     public static final String MATRIC_NUMBER_DESC_AMY = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_AMY;
     public static final String MATRIC_NUMBER_DESC_BOB = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_BOB;
+    public static final String MATRIC_NUMBER_DESC_BENSON = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_BENSON;
+    public static final String MATRIC_NUMBER_DESC_CARL = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_CARL;
     public static final String GROUP_DESC_AMY = " " + PREFIX_GROUP + VALID_GROUP_AMY;
     public static final String GROUP_DESC_BOB = " " + PREFIX_GROUP + VALID_GROUP_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;

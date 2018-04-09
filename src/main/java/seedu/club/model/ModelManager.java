@@ -32,8 +32,8 @@ import seedu.club.model.email.Subject;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.Name;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
@@ -102,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void resetData(ReadOnlyClubBook newData) {
         clubBook.resetData(newData);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
     @Override
@@ -115,10 +116,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deleteMember(Member target) throws MemberNotFoundException {
+    public synchronized int deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
+        int numberOfTasksRemoved = clubBook.removeTasksOfMember(target);
         filteredMembers.remove(target);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksRemoved;
     }
 
     @Override
@@ -129,12 +133,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateMember(Member target, Member editedMember)
-            throws DuplicateMatricNumberException, MemberNotFoundException {
+    public int updateMember(Member target, Member editedMember)
+            throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
+        int numberOfTasksUpdated = clubBook.updateTask(target, editedMember);
         indicateClubBookChanged();
+        if (target.equals(getLoggedInMember())) {
+            clubBook.setLoggedInMember(editedMember);
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksUpdated;
     }
+
 
     //@@author MuhdNurKamal
     @Override
@@ -236,6 +247,17 @@ public class ModelManager extends ComponentManager implements Model {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
+        checkIfTagExists(toSendEmailTo, members, emailRecipients);
+
+        return String.join(",", emailRecipients);
+    }
+
+    /**
+     * Checks if the {@code Tag toSendEmailTo} exists in Club Connect.
+     * @throws TagNotFoundException if {@code toSendEmailTo} is not found.
+     */
+    private void checkIfTagExists(Tag toSendEmailTo, List<Member> members, List<String> emailRecipients)
+            throws TagNotFoundException {
         Boolean tagFound = false;
         for (Member member : members) {
             Set<Tag> memberTags = member.getTags();
@@ -247,8 +269,6 @@ public class ModelManager extends ComponentManager implements Model {
         if (!tagFound) {
             throw new TagNotFoundException();
         }
-
-        return String.join(",", emailRecipients);
     }
 
     /**
@@ -259,6 +279,16 @@ public class ModelManager extends ComponentManager implements Model {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
+        checkIfGroupExists(toSendEmailTo, members, emailRecipients);
+        return String.join(",", emailRecipients);
+    }
+
+    /**
+     * Checks if the {@code Group toSendEmailTo} exists in Club Connect.
+     * @throws GroupNotFoundException if {@code toSendEmailTo} is not found.
+     */
+    private void checkIfGroupExists(Group toSendEmailTo, List<Member> members, List<String> emailRecipients)
+            throws GroupNotFoundException {
         Boolean groupFound = false;
         for (Member member : members) {
             if (member.getGroup().equals(toSendEmailTo)) {
@@ -269,7 +299,6 @@ public class ModelManager extends ComponentManager implements Model {
         if (!groupFound) {
             throw new GroupNotFoundException();
         }
-        return String.join(",", emailRecipients);
     }
 
     @Override
@@ -297,8 +326,8 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getName().toString());
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getMatricNumber().toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
@@ -312,20 +341,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException,
+    public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
             DuplicateTaskException {
-        boolean found = false;
-        for (Member member : clubBook.getMemberList()) {
-            if (member.getName().equals(name)) {
-                found = true;
-            }
-        }
-        if (!found) {
-            throw new MemberNotFoundException();
-        }
+        checkIfMemberExists(matricNumber);
         try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(name.toString());
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+            Assignee assignee = new Assignee(matricNumber.toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
@@ -335,6 +356,22 @@ public class ModelManager extends ComponentManager implements Model {
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
+        }
+    }
+
+    /**
+     * Checks if the {@code MatricNumber matricNumber} maps to any member in Club Connect.
+     * @throws MemberNotFoundException if {@code matricNumber} doesn't map to any member.
+     */
+    private void checkIfMemberExists(MatricNumber matricNumber) throws MemberNotFoundException {
+        boolean found = false;
+        for (Member member : clubBook.getMemberList()) {
+            if (member.getMatricNumber().equals(matricNumber)) {
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new MemberNotFoundException();
         }
     }
 
@@ -342,30 +379,40 @@ public class ModelManager extends ComponentManager implements Model {
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
-        String currentMember = getLoggedInMember().getName().toString();
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
-            throw new TaskCannotBeDeletedException();
-        }
+        String currentMember = getLoggedInMember().getMatricNumber().toString();
+        checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
 
+    /**
+     * Checks if the {@code String currentMember} is either the {@code assignor} or the {@code assignee} of the task.
+     * @throws TaskCannotBeDeletedException if the task cannot be deleted.
+     */
+    private void checkIfTaskCanBeDeleted(Assignor assignor, Assignee assignee, String currentMember)
+            throws TaskCannotBeDeletedException {
+        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
+                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+            throw new TaskCannotBeDeletedException();
+        }
+    }
+
     @Override
     public void viewAllTasks() throws TasksCannotBeDisplayedException {
-        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new TasksCannotBeDisplayedException();
-        }
         updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         indicateClubBookChanged();
     }
 
     @Override
     public void viewMyTasks() throws TasksAlreadyListedException {
+        checkIfTasksAreAlreadyListed();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    }
+
+    private void checkIfTasksAreAlreadyListed() throws TasksAlreadyListedException {
         if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
             throw new TasksAlreadyListedException(ViewMyTasksCommand.MESSAGE_ALREADY_LISTED);
         }
-        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
     //@@author amrut-prabhu
@@ -532,6 +579,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
+    //@@author
 
     @Override
     public void clearClubBook() {
