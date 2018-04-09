@@ -54,8 +54,10 @@ public class DeleteCommandTest {
     public void execute_validIndexUnfilteredList_success() throws Exception {
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
+        int numberOfTasksDeleted = 0;
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete,
+                numberOfTasksDeleted);
 
         expectedModel.deleteMember(memberToDelete);
 
@@ -76,8 +78,10 @@ public class DeleteCommandTest {
 
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
+        int numberOfTasksDeleted = 0;
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete,
+                numberOfTasksDeleted);
 
         expectedModel.deleteMember(memberToDelete);
         showNoMember(expectedModel);

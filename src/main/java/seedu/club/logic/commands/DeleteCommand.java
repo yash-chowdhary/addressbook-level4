@@ -29,11 +29,13 @@ public class DeleteCommand extends UndoableCommand {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_MEMBER_SUCCESS = "Deleted member: %1$s";
+    public static final String MESSAGE_DELETE_MEMBER_SUCCESS = "Deleted member: %1$s.\n"
+            + "Number of tasks deleted from main task list: %2$d.";
 
     private final Index targetIndex;
 
     private Member memberToDelete;
+    private int numberOfTasksDeleted;
 
     public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
@@ -47,12 +49,12 @@ public class DeleteCommand extends UndoableCommand {
         requireToLogIn();
         requireExcoLogIn();
         try {
-            model.deleteMember(memberToDelete);
+            numberOfTasksDeleted = model.deleteMember(memberToDelete);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete, numberOfTasksDeleted));
     }
 
     @Override
