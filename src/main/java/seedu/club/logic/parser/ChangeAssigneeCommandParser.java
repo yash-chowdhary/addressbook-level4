@@ -1,5 +1,5 @@
 package seedu.club.logic.parser;
-
+//@@author yash-chowdhary
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
@@ -26,7 +26,7 @@ public class ChangeAssigneeCommandParser implements Parser<ChangeAssigneeCommand
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ChangeAssigneeCommand.COMMAND_USAGE));
+                    ChangeAssigneeCommand.MESSAGE_USAGE));
         }
 
         try {

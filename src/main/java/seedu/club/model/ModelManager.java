@@ -25,6 +25,7 @@ import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
+import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -55,11 +56,11 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.CsvClubBookStorage;
 
 /**
@@ -333,7 +334,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
-            MemberNotFoundException, TaskAlreadyAssignedException {
+            MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
         requireAllNonNull(taskToEdit, editedTask);
         MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
         checkIfMemberExists(newAssigneeMatricNumber);
@@ -349,9 +350,9 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
-    private void checkIfInputAssigneeIsSame(Task taskToEdit, Task editedTask) throws DuplicateTaskException {
+    private void checkIfInputAssigneeIsSame(Task taskToEdit, Task editedTask) throws TaskAssigneeUnchangedException {
         if (taskToEdit.getAssignee().equals(editedTask.getAssignee())) {
-            throw new DuplicateTaskException();
+            throw new TaskAssigneeUnchangedException();
         }
     }
 
@@ -453,9 +454,16 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void viewAllTasks() throws TasksCannotBeDisplayedException {
+    public void viewAllTasks() throws TasksAlreadyListedException {
+        checkIfAllTasksAlreadyListed();
         updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         indicateClubBookChanged();
+    }
+
+    private void checkIfAllTasksAlreadyListed() throws TasksAlreadyListedException {
+        if (filteredTasks.getPredicate().equals(PREDICATE_SHOW_ALL_TASKS)) {
+            throw new TasksAlreadyListedException(ViewAllTasksCommand.MESSAGE_ALREADY_LISTED);
+        }
     }
 
     @Override

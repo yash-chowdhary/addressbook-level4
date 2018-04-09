@@ -1,5 +1,6 @@
 package seedu.club.logic.commands;
 //@@author yash-chowdhary
+import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.Time;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 
 /**
  * Changes the Assignee of a specified task.
@@ -32,7 +34,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
     public static final String COMMAND_FORMAT = COMMAND_WORD + " "
             + " INDEX " + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER";
 
-    public static final String COMMAND_USAGE = COMMAND_WORD + ": Changes the assignee of the task identified"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes the assignee of the task identified"
             + " by the index number used in the last task listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER\n"
@@ -43,6 +45,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
             + "%2$s";
     public static final String MESSAGE_NOT_CHANGED = "Assignee of task unchanged as the input assignee is "
             + "same as the identified task's assignee!";
+    public static final String MESSAGE_DUPLICATE_TASK = "This operation would result in a duplicate task!";
     public static final String MESSAGE_ALREADY_ASSIGNED = "Assignee of task could not be changed as there is an "
             + "identical task assigned to this member";
     public static final String MESSAGE_MEMBER_NOT_FOUND = "This member doesn't exist in the club book";
@@ -53,6 +56,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
     private final Assignee newAssignee;
 
     public ChangeAssigneeCommand(Index index, Assignee newAssignee) {
+        requireAllNonNull(index, newAssignee);
         this.index = index;
         this.newAssignee = newAssignee;
     }
@@ -61,6 +65,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
     protected void preprocessUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         List<Task> lastShownList = model.getFilteredTaskList();
 
         if (index.getZeroBased() >= lastShownList.size() || index.getZeroBased() < 0) {
@@ -81,11 +86,13 @@ public class ChangeAssigneeCommand extends UndoableCommand {
         try {
             model.changeAssignee(taskToEdit, editedTask);
         } catch (DuplicateTaskException dte) {
-            throw new CommandException(MESSAGE_NOT_CHANGED);
+            throw new CommandException(MESSAGE_DUPLICATE_TASK);
         } catch (MemberNotFoundException mnfe) {
             throw new CommandException(MESSAGE_MEMBER_NOT_FOUND);
         } catch (TaskAlreadyAssignedException e) {
             throw new CommandException(MESSAGE_ALREADY_ASSIGNED);
+        } catch (TaskAssigneeUnchangedException e) {
+            throw new CommandException(MESSAGE_NOT_CHANGED);
         }
         return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription(),
                 newAssignee.getAssignee()));
@@ -105,5 +112,13 @@ public class ChangeAssigneeCommand extends UndoableCommand {
         Status status = new Status(taskToEdit.getStatus().getStatus());
 
         return new Task(description, time, date, assignor, newAssignee, status);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other == this
+                || (other instanceof ChangeAssigneeCommand
+                && index.equals(((ChangeAssigneeCommand) other).index)
+                && newAssignee.equals(((ChangeAssigneeCommand) other).newAssignee)));
     }
 }

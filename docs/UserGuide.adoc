@@ -54,7 +54,7 @@ image::startup.png[width="550"]
 . Execute the `signup` command. No other command will work unless you sign up.
 . Execute the `login` command once you've signed up. The GUI should look similar to Figure 2.
 +
-[[launch-app]]
+[[login]]
 [.text-center]
 .Club Connect application after logging in
 image::login.png[width="550"]

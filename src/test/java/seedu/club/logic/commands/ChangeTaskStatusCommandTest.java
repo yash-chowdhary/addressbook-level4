@@ -49,7 +49,7 @@ public class ChangeTaskStatusCommandTest {
     @Test
     public void constructor_nullTask_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AssignTaskCommand(null, null);
+        new ChangeTaskStatusCommand(null, null);
     }
 
     @Test
