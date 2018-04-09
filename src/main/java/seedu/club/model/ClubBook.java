@@ -22,6 +22,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -449,7 +450,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Change the password of {@code member} in the ClubBook.
      * @param username
@@ -457,14 +458,16 @@ public class ClubBook implements ReadOnlyClubBook {
      * @param newPassword
      */
     public void changePassword (String username, String oldpassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         members.changePassword(username, oldpassword, newPassword);
     }
-    //@@author
 
     public void clearClubBook() {
         members.clear();
     }
+    //@@author
+
     //// util methods
 
     @Override
