@@ -262,14 +262,16 @@ public class AddPollCommandTest {
         }
 
         @Override
-        public void deleteMember(Member member) throws MemberNotFoundException {
+        public int deleteMember(Member member) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
-        public void updateMember(Member member, Member editedMember)
+        public int updateMember(Member member, Member editedMember)
                 throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
