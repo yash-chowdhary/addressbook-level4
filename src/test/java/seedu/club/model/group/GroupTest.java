@@ -44,8 +44,8 @@ public class GroupTest {
 
         assertTrue(testGroupOne.toString().equals(VALID_GROUP_AMY)); //already capitalised
         assertTrue(testGroupTwo.toString().equals(WordUtils.capitalize(VALID_GROUP_BOB)));
-        assertFalse(testGroupOne.toString().equals(WordUtils.capitalize(VALID_GROUP_BOB)));
-        assertFalse(testGroupTwo.toString().equals(WordUtils.capitalize(VALID_GROUP_AMY)));
+        assertFalse(testGroupOne.toString().equals(VALID_GROUP_BOB));
+        assertFalse(testGroupTwo.toString().equals(WordUtils.capitalize(VALID_GROUP_AMY.toLowerCase())));
     }
 
     @Test
