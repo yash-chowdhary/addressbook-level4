@@ -57,6 +57,7 @@ import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.CsvClubBookStorage;
@@ -309,11 +310,25 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
-            DuplicateTaskException {
+            DuplicateTaskException, TaskStatusCannotBeEditedException {
         requireAllNonNull(taskToEdit, editedTask);
+        String currentMember = getLoggedInMember().getMatricNumber().toString();
+        checkIfStatusCanBeEdited(taskToEdit, currentMember);
         clubBook.updateTaskStatus(taskToEdit, editedTask);
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
+    }
+
+    /**
+     * Checks if status can be edited based on the current member's matric number.
+     * @throws TaskStatusCannotBeEditedException if the task status cannot be edited.
+     */
+    private void checkIfStatusCanBeEdited(Task taskToEdit, String currentMember)
+            throws TaskStatusCannotBeEditedException {
+        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getAssignor())
+                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getAssignee())) {
+            throw new TaskStatusCannotBeEditedException();
+        }
     }
 
     @Override

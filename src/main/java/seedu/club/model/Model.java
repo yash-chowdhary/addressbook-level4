@@ -32,6 +32,7 @@ import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
@@ -248,7 +249,8 @@ public interface Model {
 
     void viewMyTasks() throws TasksAlreadyListedException;
 
-    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException;
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+            TaskStatusCannotBeEditedException;
 
     void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException, DuplicateTaskException,
             TaskAlreadyAssignedException;

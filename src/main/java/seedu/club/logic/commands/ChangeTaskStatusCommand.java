@@ -20,6 +20,7 @@ import seedu.club.model.task.Task;
 import seedu.club.model.task.Time;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 
 /**
  * Edits the status of a existing task in the club book.
@@ -41,7 +42,7 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
             + PREFIX_STATUS + "Completed";
 
     public static final String MESSAGE_INVALID_PERMISSION = "This task's status cannot be updated "
-            + "as you are not assigned to the task!";
+            + "as you have not assigned this task nor are you assigned to the task !";
     public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s, successfully changed!";
     public static final String MESSAGE_NOT_CHANGED = "Status of task unchanged as the input status is "
             + "same as the identified task's status!";
@@ -83,6 +84,8 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
             throw new AssertionError("The target task cannot be missing");
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_NOT_CHANGED);
+        } catch (TaskStatusCannotBeEditedException e) {
+            throw new CommandException(MESSAGE_INVALID_PERMISSION);
         }
         return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription()));
     }
