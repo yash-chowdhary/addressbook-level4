@@ -36,6 +36,7 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
@@ -70,6 +71,12 @@ public class SignUpCommandTest {
         public void voteInPoll(Poll poll, Index answerIndex) throws
                 PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
         }
 
         @Override

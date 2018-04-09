@@ -45,8 +45,10 @@ import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.Assert;
@@ -246,7 +248,7 @@ public class ModelManagerTest {
             modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedModel, modelManager);
-        } catch (MemberNotFoundException mnfe) {
+        } catch (MemberNotFoundException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         }
     }
@@ -262,7 +264,7 @@ public class ModelManagerTest {
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
             modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
-        } catch (DuplicateTaskException dte) {
+        } catch (DuplicateTaskException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
             assertEquals(expectedModel, modelManager);
@@ -281,9 +283,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
-        } catch (DuplicateTaskException dte) {
-            fail("This exception should not be caught");
-        } catch (MemberNotFoundException mnfe) {
+        } catch (DuplicateTaskException | MemberNotFoundException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         }
     }
@@ -324,7 +324,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (TaskNotFoundException | DuplicateTaskException e) {
+        } catch (TaskNotFoundException | DuplicateTaskException | TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         }
 
@@ -348,7 +348,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (DuplicateTaskException | TaskNotFoundException e) {
+        } catch (DuplicateTaskException | TaskNotFoundException | TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         }
     }
@@ -369,9 +369,12 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (TaskStatusCannotBeEditedException e) {
+            assertEquals(expectedModel, modelManager);
         } catch (TaskNotFoundException | DuplicateTaskException e) {
-            fail("This will not be executed");
+            fail("This will not execute");
         }
+
     }
 
     @Test
