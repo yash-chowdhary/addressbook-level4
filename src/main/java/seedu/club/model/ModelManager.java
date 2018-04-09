@@ -102,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void resetData(ReadOnlyClubBook newData) {
         clubBook.resetData(newData);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
     @Override
@@ -115,10 +116,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deleteMember(Member target) throws MemberNotFoundException {
+    public synchronized int deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
+        int numberOfTasksRemoved = clubBook.removeTasksOfMember(target);
         filteredMembers.remove(target);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksRemoved;
     }
 
     @Override
@@ -129,12 +133,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateMember(Member target, Member editedMember)
-            throws DuplicateMatricNumberException, MemberNotFoundException {
+    public int updateMember(Member target, Member editedMember)
+            throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
+        int numberOfTasksUpdated = clubBook.updateTask(target, editedMember);
         indicateClubBookChanged();
+        if (target.equals(getLoggedInMember())) {
+            clubBook.setLoggedInMember(editedMember);
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksUpdated;
     }
+
 
     //@@author MuhdNurKamal
     @Override

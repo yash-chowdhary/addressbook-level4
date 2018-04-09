@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_TEST;
 
 import org.junit.Test;
 
@@ -56,7 +57,7 @@ public class GroupTest {
     @Test
     public void test_equals() {
         Group firstGroup = new Group(VALID_GROUP_AMY);
-        Group secondGroup = new Group(VALID_GROUP_BOB);
+        Group secondGroup = new Group(VALID_GROUP_TEST);
 
         assertTrue(firstGroup.equals(firstGroup));
         assertFalse(firstGroup.equals(secondGroup));
