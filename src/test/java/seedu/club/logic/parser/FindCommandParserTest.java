@@ -4,6 +4,7 @@ import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -29,11 +30,11 @@ public class FindCommandParserTest {
     public void parse_findNameValidArgs_returnsFindCommand() {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
-                new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"), null));
-        assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
+                new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"), PREFIX_NAME));
+        assertParseSuccess(parser, "n/Alice Bob", expectedFindCommand);
 
-        // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+        // multiple whitespaces between keywords and prefix
+        assertParseSuccess(parser, " \n n/ \t Alice \n \t Bob  \t", expectedFindCommand);
     }
 
     @Test
@@ -41,7 +42,7 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("123", "321"), PREFIX_PHONE));
-        assertParseSuccess(parser, PREFIX_PHONE + " 123 321", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_PHONE + "123 321", expectedFindCommand);
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, PREFIX_PHONE + " \n 123 \n \t 321  \t", expectedFindCommand);
@@ -52,10 +53,10 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("lalala", "blablabla"), PREFIX_EMAIL));
-        assertParseSuccess(parser, PREFIX_EMAIL + " lalala blablabla", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_EMAIL + "lalala blablabla", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, PREFIX_EMAIL + " \n lalala \n \t blablabla  \t", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_EMAIL + " \n  \t lalala \n \t blablabla  \t", expectedFindCommand);
     }
 
     @Test
@@ -63,10 +64,10 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("123", "321"), PREFIX_MATRIC_NUMBER));
-        assertParseSuccess(parser, PREFIX_MATRIC_NUMBER + " 123 321", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_MATRIC_NUMBER + "123 321", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, PREFIX_MATRIC_NUMBER + " \n 123 \n \t 321  \t", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_MATRIC_NUMBER + " \n  \t 123 \n \t 321  \t", expectedFindCommand);
     }
 
     @Test
@@ -74,10 +75,10 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("klan", "vampyr"), PREFIX_GROUP));
-        assertParseSuccess(parser, PREFIX_GROUP + " klan vampyr", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_GROUP + "klan vampyr", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, PREFIX_GROUP + " \n klan \n \t vampyr  \t", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_GROUP + " \n  \t klan \n \t vampyr  \t", expectedFindCommand);
     }
 
     @Test
@@ -85,10 +86,10 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("123", "321"), PREFIX_TAG));
-        assertParseSuccess(parser, PREFIX_TAG + " 123 321", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_TAG + "123 321", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, PREFIX_TAG + " \n 123 \n \t 321  \t", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_TAG + " \n  123 \n \t 321  \t", expectedFindCommand);
     }
 
     @Test
@@ -96,7 +97,7 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("123", "321"), null));
-        assertParseSuccess(parser,  " 123 321", expectedFindCommand);
+        assertParseSuccess(parser,  "123 321", expectedFindCommand);
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n 123 \n \t 321  \t", expectedFindCommand);
