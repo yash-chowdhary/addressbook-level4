@@ -66,7 +66,7 @@ public abstract class Command {
      */
     protected void requireExcoLogIn () throws CommandException {
         boolean isExco = model.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO);
-        if (!model.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
+        if (!isExco) {
             throw new CommandException(Messages.MESSAGE_REQUIRE_EXCO_LOG_IN);
         }
     }
