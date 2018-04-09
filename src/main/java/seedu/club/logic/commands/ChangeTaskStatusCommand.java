@@ -95,10 +95,10 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
         assert taskToEdit != null;
 
         Description description = new Description(taskToEdit.getDescription().getDescription());
+        Time time = new Time(taskToEdit.getTime().getTime());
+        Date date = new Date(taskToEdit.getDate().getDate());
         Assignor assignor = new Assignor(taskToEdit.getAssignor().getAssignor());
         Assignee assignee = new Assignee(taskToEdit.getAssignee().getAssignee());
-        Date date = new Date(taskToEdit.getDate().getDate());
-        Time time = new Time(taskToEdit.getTime().getTime());
 
         return new Task(description, time, date, assignor, assignee, newStatus);
     }

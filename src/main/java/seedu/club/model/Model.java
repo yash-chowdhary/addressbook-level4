@@ -29,6 +29,7 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
@@ -242,9 +243,13 @@ public interface Model {
 
     void viewAllTasks() throws TasksCannotBeDisplayedException;
 
-    void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException;
+    void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException,
+            TaskAlreadyAssignedException;
 
     void viewMyTasks() throws TasksAlreadyListedException;
 
     void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException;
+
+    void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException, DuplicateTaskException,
+            TaskAlreadyAssignedException;
 }

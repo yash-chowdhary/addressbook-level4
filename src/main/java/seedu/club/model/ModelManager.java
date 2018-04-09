@@ -54,6 +54,7 @@ import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
@@ -310,11 +311,34 @@ public class ModelManager extends ComponentManager implements Model {
     public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
             DuplicateTaskException {
         requireAllNonNull(taskToEdit, editedTask);
-        clubBook.updateTask(taskToEdit, editedTask);
+        clubBook.updateTaskStatus(taskToEdit, editedTask);
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
+    @Override
+    public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
+            MemberNotFoundException, TaskAlreadyAssignedException {
+        requireAllNonNull(taskToEdit, editedTask);
+        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+        checkIfMemberExists(newAssigneeMatricNumber);
+        checkIfDuplicateTaskExists(editedTask);
+        checkIfTaskIsAlreadyAssigned(editedTask);
+        checkIfInputAssigneeIsSame(taskToEdit, editedTask);
+        try {
+            clubBook.updateTaskAssignee(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            throw new AssertionError("Impossible. This check has already been made");
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+    private void checkIfInputAssigneeIsSame(Task taskToEdit, Task editedTask) throws DuplicateTaskException {
+        if (taskToEdit.getAssignee().equals(editedTask.getAssignee())) {
+            throw new DuplicateTaskException();
+        }
+    }
 
     //@@author Song Weiyang
     @Override
@@ -342,7 +366,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
-            DuplicateTaskException {
+            DuplicateTaskException, TaskAlreadyAssignedException {
         checkIfMemberExists(matricNumber);
         try {
             Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
@@ -351,12 +375,28 @@ public class ModelManager extends ComponentManager implements Model {
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
-            clubBook.addTaskToTaskList(toAdd);
+            checkIfDuplicateTaskExists(toAdd);
+            checkIfTaskIsAlreadyAssigned(toAdd);
+            try {
+                clubBook.addTaskToTaskList(toAdd);
+            } catch (DuplicateTaskException dte) {
+                throw new AssertionError("Already caught before.");
+            }
             updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
+        } catch (TaskAlreadyAssignedException e) {
+            throw new TaskAlreadyAssignedException();
         }
+    }
+
+    private void checkIfDuplicateTaskExists(Task toAdd) throws DuplicateTaskException {
+        clubBook.checkIfDuplicateTaskExists(toAdd);
+    }
+
+    private void checkIfTaskIsAlreadyAssigned(Task toAdd) throws TaskAlreadyAssignedException {
+        clubBook.checkIfTaskIsAlreadyAssigned(toAdd);
     }
 
     /**

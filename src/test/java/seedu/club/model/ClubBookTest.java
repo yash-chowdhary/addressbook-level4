@@ -197,7 +197,7 @@ public class ClubBookTest {
         editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
 
         try {
-            clubBook.updateTask(taskToEdit, editedTask);
+            clubBook.updateTaskStatus(taskToEdit, editedTask);
         } catch (DuplicateTaskException | TaskNotFoundException e) {
             fail("This will not be executed");
         }
@@ -221,7 +221,7 @@ public class ClubBookTest {
         Task editedTask = new Task(BUY_FOOD);
 
         try {
-            clubBook.updateTask(taskToEdit, editedTask);
+            clubBook.updateTaskStatus(taskToEdit, editedTask);
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedClubBook, clubBook);
         } catch (TaskNotFoundException tnfe) {
