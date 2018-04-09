@@ -19,7 +19,6 @@ import static seedu.club.testutil.TypicalMembers.FIONA;
 import static seedu.club.testutil.TypicalMembers.GEORGE;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +62,7 @@ public class FindCommandTest {
     }
 
     @Test
-    public void equals() {
+    public void equals_returnTrue() {
         for (Prefix prefix : FINDABLE_PREFIXES) {
             assertEqualsCorrectForPrefix(prefix);
         }
@@ -88,7 +87,6 @@ public class FindCommandTest {
                 }
             }
         }
-
     }
 
     @Test
@@ -150,22 +148,19 @@ public class FindCommandTest {
         assertEquals(expectedClubBook, model.getClubBook());
     }
 
-    private FindCommand getFindCommand(FieldContainsKeywordsPredicate predicate) {
-        return new FindCommand(predicate);
-    }
-
-    private FieldContainsKeywordsPredicate getFieldContainsKeywordsPredicate(String keywords, Prefix prefix) {
-        return new FieldContainsKeywordsPredicate(Collections.singletonList(keywords), prefix);
-    }
-
+    /**
+     * Asserts that equals method for FindCommand with prefix is correct
+     *
+     * @param prefix of field FindCommand finds for
+     */
     private void assertEqualsCorrectForPrefix(Prefix prefix) {
         FieldContainsKeywordsPredicate firstPredicate =
-                getFieldContainsKeywordsPredicate("first", prefix);
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), prefix);
         FieldContainsKeywordsPredicate secondPredicate =
-                getFieldContainsKeywordsPredicate("second", prefix);;
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), prefix);
 
-        FindCommand findByFirstCommand = getFindCommand(firstPredicate);
-        FindCommand findBySecondCommand = getFindCommand(secondPredicate);
+        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
+        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
 
         // same object -> returns true
         assertTrue(findByFirstCommand.equals(findByFirstCommand));
