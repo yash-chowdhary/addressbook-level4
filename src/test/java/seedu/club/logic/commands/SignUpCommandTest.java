@@ -151,14 +151,16 @@ public class SignUpCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public int deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember)
+        public int updateMember(Member target, Member editedMember)
                 throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
