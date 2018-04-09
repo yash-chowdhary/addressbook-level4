@@ -67,6 +67,7 @@ public class CommandTestUtil {
     public static final String VALID_QUESTION_LOVE = "What is love?";
     public static final String VALID_QUESTION_WHAT = "What are you?";
     public static final String VALID_QUESTION_HOW = "How are you?";
+    public static final String VALID_QUESTION_WHICH = "Which one is right?";
     public static final String VALID_ANSWER_ONE = "this is an answer";
     public static final String VALID_ANSWER_TWO = "this is also an answer";
     public static final String VALID_ANSWER_THREE = "42";
@@ -75,6 +76,8 @@ public class CommandTestUtil {
     public static final String VALID_ANSWER_ZOMBIE = "A zombie";
     public static final String VALID_ANSWER_FINE = "I'm fine";
     public static final String VALID_ANSWER_NOT_GOOD = "Not good man";
+    public static final String VALID_ANSWER_LEFT = "Left";
+    public static final String VALID_ANSWER_RIGHT = "Right";
 
     public static final String VALID_CLIENT = "gmail";
     public static final String VALID_CLIENT_DESC = " " + PREFIX_CLIENT + VALID_CLIENT;
@@ -115,6 +118,7 @@ public class CommandTestUtil {
     public static final String QUESTION_DESC_LOVE = " " + PREFIX_QUESTION + VALID_QUESTION_LOVE;
     public static final String QUESTION_DESC_WHAT = " " + PREFIX_QUESTION + VALID_QUESTION_WHAT;
     public static final String QUESTION_DESC_HOW = " " + PREFIX_QUESTION + VALID_QUESTION_HOW;
+    public static final String QUESTION_DESC_WHICH = " " + PREFIX_QUESTION + VALID_QUESTION_WHICH;
     public static final String ANSWER_DESC_ONE = " " + PREFIX_ANSWER + VALID_ANSWER_ONE;
     public static final String ANSWER_DESC_TWO = " " + PREFIX_ANSWER + VALID_ANSWER_TWO;
     public static final String ANSWER_DESC_THREE = " " + PREFIX_ANSWER + VALID_ANSWER_THREE;
@@ -123,6 +127,8 @@ public class CommandTestUtil {
     public static final String ANSWER_DESC_ZOMBIE = " " + PREFIX_ANSWER + VALID_ANSWER_ZOMBIE;
     public static final String ANSWER_DESC_FINE = " " + PREFIX_ANSWER + VALID_ANSWER_FINE;
     public static final String ANSWER_DESC_NOT_GOOD = " " + PREFIX_ANSWER + VALID_ANSWER_NOT_GOOD;
+    public static final String ANSWER_DESC_LEFT = " " + PREFIX_ANSWER + VALID_ANSWER_LEFT;
+    public static final String ANSWER_DESC_RIGHT = " " + PREFIX_ANSWER + VALID_ANSWER_RIGHT;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones

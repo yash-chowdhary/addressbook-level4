@@ -1,71 +1,75 @@
 package systemtests;
 //@@author MuhdNurKamal
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.club.logic.commands.DeleteTaskCommand.MESSAGE_DELETE_TASK_SUCCESS;
-import static seedu.club.testutil.TestUtil.getTask;
+import static seedu.club.logic.commands.DeletePollCommand.MESSAGE_DELETE_POLL_SUCCESS;
+import static seedu.club.testutil.TestUtil.getPoll;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 import static seedu.club.testutil.TypicalMembers.ALICE;
-import static seedu.club.testutil.TypicalTasks.getTypicalClubBookWithTasks;
+import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
-import seedu.club.logic.commands.DeleteTaskCommand;
+import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
-import seedu.club.model.task.Task;
-import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
-import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
 
 public class DeletePollCommandSystemTest extends ClubBookSystemTest {
 
-    private static final String MESSAGE_INVALID_DELETE_TASK_COMMAND_FORMAT =
-            String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteTaskCommand.MESSAGE_USAGE);
+    private static final String MESSAGE_INVALID_DELETE_POLL_COMMAND_FORMAT =
+            String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeletePollCommand.MESSAGE_USAGE);
 
     @Test
-    public void deleteTask() {
-        /* ----------------- Performing delete operation while an unfiltered list is being shown -------------------- */
-
-        /* Case: delete the first member in the list, command with leading spaces and trailing spaces -> deleted */
+    public void deletePoll() {
         Model expectedModel = getModel();
         String command;
         ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
         String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
-        expectedModel = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
 
+        /* Case: delete the first poll in the list, command with leading spaces and trailing spaces -> deleted */
+        command = DeletePollCommand.COMMAND_WORD + " 1";
+        Poll deletedPoll = deletePollInModel(expectedModel, INDEX_FIRST_POLL);
+        System.out.println("deletedPoll = " + deletedPoll);
+        String expectedResultMessage = String.format(MESSAGE_DELETE_POLL_SUCCESS, deletedPoll);
+        assertCommandSuccess(command, expectedModel, expectedResultMessage);
+
         /* Case: invalid index (0) -> rejected */
-        command = DeleteTaskCommand.COMMAND_WORD + " 0";
-        assertCommandFailure(command, MESSAGE_INVALID_DELETE_TASK_COMMAND_FORMAT);
+        command = DeletePollCommand.COMMAND_WORD + " 0";
+        assertCommandFailure(command, MESSAGE_INVALID_DELETE_POLL_COMMAND_FORMAT);
 
         /* Case: invalid index (-1) -> rejected */
-        command = DeleteTaskCommand.COMMAND_WORD + " -1";
-        assertCommandFailure(command, MESSAGE_INVALID_DELETE_TASK_COMMAND_FORMAT);
+        command = DeletePollCommand.COMMAND_WORD + " -1";
+        assertCommandFailure(command, MESSAGE_INVALID_DELETE_POLL_COMMAND_FORMAT);
 
         /* Case: invalid index (size + 1) -> rejected */
         Index outOfBoundsIndex = Index.fromOneBased(
-                getModel().getClubBook().getTaskList().size() + 1);
-        command = DeleteTaskCommand.COMMAND_WORD + " " + outOfBoundsIndex.getOneBased();
-        assertCommandFailure(command, MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+                getModel().getClubBook().getPollList().size() + 1);
+        command = DeletePollCommand.COMMAND_WORD + " " + outOfBoundsIndex.getOneBased();
+        assertCommandFailure(command, MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
 
         /* Case: invalid arguments (alphabets) -> rejected */
-        assertCommandFailure(DeleteTaskCommand.COMMAND_WORD + " abc",
-                MESSAGE_INVALID_DELETE_TASK_COMMAND_FORMAT);
+        assertCommandFailure(DeletePollCommand.COMMAND_WORD + " abc",
+                MESSAGE_INVALID_DELETE_POLL_COMMAND_FORMAT);
 
         /* Case: invalid arguments (extra argument) -> rejected */
-        assertCommandFailure(DeleteTaskCommand.COMMAND_WORD + " 1 abc",
-                MESSAGE_INVALID_DELETE_TASK_COMMAND_FORMAT);
+        assertCommandFailure(DeletePollCommand.COMMAND_WORD + " 1 abc",
+                MESSAGE_INVALID_DELETE_POLL_COMMAND_FORMAT);
 
         /* Case: mixed case command word -> rejected */
-        assertCommandFailure("DelETETAsk 1", MESSAGE_UNKNOWN_COMMAND);
+        assertCommandFailure("DeletePoll 1", MESSAGE_UNKNOWN_COMMAND);
     }
 
     /**
@@ -75,11 +79,11 @@ public class DeletePollCommandSystemTest extends ClubBookSystemTest {
      */
     private void assertCommandSuccess(Index toDelete) {
         Model expectedModel = getModel();
-        Task deletedTask = removeTask(expectedModel, toDelete);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_TASK_SUCCESS, deletedTask);
+        Poll deletedPoll = deletePollInModel(expectedModel, toDelete);
+        String expectedResultMessage = String.format(MESSAGE_DELETE_POLL_SUCCESS, deletedPoll);
 
         assertCommandSuccess(
-                DeleteTaskCommand.COMMAND_WORD + " " + toDelete.getOneBased(), expectedModel,
+                DeletePollCommand.COMMAND_WORD + " " + toDelete.getOneBased(), expectedModel,
                 expectedResultMessage);
     }
 
@@ -121,19 +125,17 @@ public class DeletePollCommandSystemTest extends ClubBookSystemTest {
     }
 
     /**
-     * Removes the {@code task} at the specified {@code index} in {@code model}'s club book.
-     * @return the removed task
+     * Removes the {@code poll} at the specified {@code index} in {@code model}'s club book.
+     * @return the removed poll
      */
-    private Task removeTask(Model model, Index index) {
-        Task targetTask = getTask(model, index);
+    private Poll deletePollInModel(Model model, Index index) {
+        Poll targetPoll = getPoll(model, index);
         try {
-            model.deleteTask(targetTask);
-        } catch (TaskNotFoundException tnfe) {
-            throw new AssertionError("targetTask is retrieved from model");
-        } catch (TaskCannotBeDeletedException tcbde) {
-            throw new AssertionError("targetTask cannot be deleted");
+            model.deletePoll(targetPoll);
+        } catch (PollNotFoundException pnfe) {
+            throw new AssertionError("targetPoll is retrieved from model");
         }
-        return targetTask;
+        return targetPoll;
     }
 
     /**

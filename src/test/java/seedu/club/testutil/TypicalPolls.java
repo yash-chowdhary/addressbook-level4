@@ -29,8 +29,17 @@ public class TypicalPolls {
     public static final Poll POLL_WHEN = new PollBuilder().withQuestion("When are you?")
             .withAnswers("I don't get it", "Umm..")
             .withPolleesMatricNumbers("A2222222A", "A1234567A").build();
+
     public static final Poll POLL_WHO = new PollBuilder().withQuestion("Who are you?")
             .withAnswers("Your father", "Your mom")
+            .withPolleesMatricNumbers("A3333333A", "A1111111A").build();
+
+    public static final Poll POLL_WHICH = new PollBuilder().withQuestion("Which one is right?")
+            .withAnswers("Left", "Right")
+            .withPolleesMatricNumbers("A2222222A", "A1234567A").build();
+
+    public static final Poll POLL_LIFE = new PollBuilder().withQuestion("What is the meaning of life?")
+            .withAnswers("42", "i dono")
             .withPolleesMatricNumbers("A3333333A", "A1111111A").build();
 
 

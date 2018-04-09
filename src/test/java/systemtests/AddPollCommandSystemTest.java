@@ -1,28 +1,29 @@
 package systemtests;
 //@@author MuhdNurKamal
+
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_FINE;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_FOUR;
-import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_NOT_GOOD;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_LEFT;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_ONE;
+import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_RIGHT;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_THREE;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_TWO;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_VAMPIRE;
 import static seedu.club.logic.commands.CommandTestUtil.ANSWER_DESC_ZOMBIE;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_ANSWER_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_QUESTION_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_HOW;
 import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_LIFE;
 import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_LOVE;
 import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_WHAT;
+import static seedu.club.logic.commands.CommandTestUtil.QUESTION_DESC_WHICH;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_TWO;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_VAMPIRE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ZOMBIE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_LOVE;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_WHAT;
-import static seedu.club.testutil.TypicalPolls.POLL_HOW;
-import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
+import static seedu.club.testutil.TypicalPolls.POLL_LIFE;
+import static seedu.club.testutil.TypicalPolls.POLL_WHICH;
 
 import org.junit.Test;
 
@@ -58,10 +59,10 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
         /* Case: add a poll without tags to a non-empty club book, command with leading spaces and trailing spaces
          * -> added
          */
-        Poll toAdd = POLL_WHAT;
-        String command = "   " + AddPollCommand.COMMAND_WORD + "  " + QUESTION_DESC_WHAT + "  "
-                + ANSWER_DESC_VAMPIRE + " "
-                + ANSWER_DESC_ZOMBIE;
+        Poll toAdd = POLL_WHICH;
+        String command = "   " + AddPollCommand.COMMAND_WORD + "  " + QUESTION_DESC_WHICH + "  "
+                + ANSWER_DESC_LEFT + " "
+                + ANSWER_DESC_RIGHT;
         assertCommandSuccess(command, toAdd);
 
         /* Case: undo adding "What poll" to the list -> "What poll" deleted */
@@ -96,14 +97,14 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a poll with fields in random order -> added */
-        toAdd = POLL_HOW;
-        command = AddPollCommand.COMMAND_WORD + ANSWER_DESC_FINE + QUESTION_DESC_HOW + ANSWER_DESC_NOT_GOOD;
+        toAdd = POLL_LIFE;
+        command = AddPollCommand.COMMAND_WORD + ANSWER_DESC_THREE + QUESTION_DESC_LIFE + ANSWER_DESC_FOUR;
         assertCommandSuccess(command, toAdd);
 
         /* ----------------------------------- Perform invalid add operations --------------------------------------- */
 
         /* Case: add a duplicate poll -> rejected */
-        command = PollUtil.getAddPollCommand(POLL_WHAT);
+        command = PollUtil.getAddPollCommand(POLL_WHICH);
         assertCommandFailure(command, AddPollCommand.MESSAGE_DUPLICATE_POLL);
 
         /* Case: missing question -> rejected */
@@ -139,6 +140,7 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
      * 6. Status bar's sync status changes.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     *
      * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(Poll toAdd) {
@@ -148,6 +150,7 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
     /**
      * Performs the same verification as {@code assertCommandSuccess(poll)}. Executes {@code command}
      * instead.
+     *
      * @see AddPollCommandSystemTest#assertCommandSuccess(Poll)
      */
     private void assertCommandSuccess(String command, Poll toAdd) {
@@ -168,6 +171,7 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
      * 1. Result display box displays {@code expectedResultMessage}.<br>
      * 2. {@code Model}, {@code Storage} and {@code PollListPanel} equal to the corresponding components in
      * {@code expectedModel}.<br>
+     *
      * @see AddPollCommandSystemTest#assertCommandSuccess(String, Poll)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage) {
@@ -187,6 +191,7 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
      * 5. Browser url, selected card and status bar remain unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     *
      * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandFailure(String command, String expectedResultMessage) {
