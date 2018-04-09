@@ -51,7 +51,7 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
-    public static final String MESSAGE_INVALID_PATH = "Path should be a valid absolute path to a file.";
+    public static final String MESSAGE_INVALID_CSV_PATH = "Path should be a valid absolute path to a CSV file.";
 
     private static final Logger logger = LogsCenter.getLogger(ParserUtil.class);
 
@@ -250,7 +250,7 @@ public class ParserUtil {
         File file = FileUtil.parsePath(path);
 
         if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+            throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
         return file;
@@ -265,7 +265,7 @@ public class ParserUtil {
         File file = FileUtil.parsePath(path);
 
         if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+            throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
         file.createNewFile();

@@ -42,7 +42,7 @@ public class XmlUtilTest {
     private static final String VALID_GROUP = "logistics";
     private static final String VALID_USERNAME = "HansMuster";
     private static final String VALID_PASSWORD = "password";
-    private static final List<XmlAdaptedTag> VALID_TAGS = Collections.singletonList(new XmlAdaptedTag("friends"));
+    private static final List<XmlAdaptedTag> VALID_TAGS = Collections.singletonList(new XmlAdaptedTag("head"));
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

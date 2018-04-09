@@ -49,7 +49,7 @@ public class LogInCommandTest {
     private final Member member = new Member(new Name("Alex Yeoh"),
             new Phone("87438807"), new Email("alexyeoh@example.com"),
             new MatricNumber("A5215090A"), new Group("logistics"),
-            getTagSet("friends"));
+            getTagSet("head"));
 
     @Test
     public void executeMemberSuccessfullyLogIn() throws CommandException {
@@ -297,7 +297,7 @@ public class LogInCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void logsInMember(String username, String password) {
@@ -346,7 +346,7 @@ public class LogInCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void logsInMember(String username, String password) {
