@@ -78,6 +78,25 @@ public class UniqueTaskList implements Iterable<Task> {
         internalList.set(index, editedTask);
     }
 
+    public void setTaskEdited(Task target, Task editedTask) throws DuplicateTaskException {
+        requireNonNull(editedTask);
+
+        int index = internalList.indexOf(target);
+
+        for (Task task : internalList) {
+            if (task.getDescription().getDescription().equalsIgnoreCase(editedTask.getDescription().getDescription())
+                    && task.getTime().getTime().equalsIgnoreCase(editedTask.getTime().getTime())
+                    && task.getDate().getDate().equalsIgnoreCase(editedTask.getDate().getDate())
+                    && task.getAssignor().getAssignor().equalsIgnoreCase(editedTask.getAssignor().getAssignor())
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+                throw new DuplicateTaskException();
+            }
+        }
+
+        internalList.set(index, editedTask);
+
+    }
+
     /**
      * Ensures every task in the argument list exists in this object.
      */
@@ -143,6 +162,8 @@ public class UniqueTaskList implements Iterable<Task> {
         sortList();
         return FXCollections.unmodifiableObservableList(internalList);
     }
+
+
 
     /**
      * Sorts the list of tasks according to alphabetical order of description.

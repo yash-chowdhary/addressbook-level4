@@ -179,9 +179,9 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public int deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called");
-            return;
+            return -1;
         }
 
         @Override
@@ -191,10 +191,10 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
+        public int updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
                 MemberNotFoundException {
             fail("This method should not be called");
-            return;
+            return -1;
         }
 
         @Override
