@@ -31,10 +31,10 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new FieldContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"), PREFIX_NAME));
-        assertParseSuccess(parser, "n/Alice Bob", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_NAME + "Alice Bob", expectedFindCommand);
 
         // multiple whitespaces between keywords and prefix
-        assertParseSuccess(parser, " \n n/ \t Alice \n \t Bob  \t", expectedFindCommand);
+        assertParseSuccess(parser, PREFIX_NAME + " \n  \t Alice \n \t Bob  \t", expectedFindCommand);
     }
 
     @Test
