@@ -99,11 +99,7 @@ public class ClubBook implements ReadOnlyClubBook {
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
-        if (newData.getLoggedInMember() != null) {
-            setLoggedInMember(newData.getLoggedInMember());
-        } else {
-            setLoggedInMember(null);
-        }
+        setLoggedInMember(newData.getLoggedInMember());
 
         try {
             setMembers(syncedMemberList);
