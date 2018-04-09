@@ -16,6 +16,7 @@ import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Name;
+import seedu.club.model.member.Password;
 import seedu.club.model.member.Phone;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.Username;
@@ -145,8 +146,12 @@ public class XmlAdaptedMember {
 
         final ProfilePhoto profilePhoto = new ProfilePhoto(this.profilePhoto);
 
+        final Username username = new Username(this.username);
+
+        final Password password = new Password(this.password);
+
         Member member = new Member(name, phone, email, matricNumber, group, tags,
-                new Credentials(new Username(matricNumber.value)), profilePhoto);
+                new Credentials(username, password), profilePhoto);
 
         return member;
     }
@@ -168,6 +173,8 @@ public class XmlAdaptedMember {
                 && Objects.equals(matricNumber, otherMember.matricNumber)
                 && Objects.equals(group, otherMember.group)
                 && Objects.equals(profilePhoto, otherMember.profilePhoto)
+                && Objects.equals(username, otherMember.username)
+                && Objects.equals(password, otherMember.password)
                 && tagged.equals(otherMember.tagged);
     }
 }
