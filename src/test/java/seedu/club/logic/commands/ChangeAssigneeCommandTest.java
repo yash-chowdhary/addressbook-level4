@@ -75,10 +75,10 @@ public class ChangeAssigneeCommandTest {
         ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
                 .withTask(bookAuditorium).build();
 
-        expectedModel = new ModelManager(expectedClubBook, new UserPrefs());
+        model.changeAssignee(BUY_FOOD, buyFood);
+        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
-        model.changeAssignee(BUY_FOOD, buyFood);
 
         assertEquals(expectedModel, model);
     }
@@ -94,7 +94,7 @@ public class ChangeAssigneeCommandTest {
         Task editedTask = new TaskBuilder(buyFood).build();
         editedTask.setAssignee(new Assignee(CARL.getMatricNumber().toString()));
 
-        expectedModel = new ModelManager(expectedClubBook, new UserPrefs());
+        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
         try {
