@@ -63,8 +63,10 @@ public class EditCommandTest {
         Member editedMember = new MemberBuilder().build();
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder(editedMember).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, descriptor);
+        int numberOfTasksUpdated = 0;
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember,
+                numberOfTasksUpdated);
 
         expectedModel.updateMember(model.getFilteredMemberList().get(0), editedMember);
 
@@ -84,7 +86,9 @@ public class EditCommandTest {
                 .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_HUSBAND).build();
         EditCommand editCommand = prepareCommand(indexLastMember, descriptor);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
+        int numberOfTasksUpdated = 0;
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember,
+                numberOfTasksUpdated);
 
         expectedModel.updateMember(lastMember, editedMember);
 
@@ -96,7 +100,9 @@ public class EditCommandTest {
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER, new EditMemberDescriptor());
         Member editedMember = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
+        int numberOfTasksUpdated = 0;
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember,
+                numberOfTasksUpdated);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -110,7 +116,9 @@ public class EditCommandTest {
         EditCommand editCommand = prepareCommand(INDEX_FIRST_MEMBER,
                 new EditMemberDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember);
+        int numberOfTasksUpdated = 0;
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember,
+                numberOfTasksUpdated);
 
         expectedModel.updateMember(model.getFilteredMemberList().get(0), editedMember);
 

@@ -447,6 +447,26 @@ public class ModelManagerTest {
         Assert.assertThrows(TasksAlreadyListedException.class, expectedMessage, modelManager::viewMyTasks);
     }
 
+    @Test
+    public void deleteMember_validMemberWithTasks_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BOOK_AUDITORIUM)
+                .withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        modelManager.deleteMember(BENSON);
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        assertEquals(expectedModel, modelManager);
+    }
+
     //@@author
 
     @Test

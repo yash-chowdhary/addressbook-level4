@@ -75,9 +75,10 @@ public interface Model {
     ReadOnlyClubBook getClubBook();
 
     /**
-     * Deletes the given member.
+     * Deletes the given member, and returns the number of tasks that have been deleted from the
+     * main task list.
      */
-    void deleteMember(Member target) throws MemberNotFoundException;
+    int deleteMember(Member target) throws MemberNotFoundException;
 
     /**
      * Adds the given member
@@ -103,13 +104,15 @@ public interface Model {
 
     /**
      * Replaces the given member {@code target} with {@code editedMember}.
-     *
+     * The task list is also affected if there is a change in the {@code target}'s Matric Number.
      * @throws DuplicateMatricNumberException if updating the member's details causes the member's matriculation number
      *                                  to be equivalent to that of another existing member in the list.
      * @throws MemberNotFoundException  if {@code target} could not be found in the list.
+     * @throws DuplicateTaskException if there's already a task which has the same details. This is the
+     *                                  same as identifying a duplicate member.
      */
-    void updateMember(Member target, Member editedMember)
-            throws DuplicateMatricNumberException, MemberNotFoundException;
+    int updateMember(Member target, Member editedMember)
+            throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException;
 
     /**
      * Returns an unmodifiable view of the filtered member list
