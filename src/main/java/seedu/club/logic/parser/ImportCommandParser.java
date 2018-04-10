@@ -1,8 +1,6 @@
 //@@author amrut-prabhu
 package seedu.club.logic.parser;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import java.io.File;
 
 import seedu.club.commons.exceptions.IllegalValueException;
@@ -25,7 +23,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
             return new ImportCommand(importFile);
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ImportCommand.MESSAGE_USAGE));
+                    String.format(ive.getMessage(), ImportCommand.MESSAGE_USAGE));
         }
     }
 

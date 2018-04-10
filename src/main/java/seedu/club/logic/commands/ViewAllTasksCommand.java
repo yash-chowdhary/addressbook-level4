@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 
 /**
  * Lists all tasks in the club book to the user.
@@ -22,6 +22,7 @@ public class ViewAllTasksCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "All tasks are displayed.";
     public static final String MESSAGE_CANNOT_VIEW = "You do not have permission to view all tasks.";
+    public static final String MESSAGE_ALREADY_LISTED = "All the tasks in Club Connect are already listed!";
 
     @Override
     public CommandResult execute() throws CommandException {
@@ -31,8 +32,8 @@ public class ViewAllTasksCommand extends Command {
         requireExcoLogIn();
         try {
             model.viewAllTasks();
-        } catch (TasksCannotBeDisplayedException tcbde) {
-            throw new CommandException(MESSAGE_CANNOT_VIEW);
+        } catch (TasksAlreadyListedException e) {
+            throw new CommandException(MESSAGE_ALREADY_LISTED);
         }
         return new CommandResult(MESSAGE_SUCCESS);
     }

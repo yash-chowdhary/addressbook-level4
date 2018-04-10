@@ -32,10 +32,10 @@ public class SampleDataUtil {
         return new Member[] {
             new Member(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                     new MatricNumber("A5215090A"), new Group("logistics"),
-                    getTagSet("friends")),
+                    getTagSet("head")),
             new Member(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
                     new MatricNumber("A0632713Q"), new Group("production"),
-                    getTagSet("colleagues", "friends")),
+                    getTagSet("colleagues", "head")),
             new Member(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
                     new MatricNumber("A1010027G"), new Group("exco"),
                     getTagSet("neighbours")),

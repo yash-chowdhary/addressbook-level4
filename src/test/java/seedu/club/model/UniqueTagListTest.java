@@ -2,7 +2,7 @@ package seedu.club.model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 
 import org.junit.Rule;
@@ -28,7 +28,7 @@ public class UniqueTagListTest {
         UniqueTagList firstTagList = new UniqueTagList();
         firstTagList.add(new Tag(VALID_TAG_HUSBAND));
         UniqueTagList secondTagList = new UniqueTagList();
-        secondTagList.add(new Tag(VALID_TAG_FRIEND));
+        secondTagList.add(new Tag(VALID_TAG_HEAD));
 
         assertTrue(firstTagList.equals(firstTagList));
         assertFalse(firstTagList.equals(true));
@@ -39,11 +39,11 @@ public class UniqueTagListTest {
     public void asTaskInsensitiveList_compareSimilarLists_success()
             throws UniqueTagList.DuplicateTagException {
         UniqueTagList firstTagList = new UniqueTagList();
-        firstTagList.add(new Tag(VALID_TAG_FRIEND));
+        firstTagList.add(new Tag(VALID_TAG_HEAD));
         firstTagList.add(new Tag(VALID_TAG_HUSBAND));
         UniqueTagList secondTagList = new UniqueTagList();
         secondTagList.add(new Tag(VALID_TAG_HUSBAND));
-        secondTagList.add(new Tag(VALID_TAG_FRIEND));
+        secondTagList.add(new Tag(VALID_TAG_HEAD));
 
         assertTrue(firstTagList.equalsOrderInsensitive(secondTagList));
     }
@@ -53,7 +53,7 @@ public class UniqueTagListTest {
             throws UniqueTagList.DuplicateTagException {
         UniqueTagList uniqueTagList = new UniqueTagList();
         thrown.expect(UniqueTagList.DuplicateTagException.class);
-        uniqueTagList.add(new Tag(VALID_TAG_FRIEND));
-        uniqueTagList.add(new Tag(VALID_TAG_FRIEND));
+        uniqueTagList.add(new Tag(VALID_TAG_HEAD));
+        uniqueTagList.add(new Tag(VALID_TAG_HEAD));
     }
 }

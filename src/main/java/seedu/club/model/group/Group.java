@@ -3,6 +3,8 @@ package seedu.club.model.group;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 /**
  * Represents a member's Group in the club book
  * Guarantees: immutable; is valid as declared in {@link #isValidGroup(String)}
@@ -30,7 +32,7 @@ public class Group {
     public Group(String group) {
         requireNonNull(group);
         checkArgument(isValidGroup(group), MESSAGE_GROUP_CONSTRAINTS);
-        this.groupName = group;
+        this.groupName = WordUtils.capitalize(group);
     }
 
     /**
