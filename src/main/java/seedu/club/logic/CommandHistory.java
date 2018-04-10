@@ -21,7 +21,19 @@ public class CommandHistory {
     public void add(String userInput) {
         requireNonNull(userInput);
         userInputHistory.add(userInput);
+        if (userInput.equals("logout") || userInput.equals("clear Y")) {
+            clear();
+        }
     }
+
+    //@@author th14thmusician
+    /**
+     * Clears user input history
+     */
+    public void clear() {
+        userInputHistory.clear();
+    }
+    //@@author
 
     /**
      * Returns a defensive copy of {@code userInputHistory}.
