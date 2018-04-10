@@ -358,6 +358,9 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author Song Weiyang
     @Override
     public void logOutMember() {
+        updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
         clubBook.logOutMember();
     }
 

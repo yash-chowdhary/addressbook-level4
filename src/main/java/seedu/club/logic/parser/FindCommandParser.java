@@ -1,5 +1,6 @@
 package seedu.club.logic.parser;
 //@@author MuhdNurKamal
+
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
@@ -19,12 +20,13 @@ import seedu.club.model.member.FieldContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    private static final Prefix[] VALID_SEARCH_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
+    private static final Prefix[] FINDABLE_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
         PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG};
 
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
      * and returns an FindCommand object for execution.
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
@@ -34,20 +36,18 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        String[] findArgs = trimmedArgs.split("\\s+");
-
-        if (findArgs.length < 1) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        } else if (findArgs.length > 1) {
-            for (Prefix prefix : VALID_SEARCH_PREFIXES) {
-                if (findArgs[0].equalsIgnoreCase(prefix.toString())) {
-                    return new FindCommand(new FieldContainsKeywordsPredicate(
-                            Arrays.asList(findArgs).subList(1, findArgs.length), prefix));
-                }
+        for (Prefix prefix : FINDABLE_PREFIXES) {
+            int prefixLength = prefix.toString().length();
+            if (trimmedArgs.length() >= prefixLength && trimmedArgs.substring(0, prefixLength)
+                    .equalsIgnoreCase(prefix.toString())) {
+                String[] findArgs = trimmedArgs.substring(prefixLength, trimmedArgs.length())
+                        .trim().split("\\s+");
+                return new FindCommand(new FieldContainsKeywordsPredicate(
+                        Arrays.asList(findArgs), prefix));
             }
         }
+
         return new FindCommand(new FieldContainsKeywordsPredicate(
-                Arrays.asList(findArgs), null));
+                Arrays.asList(trimmedArgs.split("\\s+")), null));
     }
 }
