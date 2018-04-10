@@ -1,0 +1,145 @@
+= Yash Chowdhary - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: Club Connect
+
+---
+
+== Overview
+
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+It aims to make the tedious process of club management easier and more effective.
+
+*Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI). All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
+
+*Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/yash-chowdhary.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/yash-chowdhary.md[Test code]]
+
+=== Enhancement Added: Remove Group Command
+
+==== External Behavior
+
+---
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=removegroup]
+
+#End of Extract (from User Guide)#
+
+---
+
+==== Justification
+
+---
+If a sub-committee of a club is no longer required, the `EXCO` members can delete the group from the app. This changes the group of all the members (previously part of the deleted group) to the default group - `member`.
+
+==== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=removegroup]
+
+#End of Extract (from Developer Guide)#
+
+---
+=== Enhancement Added: Email Feature
+
+==== External Behavior
+
+---
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=email]
+
+#End of Extract (from User Guide)#
+
+---
+
+==== Justification
+Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+
+---
+==== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=email]
+
+#End of Extract (from Developer Guide)#
+
+---
+=== Enhancement Added: Task-Management
+
+==== External Behaviour
+
+===== Add Tasks
+---
+
+#Start of Extract (from UserGuide)#
+
+include::../UserGuide.adoc[tag=addtask]
+
+===== Assign Tasks
+---
+
+include::../UserGuide.adoc[tag=assigntask]
+
+===== Delete Tasks
+---
+
+include::../UserGuide.adoc[tag=deletetask]
+
+===== ChangeTaskStatus Tasks
+---
+
+include::../UserGuide.adoc[tag=changetaskstatus]
+
+===== View All Tasks
+---
+
+include::../UserGuide.adoc[tag=viewalltasks]
+
+
+===== View My Tasks
+---
+
+include::../UserGuide.adoc[tag=viewmytasks]
+
+#Start of Extract (from User Guide)#
+
+---
+=== Justification
+
+Members of a club have certain responsibilities and must carry out tasks to fulfil their responsibilities. Furthermore, `EXCO` members can delegate tasks to other members which they must perform within a stipulated time period.
+Maintaining a record of tasks is crucial as it help maintain transparency and accountability of the club.
+
+---
+=== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=tasks]
+
+#End of Extract (from Developer Guide)#
+
+---
+=== Other contributions
+
+
+*** Managed all releases on GitHub and Milestones.
+*** Assumed responsibility of the Team Leader where I took important decisions regarding the product development.
+*** Maintained User Guide.
+*** Added `Group` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/66[Pull Request #66].
+*** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/53[#53], https://github.com/CS2103JAN2018-W15-B4/main/pull/67[#67], and https://github.com/CS2103JAN2018-W15-B4/main/pull/155[#155].
+*** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-W14-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue+yash+[Peer Testing].
+
+== Project: NUS Sports Update
+
+=== Overview
+The main source of motivation behind this project is the lack of real time organized information regarding sports events on campus – fixtures, timings, and (most importantly) results, unless you know somebody on the team or unless you yourself are a part of the team. The app also seeks to eliminate the use of Google forms and other unofficial means of signing up and indication of interest, that may be easily missed by a significant number of students. This application seeks to take care of these problems and mainly caters to the needs of NUS students. The user-friendliness of the app makes the job of the organizers simpler by providing organized access to all information. Live-scores and fixtures help engage more students in the sports events around campus, and improve the reach of these events.
+
+
+link:https://github.com/O-impossible/NUS_Sports_Update[`Link to GitHub Repository`]

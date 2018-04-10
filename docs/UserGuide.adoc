@@ -110,6 +110,7 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 * *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
 ====
 
+// tag::add[]
 === Adding a member: `add`
 
 Adds a member to Club Connect. +
@@ -129,6 +130,7 @@ Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
 * `add n/Betsy Crowe p/95462159 e/betsycrowe@u.nus.edu m/A0145625K g/Logistics t/Head`
+// end::add[]
 
 === Adding a poll: `addpoll` (Since v1.3)
 
@@ -152,6 +154,7 @@ The answers to choose from are `I-Cube` and `LT7`.
 [IMPORTANT]
 This command is for `EXCO` members only.
 
+// tag::addtask[]
 === Adding a task: `addtask` (Since v1.3)
 
 Adds a task to Club Connect. +
@@ -174,7 +177,9 @@ Examples:
 Adds a task with description `Book PGP Function Room 3` due on `02/04/2018` at `19:00`.
 * `addtask desc/Buy Food d/03.04.2018 ti/15:00` +
 Adds a task with description `Buy Food` due on `03/04/2018` at `15:00`.
+// end::addtask[]
 
+// tag::assigntask[]
 === Adding a task: `assigntask` (Since v1.4)
 
 Adds a task to Club Connect and assigns it to a member. +
@@ -199,6 +204,7 @@ Examples:
 Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on `02/04/2018` at `19:00`.
 * `assigntask desc/Buy Food d/03.04.2018 ti/15:00 m/A1122334K` +
 Assigns a task to `A1122334K` with description `Buy Food` due on `03/04/2018` at `15:00`.
+// end::assigntask[]
 
 === Changing password : `changepass` (Since v1.4)
 
@@ -242,6 +248,7 @@ Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Deskto
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
 
+// tag::changetaskstatus[]
 === Changing the status of your task : `changetaskstatus` (Since v1.5rc)
 
 Changes the status of a task in Club Connect. +
@@ -267,6 +274,7 @@ Examples:
 Changes the status of the 1st task to `In Progress` in the task listing.
 * `status 3 st/Completed` +
 Changes the status of the 3rd task to `Completed` in the task listing.
+// end::changetaskstatus[]
 
 === Clearing all entries : `clear`
 
@@ -385,6 +393,7 @@ Deletes the `Treasurer` tag for all members tagged with `Treasurer` in Club Conn
 * `deletetag t/EventInCharge` +
 Deletes the `EventInCharge` tag for all members tagged with `EventInCharge` in Club Connect.
 
+// tag::deletetask[]
 === Deleting a task : `deletetask` (Since v1.3)
 
 Deletes the specified task from the club book. +
@@ -408,6 +417,7 @@ Deletes the 2nd task in the results of the `viewmytasks` command.
 * `viewalltasks` +
 `deletetask 1` +
 Deletes the 1st task in the results of the `viewalltasks` command.
+// end::deletetask[]
 
 === Editing a member : `edit`
 
@@ -436,6 +446,7 @@ Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
 Edits the group of the 3rd member to be `finance`.
 
+// tag::email[]
 === Emailing club members: `email` (Since v1.2)
 
 Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
@@ -461,6 +472,7 @@ Examples:
 Opens up the Compose Message page of Gmail with the `Subject` field filled-in. The recipients are all the members that belong to the `logistics` group.
 * `email t/projectHead c/outlook` +
 Opens up the Compose Message page of Outlook with blank `Subject` and `Body` fields. The recipients are all the members that are tagged with `projectHead`.
+// end::email[]
 
 === Exiting the application : `exit`
 
@@ -627,6 +639,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `delete 1` command) +
 `redo` (reapplies the `clear` command) +
 
+// tag::removegroup[]
 === Deleting a group : `removegroup` (Since v1.1)
 
 Deletes the specified group from Club Connect. +
@@ -649,6 +662,7 @@ Deletes the `logistics` group from Club Connect.
 
 * `removegroup g/pr` +
 Deletes the `pr` group from Club Connect.
+// end::removegroup[]
 
 === Selecting a member : `select` (since v1.5rc)
 
@@ -734,6 +748,7 @@ The `undo` command fails as there are no undoable commands executed previously.
 `undo` (reverses the `clear` command) +
 `undo` (reverses the `delete 1` command) +
 
+// tag::viewalltasks[]
 === Viewing all tasks in Club Connect : `viewalltasks` (Since v1.4)
 
 Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
@@ -741,7 +756,9 @@ Format: `viewalltasks` +
 Alias: `alltasks`
 [IMPORTANT]
 This command is for `EXCO` members only.
+// end::viewalltasks[]
 
+// tag::viewmytasks[]
 === Viewing tasks assigned to or assigned by you : `viewmytasks` (Since v1.4)
 
 Display all tasks created/assigned by the currently member in Club Connect. +
@@ -751,6 +768,7 @@ The main purpose of this command is to enable `EXCO` members to toggle between a
 
 Format: `viewmytasks` +
 Alias: `mytasks`
+// end::viewmytasks[]
 
 === Voting in a poll : `vote` (Since v1.4)
 
