@@ -78,7 +78,7 @@ public class UniqueTaskList implements Iterable<Task> {
         internalList.set(index, editedTask);
     }
 
-    public void setTaskEdited(Task target, Task editedTask) throws DuplicateTaskException {
+    public void setTaskIgnoreStatus(Task target, Task editedTask) throws DuplicateTaskException {
         requireNonNull(editedTask);
 
         int index = internalList.indexOf(target);

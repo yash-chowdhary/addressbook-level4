@@ -50,10 +50,10 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.TaskBuilder;
 
 //@@author yash-chowdhary
@@ -146,6 +146,12 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called");
         }
@@ -157,7 +163,7 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        public void viewAllTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 

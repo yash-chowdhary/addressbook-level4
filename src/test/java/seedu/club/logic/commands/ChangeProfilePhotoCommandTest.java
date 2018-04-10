@@ -51,10 +51,10 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 public class ChangeProfilePhotoCommandTest {
 
@@ -160,6 +160,12 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
@@ -217,7 +223,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        public void viewAllTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 
