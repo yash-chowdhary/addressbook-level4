@@ -6,11 +6,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.ui.BrowserPanel.DEFAULT_PAGE;
+import static seedu.club.ui.StatusBarFooter.SAVE_LOCATION;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
 import static seedu.club.ui.UiPart.FXML_FILE_FOLDER;
 import static seedu.club.ui.testutil.GuiTestAssert.assertListMatching;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -279,7 +281,8 @@ public abstract class ClubBookSystemTest {
             assertEquals("", getResultDisplay().getText());
             assertListMatching(getMemberListPanel(), getModel().getFilteredMemberList());
             assertEquals(MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE), getBrowserPanel().getLoadedUrl());
-            assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
+            assertEquals(String.format(SAVE_LOCATION, new File(testApp.getStorageSaveLocation()).getCanonicalPath()),
+                    getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
         } catch (Exception e) {
             throw new AssertionError("Starting state is wrong.", e);

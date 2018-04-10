@@ -61,7 +61,7 @@
     -fx-background-color: brown;
     -fx-table-cell-border-color: green;
     -fx-table-header-border-color: purple;
-    -fx-padding: 5;
+    -fx-padding: 25;
 }
 
 .table-view .column-header-background {
@@ -94,7 +94,7 @@
 
 .split-pane:horizontal .split-pane-divider {
     -fx-background-color: white;
-    -fx-border-color: transparent transparent transparent transparent;
+    -fx-border-color: transparent black transparent transparent;
 }
 
 .split-pane {
@@ -226,7 +226,7 @@
  * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
  */
 .button {
-    -fx-padding: 5 22 5 22;
+    -fx-padding: 5 10 5 10;
     -fx-border-color: #e2e2e2;
     -fx-border-width: 2;
     -fx-background-radius: 0;
@@ -321,7 +321,7 @@
 }
 
 #cardPane {
-    -fx-border-width: 4 6 2 6;
+    -fx-border-width: 3 6 3 6;
     -fx-border-color: #cccccc;
     -fx-padding: 5 5 5 5;
 }

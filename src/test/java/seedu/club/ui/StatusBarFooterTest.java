@@ -2,9 +2,12 @@ package seedu.club.ui;
 
 import static org.junit.Assert.assertEquals;
 import static seedu.club.testutil.EventsUtil.postNow;
+import static seedu.club.ui.StatusBarFooter.SAVE_LOCATION;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -20,6 +23,7 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
 import seedu.club.model.ClubBook;
 
 public class StatusBarFooterTest extends GuiUnitTest {
+
 
     private static final String STUB_SAVE_LOCATION = "Stub";
     private static final String RELATIVE_PATH = "./";
@@ -67,7 +71,12 @@ public class StatusBarFooterTest extends GuiUnitTest {
      * sync status matches that of {@code expectedSyncStatus}.
      */
     private void assertStatusBarContent(String expectedSaveLocation, String expectedSyncStatus) {
-        assertEquals(expectedSaveLocation, statusBarFooterHandle.getSaveLocation());
+        try {
+            assertEquals(String.format(SAVE_LOCATION, new File(expectedSaveLocation).getCanonicalPath()),
+                    statusBarFooterHandle.getSaveLocation());
+        } catch (IOException e) {
+            assert false : "IOException should not occur";
+        }
         assertEquals(expectedSyncStatus, statusBarFooterHandle.getSyncStatus());
         guiRobot.pauseForHuman();
     }
