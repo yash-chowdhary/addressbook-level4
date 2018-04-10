@@ -8,13 +8,11 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,15 +22,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
-import org.fxmisc.easybind.EasyBind;
 import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
-import seedu.club.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.club.model.email.Client;
 import seedu.club.model.member.Member;
-import seedu.club.model.task.Task;
 
 /**
  * The Browser Panel of the App.
@@ -76,11 +71,10 @@ public class BrowserPanel extends UiPart<Region> {
     private ImageView phoneIcon;
     @FXML
     private ImageView emailIcon;
-    @FXML
-    private ListView<ModifiedTaskCard> taskListView;
 
 
-    public BrowserPanel(ObservableList<Task> taskList) {
+
+    public BrowserPanel() {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.
@@ -136,28 +130,6 @@ public class BrowserPanel extends UiPart<Region> {
                 }
             }
         }
-    }
-
-    public void setConnections(ObservableList<Task> taskList) {
-        setMemberListView(taskList);
-        setEventHandlerForSelectionChangeEvent();
-    }
-
-    private void setEventHandlerForSelectionChangeEvent() {
-        taskListView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        logger.fine("Selection in task list panel changed to : '" + newValue + "'");
-                        raise(new TaskPanelSelectionChangedEvent(newValue));
-                    }
-                });
-    }
-
-    public void setMemberListView(ObservableList<Task> taskList) {
-        ObservableList<TaskCard> mappedList = EasyBind.map(
-                taskList, (task) -> new TaskCard(task, taskList.indexOf(task) + 1));
-        taskListView.setItems(mappedList);
-        taskListView.setCellFactory(listView -> new TaskListPanel.TaskListViewCell());
     }
     //@@author
 
