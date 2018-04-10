@@ -50,9 +50,6 @@ public class DeleteCommand extends UndoableCommand {
         requireExcoLogIn();
         try {
             numberOfTasksDeleted = model.deleteMember(memberToDelete);
-            if (memberToDelete.equals(model.getLoggedInMember())) {
-                model.logOutMember();
-            }
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
