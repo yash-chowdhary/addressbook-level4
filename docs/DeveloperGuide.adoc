@@ -437,7 +437,7 @@ Once the key is generated, all data will be encrypted with AES. Anyone who wishe
 === Email Mechanism
 ==== Current Implementation
 The `email` mechanism of Club Connect is facilitated by the `EmailCommand` class and is event-driven.
-The `EmailCommand`  consists of the following fields:
+The `EmailCommand` consists of the following fields:
 
 * Client - the mail client used to send the email (currently restricted to GMail and Outlook).
 * Subject - the subject of the email (optional field).
@@ -505,7 +505,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 
 // tag::tasks[]
 === Task-Management
-Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `EXCO` members.
+Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `Exco` members.
 
 ==== Current Implementation
 The task-management mechanism is facilitated by several command classes in Club Connect, namely: +
@@ -695,7 +695,7 @@ _Figure 30. Sequence Diagram for changing the status of a task._
 ===== Viewing All Tasks
 ---
 
-`EXCO` members can view all the tasks in `Club Connect` using the `ViewAllTasksCommand`.
+`Exco` members can view all the tasks in `Club Connect` using the `ViewAllTasksCommand`.
 
 The implementation makes use of a `Predicate` and is as follows:
 
@@ -714,7 +714,7 @@ _Figure 31. Sequence Diagram for viewing all tasks._
 ===== Viewing My Tasks
 ---
 
-`EXCO` members need a way to toggle between all tasks in `Club Connect` and the tasks that are related to them (i.e. tasks that they have assigned or been assigned to). This is achieved by the `ViewMyTasksCommand`.
+`Exco` members need a way to toggle between all tasks in `Club Connect` and the tasks that are related to them (i.e. tasks that they have assigned or been assigned to). This is achieved by the `ViewMyTasksCommand`.
 
 `Model#viewMyTasks()` is called during the execution of the command.
 Here is the implementation:
@@ -749,7 +749,7 @@ _Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member
 === Remove Group Mechanism
 ==== Current Implementation
 
-The `removegroup` mechanism is facilitated by the `RemoveGroupCommand` class. It allows `EXCO` members to remove a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
+The `removegroup` mechanism is facilitated by the `RemoveGroupCommand` class. It allows `Exco` members to remove a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
 
 The `RemoveGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
 
