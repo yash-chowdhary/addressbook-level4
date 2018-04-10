@@ -48,10 +48,14 @@ public class ChangePasswordCommandTest {
     public void excecute_changepassword_success ()
             throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
             MatricNumberNotFoundException {
+        Member memberToChangePasswordOf = new Member(member.getName(), member.getPhone(), member.getEmail(),
+                member.getMatricNumber(), member.getGroup(), member.getTags());
         expectedModel.changePassword(this.member.getCredentials().getUsername().value,
                 this.member.getCredentials().getPassword().value, newPassword.value);
-        assertCommandSuccess(prepareCommand(this.member, model), model,
+        assertCommandSuccess(prepareCommand(memberToChangePasswordOf, model), model,
                 ChangePasswordCommand.MESSAGE_SUCCESS, expectedModel);
+        expectedModel.changePassword(member.getCredentials().getUsername().value,
+                member.getCredentials().getPassword().value, "password");
     }
 
     @Test

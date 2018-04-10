@@ -457,7 +457,8 @@ public class ClubBook implements ReadOnlyClubBook {
      * @param newPassword
      */
     public void changePassword (String username, String oldpassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException, MatricNumberNotFoundException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         members.changePassword(username, oldpassword, newPassword);
     }
     //@@author

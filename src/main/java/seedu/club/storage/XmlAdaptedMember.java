@@ -179,6 +179,7 @@ public class XmlAdaptedMember {
     }
 
     public String getPassword() {
-        return this.name + this.password + this.username + this.phone + this.matricNumber + this.group + this.email + this.profilePhoto + this.tagged;
+        return this.name + this.password + this.username + this.phone + this.matricNumber + this.group
+                + this.email + this.profilePhoto + this.tagged;
     }
 }
