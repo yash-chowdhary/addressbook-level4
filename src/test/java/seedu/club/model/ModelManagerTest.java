@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
@@ -171,7 +171,7 @@ public class ModelManagerTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         String expectedRecipients = modelManager.generateEmailRecipients(null,
-                new Tag(VALID_TAG_FRIEND));
+                new Tag(VALID_TAG_HEAD));
         modelManager.sendEmail(expectedRecipients, new Client(Client.VALID_CLIENT_GMAIL),
                 new Subject(Subject.TEST_SUBJECT_STRING), new Body(Body.TEST_BODY_STRING));
 
@@ -600,7 +600,7 @@ public class ModelManagerTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         modelManager.updateFilteredMemberList(modelManager.PREDICATE_SHOW_ALL_MEMBERS);
-        modelManager.deleteTag(new Tag(VALID_TAG_FRIEND));
+        modelManager.deleteTag(new Tag(VALID_TAG_HEAD));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();

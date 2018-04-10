@@ -361,7 +361,7 @@ public class AddTaskCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
@@ -396,7 +396,7 @@ public class AddTaskCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {

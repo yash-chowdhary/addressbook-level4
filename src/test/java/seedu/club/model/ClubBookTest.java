@@ -5,7 +5,7 @@ import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.testutil.TypicalMembers.ALICE;
@@ -317,7 +317,7 @@ public class ClubBookTest {
 
     @Test
     public void deleteTag_tagUsedByMultipleMembers_tagRemoved() throws Exception {
-        clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_FRIEND));
+        clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_HEAD));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();
