@@ -1,5 +1,5 @@
 .background {
-    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-background-color: derive(purple, 20%);
     background-color: white; /* Used in the default.html file */
 }
 
@@ -41,7 +41,7 @@
 .text-panel-header {
     -fx-font-size: 17pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-background-color: ##9ba0a3;
+    -fx-background-color: #9ba0a3;
     -fx-background-radius: 2;
 }
 
@@ -57,10 +57,10 @@
 
 .table-view {
     -fx-base: #1d1d1d;
-    -fx-control-inner-background: #1d1d1d;
-    -fx-background-color: #1d1d1d;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
+    -fx-control-inner-background: pink;
+    -fx-background-color: brown;
+    -fx-table-cell-border-color: green;
+    -fx-table-header-border-color: purple;
     -fx-padding: 5;
 }
 
@@ -73,8 +73,8 @@
     -fx-border-width: 0 0 1 0;
     -fx-background-color: red;
     -fx-border-color:
-        transparent
-        transparent
+        green
+        green
         derive(-fx-base, 80%)
         transparent;
     -fx-border-insets: 0 10 1 0;
@@ -93,14 +93,14 @@
 }
 
 .split-pane:horizontal .split-pane-divider {
-    -fx-background-color: derive(white, 20%);
-    -fx-border-color: #4d4d4d transparent transparent #4d4d4d;
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent transparent #4d4d4d;
 }
 
 .split-pane {
-    -fx-border-radius: 1;
     -fx-border-width: 1;
-    -fx-background-color: derive(white, 20%);
+    -fx-border-color: black;
+    -fx-background-color: white;
 }
 
 .list-view {
@@ -153,9 +153,9 @@
 }
 
 .pane-with-border {
-     -fx-background-color: derive(white, 20%);
-     /*-fx-border-color: derive(purple, 10%);
-     -fx-border-top-width: 1px;*/
+     -fx-background-color: white;
+     -fx-border-color: derive(white, 40%);
+     -fx-border-width: 0 0 1 0;
 }
 
 .status-bar {
@@ -193,8 +193,8 @@
 
 .grid-pane {
     -fx-background-color: derive(purple, 30%);
-    -fx-border-color: derive(black, 30%);
-    -fx-border-width: 1px;
+    /*-fx-border-color: derive(green, 30%);
+    -fx-border-width: 1px;*/
 }
 
 .grid-pane .anchor-pane {
@@ -211,6 +211,7 @@
 
 .menu-bar {
     -fx-background-color: derive(white, 20%);
+    -fx-border-color: black;
 }
 
 .menu-bar .label {
@@ -220,7 +221,7 @@
 }
 
 .menu .left-container {
-    -fx-background-color: white;
+    -fx-background-color: purple;
 }
 
 /*
@@ -269,7 +270,7 @@
 }
 
 .button:default:hover {
-    -fx-background-color: derive(-fx-focus-color, 30%);
+    -fx-background-color: derive(brown, 30%);
 }
 
 .dialog-pane {
@@ -346,7 +347,7 @@
 }
 
 #filterField, #memberListPanel, #memberWebpage {
-    -fx-effect: dropshadow(gaussian, purple, 10, 10, 10, 10);
+    -fx-effect: dropshadow(gaussian, purple, 100, 100, 100, 100);
 }
 
 #resultDisplay .content {
