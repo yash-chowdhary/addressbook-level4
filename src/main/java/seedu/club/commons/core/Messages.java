@@ -22,4 +22,5 @@ public class Messages {
     public static final String MESSAGE_REQUIRE_SIGN_UP = "Please sign up to use Club Connect";
     public static final String MESSAGE_REQUIRE_EXCO_LOG_IN = "You need to be an exco to use these features";
     public static final String MESSAGE_REQUIRE_LOG_OUT = "Please logout before using the login feature";
+    public static final String MESSAGE_UNABLE_TO_DELETE_CURRENT_USER = "Unable to delete yourself";
 }

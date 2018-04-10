@@ -22,6 +22,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -213,7 +214,7 @@ public class ClubBook implements ReadOnlyClubBook {
      *
      * @throws MemberNotFoundException if the {@code key} is not in this {@code ClubBook}.
      */
-    public boolean removeMember(Member key) throws MemberNotFoundException {
+    public boolean removeMember(Member key) throws MemberNotFoundException, DeleteCurrentUserException {
         deleteTagsUniqueToMember(key);
         if (members.remove(key)) {
             return true;
