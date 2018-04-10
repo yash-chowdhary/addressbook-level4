@@ -832,7 +832,7 @@ e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *Add Poll* `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
-e.g. `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
+e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 * *Delete Poll* `deletepoll INDEX` +
 e.g. `deletepoll 2`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
