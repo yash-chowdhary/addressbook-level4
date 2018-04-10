@@ -32,7 +32,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -56,7 +56,7 @@ public class AddCommandParserTest {
     public void parse_allFieldsPresent_success() {
         Member expectedMember = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
-                .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_FRIEND).build();
+                .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_HEAD).build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
@@ -86,7 +86,7 @@ public class AddCommandParserTest {
         // multiple tags - all accepted
         Member expectedMemberMultipleTags = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
-                .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
+                .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_HEAD, VALID_TAG_HUSBAND).build();
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_BOB
                 + GROUP_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND
                 + USERNAME_DESC_BOB + PASSWORD_DESC, new AddCommand(expectedMemberMultipleTags));
@@ -160,7 +160,7 @@ public class AddCommandParserTest {
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_BOB
-                + GROUP_DESC_BOB + INVALID_TAG_DESC + VALID_TAG_FRIEND, Tag.MESSAGE_TAG_CONSTRAINTS);
+                + GROUP_DESC_BOB + INVALID_TAG_DESC + VALID_TAG_HEAD, Tag.MESSAGE_TAG_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_MATRIC_NUMBER_DESC

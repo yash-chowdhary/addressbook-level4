@@ -3,6 +3,8 @@ package seedu.club.model.tag;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 /**
  * Represents a Tag in the club book.
  * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
@@ -23,7 +25,7 @@ public class Tag {
     public Tag(String tagName) {
         requireNonNull(tagName);
         checkArgument(isValidTagName(tagName), MESSAGE_TAG_CONSTRAINTS);
-        this.tagName = tagName;
+        this.tagName = WordUtils.capitalize(tagName);
     }
 
     /**

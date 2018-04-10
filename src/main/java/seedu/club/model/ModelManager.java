@@ -25,6 +25,7 @@ import seedu.club.commons.events.model.ProfilePhotoChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.commons.util.CsvUtil;
+import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
@@ -55,10 +56,12 @@ import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.storage.CsvClubBookStorage;
 
 /**
@@ -103,6 +106,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void resetData(ReadOnlyClubBook newData) {
         clubBook.resetData(newData);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
     @Override
@@ -116,10 +120,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deleteMember(Member target) throws MemberNotFoundException {
+    public synchronized int deleteMember(Member target) throws MemberNotFoundException {
         clubBook.removeMember(target);
+        int numberOfTasksRemoved = clubBook.removeTasksOfMember(target);
         filteredMembers.remove(target);
         indicateClubBookChanged();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksRemoved;
     }
 
     @Override
@@ -130,12 +137,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateMember(Member target, Member editedMember)
-            throws DuplicateMatricNumberException, MemberNotFoundException {
+    public int updateMember(Member target, Member editedMember)
+            throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
+        int numberOfTasksUpdated = clubBook.updateTask(target, editedMember);
         indicateClubBookChanged();
+        if (target.equals(getLoggedInMember())) {
+            clubBook.setLoggedInMember(editedMember);
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        return numberOfTasksUpdated;
     }
+
 
     //@@author MuhdNurKamal
     @Override
@@ -159,7 +173,6 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
-    //@@author
 
     //@@author Song Weiyang
     @Override
@@ -173,7 +186,6 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    //@@author Song Weiyang
     @Override
     public Member getLoggedInMember() {
         return clubBook.getLoggedInMember();
@@ -298,13 +310,50 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
-            DuplicateTaskException {
+            DuplicateTaskException, TaskStatusCannotBeEditedException {
         requireAllNonNull(taskToEdit, editedTask);
-        clubBook.updateTask(taskToEdit, editedTask);
+        String currentMember = getLoggedInMember().getMatricNumber().toString();
+        checkIfStatusCanBeEdited(taskToEdit, currentMember);
+        clubBook.updateTaskStatus(taskToEdit, editedTask);
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
+    /**
+     * Checks if status can be edited based on the current member's matric number.
+     * @throws TaskStatusCannotBeEditedException if the task status cannot be edited.
+     */
+    private void checkIfStatusCanBeEdited(Task taskToEdit, String currentMember)
+            throws TaskStatusCannotBeEditedException {
+        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getAssignor())
+                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getAssignee())) {
+            throw new TaskStatusCannotBeEditedException();
+        }
+    }
+
+    @Override
+    public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
+            MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
+        requireAllNonNull(taskToEdit, editedTask);
+        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+        checkIfMemberExists(newAssigneeMatricNumber);
+        checkIfDuplicateTaskExists(editedTask);
+        checkIfTaskIsAlreadyAssigned(editedTask);
+        checkIfInputAssigneeIsSame(taskToEdit, editedTask);
+        try {
+            clubBook.updateTaskAssignee(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            throw new AssertionError("Impossible. This check has already been made");
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+    private void checkIfInputAssigneeIsSame(Task taskToEdit, Task editedTask) throws TaskAssigneeUnchangedException {
+        if (taskToEdit.getAssignee().equals(editedTask.getAssignee())) {
+            throw new TaskAssigneeUnchangedException();
+        }
+    }
 
     //@@author Song Weiyang
     @Override
@@ -332,7 +381,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
-            DuplicateTaskException {
+            DuplicateTaskException, TaskAlreadyAssignedException {
         checkIfMemberExists(matricNumber);
         try {
             Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
@@ -341,12 +390,28 @@ public class ModelManager extends ComponentManager implements Model {
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
             toAdd.setStatus(status);
-            clubBook.addTaskToTaskList(toAdd);
+            checkIfDuplicateTaskExists(toAdd);
+            checkIfTaskIsAlreadyAssigned(toAdd);
+            try {
+                clubBook.addTaskToTaskList(toAdd);
+            } catch (DuplicateTaskException dte) {
+                throw new AssertionError("Already caught before.");
+            }
             updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
             indicateClubBookChanged();
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
+        } catch (TaskAlreadyAssignedException e) {
+            throw new TaskAlreadyAssignedException();
         }
+    }
+
+    private void checkIfDuplicateTaskExists(Task toAdd) throws DuplicateTaskException {
+        clubBook.checkIfDuplicateTaskExists(toAdd);
+    }
+
+    private void checkIfTaskIsAlreadyAssigned(Task toAdd) throws TaskAlreadyAssignedException {
+        clubBook.checkIfTaskIsAlreadyAssigned(toAdd);
     }
 
     /**
@@ -388,9 +453,16 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void viewAllTasks() throws TasksCannotBeDisplayedException {
+    public void viewAllTasks() throws TasksAlreadyListedException {
+        checkIfAllTasksAlreadyListed();
         updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         indicateClubBookChanged();
+    }
+
+    private void checkIfAllTasksAlreadyListed() throws TasksAlreadyListedException {
+        if (filteredTasks.getPredicate().equals(PREDICATE_SHOW_ALL_TASKS)) {
+            throw new TasksAlreadyListedException(ViewAllTasksCommand.MESSAGE_ALREADY_LISTED);
+        }
     }
 
     @Override

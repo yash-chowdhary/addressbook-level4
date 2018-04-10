@@ -7,6 +7,8 @@ import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
+import seedu.club.logic.commands.ChangeAssigneeCommand;
+import seedu.club.logic.commands.ChangePasswordCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ChangeTaskStatusCommand;
 import seedu.club.logic.commands.ClearCommand;
@@ -23,6 +25,7 @@ import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HideResultsCommand;
+import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
@@ -79,6 +82,9 @@ public class CommandList {
         commandList.add(SignUpCommand.COMMAND_FORMAT);
         commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
         commandList.add(ImportCommand.COMMAND_FORMAT);
+        commandList.add(ChangePasswordCommand.COMMAND_FORMAT);
+        commandList.add(HistoryCommand.COMMAND_WORD);
+        commandList.add(ChangeAssigneeCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;

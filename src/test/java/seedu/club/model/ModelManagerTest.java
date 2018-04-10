@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
@@ -15,6 +15,7 @@ import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.BOB;
+import static seedu.club.testutil.TypicalMembers.CARL;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
@@ -41,14 +42,18 @@ import seedu.club.model.member.NameContainsKeywordsPredicate;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 import seedu.club.testutil.Assert;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
@@ -166,7 +171,7 @@ public class ModelManagerTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         String expectedRecipients = modelManager.generateEmailRecipients(null,
-                new Tag(VALID_TAG_FRIEND));
+                new Tag(VALID_TAG_HEAD));
         modelManager.sendEmail(expectedRecipients, new Client(Client.VALID_CLIENT_GMAIL),
                 new Subject(Subject.TEST_SUBJECT_STRING), new Body(Body.TEST_BODY_STRING));
 
@@ -246,7 +251,7 @@ public class ModelManagerTest {
             modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedModel, modelManager);
-        } catch (MemberNotFoundException mnfe) {
+        } catch (MemberNotFoundException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         }
     }
@@ -262,7 +267,7 @@ public class ModelManagerTest {
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
             modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
-        } catch (DuplicateTaskException dte) {
+        } catch (DuplicateTaskException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
             assertEquals(expectedModel, modelManager);
@@ -281,9 +286,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
-        } catch (DuplicateTaskException dte) {
-            fail("This exception should not be caught");
-        } catch (MemberNotFoundException mnfe) {
+        } catch (DuplicateTaskException | MemberNotFoundException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         }
     }
@@ -324,7 +327,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (TaskNotFoundException | DuplicateTaskException e) {
+        } catch (TaskNotFoundException | DuplicateTaskException | TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         }
 
@@ -348,7 +351,7 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (DuplicateTaskException | TaskNotFoundException e) {
+        } catch (DuplicateTaskException | TaskNotFoundException | TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         }
     }
@@ -369,8 +372,116 @@ public class ModelManagerTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
+        } catch (TaskStatusCannotBeEditedException e) {
+            assertEquals(expectedModel, modelManager);
         } catch (TaskNotFoundException | DuplicateTaskException e) {
-            fail("This will not be executed");
+            fail("This will not execute");
+        }
+    }
+
+    @Test
+    public void changeAssignee_validAssignee_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        modelManager.changeAssignee(taskToEdit, editedTask);
+
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void changeAssignee_invalidMember_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setAssignee(new Assignee(CARL.getMatricNumber().toString()));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeAssignee(taskToEdit, editedTask);
+        } catch (MemberNotFoundException mnfe) {
+            assertEquals(expectedModel, modelManager);
+        } catch (TaskAlreadyAssignedException | DuplicateTaskException | TaskAssigneeUnchangedException e) {
+            return;
+        }
+    }
+
+    @Test
+    public void changeAssignee_unchangedAssignee_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeAssignee(taskToEdit, editedTask);
+        } catch (TaskAssigneeUnchangedException e) {
+            assertEquals(expectedModel, modelManager);
+        } catch (TaskAlreadyAssignedException | DuplicateTaskException | MemberNotFoundException e) {
+            return;
+        }
+    }
+
+    @Test
+    public void changeAssignee_taskAlreadyAssigned_throwsException() {
+        Task buyFoodModified = new TaskBuilder(BUY_FOOD).build();
+        buyFoodModified.setAssignor(new Assignor(BENSON.getMatricNumber().toString()));
+        buyFoodModified.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(buyFoodModified).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeAssignee(taskToEdit, editedTask);
+        } catch (TaskAlreadyAssignedException e) {
+            assertEquals(expectedModel, modelManager);
+        } catch (MemberNotFoundException | DuplicateTaskException | TaskAssigneeUnchangedException e) {
+            return;
         }
     }
 
@@ -404,7 +515,7 @@ public class ModelManagerTest {
                 BENSON.getCredentials().getPassword().value);
         try {
             modelManager.viewAllTasks();
-        } catch (TasksCannotBeDisplayedException tdbde) {
+        } catch (TasksAlreadyListedException e) {
             assertEquals(expectedModel, modelManager);
         }
     }
@@ -447,6 +558,26 @@ public class ModelManagerTest {
         Assert.assertThrows(TasksAlreadyListedException.class, expectedMessage, modelManager::viewMyTasks);
     }
 
+    @Test
+    public void deleteMember_validMemberWithTasks_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BOOK_AUDITORIUM)
+                .withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        modelManager.deleteMember(BENSON);
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        assertEquals(expectedModel, modelManager);
+    }
+
     //@@author
 
     @Test
@@ -469,7 +600,7 @@ public class ModelManagerTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         modelManager.updateFilteredMemberList(modelManager.PREDICATE_SHOW_ALL_MEMBERS);
-        modelManager.deleteTag(new Tag(VALID_TAG_FRIEND));
+        modelManager.deleteTag(new Tag(VALID_TAG_HEAD));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();

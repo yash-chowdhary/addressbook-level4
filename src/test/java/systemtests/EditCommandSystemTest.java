@@ -27,7 +27,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
@@ -37,6 +37,7 @@ import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.KEYWORD_MATCHING_MEIER;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
@@ -56,6 +57,7 @@ import seedu.club.model.member.Phone;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.MemberUtil;
 
@@ -80,8 +82,8 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
                 + PHONE_DESC_BOB + " " + EMAIL_DESC_BOB + "  " + MATRIC_NUMBER_DESC_BOB + " "
                 + GROUP_DESC_BOB + " " + TAG_DESC_HUSBAND + " " + USERNAME_DESC_BOB + " " + PASSWORD_DESC;
         Member editedMember = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-                .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
+                .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
+                .withGroup(WordUtils.capitalize(VALID_GROUP_BOB.toLowerCase())).withTags(VALID_TAG_HUSBAND).build();
 
         assertCommandSuccess(command, index, editedMember);
 
@@ -97,6 +99,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
                 getModel().getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()), editedMember);
         assertCommandSuccess(command, model, expectedResultMessage);
 
+        model = getModel();
         /* Case: edit a member with new values same as existing values -> edited */
         index = INDEX_SECOND_MEMBER;
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
@@ -107,7 +110,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         index = INDEX_FIRST_MEMBER;
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + TAG_DESC_FRIEND;
         Member memberToEdit = getModel().getFilteredMemberList().get(index.getZeroBased());
-        editedMember = new MemberBuilder(memberToEdit).withTags(VALID_TAG_FRIEND).build();
+        editedMember = new MemberBuilder(memberToEdit).withTags(VALID_TAG_HEAD).build();
         assertCommandSuccess(command, index, editedMember);
 
         /* Case: clear tags -> cleared */
@@ -239,13 +242,15 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
             expectedModel.updateMember(
                     expectedModel.getFilteredMemberList().get(toEdit.getZeroBased()), editedMember);
             expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        } catch (DuplicateMatricNumberException | MemberNotFoundException e) {
+        } catch (DuplicateMatricNumberException | MemberNotFoundException | DuplicateTaskException e) {
             throw new IllegalArgumentException(
                     "editedMember is a duplicate in expectedModel, or it isn't found in the model.");
         }
 
+        int numberOfTasksUpdated = 0;
         assertCommandSuccess(command, expectedModel,
-                String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember), expectedSelectedCardIndex);
+                String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember, numberOfTasksUpdated),
+                expectedSelectedCardIndex);
     }
 
     /**

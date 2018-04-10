@@ -7,8 +7,8 @@
         <phone>85355255</phone>
         <email>alice@example.com</email>
         <matricNumber>A9210701B</matricNumber>
-        <group>logistics</group>
-        <tagged>friends</tagged>
+        <group>Exco</group>
+        <tagged>head</tagged>
     </members>
     <members>
         <name>Benson Meier</name>
@@ -17,7 +17,7 @@
         <matricNumber>A8389539B</matricNumber>
         <group>pr</group>
         <tagged>owesMoney</tagged>
-        <tagged>friends</tagged>
+        <tagged>head</tagged>
     </members>
     <members>
         <name>Carl Kurz</name>
@@ -54,6 +54,6 @@
         <matricNumber>A2836750A</matricNumber>
         <group>legal</group>
     </members>
-    <tags>friends</tags>
+    <tags>head</tags>
     <tags>owesMoney</tags>
 </clubbook>
