@@ -3,6 +3,17 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <!--@@author amrut-prabhu-->
+  <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+    <Text text="CLUB MEMBERS" fill="darkblue" VBox.vgrow="NEVER" />
+    <VBox.margin>
+      <Insets bottom="5.0" />
+    </VBox.margin>
+  </TextFlow>
+  <!--@@author-->
   <ListView fx:id="memberListView" VBox.vgrow="ALWAYS" />
 </VBox>

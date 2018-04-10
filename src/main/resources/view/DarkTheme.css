@@ -38,6 +38,13 @@
     -fx-font-family: "Segoe UI Semibold";
 }
 
+.text-panel-header {
+    -fx-font-size: 17pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-background-color: gray;
+    -fx-background-radius: 2;
+}
+
 .tab-pane {
     -fx-padding: 0 0 0 1;
 }
