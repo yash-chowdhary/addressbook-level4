@@ -596,6 +596,7 @@ The logged in member's details are then updated to include this new profile phot
 // end::profilephoto[]
 // end::profilephoto[]
 
+// tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
 Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
@@ -640,6 +641,7 @@ just for compress/decompress but for other events as well.
 * **Alternative 2:** Keep a `Ui` attribute in every command just like `Model`
 ** Pros: Easy to implement.
 ** Cons: Increases coupling
+// end::compressdecompress[]
 
 === Logging
 

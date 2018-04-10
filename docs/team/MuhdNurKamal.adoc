@@ -1,0 +1,59 @@
+= Muhammad Nur Kamal Bin Mohammed Ariff - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: Club Connect
+
+---
+
+== Overview
+
+*Club Connect* is a desktop application targeted at club members who are students at the National University of Singapore (NUS).
+It aims to make the tedious process of club management easier and more effective.  The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+
+== Summary of contributions
+
+* *Major enhancement*: added *voting system*
+** What it does: Allows `Exco` members to create/delete polls. Members can vote in polls.
+** Justification: This feature improves the product significantly because the `Exco` of the club using Club Connect can accurately determine the views of other members so that they can take the best path of action for the club.
+** Highlights: This enhancement extensively covers . It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
+
+* *Minor enhancement*: added *compress/decompress commands* for users to navigate through member list easily.
+
+* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+
+* *Other contributions*:
+
+** Project management:
+*** Managed release `Peer Testing` (3 releases) on GitHub
+** Enhancements to existing features:
+*** Replaced Address field of members to Matriculation Number
+*** Updated the Find Command to either search according to specified field (eg. email) or according to all fields
+*** Wrote additional tests for existing features to increase coverage from 88% to 92% (Pull requests https://github.com[#36], https://github.com[#38])
+** Community:
+*** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/168[#168], https://github.com/CS2103JAN2018-W15-B4/main/pull/167[#167], https://github.com/CS2103JAN2018-W15-B4/main/pull/149[#149], https://github.com/CS2103JAN2018-W15-B4/main/pull/125[#125]
+*** Reported bugs and suggestions for other teams in the class (examples:  https://github.com[1], https://github.com[2], https://github.com[3])
+
+== Contributions to the User Guide
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=find]
+
+include::../UserGuide.adoc[tag=compressdecompress]
+
+include::../UserGuide.adoc[tag=showresults]
+
+include::../UserGuide.adoc[tag=hideresults]
+
+include::../UserGuide.adoc[tag=vote]
+
+== Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+include::../DeveloperGuide.adoc[tag=compressdecompress]

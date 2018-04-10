@@ -130,6 +130,7 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com m/A1234567H`
 * `add n/Betsy Crowe p/95462159 e/betsycrowe@u.nus.edu m/A0145625K g/Logistics t/Head`
 
+// tag::addpoll[]
 === Adding a poll: `addpoll` (Since v1.3)
 
 Adds a poll to Club Connect. +
@@ -151,6 +152,7 @@ The answers to choose from are `I-Cube` and `LT7`.
 
 [IMPORTANT]
 This command is for `EXCO` members only.
+// end::addpoll[]
 
 === Adding a task: `addtask` (Since v1.3)
 
@@ -293,6 +295,7 @@ Execute the clear command, and confirming it.
 * `Clear` -> `Clear N`
 Execute the clear command, and cancelling it.
 
+// tag::compressdecompress[]
 === Compressing member details : `compress` (Since v1.2)
 
 Compresses the details of members in the member list +
@@ -315,6 +318,7 @@ Alias: `decomp`
 * No changes if member details are already decompressed
 * Use this to see more detailed information of members in contact list
 ****
+// end::compressdecompress[]
 
 === Deleting a member : `delete`
 
@@ -344,6 +348,7 @@ Deletes the 2nd member in the member listing.
 `delete 1` +
 Deletes the 1st member in the results of the `find` command.
 
+// tag::deletepoll[]
 === Deleting a poll : `deletepoll` (Since v1.3)
 
 Deletes the specified poll from the Club Connect. +
@@ -364,6 +369,7 @@ Examples:
 Deletes the 2nd poll in the poll listing.
 * `deletepoll 4` +
 Deletes the 4th poll in the poll listing.
+// end::deletepoll[]
 
 === Deleting a tag : `deletetag` (Since v1.1)
 
@@ -492,6 +498,7 @@ Exports all members in Club Connect to "members.csv" file on `John Doe` 's Deskt
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
 Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
 
+// tag::find[]
 === Locating members: `find` (Since v1.2)
 
 Finds members whose details contain any of the given keywords. +
@@ -527,6 +534,7 @@ Returns all members having names containing `Betsy`, `Tim`, or `John`.
 Returns all members in the logistics `group`
 * `find p/ 123` +
 Returns any member having phone number containing 123.
+// end::find[]
 
 === Viewing help : `help`
 
@@ -534,6 +542,7 @@ Opens the Club Connect help window (see <<help-window,Figure 2>>). +
 Format : `help` +
 Aliases : `h`, `info`
 
+// tag::hideresults[]
 === Hiding results of polls : `hideresults` (Since v1.4)
 
 Hides the results of all polls in Club Connect.
@@ -544,7 +553,7 @@ Format: `hideresults` +
 Alias: `hideres`
 [IMPORTANT]
 This command is for `EXCO` members only.
-
+// end::hideresults[]
 
 === Listing entered commands : `history`
 
@@ -671,6 +680,7 @@ Selects the 2nd member in Club Connect.
 `s 1` +
 Selects the 1st member in the results of the `find` command.
 
+// tag::showresults[]
 === Showing results of polls : `showresults` (Since v1.4)
 
 Displays the results of polls in Club Connect.
@@ -686,7 +696,7 @@ Alias: `showres`
 
 [IMPORTANT]
 This command is for `EXCO` members only.
-
+// end::showresults[]
 
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
@@ -752,6 +762,7 @@ The main purpose of this command is to enable `EXCO` members to toggle between a
 Format: `viewmytasks` +
 Alias: `mytasks`
 
+// tag::vote[]
 === Voting in a poll : `vote` (Since v1.4)
 
 Votes for the specified answer in the specified poll in Club Connect . +
@@ -771,6 +782,7 @@ Examples:
 Votes for the 2nd answer in the 1st poll of the poll listing
 * `vote 5 1` +
 Votes for the 1st answer in the 5th poll of the poll listing
+// end::vote[]
 
 === Auto-Complete Command (Since v1.3)
 Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
