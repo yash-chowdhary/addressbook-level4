@@ -5,7 +5,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.core.Messages;
+import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 //@@author th14thmusician
@@ -49,6 +51,7 @@ public class ClearCommand extends Command {
             } else if (args.equals(" Y")) {
                 model.resetData(new ClubBook());
                 model.clearClubBook();
+                EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
                 return new CommandResult(MESSAGE_SUCCESS);
             } else {
                 model.setClearConfirmation(false);

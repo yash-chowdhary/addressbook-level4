@@ -3,7 +3,12 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EventListener;
 
+import javafx.event.Event;
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
+import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
@@ -35,6 +40,7 @@ public class LogOutCommand extends Command {
             model.updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
             model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
             model.updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
+            EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
             return new CommandResult(MESSAGE_SUCCESS);
         }
     }

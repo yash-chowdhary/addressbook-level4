@@ -6,9 +6,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.logging.Logger;
 
-import javafx.collections.transformation.FilteredList;
-import javafx.geometry.HPos;
-import javafx.scene.layout.GridPane;
 import org.fxmisc.easybind.EasyBind;
 
 import com.google.common.eventbus.Subscribe;
@@ -22,11 +19,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.web.WebView;
 
 import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.commons.events.ui.ModifiedTaskPanelSelecetionChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
@@ -134,6 +132,15 @@ public class BrowserPanel extends UiPart<Region> {
     public void handleMemberPanelSelectionChangeEvent(MemberPanelSelectionChangedEvent event) {
         loadMemberPage(event.getNewSelection().member);
         setConnections(taskList, event.getNewSelection().member);
+    }
+
+    @Subscribe
+    private void handleClearMemberSelectPanelEvent (ClearMemberSelectPanelEvent event) {
+        if (event.isToClear()) {
+            loadDetails(false);
+        } else {
+            loadDetails(true);
+        }
     }
     //@@author
 
