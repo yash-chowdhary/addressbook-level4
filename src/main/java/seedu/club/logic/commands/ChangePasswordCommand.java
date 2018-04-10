@@ -14,6 +14,7 @@ import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
 //@@author Song Weiyang
@@ -38,6 +39,7 @@ public class ChangePasswordCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Password changed successfully.";
     public static final String MESSAGE_PASSWORD_INCORRECT = "The old password entered is incorrect.";
     public static final String MESSAGE_AUTHENTICATION_FAILED = "You can only change your own password.";
+    public static final String MESSAGE_USERNAME_NOTFOUND = "This username does not exist.";
     private Username username;
     private Password oldPassword;
     private Password newPassword;
@@ -59,6 +61,8 @@ public class ChangePasswordCommand extends Command {
             throw new CommandException(MESSAGE_PASSWORD_INCORRECT);
         } catch (DataToChangeIsNotCurrentlyLoggedInMemberException dataToChangeIsNotCurrentlyLoggedInMemberException) {
             throw new CommandException(MESSAGE_AUTHENTICATION_FAILED);
+        } catch (MatricNumberNotFoundException e) {
+            throw new CommandException(MESSAGE_USERNAME_NOTFOUND);
         }
     }
 
