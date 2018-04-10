@@ -116,7 +116,7 @@ public class FindCommandTest {
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
         expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 7);
-        command = prepareCommand("friend friends owesMoney", PREFIX_TAG);
+        command = prepareCommand("head heads owesMoney", PREFIX_TAG);
         assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON, CARL,
                 DANIEL, ELLE, FIONA, GEORGE));
     }

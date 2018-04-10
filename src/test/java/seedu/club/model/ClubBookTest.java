@@ -5,7 +5,7 @@ import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.testutil.TypicalMembers.ALICE;
@@ -37,6 +37,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
@@ -197,7 +198,7 @@ public class ClubBookTest {
         editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
 
         try {
-            clubBook.updateTask(taskToEdit, editedTask);
+            clubBook.updateTaskStatus(taskToEdit, editedTask);
         } catch (DuplicateTaskException | TaskNotFoundException e) {
             fail("This will not be executed");
         }
@@ -221,12 +222,29 @@ public class ClubBookTest {
         Task editedTask = new Task(BUY_FOOD);
 
         try {
-            clubBook.updateTask(taskToEdit, editedTask);
+            clubBook.updateTaskStatus(taskToEdit, editedTask);
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedClubBook, clubBook);
         } catch (TaskNotFoundException tnfe) {
             fail("This will not be executed");
         }
+    }
+
+    @Test
+    public void updateTaskAssignee_validAssignee_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+
+        Task taskToEdit = BUY_FOOD;
+        Task editedTask = new TaskBuilder(BUY_FOOD).build();
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON)
+                .withTask(editedTask).withTask(BUY_CONFETTI).build();
+
+        clubBook.updateTaskAssignee(taskToEdit, editedTask);
+        assertEquals(expectedClubBook, clubBook);
     }
     //@@author
 
@@ -299,7 +317,7 @@ public class ClubBookTest {
 
     @Test
     public void deleteTag_tagUsedByMultipleMembers_tagRemoved() throws Exception {
-        clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_FRIEND));
+        clubBookWithBobAndAmy.deleteTag(new Tag(VALID_TAG_HEAD));
 
         Member amyWithoutFriendTag = new MemberBuilder(AMY).withTags().build();
         Member bobWithoutFriendTag = new MemberBuilder(BOB).withTags(VALID_TAG_HUSBAND).build();

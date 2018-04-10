@@ -15,6 +15,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 
 /**
  * Adds a task to the currently logged-in member's Task list
@@ -45,6 +46,8 @@ public class AssignTaskCommand extends UndoableCommand {
 
     public static final String MESSAGE_SUCCESS = "New task created and assigned to %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
+    public static final String MESSAGE_ALREADY_ASSIGNED = "This task has already been assigned to this member by "
+            + "another EXCO member";
     public static final String MESSAGE_MEMBER_NOT_FOUND = "This member doesn't exist in the club book";
 
     private final Task toAdd;
@@ -69,6 +72,8 @@ public class AssignTaskCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_MEMBER_NOT_FOUND);
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
+        } catch (TaskAlreadyAssignedException e) {
+            throw new CommandException(MESSAGE_ALREADY_ASSIGNED);
         }
     }
 

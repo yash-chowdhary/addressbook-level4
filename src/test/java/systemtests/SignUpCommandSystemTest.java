@@ -62,13 +62,13 @@ public class SignUpCommandSystemTest extends ClubBookSystemTest {
         Member[] list = new Member[1];
         list[0] =  new Member(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
         String signupcommand = SignUpCommand.COMMAND_WORD +  " "
                 + PREFIX_NAME + list[0].getName().toString() + " "
                 + PREFIX_PHONE + list[0].getPhone().toString() + " "
                 + PREFIX_EMAIL + list[0].getEmail().value + " "
                 + PREFIX_MATRIC_NUMBER + list[0].getMatricNumber() + " "
-                + PREFIX_TAG + "friends ";
+                + PREFIX_TAG + "head ";
         String logincommand = LogInCommand.COMMAND_WORD + " u/" + list[0].getCredentials().getUsername().value
                 + " pw/password";
         executeCommand(signupcommand);
