@@ -20,10 +20,10 @@ public class VoteCommandParserTest {
         assertParseSuccess(parser, "1 2",
                 new VoteCommand(Index.fromOneBased(1), Index.fromOneBased(2)));
 
-        assertParseSuccess(parser, "2 99",
+        assertParseSuccess(parser, "2 \t   99",
                 new VoteCommand(Index.fromOneBased(2), Index.fromOneBased(99)));
 
-        assertParseSuccess(parser, "10 1",
+        assertParseSuccess(parser, "\t  10   1   \t    ",
                 new VoteCommand(Index.fromOneBased(10), Index.fromOneBased(1)));
     }
 
@@ -31,26 +31,26 @@ public class VoteCommandParserTest {
     public void parse_negativeIndices_failure() {
         assertParseFailure(parser, "-1 2", MESSAGE_INVALID_FORMAT);
 
-        assertParseFailure(parser, "1 -2", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1 \t   -2", MESSAGE_INVALID_FORMAT);
 
-        assertParseFailure(parser, "-1 -2", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "\t  -1   -2   \t    ", MESSAGE_INVALID_FORMAT);
     }
 
     @Test
     public void parse_oneIndexMissing_failure() {
         assertParseFailure(parser, "2", MESSAGE_INVALID_FORMAT);
 
-        assertParseFailure(parser, "1 ", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "2 \t   ", MESSAGE_INVALID_FORMAT);
 
-        assertParseFailure(parser, "  8  ", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "\t  8   \t    ", MESSAGE_INVALID_FORMAT);
     }
 
     @Test
     public void parse_moreThanTwoIndices_failure() {
         assertParseFailure(parser, "2 2  22  11 1", MESSAGE_INVALID_FORMAT);
 
-        assertParseFailure(parser, "2  3   1", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "2 \t   3    \t 1", MESSAGE_INVALID_FORMAT);
 
-        assertParseFailure(parser, "2 1 11", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "\t  2 1  11 \t    ", MESSAGE_INVALID_FORMAT);
     }
 }
