@@ -73,21 +73,6 @@ public class DeletePollCommandSystemTest extends ClubBookSystemTest {
     }
 
     /**
-     * Deletes the member at {@code toDelete} by creating a default {@code DeleteCommand} using {@code toDelete} and
-     * performs the same verification as {@code assertCommandSuccess(String, Model, String)}.
-     * @see DeleteCommandSystemTest#assertCommandSuccess(String, Model, String)
-     */
-    private void assertCommandSuccess(Index toDelete) {
-        Model expectedModel = getModel();
-        Poll deletedPoll = deletePollInModel(expectedModel, toDelete);
-        String expectedResultMessage = String.format(MESSAGE_DELETE_POLL_SUCCESS, deletedPoll);
-
-        assertCommandSuccess(
-                DeletePollCommand.COMMAND_WORD + " " + toDelete.getOneBased(), expectedModel,
-                expectedResultMessage);
-    }
-
-    /**
      * Executes {@code command} and in addition,<br>
      * 1. Asserts that the command box displays an empty string.<br>
      * 2. Asserts that the result display box displays {@code expectedResultMessage}.<br>
