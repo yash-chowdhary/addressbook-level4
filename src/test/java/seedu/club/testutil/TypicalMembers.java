@@ -10,7 +10,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.testutil.TypicalPolls.POLL_HOW;
 import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
@@ -18,6 +18,8 @@ import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import seedu.club.model.ClubBook;
 import seedu.club.model.member.Member;
@@ -35,13 +37,13 @@ public class TypicalMembers {
             .withPhone("85355255")
             .withMatricNumber("A9210701B")
             .withGroup("exco")
-            .withTags("friends").build();
+            .withTags("head").build();
     public static final Member BENSON = new MemberBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com")
             .withPhone("98765432")
             .withMatricNumber("A8389539B")
             .withGroup("pr")
-            .withTags("owesMoney", "friends").build();
+            .withTags("owesMoney", "head").build();
     public static final Member CARL = new MemberBuilder().withName("Carl Kurz")
             .withPhone("95352563")
             .withEmail("heinz@example.com")
@@ -86,11 +88,11 @@ public class TypicalMembers {
     public static final Member AMY = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
             .withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY)
             .withGroup(VALID_GROUP_AMY)
-            .withTags(VALID_TAG_FRIEND).build();
+            .withTags(VALID_TAG_HEAD).build();
     public static final Member BOB = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
             .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
-            .withGroup(VALID_GROUP_BOB)
-            .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
+            .withGroup(WordUtils.capitalize(VALID_GROUP_BOB.toLowerCase()))
+            .withTags(VALID_TAG_HUSBAND, VALID_TAG_HEAD)
             .build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER

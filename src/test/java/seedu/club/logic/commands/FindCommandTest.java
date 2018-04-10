@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author MuhdNurKamal
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -43,7 +43,7 @@ import seedu.club.model.member.Member;
  */
 public class FindCommandTest {
 
-    private static final Prefix[] prefixes = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
+    private static final Prefix[] FINDABLE_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
         PREFIX_MATRIC_NUMBER, PREFIX_TAG, PREFIX_GROUP};
 
     private Model model;
@@ -62,165 +62,10 @@ public class FindCommandTest {
     }
 
     @Test
-    public void equals_namePrefix() {
-        FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_NAME);
-        FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_NAME);
-
-        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findByFirstCommand.equals(findByFirstCommand));
-
-        // same values -> returns true
-        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findByFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findByFirstCommand == null);
-
-        // different member -> returns false
-        assertFalse(findByFirstCommand.equals(findBySecondCommand));
-    }
-
-    @Test
-    public void equals_emailPrefix() {
-        FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_EMAIL);
-        FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_EMAIL);
-
-        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findByFirstCommand.equals(findByFirstCommand));
-
-        // same values -> returns true
-        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findByFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findByFirstCommand == null);
-
-        // different member -> returns false
-        assertFalse(findByFirstCommand.equals(findBySecondCommand));
-    }
-
-    @Test
-    public void equals_phonePrefix() {
-        FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_PHONE);
-        FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_PHONE);
-
-        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findByFirstCommand.equals(findByFirstCommand));
-
-        // same values -> returns true
-        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findByFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findByFirstCommand == null);
-
-        // different member -> returns false
-        assertFalse(findByFirstCommand.equals(findBySecondCommand));
-    }
-
-    @Test
-    public void equals_matricNumberPrefix() {
-        FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_MATRIC_NUMBER);
-        FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_MATRIC_NUMBER);
-
-        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findByFirstCommand.equals(findByFirstCommand));
-
-        // same values -> returns true
-        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findByFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findByFirstCommand == null);
-
-        // different member -> returns false
-        assertFalse(findByFirstCommand.equals(findBySecondCommand));
-    }
-
-    @Test
-    public void equals_groupPrefix() {
-        FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_GROUP);
-        FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_GROUP);
-
-        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findByFirstCommand.equals(findByFirstCommand));
-
-        // same values -> returns true
-        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findByFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findByFirstCommand == null);
-
-        // different member -> returns false
-        assertFalse(findByFirstCommand.equals(findBySecondCommand));
-    }
-
-    @Test
-    public void equals_tagPrefix() {
-        FieldContainsKeywordsPredicate firstPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), PREFIX_TAG);
-        FieldContainsKeywordsPredicate secondPredicate =
-                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), PREFIX_TAG);
-
-        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
-
-        // same object -> returns true
-        assertTrue(findByFirstCommand.equals(findByFirstCommand));
-
-        // same values -> returns true
-        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
-        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(findByFirstCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(findByFirstCommand == null);
-
-        // different member -> returns false
-        assertFalse(findByFirstCommand.equals(findBySecondCommand));
+    public void equals_returnTrue() {
+        for (Prefix prefix : FINDABLE_PREFIXES) {
+            assertEqualsCorrectForPrefix(prefix);
+        }
     }
 
     @Test
@@ -242,13 +87,12 @@ public class FindCommandTest {
                 }
             }
         }
-
     }
 
     @Test
     public void execute_zeroKeywords_noMemberFound() throws CommandException {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 0);
-        for (Prefix prefix : prefixes) {
+        for (Prefix prefix : FINDABLE_PREFIXES) {
             assertCommandSuccess(prepareCommand(" ", prefix), expectedMessage, Collections.emptyList());
         }
     }
@@ -272,7 +116,7 @@ public class FindCommandTest {
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
         expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 7);
-        command = prepareCommand("friend friends owesMoney", PREFIX_TAG);
+        command = prepareCommand("head heads owesMoney", PREFIX_TAG);
         assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON, CARL,
                 DANIEL, ELLE, FIONA, GEORGE));
     }
@@ -302,5 +146,36 @@ public class FindCommandTest {
         assertEquals(expectedMessage, commandResult.feedbackToUser);
         assertEquals(expectedList, model.getFilteredMemberList());
         assertEquals(expectedClubBook, model.getClubBook());
+    }
+
+    /**
+     * Asserts that equals method for FindCommand with prefix is correct
+     *
+     * @param prefix of field FindCommand finds for
+     */
+    private void assertEqualsCorrectForPrefix(Prefix prefix) {
+        FieldContainsKeywordsPredicate firstPredicate =
+                new FieldContainsKeywordsPredicate(Collections.singletonList("first"), prefix);
+        FieldContainsKeywordsPredicate secondPredicate =
+                new FieldContainsKeywordsPredicate(Collections.singletonList("second"), prefix);
+
+        FindCommand findByFirstCommand = new FindCommand(firstPredicate);
+        FindCommand findBySecondCommand = new FindCommand(secondPredicate);
+
+        // same object -> returns true
+        assertTrue(findByFirstCommand.equals(findByFirstCommand));
+
+        // same values -> returns true
+        FindCommand findByFirstCommandCopy = new FindCommand(firstPredicate);
+        assertTrue(findByFirstCommand.equals(findByFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(findByFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(findByFirstCommand == null);
+
+        // different member -> returns false
+        assertFalse(findByFirstCommand.equals(findBySecondCommand));
     }
 }

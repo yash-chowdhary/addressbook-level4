@@ -24,9 +24,9 @@ public class MemberBuilder {
     public static final String DEFAULT_MATRIC_NUMBER = "A1357904H";
     public static final String DEFAULT_EMAIL = "alicia@gmail.com";
     public static final String DEFAULT_GROUP = "exco";
-    public static final String DEFAULT_TAGS = "friends";
+    public static final String DEFAULT_TAGS = "head";
     public static final String DEFAULT_USERNAME = "A1357904H";
-    public static final String DEFAULT_PASSWORD = "passsword";
+    public static final String DEFAULT_PASSWORD = "password";
 
     private Name name;
     private Phone phone;

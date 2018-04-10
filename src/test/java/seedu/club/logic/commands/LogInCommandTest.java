@@ -40,16 +40,16 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 public class LogInCommandTest {
     private final Member member = new Member(new Name("Alex Yeoh"),
             new Phone("87438807"), new Email("alexyeoh@example.com"),
             new MatricNumber("A5215090A"), new Group("logistics"),
-            getTagSet("friends"));
+            getTagSet("head"));
 
     @Test
     public void executeMemberSuccessfullyLogIn() throws CommandException {
@@ -102,6 +102,12 @@ public class LogInCommandTest {
         }
 
         @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void updateFilteredPollList(Predicate<Poll> predicate) {
             fail("This method should not be called.");
         }
@@ -122,7 +128,7 @@ public class LogInCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        public void viewAllTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 
@@ -297,7 +303,7 @@ public class LogInCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void logsInMember(String username, String password) {
@@ -346,7 +352,7 @@ public class LogInCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void logsInMember(String username, String password) {

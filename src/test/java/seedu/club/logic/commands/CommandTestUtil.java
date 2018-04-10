@@ -55,8 +55,8 @@ public class CommandTestUtil {
     public static final String VALID_GROUP_AMY = "Exco";
     public static final String VALID_GROUP_BOB = "EXCO";
     public static final String VALID_GROUP_TEST = "pr";
-    public static final String VALID_TAG_HUSBAND = "husband";
-    public static final String VALID_TAG_FRIEND = "friends";
+    public static final String VALID_TAG_HUSBAND = "Husband";
+    public static final String VALID_TAG_HEAD = "Head";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member
     public static final String VALID_TAG_UNUSED_DESC = " " + PREFIX_TAG + VALID_TAG_UNUSED;
     public static final String VALID_USERNAME_AMY = "AmyBee";
@@ -109,7 +109,7 @@ public class CommandTestUtil {
     public static final String MATRIC_NUMBER_DESC_CARL = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_CARL;
     public static final String GROUP_DESC_AMY = " " + PREFIX_GROUP + VALID_GROUP_AMY;
     public static final String GROUP_DESC_BOB = " " + PREFIX_GROUP + VALID_GROUP_BOB;
-    public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
+    public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_HEAD;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
     public static final String USERNAME_DESC_AMY = " " + PREFIX_USERNAME + VALID_USERNAME_AMY;
     public static final String USERNAME_DESC_BOB = " " + PREFIX_USERNAME + VALID_USERNAME_BOB;
@@ -177,10 +177,10 @@ public class CommandTestUtil {
     static {
         DESC_AMY = new EditMemberDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY)
-                .withGroup(VALID_GROUP_AMY).withTags(VALID_TAG_FRIEND).build();
+                .withGroup(VALID_GROUP_AMY).withTags(VALID_TAG_HEAD).build();
         DESC_BOB = new EditMemberDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
-                .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withGroup(VALID_GROUP_BOB).withTags(VALID_TAG_HUSBAND, VALID_TAG_HEAD).build();
     }
 
     /**

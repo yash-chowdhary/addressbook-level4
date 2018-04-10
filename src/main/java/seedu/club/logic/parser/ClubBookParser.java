@@ -10,6 +10,7 @@ import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
+import seedu.club.logic.commands.ChangeAssigneeCommand;
 import seedu.club.logic.commands.ChangePasswordCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ChangeTaskStatusCommand;
@@ -78,6 +79,8 @@ public class ClubBookParser {
             return new AddTaskCommandParser().parse(arguments);
         } else if (isAssignTaskCommand(commandWord)) {
             return new AssignTaskCommandParser().parse(arguments);
+        } else if (isChangeAssigneeCommand(commandWord)) {
+            return new ChangeAssigneeCommandParser().parse(arguments);
         } else if (isChangePasswordCommand(commandWord)) {
             return new ChangePasswordCommandParser().parse(arguments);
         } else if (isChangePicCommand(commandWord)) {
@@ -143,6 +146,18 @@ public class ClubBookParser {
         } else {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangeAssigneeCommand's aliases
+     */
+    private boolean isChangeAssigneeCommand(String commandWord) {
+        for (String commandAlias : ChangeAssigneeCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
