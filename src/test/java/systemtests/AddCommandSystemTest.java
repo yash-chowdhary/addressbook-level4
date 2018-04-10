@@ -30,7 +30,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
@@ -106,7 +106,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         /* Case: add a member with all fields same as another member in the club book except name -> rejected */
         toAdd = new MemberBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HEAD).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_BOB + PASSWORD_DESC;
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
@@ -114,7 +114,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         /* Case: add a member with all fields same as another member in the club book except phone -> rejected */
         toAdd = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HEAD).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_AMY
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
@@ -122,7 +122,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         /* Case: add a member with all fields same as another member in the club book except email -> rejected */
         toAdd = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_BOB)
                 .withMatricNumber(VALID_MATRIC_NUMBER_AMY).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HEAD).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_BOB + MATRIC_NUMBER_DESC_AMY
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
@@ -130,7 +130,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         /* Case: add a member with all fields same as another member in the club book except matric number -> added */
         toAdd = new MemberBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withMatricNumber(VALID_MATRIC_NUMBER_BOB).withGroup(VALID_GROUP_AMY)
-                .withTags(VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HEAD).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + MATRIC_NUMBER_DESC_BOB
                 + GROUP_DESC_AMY + TAG_DESC_FRIEND + USERNAME_DESC_AMY + PASSWORD_DESC;
         assertCommandSuccess(command, toAdd);
@@ -142,7 +142,7 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
                 + PREFIX_PHONE + "98765432 "
                 + PREFIX_EMAIL + "johnd@example.com "
                 + PREFIX_MATRIC_NUMBER + "A0123456H "
-                + PREFIX_TAG + "friends "
+                + PREFIX_TAG + "head "
                 + PREFIX_TAG + "owesMoney ";
         executeCommand(signUpCommand);
         logInCommand = LogInCommand.COMMAND_WORD + " "
@@ -179,10 +179,10 @@ public class AddCommandSystemTest extends ClubBookSystemTest {
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         /* Case: add a duplicate member except with different tags -> rejected */
-        // "friends" is an existing tag used in the default model, see TypicalMembers#ALICE
+        // "head" is an existing tag used in the default model, see TypicalMembers#ALICE
         // This test will fail if a new tag that is not in the model is used, see the bug documented in
         // ClubBook#addMember(member)
-        command = MemberUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "friends";
+        command = MemberUtil.getAddCommand(HOON) + " " + PREFIX_TAG.getPrefix() + "head";
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
 
         /* Case: missing name -> rejected */

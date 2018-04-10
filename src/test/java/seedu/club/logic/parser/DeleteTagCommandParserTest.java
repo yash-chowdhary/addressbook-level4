@@ -1,7 +1,7 @@
 package seedu.club.logic.parser;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -23,7 +23,7 @@ public class DeleteTagCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteTagCommand() {
-        assertParseSuccess(parser, " t/friends", new DeleteTagCommand(new Tag(VALID_TAG_FRIEND)));
+        assertParseSuccess(parser, " t/head", new DeleteTagCommand(new Tag(VALID_TAG_HEAD)));
     }
 
     @Test

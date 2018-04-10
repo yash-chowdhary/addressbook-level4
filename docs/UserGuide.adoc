@@ -54,7 +54,7 @@ image::startup.png[width="550"]
 . Execute the `signup` command. No other command will work unless you sign up.
 . Execute the `login` command once you've signed up. The GUI should look similar to Figure 2.
 +
-[[launch-app]]
+[[login]]
 [.text-center]
 .Club Connect application after logging in
 image::login.png[width="550"]
@@ -850,7 +850,7 @@ e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *Add Poll* `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
-e.g. `addpoll n/Where should the annual meeting be held? ans/I-Cube ans/LT7`
+e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 * *Delete Poll* `deletepoll INDEX` +
 e.g. `deletepoll 2`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
