@@ -145,7 +145,7 @@ public class FindCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: find tags of member in club book -> 0 members found */
         List<Tag> tags = new ArrayList<>(BENSON.getTags());
-        command = FindCommand.COMMAND_WORD + " " + tags.get(0).tagName;
+        command = FindCommand.COMMAND_WORD + " " + tags.get(1).tagName;
         ModelHelper.setFilteredList(expectedModel, BENSON);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();

@@ -184,6 +184,8 @@ public class Member {
                 .append(getGroup())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
+
+
         return builder.toString();
     }
 

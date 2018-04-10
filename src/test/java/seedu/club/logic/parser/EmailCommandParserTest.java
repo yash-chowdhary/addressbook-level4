@@ -11,7 +11,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_CLIENT_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -44,7 +44,7 @@ public class EmailCommandParserTest {
         assertParseFailure(parser, VALID_GROUP_BOB, expectedMessage);
 
         //tag should be preceded with 't/' prefix
-        assertParseFailure(parser, VALID_TAG_FRIEND, expectedMessage);
+        assertParseFailure(parser, VALID_TAG_HEAD, expectedMessage);
     }
 
     @Test

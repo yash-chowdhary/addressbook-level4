@@ -7,7 +7,7 @@ import seedu.club.model.email.Subject;
 
 //@@author yash-chowdhary
 /**
- *
+ * Event to send an email.
  */
 public class SendEmailRequestEvent extends BaseEvent {
 

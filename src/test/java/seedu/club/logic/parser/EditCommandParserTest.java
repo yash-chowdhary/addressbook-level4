@@ -24,10 +24,9 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
@@ -117,7 +116,7 @@ public class EditCommandParserTest {
 
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).withMatricNumber(VALID_MATRIC_NUMBER_AMY)
-                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+                .withTags(VALID_TAG_HUSBAND, VALID_TAG_HEAD).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -164,7 +163,7 @@ public class EditCommandParserTest {
 
         // tags
         userInput = targetIndex.getOneBased() + TAG_DESC_FRIEND;
-        descriptor = new EditMemberDescriptorBuilder().withTags(VALID_TAG_FRIEND).build();
+        descriptor = new EditMemberDescriptorBuilder().withTags(VALID_TAG_HEAD).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -178,7 +177,7 @@ public class EditCommandParserTest {
 
         EditMemberDescriptor descriptor = new EditMemberDescriptorBuilder().withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withMatricNumber(VALID_MATRIC_NUMBER_BOB)
-                .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
+                .withTags(VALID_TAG_HEAD, VALID_TAG_HUSBAND)
                 .build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
