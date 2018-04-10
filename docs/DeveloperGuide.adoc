@@ -452,13 +452,13 @@ ClubConnect currently doesn't support sending emails to members belonging to BOT
 The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command.
 Refer to Figure 19 for the UML diagram.
 
-image::EmailCommandUML.png[width="600"]
+image::EmailCommandUML.png[width="800"]
 _Figure 19. EmailCommand UML Diagram_
 
 `EmailCommandParser` is responsible for parsing the `email` command. It returns a `EmailCommand` object after parsing `Client`, `Subject`, `Body`, `Group`, and `Tag`.
 Figure 20 depicts the sequence of parsing the command.
 
-image::SDforEmailCommandParser.png[width="650"]
+image::SDforEmailCommandParser.png[width="800"]
 _Figure 20. Sequence Diagram for Email Command parsing_
 
 [NOTE]
@@ -502,6 +502,323 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ** Pros: No dependency on third party apps.
 ** Cons: Older version browser will disallow auto-filling of email fields.
 // end::email[]
+
+// tag::tasks[]
+=== Task-Management
+Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `Exco` members.
+
+==== Current Implementation
+The task-management mechanism is facilitated by several command classes in Club Connect, namely: +
+
+* `AddTaskCommand`
+* `AssignTaskCommand`
+* `DeleteTaskCommand`
+* `ChangeTaskStatusCommand`
+* `ChangeAssigneeCommand`
+* `ViewAllTasksCommand`
+* `ViewMyTasksCommand`
+
+All of these commands require a member to be logged in (and thus by extension, an initial sign-up).
+Hence, they all share the following lines of code in their respective implementations:
+
+[source, java]
+requireToSignUp();
+requireToLogIn();
+
+
+Figure 22 below shows the UML diagram of the `Task` class.
+
+image::TaskUML.png[width="800"]
+_Figure 22. Task UML Diagram_
+
+Tasks consists of the following:
+
+* Description: Represents the description of a task.
+* Date: Represents the due date of a task.
+* Time: Represents the time before which a task must be completed.
+* Assignor: Represents the member who has assigned the task.
+* Assignee: Represents the member who has been assigned the task.
+* Status: Represents the status of a task - one of `Yet To Begin`, `In Progress`, and `Completed`.
+
+===== Adding Tasks
+---
+Adding Tasks is facilitated by the `AddTaskCommand`. When this command is invoked, it adds a task with the input `Description`, `Date`, and `Time`. The status of every newly created task is by default set to `Yet To Begin`. The `Assignor` and `Assignee` of the task is set to the `Matric Number` of the member who is currently logged into `Club Connect`.
+
+Figure 23 shows the flow of parsing an `AddTaskCommand` object:
+
+image::SDforAddTaskCommandParser.png[width="800"]
+_Figure 23. Sequence Diagram for `AddTaskCommand` parsing._
+
+The execution of the command invokes `Model#addTaskToTaskList()`. +
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+    try {
+        Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+        Assignee assignee = new Assignee(clubBook.getLoggedInMember().getMatricNumber().toString());
+        Status status = new Status(Status.NOT_STARTED_STATUS);
+        toAdd.setAssignor(assignor);
+        toAdd.setAssignee(assignee);
+        toAdd.setStatus(status);
+        clubBook.addTaskToTaskList(toAdd);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    } catch (DuplicateTaskException dte) {
+        throw new DuplicateTaskException();
+    }
+}
+
+Figure 24 depicts the high-level sequence of events that take place.
+
+image::SDforAddTask.png[width="800"]
+_Figure 24. Sequence Diagram for adding a task._
+
+The task is displayed in the Task pane on the far right side.
+
+===== Assigning Tasks
+---
+
+Assigning tasks can be accomplished with the `AssignTaskCommand`. Tasks are assigned to members through the `Matric Number` attribute. +
+Thus, the following are the required parameters:
+
+* `Description`
+* `Date`
+* `Time`
+* `Matric Number`
+
+The implementation of assigning tasks is similar to that of adding tasks. The only difference is that the Assignor is set to the `Matric Number` of the member who is currently logged in.
+
+The parsing of an `AssignTaskCommand` is performed by the `AssignTaskCommandParser`. +
+Figure 25 shows the flow of parsing an `AssignTaskCommand` object:
+
+image::SDforAssignTaskCommandParser.png[width="800"]
+_Figure 25. Sequence Diagram for `AssignTaskCommand` parsing._
+
+The execution of the command invokes `Model#assignTask()`.
+The following code snippet shows the implementation:
+
+[source,java]
+@Override
+public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException {
+    checkIfMemberExists(matricNumber);
+    try {
+        Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+        Assignee assignee = new Assignee(matricNumber.toString());
+        Status status = new Status(Status.NOT_STARTED_STATUS);
+        toAdd.setAssignor(assignor);
+        toAdd.setAssignee(assignee);
+        toAdd.setStatus(status);
+        clubBook.addTaskToTaskList(toAdd);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    } catch (DuplicateTaskException dte) {
+        throw new DuplicateTaskException();
+    }
+}
+
+Figure 26 depicts the high-level sequence of events that take place.
+
+image::SDforAssignTask.png[width="800"]
+_Figure 26. Sequence Diagram for assigning a task._
+
+
+===== Deleting Tasks
+---
+The 'DeleteTaskCommand` is used to delete a task. A task can only be deleted if the member who is currently logged in is either the `Assignor` or the `Assignee`. +
+The command object takes in the `INDEX` of the task to be deleted.
+
+`DeleteTaskCommandParser` is responsible for parsing the user input into a `DeleteTaskCommand` object. +
+Figure 27 illustrates the sequence in which the parsing is done.
+
+image::SDforDeleteTaskCommandParser.png[width="800"]
+_Figure 27. Sequence Diagram for `DeleteTaskCommand` parsing._
+
+The execution of the command invokes `Model#deleteTask()`.
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
+    Assignor assignor = targetTask.getAssignor();
+    Assignee assignee = targetTask.getAssignee();
+    String currentMember = getLoggedInMember().getMatricNumber().toString();
+    checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
+    clubBook.deleteTask(targetTask);
+    indicateClubBookChanged();
+}
+
+The high-level sequence of events is shown below in Figure 28.
+
+image::SDforDeleteTask.png[width="800"]
+_Figure 28. Sequence Diagram for deleting a task._
+
+
+===== Changing Task Status
+---
+
+Changing a task's status is made possible by the `ChangeTaskStatusCommand`. +
+The `Status` of a task can be changed to any one of the following:
+
+* [red]#Yet To Begin#
+* [yellow]#In Progress#
+* [green]#Completed#
+
+The input of the command is the `INDEX` of a task, and the desired `Status`.
+
+Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
+Figure 29 below depicts the parsing of the `ChangeTaskStatusObject`.
+
+image::SDforChangeTaskStatusCommandParser.png[width]"800" ]
+_Figure 29. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
+
+
+The execution of the command invokes `Model#changeStatus()`.
+The following code snippet shows the implementation:
+
+[source,java]
+@Override
+public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+        DuplicateTaskException {
+    requireAllNonNull(taskToEdit, editedTask);
+    clubBook.updateTask(taskToEdit, editedTask);
+    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    indicateClubBookChanged();
+}
+
+Figure 30 below describes the high-level sequence of events that take place.
+
+image::SDforChangeTaskStatus.png[width="800"]
+_Figure 30. Sequence Diagram for changing the status of a task._
+
+===== Viewing All Tasks
+---
+
+`Exco` members can view all the tasks in `Club Connect` using the `ViewAllTasksCommand`.
+
+The implementation makes use of a `Predicate` and is as follows:
+
+[source, java]
+@Override
+public void viewAllTasks() throws TasksCannotBeDisplayedException {
+    updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+    indicateClubBookChanged();
+}
+
+The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 31.
+
+image::SDforViewAllTasks.png[width="800"]
+_Figure 31. Sequence Diagram for viewing all tasks._
+
+===== Viewing My Tasks
+---
+
+`Exco` members need a way to toggle between all tasks in `Club Connect` and the tasks that are related to them (i.e. tasks that they have assigned or been assigned to). This is achieved by the `ViewMyTasksCommand`.
+
+`Model#viewMyTasks()` is called during the execution of the command.
+Here is the implementation:
+
+[source,java]
+@Override
+public void viewMyTasks() throws TasksAlreadyListedException {
+    checkIfTasksAreAlreadyListed();
+    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+}
+
+As shown in the implementation above, the method invokes the `checkIfTasksAreAlreadyListed()` method which throws `TasksAlreadyListedException` if the tasks are already listed.
+
+The sequence diagram of the command is shown below in Figure 32.
+
+image::SDforViewMyTasks.png[width="800"]
+_Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member._
+
+
+==== Design Considerations
+===== Aspect: Displaying similar tasks for different Assignees
+* **Alternative 1 (current choice)**: Make a copy of the task for every new `Assignee` if all other parameters are same.
+** Pros: Easy to implement
+** Cons: Clutters the `TaskListPanel` because of redundancies.
+* **Alternative 2:** Maintain a list of `Assignee` s in a task .
+** Pros: Reduces clutter in the `TaskListPanel` and is easy on the eye.
+** Cons: Relatively difficult to implement.
+
+// end::tasks[]
+
+// tag::removegroup[]
+=== Remove Group Mechanism
+==== Current Implementation
+
+The `removegroup` mechanism is facilitated by the `RemoveGroupCommand` class. It allows `Exco` members to remove a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
+
+The `RemoveGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
+
+image::RemoveGroupCommandUML.png[width="200" height="200"]
+_Figure 33. UML Diagram of `RemoveGroupCommand`._
+
+`RemoveGroupCommandParser` is responsible for parsing the `removegroup` command. It returns a `RemoveGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
+
+image::SDforRemoveGroupCommandParser.png[width="800"]
+_Figure 34. Sequence Diagram for the parsing of `RemoveGroupCommand`._
+
+The execution invokes `Model#removeGroup()` with the `Group` ```toDelete``` as a parameter. This further invokes the method `ClubBook#removeGroup()`. Here is the implementation:
+
+[source, java]
+@Override
+public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+    requireNonNull(toRemove);
+    clubBook.removeGroup(toRemove);
+    indicateClubBookChanged();
+}
+
+`ClubBook#removeGroup()` further calls `ClubBook#removeGroupFromClubBook()`.
+
+[source, java]
+private void removeGroupFromClubBook(Group toRemove) {
+    try {
+        for (Member member : members) {
+            removeGroupFromMember(toRemove, member);
+        }
+    } catch (MemberNotFoundException mnfe) {
+        throw new AssertionError("Impossible: original member is obtained from the club book.");
+    }
+}
+
+The final method called is `ClubBook#removeGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toDelete``` to `member`.
+
+[source, java]
+private void removeGroupFromMember(Group toRemove, Member member)
+        throws MemberNotFoundException {
+    if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
+        return;
+    }
+    Group defaultGroup = new Group(Group.DEFAULT_GROUP);
+    Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
+            defaultGroup, member.getTags());
+    try {
+        updateMember(member, newMember);
+    } catch (DuplicateMatricNumberException dme) {
+        throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
+                + "See member#equals(Object).");
+    }
+}
+
+The high-level sequence of events is depicted in Figure 35 below.
+
+image::SDforRemoveGroup.png[width="800"]
+_Figure 35. Sequence Diagram for removing a group from `Club Connect`._
+
+
+==== Design Considerations
+===== Aspect: Implementation of `RemoveGroupCommand`
+* **Alternative 1 (current choice)**: Overwrite the relevant `Member` objects with new `Member` objects.
+** Pros: Easy to implement.
+** Cons: Requires looping through all the members in `Club Connect`.
+* **Alternative 2:** To maintain a `UniqueGroupList`
+** Pros: Cleaner implementation.
+** Cons: Relatively difficult to implement.
+
+// end::removegroup[]
 
 // tag::profilephoto[]
 === Changing Profile Photo Mechanism
@@ -593,7 +910,6 @@ The logged in member's details are then updated to include this new profile phot
 * **Alternative 2**: Always read the profile photo from the file path provided.
 ** Pros: Changes made in the source image are reflected in the application.
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
-// end::profilephoto[]
 // end::profilephoto[]
 
 === Compress/Decompress Mechanism
