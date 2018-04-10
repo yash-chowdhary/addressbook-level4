@@ -3,12 +3,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EventListener;
 
-import javafx.event.Event;
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
-import seedu.club.commons.events.ui.JumpToListRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;

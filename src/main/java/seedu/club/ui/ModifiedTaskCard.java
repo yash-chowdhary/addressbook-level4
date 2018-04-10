@@ -9,7 +9,7 @@ import seedu.club.model.task.Task;
 /**
  * UI component that displays the summary of the task of a specific person
  */
-public class ModifiedTaskCard extends UiPart<Region>{
+public class ModifiedTaskCard extends UiPart<Region> {
 
     private static final String FXML = "ModifiedTaskListCard.fxml";
 
