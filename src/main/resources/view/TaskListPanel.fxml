@@ -3,6 +3,17 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx/8" maxHeight="1.7976931348623157E308" xmlns:fx="http://javafx.com/fxml/1">
+    <!--@@author amrut-prabhu-->
+    <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+        <Text text="TASKS" fill="darkblue" VBox.vgrow="NEVER" />
+        <VBox.margin>
+            <Insets bottom="5.0" />
+        </VBox.margin>
+    </TextFlow>
+    <!--@@author yash-chowdhary-->
     <ListView fx:id="taskListView" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 </VBox>
