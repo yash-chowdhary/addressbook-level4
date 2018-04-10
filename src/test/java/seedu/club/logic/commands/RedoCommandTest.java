@@ -22,6 +22,7 @@ import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 
 public class RedoCommandTest {
     private static final CommandHistory EMPTY_COMMAND_HISTORY = new CommandHistory();
@@ -52,7 +53,7 @@ public class RedoCommandTest {
     }
 
     @Test
-    public void execute() {
+    public void execute() throws DeleteCurrentUserException {
         UndoRedoStack undoRedoStack = prepareStack(
                 Collections.emptyList(), Arrays.asList(deleteCommandTwo, deleteCommandOne));
         RedoCommand redoCommand = new RedoCommand();

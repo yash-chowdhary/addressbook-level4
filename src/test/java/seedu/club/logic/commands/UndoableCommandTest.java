@@ -18,6 +18,7 @@ import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 public class UndoableCommandTest {
@@ -59,7 +60,7 @@ public class UndoableCommandTest {
     }
 
     @Test
-    public void redo() {
+    public void redo() throws DeleteCurrentUserException {
         model.updateFilteredMemberList(model.PREDICATE_SHOW_ALL_MEMBERS);
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
         expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
@@ -84,6 +85,8 @@ public class UndoableCommandTest {
             try {
                 model.deleteMember(memberToDelete);
             } catch (MemberNotFoundException mnfe) {
+                fail("Impossible: memberToDelete was retrieved from model.");
+            } catch (DeleteCurrentUserException e) {
                 fail("Impossible: memberToDelete was retrieved from model.");
             }
             return new CommandResult("");

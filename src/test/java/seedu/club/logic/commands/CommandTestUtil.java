@@ -30,6 +30,7 @@ import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.QuestionContainsAnyKeywordsPredicate;
@@ -245,7 +246,7 @@ public class CommandTestUtil {
     /**
      * Deletes the first member in {@code model}'s filtered list from {@code model}'s club book.
      */
-    public static void deleteFirstMember(Model model) {
+    public static void deleteFirstMember(Model model) throws DeleteCurrentUserException {
         Member firstMember = model.getFilteredMemberList().get(0);
         try {
             model.deleteMember(firstMember);

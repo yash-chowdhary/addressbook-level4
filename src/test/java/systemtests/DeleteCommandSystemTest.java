@@ -21,6 +21,7 @@ import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 public class DeleteCommandSystemTest extends ClubBookSystemTest {
 
@@ -28,7 +29,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
             String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
 
     @Test
-    public void delete() {
+    public void delete() throws DeleteCurrentUserException {
         /* ----------------- Performing delete operation while an unfiltered list is being shown -------------------- */
 
         /* Case: delete the first member in the list, command with leading spaces and trailing spaces -> deleted */
@@ -131,7 +132,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      * Removes the {@code member} at the specified {@code index} in {@code model}'s club book.
      * @return the removed member
      */
-    private Member removeMember(Model model, Index index) {
+    private Member removeMember(Model model, Index index) throws DeleteCurrentUserException {
         Member targetMember = getMember(model, index);
         try {
             model.deleteMember(targetMember);
@@ -146,7 +147,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
      * performs the same verification as {@code assertCommandSuccess(String, Model, String)}.
      * @see DeleteCommandSystemTest#assertCommandSuccess(String, Model, String)
      */
-    private void assertCommandSuccess(Index toDelete) {
+    private void assertCommandSuccess(Index toDelete) throws DeleteCurrentUserException {
         Model expectedModel = getModel();
         Member deletedMember = removeMember(expectedModel, toDelete);
         int numberOfTasksDeleted = 0;
