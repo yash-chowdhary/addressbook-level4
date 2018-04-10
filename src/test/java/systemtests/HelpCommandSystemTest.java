@@ -18,7 +18,6 @@ import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.model.member.Member;
-import seedu.club.ui.BrowserPanel;
 import seedu.club.ui.StatusBarFooter;
 
 /**
@@ -72,7 +71,6 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         assertEquals("", getCommandBox().getInput());
         assertCommandBoxShowsDefaultStyle();
         assertNotEquals(HelpCommand.SHOWING_HELP_MESSAGE, getResultDisplay().getText());
-        assertNotEquals(BrowserPanel.DEFAULT_PAGE, getBrowserPanel().getLoadedUrl());
         assertListMatching(getMemberListPanel(), getModel().getFilteredMemberList());
 
         // assert that the status bar too is updated correctly while the help window is open

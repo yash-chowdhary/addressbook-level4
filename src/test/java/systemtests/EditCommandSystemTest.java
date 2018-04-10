@@ -283,11 +283,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertCommandBoxShowsDefaultStyle();
-        if (expectedSelectedCardIndex != null) {
-            assertSelectedCardChanged(expectedSelectedCardIndex);
-        } else {
-            assertSelectedCardUnchanged();
-        }
+        
         assertStatusBarUnchangedExceptSyncStatus();
     }
 
