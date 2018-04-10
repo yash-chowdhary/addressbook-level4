@@ -13,6 +13,7 @@ import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
@@ -74,7 +75,8 @@ public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + NON_EXISTENT_GROUP_DESC + " ";
         deletedGroup = deleteGroup(expectedModel, NON_EXISTENT_GROUP);
         assertEquals(null, deletedGroup);
-        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP));
+        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP,
+                WordUtils.capitalize(NON_EXISTENT_GROUP)));
     }
 
     /**
