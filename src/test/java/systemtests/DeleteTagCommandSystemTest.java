@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_TAG;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED_DESC;
 import static seedu.club.logic.commands.DeleteTagCommand.MESSAGE_DELETE_TAG_SUCCESS;
@@ -41,7 +41,7 @@ public class DeleteTagCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: delete a valid tag which is present in the club book */
         command = DeleteTagCommand.COMMAND_WORD + TAG_DESC_FRIEND;
-        deletedTag = deleteTagFromModel(expectedModel, VALID_TAG_FRIEND);
+        deletedTag = deleteTagFromModel(expectedModel, VALID_TAG_HEAD);
         String expectedResultMessage = String.format(MESSAGE_DELETE_TAG_SUCCESS, deletedTag);
         assertCommandSuccess(command, expectedModel, expectedResultMessage);
 

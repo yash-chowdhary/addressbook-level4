@@ -17,6 +17,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -29,10 +30,12 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 /**
  * The API of the Model component.
@@ -225,7 +228,8 @@ public interface Model {
      * @throws PasswordIncorrectException
      */
     void changePassword(String username, String oldPassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException;
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException;
 
     /**
      * Signs up a member if the clubbook is empty
@@ -240,11 +244,16 @@ public interface Model {
     void setClearConfirmation(Boolean b);
     //@@author
 
-    void viewAllTasks() throws TasksCannotBeDisplayedException;
+    void viewAllTasks() throws TasksAlreadyListedException;
 
-    void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException;
+    void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException,
+            TaskAlreadyAssignedException;
 
     void viewMyTasks() throws TasksAlreadyListedException;
 
-    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException;
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+            TaskStatusCannotBeEditedException;
+
+    void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException, DuplicateTaskException,
+            TaskAlreadyAssignedException, TaskAssigneeUnchangedException;
 }

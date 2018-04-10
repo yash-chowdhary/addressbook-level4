@@ -19,7 +19,7 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_FAILURE = "Action to Clear data in Club Connect has been cancelled";
     public static final String MESSAGE_CONFRIMATION = "Confirm clearing all data in Club Connect?"
             + " Type 'clear Y' to confirm and 'clear N' to cancel."
-            + " \nWARNING: THIS IS NOT A UNDOABLE COMMAND";
+            + " \nWARNING: THIS CANNOT BE UNDONE";
     public static final String COMMAND_FORMAT = COMMAND_WORD + " "
             + "Y/N";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
