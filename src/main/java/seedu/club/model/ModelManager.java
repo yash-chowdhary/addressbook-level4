@@ -169,7 +169,6 @@ public class ModelManager extends ComponentManager implements Model {
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
-    //@@author
 
     //@@author Song Weiyang
     @Override
@@ -183,7 +182,6 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    //@@author Song Weiyang
     @Override
     public Member getLoggedInMember() {
         return clubBook.getLoggedInMember();

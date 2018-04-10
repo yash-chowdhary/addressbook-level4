@@ -1,5 +1,8 @@
 package seedu.club.model;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.util.Objects;
 
 import seedu.club.commons.core.GuiSettings;
@@ -13,9 +16,21 @@ public class UserPrefs {
     private String clubBookFilePath = "data/clubbook.xml";
     private String clubBookName = "TypicalClubBookName";
 
+    //@@author amrut-prabhu
     public UserPrefs() {
-        this.setGuiSettings(500, 500, 0, 0);
+        double width = 500;
+        double height = 500;
+        double taskbarHeight = 50;
+
+        if (!GraphicsEnvironment.isHeadless()) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            width = screenSize.getWidth();
+            height = screenSize.getHeight() - taskbarHeight; //To prevent application window from going beyond taskbar
+        }
+
+        this.setGuiSettings(width, height, 0, 0);
     }
+    //@@author
 
     public GuiSettings getGuiSettings() {
         return guiSettings == null ? new GuiSettings() : guiSettings;

@@ -10,6 +10,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_SUBJECT;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
@@ -52,7 +53,7 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         command = "  " + EmailCommand.COMMAND_WORD + "  " + PREFIX_GROUP + NON_EXISTENT_GROUP + " "
                 + PREFIX_CLIENT + VALID_CLIENT + " " + PREFIX_SUBJECT + Subject.TEST_SUBJECT_STRING
                 + " " + PREFIX_BODY + Body.TEST_BODY_STRING;
-        expectedResultMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP);
+        expectedResultMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, WordUtils.capitalize(NON_EXISTENT_GROUP));
         assertCommandFailure(command, expectedResultMessage);
 
         /* Case: valid command entered -> email client opened */

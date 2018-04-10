@@ -7,6 +7,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_TEST;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
 
 public class GroupTest {
@@ -41,10 +42,10 @@ public class GroupTest {
         Group testGroupOne = new Group(VALID_GROUP_AMY);
         Group testGroupTwo = new Group(VALID_GROUP_BOB);
 
-        assertTrue(testGroupOne.toString().equals(VALID_GROUP_AMY));
-        assertTrue(testGroupTwo.toString().equals(VALID_GROUP_BOB));
+        assertTrue(testGroupOne.toString().equals(VALID_GROUP_AMY)); //already capitalised
+        assertTrue(testGroupTwo.toString().equals(WordUtils.capitalize(VALID_GROUP_BOB)));
         assertFalse(testGroupOne.toString().equals(VALID_GROUP_BOB));
-        assertFalse(testGroupTwo.toString().equals(VALID_GROUP_AMY));
+        assertFalse(testGroupTwo.toString().equals(WordUtils.capitalize(VALID_GROUP_AMY.toLowerCase())));
     }
 
     @Test
