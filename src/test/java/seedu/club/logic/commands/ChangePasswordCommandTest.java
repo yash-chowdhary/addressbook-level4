@@ -16,8 +16,11 @@ import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.Password;
+import seedu.club.model.member.Username;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
+//@@author th14thmusician
 
 public class ChangePasswordCommandTest {
     private Model model;
@@ -29,19 +32,22 @@ public class ChangePasswordCommandTest {
     @Before
     public void setUp () throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
-        newPassword = new Password("test");
         member = observableList.get(0);
-        LogInCommand logInCommand = new LogInCommand(member.getCredentials().getUsername(),
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
                 member.getCredentials().getPassword());
-        logInCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        logInCommand.execute();
-        expectedModel = model;
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        newPassword = new Password("test");
     }
 
     @Test
     public void excecute_changepassword_success ()
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         expectedModel.changePassword(this.member.getCredentials().getUsername().value,
                 this.member.getCredentials().getPassword().value, newPassword.value);
         assertCommandSuccess(prepareCommand(this.member, model), model,
@@ -53,7 +59,6 @@ public class ChangePasswordCommandTest {
         assertCommandFailure(prepareCommandThatFails(member, model), model,
                 ChangePasswordCommand.MESSAGE_PASSWORD_INCORRECT);
     }
-
     @Test
     public void execute_changepassword_throwsauthenicationerrorexception () {
         Member othermember = observableList.get(1);
@@ -61,6 +66,11 @@ public class ChangePasswordCommandTest {
                 ChangePasswordCommand.MESSAGE_AUTHENTICATION_FAILED);
     }
 
+    @Test
+    public void execute_changepassword_throwsincorrectusernameexception () {
+        assertCommandFailure(prepareCommandThatThrowsIncorrectUsername(member, model), model,
+                ChangePasswordCommand.MESSAGE_USERNAME_NOTFOUND);
+    }
     /**
      * Generates a ChangePasswordCommand upon execution
      * @param member
@@ -75,7 +85,7 @@ public class ChangePasswordCommandTest {
     }
 
     /**
-     * Generates a ChangePasswordCommand upon exceution that fails
+     * Generates a ChangePasswordCommand upon exceution that throws incorrectPassword
      * @param member
      * @param model
      * @return
@@ -86,4 +96,15 @@ public class ChangePasswordCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
+
+    /**
+     * Generates a ChangePasswordCommand upon execution that throws IncorrectUsername
+     */
+    private ChangePasswordCommand prepareCommandThatThrowsIncorrectUsername(Member member, Model model) {
+        ChangePasswordCommand command = new ChangePasswordCommand(new Username("A0000000Z"),
+                new Password("pass"), newPassword);
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        return command;
+    }
 }
+//@@author
