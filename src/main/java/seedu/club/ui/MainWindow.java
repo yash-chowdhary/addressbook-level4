@@ -124,7 +124,7 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        browserPanel = new BrowserPanel(logic.getFilteredTaskList());
+        browserPanel = new BrowserPanel(logic.getTaskList());
         browserPlaceholder.getChildren().add(browserPanel.getRoot());
 
         memberListPanel = new MemberListPanel(logic.getFilteredMemberList());
@@ -201,10 +201,6 @@ public class MainWindow extends UiPart<Stage> {
 
     public TaskListPanel getTaskListPanel() {
         return this.taskListPanel;
-    }
-
-    void releaseResources() {
-        browserPanel.freeResources();
     }
 
     @Subscribe

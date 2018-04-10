@@ -1,38 +1,39 @@
 package seedu.club.ui;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.logging.Logger;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.HPos;
+import javafx.scene.layout.GridPane;
+import org.fxmisc.easybind.EasyBind;
+
 import com.google.common.eventbus.Subscribe;
 
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
-import org.fxmisc.easybind.EasyBind;
+
 import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
+import seedu.club.commons.events.ui.ModifiedTaskPanelSelecetionChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
-import seedu.club.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.club.model.email.Client;
 import seedu.club.model.member.Member;
 import seedu.club.model.task.Task;
+import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 
 /**
  * The Browser Panel of the App.
@@ -54,10 +55,14 @@ public class BrowserPanel extends UiPart<Region> {
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
                                                 "orange", "blue", "violet"};
 
-    private final Logger logger = LogsCenter.getLogger(this.getClass());
+    private static final String DIRECTORY_PATH = "view/";
+    private static final String TASK_YET_TO_BEGIN_CSS = DIRECTORY_PATH + "TaskYetToBegin.css";
+    private static final String TASK_IN_PROGRESS_CSS = DIRECTORY_PATH + "TaskInProgress.css";
+    private static final String TASK_COMPLETED_CSS = DIRECTORY_PATH + "TaskCompleted.css";
 
-    @FXML
-    private WebView browser;
+    private final Logger logger = LogsCenter.getLogger(this.getClass());
+    private ObservableList<Task> taskList;
+
     @FXML
     private Label name;
     @FXML
@@ -77,16 +82,60 @@ public class BrowserPanel extends UiPart<Region> {
     @FXML
     private ImageView emailIcon;
     @FXML
-    private ListView<ModifiedTaskCard> taskListView;
+    private ListView<ModifiedTaskCard> modifiedTaskCardListView;
+    @FXML
+    private GridPane gridPane;
 
 
     public BrowserPanel(ObservableList<Task> taskList) {
         super(FXML);
-
-        // To prevent triggering events for typing inside the loaded Web page.
-        getRoot().setOnKeyPressed(Event::consume);
+        this.taskList = taskList;
+        loadDetails(false);
         registerAsAnEventHandler(this);
     }
+
+    //@@author th14thmusician
+
+    /**
+     * Loads a blank details if no one is selected
+     * @param show
+     */
+    public void loadDetails (Boolean show) {
+        int size = gridPane.getChildren().size();
+        for (int i = 0; i < size; i++) {
+            gridPane.getChildren().get(i).setVisible(show);
+        }
+    }
+    public void setConnections(ObservableList<Task> taskList, Member member) {
+        loadDetails(true);
+        setMemberListView(taskList, member);
+        setEventHandlerForSelectionChangeEvent();
+    }
+
+    private void setEventHandlerForSelectionChangeEvent() {
+        modifiedTaskCardListView.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        logger.fine("Selection in task list panel changed to : '" + newValue + "'");
+                        raise(new ModifiedTaskPanelSelecetionChangedEvent(newValue));
+                    }
+                });
+    }
+
+    public void setMemberListView(ObservableList<Task> taskList, Member member) {
+        taskList.filtered(new TaskIsRelatedToMemberPredicate(member));
+        ObservableList<ModifiedTaskCard> mappedList = EasyBind.map(
+                taskList, (task) -> new ModifiedTaskCard(task, taskList.indexOf(task) + 1));
+        modifiedTaskCardListView.setItems(mappedList);
+        modifiedTaskCardListView.setCellFactory(listView -> new TaskListViewCell());
+    }
+
+    @Subscribe
+    public void handleMemberPanelSelectionChangeEvent(MemberPanelSelectionChangedEvent event) {
+        loadMemberPage(event.getNewSelection().member);
+        setConnections(taskList, event.getNewSelection().member);
+    }
+    //@@author
 
     //@@author yash-chowdhary
     /**
@@ -137,28 +186,6 @@ public class BrowserPanel extends UiPart<Region> {
             }
         }
     }
-
-    public void setConnections(ObservableList<Task> taskList) {
-        setMemberListView(taskList);
-        setEventHandlerForSelectionChangeEvent();
-    }
-
-    private void setEventHandlerForSelectionChangeEvent() {
-        taskListView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        logger.fine("Selection in task list panel changed to : '" + newValue + "'");
-                        raise(new TaskPanelSelectionChangedEvent(newValue));
-                    }
-                });
-    }
-
-    public void setMemberListView(ObservableList<Task> taskList) {
-        ObservableList<TaskCard> mappedList = EasyBind.map(
-                taskList, (task) -> new TaskCard(task, taskList.indexOf(task) + 1));
-        taskListView.setItems(mappedList);
-        taskListView.setCellFactory(listView -> new TaskListPanel.TaskListViewCell());
-    }
     //@@author
 
     //@@author th14thmusician
@@ -192,19 +219,6 @@ public class BrowserPanel extends UiPart<Region> {
         emailIcon.setImage(emailImg);
     }
     //@@author
-
-    /**
-     * Frees resources allocated to the browser.
-     */
-    public void freeResources() {
-        browser = null;
-    }
-
-    @Subscribe
-    private void handleMemberPanelSelectionChangedEvent(MemberPanelSelectionChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadMemberPage(event.getNewSelection().member);
-    }
 
     //@@author yash-chowdhary
     @Subscribe
@@ -249,6 +263,7 @@ public class BrowserPanel extends UiPart<Region> {
             tagLabel.getStyleClass().add(returnColor(tag.tagName));
             tags.getChildren().add(tagLabel);
         });
+        tags.setAlignment(Pos.CENTER);
     }
 
     /**
@@ -256,6 +271,35 @@ public class BrowserPanel extends UiPart<Region> {
      */
     private String returnColor(String tag) {
         return TAG_COLORS[Math.abs(tag.hashCode()) % TAG_COLORS.length];
+    }
+
+    /**
+     * Custom {@code ListCell} that displays the graphics of a {@code TaskCard}.
+     */
+    class TaskListViewCell extends ListCell<ModifiedTaskCard> {
+
+        @Override
+        protected void updateItem(ModifiedTaskCard task, boolean empty) {
+            super.updateItem(task, empty);
+
+            if (empty || task == null) {
+                setGraphic(null);
+                setText(null);
+                return;
+            }
+
+            this.getStylesheets().clear();
+            logger.info("Status: " + task.task.getStatus().getStatus());
+            if (task.isTaskYetToBegin()) {
+                logger.info("In here");
+                this.getStylesheets().add(TASK_YET_TO_BEGIN_CSS);
+            } else if (task.isTaskInProgress()) {
+                this.getStylesheets().add(TASK_IN_PROGRESS_CSS);
+            } else if (task.isTaskCompleted()) {
+                this.getStylesheets().add(TASK_COMPLETED_CSS);
+            }
+            setGraphic(task.getRoot());
+        }
     }
     //@@author
 }
