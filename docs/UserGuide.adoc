@@ -44,12 +44,20 @@ This app will not work with earlier versions of Java 8.
 +
 .  Download the latest `clubconnect.jar` link:{https://github.com/CS2103JAN2018-W15-B4/main}/releases[here].
 .  Copy the file to the folder that you want to use as the home folder for Club Connect (and the club Database).
-.  Double-click the file to start the app. The GUI (as shown in <<launch-app, Figure 1>>) should appear in a few seconds.
+.  Double-click the file to start the app. The GUI (as shown in Figure 1) should appear in a few seconds.
 +
 [[launch-app]]
 [.text-center]
 .Club Connect application on launch
-image::Ui.png[width="550"]
+image::startup.png[width="550"]
++
+. Execute the `signup` command. No other command will work unless you sign up.
+. Execute the `login` command once you've signed up. The GUI should look similar to Figure 2.
++
+[[login]]
+[.text-center]
+.Club Connect application after logging in
+image::login.png[width="550"]
 +
 .  Type a command in the command box and press kbd:[Enter] to execute it. +
 e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown in Figure 2).
@@ -59,7 +67,7 @@ e.g. You can type *`help`* and press kbd:[Enter] to open the help window (shown 
 .Club Connect Help window
 image::help-window.png[height="450"]
 +
-.  Some other example commands that you can try are:
+.  Try some of these example commands:
 
 * *`list`* : lists all members of the club on the left pane
 * *`add`*`n/John Doe p/98765432 e/johnd@example.com m/A1234567H` : adds a member named `John Doe` to your Club Connect members list
@@ -99,7 +107,7 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Groups* should only contain letters and digits. They must not be empty.
 
-* *Tags* should also only contain letters and digits. They cannot be empty.
+* *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
 ====
 
 === Adding a member: `add`
@@ -114,7 +122,7 @@ A member can have any number of tags (including 0).
 The `group` attribute is an optional attribute.
 A member will be assigned to the default group `Member` if no group is specified in the command.
 
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 Examples:
@@ -129,20 +137,19 @@ Format: `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
 Aliases: `addp`, `poll`
 
 ****
-* A poll must have 1 question.
-* A poll must have at least 1 answer.
+* A poll must have 1 question, and at least 1 answer.
 * Questions and answers must be non-empty.
 ****
 Examples:
 
 * `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
-Creates a poll asking members to vote which day Free Ice-Cream Day should be.
-The options to choose from are Monday, Wednesday and Friday.
-* `addpoll n/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
-Creates a poll asking members to vote where the annual sports meeting should be held.
-The answers to choose from are I-Cube and LT7.
+Creates a poll asking members to vote for which day Free Ice-Cream Day should be held on.
+The options to choose from are `Monday`, `Wednesday` and `Friday`.
+* `addpoll p/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+Creates a poll asking members to vote for where the annual sports meeting should be held.
+The answers to choose from are `I-Cube` and `LT7`.
 
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 === Adding a task: `addtask` (Since v1.3)
@@ -171,7 +178,7 @@ Adds a task with description `Buy Food` due on `03/04/2018` at `15:00`.
 === Adding a task: `assigntask` (Since v1.4)
 
 Adds a task to Club Connect and assigns it to a member. +
-Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME` +
+Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME m/MATRIC_NUMBER` +
 Alias: `assignt`
 
 *****
@@ -181,17 +188,17 @@ Alias: `assignt`
 *****
 [NOTE]
 Duplicate tasks are not allowed.
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
-This command assigns the task to the member based on the entered `NAME`.
+This command assigns the task to the member based on the entered `MATRIC_NUMBER`.
 
 Examples:
 
-* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 n/Bernice Yu` +
-Assigns a task to `Bernice Yu` with description `Book PGP Function Room 3` due on `02/04/2018` at `19:00`.
-* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 n/David Li` +
-Assigns a task to `David Li` with description `Buy Food` due on `03/04/2018` at `15:00`.
+* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 m/A1234567H` +
+Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on `02/04/2018` at `19:00`.
+* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 m/A1122334K` +
+Assigns a task to `A1122334K` with description `Buy Food` due on `03/04/2018` at `15:00`.
 
 === Changing password : `changepass` (Since v1.4)
 
@@ -276,7 +283,7 @@ Aliases: `c`, `erase`
 * LETTER must be equals to "Y" to confirm clearing data from Club Connect
 * Any other LETTER will cancell the execution
 ****
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 Examples:
@@ -320,8 +327,13 @@ Aliases: `del`, `rm`, `remove`
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
+
+****
+* Deleting a member who is the `Assignee` will result in all relevant tasks being deleted.
+* Deleting a member who is the `Assignor` of a task will not affect the list of tasks.
+****
 
 Examples:
 
@@ -343,7 +355,7 @@ Aliases: `rmpoll`, `delpoll`
 * The index refers to the index number shown in the most recent poll listing.
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 Examples:
@@ -358,7 +370,7 @@ Deletes the 4th poll in the poll listing.
 Deletes the specified tag for all members in the Club Connect. +
 Format: `deletetag t/TAG` +
 Aliases: `rmtag`, `deltag`
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 ****
@@ -385,6 +397,9 @@ Aliases: `deltask`, `rmtask`
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
 
+[NOTE]
+Only Members who are either the `Assignor` or the `Assignee` can delete their respective tasks.
+
 Examples:
 
 * `viewmytasks` +
@@ -409,7 +424,7 @@ Aliases: `e`, `update`
 * When editing tags, the existing tags of the member will be removed i.e adding of tags is not cumulative.
 * You can remove all the member's tags by typing `t/` without specifying any tags after it.
 ****
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 Examples:
@@ -490,6 +505,9 @@ m/ = `MATRIC NUMBER` +
 g/ = `GROUP` +
 t/ = `TAG` +
 
+[NOTE]
+If you wish to find by a `PREFIX`, enter a space after the `PREFIX` while typing the command. This enables you to search for multiple keywords without having to enter the `PREFIX`.
+
 ****
 * An additional `PREFIX` can be stated after `find` to narrow search to a particular field. e.g e/ for email
 * If no `PREFIX` is stated, all member fields will be searched.
@@ -518,10 +536,13 @@ Aliases : `h`, `info`
 
 === Hiding results of polls : `hideresults` (Since v1.4)
 
-Hides the results of all polls in Club Connect. This is a command that can be used by `EXCO` members only to remove clutter from poll results. +
+Hides the results of all polls in Club Connect.
+[NOTE]
+This is a command that can be used to remove clutter from poll results. +
+
 Format: `hideresults` +
 Alias: `hideres`
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 
@@ -551,7 +572,7 @@ Alias: `imp`
 [NOTE]
 You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
 
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 Examples:
@@ -572,7 +593,10 @@ Logs in a member to Club Connect. +
 Format: `login u/USERNAME pw/PASSWORD` +
 Alias: `signin`
 
-Example: `login u/JohnDoe pw/pass1234`
+Example: `login u/A0123456H pw/password`
+
+* Use your `MATRIC NUMBER` as your username.
+* The default password is `password`. We advise you to change your password using the `changepass` command once you've logged in.
 
 === Logging out of the application : `logout` (Since v1.4)
 
@@ -615,7 +639,7 @@ Aliases: `rmgroup`, `delgroup`
 * The group must exist in Club Connect.
 * The group must be in valid format (i.e. no white-spaces and non-empty).
 ****
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 Examples:
@@ -649,12 +673,18 @@ Selects the 1st member in the results of the `find` command.
 
 === Showing results of polls : `showresults` (Since v1.4)
 
-Displays the results of polls in Club Connect. This is a command that can be used by `EXCO` members only to monitor polls in the Club Connect. +
+Displays the results of polls in Club Connect.
+
+[NOTE]
+This is a command that can be used to monitor polls in the Club Connect. +
+
+[NOTE]
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
+
 Format: `showresults` +
 Alias: `showres`
 
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
 
 
@@ -671,6 +701,9 @@ A member can have any number of tags (including 0).
 * You can only sign-up once.
 * You must use the credentials of the signed-up member to continue using Club Connect.
 ****
+
+[NOTE]
+Refer to `login` command documentation for user credentials.
 
 Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
 
@@ -706,16 +739,16 @@ The `undo` command fails as there are no undoable commands executed previously.
 Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
 Format: `viewalltasks` +
 Alias: `alltasks`
-[NOTE]
+[IMPORTANT]
 This command is for `EXCO` members only.
-
-[NOTE]
-This command can only be invoked by `EXCO` members.
 
 === Viewing tasks assigned to or assigned by you : `viewmytasks` (Since v1.4)
 
 Display all tasks created/assigned by the currently member in Club Connect. +
+
+[NOTE]
 The main purpose of this command is to enable `EXCO` members to toggle between all tasks and those related to them. +
+
 Format: `viewmytasks` +
 Alias: `mytasks`
 

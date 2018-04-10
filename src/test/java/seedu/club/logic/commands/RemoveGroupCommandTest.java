@@ -8,7 +8,7 @@ import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_TEST;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
@@ -163,7 +163,7 @@ public class RemoveGroupCommandTest {
     @Test
     public void equals() {
         RemoveGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
-        RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_BOB));
+        RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_TEST));
 
         // same object -> returns true
         assertTrue(firstCommand.equals(firstCommand));

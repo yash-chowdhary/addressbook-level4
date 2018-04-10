@@ -184,8 +184,8 @@ public class Member {
                 .append(getGroup())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
-        builder.append("Tasks: ");
-        getTasks().forEach(builder::append);
+
+
         return builder.toString();
     }
 

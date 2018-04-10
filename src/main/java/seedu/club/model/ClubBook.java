@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,6 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
-import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -35,9 +35,12 @@ import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.UniqueTagList;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.UniqueTaskList;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 
 /**
@@ -97,6 +100,7 @@ public class ClubBook implements ReadOnlyClubBook {
         List<Member> syncedMemberList = newData.getMemberList().stream()
                 .map(this::syncWithMasterTagList)
                 .collect(Collectors.toList());
+        setLoggedInMember(newData.getLoggedInMember());
 
         try {
             setMembers(syncedMemberList);
@@ -250,13 +254,6 @@ public class ClubBook implements ReadOnlyClubBook {
     }
 
     /**
-     * Get the member who is log in, if null, there are no one that is logged in.
-     */
-    public Member getLoggedInMember() {
-        return members.getCurrentlyLogInMember();
-    }
-
-    /**
      * Sign up a member if it is a new clubbook
      */
     public void signUpMember(Member p) throws MemberListNotEmptyException {
@@ -356,6 +353,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
 
     //// tag-level operations
+
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
     }
@@ -373,7 +371,6 @@ public class ClubBook implements ReadOnlyClubBook {
                 .collect(Collectors.toSet());
         tags.setTags(newTags);
     }
-
     /**
      * Returns true if only {@code member} is tagged with {@code tag}.
      *
@@ -450,7 +447,8 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
-    //@@author th14thmusician
+
+    //@@author Song Weiyang
     /**
      * Change the password of {@code member} in the ClubBook.
      * @param username
@@ -458,18 +456,15 @@ public class ClubBook implements ReadOnlyClubBook {
      * @param newPassword
      */
     public void changePassword (String username, String oldpassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
-            MatricNumberNotFoundException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
         members.changePassword(username, oldpassword, newPassword);
     }
-
+    //@@author
     public void clearClubBook() {
         members.clear();
     }
-    //@@author
 
     //// util methods
-
     @Override
     public String toString() {
         return members.asObservableList().size() + " members, " + tags.asObservableList().size() + " tags, "
@@ -505,6 +500,15 @@ public class ClubBook implements ReadOnlyClubBook {
                 && this.tags.equalsOrderInsensitive(((ClubBook) other).tags));
     }
 
+    @Override
+    public void setLoggedInMember(Member target) {
+        members.setCurrentlyLogInMember(target);
+    }
+
+    @Override
+    public Member getLoggedInMember() {
+        return members.getCurrentlyLogInMember();
+    }
 
     @Override
     public int hashCode() {
@@ -514,13 +518,128 @@ public class ClubBook implements ReadOnlyClubBook {
 
     //@@author yash-chowdhary
     /**
-     * Replaces the given task {@code target} in the list with {@code editedMember}.
+     * Update {@code Task target}'s status with that of {@code Task editedMember}.
      * @throws DuplicateTaskException if updating the tasks's details causes the task to be equivalent to
      *                                  another existing task in the list.
      * @throws TaskNotFoundException if {@code target} could not be found in the list.
      */
-    public void updateTask(Task taskToEdit, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
+    public void updateTaskStatus(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
+            TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+    }
+
+    /**
+     * Update {@code Task target}'s Assignee with that of {@code Task editedMember}.
+     * @throws DuplicateTaskException if updating the tasks's details causes the task to be equivalent to
+     *                                  another existing task in the list, ignoring the status.
+     * @throws TaskNotFoundException if {@code target} could not be found in the list.
+     */
+    public void updateTaskAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException {
+        requireNonNull(editedTask);
+        try {
+            tasks.setTaskIgnoreStatus(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    /**
+     * Updates the task if there is a change in Matric Number of the target member.
+     * @return number of tasks updated.
+     * @throws DuplicateTaskException if there is already a task with similar attributes (regardless of status).
+     */
+    public int updateTask(Member target, Member editedMember) throws DuplicateTaskException {
+        ObservableList<Task> taskObservableList = tasks.asObservableList();
+        if (target.getMatricNumber().equals(editedMember.getMatricNumber())) {
+            return 0;
+        }
+
+        int numberOfTasksUpdated = 0;
+
+        for (Task task : taskObservableList) {
+            Task editedTask = null;
+            String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
+            String targetMemberMatricNumberString = target.getMatricNumber().toString();
+
+            if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+
+                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        newAssignor, newAssignee, task.getStatus());
+                tasks.setTaskIgnoreStatus(task, editedTask);
+                numberOfTasksUpdated++;
+            } else if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+
+                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        newAssignor, task.getAssignee(), task.getStatus());
+                tasks.setTaskIgnoreStatus(task, editedTask);
+                numberOfTasksUpdated++;
+            } else if (task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        task.getAssignor(), newAssignee, task.getStatus());
+                tasks.setTaskIgnoreStatus(task, editedTask);
+                numberOfTasksUpdated++;
+            }
+        }
+
+        return numberOfTasksUpdated;
+
+    }
+
+    /**
+     * Removes all tasks that have been assigned to {@code member}.
+     */
+    public int removeTasksOfMember(Member member) {
+
+        int numberOfTasksRemoved = 0;
+        Iterator<Task> it = tasks.iterator();
+        while (it.hasNext()) {
+            Task task = it.next();
+            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+                it.remove();
+                numberOfTasksRemoved++;
+            }
+        }
+        return numberOfTasksRemoved;
+    }
+
+    /**
+     * Checks if a similar task has been assigned to the member by some other exco member.
+     * The task's Assignor and Status are ignored in this comparison.
+     * @throws TaskAlreadyAssignedException if there exists a task like so.
+     */
+    public void checkIfTaskIsAlreadyAssigned(Task toAdd) throws TaskAlreadyAssignedException {
+        ObservableList<Task> taskObservableList = getTaskList();
+        for (Task task : taskObservableList) {
+            if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
+                    && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
+                    && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                throw new TaskAlreadyAssignedException();
+            }
+        }
+    }
+
+    /**
+     * Checks if a similar task exists.
+     * @throws DuplicateTaskException if there exists a duplicate task.
+     */
+    public void checkIfDuplicateTaskExists(Task toAdd) throws DuplicateTaskException {
+        ObservableList<Task> taskObservableList = getTaskList();
+        for (Task task : taskObservableList) {
+            if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
+                    && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
+                    && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
+                    && task.getAssignor().getAssignor().equalsIgnoreCase(toAdd.getAssignor().getAssignor())
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                throw new DuplicateTaskException();
+            }
+        }
     }
 }

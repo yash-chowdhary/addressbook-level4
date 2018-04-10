@@ -30,10 +30,12 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 /**
  * The API of the Model component.
@@ -75,9 +77,10 @@ public interface Model {
     ReadOnlyClubBook getClubBook();
 
     /**
-     * Deletes the given member.
+     * Deletes the given member, and returns the number of tasks that have been deleted from the
+     * main task list.
      */
-    void deleteMember(Member target) throws MemberNotFoundException;
+    int deleteMember(Member target) throws MemberNotFoundException;
 
     /**
      * Adds the given member
@@ -103,13 +106,15 @@ public interface Model {
 
     /**
      * Replaces the given member {@code target} with {@code editedMember}.
-     *
+     * The task list is also affected if there is a change in the {@code target}'s Matric Number.
      * @throws DuplicateMatricNumberException if updating the member's details causes the member's matriculation number
      *                                  to be equivalent to that of another existing member in the list.
      * @throws MemberNotFoundException  if {@code target} could not be found in the list.
+     * @throws DuplicateTaskException if there's already a task which has the same details. This is the
+     *                                  same as identifying a duplicate member.
      */
-    void updateMember(Member target, Member editedMember)
-            throws DuplicateMatricNumberException, MemberNotFoundException;
+    int updateMember(Member target, Member editedMember)
+            throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException;
 
     /**
      * Returns an unmodifiable view of the filtered member list
@@ -239,11 +244,16 @@ public interface Model {
     void setClearConfirmation(Boolean b);
     //@@author
 
-    void viewAllTasks() throws TasksCannotBeDisplayedException;
+    void viewAllTasks() throws TasksAlreadyListedException;
 
-    void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException;
+    void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException,
+            TaskAlreadyAssignedException;
 
     void viewMyTasks() throws TasksAlreadyListedException;
 
-    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException;
+    void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
+            TaskStatusCannotBeEditedException;
+
+    void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException, DuplicateTaskException,
+            TaskAlreadyAssignedException, TaskAssigneeUnchangedException;
 }
