@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
@@ -98,8 +97,7 @@ public class VoteCommand extends UndoableCommand {
         // state check
         VoteCommand e = (VoteCommand) other;
         return pollIndex.equals(e.pollIndex)
-                && answerIndex.equals(e.answerIndex)
-                && Objects.equals(pollToVoteIn, e.pollToVoteIn);
+                && answerIndex.equals(e.answerIndex);
     }
 
 }
