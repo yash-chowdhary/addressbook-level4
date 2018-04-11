@@ -123,9 +123,9 @@ public class MemberOverviewPanel extends UiPart<Region> {
     }
 
     public void setMemberListView(ObservableList<Task> taskList, Member member) {
-        taskList.filtered(new TaskIsRelatedToMemberPredicate(member));
+        final ObservableList<Task> filteredTaskList = taskList.filtered(new TaskIsRelatedToMemberPredicate(member));
         ObservableList<ModifiedTaskCard> mappedList = EasyBind.map(
-                taskList, (task) -> new ModifiedTaskCard(task, taskList.indexOf(task) + 1));
+                filteredTaskList, (task) -> new ModifiedTaskCard(task, filteredTaskList.indexOf(task) + 1));
         modifiedTaskCardListView.setItems(mappedList);
         modifiedTaskCardListView.setCellFactory(listView -> new TaskListViewCell());
     }
