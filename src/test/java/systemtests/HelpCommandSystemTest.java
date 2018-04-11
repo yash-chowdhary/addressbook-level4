@@ -46,10 +46,6 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();
 
-        getMemberListPanel().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
-        assertHelpWindowOpen();
-
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowNotOpen();
 
