@@ -177,4 +177,9 @@ public class XmlAdaptedMember {
                 && Objects.equals(password, otherMember.password)
                 && tagged.equals(otherMember.tagged);
     }
+
+    public String getPassword() {
+        return this.name + this.password + this.username + this.phone + this.matricNumber + this.group
+                + this.email + this.profilePhoto + this.tagged;
+    }
 }
