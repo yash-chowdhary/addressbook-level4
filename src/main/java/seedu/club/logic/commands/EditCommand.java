@@ -64,7 +64,7 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s.\n"
+    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s\n"
             + "Number of tasks updated = %2$d";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "

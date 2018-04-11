@@ -30,8 +30,8 @@ public class VoteCommand extends UndoableCommand {
             + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 3 2";
 
-    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been received";
-    public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll";
+    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.";
+    public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll.";
 
     private final Index pollIndex;
     private final Index answerIndex;
