@@ -912,6 +912,24 @@ The logged in member's details are then updated to include this new profile phot
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
 // end::profilephoto[]
 
+// tag::deletetag[]
+=== Delete Tag Mechanism
+==== Current Implementation
+
+The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
+It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
+
+The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
+Figure 34 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+
+image::placeholder.png[width="200" height="200"]
+_Figure 34. UML Diagram of `DeleteTagCommand`._
+
+==== Design Considerations
+===== Aspect: Implementation of `DeleteTagCommand`
+Lorem ipsum dolor sit amet
+// end::deletetag[]
+
 === Compress/Decompress Mechanism
 ==== Current Implementation
 Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).

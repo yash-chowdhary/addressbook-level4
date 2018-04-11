@@ -16,3 +16,38 @@ All output is displayed on a Graphical User Interface (GUI) - which is just comp
 
 *Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]]
 [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
+
+=== Enhancement Added: Delete Tag Command
+
+==== External Behavior
+
+---
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=deletetag]
+
+#End of Extract (from User Guide)#
+
+---
+
+==== Justification
+
+---
+If a tag in Club Connect is no longer required, an `Exco` member can delete the tag from all members.
+
+Here is an example of when this feature can be useful.
+Suppose the club is conducting a fundraising event.
+Then, all members who are organising and helping out in this event can be tagged with `Fundraising` in Club Connect.
+Once the fundraising event is over, it does not make sense to have this tag anymore.
+So, the `deletetag` command allows any `Exco` member to remove this tag from all members (and from Club Connect itself) in one go.
+
+==== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=deletetag]
+
+#End of Extract (from Developer Guide)#
+
+---
