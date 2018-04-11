@@ -165,7 +165,9 @@ public class UniqueMemberList implements Iterable<Member> {
     public void logsInMember(String username, String password) {
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
-            currentlyLogInMember = checkMember;
+            currentlyLogInMember = new Member(checkMember.getName(), checkMember.getPhone(),
+                    checkMember.getEmail(), checkMember.getMatricNumber(),
+                    checkMember.getGroup(), checkMember.getTags());
         }
     }
 

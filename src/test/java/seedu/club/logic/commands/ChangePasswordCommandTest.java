@@ -32,24 +32,30 @@ public class ChangePasswordCommandTest {
     @Before
     public void setUp () throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
-        newPassword = new Password("test");
         member = observableList.get(0);
-        LogInCommand logInCommand = new LogInCommand(member.getCredentials().getUsername(),
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
                 member.getCredentials().getPassword());
-        logInCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        logInCommand.execute();
-        expectedModel = model;
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        newPassword = new Password("test");
     }
 
     @Test
     public void excecute_changepassword_success ()
             throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
             MatricNumberNotFoundException {
+        Member memberToChangePasswordOf = new Member(member.getName(), member.getPhone(), member.getEmail(),
+                member.getMatricNumber(), member.getGroup(), member.getTags());
         expectedModel.changePassword(this.member.getCredentials().getUsername().value,
                 this.member.getCredentials().getPassword().value, newPassword.value);
-        assertCommandSuccess(prepareCommand(this.member, model), model,
+        assertCommandSuccess(prepareCommand(memberToChangePasswordOf, model), model,
                 ChangePasswordCommand.MESSAGE_SUCCESS, expectedModel);
+        expectedModel.changePassword(member.getCredentials().getUsername().value,
+                member.getCredentials().getPassword().value, "password");
     }
 
     @Test
