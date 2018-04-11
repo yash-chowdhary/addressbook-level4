@@ -1037,7 +1037,7 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
-import seedu.club.logic.commands.RemoveGroupCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
@@ -1386,7 +1386,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import java.util.stream.Stream;
 
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.RemoveGroupCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.group.Group;
 

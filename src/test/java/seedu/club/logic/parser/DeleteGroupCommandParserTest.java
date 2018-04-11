@@ -14,22 +14,22 @@ import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import org.junit.Test;
 
-import seedu.club.logic.commands.RemoveGroupCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.model.group.Group;
 
 //@@author yash-chowdhary
-public class RemoveGroupCommandParserTest {
+public class DeleteGroupCommandParserTest {
     private RemoveGroupCommandParser parser = new RemoveGroupCommandParser();
 
     @Test
     public void parse_fieldPresent_success() {
-        assertParseSuccess(parser, GROUP_DESC_BOB, new RemoveGroupCommand(new Group(VALID_GROUP_BOB)));
-        assertParseSuccess(parser, GROUP_DESC_AMY, new RemoveGroupCommand(new Group(VALID_GROUP_AMY)));
+        assertParseSuccess(parser, GROUP_DESC_BOB, new DeleteGroupCommand(new Group(VALID_GROUP_BOB)));
+        assertParseSuccess(parser, GROUP_DESC_AMY, new DeleteGroupCommand(new Group(VALID_GROUP_AMY)));
     }
 
     @Test
     public void parse_incorrectField_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteGroupCommand.MESSAGE_USAGE);
         assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
         assertParseFailure(parser, MATRIC_NUMBER_DESC_AMY, expectedMessage);
     }
@@ -43,7 +43,7 @@ public class RemoveGroupCommandParserTest {
 
     @Test
     public void parse_fieldNotPresent_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteGroupCommand.MESSAGE_USAGE);
 
         // blank space
         assertParseFailure(parser, " ", expectedMessage);

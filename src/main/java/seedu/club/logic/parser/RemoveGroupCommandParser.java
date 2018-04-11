@@ -6,32 +6,32 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import java.util.stream.Stream;
 
 import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.RemoveGroupCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.group.Group;
 
 /**
- * Parses input arguments and creates a new RemoveGroupCommand object
+ * Parses input arguments and creates a new DeleteGroupCommand object
  */
-public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
+public class RemoveGroupCommandParser implements Parser<DeleteGroupCommand> {
     /**
-     * Parses the given {@code String} of arguments in the context of the RemoveGroupCommand
-     * and returns an RemoveGroupCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the DeleteGroupCommand
+     * and returns an DeleteGroupCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public RemoveGroupCommand parse(String args) throws ParseException {
+    public DeleteGroupCommand parse(String args) throws ParseException {
         ArgumentMultimap argumentMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_GROUP);
 
         if (!arePrefixesPresent(argumentMultimap, PREFIX_GROUP)
                 || !argumentMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteGroupCommand.MESSAGE_USAGE));
         }
 
         try {
             Group group = ParserUtil.parseGroup(argumentMultimap.getValue(PREFIX_GROUP).get());
 
-            return new RemoveGroupCommand(group);
+            return new DeleteGroupCommand(group);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }

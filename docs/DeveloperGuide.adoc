@@ -746,48 +746,48 @@ _Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member
 // end::tasks[]
 
 // tag::removegroup[]
-=== Remove Group Mechanism
+=== Delete Group Mechanism
 ==== Current Implementation
 
-The `removegroup` mechanism is facilitated by the `RemoveGroupCommand` class. It allows `Exco` members to remove a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
+The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It allows `Exco` members to delete a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
 
-The `RemoveGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
+The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
 
 image::RemoveGroupCommandUML.png[width="200" height="200"]
-_Figure 33. UML Diagram of `RemoveGroupCommand`._
+_Figure 33. UML Diagram of `DeleteGroupCommand`._
 
-`RemoveGroupCommandParser` is responsible for parsing the `removegroup` command. It returns a `RemoveGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
+`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
 
 image::SDforRemoveGroupCommandParser.png[width="800"]
-_Figure 34. Sequence Diagram for the parsing of `RemoveGroupCommand`._
+_Figure 34. Sequence Diagram for the parsing of `DeleteGroupCommand`._
 
-The execution invokes `Model#removeGroup()` with the `Group` ```toDelete``` as a parameter. This further invokes the method `ClubBook#removeGroup()`. Here is the implementation:
+The execution invokes `Model#deleteGroup()` with the `Group` ```toRemove``` as a parameter. This further invokes the method `ClubBook#deleteGroup()`. Here is the implementation:
 
 [source, java]
 @Override
-public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
-    requireNonNull(toRemove);
-    clubBook.removeGroup(toRemove);
-    indicateClubBookChanged();
+public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+    checkIfGroupIsMemberOrExco(toRemove);
+    checkIfGroupIsPresent(toRemove);
+    deleteGroupFromClubBook(toRemove);
 }
 
-`ClubBook#removeGroup()` further calls `ClubBook#removeGroupFromClubBook()`.
+`ClubBook#deleteGroup()` further calls `ClubBook#deleteGroupFromClubBook()`.
 
 [source, java]
-private void removeGroupFromClubBook(Group toRemove) {
+private void deleteGroupFromClubBook(Group toRemove) {
     try {
         for (Member member : members) {
-            removeGroupFromMember(toRemove, member);
+            deleteGroupFromMember(toRemove, member);
         }
     } catch (MemberNotFoundException mnfe) {
         throw new AssertionError("Impossible: original member is obtained from the club book.");
     }
 }
 
-The final method called is `ClubBook#removeGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toDelete``` to `member`.
+The final method called is `ClubBook#deleteGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toRemove``` to `member`.
 
 [source, java]
-private void removeGroupFromMember(Group toRemove, Member member)
+private void deleteGroupFromMember(Group toRemove, Member member)
         throws MemberNotFoundException {
     if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
         return;
@@ -806,11 +806,11 @@ private void removeGroupFromMember(Group toRemove, Member member)
 The high-level sequence of events is depicted in Figure 35 below.
 
 image::SDforRemoveGroup.png[width="800"]
-_Figure 35. Sequence Diagram for removing a group from `Club Connect`._
+_Figure 35. Sequence Diagram for delete a group from `Club Connect`._
 
 
 ==== Design Considerations
-===== Aspect: Implementation of `RemoveGroupCommand`
+===== Aspect: Implementation of `DeleteGroupCommand`
 * **Alternative 1 (current choice)**: Overwrite the relevant `Member` objects with new `Member` objects.
 ** Pros: Easy to implement.
 ** Cons: Requires looping through all the members in `Club Connect`.
