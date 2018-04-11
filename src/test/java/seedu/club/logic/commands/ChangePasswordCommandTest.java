@@ -100,7 +100,7 @@ public class ChangePasswordCommandTest {
      */
     private ChangePasswordCommand prepareCommandThatThrowsIncorrectUsername(Member member, Model model) {
         ChangePasswordCommand command = new ChangePasswordCommand(new Username("A0000000Z"),
-                new Password("pass"), newPassword);
+                member.getCredentials().getPassword(), newPassword);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
