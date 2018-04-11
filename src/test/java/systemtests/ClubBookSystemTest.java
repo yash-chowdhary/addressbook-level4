@@ -101,9 +101,6 @@ public abstract class ClubBookSystemTest {
         return mainWindowHandle.getMainMenu();
     }
 
-    /*public BrowserPanelHandle getBrowserPanel() {
-        return mainWindowHandle.getBrowserPanel();
-    }*/
 
     public StatusBarFooterHandle getStatusBarFooter() {
         return mainWindowHandle.getStatusBarFooter();
