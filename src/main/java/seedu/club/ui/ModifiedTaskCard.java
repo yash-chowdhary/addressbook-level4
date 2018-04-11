@@ -27,8 +27,6 @@ public class ModifiedTaskCard extends UiPart<Region> {
 
     @FXML
     private Label assignor;
-    @FXML
-    private Label status;
 
     public ModifiedTaskCard(Task task, int displayedIndex) {
         super(FXML);
@@ -37,7 +35,6 @@ public class ModifiedTaskCard extends UiPart<Region> {
         description.setText(task.getDescription().getDescription());
         date.setText("Due Date: " + task.getDate().getDate());
         assignor.setText("Assigned by: " + task.getAssignor().getAssignor());
-        status.setText("Status: " + task.getStatus().getStatus());
     }
     public boolean isTaskYetToBegin() {
         return task.hasTaskNotBegun();
