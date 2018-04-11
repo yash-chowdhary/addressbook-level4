@@ -22,7 +22,7 @@ public class ViewAllTasksCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "All tasks are displayed.";
     public static final String MESSAGE_CANNOT_VIEW = "You do not have permission to view all tasks.";
-    public static final String MESSAGE_ALREADY_LISTED = "All the tasks in Club Connect are already listed!";
+    public static final String MESSAGE_ALREADY_LISTED = "All the tasks in Club Connect are already listed.";
 
     @Override
     public CommandResult execute() throws CommandException {
