@@ -1,7 +1,6 @@
 package systemtests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
@@ -18,7 +17,6 @@ import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.model.member.Member;
-import seedu.club.ui.BrowserPanel;
 import seedu.club.ui.StatusBarFooter;
 
 /**
@@ -47,14 +45,6 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();
 
-        getMemberListPanel().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
-        assertHelpWindowOpen();
-
-        getBrowserPanel().click();
-        getMainMenu().openHelpWindowUsingAccelerator();
-        assertHelpWindowNotOpen();
-
         //use menu button
         getMainMenu().openHelpWindowUsingMenu();
         assertHelpWindowOpen();
@@ -72,7 +62,6 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         assertEquals("", getCommandBox().getInput());
         assertCommandBoxShowsDefaultStyle();
         assertNotEquals(HelpCommand.SHOWING_HELP_MESSAGE, getResultDisplay().getText());
-        assertNotEquals(BrowserPanel.DEFAULT_PAGE, getBrowserPanel().getLoadedUrl());
         assertListMatching(getMemberListPanel(), getModel().getFilteredMemberList());
 
         // assert that the status bar too is updated correctly while the help window is open
@@ -91,12 +80,4 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         new HelpWindowHandle(guiRobot.getStage(HelpWindowHandle.HELP_WINDOW_TITLE)).close();
         getMainWindowHandle().focus();
     }
-
-    /**
-     * Asserts that the help window isn't open.
-     */
-    private void assertHelpWindowNotOpen() {
-        assertFalse(ERROR_MESSAGE, HelpWindowHandle.isWindowPresent());
-    }
-
 }

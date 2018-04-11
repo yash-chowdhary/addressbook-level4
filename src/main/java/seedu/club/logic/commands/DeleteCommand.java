@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
@@ -53,7 +55,7 @@ public class DeleteCommand extends UndoableCommand {
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
-
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToDelete, true));
         return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete, numberOfTasksDeleted));
     }
 

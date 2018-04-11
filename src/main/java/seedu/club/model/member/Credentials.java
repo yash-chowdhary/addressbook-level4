@@ -12,6 +12,11 @@ public class Credentials {
         this.password = new Password("password");
     }
 
+    public Credentials(Username username, Password password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public boolean isValid(String username, String password) {
         return password.equals(this.password.value) && username.equals(this.username.value);
     }
