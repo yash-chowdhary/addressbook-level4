@@ -6,7 +6,7 @@ import seedu.club.model.member.Member;
 /**
  *
  */
-public class UpdateSelectionPanelEvent extends BaseEvent{
+public class UpdateSelectionPanelEvent extends BaseEvent {
     private Member member;
     private boolean toDelete;
 
