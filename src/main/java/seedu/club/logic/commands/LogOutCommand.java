@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
@@ -33,6 +34,7 @@ public class LogOutCommand extends Command {
         requireToLogIn();
         EventsCenter.getInstance().post(new HideResultsRequestEvent());
         model.logOutMember();
+        EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

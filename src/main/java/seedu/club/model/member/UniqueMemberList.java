@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -156,7 +157,7 @@ public class UniqueMemberList implements Iterable<Member> {
     public int hashCode() {
         return internalList.hashCode();
     }
-
+    //@@author th14thmusician
     /**
      * Logs in a member successfully and return a true value
      * @return
@@ -164,7 +165,9 @@ public class UniqueMemberList implements Iterable<Member> {
     public void logsInMember(String username, String password) {
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
-            currentlyLogInMember = checkMember;
+            currentlyLogInMember = new Member(checkMember.getName(), checkMember.getPhone(),
+                    checkMember.getEmail(), checkMember.getMatricNumber(),
+                    checkMember.getGroup(), checkMember.getTags());
         }
     }
 
@@ -210,17 +213,20 @@ public class UniqueMemberList implements Iterable<Member> {
         currentlyLogInMember = member;
     }
 
-    //@@author Song Weiyang
     /**
      * Changes the password of a member
      */
     public void changePassword (String username, String oldPassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         Member checkMember = usernameCredentialsHashMap.get(username);
+        if (!usernameCredentialsHashMap.containsKey(username)) {
+            throw new MatricNumberNotFoundException();
+        }
         if (!checkMember.equals(currentlyLogInMember)) {
             throw new DataToChangeIsNotCurrentlyLoggedInMemberException();
         }
-        if (checkMember != null && usernamePasswordHashMap.get(username).equals(oldPassword)) {
+        if (usernamePasswordHashMap.get(username).equals(oldPassword)) {
             internalList.get(internalList.indexOf(checkMember)).getCredentials().setPassword(new Password(newPassword));
             usernamePasswordHashMap.remove(username);
             usernamePasswordHashMap.put(username, newPassword);
@@ -251,4 +257,5 @@ public class UniqueMemberList implements Iterable<Member> {
         setCurrentlyLogInMember(null);
         System.out.println(getCurrentlyLogInMember());
     }
+    //@@author
 }
