@@ -820,6 +820,20 @@ _Figure 35. Sequence Diagram for removing a group from `Club Connect`._
 
 // end::removegroup[]
 
+// tag::import[]
+=== Importing Members
+==== Current Implementation
+Lorem ipsum dolor sit amet
+
+// end::import[]
+
+// tag::export[]
+=== Exporting Members
+==== Current Implementation
+Lorem ipsum dolor sit amet
+
+// end::export[]
+
 // tag::profilephoto[]
 === Changing Profile Photo Mechanism
 ==== Current Implementation
@@ -911,6 +925,31 @@ The logged in member's details are then updated to include this new profile phot
 ** Pros: Changes made in the source image are reflected in the application.
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
 // end::profilephoto[]
+
+// tag::deletetag[]
+=== Delete Tag Mechanism
+==== Current Implementation
+
+The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
+It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
+
+The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
+Figure 34 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+
+image::placeholder.png[width="200" height="200"]
+_Figure 34. UML Diagram of `DeleteTagCommand`._
+
+==== Design Considerations
+===== Aspect: Implementation of `DeleteTagCommand`
+Lorem ipsum dolor sit amet
+// end::deletetag[]
+
+// tag::uitheme[]
+=== UI Look and Feel
+==== Current Implementation
+Lorem ipsum dolor sit amet
+
+// end::uitheme[]
 
 === Compress/Decompress Mechanism
 ==== Current Implementation
@@ -1822,27 +1861,41 @@ Use case ends.
 _{More to be added}_
 
 [appendix]
+
+// tag::glossary[]
+
 == Glossary
 
 [[abstraction]] Abstraction::
+In Object-oriented Programming, abstraction is the mechanism by which users are provided with only the functionality, and not the implementation details.
+So, abstraction provides users with information on what an object does, rather than how it does it.
 
 [[attribute]] Attribute::
-An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matric number and so on.
+An attribute is a type of detail of a member.
+For example, an attribute of a member could be phone number, email, matric number and so on.
 
 [[club]] Club::
-A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+A student organisation or association at the National University of Singapore.
+These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
 
 [[cli]] CLI::
-Acronym for Command Line Inerface. It is a purely text-based interface for software. User respond to visual prompts by typing single commands into the interface and receive results as text as well.
+Acronym for Command Line Inerface. It is a purely text-based interface for software.
+User respond to visual prompts by typing single commands into the interface and receive results as text as well.
 An example of CLI would be MS-DOS.
 
 [[csv]] CSV::
+A comma-separated values (CSV) file is a text file that uses a comma (",") to separate values.
+This allows data to be saved in a table structured format.
 
 [[entry]] Entry::
 A value added to a member's attribute.
 
 [[exco-member]] Exco member::
-A member who is part of the Executive committee of the club. Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+A member who is part of the Executive committee of the club.
+Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+
+[NOTE]
+An Exco member is still regarded as a member.
 
 [[gui]] GUI::
 Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
@@ -1854,33 +1907,13 @@ Windows, Linux, Unix, OS-X
 [[member]] Member::
 One of the members who compose a group organization. They are the target users of our application.
 
-[NOTE]
-An Exco member is also regarded as a member.
-
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
 
 [[profile]] Profile::
 Visual display of the information (attributes and entries) of a member.
 
-[[uml]] UML Diagram::
-
-[appendix]
-== Product Survey
-
-*Product Name*
-
-Author: ...
-
-Pros:
-
-* ...
-* ...
-
-Cons:
-
-* ...
-* ...
+// end::glossary[]
 
 [appendix]
 == Instructions for Manual Testing
@@ -1904,8 +1937,6 @@ These instructions only provide a starting point for testers to work on; testers
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
 
-_{ more test cases ... }_
-
 === Deleting a member
 
 . Deleting a member while all members are listed
@@ -1917,13 +1948,3 @@ _{ more test cases ... }_
    Expected: No member is deleted. Error details shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
-
-_{ more test cases ... }_
-
-=== Saving data
-
-. Dealing with missing/corrupted data files
-
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
-
-_{ more test cases ... }_

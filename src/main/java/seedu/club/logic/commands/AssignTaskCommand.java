@@ -45,10 +45,10 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_MATRIC_NUMBER + "A1234567H";
 
     public static final String MESSAGE_SUCCESS = "New task created and assigned to %1$s";
-    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
+    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists.";
     public static final String MESSAGE_ALREADY_ASSIGNED = "This task has already been assigned to this member by "
-            + "another EXCO member";
-    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member doesn't exist in the club book";
+            + "another Exco member.";
+    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member does not exist in Club Connect.";
 
     private final Task toAdd;
     private final MatricNumber matricNumber;
