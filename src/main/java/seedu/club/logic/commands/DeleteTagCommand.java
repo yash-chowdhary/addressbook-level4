@@ -29,7 +29,7 @@ public class DeleteTagCommand extends UndoableCommand {
             + "Parameters: TAG (must be an existing tag)\n"
             + "Example: " + COMMAND_WORD + " t/EventHelper";
 
-    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted Tag: %1$s";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted tag: %1$s";
     public static final String MESSAGE_NON_EXISTENT_TAG = "This tag does not exist in Club Connect.";
 
     private Tag tagToDelete;

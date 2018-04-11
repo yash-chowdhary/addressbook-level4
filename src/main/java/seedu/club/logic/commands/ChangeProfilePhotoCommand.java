@@ -21,7 +21,7 @@ public class ChangeProfilePhotoCommand extends Command {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "pic", "profilepic")
     );
-    public static final String COMMAND_FORMAT = "changepic PATH";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " PATH";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"

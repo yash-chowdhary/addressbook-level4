@@ -28,7 +28,8 @@ public class SignUpCommand extends Command {
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " n/ p/ e/ m/ [pic/ ] ";
 
-    public static final String MESSAGE_SUCCESS = "Sign up successful! Please log in to start using Club Connect.";
+    public static final String MESSAGE_SUCCESS = "Sign up successful! Please log in with your matriculation number"
+            + " and password to start using Club Connect.";
     public static final String MESSAGE_FAILURE = "Club Connect is already set up. Please log in to start.";
     public static final String MESSAGE_USAGE = "Lets you sign up for Club Connect.\n"
             + "Parameters: "

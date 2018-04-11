@@ -31,7 +31,8 @@ include::../UserGuide.adoc[tag=removegroup]
 ==== Justification
 
 ---
-If a sub-committee of a club is no longer required, the `EXCO` members can delete the group from the app. This changes the group of all the members (previously part of the deleted group) to the default group - `member`.
+If a sub-committee of a club is no longer required, the `Exco` members can delete the group from the app.
+This changes the group of all the members (previously part of the deleted group) to the default group - `Member`.
 
 ==== Implementation
 
@@ -57,7 +58,8 @@ include::../UserGuide.adoc[tag=email]
 ---
 
 ==== Justification
-Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+Every student club / organisation makes use of email blasts to communicate with its members.
+Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
 
 ---
 ==== Implementation

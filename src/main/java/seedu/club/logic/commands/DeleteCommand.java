@@ -31,7 +31,7 @@ public class DeleteCommand extends UndoableCommand {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_DELETE_MEMBER_SUCCESS = "Deleted member: %1$s.\n"
+    public static final String MESSAGE_DELETE_MEMBER_SUCCESS = "Deleted member: %1$s\n"
             + "Number of tasks deleted from main task list: %2$d.";
 
     private final Index targetIndex;
