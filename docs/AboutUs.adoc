@@ -21,7 +21,7 @@ Responsibilities: In charge of Model, Deliverables and deadlines
 
 === Amrut Prabhu
 image::amrut-prabhu.png[width="150", align="left"]
-{empty}[https://github.com/amrut-prabhu[github]] [https://github.com/CS2103JAN2018-W15-B4/main/tree/master/docs/team/yash-chowdhary.adoc[portfolio]]
+{empty}[https://github.com/amrut-prabhu[github]] [https://github.com/CS2103JAN2018-W15-B4/main/tree/master/docs/team/amrut-prabhu.adoc[portfolio]]
 
 Role: DevOps +
 Responsibilities:
