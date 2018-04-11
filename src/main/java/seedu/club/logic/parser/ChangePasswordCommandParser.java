@@ -14,7 +14,7 @@ import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
 
 
-//@@author Song Weiyang
+//@@author th14thmusician
 /**
  * Parses input arguments and creates a new ChangePasswordCommand object
  */
@@ -53,3 +53,4 @@ public class ChangePasswordCommandParser implements Parser<ChangePasswordCommand
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
+//@@author

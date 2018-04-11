@@ -238,7 +238,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
     //@@author
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Logs in a member
      */
@@ -261,6 +261,7 @@ public class ClubBook implements ReadOnlyClubBook {
         Member member = syncWithMasterTagList(p);
         members.signup(member);
     }
+    //@@author
 
     //@@author yash-chowdhary
 
@@ -449,8 +450,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
-
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Change the password of {@code member} in the ClubBook.
      * @param username
@@ -462,10 +462,20 @@ public class ClubBook implements ReadOnlyClubBook {
             MatricNumberNotFoundException {
         members.changePassword(username, oldpassword, newPassword);
     }
-    //@@author
+
+    @Override
+    public void setLoggedInMember(Member target) {
+        members.setCurrentlyLogInMember(target);
+    }
+
+    @Override
+    public Member getLoggedInMember() {
+        return members.getCurrentlyLogInMember();
+    }
     public void clearClubBook() {
         members.clear();
     }
+    //@@author
 
     //// util methods
     @Override
@@ -503,15 +513,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 && this.tags.equalsOrderInsensitive(((ClubBook) other).tags));
     }
 
-    @Override
-    public void setLoggedInMember(Member target) {
-        members.setCurrentlyLogInMember(target);
-    }
 
-    @Override
-    public Member getLoggedInMember() {
-        return members.getCurrentlyLogInMember();
-    }
 
     @Override
     public int hashCode() {
