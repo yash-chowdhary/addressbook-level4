@@ -13,7 +13,7 @@ import seedu.club.model.group.Group;
 /**
  * Parses input arguments and creates a new DeleteGroupCommand object
  */
-public class RemoveGroupCommandParser implements Parser<DeleteGroupCommand> {
+public class DeleteGroupCommandParser implements Parser<DeleteGroupCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteGroupCommand
      * and returns an DeleteGroupCommand object for execution.

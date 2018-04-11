@@ -127,8 +127,8 @@ public class ClubBookParser {
             return new LogOutCommand();
         } else if (isRedoCommand(commandWord)) {
             return new RedoCommand();
-        } else if (isRemoveGroupCommand(commandWord)) {
-            return new RemoveGroupCommandParser().parse(arguments);
+        } else if (isDeleteGroupCommand(commandWord)) {
+            return new DeleteGroupCommandParser().parse(arguments);
         } else if (isSelectCommand(commandWord)) {
             return new SelectCommandParser().parse(arguments);
         } else if (isShowResultsCommand(commandWord)) {
@@ -271,7 +271,7 @@ public class ClubBookParser {
     /**
      * Returns true if {@code commandWord} matches any of DeleteGroupCommand's aliases
      */
-    private boolean isRemoveGroupCommand(String commandWord) {
+    private boolean isDeleteGroupCommand(String commandWord) {
         for (String commandAlias : DeleteGroupCommand.COMMAND_ALIASES) {
             if (commandWord.equals(commandAlias)) {
                 return true;

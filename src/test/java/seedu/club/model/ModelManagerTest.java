@@ -106,7 +106,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
+    public void deleteGroup_atLeastOneMemberInGroup_groupDeleted() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
 

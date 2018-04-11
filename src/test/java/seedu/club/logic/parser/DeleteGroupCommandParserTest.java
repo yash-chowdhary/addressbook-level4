@@ -19,7 +19,7 @@ import seedu.club.model.group.Group;
 
 //@@author yash-chowdhary
 public class DeleteGroupCommandParserTest {
-    private RemoveGroupCommandParser parser = new RemoveGroupCommandParser();
+    private DeleteGroupCommandParser parser = new DeleteGroupCommandParser();
 
     @Test
     public void parse_fieldPresent_success() {

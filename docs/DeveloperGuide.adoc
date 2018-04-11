@@ -753,12 +753,12 @@ The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It
 
 The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
 
-image::RemoveGroupCommandUML.png[width="200" height="200"]
+image::DeleteGroupCommandUML.png[width="200" height="200"]
 _Figure 33. UML Diagram of `DeleteGroupCommand`._
 
 `DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
 
-image::SDforRemoveGroupCommandParser.png[width="800"]
+image::SDforDeleteGroupCommandParser.png[width="800"]
 _Figure 34. Sequence Diagram for the parsing of `DeleteGroupCommand`._
 
 The execution invokes `Model#deleteGroup()` with the `Group` ```toRemove``` as a parameter. This further invokes the method `ClubBook#deleteGroup()`. Here is the implementation:
@@ -805,7 +805,7 @@ private void deleteGroupFromMember(Group toRemove, Member member)
 
 The high-level sequence of events is depicted in Figure 35 below.
 
-image::SDforRemoveGroup.png[width="800"]
+image::SDforDeleteGroup.png[width="800"]
 _Figure 35. Sequence Diagram for delete a group from `Club Connect`._
 
 
