@@ -18,8 +18,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
@@ -102,6 +104,7 @@ public class EditCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
         return new CommandResult(String.format(MESSAGE_EDIT_MEMBER_SUCCESS, editedMember, numberOfTasksUpdated));
     }
 

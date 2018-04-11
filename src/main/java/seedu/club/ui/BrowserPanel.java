@@ -28,6 +28,7 @@ import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
 import seedu.club.commons.events.ui.MemberPanelSelectionChangedEvent;
 import seedu.club.commons.events.ui.ModifiedTaskPanelSelecetionChangedEvent;
 import seedu.club.commons.events.ui.SendEmailRequestEvent;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.model.email.Client;
 import seedu.club.model.member.Member;
 import seedu.club.model.task.Task;
@@ -60,6 +61,7 @@ public class BrowserPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private ObservableList<Task> taskList;
+    private Member currentlySelectedMember;
 
     @FXML
     private Label name;
@@ -142,6 +144,20 @@ public class BrowserPanel extends UiPart<Region> {
             loadDetails(true);
         }
     }
+
+    @Subscribe
+    public void handleUpdateSelectionPanelEvent (UpdateSelectionPanelEvent event) {
+        System.out.println(currentlySelectedMember);
+        if (event.isToDelete()) {
+            if (currentlySelectedMember.equals(event.getUpdatedMember())) {
+                loadDetails(false);
+            }
+        } else {
+            if (currentlySelectedMember != null) {
+                loadMemberPage(event.getUpdatedMember());
+            }
+        }
+    }
     //@@author
 
     //@@author yash-chowdhary
@@ -201,6 +217,7 @@ public class BrowserPanel extends UiPart<Region> {
      * @param member
      */
     private void loadMemberPage(Member member) {
+        currentlySelectedMember = member;
         name.setText(member.getName().fullName);
         setProfilePhoto(member);
         phone.setText(member.getPhone().value);
