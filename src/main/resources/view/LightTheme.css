@@ -317,7 +317,7 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #d3ffff;
+    -fx-background-color: #91e0e0;
     -fx-background-insets: 3;
 }
 
@@ -331,11 +331,11 @@
 }
 
 .scroll-bar:vertical .increment-arrow, .scroll-bar:vertical .decrement-arrow {
-    -fx-padding: 0 8 0 8;
+    -fx-padding: 0 7 0 7;
 }
 
 .scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
-    -fx-padding: 8 0 8 0;
+    -fx-padding: 7 0 7 0;
 }
 
 #cardPane {
