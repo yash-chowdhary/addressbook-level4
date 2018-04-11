@@ -20,7 +20,7 @@ AddressBook - Level 4 is a desktop address book application used for teaching So
 
 * *Minor enhancement*: added a history command that allows the user to navigate to previous commands using up/down keys.
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]]
 
 * *Other contributions*:
 
