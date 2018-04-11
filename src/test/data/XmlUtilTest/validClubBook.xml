@@ -7,6 +7,8 @@
         <matricNumber isPrivate="false">A9210701B</matricNumber>
         <group isPrivate="false">publicity</group>
         <profilePhoto></profilePhoto>
+        <username>A9210701B</username>
+        <password>password</password>
     </members>
     <members>
         <name>Ruth Mueller</name>
@@ -15,6 +17,8 @@
         <matricNumber isPrivate="false">A8389539B</matricNumber>
         <group isPrivate="false">logistic</group>
         <profilePhoto></profilePhoto>
+        <username>A8389539B</username>
+        <password>password</password>
     </members>
     <members>
         <name>Heinz Kurz</name>
@@ -23,6 +27,8 @@
         <matricNumber isPrivate="false">A6076201A</matricNumber>
         <group isPrivate="false">legal</group>
         <profilePhoto></profilePhoto>
+        <username>A6076201A</username>
+        <password>password</password>
     </members>
     <members>
         <name>Cornelia Meier</name>
@@ -31,6 +37,8 @@
         <matricNumber isPrivate="false">A2719059H</matricNumber>
         <group isPrivate="false">logistics</group>
         <profilePhoto></profilePhoto>
+        <username>A2719059H</username>
+        <password>password</password>
     </members>
     <members>
         <name>Werner Meyer</name>
@@ -39,6 +47,8 @@
         <matricNumber isPrivate="false">A1932279G</matricNumber>
         <group isPrivate="false">pr</group>
         <profilePhoto></profilePhoto>
+        <username>A1932279G</username>
+        <password>password</password>
     </members>
     <members>
         <name>Lydia Kunz</name>
@@ -47,6 +57,8 @@
         <matricNumber isPrivate="false">A9662042H</matricNumber>
         <group isPrivate="false">operations</group>
         <profilePhoto></profilePhoto>
+        <username>A9662042H</username>
+        <password>password</password>
     </members>
     <members>
         <name>Anna Best</name>
@@ -55,6 +67,8 @@
         <matricNumber isPrivate="false">A2836750A</matricNumber>
         <group isPrivate="false">legal</group>
         <profilePhoto></profilePhoto>
+        <username>A2836750A</username>
+        <password>password</password>
     </members>
     <members>
         <name>Stefan Meier</name>
@@ -63,6 +77,8 @@
         <matricNumber isPrivate="false">A8925920A</matricNumber>
         <group isPrivate="false">marketing</group>
         <profilePhoto></profilePhoto>
+        <username>A8925920A</username>
+        <password>password</password>
     </members>
     <members>
         <name>Martin Mueller</name>
@@ -71,5 +87,7 @@
         <matricNumber isPrivate="false">A8801996A</matricNumber>
         <group isPrivate="false">marketing</group>
         <profilePhoto></profilePhoto>
+        <username>A8801996A</username>
+        <password>password</password>
     </members>
 </clubbook>
