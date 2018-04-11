@@ -28,7 +28,7 @@ public class RemoveGroupCommand extends UndoableCommand {
             + "Parameters: "
             + PREFIX_GROUP + "GROUP";
 
-    public static final String MESSAGE_SUCCESS = "Group deleted from Club Connect: %1$s";
+    public static final String MESSAGE_SUCCESS = "Deleted group: %1$s";
 
     private final Group toRemove;
 

@@ -35,17 +35,17 @@ public class ChangeTaskStatusCommand extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Modifies the status of the task identified "
             + "by the index number used in the last task listing. "
-            + "The existing status will be overwritten by the input status.\n"
+            + "The existing status will be overwritten by the status provided in the command.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "st/STATUS\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_STATUS + "Completed";
 
     public static final String MESSAGE_INVALID_PERMISSION = "This task's status cannot be updated "
-            + "as you have not assigned this task nor are you assigned to the task !";
-    public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s, successfully changed!";
-    public static final String MESSAGE_NOT_CHANGED = "Status of task unchanged as the input status is "
-            + "same as the identified task's status!";
+            + "as you are neither the assignor nor the assignee of the task.";
+    public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s, successfully changed.";
+    public static final String MESSAGE_NOT_CHANGED = "Status of task is unchanged as the status provided is the "
+            + "same as the task's existing status.";
 
     private final Index index;
     private Task taskToEdit;
