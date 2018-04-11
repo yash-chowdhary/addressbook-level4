@@ -13,7 +13,7 @@ import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.member.Password;
 import seedu.club.model.member.Username;
-//@@author th14thmuician
+//@@author th14thmusician
 /**
  * Logs in a member to ClubConnect
  */
