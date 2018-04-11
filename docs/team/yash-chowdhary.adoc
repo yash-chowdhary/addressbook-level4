@@ -58,7 +58,8 @@ include::../UserGuide.adoc[tag=email]
 ---
 
 ==== Justification
-Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+Every student club / organisation makes use of email blasts to communicate with its members.
+Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
 
 ---
 ==== Implementation

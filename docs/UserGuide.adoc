@@ -225,6 +225,7 @@ Changes the password of the member with username `A0123456H` to `pword`.
 * `changepass u/A1234567H pw/password npw/brandnewpassword` +
 Changes the password of the member with username `A1234567H` to `brandnewpassword`.
 
+// tag::changepic[]
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo. +
@@ -247,6 +248,7 @@ Examples:
 Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+// end::changepic[]
 
 // tag::changetaskstatus[]
 === Changing the status of your task : `changetaskstatus` (Since v1.5rc)

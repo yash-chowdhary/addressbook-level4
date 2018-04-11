@@ -17,9 +17,95 @@ All output is displayed on a Graphical User Interface (GUI) - which is just comp
 *Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]]
 [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
 
-=== Enhancement Added: Delete Tag Command
+=== Major Enhancement Added: Data Handling
 
-==== External Behavior
+==== External Behaviour
+
+===== Add Tasks
+---
+
+#Start of Extract (from UserGuide)#
+
+include::../UserGuide.adoc[tag=addtask]
+
+===== Assign Tasks
+---
+
+include::../UserGuide.adoc[tag=assigntask]
+
+===== Delete Tasks
+---
+
+include::../UserGuide.adoc[tag=deletetask]
+
+===== ChangeTaskStatus Tasks
+---
+
+include::../UserGuide.adoc[tag=changetaskstatus]
+
+===== View All Tasks
+---
+
+include::../UserGuide.adoc[tag=viewalltasks]
+
+
+===== View My Tasks
+---
+
+include::../UserGuide.adoc[tag=viewmytasks]
+
+#Start of Extract (from User Guide)#
+
+---
+=== Justification
+
+Members of a club have certain responsibilities and must carry out tasks to fulfil their responsibilities. Furthermore, `EXCO` members can delegate tasks to other members which they must perform within a stipulated time period.
+Maintaining a record of tasks is crucial as it help maintain transparency and accountability of the club.
+
+---
+=== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=tasks]
+
+#End of Extract (from Developer Guide)#
+
+---
+=== Minor Enhancement Added: Profile Photo Feature
+
+==== External Behaviour
+
+---
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=changepic]
+
+#End of Extract (from User Guide)#
+
+---
+
+==== Justification
+Most student clubs have a large number of members.
+Hence, members may find it difficult to identify other members based solely on name.
+Having the ability to add a profile photo for yourself would make it much easier for others to identify you if they ever need to get in contact with you.
+
+---
+==== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=profilephoto]
+
+#End of Extract (from Developer Guide)#
+
+---
+
+=== Other Enhancement Added: Delete Tag Command
+
+==== External Behaviour
 
 ---
 #Start of Extract (from User Guide)#
@@ -41,12 +127,52 @@ Then, all members who are organising and helping out in this event can be tagged
 Once the fundraising event is over, it does not make sense to have this tag anymore.
 So, the `deletetag` command allows any `Exco` member to remove this tag from all members (and from Club Connect itself) in one go.
 
+---
+
 ==== Implementation
 
 ---
 #Start of Extract (from Developer Guide)#
 
 include::../DeveloperGuide.adoc[tag=deletetag]
+
+#End of Extract (from Developer Guide)#
+
+---
+
+=== Other Enhancement Added: UI Look and Feel
+
+==== External Behaviour
+
+---
+Before this enhancement was added, the Club Connect UI looked like the one shown in the image below (Figure 1).
+
+image::Old_Ui.png[width="550"]
+_Figure 1. The old Club Connect UI_
+
+This enhancement changed the Club Connect UI to have a cleaner and more modern look.
+This new UI look is shown in Figure 2 below.
+
+image::Ui.png[width="700"]
+_Figure 2. The enhanced Club Connect UI_
+
+---
+
+==== Justification
+
+---
+Changing the UI of the Club Connect application to look cleaner and feel more modern would make the application more appealing to users.
+Especially in the case of university students (who are effectively our target audience),
+an aesthetically pleasing UI would encourage them to adopt our application for their club management needs.
+
+---
+
+==== Implementation
+
+---
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=uitheme]
 
 #End of Extract (from Developer Guide)#
 
