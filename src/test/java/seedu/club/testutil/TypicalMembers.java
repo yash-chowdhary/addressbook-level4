@@ -12,6 +12,8 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.club.testutil.TypicalPolls.POLL_HOW;
+import static seedu.club.testutil.TypicalPolls.POLL_WHAT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import seedu.club.model.ClubBook;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
 
 /**
  * A utility class containing a list of {@code member} objects
@@ -107,6 +110,12 @@ public class TypicalMembers {
             } catch (DuplicateMatricNumberException e) {
                 throw new AssertionError("not possible");
             }
+        }
+        try {
+            ab.addPoll(POLL_WHAT);
+            ab.addPoll(POLL_HOW);
+        } catch (DuplicatePollException e) {
+            throw new AssertionError("not possible");
         }
         return ab;
     }
