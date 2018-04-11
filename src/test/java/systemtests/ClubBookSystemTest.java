@@ -10,8 +10,6 @@ import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
 import static seedu.club.ui.testutil.GuiTestAssert.assertListMatching;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
