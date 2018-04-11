@@ -2,7 +2,6 @@ package seedu.club.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.club.model.task.Task;
 
@@ -15,8 +14,6 @@ public class ModifiedTaskCard extends UiPart<Region> {
 
     public final Task task;
 
-    @FXML
-    private HBox cardPane;
     @FXML
     private Label description;
 
