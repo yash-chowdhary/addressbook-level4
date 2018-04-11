@@ -21,7 +21,7 @@
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
     </ImageView>
-   <Label fx:id="name" styleClass="cell_small_label" text="/$name" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+   <Label fx:id="name" styleClass="cell_medium_label" text="/$name" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
     <ImageView fx:id="phoneIcon" fitHeight="21.0" fitWidth="21.0" translateX="10.0" GridPane.halignment="LEFT" GridPane.rowIndex="4">
         <HBox.margin>
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
@@ -31,9 +31,9 @@
       <font>
          <Font size="18.0" />
       </font></Label>
-   <Label fx:id="matricNumber" styleClass="cell_small_label" text="/$matricnumber" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-   <Label fx:id="phone" styleClass="cell_small_label" text="/$mobile" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-   <Label fx:id="email" prefHeight="30.0" prefWidth="177.0" styleClass="cell_small_label" text="/$email" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+   <Label fx:id="matricNumber" styleClass="cell_medium_label" text="/$matricnumber" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+   <Label fx:id="phone" styleClass="cell_medium_label" text="/$mobile" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+   <Label fx:id="email" prefHeight="29.0" prefWidth="155.0" styleClass="cell_small_label" text="/$email" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
    <ImageView fx:id="emailIcon" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="227.0" translateX="10.0" GridPane.rowIndex="5" />
     <FlowPane fx:id="tags" GridPane.rowIndex="1">
         <padding>

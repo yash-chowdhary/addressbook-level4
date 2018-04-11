@@ -159,6 +159,12 @@
     -fx-text-fill: #ffffff;
 }
 
+.cell_medium_label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+}
+
 .anchor-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }
