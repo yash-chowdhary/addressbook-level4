@@ -46,7 +46,7 @@ public class EmailCommand extends Command {
             + PREFIX_BODY + "Hi all, I hope you have enjoyed using Club Connect so far. "
             + "Please do share your experience with us. Regards, John Doe";
 
-    public static final String EMAIL_CLIENT_OPENED = "Email client opened!";
+    public static final String EMAIL_CLIENT_OPENED = "Email client opened.";
     public static final String MESSAGE_NOT_SENT = "Please adhere to the command usage.";
 
     private Tag tag;

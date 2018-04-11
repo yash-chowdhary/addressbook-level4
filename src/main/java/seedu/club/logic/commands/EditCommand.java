@@ -23,6 +23,7 @@ import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.group.Group;
@@ -63,7 +64,7 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s.\n"
+    public static final String MESSAGE_EDIT_MEMBER_SUCCESS = "Edited member: %1$s\n"
             + "Number of tasks updated = %2$d";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_MATRIC_NUMBER = "A member with the same matriculation number already "
@@ -105,6 +106,7 @@ public class EditCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
         if (!(GROUP_EXCO.equalsIgnoreCase(editedMember.getGroup().toString()))) {
             EventsCenter.getInstance().post(new HideResultsRequestEvent());
         }

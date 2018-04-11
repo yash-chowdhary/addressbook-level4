@@ -46,7 +46,6 @@ public class AddPollCommandSystemTest extends ClubBookSystemTest {
     @Test
     public void add() throws Exception {
         Model model = getModel();
-        Model modelBeforeAdding = getModel();
         ObservableList<Member> memberObservableList = model.getClubBook().getMemberList();
         String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";

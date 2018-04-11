@@ -32,7 +32,7 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX";
 
-    public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: %1$s";
+    public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted task: %1$s";
     public static final String MESSAGE_TASK_CANNOT_BE_DELETED = "This task cannot be deleted as you are "
             + " neither the assignor nor the assignee of the task.";
     public static final String MESSAGE_TASK_NOT_FOUND = "This task does not exist in Club Connect.";

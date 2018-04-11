@@ -6,6 +6,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.ProfilePhoto;
@@ -19,7 +21,7 @@ public class ChangeProfilePhotoCommand extends Command {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "pic", "profilepic")
     );
-    public static final String COMMAND_FORMAT = "changepic PATH";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " PATH";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
@@ -47,6 +49,7 @@ public class ChangeProfilePhotoCommand extends Command {
         requireToLogIn();
         try {
             model.addProfilePhoto(profilePhoto.getPhotoPath());
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {
             throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH, profilePhoto.getPhotoPath()));

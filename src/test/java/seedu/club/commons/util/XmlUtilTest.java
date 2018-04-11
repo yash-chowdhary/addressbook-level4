@@ -103,6 +103,8 @@ public class XmlUtilTest {
         XmlAdaptedMember expectedMember = new XmlAdaptedMember(
                 VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_MATRIC_NUMBER, VALID_GROUP,
                 VALID_TAGS);
+        System.out.println("expectedMember.getUsername() = " + expectedMember.getPassword());
+        System.out.println("actual.getUsername() = " + actualMember.getPassword());
         assertEquals(expectedMember, actualMember);
     }
 

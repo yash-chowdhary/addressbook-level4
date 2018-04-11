@@ -1,15 +1,12 @@
 package systemtests;
 
-import static guitests.guihandles.WebViewUtil.waitUntilBrowserLoaded;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.club.ui.BrowserPanel.DEFAULT_PAGE;
 import static seedu.club.ui.StatusBarFooter.SAVE_LOCATION;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
-import static seedu.club.ui.UiPart.FXML_FILE_FOLDER;
 import static seedu.club.ui.testutil.GuiTestAssert.assertListMatching;
 
 import java.io.File;
@@ -31,7 +28,6 @@ import guitests.guihandles.MainWindowHandle;
 import guitests.guihandles.MemberListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
-import seedu.club.MainApp;
 import seedu.club.TestApp;
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.core.index.Index;
@@ -42,7 +38,6 @@ import seedu.club.logic.commands.SelectCommand;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.testutil.TypicalMembers;
-import seedu.club.ui.BrowserPanel;
 import seedu.club.ui.CommandBox;
 
 /**
@@ -71,8 +66,6 @@ public abstract class ClubBookSystemTest {
         setupHelper = new SystemTestSetupHelper();
         testApp = setupHelper.setupApplication(this::getInitialData, getDataFileLocation());
         mainWindowHandle = setupHelper.setupMainWindowHandle();
-
-        waitUntilBrowserLoaded(getBrowserPanel());
         assertApplicationStartingStateIsCorrect();
     }
 
@@ -112,10 +105,6 @@ public abstract class ClubBookSystemTest {
         return mainWindowHandle.getMainMenu();
     }
 
-    public BrowserPanelHandle getBrowserPanel() {
-        return mainWindowHandle.getBrowserPanel();
-    }
-
     public StatusBarFooterHandle getStatusBarFooter() {
         return mainWindowHandle.getStatusBarFooter();
     }
@@ -133,10 +122,7 @@ public abstract class ClubBookSystemTest {
         // Injects a fixed clock before executing a command so that the time stamp shown in the status bar
         // after each command is predictable and also different from the previous command.
         clockRule.setInjectedClockToCurrentTime();
-
         mainWindowHandle.getCommandBox().run(command);
-
-        waitUntilBrowserLoaded(getBrowserPanel());
     }
 
     /**
@@ -192,7 +178,6 @@ public abstract class ClubBookSystemTest {
      */
     private void rememberStates() {
         StatusBarFooterHandle statusBarFooterHandle = getStatusBarFooter();
-        getBrowserPanel().rememberUrl();
         statusBarFooterHandle.rememberSaveLocation();
         statusBarFooterHandle.rememberSyncStatus();
         getMemberListPanel().rememberSelectedMemberCard();
@@ -204,36 +189,14 @@ public abstract class ClubBookSystemTest {
      * @see BrowserPanelHandle#isUrlChanged()
      */
     protected void assertSelectedCardDeselected() {
-        assertFalse(getBrowserPanel().isUrlChanged());
         assertFalse(getMemberListPanel().isAnyCardSelected());
     }
 
     /**
-     * Asserts that the browser's url is changed to display the details of the member in the member list panel at
-     * {@code expectedSelectedCardIndex}, and only the card at {@code expectedSelectedCardIndex} is selected.
-     * @see BrowserPanelHandle#isUrlChanged()
-     * @see MemberListPanelHandle#isSelectedMemberCardChanged()
-     */
-    protected void assertSelectedCardChanged(Index expectedSelectedCardIndex) {
-        String selectedCardName = getMemberListPanel().getHandleToSelectedCard().getName();
-        URL expectedUrl;
-        try {
-            expectedUrl = new URL(BrowserPanel.SEARCH_PAGE_URL + selectedCardName.replaceAll(" ", "%20"));
-        } catch (MalformedURLException mue) {
-            throw new AssertionError("URL expected to be valid.");
-        }
-        assertEquals(expectedUrl, getBrowserPanel().getLoadedUrl());
-
-        assertEquals(expectedSelectedCardIndex.getZeroBased(), getMemberListPanel().getSelectedCardIndex());
-    }
-
-    /**
      * Asserts that the browser's url and the selected card in the member list panel remain unchanged.
-     * @see BrowserPanelHandle#isUrlChanged()
      * @see MemberListPanelHandle#isSelectedMemberCardChanged()
      */
     protected void assertSelectedCardUnchanged() {
-        assertFalse(getBrowserPanel().isUrlChanged());
         assertFalse(getMemberListPanel().isSelectedMemberCardChanged());
     }
 
@@ -280,7 +243,6 @@ public abstract class ClubBookSystemTest {
             assertEquals("", getCommandBox().getInput());
             assertEquals("", getResultDisplay().getText());
             assertListMatching(getMemberListPanel(), getModel().getFilteredMemberList());
-            assertEquals(MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE), getBrowserPanel().getLoadedUrl());
             assertEquals(String.format(SAVE_LOCATION, new File(testApp.getStorageSaveLocation()).getCanonicalPath()),
                     getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());

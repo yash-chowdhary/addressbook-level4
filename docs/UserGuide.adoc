@@ -123,7 +123,7 @@ The `group` attribute is an optional attribute.
 A member will be assigned to the default group `Member` if no group is specified in the command.
 
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 Examples:
 
@@ -151,7 +151,7 @@ Creates a poll asking members to vote for where the annual sports meeting should
 The answers to choose from are `I-Cube` and `LT7`.
 
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 // tag::addtask[]
 === Adding a task: `addtask` (Since v1.3)
@@ -193,7 +193,7 @@ Alias: `assignt`
 [NOTE]
 Duplicate tasks are not allowed.
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 This command assigns the task to the member based on the entered `MATRIC_NUMBER`.
 
@@ -224,6 +224,7 @@ Changes the password of the member with username `A0123456H` to `pword`.
 * `changepass u/A1234567H pw/password npw/brandnewpassword` +
 Changes the password of the member with username `A1234567H` to `brandnewpassword`.
 
+// tag::changepic[]
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo. +
@@ -246,6 +247,7 @@ Examples:
 Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+// end::changepic[]
 
 // tag::changetaskstatus[]
 === Changing the status of your task : `changetaskstatus` (Since v1.5rc)
@@ -291,7 +293,7 @@ Aliases: `c`, `erase`
 * Any other LETTER will cancell the execution
 ****
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 Examples:
 
@@ -335,7 +337,7 @@ Aliases: `del`, `rm`, `remove`
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 ****
 * Deleting a member who is the `Assignee` will result in all relevant tasks being deleted.
@@ -363,7 +365,7 @@ Aliases: `rmpoll`, `delpoll`
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 Examples:
 
@@ -372,13 +374,14 @@ Deletes the 2nd poll in the poll listing.
 * `deletepoll 4` +
 Deletes the 4th poll in the poll listing.
 
+// tag::deletetag[]
 === Deleting a tag : `deletetag` (Since v1.1)
 
-Deletes the specified tag for all members in the Club Connect. +
+Deletes the specified tag from all members in Club Connect. +
 Format: `deletetag t/TAG` +
 Aliases: `rmtag`, `deltag`
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 ****
 * Deletes the specified tag from Club Connect.
@@ -391,6 +394,7 @@ Examples:
 Deletes the `Treasurer` tag for all members tagged with `Treasurer` in Club Connect.
 * `deletetag t/EventInCharge` +
 Deletes the `EventInCharge` tag for all members tagged with `EventInCharge` in Club Connect.
+// end::deletetag[]
 
 // tag::deletetask[]
 === Deleting a task : `deletetask` (Since v1.3)
@@ -434,7 +438,7 @@ Aliases: `e`, `update`
 * You can remove all the member's tags by typing `t/` without specifying any tags after it.
 ****
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 Examples:
 
@@ -479,6 +483,7 @@ Exits the Club Connect application. +
 Format: `exit` +
 Aliases: `q`, `quit`
 
+// tag::export[]
 === Exporting Club Connect data: `export` (Since v1.3)
 
 Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
@@ -502,6 +507,8 @@ Examples:
 Exports all members in Club Connect to "members.csv" file on `John Doe` 's Desktop.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
 Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
+
+// end::export[]
 
 === Locating members: `find` (Since v1.2)
 
@@ -554,7 +561,7 @@ This is a command that can be used to remove clutter from poll results. +
 Format: `hideresults` +
 Alias: `hideres`
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 
 === Listing entered commands : `history`
@@ -568,6 +575,7 @@ Alias: `his`
 Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
 ====
 
+// tag::import[]
 === Importing members into Club Connect: `import` (Since v1.4)
 
 Imports the details of all members in the specified CSV file into Club Connect.
@@ -584,7 +592,7 @@ Alias: `imp`
 You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
 
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 Examples:
 
@@ -592,6 +600,8 @@ Examples:
 Imports all members in the "members.csv" file on `John Doe` 's Desktop to Club Connect.
 * `import /Users/Jane Doe/Desktop/clubbook.csv` +
 Imports all members in the "clubbook.csv" file on `Jane Doe` 's Desktop to Club Connect.
+
+// end::import[]
 
 === Listing all members : `list`
 
@@ -652,7 +662,7 @@ Aliases: `rmgroup`, `delgroup`
 * The group must be in valid format (i.e. no white-spaces and non-empty).
 ****
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 Examples:
 
@@ -698,7 +708,7 @@ Format: `showresults` +
 Alias: `showres`
 
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 
 
 === Signing up a member: `signup` (since v1.4)
@@ -750,11 +760,11 @@ The `undo` command fails as there are no undoable commands executed previously.
 // tag::viewalltasks[]
 === Viewing all tasks in Club Connect : `viewalltasks` (Since v1.4)
 
-Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `EXCO` members to monitor all the tasks in the club. +
+Displays all the tasks created/assigned in Club Connect. This is a command that can be used by `Exco` members to monitor all the tasks in the club. +
 Format: `viewalltasks` +
 Alias: `alltasks`
 [IMPORTANT]
-This command is for `EXCO` members only.
+This command is for `Exco` members only.
 // end::viewalltasks[]
 
 // tag::viewmytasks[]
@@ -763,7 +773,7 @@ This command is for `EXCO` members only.
 Display all tasks created/assigned by the currently member in Club Connect. +
 
 [NOTE]
-The main purpose of this command is to enable `EXCO` members to toggle between all tasks and those related to them. +
+The main purpose of this command is to enable `Exco` members to toggle between all tasks and those related to them. +
 
 Format: `viewmytasks` +
 Alias: `mytasks`
@@ -779,7 +789,7 @@ Alias: `vpoll`
 * The POLL_INDEX refers to the index number shown in the most recent poll listing.
 * The ANSWER_INDEX refers to one of the index number of the answers of the specified poll.
 * The indices *must be positive integers* 1, 2, 3, ...
-* Polls voted by current logged in member will not be visible in the poll list unless logged in as an `EXCO` member
+* Polls voted by current logged in member will not be visible in the poll list unless logged in as an `Exco` member
 ****
 
 Examples:
@@ -796,21 +806,6 @@ Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all pos
 
 Club Connect data is saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
-
-// tag::dataencryption[]
-=== Encrypting data files `[coming in v2.0]`
-
-Encrypts the file in the hard disk that contains data from the Club Connect application. +
-Format: `encrypt`
-_{explain how the user can enable/disable data encryption}_
-// end::dataencryption[]
-[NOTE]
-====
-Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
-Encrypting Club Connect's data files ensures that others will not be able to read members' information if they open the files.
-====
-
-<br/>
 
 [TIP]
 To further increase your efficiency while using Club Connect, check out <<Tips>>.
@@ -864,6 +859,7 @@ e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 * *Undo* : `undo`
 * *Redo* : `redo`
 
+// tag::tips[]
 == Tips
 
 Not satisfied with your productivity while using Club Connect?
@@ -894,6 +890,8 @@ image::CSV_format.png[height="350"]
 The columns in the import file should be in the same order as shown in the figure above.
 All the tags of a member should be in a single cell, separated by commas (",").
 Also, to successfully import the data of a member, you have to make sure that their details conform to the constraints of the <<add-command,`add` command>>.
+
+// end::tips[]
 
 == Coming in v2.0
 
