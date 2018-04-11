@@ -39,7 +39,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof  FieldContainsKeywordsPredicate)) {
+        if (!(other instanceof FieldContainsKeywordsPredicate)) {
             return false;
         }
         if (!(this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords))) {

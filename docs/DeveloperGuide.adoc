@@ -1116,9 +1116,9 @@ Adding a profile photo makes it easier to know what other members look like and 
 +
 Exco members can create polls and look at the results to help ascertain the needs and want of other members. Members can vote for polls to express what they require from the club.
 
-* Minor Feature: Findby Command
+* Minor Feature: Compress/Decompress feature
 +
-Instead of just finding a member by name, Findby Command is used to search members by a specified field which includes: Name, Phone, Email, Matric Number, Tags and Group. This increases navigability of the contacts inside Club Connect.
+Users can use compress command to clear clutter from member information in member list. Users can use decompress command to see more information about members in member list.
 
 4. Song Weiyang
 
