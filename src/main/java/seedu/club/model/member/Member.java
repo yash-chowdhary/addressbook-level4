@@ -1,5 +1,6 @@
 package seedu.club.model.member;
 
+import static com.sun.org.apache.xml.internal.utils.LocaleUtility.EMPTY_STRING;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
@@ -27,11 +28,8 @@ public class Member {
     private final MatricNumber matricNumber;
     private Group group;
     private final UniqueTaskList tasks;
-    //@@author amrut-prabhu
     private final HashMap<String, Tag> tags;
     private ProfilePhoto profilePhoto;
-    private final String emptyString = "";
-    //@@author
 
     /**
      * Every field must be present and not null.
@@ -44,7 +42,7 @@ public class Member {
         this.matricNumber = matricNumber;
         this.group = group;
         this.credentials = new Credentials(new Username(matricNumber.value));
-        this.profilePhoto = new ProfilePhoto(emptyString);
+        this.profilePhoto = new ProfilePhoto(EMPTY_STRING);
         this.tasks = new UniqueTaskList();
         this.tags = new HashMap<String, Tag>();
         setTags(tags);
@@ -128,10 +126,6 @@ public class Member {
 
     public ProfilePhoto getProfilePhoto() {
         return profilePhoto;
-    }
-
-    public void setProfilePhoto(ProfilePhoto profilePhoto) {
-        this.profilePhoto = profilePhoto;
     }
 
     public void setProfilePhotoPath(String newPath) {
