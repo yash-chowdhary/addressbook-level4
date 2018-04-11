@@ -1,0 +1,32 @@
+/*@@author yash-chowdhary*/
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-padding: 10px;
+    -fx-background-insets: 5px, 5px;
+    -fx-background-color: transparent, -fx-background;
+}
+
+.list-cell:filled:even {
+    -fx-background-color: derive(#ff8c00, 0%);
+}
+
+.list-cell:filled:odd {
+    -fx-background-color: derive(#ff8c00, 0%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#ff8c00, +40%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#ff8c00, +80%);
+    -fx-border-width: 3;
+    -fx-border-radius: 0 0 0 0;
+}
+
+.list-cell .label {
+    -fx-text-fill: white;
+}

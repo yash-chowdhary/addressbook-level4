@@ -1,6 +1,7 @@
 package seedu.club.ui;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static seedu.club.testutil.EventsUtil.postNow;
 import static seedu.club.ui.StatusBarFooter.SAVE_LOCATION;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
@@ -75,7 +76,7 @@ public class StatusBarFooterTest extends GuiUnitTest {
             assertEquals(String.format(SAVE_LOCATION, new File(expectedSaveLocation).getCanonicalPath()),
                     statusBarFooterHandle.getSaveLocation());
         } catch (IOException e) {
-            assert false : "IOException should not occur";
+            fail("IOException is not expected to occur");
         }
         assertEquals(expectedSyncStatus, statusBarFooterHandle.getSyncStatus());
         guiRobot.pauseForHuman();

@@ -559,6 +559,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.ProfilePhoto;
@@ -572,7 +574,7 @@ public class ChangeProfilePhotoCommand extends Command {
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "pic", "profilepic")
     );
-    public static final String COMMAND_FORMAT = "changepic PATH";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " PATH";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes your profile photo.\n"
             + "Parameters: PHOTO_FILE_PATH (must be an absolute file path to your new profile photo)\n"
@@ -596,11 +598,11 @@ public class ChangeProfilePhotoCommand extends Command {
     public CommandResult execute() throws CommandException {
         //Defensive programming
         assert profilePhoto.getPhotoPath() != null : "Photo path should not be null.";
-
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.addProfilePhoto(profilePhoto.getPhotoPath());
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {
             throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH, profilePhoto.getPhotoPath()));
@@ -635,6 +637,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -655,7 +659,7 @@ public class DeleteTagCommand extends UndoableCommand {
             + "Parameters: TAG (must be an existing tag)\n"
             + "Example: " + COMMAND_WORD + " t/EventHelper";
 
-    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted Tag: %1$s";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted tag: %1$s";
     public static final String MESSAGE_NON_EXISTENT_TAG = "This tag does not exist in Club Connect.";
 
     private Tag tagToDelete;
@@ -667,11 +671,12 @@ public class DeleteTagCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(tagToDelete);
-
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.deleteTag(tagToDelete);
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
@@ -748,9 +753,9 @@ public class ExportCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.exportClubConnectMembers(exportFile);
         } catch (IOException ioe) {
             throw new CommandException(String.format(MESSAGE_EXPORT_FAILURE, exportFile));
@@ -796,7 +801,7 @@ public class ImportCommand extends UndoableCommand {
             + "Parameters: FILE_PATH (must be an absolute path to a CSV file)\n"
             + "Example: " + COMMAND_WORD + " C:/Users/John Doe/Downloads/new_members.csv";
 
-    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported %d member(s) from %s";
+    public static final String MESSAGE_IMPORT_SUCCESS = "Successfully imported %1$d member(s) from %2$s";
     public static final String MESSAGE_IMPORT_FAILURE = "Error occurred while importing from %1$s";
     public static final String MESSAGE_MEMBERS_NOT_IMPORTED = "0 members imported from %1$s. This may be due to "
             + "incorrect format of the data or duplicate members in the file.";
@@ -815,6 +820,7 @@ public class ImportCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         try {
             int numberImported = model.importMembers(importFile);
             if (numberImported == 0) {
@@ -964,8 +970,6 @@ public class ExportCommandParser implements Parser<ExportCommand> {
 ``` java
 package seedu.club.logic.parser;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import java.io.File;
 
 import seedu.club.commons.exceptions.IllegalValueException;
@@ -988,7 +992,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
             return new ImportCommand(importFile);
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ImportCommand.MESSAGE_USAGE));
+                    String.format(ive.getMessage(), ImportCommand.MESSAGE_USAGE));
         }
     }
 
@@ -1020,7 +1024,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         File file = FileUtil.parsePath(path);
 
         if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+            throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
         return file;
@@ -1035,7 +1039,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         File file = FileUtil.parsePath(path);
 
         if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
-            throw new IllegalValueException(MESSAGE_INVALID_PATH);
+            throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
         file.createNewFile();
@@ -1073,7 +1077,6 @@ public class ImportCommandParser implements Parser<ImportCommand> {
                 .collect(Collectors.toSet());
         tags.setTags(newTags);
     }
-
     /**
      * Returns true if only {@code member} is tagged with {@code tag}.
      *
@@ -1141,7 +1144,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         }
 
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags);
+                member.getGroup(), memberTags, member.getCredentials(), member.getProfilePhoto());
         try {
             updateMember(member, newMember);
         } catch (DuplicateMatricNumberException dme) {
@@ -1165,12 +1168,6 @@ public class DuplicateMatricNumberException extends DuplicateDataException {
         super("Operation would result in a member with duplicate matric number");
     }
 }
-```
-###### \java\seedu\club\model\member\Member.java
-``` java
-    private final HashMap<String, Tag> tags;
-    private ProfilePhoto profilePhoto;
-    private final String emptyString = "";
 ```
 ###### \java\seedu\club\model\member\Member.java
 ``` java
@@ -1213,10 +1210,6 @@ public class DuplicateMatricNumberException extends DuplicateDataException {
 
     public ProfilePhoto getProfilePhoto() {
         return profilePhoto;
-    }
-
-    public void setProfilePhoto(ProfilePhoto profilePhoto) {
-        this.profilePhoto = profilePhoto;
     }
 
     public void setProfilePhotoPath(String newPath) {
@@ -1394,9 +1387,10 @@ public class ProfilePhoto {
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
-
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
+        logger.fine("Member's profile photo has been set to: "
+                + getLoggedInMember().getProfilePhoto().getPhotoPath());
     }
 
 ```
@@ -1537,6 +1531,20 @@ package seedu.club.model.tag.exceptions;
  * Signals that the operation is unable to find the specified tag.
  */
 public class TagNotFoundException extends Exception {}
+```
+###### \java\seedu\club\model\UserPrefs.java
+``` java
+        double width = 500;
+        double height = 500;
+        double taskbarHeight = 50;
+
+        if (!GraphicsEnvironment.isHeadless()) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            width = screenSize.getWidth();
+            height = screenSize.getHeight() - taskbarHeight; //To prevent application window from going beyond taskbar
+        }
+
+        this.setGuiSettings(width, height, 0, 0);
 ```
 ###### \java\seedu\club\storage\CsvClubBookStorage.java
 ``` java
@@ -1827,8 +1835,8 @@ public class ProfilePhotoStorage implements  PhotoStorage {
 ```
 ###### \java\seedu\club\ui\MemberCard.java
 ``` java
-    private static final Integer PHOTO_WIDTH = 90;
-    private static final Integer PHOTO_HEIGHT = 120;
+    private static final Integer PHOTO_WIDTH = 100;
+    private static final Integer PHOTO_HEIGHT = 130;
     private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 
@@ -1858,6 +1866,39 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     }
 
 ```
+###### \java\seedu\club\ui\MemberOverviewPanel.java
+``` java
+    /**
+     * Sets the profile photo to the displayed photo shape.
+     */
+    private void setProfilePhoto(Member member) {
+        Image photo;
+        String photoPath = member.getProfilePhoto().getPhotoPath();
+        if (photoPath.equals(EMPTY_STRING)) {
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
+                    PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+        } else {
+            try {
+                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
+                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
+            } catch (NullPointerException npe) {
+                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
+                        PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+            }
+        }
+        profilePhoto.setImage(photo);
+    }
+```
+###### \java\seedu\club\ui\StatusBarFooter.java
+``` java
+        try {
+            String saveFileLocation = new File(location).getCanonicalPath();
+            Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
+        } catch (IOException ioe) {
+            String saveFileLocation = new File(location).getAbsolutePath();
+            Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
+        }
+```
 ###### \resources\view\CompressedMemberListCard.fxml
 ``` fxml
   <HBox alignment="CENTER_LEFT">
@@ -1868,13 +1909,48 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     </ImageView>
   </HBox>
 ```
+###### \resources\view\MemberDetailsPanel.fxml
+``` fxml
+    <VBox>
+        <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+            <Text text="MEMBER PROFILE" fill="darkblue" VBox.vgrow="NEVER" />
+        </TextFlow>
+    </VBox>
+```
 ###### \resources\view\MemberListCard.fxml
 ``` fxml
   <HBox alignment="CENTER_LEFT">
-    <ImageView fx:id="profilePhoto" fitWidth="90" fitHeight="120">
+    <ImageView fx:id="profilePhoto" fitWidth="100" fitHeight="130">
       <HBox.margin>
         <Insets left="7.5" bottom="7.5" right="5.0" top="7.5" />
       </HBox.margin>
     </ImageView>
   </HBox>
+```
+###### \resources\view\MemberListPanel.fxml
+``` fxml
+  <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+    <Text text="CLUB MEMBERS" fill="darkblue" VBox.vgrow="NEVER" />
+    <VBox.margin>
+      <Insets bottom="5.0" />
+    </VBox.margin>
+  </TextFlow>
+```
+###### \resources\view\PollListPanel.fxml
+``` fxml
+  <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+    <Text text="POLLS" fill="darkblue" VBox.vgrow="NEVER" />
+    <VBox.margin>
+      <Insets bottom="5.0" />
+    </VBox.margin>
+  </TextFlow>
+```
+###### \resources\view\TaskListPanel.fxml
+``` fxml
+    <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+        <Text text="TASKS" fill="darkblue" VBox.vgrow="NEVER" />
+        <VBox.margin>
+            <Insets bottom="5.0" />
+        </VBox.margin>
+    </TextFlow>
 ```
