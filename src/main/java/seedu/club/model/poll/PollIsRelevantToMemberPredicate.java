@@ -1,5 +1,7 @@
 package seedu.club.model.poll;
 //@@author MuhdNurKamal
+import static seedu.club.model.group.Group.GROUP_EXCO;
+
 import java.util.function.Predicate;
 
 import seedu.club.model.member.Member;
@@ -11,7 +13,6 @@ import seedu.club.model.member.Member;
  */
 public class PollIsRelevantToMemberPredicate implements Predicate<Poll> {
 
-    private static final String GROUP_EXCO = "exco";
     private final Member member;
 
     public PollIsRelevantToMemberPredicate(Member member) {
@@ -22,7 +23,7 @@ public class PollIsRelevantToMemberPredicate implements Predicate<Poll> {
     public boolean test(Poll poll) {
         if (member == null) {
             return false;
-        } else if (member.getGroup().toString().equalsIgnoreCase("exco")) {
+        } else if (member.getGroup().toString().equalsIgnoreCase(GROUP_EXCO)) {
             return true;
         } else {
             return !poll.getPolleesMatricNumbers().contains(member.getMatricNumber());

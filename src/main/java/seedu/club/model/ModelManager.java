@@ -38,6 +38,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -357,6 +358,9 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author Song Weiyang
     @Override
     public void logOutMember() {
+        updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
         clubBook.logOutMember();
     }
 
@@ -573,7 +577,7 @@ public class ModelManager extends ComponentManager implements Model {
         return CsvUtil.toCsvFormat(member);
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Changes the password of {@code member} in the clubBook
       * @param username
@@ -581,10 +585,12 @@ public class ModelManager extends ComponentManager implements Model {
      * @param newPassword
      */
     public void changePassword (String username, String oldPassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         clubBook.changePassword(username, oldPassword, newPassword);
         indicateClubBookChanged();
     }
+    //@@author
 
     //@@author amrut-prabhu
     //=========== Filtered Tag List Accessors =============================================================

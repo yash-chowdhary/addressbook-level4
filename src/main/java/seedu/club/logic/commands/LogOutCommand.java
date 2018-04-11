@@ -1,4 +1,5 @@
 package seedu.club.logic.commands;
+
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
@@ -6,10 +7,11 @@ import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
+import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
-
 
 
 /**
@@ -22,24 +24,18 @@ public class LogOutCommand extends Command {
     );
 
     public static final String MESSAGE_SUCCESS = "Logout successful.";
-    public static final String MESSAGE_FAILURE = "You are not logged in.";
 
-    public LogOutCommand(){
+    public LogOutCommand() {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         requireNonNull(model);
-        if (model.getLoggedInMember() == null) {
-            return new CommandResult(MESSAGE_FAILURE);
-        } else {
-            model.logOutMember();
-            model.updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
-            model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
-            model.updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
-            EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
-            return new CommandResult(MESSAGE_SUCCESS);
-        }
+        requireToLogIn();
+        EventsCenter.getInstance().post(new HideResultsRequestEvent());
+        model.logOutMember();
+        EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
+        return new CommandResult(MESSAGE_SUCCESS);
     }
 
     @Override
