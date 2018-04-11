@@ -37,7 +37,7 @@ import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 /**
  * The Browser Panel of the App.
  */
-public class BrowserPanel extends UiPart<Region> {
+public class MemberOverviewPanel extends UiPart<Region> {
     public static final String GMAIL_URL = "https://mail.google.com/mail/?view=cm&fs=1&to=%1$s"
             + "&su=%2$s&body=%3$s";
     public static final String OUTLOOK_URL = "https://outlook.office.com/?path=/mail/action/"
@@ -87,7 +87,7 @@ public class BrowserPanel extends UiPart<Region> {
     private GridPane gridPane;
 
 
-    public BrowserPanel(ObservableList<Task> taskList) {
+    public MemberOverviewPanel(ObservableList<Task> taskList) {
         super(FXML);
         this.taskList = taskList;
         loadDetails(false);
