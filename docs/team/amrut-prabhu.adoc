@@ -21,46 +21,33 @@ All output is displayed on a Graphical User Interface (GUI) - which is just comp
 
 ==== External Behaviour
 
-===== Add Tasks
+===== Import Members
 ---
 
 #Start of Extract (from UserGuide)#
 
-include::../UserGuide.adoc[tag=addtask]
+include::../UserGuide.adoc[tag=import]
 
-===== Assign Tasks
+#End of Extract (from UserGuide)#
+
+=====Export Members
 ---
 
-include::../UserGuide.adoc[tag=assigntask]
+#Start of Extract (from UserGuide)#
 
-===== Delete Tasks
----
+include::../UserGuide.adoc[tag=export]
 
-include::../UserGuide.adoc[tag=deletetask]
-
-===== ChangeTaskStatus Tasks
----
-
-include::../UserGuide.adoc[tag=changetaskstatus]
-
-===== View All Tasks
----
-
-include::../UserGuide.adoc[tag=viewalltasks]
-
-
-===== View My Tasks
----
-
-include::../UserGuide.adoc[tag=viewmytasks]
-
-#Start of Extract (from User Guide)#
+#End of Extract (from UserGuide)#
 
 ---
 === Justification
 
-Members of a club have certain responsibilities and must carry out tasks to fulfil their responsibilities. Furthermore, `EXCO` members can delegate tasks to other members which they must perform within a stipulated time period.
-Maintaining a record of tasks is crucial as it help maintain transparency and accountability of the club.
+During recruitment events (such as the annual Student Life Fair at the National University of Singapore),
+club representatives collect data of incoming members on software such as Microsoft Excel.
+They will then have to update Club Connect's database to include the data of these new members.
+One way od doing so would be by adding all the new members one at a time, by using the `add` command.
+But, this is extremely cumbersome.
+The `import` command allows the `Exco` members to add all these new members in one go.
 
 ---
 === Implementation
@@ -68,11 +55,16 @@ Maintaining a record of tasks is crucial as it help maintain transparency and ac
 ---
 #Start of Extract (from Developer Guide)#
 
-include::../DeveloperGuide.adoc[tag=tasks]
+include::../DeveloperGuide.adoc[tag=import]
+
+---
+
+include::../DeveloperGuide.adoc[tag=export]
 
 #End of Extract (from Developer Guide)#
 
 ---
+
 === Minor Enhancement Added: Profile Photo Feature
 
 ==== External Behaviour
@@ -177,3 +169,27 @@ include::../DeveloperGuide.adoc[tag=uitheme]
 #End of Extract (from Developer Guide)#
 
 ---
+
+=== Other Contributions: General Documentation
+
+*** Added the `Tips` section to the User Guide.
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=tips]
+
+#End of Extract (from User Guide)#
+
+*** Added the `Glossary` section to the Developer Guide.
+
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=glossary]
+
+#End of Extract (from Developer Guide)#
+
+*** Maintained the Developer Guide.
+*** Added `ProfilePhoto` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/106[Pull Request #106].
+*** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-T16-B2/main/issues?utf8=%E2%9C%93&q=is%3Aissue+amrut+-prabhu[Peer Testing] session.
+
+

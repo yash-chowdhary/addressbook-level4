@@ -484,6 +484,7 @@ Exits the Club Connect application. +
 Format: `exit` +
 Aliases: `q`, `quit`
 
+// tag::export[]
 === Exporting Club Connect data: `export` (Since v1.3)
 
 Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
@@ -507,6 +508,8 @@ Examples:
 Exports all members in Club Connect to "members.csv" file on `John Doe` 's Desktop.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
 Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
+
+// end::export[]
 
 === Locating members: `find` (Since v1.2)
 
@@ -573,6 +576,7 @@ Alias: `his`
 Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
 ====
 
+// tag::import[]
 === Importing members into Club Connect: `import` (Since v1.4)
 
 Imports the details of all members in the specified CSV file into Club Connect.
@@ -597,6 +601,8 @@ Examples:
 Imports all members in the "members.csv" file on `John Doe` 's Desktop to Club Connect.
 * `import /Users/Jane Doe/Desktop/clubbook.csv` +
 Imports all members in the "clubbook.csv" file on `Jane Doe` 's Desktop to Club Connect.
+
+// end::import[]
 
 === Listing all members : `list`
 
@@ -802,21 +808,6 @@ Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all pos
 Club Connect data is saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-// tag::dataencryption[]
-=== Encrypting data files `[coming in v2.0]`
-
-Encrypts the file in the hard disk that contains data from the Club Connect application. +
-Format: `encrypt`
-_{explain how the user can enable/disable data encryption}_
-// end::dataencryption[]
-[NOTE]
-====
-Encryption is the process of encoding information in such a way that only authorized parties can access it and others cannot.  +
-Encrypting Club Connect's data files ensures that others will not be able to read members' information if they open the files.
-====
-
-<br/>
-
 [TIP]
 To further increase your efficiency while using Club Connect, check out <<Tips>>.
 
@@ -869,6 +860,7 @@ e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
 * *Undo* : `undo`
 * *Redo* : `redo`
 
+// tag::tips[]
 == Tips
 
 Not satisfied with your productivity while using Club Connect?
@@ -899,6 +891,8 @@ image::CSV_format.png[height="350"]
 The columns in the import file should be in the same order as shown in the figure above.
 All the tags of a member should be in a single cell, separated by commas (",").
 Also, to successfully import the data of a member, you have to make sure that their details conform to the constraints of the <<add-command,`add` command>>.
+
+// end::tips[]
 
 == Coming in v2.0
 
