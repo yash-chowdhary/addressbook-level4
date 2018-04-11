@@ -238,6 +238,9 @@ Aliases: `pic`, `profilepic`
 * This command is only guaranteed to work for ,jpeg, .jpg, and .png files.
 ****
 
+[NOTE]
+You will face a longer delay when setting your profile photo to an image whose file size is above 500 KB.
+
 [TIP]
 To get the abolute path, right-click on the photo file and select `Properties`.
 The `Location` field specifies the absolute location of the photo.
