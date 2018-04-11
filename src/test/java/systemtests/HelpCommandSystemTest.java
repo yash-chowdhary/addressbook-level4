@@ -46,9 +46,6 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();
 
-        getMainMenu().openHelpWindowUsingAccelerator();
-        assertHelpWindowNotOpen();
-
         //use menu button
         getMainMenu().openHelpWindowUsingMenu();
         assertHelpWindowOpen();
@@ -84,12 +81,4 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         new HelpWindowHandle(guiRobot.getStage(HelpWindowHandle.HELP_WINDOW_TITLE)).close();
         getMainWindowHandle().focus();
     }
-
-    /**
-     * Asserts that the help window isn't open.
-     */
-    private void assertHelpWindowNotOpen() {
-        assertFalse(ERROR_MESSAGE, HelpWindowHandle.isWindowPresent());
-    }
-
 }
