@@ -1,5 +1,4 @@
 = Club Connect - User Guide
-[.text-center]
 :toc:
 :toc-title:
 :toc-placement: preamble

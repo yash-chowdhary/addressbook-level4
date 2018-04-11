@@ -13,7 +13,7 @@ import seedu.club.model.poll.Poll;
 public class PollCard extends UiPart<Region> {
 
     private static final String FXML = "PollListCard.fxml";
-    private static final String DESCRIPTION_TOTAL_VOTE_COUNT = "Total Vote Count: ";
+    private static final String DESCRIPTION_TOTAL_VOTE_COUNT = "Total Votes: ";
 
     public final Poll poll;
 

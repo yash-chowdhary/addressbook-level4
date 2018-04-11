@@ -14,7 +14,7 @@
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <!--@@author amrut-prabhu-->
   <HBox alignment="CENTER_LEFT">
-    <ImageView fx:id="profilePhoto" fitWidth="90" fitHeight="120">
+    <ImageView fx:id="profilePhoto" fitWidth="100" fitHeight="130">
       <HBox.margin>
         <Insets left="7.5" bottom="7.5" right="5.0" top="7.5" />
       </HBox.margin>

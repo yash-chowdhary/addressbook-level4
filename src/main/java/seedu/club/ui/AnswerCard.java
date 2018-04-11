@@ -12,7 +12,7 @@ import seedu.club.model.poll.Answer;
 public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
-    private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
+    private static final String DESCRIPTION_VOTE_COUNT = "Votes: ";
     private static final String PERCENTAGE_SYMBOL = "%";
     private final int totalVoteCount;
 

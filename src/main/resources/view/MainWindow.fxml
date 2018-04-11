@@ -46,27 +46,26 @@
           </padding>
         </StackPane>
 
-        <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.5" VBox.vgrow="ALWAYS">
+        <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.3, 0.45, 0.7" VBox.vgrow="ALWAYS">
           <VBox fx:id="memberList" minWidth="250" prefWidth="250" SplitPane.resizableWithParent="false">
             <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
+              <Insets top="10" right="0" bottom="10" left="10" />
             </padding>
             <StackPane fx:id="memberListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
 
-          <StackPane fx:id="browserPlaceholder" prefWidth="340" >
+          <StackPane fx:id="browserPlaceholder" minWidth="300" prefWidth="300" SplitPane.resizableWithParent="false">
             <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
+              <Insets top="10" right="0" bottom="10" left="10" />
             </padding>
           </StackPane>
 
           <VBox fx:id="pollList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
             <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
+              <Insets top="10" right="0" bottom="10" left="10" />
             </padding>
             <StackPane fx:id="pollListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
-
           <VBox fx:id="taskList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
             <padding>
               <Insets top="10" right="10" bottom="10" left="10" />

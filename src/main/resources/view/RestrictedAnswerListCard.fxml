@@ -26,7 +26,7 @@
                         <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" maxHeight="1.7976931348623157E308" wrapText="true" />
+                <Label fx:id="answerValue" maxHeight="1.7976931348623157E308" wrapText="true" styleClass="cell_big_label"/>
             </HBox>
         </VBox>
         <rowConstraints>
