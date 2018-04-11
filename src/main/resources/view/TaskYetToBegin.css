@@ -4,7 +4,7 @@
     -fx-graphic-text-gap : 0;
     -fx-background-radius: 0 0 0 0;
     -fx-border-radius: 0 0 0 0;
-    -fx-padding: 10px;
+    -fx-padding: 0px;
     -fx-background-insets: 5px, 5px;
     -fx-background-color: transparent, -fx-background;
 }

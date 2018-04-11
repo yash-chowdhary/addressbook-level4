@@ -226,13 +226,13 @@ public class MemberOverviewPanel extends UiPart<Region> {
         group.setText(member.getGroup().groupName);
         group.setAlignment(Pos.CENTER);
         createTags(member);
-        setIcons();
+        //setIcons();
     }
 
     /**
      * Set Icon pictures
      */
-    private void setIcons() {
+    /*private void setIcons() {
         Image phoneImg;
         Image emailImg;
         phoneImg = new Image(MainApp.class.getResourceAsStream(PHONE_ICON),
@@ -241,7 +241,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
         emailImg = new Image(MainApp.class.getResourceAsStream(EMAIL_ICON),
                 21, 21, false, true);
         emailIcon.setImage(emailImg);
-    }
+    }*/
     //@@author
 
     //@@author yash-chowdhary
