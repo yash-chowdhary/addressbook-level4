@@ -174,7 +174,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     @Override
     public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
@@ -355,7 +355,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     @Override
     public void logOutMember() {
         updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
@@ -639,14 +639,13 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTasks.setPredicate(predicate);
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     @Override
     public void signUpMember(Member member) throws MemberListNotEmptyException {
         clubBook.signUpMember(member);
         filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
-    //@@author
 
     @Override
     public void clearClubBook() {
@@ -664,7 +663,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void setClearConfirmation(Boolean b) {
         isConfirmedClear = b;
     }
-
+    //@@author
 
     @Override
     public ObservableList<Poll> getFilteredPollList() {

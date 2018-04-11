@@ -951,6 +951,7 @@ Lorem ipsum dolor sit amet
 
 // end::uitheme[]
 
+// tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
 Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
@@ -995,6 +996,7 @@ just for compress/decompress but for other events as well.
 * **Alternative 2:** Keep a `Ui` attribute in every command just like `Model`
 ** Pros: Easy to implement.
 ** Cons: Increases coupling
+// end::compressdecompress[]
 
 === Logging
 
@@ -1469,9 +1471,9 @@ Adding a profile photo makes it easier to know what other members look like and 
 +
 Exco members can create polls and look at the results to help ascertain the needs and wants of other members. Members can vote for polls to express what they require from the club.
 
-* Minor Feature: Find Command
+* Minor Feature: Compress/Decompress feature
 +
-Improved Find Command such that users can search members by a specified field which includes: Name, Phone, Email, Matric Number, Tags and Group. This increases navigability of the contacts inside Club Connect.
+Users can use compress command to clear clutter from member information in member list. Users can use decompress command to see more information about members in member list.
 
 4. Song Weiyang
 

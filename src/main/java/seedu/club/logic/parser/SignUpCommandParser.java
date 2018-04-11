@@ -21,8 +21,7 @@ import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
 import seedu.club.model.tag.Tag;
 
-//@@author Song Weiyang
-
+//@@author th14thmusician
 /**
  * Parses input arguments and creates a new SignUpCommand object
  */
@@ -67,3 +66,4 @@ public class SignUpCommandParser {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
+//@@author
