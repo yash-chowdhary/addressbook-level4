@@ -146,7 +146,7 @@ public interface Model {
     void updateFilteredPollList(Predicate<Poll> predicate);
 
     //@@author th14thmusician
-       /**
+    /**
      * Logs In a member in the club
      */
     void logsInMember(String username, String password);
