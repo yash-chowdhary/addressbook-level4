@@ -5,16 +5,15 @@
     -fx-background-radius: 0 0 0 0;
     -fx-border-radius: 0 0 0 0;
     -fx-padding: 0px;
-    -fx-background-insets:5px, 5px;
-    -fx-background-color: transparent, -fx-background;
+    -fx-background-color: cccccc;
 }
 
 .list-cell:filled:even {
-    -fx-background-color: derive(#006400, 0%);
+    -fx-background-color: derive(#006400, 75%);
 }
 
 .list-cell:filled:odd {
-    -fx-background-color: derive(#006400, 0%);
+    -fx-background-color: derive(#006400, 75%);
 }
 
 .list-cell:filled:selected {
@@ -28,5 +27,5 @@
 }
 
 .list-cell .label {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
