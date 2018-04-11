@@ -784,7 +784,7 @@ private void deleteGroupFromClubBook(Group toRemove) {
     }
 }
 
-The final method called is `ClubBook#deleteGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toRemove``` to `member`.
+The final method called is `ClubBook#deleteGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toRemove```, to `member`.
 
 [source, java]
 private void deleteGroupFromMember(Group toRemove, Member member)
@@ -850,18 +850,18 @@ image::ChangeProfilePhotoCommandUML.png[width="350"]
 _Figure 22. ChangeProfilePhotoCommand UML Diagram_
 
 The `displaypic` command involves the use of multiple components of Club Connect.
-Below, Figure 23 shows the interactions betweeen these components.
+Below, Figure 36 shows the interactions betweeen these components.
 As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
 
 image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 23. High Level Sequence Diagram for `changepic PATH` Command_
+_Figure 36. High Level Sequence Diagram for `changepic PATH` Command_
 
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 24 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+Figure 37 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 24. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+_Figure 37. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command_
 
 The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
@@ -934,10 +934,10 @@ The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
 It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
 
 The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
-Figure 34 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+Figure 38 (shown below) depicts the UML representation of the `DeleteTagCommand`.
 
 image::placeholder.png[width="200" height="200"]
-_Figure 34. UML Diagram of `DeleteTagCommand`._
+_Figure 38. UML Diagram of `DeleteTagCommand`._
 
 ==== Design Considerations
 ===== Aspect: Implementation of `DeleteTagCommand`
@@ -954,38 +954,38 @@ Lorem ipsum dolor sit amet
 // tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
-Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 39) or compressed(Figure 40).
 
 image::DecompressedMemberCards.png[width="300"]
-_Figure 22. Decompressed Member Cards_
+_Figure 39. Decompressed Member Cards_
 
 image::CompressedCards.png[width="300"]
-_Figure 23. Compressed Member Cards_
+_Figure 40. Compressed Member Cards_
 
 The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
-To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 24) since a `CompressedMemberCard` is a `MemberCard`.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 41) since a `CompressedMemberCard` is a `MemberCard`.
 Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
 
 image::MemberCardClassDiagram.png[width="300"]
-_Figure 24. `MemberCard` class diagram_
+_Figure 41. `MemberCard` class diagram_
 
 The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
 These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
 
 Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
 
-Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 42).
 
-The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
+The user inputs 'compress' and the sequence diagram (Figure 42) below shows how the different components interact.
 
 image::SDforCompressToEventsCenter.png[width="800"]
-_Figure 25. Sequence diagram for compress command to Events Center_
+_Figure 42. Sequence diagram for compress command to Events Center_
 
-Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 25). If the cards are already compressed, no changes occur.
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 43). If the cards are already compressed, no changes occur.
 However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
 
 image::SDforCompressFromEventsCenter.png[width="800"]
-_Figure 26. Sequence diagram for compress command from Events Center_
+_Figure 43. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
@@ -1044,10 +1044,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 19 below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 44 below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 19. Screenshot of saving documentation as PDF in Chrome_
+_Figure 44. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -1208,17 +1208,17 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 [TIP]
 Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 21.
+. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 46.
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
-_Figure 20. Member details before modification_
+_Figure 45. Member details before modification_
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
-_Figure 21. Member details after modification_
+_Figure 46. Member details after modification_
 +
 ****
 * Hints
@@ -1233,15 +1233,18 @@ _Figure 21. Member details after modification_
 
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
+Figure 47 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 22. ResultDisplay before modification_
+_Figure 47. ResultDisplay before modification_
 +
 **After**
 +
+Figure 48 below shows the `ResultDisplay` after the modification.
++
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 23. ResultDisplay after modification_
+_Figure 48. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -1259,15 +1262,19 @@ _Figure 23. ResultDisplay after modification_
 
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
+Figure 49 below shows the `StatusBarFooter` before the modification.
++
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 24. StatusBarFooter before modification_
+_Figure 49. StatusBarFooter before modification_
++
+Figure 50 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 25. StatusBarFooter after modification_
+_Figure 50. StatusBarFooter after modification_
 +
 ****
 * Hints
@@ -1449,9 +1456,13 @@ Club Connect provides student organisations with a one-stop shop for all their m
 +
 Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status. This ensures transparency and accountability of the club.
 
-* Minor Feature: Email Command
+* Minor Feature: Email Command + Auto-Complete + Group Management
 +
-Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+** Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+
+** In situations where it is quite tedious to enter all of the parameters of a command, the auto-complete feature is a life-saver. Designed to reduce the chances of entering an invalid command format, it also comes to the aid of forgetful users of the application.
+
+** Every student club/organisation is sub-divided into sub-committees - each with a different set of responsibilities. `Groups` in `Club Connect` emulate this. Furthermore, a club should be given the option to do as it pleases with its sub-committees - rename them, shuffle members, and even remove the sub-committee if need be.
 
 2. Amrut Prabhu
 
