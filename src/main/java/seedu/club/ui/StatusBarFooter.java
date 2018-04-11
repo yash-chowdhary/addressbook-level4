@@ -70,7 +70,7 @@ public class StatusBarFooter extends UiPart<Region> {
         try {
             String saveFileLocation = new File(location).getCanonicalPath();
             Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
-        } catch (IOException e) {
+        } catch (IOException ioe) {
             String saveFileLocation = new File(location).getAbsolutePath();
             Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
         }
