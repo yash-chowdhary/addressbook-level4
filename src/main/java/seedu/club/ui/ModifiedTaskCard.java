@@ -1,5 +1,5 @@
 package seedu.club.ui;
-
+//@@author th14thmusician
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
@@ -63,3 +63,4 @@ public class ModifiedTaskCard extends UiPart<Region> {
                 && task.equals(card.task);
     }
 }
+//@@author
