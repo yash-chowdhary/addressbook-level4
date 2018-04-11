@@ -440,7 +440,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
 
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags);
+                member.getGroup(), memberTags, member.getCredentials(), member.getProfilePhoto());
         try {
             updateMember(member, newMember);
         } catch (DuplicateMatricNumberException dme) {

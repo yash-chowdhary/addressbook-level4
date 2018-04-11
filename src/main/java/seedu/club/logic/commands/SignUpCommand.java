@@ -26,7 +26,7 @@ public class SignUpCommand extends Command {
             Arrays.asList(COMMAND_WORD, "register", "enroll")
     );
 
-    public static final String COMMAND_FORMAT = COMMAND_WORD + " n/ p/ e/ m/ [pic/ ] ";
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " n/ p/ e/ m/ [t/]";
 
     public static final String MESSAGE_SUCCESS = "Sign up successful! Please log in with your matriculation number"
             + " and password to start using Club Connect.";
