@@ -76,7 +76,7 @@ public class ParserUtil {
      */
     public static List<Index> parseIndices(String oneBasedIndexes) throws IllegalValueException {
         String trimmedIndexes = oneBasedIndexes.trim();
-        String[] stringIndexes = trimmedIndexes.split(" ");
+        String[] stringIndexes = trimmedIndexes.split("\\s+");
         List<Index> indexes = new ArrayList<>();
         for (String s : stringIndexes) {
             if (!StringUtil.isNonZeroUnsignedInteger(s)) {

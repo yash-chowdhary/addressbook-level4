@@ -7,6 +7,7 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
+import seedu.club.model.poll.Poll;
 import seedu.club.model.task.Task;
 
 /**
@@ -65,5 +66,12 @@ public class TestUtil {
      */
     public static Task getTask(Model model, Index index) {
         return model.getClubBook().getTaskList().get(index.getOneBased());
+    }
+
+    /**
+     * Returns the poll in the {@code model}'s poll list at {@code index}.
+     */
+    public static Poll getPoll(Model model, Index index) {
+        return model.getClubBook().getPollList().get(index.getZeroBased());
     }
 }
