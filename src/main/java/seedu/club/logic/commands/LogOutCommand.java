@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author th14thmusician
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
@@ -41,3 +41,4 @@ public class LogOutCommand extends Command {
         super.setData(model, history, undoRedoStack);
     }
 }
+//@@author

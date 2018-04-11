@@ -16,7 +16,7 @@ import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 
-//@@author Song Weiyang
+//@@author th14thmusician
 /**
  * Signs up a member when the clubbook is empty
  */
@@ -64,3 +64,4 @@ public class SignUpCommand extends Command {
         super.setData(model, history, undoRedoStack);
     }
 }
+//@@author
