@@ -3,8 +3,7 @@ package seedu.club.storage;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.InputStream;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -65,7 +64,7 @@ public class ProfilePhotoStorageTest {
     private class ProfilePhotoStorageStubAcceptingCreateCopy extends ProfilePhotoStorage {
 
         @Override
-        public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
+        public void createPhotoFileCopy(InputStream photoInputStream, String newPath) throws PhotoWriteException {
             return;
         }
 
@@ -77,7 +76,7 @@ public class ProfilePhotoStorageTest {
     class ProfilePhotoStorageExceptionThrowingStub extends ProfilePhotoStorage {
 
         @Override
-        public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
+        public void createPhotoFileCopy(InputStream photoInputStream, String newPath) throws PhotoWriteException {
             throw new PhotoWriteException("dummy exception");
         }
 
