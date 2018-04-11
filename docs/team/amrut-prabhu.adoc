@@ -1,0 +1,18 @@
+= Amrut Prabhu - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: Club Connect
+
+---
+
+== Overview
+
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+It aims to make the tedious process of club management easier and more effective.
+
+*Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI).
+All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
+
+*Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]]
+[https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
