@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.ui.StatusBarFooter.SAVE_LOCATION;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.club.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
 import static seedu.club.ui.testutil.GuiTestAssert.assertListMatching;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -100,7 +102,6 @@ public abstract class ClubBookSystemTest {
     public MainMenuHandle getMainMenu() {
         return mainWindowHandle.getMainMenu();
     }
-
 
     public StatusBarFooterHandle getStatusBarFooter() {
         return mainWindowHandle.getStatusBarFooter();
@@ -240,7 +241,8 @@ public abstract class ClubBookSystemTest {
             assertEquals("", getCommandBox().getInput());
             assertEquals("", getResultDisplay().getText());
             assertListMatching(getMemberListPanel(), getModel().getFilteredMemberList());
-            assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
+            assertEquals(String.format(SAVE_LOCATION, new File(testApp.getStorageSaveLocation()).getCanonicalPath()),
+                    getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
         } catch (Exception e) {
             throw new AssertionError("Starting state is wrong.", e);
