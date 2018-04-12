@@ -14,7 +14,7 @@ public class ViewResultsCommand extends Command {
 
     public static final String COMMAND_WORD = "viewresults";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
-            Arrays.asList(COMMAND_WORD, "showres")
+            Arrays.asList(COMMAND_WORD, "viewres")
     );
     public static final String MESSAGE_SUCCESS = "Poll results displayed.";
 
