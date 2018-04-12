@@ -76,7 +76,10 @@ public class CsvClubBookStorageTest {
 
     @Test
     public void readClubBook_invalidMemberClubBook_noMembersImported() throws Exception {
-        UniqueMemberList importedMembers = readClubBook("invalidMemberClubBook.csv");
+        CsvClubBookStorage csvClubBookStorage =
+                new CsvClubBookStorage(new File(TEST_DATA_FOLDER + "invalidMemberClubBook.csv"));
+        UniqueMemberList importedMembers = csvClubBookStorage.readClubBook();
+        //UniqueMemberList importedMembers = readClubBook("invalidMemberClubBook.csv");
         assertTrue(importedMembers.asObservableList().size() == 0); //No members imported
     }
 
