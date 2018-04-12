@@ -234,7 +234,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void removeGroup(Group toRemove) {
+        public void deleteGroup(Group toRemove) {
             fail("This method should not be called.");
         }
 

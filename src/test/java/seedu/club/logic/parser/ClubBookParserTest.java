@@ -29,6 +29,7 @@ import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.DeleteTaskCommand;
 import seedu.club.logic.commands.EditCommand;
@@ -41,7 +42,6 @@ import seedu.club.logic.commands.HideResultsCommand;
 import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.RedoCommand;
-import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
@@ -190,9 +190,9 @@ public class ClubBookParserTest {
 
     @Test
     public void parseCommand_removeGroup() throws Exception {
-        RemoveGroupCommand removeGroupCommand = (RemoveGroupCommand) parser.parseCommand(
-                RemoveGroupCommand.COMMAND_WORD + GROUP_DESC_AMY);
-        assertEquals(new RemoveGroupCommand(new Group(VALID_GROUP_AMY)), removeGroupCommand);
+        DeleteGroupCommand deleteGroupCommand = (DeleteGroupCommand) parser.parseCommand(
+                DeleteGroupCommand.COMMAND_WORD + GROUP_DESC_AMY);
+        assertEquals(new DeleteGroupCommand(new Group(VALID_GROUP_AMY)), deleteGroupCommand);
     }
 
     @Test
