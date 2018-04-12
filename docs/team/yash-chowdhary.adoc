@@ -4,8 +4,6 @@
 
 == PROJECT: Club Connect
 
----
-
 == Overview
 
 *Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
@@ -140,6 +138,27 @@ include::../DeveloperGuide.adoc[tag=tasks]
 #End of Extract (from Developer Guide)#
 
 ---
+=== Proposed Enhancement: Data Encryption
+
+===== External Behaviour
+
+Implementing this feature will have no effect on the functionality that `Club Connect` provides to its users. The major change that this feature will bring is securing user data. +
+Users can rest assured that none of their data is leaked to malicious foreign parties.
+
+===== Justification
+
+Data privacy is a hot topic in today's world. When personal data falls into the wrong hands, it can be misused in ways we couldn't possibly imagine. Every corporation, organization and service must provide data privacy not only because it's the law, but also to maintain consumer satisfaction.
+
+===== Implementation
+
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=dataencryption]
+
+#End of Extract (from Developer Guide)#
+
+---
+
 === Other contributions
 
 
