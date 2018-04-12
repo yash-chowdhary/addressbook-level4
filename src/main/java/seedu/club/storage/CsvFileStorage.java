@@ -13,7 +13,7 @@ import seedu.club.model.member.UniqueMemberList;
 public class CsvFileStorage {
 
     /**
-     * Saves the given clubBook data to the specified file.
+     * Saves the given clubBook {@code data} to the specified file.
      */
     public static void saveDataToFile(File file, String data) throws IOException {
         try {
