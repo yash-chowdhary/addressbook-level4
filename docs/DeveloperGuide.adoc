@@ -867,7 +867,7 @@ The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()`
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
 
 The actual reading of the profile photo from the path provided is done by the `Storage` component.
-It copies the photo to the Club Connect application's resources.
+It copies the photo as a <<bmp,bitmap image file>> (.bmp) to the Club Connect application's resources.
 
 The code used for reading and copying the file is as follows:
 
@@ -881,24 +881,23 @@ public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
         logger.info("Profile Photo is being read from " + originalPhotoPath);
 
         URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
-        originalPhoto = ImageIO.read(photoUrl);
+        newPath = SAVE_PHOTO_DIRECTORY + newPhotoName + PHOTO_FILE_EXTENSION;
+        InputStream photoStream = photoUrl.openStream();
 
-        String saveAs = newPhotoName + FILE_EXTENSION;
-        File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
-
-        createPhotoFileCopy(originalPhoto, newPath);
+        createPhotoFileCopy(photoStream, newPath);
     } catch (IOException ioe) {
         // ... exception handling ...
     }
 }
 
-public static String getCurrentDirectory() {
-    // ... getting current directory logic ...
-}
-
-public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
+public void createPhotoFileCopy(InputStream photoStream, String newPath) throws PhotoWriteException {
     // ... logging ...
-    ImageIO.write(originalPhoto, "png", newPath);
+    try {
+        FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
+        Files.copy(photoStream, Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException ioe) {
+        // ... exception handling ...
+    }
 }
 ----
 
@@ -911,6 +910,7 @@ The logged in member's details are then updated to include this new profile phot
 * **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo.
 ** Pros: Makes intuitive sense, easy to implement.
 ** Cons: There is no way for Exco members to ensure that members have appropriate profile photos.
+
 * **Alternative 2**: Exco members can change any member's profile photo.
 ** Pros: Gives Exco members a way to exercise control over members' profile photos.
 ** Cons: Implementation becomes more complicated.
@@ -921,6 +921,7 @@ The logged in member's details are then updated to include this new profile phot
 ** Pros: Makes application portable and non-dependent on the rest of the system.
    Members can delete the original file from the computer, without affecting the Club Connect Application.
 ** Cons: Changes made to the original source images are not reflected in the application.
+
 * **Alternative 2**: Always read the profile photo from the file path provided.
 ** Pros: Changes made in the source image are reflected in the application.
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
@@ -1874,14 +1875,20 @@ So, abstraction provides users with information on what an object does, rather t
 
 [[attribute]] Attribute::
 An attribute is a type of detail of a member.
-For example, an attribute of a member could be phone number, email, matric number and so on.
+For example, an attribute of a member could be phone number, email, matriculation number and so on.
+
+[[bmp]] Bitmap Image File::
+Bitmap Image file (BMP) is a file format that stores bitmap graphics data.
+It is device independent and you do not need a graphics adapter to display it.
+Images stored as BMP files can be losslessly compressed.
 
 [[club]] Club::
 A student organisation or association at the National University of Singapore.
-These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups.
+Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
 
 [[cli]] CLI::
-Acronym for Command Line Inerface. It is a purely text-based interface for software.
+Acronym for Command Line Interface. It is a purely text-based interface for software.
 User respond to visual prompts by typing single commands into the interface and receive results as text as well.
 An example of CLI would be MS-DOS.
 
@@ -1893,14 +1900,17 @@ This allows data to be saved in a table structured format.
 A value added to a member's attribute.
 
 [[exco-member]] Exco member::
-A member who is part of the Executive committee of the club.
-Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+A member who is part of the Executive Committee of the club.
+Exco members are seen as the leaders of the club.
+Exco members can execute certain commands and view features that are not available to other members of the club.
 
 [NOTE]
 An Exco member is still regarded as a member.
 
 [[gui]] GUI::
-Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
+Acronnym for Graphical User Interface.
+In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information.
+Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
 For example, all Windows operating systems have a GUI.
 
 [[mainstream-os]] Mainstream OS::
