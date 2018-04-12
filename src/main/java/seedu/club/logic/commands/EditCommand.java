@@ -106,7 +106,7 @@ public class EditCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToEdit, false, null));
         if (!(GROUP_EXCO.equalsIgnoreCase(editedMember.getGroup().toString()))) {
             EventsCenter.getInstance().post(new HideResultsRequestEvent());
         }
