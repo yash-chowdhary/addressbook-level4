@@ -37,7 +37,7 @@ import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
@@ -131,8 +131,8 @@ public class ClubBookParser {
             return new RemoveGroupCommandParser().parse(arguments);
         } else if (isSelectCommand(commandWord)) {
             return new SelectCommandParser().parse(arguments);
-        } else if (isShowResultsCommand(commandWord)) {
-            return new ShowResultsCommand();
+        } else if (isViewResultsCommand(commandWord)) {
+            return new ViewResultsCommand();
         } else if (isSignUpCommand(commandWord)) {
             return new SignUpCommandParser().parse(arguments);
         } else if (isUndoCommand(commandWord)) {
@@ -245,10 +245,10 @@ public class ClubBookParser {
     }
 
     /**
-     * Returns true if {@code commandWord} matches any of ShowResultsCommand's aliases
+     * Returns true if {@code commandWord} matches any of ViewResultsCommand's aliases
      */
-    private boolean isShowResultsCommand(String commandWord) {
-        for (String commandAlias : ShowResultsCommand.COMMAND_ALIASES) {
+    private boolean isViewResultsCommand(String commandWord) {
+        for (String commandAlias : ViewResultsCommand.COMMAND_ALIASES) {
             if (commandWord.equals(commandAlias)) {
                 return true;
             }

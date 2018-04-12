@@ -43,7 +43,7 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
@@ -239,8 +239,8 @@ public class ClubBookParserTest {
     }
 
     @Test
-    public void parseCommand_showResults() throws Exception {
-        assertTrue(parser.parseCommand(ShowResultsCommand.COMMAND_WORD) instanceof ShowResultsCommand);
+    public void parseCommand_viewResults() throws Exception {
+        assertTrue(parser.parseCommand(ViewResultsCommand.COMMAND_WORD) instanceof ViewResultsCommand);
     }
 
     @Test
