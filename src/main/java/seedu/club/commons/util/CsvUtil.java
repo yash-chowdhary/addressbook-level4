@@ -162,7 +162,7 @@ public class CsvUtil {
         requireNonNull(file);
         requireNonNull(data);
 
-        FileUtil.appendToFile(file, data);
+        FileUtil.writeToFile(file, data);
     }
 
     /**

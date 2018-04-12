@@ -249,7 +249,7 @@ public class ParserUtil {
     public static File parseImportPath(String path) throws IllegalValueException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotValidFilePath(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
@@ -264,7 +264,7 @@ public class ParserUtil {
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotValidFilePath(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 

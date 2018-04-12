@@ -1,5 +1,6 @@
 package seedu.club.model;
 
+import static com.sun.org.apache.xml.internal.utils.LocaleUtility.EMPTY_STRING;
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.club.storage.ProfilePhotoStorage.PHOTO_FILE_EXTENSION;
@@ -507,10 +508,11 @@ public class ModelManager extends ComponentManager implements Model {
 
         exportHeaders(exportFile);
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
+        String csvMemberList = EMPTY_STRING;
         for (Member member: members) {
-            exportMember(member);
+            csvMemberList = exportMember(member, csvMemberList);
         }
+        indicateNewExport(csvMemberList);
     }
 
     /**
@@ -563,9 +565,9 @@ public class ModelManager extends ComponentManager implements Model {
      *
      * @param member Member whose data is to be exported.
      */
-    private void exportMember(Member member) throws IOException {
+    private String exportMember(Member member, String csvList) throws IOException {
         String memberData = convertMemberToCsv(member);
-        indicateNewExport(memberData);
+        return csvList + memberData;
     }
 
     /**
