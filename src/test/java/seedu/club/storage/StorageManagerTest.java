@@ -93,10 +93,10 @@ public class StorageManagerTest {
 
     //@@author amrut-prabhu
     @Test
-    public void handleProfilePictureChangedEvent_exceptionThrown_eventRaised() {
-        // Create a StorageManager while injecting a stub that  throws an exception when the copy Photo method is called
+    public void handleProfilePictureChangedEvent_readExceptionThrown_eventRaised() {
+        // Create a StorageManager while injecting a stub that throws an exception when the copy photo method is called.
         Storage storage = new StorageManager(new XmlClubBookStorage("dummy"),
-                new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorageExceptionThrowingStub(),
+                new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorageReadExceptionThrowingStub(),
                 new CsvClubBookStorage());
 
         File photoFile = new File("./src/test/resources/photos/");
@@ -106,18 +106,65 @@ public class StorageManagerTest {
     }
 
     @Test
+    public void handleProfilePictureChangedEvent_writeExceptionThrown_eventRaised() {
+        // Create a StorageManager while injecting a stub that throws an exception when the copy photo method is called.
+        Storage storage = new StorageManager(new XmlClubBookStorage("dummy"),
+                new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorageWriteExceptionThrowingStub(),
+                new CsvClubBookStorage());
+
+        File photoFile = new File("./src/test/resources/photos/");
+        String photoPath = photoFile.getAbsolutePath();
+        storage.handleProfilePictureChangedEvent(new ProfilePhotoChangedEvent(photoPath, "testPhotoCopy.png"));
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
+    }
+
+    @Test
     public void handleExportDataEvent_exceptionThrown_eventRaised() {
-        // Create a StorageManager while injecting a stub that  throws an exception when the exportData method is called
+        // Create a StorageManager while injecting a stub that throws an exception when the save data method is called.
         Storage storage = new StorageManager(new XmlClubBookStorage("dummy"),
                 new JsonUserPrefsStorage("dummy"), new ProfilePhotoStorage(),
                 new CsvClubBookStorageExceptionThrowingStub());
 
-        File dummyFile = new File("./src/test/exportFile.csv");
+        File dummyFile = new File("./src/test/data/CsvClubBookStorageTest/exportFile.csv");
         storage.handleExportDataEvent(new NewExportDataAvailableEvent(dummyFile, "dummy data"));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
-    //@@author
 
+    /**
+     * A Stub class to throw a read exception when the copy photo method is called.
+     */
+    class ProfilePhotoStorageReadExceptionThrowingStub extends ProfilePhotoStorage {
+
+        @Override
+        public void copyOriginalPhotoFile(String originalFilePath, String newName)
+                throws PhotoReadException, PhotoWriteException {
+            throw new PhotoReadException("dummy exception");
+        }
+    }
+
+    /**
+     * A Stub class to throw a write exception when the copy photo method is called.
+     */
+    class ProfilePhotoStorageWriteExceptionThrowingStub extends ProfilePhotoStorage {
+
+        @Override
+        public void copyOriginalPhotoFile(String originalFilePath, String newName)
+                throws PhotoReadException, PhotoWriteException {
+            throw new PhotoWriteException("dummy exception");
+        }
+    }
+
+    /**
+     * A Stub class to throw an exception when the save data method is called.
+     */
+    class CsvClubBookStorageExceptionThrowingStub extends CsvClubBookStorage {
+
+        @Override
+        public void saveData(String data) throws IOException {
+            throw new IOException("dummy exception");
+        }
+    }
+    //@@author
 
     /**
      * A Stub class to throw an exception when the save method is called
@@ -133,30 +180,4 @@ public class StorageManagerTest {
             throw new IOException("dummy exception");
         }
     }
-
-    //@@author amrut-prabhu
-    /**
-     * A Stub class to throw an exception when the copy photo method is called
-     */
-    class ProfilePhotoStorageExceptionThrowingStub extends ProfilePhotoStorage {
-
-        @Override
-        public void copyOriginalPhotoFile(String originalFilePath, String newName)
-                throws PhotoReadException, PhotoWriteException {
-            throw new PhotoReadException("dummy exception");
-        }
-    }
-
-    /**
-     * A Stub class to throw an exception when the save data method is called
-     */
-    class CsvClubBookStorageExceptionThrowingStub extends CsvClubBookStorage {
-
-        @Override
-        public void saveData(String data) throws IOException {
-            throw new IOException("dummy exception");
-        }
-    }
-    //@@author
-
 }
