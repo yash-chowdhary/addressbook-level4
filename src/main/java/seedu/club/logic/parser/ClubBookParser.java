@@ -37,11 +37,11 @@ import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.VoteCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 
