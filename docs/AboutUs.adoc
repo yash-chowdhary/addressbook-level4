@@ -31,7 +31,7 @@ Responsibilities:
 * Look and feel of the UI
 * Developer guide documentation
 * Code clean up and consistency
-* Project Management
+* Project management
 
 '''
 

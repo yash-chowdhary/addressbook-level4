@@ -660,10 +660,10 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 
 // tag::removegroup[]
-=== Deleting a group : `removegroup` (Since v1.1)
+=== Deleting a group : `deletegroup` (Since v1.1)
 
 Deletes the specified group from Club Connect. +
-Format: `removegroup g/GROUP` +
+Format: `deletegroup g/GROUP` +
 Aliases: `rmgroup`, `delgroup`
 ****
 * Deletes the specified group from Club Connect.
@@ -677,10 +677,10 @@ This command is for `Exco` members only.
 
 Examples:
 
-* `removegroup g/logistics` +
+* `deletegroup g/logistics` +
 Deletes the `logistics` group from Club Connect.
 
-* `removegroup g/pr` +
+* `deletegroup g/pr` +
 Deletes the `pr` group from Club Connect.
 // end::removegroup[]
 
@@ -837,8 +837,8 @@ e.g. `assigntask desc/Buy Confetti d/03.04.2018 ti/19:00 n/Bernice Yu`
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Delete Group* : `removegroup g/GROUP` +
-e.g. `removegroup g/Publicity`
+* *Delete Group* : `deletegroup g/GROUP` +
+e.g. `deletegroup g/Publicity`
 * *Delete Tag* : `deletetag t/TAG` +
 e.g. `deletetag t/EventHelper`
 * *Delete Task* : `deletetask INDEX` +

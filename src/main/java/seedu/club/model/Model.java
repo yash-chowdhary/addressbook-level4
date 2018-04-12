@@ -202,7 +202,7 @@ public interface Model {
     void updateFilteredTagList(Predicate<Tag> predicate);
 
     //@@author yash-chowdhary
-    void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
+    void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 

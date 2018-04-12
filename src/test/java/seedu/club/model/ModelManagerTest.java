@@ -86,7 +86,7 @@ public class ModelManagerTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         try {
-            modelManager.removeGroup(new Group(NON_EXISTENT_GROUP));
+            modelManager.deleteGroup(new Group(NON_EXISTENT_GROUP));
         } catch (GroupNotFoundException gnfe) {
             assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
         }
@@ -99,24 +99,24 @@ public class ModelManagerTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         try {
-            modelManager.removeGroup(new Group(MANDATORY_GROUP));
+            modelManager.deleteGroup(new Group(MANDATORY_GROUP));
         } catch (GroupCannotBeRemovedException e) {
             assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
         }
     }
 
     @Test
-    public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+    public void deleteGroup_atLeastOneMemberInGroup_groupDeleted() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.removeGroup(new Group(VALID_GROUP_AMY));
+        modelManager.deleteGroup(new Group(BENSON.getGroup().toString()));
 
-        Member amyNotInPublicity = new MemberBuilder(AMY).withGroup().build();
-        Member bobNotInPublicity = new MemberBuilder(BOB).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amyNotInPublicity)
-                .withMember(bobNotInPublicity).build();
+        Member aliceNotInPr = new MemberBuilder(ALICE).withGroup().build();
+        Member bensonNotInPr = new MemberBuilder(BENSON).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(aliceNotInPr)
+                .withMember(bensonNotInPr).build();
 
         assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
 

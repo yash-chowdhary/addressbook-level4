@@ -218,10 +218,10 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author yash-chowdhary
     @Override
-    public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+    public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
 
-        clubBook.removeGroup(toRemove);
+        clubBook.deleteGroup(toRemove);
         indicateClubBookChanged();
     }
 

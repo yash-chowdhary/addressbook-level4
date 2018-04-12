@@ -280,7 +280,7 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
             fail("This method should not be called");
             return;
         }
