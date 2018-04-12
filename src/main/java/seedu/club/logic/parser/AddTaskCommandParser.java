@@ -7,8 +7,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import java.text.SimpleDateFormat;
 import java.util.stream.Stream;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
@@ -36,6 +38,22 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
             Description description = ParserUtil.parseDescription(argMultimap.getValue(PREFIX_DESCRIPTION).get());
             Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
             Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME).get());
+
+            long currentTimeMillis = System.currentTimeMillis();
+            String enteredDateString = date.getDate() + " " + time.getTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            long enteredDateMillis = Long.MIN_VALUE;
+
+            try {
+                java.util.Date enteredDate = formatter.parse(enteredDateString);
+                enteredDateMillis = enteredDate.getTime();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (enteredDateMillis < currentTimeMillis) {
+                throw new IllegalValueException(Messages.MESSAGE_DATE_ALREADY_PASSED);
+            }
 
             Task newTask = new Task(description, time, date);
 

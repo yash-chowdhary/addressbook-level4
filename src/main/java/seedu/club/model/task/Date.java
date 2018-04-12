@@ -15,7 +15,9 @@ public class Date {
     public static final String DATE_SPLITTER = "[///./-]";
     public static final String DATE_SEPARATOR = "/";
     public static final String MESSAGE_DATE_CONSTRAINTS = "Date should be a string separated by '.', '/', or "
-            + "'-' in the format DD-MM-YYYY";
+            + "'-' in the format DD-MM-YYYY\nClub Connect detects invalid leap days.\nThe valid range of Year is "
+            + "1900-2099.";
+
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-date-with-regular-expression/}
      */
