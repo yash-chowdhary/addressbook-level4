@@ -1,13 +1,19 @@
 //@@author amrut-prabhu
 package seedu.club.storage;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalMembers.HOON;
+import static seedu.club.testutil.TypicalMembers.IDA;
 import static seedu.club.testutil.TypicalMembers.getTypicalMembers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -16,16 +22,23 @@ import org.junit.rules.TemporaryFolder;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.UniqueMemberList;
 
 public class CsvClubBookStorageTest {
 
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/CsvClubBookStorageTest/");
+    private static final String FILE_NAME = "TempClubBook.csv";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Rule
-    public TemporaryFolder testFolder = new TemporaryFolder();
+    public TemporaryFolder temp = new TemporaryFolder();
+
+    @Before
+    public void init() {
+        File file = new File(temp.getRoot(), FILE_NAME);
+    }
 
     private File addToTestDataFileIfNotNull(File prefsFileInTestDataFolder) {
         return prefsFileInTestDataFolder != null
@@ -33,13 +46,16 @@ public class CsvClubBookStorageTest {
                 : null;
     }
 
-    /*@Test
+    @Test
     public void readClubBook_nullFilePath_throwsNullPointerException() throws Exception {
         thrown.expect(NullPointerException.class);
         readClubBook(null);
     }
 
-    private java.util.Optional<ReadOnlyClubBook> readClubBook(String filePath) throws Exception {
+    /**
+     * Returns a {@code UniqueMemberList} by parsing the data in the file specified by {@code filePath}.
+     */
+    private UniqueMemberList readClubBook(String filePath) throws Exception {
         File file = new File(filePath);
         CsvClubBookStorage csvClubBookStorage = new CsvClubBookStorage();
         csvClubBookStorage.setClubBookFile(file);
@@ -48,62 +64,58 @@ public class CsvClubBookStorageTest {
 
     @Test
     public void read_missingFile_emptyResult() throws Exception {
-        assertFalse(readClubBook("NonExistentFile.csv").isPresent());
-    }*/
-
-    /*@Test
-    public void read_notXmlFormat_exceptionThrown() throws Exception {
-
-        thrown.expect(DataConversionException.class);
-        readClubBook("NotXmlFormatClubBook.xml");
-
-         IMPORTANT: Any code below an exception-throwing line (like the one above) will be ignored.
-         * That means you should not have more than one exception test in one method
-
+        thrown.expect(FileNotFoundException.class);
+        readClubBook("NonExistentFile.csv");
     }
 
     @Test
-    public void readClubBook_invalidMemberClubBook_throwDataConversionException() throws Exception {
-        thrown.expect(DataConversionException.class);
-        readClubBook("invalidMemberClubBook.xml");
+    public void read_notCsvFormat_noMembersImported() throws Exception {
+        UniqueMemberList importedMembers = readClubBook("NotCsvFormatClubBook.csv");
+        assertTrue(importedMembers.asObservableList().size() == 0); //No members imported
     }
 
     @Test
-    public void readClubBook_invalidAndValidMemberClubBook_throwDataConversionException() throws Exception {
-        thrown.expect(DataConversionException.class);
-        readClubBook("invalidAndValidMemberClubBook.xml");
-    }*/
+    public void readClubBook_invalidMemberClubBook_noMembersImported() throws Exception {
+        UniqueMemberList importedMembers = readClubBook("invalidMemberClubBook.csv");
+        assertTrue(importedMembers.asObservableList().size() == 0); //No members imported
+    }
+
+    @Test
+    public void readClubBook_invalidAndValidMemberClubBook_someMembersImported() throws Exception {
+        UniqueMemberList importedMembers = readClubBook("invalidAndValidMemberClubBook.csv");
+        assertTrue(importedMembers.asObservableList().size() == 1); //No members imported
+    }
 
     @Test
     public void readAndSaveClubBook_allInOrder_success() throws Exception {
-        String filePath = testFolder.getRoot().getPath() + "TempClubBook.csv";
-        File exportFile = new File(filePath);
+        File exportFile = temp.newFile(FILE_NAME);
         List<Member> originalMemberList = getTypicalMembers();
+        StringBuilder dataToExport = new StringBuilder();
         CsvClubBookStorage csvClubBookStorage = new CsvClubBookStorage();
         csvClubBookStorage.setClubBookFile(exportFile);
 
-        //Save in new file (without headers) and read back
-        FileUtil.createIfMissing(exportFile);
-        for (Member member: originalMemberList) {
-            csvClubBookStorage.saveData(CsvUtil.toCsvFormat(member));
-        }
-        assertTrue(exportFile.exists());
-        //TODO: Read back data
-        /*ReadOnlyClubBook readBack = csvClubBookStorage.readClubBook(filePath).get();
-        assertEquals(original, new ClubBook(readBack));
+        //Save in new file and read back
+        originalMemberList.forEach(member -> dataToExport.append(CsvUtil.toCsvFormat(member)));
+        csvClubBookStorage.saveData(dataToExport.toString());
+        UniqueMemberList readBack = csvClubBookStorage.readClubBook(exportFile);
+        assertEquals(originalMemberList, readBack.asObservableList());
 
         //Modify data, overwrite exiting file, and read back
-        original.addMember(HOON);
-        original.removeMember(ALICE);
-        csvClubBookStorage.saveClubBook(original, filePath);
-        readBack = xmlClubBookStorage.readClubBook(filePath).get();
-        assertEquals(original, new ClubBook(readBack));
+        originalMemberList.add(HOON);
+        originalMemberList.remove(ALICE);
+        dataToExport.setLength(0); //Clear buffer
+        dataToExport.trimToSize();
+        originalMemberList.forEach(member -> dataToExport.append(CsvUtil.toCsvFormat(member)));
+        csvClubBookStorage.saveData(dataToExport.toString());
+        readBack = csvClubBookStorage.readClubBook(exportFile);
+        assertEquals(originalMemberList, readBack.asObservableList());
 
         //Save and read without specifying file path
-        original.addMember(IDA);
-        csvClubBookStorage.saveClubBook(original); //file path not specified
-        readBack = xmlClubBookStorage.readClubBook().get(); //file path not specified
-        assertEquals(original, new ClubBook(readBack));*/
+        originalMemberList.add(IDA);
+        originalMemberList.forEach(member -> dataToExport.append(CsvUtil.toCsvFormat(member)));
+        csvClubBookStorage.saveData(dataToExport.toString()); //file path not specified
+        readBack = csvClubBookStorage.readClubBook(); //file path not specified
+        assertEquals(originalMemberList, readBack.asObservableList());
     }
 
     @Test
