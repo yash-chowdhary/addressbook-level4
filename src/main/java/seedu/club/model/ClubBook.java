@@ -269,19 +269,19 @@ public class ClubBook implements ReadOnlyClubBook {
      * Removes the Group {@code toRemove} from the Club Book. Every member who was once a part of {@code toRemove}
      * will be assigned the default group - "member".
      */
-    public void removeGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
-        checkIfGroupIsMember(toRemove);
+    public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+        checkIfGroupIsMemberOrExco(toRemove);
         checkIfGroupIsPresent(toRemove);
-        removeGroupFromClubBook(toRemove);
+        deleteGroupFromClubBook(toRemove);
     }
 
     /**
      * Removes the Group {@code toRemove} from Club Connect.
      */
-    private void removeGroupFromClubBook(Group toRemove) {
+    private void deleteGroupFromClubBook(Group toRemove) {
         try {
             for (Member member : members) {
-                removeGroupFromMember(toRemove, member);
+                deleteGroupFromMember(toRemove, member);
             }
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
@@ -309,9 +309,10 @@ public class ClubBook implements ReadOnlyClubBook {
      * Checks if {@code toRemove} is "member".
      * @throws GroupCannotBeRemovedException if {@code toRemove} is "member".
      */
-    private void checkIfGroupIsMember(Group toRemove) throws GroupCannotBeRemovedException {
-        Group notToBeDeleted = new Group("member");
-        if (toRemove.equals(notToBeDeleted)) {
+    private void checkIfGroupIsMemberOrExco(Group toRemove) throws GroupCannotBeRemovedException {
+        Group groupMember = new Group("member");
+        Group groupExco = new Group("exco");
+        if (toRemove.equals(groupMember) || toRemove.equals(groupExco)) {
             throw new GroupCannotBeRemovedException();
         }
     }
@@ -319,7 +320,7 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Removes the Group {@code toRemove} from the {@code member} if the member's group matches the one to be removed.
      */
-    private void removeGroupFromMember(Group toRemove, Member member)
+    private void deleteGroupFromMember(Group toRemove, Member member)
             throws MemberNotFoundException {
         if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
             return;

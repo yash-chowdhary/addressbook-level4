@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
@@ -65,7 +64,7 @@ public class ClubBookTest {
     @Test
     public void removeGroup_nonExistentGroup_unchangedClubBook() throws Exception {
         try {
-            clubBookWithBobAndAmy.removeGroup(new Group(NON_EXISTENT_GROUP));
+            clubBookWithBobAndAmy.deleteGroup(new Group(NON_EXISTENT_GROUP));
         } catch (GroupNotFoundException gnfe) {
             ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
@@ -75,7 +74,7 @@ public class ClubBookTest {
     @Test
     public void removeGroup_mandatoryGroup_unchangedClubBook() throws Exception {
         try {
-            clubBookWithBobAndAmy.removeGroup(new Group(MANDATORY_GROUP));
+            clubBookWithBobAndAmy.deleteGroup(new Group(MANDATORY_GROUP));
         } catch (GroupCannotBeRemovedException e) {
             ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
@@ -84,14 +83,15 @@ public class ClubBookTest {
 
     @Test
     public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
-        clubBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
+        ClubBook clubBookWithBensonAndAlice = new ClubBookBuilder().withMember(ALICE).withMember(BENSON)
+                .build();
+        clubBookWithBensonAndAlice.deleteGroup(new Group(BENSON.getGroup().toString()));
 
-        Member bobNotInLogistics = new MemberBuilder(BOB).withGroup().build();
-        Member amyNotInLogistics = new MemberBuilder(AMY).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bobNotInLogistics)
-                .withMember(amyNotInLogistics).build();
-
-        assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+        Member bensonNotInPr = new MemberBuilder(ALICE).withGroup().build();
+        Member aliceNotInPr = new MemberBuilder(BENSON).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bensonNotInPr)
+                .withMember(aliceNotInPr).build();
+        assertEquals(expectedClubBook, clubBookWithBensonAndAlice);
     }
 
     @Test
