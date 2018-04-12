@@ -46,7 +46,7 @@ public class DeleteTagCommand extends UndoableCommand {
         requireExcoLogIn();
         try {
             model.deleteTag(tagToDelete);
-            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(null, false, tagToDelete));
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(MESSAGE_NON_EXISTENT_TAG);

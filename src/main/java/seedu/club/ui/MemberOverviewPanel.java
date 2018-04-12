@@ -147,15 +147,17 @@ public class MemberOverviewPanel extends UiPart<Region> {
 
     @Subscribe
     public void handleUpdateSelectionPanelEvent (UpdateSelectionPanelEvent event) {
-        System.out.println(currentlySelectedMember);
-        if (event.isToDelete()) {
+        if (event.getTagToDelete() != null) {
+            if (currentlySelectedMember.hasTag(event.getTagToDelete())) {
+                currentlySelectedMember.getTags().remove(event.getTagToDelete());
+                loadMemberPage(currentlySelectedMember);
+            }
+        } else if (event.isToDelete()) {
             if (currentlySelectedMember.equals(event.getUpdatedMember())) {
                 loadDetails(false);
             }
-        } else {
-            if (currentlySelectedMember != null) {
+        } else if (currentlySelectedMember.equals(event.getUpdatedMember())){
                 loadMemberPage(event.getUpdatedMember());
-            }
         }
     }
     //@@author
