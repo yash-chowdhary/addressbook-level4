@@ -67,6 +67,7 @@ public class StatusBarFooter extends UiPart<Region> {
     }
 
     private void setSaveLocation(String location) {
+        //@@author amrut-prabhu
         try {
             String saveFileLocation = new File(location).getCanonicalPath();
             Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
@@ -74,6 +75,7 @@ public class StatusBarFooter extends UiPart<Region> {
             String saveFileLocation = new File(location).getAbsolutePath();
             Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
         }
+        //@@author
     }
 
     private void setSyncStatus(String status) {

@@ -16,8 +16,8 @@ public class UserPrefs {
     private String clubBookFilePath = "data/clubbook.xml";
     private String clubBookName = "TypicalClubBookName";
 
-    //@@author amrut-prabhu
     public UserPrefs() {
+        //@@author amrut-prabhu
         double width = 500;
         double height = 500;
         double taskbarHeight = 50;
@@ -29,8 +29,8 @@ public class UserPrefs {
         }
 
         this.setGuiSettings(width, height, 0, 0);
+        //@@author
     }
-    //@@author
 
     public GuiSettings getGuiSettings() {
         return guiSettings == null ? new GuiSettings() : guiSettings;

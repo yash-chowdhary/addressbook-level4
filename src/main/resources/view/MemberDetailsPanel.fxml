@@ -13,36 +13,47 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
 <GridPane fx:id="gridPane" prefHeight="543.0" prefWidth="244.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
     </columnConstraints>
-    <ImageView fx:id="profilePhoto" fitHeight="152.0" fitWidth="130.0" style="-fx-background-color:white" GridPane.halignment="CENTER">
+    <!--@@author amrut-prabhu-->
+    <VBox>
+        <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+            <Text text="MEMBER PROFILE" fill="darkblue" VBox.vgrow="NEVER" />
+        </TextFlow>
+    </VBox>
+    <!--@@author-->
+    <ImageView fx:id="profilePhoto" fitHeight="152.0" fitWidth="130.0" style="-fx-background-color:white" GridPane.halignment="CENTER" translateY="35">
         <HBox.margin>
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
     </ImageView>
-   <Label fx:id="name" styleClass="cell_medium_label" text="/$name" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-    <ImageView fx:id="phoneIcon" fitHeight="21.0" fitWidth="21.0" translateX="10.0" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+    <Label fx:id="name" styleClass="cell_medium_label" text="/$name" GridPane.halignment="CENTER" GridPane.rowIndex="2" translateY="45" />
+    <ImageView fx:id="phoneIcon" fitHeight="21.0" fitWidth="21.0" translateX="10.0" GridPane.halignment="LEFT" GridPane.rowIndex="4" translateY="45">
         <HBox.margin>
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
     </ImageView>
-   <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="130.0" styleClass="label-group-panel" text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+   <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="130.0" styleClass="label-group-panel"
+          text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" translateY="45">
       <font>
          <Font size="18.0" />
       </font></Label>
-   <Label fx:id="matricNumber" styleClass="cell_medium_label" text="/$matricnumber" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-   <Label fx:id="phone" styleClass="cell_medium_label" text="/$mobile" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-   <Label fx:id="email" prefHeight="29.0" prefWidth="155.0" styleClass="cell_small_label" text="/$email" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-   <ImageView fx:id="emailIcon" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="227.0" translateX="10.0" GridPane.rowIndex="5" />
-    <FlowPane fx:id="tags" GridPane.rowIndex="1">
+   <Label fx:id="matricNumber" styleClass="cell_medium_label" text="/$matricnumber" GridPane.halignment="CENTER" GridPane.rowIndex="3" translateY="45" />
+   <Label fx:id="phone" styleClass="cell_medium_label" text="/$mobile" GridPane.halignment="CENTER" GridPane.rowIndex="4" translateY="45" />
+   <Label fx:id="email" prefWidth="155.0" styleClass="cell_medium_label" text="/$email" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5" translateY="45" />
+   <ImageView fx:id="emailIcon" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="227.0" translateX="10.0" GridPane.rowIndex="5" translateY="45"/>
+    <FlowPane fx:id="tags" GridPane.rowIndex="1" translateY="45">
         <padding>
-            <Insets bottom="5" top="5" />
+            <Insets bottom="5" top="3" />
         </padding>
     </FlowPane>
-    <VBox GridPane.rowIndex="6">
-     <ListView fx:id="modifiedTaskCardListView" prefHeight="155.0" prefWidth="250.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
+    <Text styleClass="cell_medium_label" text="Related Tasks" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+    <VBox GridPane.rowIndex="7">
+     <ListView fx:id="modifiedTaskCardListView" prefHeight="155.0" prefWidth="250.0" GridPane.rowIndex="7" VBox.vgrow="ALWAYS">
         </ListView>
     </VBox>
     <rowConstraints>
