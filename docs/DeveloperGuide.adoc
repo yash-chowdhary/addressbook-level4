@@ -1898,6 +1898,9 @@ A student organisation or association at the National University of Singapore.
 These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups.
 Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
 
+[[clubbook]] Club Book::
+The internal database of Club Connect that stores member, task and poll information.
+
 [[cli]] CLI::
 Acronym for Command Line Interface. It is a purely text-based interface for software.
 User respond to visual prompts by typing single commands into the interface and receive results as text as well.

@@ -2,7 +2,7 @@
 ###### \java\seedu\club\commons\events\ui\SendEmailRequestEvent.java
 ``` java
 /**
- *
+ * Event to send an email.
  */
 public class SendEmailRequestEvent extends BaseEvent {
 
@@ -117,9 +117,9 @@ public class AddTaskCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.addTaskToTaskList(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateTaskException dte) {
@@ -132,6 +132,131 @@ public class AddTaskCommand extends UndoableCommand {
         return other == this // short circuit if same object
                 || (other instanceof AddTaskCommand // instanceof handles nulls
                 && toAdd.equals(((AddTaskCommand) other).toAdd));
+    }
+}
+```
+###### \java\seedu\club\logic\commands\ChangeAssigneeCommand.java
+``` java
+import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import seedu.club.commons.core.Messages;
+import seedu.club.commons.core.index.Index;
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
+import seedu.club.model.task.Date;
+import seedu.club.model.task.Description;
+import seedu.club.model.task.Status;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.Time;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
+
+/**
+ * Changes the Assignee of a specified task.
+ */
+public class ChangeAssigneeCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "changeassignee";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "assignee")
+    );
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " "
+            + " INDEX " + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes the assignee of the task identified"
+            + " by the index number used in the last task listing.\n"
+            + "Parameters: INDEX (must be a positive integer) "
+            + PREFIX_MATRIC_NUMBER + "MATRIC NUMBER\n"
+            + "Example: " + COMMAND_WORD + " 1 "
+            + PREFIX_MATRIC_NUMBER + "A0123456H";
+
+    public static final String MESSAGE_CHANGE_SUCCESS = "Assignee of task - %1$s, changed successfully to "
+            + "%2$s";
+    public static final String MESSAGE_NOT_CHANGED = "Assignee of task is unchanged as the assignee provided is "
+            + "the same as the task's existing assignee.";
+    public static final String MESSAGE_DUPLICATE_TASK = "This operation would result in a duplicate task.";
+    public static final String MESSAGE_ALREADY_ASSIGNED = "Assignee of task could not be changed as there is an "
+            + "identical task assigned to this member.";
+    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member does not exist in Club Connect.";
+
+    private final Index index;
+    private Task taskToEdit;
+    private Task editedTask;
+    private final Assignee newAssignee;
+
+    public ChangeAssigneeCommand(Index index, Assignee newAssignee) {
+        requireAllNonNull(index, newAssignee);
+        this.index = index;
+        this.newAssignee = newAssignee;
+    }
+
+    @Override
+    protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
+        List<Task> lastShownList = model.getFilteredTaskList();
+
+        if (index.getZeroBased() >= lastShownList.size() || index.getZeroBased() < 0) {
+            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+        }
+
+
+        taskToEdit = lastShownList.get(index.getZeroBased());
+        editedTask = createEditedTask(taskToEdit);
+
+        if (taskToEdit.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+            throw new CommandException(MESSAGE_NOT_CHANGED);
+        }
+    }
+
+    @Override
+    protected CommandResult executeUndoableCommand() throws CommandException {
+        try {
+            model.changeAssignee(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            throw new CommandException(MESSAGE_DUPLICATE_TASK);
+        } catch (MemberNotFoundException mnfe) {
+            throw new CommandException(MESSAGE_MEMBER_NOT_FOUND);
+        } catch (TaskAlreadyAssignedException e) {
+            throw new CommandException(MESSAGE_ALREADY_ASSIGNED);
+        } catch (TaskAssigneeUnchangedException e) {
+            throw new CommandException(MESSAGE_NOT_CHANGED);
+        }
+        return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription(),
+                newAssignee.getAssignee()));
+    }
+
+    /**
+     * Creates and returns a {@code task} with the details of {@code taskToEdit}
+     * edited with {@code newAssignee}.
+     */
+    private Task createEditedTask(Task taskToEdit) {
+        assert taskToEdit != null;
+
+        Description description = new Description(taskToEdit.getDescription().getDescription());
+        Time time = new Time(taskToEdit.getTime().getTime());
+        Date date = new Date(taskToEdit.getDate().getDate());
+        Assignor assignor = new Assignor(taskToEdit.getAssignor().getAssignor());
+        Status status = new Status(taskToEdit.getStatus().getStatus());
+
+        return new Task(description, time, date, assignor, newAssignee, status);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other == this
+                || (other instanceof ChangeAssigneeCommand
+                && index.equals(((ChangeAssigneeCommand) other).index)
+                && newAssignee.equals(((ChangeAssigneeCommand) other).newAssignee)));
     }
 }
 ```
@@ -168,7 +293,7 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX";
 
-    public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted Task: %1$s";
+    public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted task: %1$s";
     public static final String MESSAGE_TASK_CANNOT_BE_DELETED = "This task cannot be deleted as you are "
             + " neither the assignor nor the assignee of the task.";
     public static final String MESSAGE_TASK_NOT_FOUND = "This task does not exist in Club Connect.";
@@ -185,9 +310,9 @@ public class DeleteTaskCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(taskToDelete);
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.deleteTask(taskToDelete);
         } catch (TaskNotFoundException tnfe) {
             throw new CommandException(MESSAGE_TASK_NOT_FOUND);
@@ -269,7 +394,7 @@ public class EmailCommand extends Command {
             + PREFIX_BODY + "Hi all, I hope you have enjoyed using Club Connect so far. "
             + "Please do share your experience with us. Regards, John Doe";
 
-    public static final String EMAIL_CLIENT_OPENED = "Email client opened!";
+    public static final String EMAIL_CLIENT_OPENED = "Email client opened.";
     public static final String MESSAGE_NOT_SENT = "Please adhere to the command usage.";
 
     private Tag tag;
@@ -289,9 +414,9 @@ public class EmailCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             String emailRecipients = model.generateEmailRecipients(group, tag);
             model.sendEmail(emailRecipients, client, subject, body);
             return new CommandResult(EMAIL_CLIENT_OPENED);
@@ -342,7 +467,7 @@ public class RemoveGroupCommand extends UndoableCommand {
             + "Parameters: "
             + PREFIX_GROUP + "GROUP";
 
-    public static final String MESSAGE_SUCCESS = "Group deleted from Club Connect: %1$s";
+    public static final String MESSAGE_SUCCESS = "Deleted group: %1$s";
 
     private final Group toRemove;
 
@@ -357,9 +482,10 @@ public class RemoveGroupCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.removeGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
         } catch (GroupNotFoundException gnfe) {
@@ -403,9 +529,9 @@ public class ViewMyTasksCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
         try {
-            requireToSignUp();
-            requireToLogIn();
             model.viewMyTasks();
         } catch (TasksAlreadyListedException tale) {
             throw new CommandException(MESSAGE_ALREADY_LISTED);
@@ -470,6 +596,47 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
     }
 }
 ```
+###### \java\seedu\club\logic\parser\ChangeAssigneeCommandParser.java
+``` java
+import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+
+import seedu.club.commons.core.index.Index;
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.ChangeAssigneeCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.task.Assignee;
+
+/**
+ * arses input arguments and creates a new ChangeAssignee object
+ */
+public class ChangeAssigneeCommandParser implements Parser<ChangeAssigneeCommand> {
+    @Override
+    public ChangeAssigneeCommand parse(String args) throws ParseException {
+        requireNonNull(args);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_MATRIC_NUMBER);
+
+        Index index;
+
+        try {
+            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (IllegalValueException ive) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ChangeAssigneeCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            MatricNumber matricNumber = ParserUtil.parseMatricNumber(argMultimap.getValue(PREFIX_MATRIC_NUMBER)).get();
+            Assignee assignee = new Assignee(matricNumber.toString());
+            return new ChangeAssigneeCommand(index, assignee);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+    }
+}
+```
 ###### \java\seedu\club\logic\parser\ChangeTaskStatusCommandParser.java
 ``` java
 import static java.util.Objects.requireNonNull;
@@ -520,6 +687,8 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
             return new AddTaskCommandParser().parse(arguments);
         } else if (isAssignTaskCommand(commandWord)) {
             return new AssignTaskCommandParser().parse(arguments);
+        } else if (isChangeAssigneeCommand(commandWord)) {
+            return new ChangeAssigneeCommandParser().parse(arguments);
         } else if (isChangePasswordCommand(commandWord)) {
             return new ChangePasswordCommandParser().parse(arguments);
         } else if (isChangePicCommand(commandWord)) {
@@ -527,7 +696,7 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
         } else if (isChangeTaskStatusCommand(commandWord)) {
             return new ChangeTaskStatusCommandParser().parse(arguments);
         } else if (isClearCommand(commandWord)) {
-            return new ClearCommand();
+            return new ClearCommandParser().parse(arguments);
         } else if (isCompressCommand(commandWord)) {
             return new CompressCommand();
         } else if (isDecompressCommand(commandWord)) {
@@ -585,6 +754,18 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
         } else {
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of ChangeAssigneeCommand's aliases
+     */
+    private boolean isChangeAssigneeCommand(String commandWord) {
+        for (String commandAlias : ChangeAssigneeCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -1016,6 +1197,8 @@ import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.commands.AssignTaskCommand;
+import seedu.club.logic.commands.ChangeAssigneeCommand;
+import seedu.club.logic.commands.ChangePasswordCommand;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ChangeTaskStatusCommand;
 import seedu.club.logic.commands.ClearCommand;
@@ -1032,6 +1215,7 @@ import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HideResultsCommand;
+import seedu.club.logic.commands.HistoryCommand;
 import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
@@ -1088,6 +1272,9 @@ public class CommandList {
         commandList.add(SignUpCommand.COMMAND_FORMAT);
         commandList.add(ChangeTaskStatusCommand.COMMAND_FORMAT);
         commandList.add(ImportCommand.COMMAND_FORMAT);
+        commandList.add(ChangePasswordCommand.COMMAND_FORMAT);
+        commandList.add(HistoryCommand.COMMAND_WORD);
+        commandList.add(ChangeAssigneeCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;
@@ -1207,7 +1394,7 @@ public class EmailCommandParser implements Parser<EmailCommand> {
         if (!Group.isValidGroup(trimmedGroup)) {
             throw new IllegalValueException(Group.MESSAGE_GROUP_CONSTRAINTS);
         }
-        return new Group(trimmedGroup);
+        return new Group(trimmedGroup.toLowerCase());
     }
 
     /**
@@ -1434,17 +1621,15 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
      * will be assigned the default group - "member".
      */
     public void removeGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
-        Group notToBeDeleted = new Group("member");
-        if (toRemove.equals(notToBeDeleted)) {
-            throw new GroupCannotBeRemovedException();
-        }
-        Boolean isPresent = false;
+        checkIfGroupIsMember(toRemove);
+        checkIfGroupIsPresent(toRemove);
+        removeGroupFromClubBook(toRemove);
+    }
 
-        for (Member member : members) {
-            if (member.getGroup().equals(toRemove)) {
-                isPresent = true;
-            }
-        }
+    /**
+     * Removes the Group {@code toRemove} from Club Connect.
+     */
+    private void removeGroupFromClubBook(Group toRemove) {
         try {
             for (Member member : members) {
                 removeGroupFromMember(toRemove, member);
@@ -1452,8 +1637,33 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
         }
+    }
+
+    /**
+     * Checks if {@code toRemove} exists in Club Connect.
+     * @throws GroupNotFoundException if {@code toRemove} is not found.
+     */
+    private void checkIfGroupIsPresent(Group toRemove) throws GroupNotFoundException {
+        Boolean isPresent = false;
+
+        for (Member member : members) {
+            if (member.getGroup().equals(toRemove)) {
+                isPresent = true;
+            }
+        }
         if (!isPresent) {
             throw new GroupNotFoundException();
+        }
+    }
+
+    /**
+     * Checks if {@code toRemove} is "member".
+     * @throws GroupCannotBeRemovedException if {@code toRemove} is "member".
+     */
+    private void checkIfGroupIsMember(Group toRemove) throws GroupCannotBeRemovedException {
+        Group notToBeDeleted = new Group("member");
+        if (toRemove.equals(notToBeDeleted)) {
+            throw new GroupCannotBeRemovedException();
         }
     }
 
@@ -1496,14 +1706,129 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
 ###### \java\seedu\club\model\ClubBook.java
 ``` java
     /**
-     * Replaces the given task {@code target} in the list with {@code editedMember}.
+     * Update {@code Task target}'s status with that of {@code Task editedMember}.
      * @throws DuplicateTaskException if updating the tasks's details causes the task to be equivalent to
      *                                  another existing task in the list.
      * @throws TaskNotFoundException if {@code target} could not be found in the list.
      */
-    public void updateTask(Task taskToEdit, Task editedTask) throws DuplicateTaskException, TaskNotFoundException {
+    public void updateTaskStatus(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
+            TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+    }
+
+    /**
+     * Update {@code Task target}'s Assignee with that of {@code Task editedMember}.
+     * @throws DuplicateTaskException if updating the tasks's details causes the task to be equivalent to
+     *                                  another existing task in the list, ignoring the status.
+     * @throws TaskNotFoundException if {@code target} could not be found in the list.
+     */
+    public void updateTaskAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException {
+        requireNonNull(editedTask);
+        try {
+            tasks.setTaskIgnoreStatus(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        }
+    }
+
+    /**
+     * Updates the task if there is a change in Matric Number of the target member.
+     * @return number of tasks updated.
+     * @throws DuplicateTaskException if there is already a task with similar attributes (regardless of status).
+     */
+    public int updateTask(Member target, Member editedMember) throws DuplicateTaskException {
+        ObservableList<Task> taskObservableList = tasks.asObservableList();
+        if (target.getMatricNumber().equals(editedMember.getMatricNumber())) {
+            return 0;
+        }
+
+        int numberOfTasksUpdated = 0;
+
+        for (Task task : taskObservableList) {
+            Task editedTask = null;
+            String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
+            String targetMemberMatricNumberString = target.getMatricNumber().toString();
+
+            if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+
+                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        newAssignor, newAssignee, task.getStatus());
+                tasks.setTaskIgnoreStatus(task, editedTask);
+                numberOfTasksUpdated++;
+            } else if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+
+                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        newAssignor, task.getAssignee(), task.getStatus());
+                tasks.setTaskIgnoreStatus(task, editedTask);
+                numberOfTasksUpdated++;
+            } else if (task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                        task.getAssignor(), newAssignee, task.getStatus());
+                tasks.setTaskIgnoreStatus(task, editedTask);
+                numberOfTasksUpdated++;
+            }
+        }
+
+        return numberOfTasksUpdated;
+
+    }
+
+    /**
+     * Removes all tasks that have been assigned to {@code member}.
+     */
+    public int removeTasksOfMember(Member member) {
+
+        int numberOfTasksRemoved = 0;
+        Iterator<Task> it = tasks.iterator();
+        while (it.hasNext()) {
+            Task task = it.next();
+            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+                it.remove();
+                numberOfTasksRemoved++;
+            }
+        }
+        return numberOfTasksRemoved;
+    }
+
+    /**
+     * Checks if a similar task has been assigned to the member by some other exco member.
+     * The task's Assignor and Status are ignored in this comparison.
+     * @throws TaskAlreadyAssignedException if there exists a task like so.
+     */
+    public void checkIfTaskIsAlreadyAssigned(Task toAdd) throws TaskAlreadyAssignedException {
+        ObservableList<Task> taskObservableList = getTaskList();
+        for (Task task : taskObservableList) {
+            if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
+                    && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
+                    && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                throw new TaskAlreadyAssignedException();
+            }
+        }
+    }
+
+    /**
+     * Checks if a similar task exists.
+     * @throws DuplicateTaskException if there exists a duplicate task.
+     */
+    public void checkIfDuplicateTaskExists(Task toAdd) throws DuplicateTaskException {
+        ObservableList<Task> taskObservableList = getTaskList();
+        for (Task task : taskObservableList) {
+            if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
+                    && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
+                    && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
+                    && task.getAssignor().getAssignor().equalsIgnoreCase(toAdd.getAssignor().getAssignor())
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                throw new DuplicateTaskException();
+            }
+        }
     }
 }
 ```
@@ -1645,6 +1970,8 @@ public class GroupNotFoundException extends Exception {
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.util.AppUtil.checkArgument;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 /**
  * Represents a member's Group in the club book
  * Guarantees: immutable; is valid as declared in {@link #isValidGroup(String)}
@@ -1672,7 +1999,7 @@ public class Group {
     public Group(String group) {
         requireNonNull(group);
         checkArgument(isValidGroup(group), MESSAGE_GROUP_CONSTRAINTS);
-        this.groupName = group;
+        this.groupName = WordUtils.capitalize(group);
     }
 
     /**
@@ -1738,6 +2065,17 @@ public class Group {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
+        checkIfTagExists(toSendEmailTo, members, emailRecipients);
+
+        return String.join(",", emailRecipients);
+    }
+
+    /**
+     * Checks if the {@code Tag toSendEmailTo} exists in Club Connect.
+     * @throws TagNotFoundException if {@code toSendEmailTo} is not found.
+     */
+    private void checkIfTagExists(Tag toSendEmailTo, List<Member> members, List<String> emailRecipients)
+            throws TagNotFoundException {
         Boolean tagFound = false;
         for (Member member : members) {
             Set<Tag> memberTags = member.getTags();
@@ -1749,8 +2087,6 @@ public class Group {
         if (!tagFound) {
             throw new TagNotFoundException();
         }
-
-        return String.join(",", emailRecipients);
     }
 
     /**
@@ -1761,6 +2097,16 @@ public class Group {
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
+        checkIfGroupExists(toSendEmailTo, members, emailRecipients);
+        return String.join(",", emailRecipients);
+    }
+
+    /**
+     * Checks if the {@code Group toSendEmailTo} exists in Club Connect.
+     * @throws GroupNotFoundException if {@code toSendEmailTo} is not found.
+     */
+    private void checkIfGroupExists(Group toSendEmailTo, List<Member> members, List<String> emailRecipients)
+            throws GroupNotFoundException {
         Boolean groupFound = false;
         for (Member member : members) {
             if (member.getGroup().equals(toSendEmailTo)) {
@@ -1771,7 +2117,6 @@ public class Group {
         if (!groupFound) {
             throw new GroupNotFoundException();
         }
-        return String.join(",", emailRecipients);
     }
 
     @Override
@@ -1780,18 +2125,49 @@ public class Group {
     }
 
     @Override
-    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException, DuplicateTaskException,
-        IllegalExecutionException {
+    public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+            DuplicateTaskException, TaskStatusCannotBeEditedException {
         requireAllNonNull(taskToEdit, editedTask);
-        checkIfUserCanModifyTask(taskToEdit);
-        clubBook.updateTask(taskToEdit, editedTask);
+        String currentMember = getLoggedInMember().getMatricNumber().toString();
+        checkIfStatusCanBeEdited(taskToEdit, currentMember);
+        clubBook.updateTaskStatus(taskToEdit, editedTask);
         updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
-    private void checkIfUserCanModifyTask(Task task) throws IllegalExecutionException {
-        if (!getLoggedInMember().getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee())) {
-            throw new IllegalExecutionException();
+    /**
+     * Checks if status can be edited based on the current member's matric number.
+     * @throws TaskStatusCannotBeEditedException if the task status cannot be edited.
+     */
+    private void checkIfStatusCanBeEdited(Task taskToEdit, String currentMember)
+            throws TaskStatusCannotBeEditedException {
+        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getAssignor())
+                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getAssignee())) {
+            throw new TaskStatusCannotBeEditedException();
+        }
+    }
+
+    @Override
+    public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
+            MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
+        requireAllNonNull(taskToEdit, editedTask);
+        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+        checkIfMemberExists(newAssigneeMatricNumber);
+        checkIfDuplicateTaskExists(editedTask);
+        checkIfTaskIsAlreadyAssigned(editedTask);
+        checkIfInputAssigneeIsSame(taskToEdit, editedTask);
+        try {
+            clubBook.updateTaskAssignee(taskToEdit, editedTask);
+        } catch (DuplicateTaskException dte) {
+            throw new AssertionError("Impossible. This check has already been made");
+        }
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    }
+
+    private void checkIfInputAssigneeIsSame(Task taskToEdit, Task editedTask) throws TaskAssigneeUnchangedException {
+        if (taskToEdit.getAssignee().equals(editedTask.getAssignee())) {
+            throw new TaskAssigneeUnchangedException();
         }
     }
 
@@ -1801,8 +2177,8 @@ public class Group {
     @Override
     public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
         try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getName().toString());
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+            Assignee assignee = new Assignee(clubBook.getLoggedInMember().getMatricNumber().toString());
             Status status = new Status(Status.NOT_STARTED_STATUS);
             toAdd.setAssignor(assignor);
             toAdd.setAssignee(assignee);
@@ -1816,32 +2192,53 @@ public class Group {
     }
 
     @Override
-    public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-            IllegalExecutionException {
-        if (!clubBook.getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new IllegalExecutionException();
+    public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+            DuplicateTaskException, TaskAlreadyAssignedException {
+        checkIfMemberExists(matricNumber);
+        try {
+            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+            Assignee assignee = new Assignee(matricNumber.toString());
+            Status status = new Status(Status.NOT_STARTED_STATUS);
+            toAdd.setAssignor(assignor);
+            toAdd.setAssignee(assignee);
+            toAdd.setStatus(status);
+            checkIfDuplicateTaskExists(toAdd);
+            checkIfTaskIsAlreadyAssigned(toAdd);
+            try {
+                clubBook.addTaskToTaskList(toAdd);
+            } catch (DuplicateTaskException dte) {
+                throw new AssertionError("Already caught before.");
+            }
+            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+            indicateClubBookChanged();
+        } catch (DuplicateTaskException dte) {
+            throw new DuplicateTaskException();
+        } catch (TaskAlreadyAssignedException e) {
+            throw new TaskAlreadyAssignedException();
         }
+    }
+
+    private void checkIfDuplicateTaskExists(Task toAdd) throws DuplicateTaskException {
+        clubBook.checkIfDuplicateTaskExists(toAdd);
+    }
+
+    private void checkIfTaskIsAlreadyAssigned(Task toAdd) throws TaskAlreadyAssignedException {
+        clubBook.checkIfTaskIsAlreadyAssigned(toAdd);
+    }
+
+    /**
+     * Checks if the {@code MatricNumber matricNumber} maps to any member in Club Connect.
+     * @throws MemberNotFoundException if {@code matricNumber} doesn't map to any member.
+     */
+    private void checkIfMemberExists(MatricNumber matricNumber) throws MemberNotFoundException {
         boolean found = false;
         for (Member member : clubBook.getMemberList()) {
-            if (member.getName().equals(name)) {
+            if (member.getMatricNumber().equals(matricNumber)) {
                 found = true;
             }
         }
         if (!found) {
             throw new MemberNotFoundException();
-        }
-        try {
-            Assignor assignor = new Assignor(clubBook.getLoggedInMember().getName().toString());
-            Assignee assignee = new Assignee(name.toString());
-            Status status = new Status(Status.NOT_STARTED_STATUS);
-            toAdd.setAssignor(assignor);
-            toAdd.setAssignee(assignee);
-            toAdd.setStatus(status);
-            clubBook.addTaskToTaskList(toAdd);
-            updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-            indicateClubBookChanged();
-        } catch (DuplicateTaskException dte) {
-            throw new DuplicateTaskException();
         }
     }
 
@@ -1849,30 +2246,47 @@ public class Group {
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
         Assignee assignee = targetTask.getAssignee();
-        String currentMember = getLoggedInMember().getName().toString();
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
-            throw new TaskCannotBeDeletedException();
-        }
+        String currentMember = getLoggedInMember().getMatricNumber().toString();
+        checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
 
-    @Override
-    public void viewAllTasks() throws TasksCannotBeDisplayedException {
-        if (!getLoggedInMember().getGroup().toString().equalsIgnoreCase(Group.GROUP_EXCO)) {
-            throw new TasksCannotBeDisplayedException();
+    /**
+     * Checks if the {@code String currentMember} is either the {@code assignor} or the {@code assignee} of the task.
+     * @throws TaskCannotBeDeletedException if the task cannot be deleted.
+     */
+    private void checkIfTaskCanBeDeleted(Assignor assignor, Assignee assignee, String currentMember)
+            throws TaskCannotBeDeletedException {
+        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
+                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+            throw new TaskCannotBeDeletedException();
         }
+    }
+
+    @Override
+    public void viewAllTasks() throws TasksAlreadyListedException {
+        checkIfAllTasksAlreadyListed();
         updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
         indicateClubBookChanged();
     }
 
+    private void checkIfAllTasksAlreadyListed() throws TasksAlreadyListedException {
+        if (filteredTasks.getPredicate().equals(PREDICATE_SHOW_ALL_TASKS)) {
+            throw new TasksAlreadyListedException(ViewAllTasksCommand.MESSAGE_ALREADY_LISTED);
+        }
+    }
+
     @Override
     public void viewMyTasks() throws TasksAlreadyListedException {
+        checkIfTasksAreAlreadyListed();
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    }
+
+    private void checkIfTasksAreAlreadyListed() throws TasksAlreadyListedException {
         if (filteredTasks.getPredicate().equals(new TaskIsRelatedToMemberPredicate(getLoggedInMember()))) {
             throw new TasksAlreadyListedException(ViewMyTasksCommand.MESSAGE_ALREADY_LISTED);
         }
-        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
     }
 
 ```
@@ -2053,7 +2467,7 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
 public class Description {
 
     public static final String DESCRIPTION_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
-    public static final String MESSAGE_DESCRIPTION_CONSTRAINTS = "Description should a non-empty alphanumeric string";
+    public static final String MESSAGE_DESCRIPTION_CONSTRAINTS = "Description should a non-empty alphanumeric string.";
     public final String description;
 
     public Description(String description) {
@@ -2098,7 +2512,7 @@ public class Status {
     public static final String NOT_STARTED_STATUS = "Yet To Begin";
     public static final String IN_PROGRESS_STATUS = "In Progress";
     public static final String COMPLETED_STATUS = "Completed";
-    public static final String MESSAGE_INVALID_STATUS = "Invalid status entered!";
+    public static final String MESSAGE_INVALID_STATUS = "Invalid task status value entered.";
 
     private String status;
 
@@ -2261,8 +2675,8 @@ public class TaskIsRelatedToMemberPredicate implements Predicate<Task> {
 
     @Override
     public boolean test(Task task) {
-        return member.getName().toString().equalsIgnoreCase(task.getAssignor().getAssignor())
-                || member.getName().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
+        return member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignor().getAssignor())
+                || member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
     }
 
     public Member getMember() {
@@ -2435,6 +2849,25 @@ public class UniqueTaskList implements Iterable<Task> {
         internalList.set(index, editedTask);
     }
 
+    public void setTaskIgnoreStatus(Task target, Task editedTask) throws DuplicateTaskException {
+        requireNonNull(editedTask);
+
+        int index = internalList.indexOf(target);
+
+        for (Task task : internalList) {
+            if (task.getDescription().getDescription().equalsIgnoreCase(editedTask.getDescription().getDescription())
+                    && task.getTime().getTime().equalsIgnoreCase(editedTask.getTime().getTime())
+                    && task.getDate().getDate().equalsIgnoreCase(editedTask.getDate().getDate())
+                    && task.getAssignor().getAssignor().equalsIgnoreCase(editedTask.getAssignor().getAssignor())
+                    && task.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+                throw new DuplicateTaskException();
+            }
+        }
+
+        internalList.set(index, editedTask);
+
+    }
+
     /**
      * Ensures every task in the argument list exists in this object.
      */
@@ -2500,6 +2933,8 @@ public class UniqueTaskList implements Iterable<Task> {
         sortList();
         return FXCollections.unmodifiableObservableList(internalList);
     }
+
+
 
     /**
      * Sorts the list of tasks according to alphabetical order of description.
@@ -2691,7 +3126,27 @@ public class XmlAdaptedTask {
     }
 }
 ```
-###### \java\seedu\club\ui\BrowserPanel.java
+###### \java\seedu\club\ui\MemberCard.java
+``` java
+    /**
+     * Creates the labels for tags by randomly generating a color from `TAG_COLORS`
+     */
+    private void createTags(Member member) {
+        member.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.getStyleClass().add(returnColor(tag.tagName));
+            tags.getChildren().add(tagLabel);
+        });
+    }
+
+    /**
+     * Returns a color chosen uniformly at random from TAG_COLORS
+     */
+    private String returnColor(String tag) {
+        return TAG_COLORS[Math.abs(tag.hashCode()) % TAG_COLORS.length];
+    }
+```
+###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
     /**
      * Loads the client page based on {@code client}
@@ -2742,7 +3197,7 @@ public class XmlAdaptedTask {
         }
     }
 ```
-###### \java\seedu\club\ui\BrowserPanel.java
+###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
     @Subscribe
     private void handleSendingEmailEvent(SendEmailRequestEvent event) {
@@ -2751,19 +3206,21 @@ public class XmlAdaptedTask {
         callClient(event.getClient().toString(), event.getRecipients(), event.getSubject().toString(),
                 event.getBody().toString());
     }
-}
+
 ```
-###### \java\seedu\club\ui\MemberCard.java
+###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
     /**
      * Creates the labels for tags by randomly generating a color from `TAG_COLORS`
      */
     private void createTags(Member member) {
+        tags.getChildren().clear();
         member.getTags().forEach(tag -> {
             Label tagLabel = new Label(tag.tagName);
             tagLabel.getStyleClass().add(returnColor(tag.tagName));
             tags.getChildren().add(tagLabel);
         });
+        tags.setAlignment(Pos.CENTER);
     }
 
     /**
@@ -2771,6 +3228,35 @@ public class XmlAdaptedTask {
      */
     private String returnColor(String tag) {
         return TAG_COLORS[Math.abs(tag.hashCode()) % TAG_COLORS.length];
+    }
+
+    /**
+     * Custom {@code ListCell} that displays the graphics of a {@code TaskCard}.
+     */
+    class TaskListViewCell extends ListCell<ModifiedTaskCard> {
+
+        @Override
+        protected void updateItem(ModifiedTaskCard task, boolean empty) {
+            super.updateItem(task, empty);
+
+            if (empty || task == null) {
+                setGraphic(null);
+                setText(null);
+                return;
+            }
+
+            this.getStylesheets().clear();
+            logger.info("Status: " + task.task.getStatus().getStatus());
+            if (task.isTaskYetToBegin()) {
+                logger.info("In here");
+                this.getStylesheets().add(TASK_YET_TO_BEGIN_CSS);
+            } else if (task.isTaskInProgress()) {
+                this.getStylesheets().add(TASK_IN_PROGRESS_CSS);
+            } else if (task.isTaskCompleted()) {
+                this.getStylesheets().add(TASK_COMPLETED_CSS);
+            }
+            setGraphic(task.getRoot());
+        }
     }
 ```
 ###### \java\seedu\club\ui\TaskCard.java
@@ -2879,9 +3365,9 @@ import seedu.club.model.task.Task;
 public class TaskListPanel extends UiPart<Region> {
     private static final String FXML = "TaskListPanel.fxml";
     private static final String DIRECTORY_PATH = "view/";
-    private static final String TASK_YET_TO_BEGIN_CSS = DIRECTORY_PATH + "TaskYetToBegin.css";
-    private static final String TASK_IN_PROGRESS_CSS = DIRECTORY_PATH + "TaskInProgress.css";
-    private static final String TASK_COMPLETED_CSS = DIRECTORY_PATH + "TaskCompleted.css";
+    private static final String TASK_YET_TO_BEGIN_CSS = DIRECTORY_PATH + "LightTaskYetToBegin.css";
+    private static final String TASK_IN_PROGRESS_CSS = DIRECTORY_PATH + "LightTaskInProgress.css";
+    private static final String TASK_COMPLETED_CSS = DIRECTORY_PATH + "LightTaskCompleted.css";
     private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
 
     @FXML
@@ -2955,7 +3441,7 @@ public class TaskListPanel extends UiPart<Region> {
     }
 }
 ```
-###### \resources\view\TaskCompleted.css
+###### \resources\view\DarkTaskCompleted.css
 ``` css
 .list-cell {
     -fx-label-padding: 0 0 0 0;
@@ -2989,7 +3475,7 @@ public class TaskListPanel extends UiPart<Region> {
     -fx-text-fill: white;
 }
 ```
-###### \resources\view\TaskInProgress.css
+###### \resources\view\DarkTaskInProgress.css
 ``` css
 .list-cell {
     -fx-label-padding: 0 0 0 0;
@@ -3023,6 +3509,72 @@ public class TaskListPanel extends UiPart<Region> {
     -fx-text-fill: white;
 }
 ```
+###### \resources\view\LightTaskCompleted.css
+``` css
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-padding: 0px;
+    -fx-background-color: cccccc;
+}
+
+.list-cell:filled:even {
+    -fx-background-color: derive(#006400, 75%);
+}
+
+.list-cell:filled:odd {
+    -fx-background-color: derive(#006400, 75%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#006400, +40%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#006400, +80%);
+    -fx-border-width: 3;
+    -fx-border-radius: 0 0 0 0;
+}
+
+.list-cell .label {
+    -fx-text-fill: black;
+}
+```
+###### \resources\view\LightTaskInProgress.css
+``` css
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-padding: 0px;
+    -fx-background-color: cccccc;
+}
+
+.list-cell:filled:even {
+    -fx-background-color: derive(#ff9711, 30%);
+}
+
+.list-cell:filled:odd {
+    -fx-background-color: derive(#ff9711, 30%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#ffae00, +40%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#ffae00, +80%);
+    -fx-border-width: 3;
+    -fx-border-radius: 0 0 0 0;
+}
+
+.list-cell .label {
+    -fx-text-fill: black;
+}
+```
 ###### \resources\view\TaskListCard.fxml
 ``` fxml
 
@@ -3036,33 +3588,33 @@ public class TaskListPanel extends UiPart<Region> {
 <?import javafx.scene.layout.VBox?>
 
 <HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-    <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
-        </columnConstraints>
-        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="105" GridPane.columnIndex="0">
-            <padding>
-                <Insets bottom="5" left="15" right="5" top="5" />
-            </padding>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" spacing="5">
-                <Label fx:id="id" styleClass="cell_big_label">
-                    <minWidth>
-                        <!-- Ensures that the label text is never truncated -->
-                        <Region fx:constant="USE_PREF_SIZE" />
-                    </minWidth>
-                </Label>
-                <Label fx:id="description" maxHeight="1.7976931348623157E308" wrapText="true" styleClass="cell_big_label" text="\$first" />
-            </HBox>
-            <Label fx:id="date" styleClass="cell_small_label" text="\$date" />
-            <Label fx:id="time" styleClass="cell_small_label" text="\$time" />
-            <Label fx:id="assignor" styleClass="cell_small_label" text="\$assignor" />
-            <Label fx:id="assignee" styleClass="cell_small_label" text="\$assignee" />
-            <Label fx:id="status" styleClass="cell_small_label" text="\$status" />
-        </VBox>
-        <rowConstraints>
-            <RowConstraints />
-        </rowConstraints>
-    </GridPane>
+<GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
+    </columnConstraints>
+    <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="105" GridPane.columnIndex="0">
+        <padding>
+            <Insets bottom="5" left="15" right="5" top="5" />
+        </padding>
+        <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308">
+            <Label fx:id="id" styleClass="cell_big_label">
+                <minWidth>
+                    <!-- Ensures that the label text is never truncated -->
+                    <Region fx:constant="USE_PREF_SIZE" />
+                </minWidth>
+            </Label>
+            <Label fx:id="description" maxHeight="1.7976931348623157E308" wrapText="true" styleClass="cell_big_label" text="\$first" />
+        </HBox>
+        <Label fx:id="date" styleClass="cell_small_label" text="\$date" />
+        <Label fx:id="time" styleClass="cell_small_label" text="\$time" />
+        <Label fx:id="assignor" styleClass="cell_small_label" text="\$assignor" />
+        <Label fx:id="assignee" styleClass="cell_small_label" text="\$assignee" />
+        <Label fx:id="status" styleClass="cell_small_label" text="\$status" />
+    </VBox>
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>
 </HBox>
 ```
 ###### \resources\view\TaskListPanel.fxml
@@ -3070,7 +3622,13 @@ public class TaskListPanel extends UiPart<Region> {
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx/8" maxHeight="1.7976931348623157E308" xmlns:fx="http://javafx.com/fxml/1">
+```
+###### \resources\view\TaskListPanel.fxml
+``` fxml
     <ListView fx:id="taskListView" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
 </VBox>
 ```
