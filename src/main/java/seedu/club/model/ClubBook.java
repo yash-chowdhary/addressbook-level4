@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.core.index.Index;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
@@ -54,6 +56,7 @@ public class ClubBook implements ReadOnlyClubBook {
     private final UniqueTagList tags;
     private final UniquePollList polls;
     private final UniqueTaskList tasks;
+    private final Logger logger = LogsCenter.getLogger(this.getClass());
 
         /*
         * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -273,6 +276,7 @@ public class ClubBook implements ReadOnlyClubBook {
         checkIfGroupIsMember(toRemove);
         checkIfGroupIsPresent(toRemove);
         removeGroupFromClubBook(toRemove);
+        logger.fine("Group " + toRemove + " has been removed.");
     }
 
     /**
@@ -342,10 +346,16 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
         tasks.add(taskToAdd);
+        logger.fine("Task added to task list.");
     }
 
+    /**
+     * Deletes {@code targetTask} from the list of tasks.
+     * @throws TaskNotFoundException if the task doesn't exist.
+     */
     public void deleteTask(Task targetTask) throws TaskNotFoundException {
         tasks.remove(targetTask);
+        logger.fine("Task removed from task list.");
     }
 
     public void setTasks(Set<Task> tasks) {
@@ -471,6 +481,7 @@ public class ClubBook implements ReadOnlyClubBook {
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
+
     public void clearClubBook() {
         members.clear();
     }
@@ -531,6 +542,7 @@ public class ClubBook implements ReadOnlyClubBook {
             TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+        logger.fine("Task status updated to " + editedTask.getStatus().getStatus());
     }
 
     /**
@@ -546,6 +558,7 @@ public class ClubBook implements ReadOnlyClubBook {
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
         }
+        logger.fine("Task assignee updated to " + editedTask.getAssignee().getAssignee());
     }
 
     /**
@@ -591,7 +604,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 numberOfTasksUpdated++;
             }
         }
-
+        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
         return numberOfTasksUpdated;
 
     }
@@ -610,6 +623,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 numberOfTasksRemoved++;
             }
         }
+        logger.info("Removed " + numberOfTasksRemoved + "tasks from task list.");
         return numberOfTasksRemoved;
     }
 

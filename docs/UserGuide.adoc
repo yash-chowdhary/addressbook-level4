@@ -207,6 +207,31 @@ Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on
 Assigns a task to `A1122334K` with description `Buy Food` due on `03/04/2018` at `15:00`.
 // end::assigntask[]
 
+// tag::changeassignee[]
+=== Changing the assignee of a task : `changeassignee` (Since v1.5rc)
+
+Changes the status of a task in Club Connect. +
+Format: `changeassignee INDEX m/MATRIC_NUMBER` +
+Alias: `assignee`
+
+****
+* `INDEX` *must be a positive integer* 1, 2, 3, ...
+* Club Connect detects if there is no change in the `ASSIGNEE`.
+* Club Connect also detects if the command results in a duplicate task in the task list.
+* You cannot change the `ASSIGNEE` to a member who has already been assigned a similar task by another `Exco` member.
+****
+
+[IMPORTANT]
+This command is only for `Exco` members.
+
+Examples:
+
+* `changeassignee 1 m/A0123456H` +
+Changes the assignee of the 1st task to `A0123456H` in the task listing.
+* `assignee 3 m/A6656789H` +
+Changes the assignee of the 3rd task to `A6656789H` in the task listing.
+// end::changeassignee[]
+
 === Changing password : `changepass` (Since v1.4)
 
 Changes your password, if you are logged in.
@@ -360,7 +385,7 @@ Deletes the 1st member in the results of the `find` command.
 // tag::deletepoll[]
 === Deleting a poll : `deletepoll` (Since v1.3)
 
-Deletes the specified poll from the Club Connect. +
+Deletes the specified poll from Club Connect. +
 Format: `deletepoll INDEX` +
 Aliases: `rmpoll`, `delpoll`
 
@@ -708,7 +733,7 @@ Selects the 1st member in the results of the `find` command.
 Displays the results of polls in Club Connect.
 
 [NOTE]
-This is a command that can be used to monitor polls in the Club Connect. +
+This is a command that can be used to monitor polls in Club Connect. +
 
 [NOTE]
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +

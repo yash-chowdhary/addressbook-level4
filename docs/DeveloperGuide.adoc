@@ -447,7 +447,7 @@ The `EmailCommand` consists of the following fields:
 
 [NOTE]
 Emails can only be sent to members belonging to EITHER a Group OR a Tag.
-ClubConnect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
+Club Connect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
 
 The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command.
 Refer to Figure 19 for the UML diagram.
@@ -465,7 +465,7 @@ _Figure 20. Sequence Diagram for Email Command parsing_
 Since `Subject` and `Body` are optional fields, their default values are `EMPTY_SUBJECT_STRING` and `EMPTY_BODY_STRING` which store blank Strings.
 
 [NOTE]
-As ClubConnect only allows emails to be sent to members of EITHER a `Group` OR a `Tag`, a valid command will result in either one of them being assigned to `null`.
+As Club Connect only allows emails to be sent to members of EITHER a `Group` OR a `Tag`, a valid command will result in either one of them being assigned to `null`.
 
 The `EmailCommand#execute()` calls the following methods of `model`:
 
@@ -484,7 +484,7 @@ The browser URL for composing the email is generated as follows:
 [source, java]
 ----
 public static final String GMAIL_EMAIL_URL =
-            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s";
 
 public static final String OUTLOOK_EMAIL_URL =
             "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
@@ -497,7 +497,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ===== Aspect: Location of opening the mail client
 * **Alternative 1 (current choice)**: Open up the mail client in system's default web browser.
 ** Pros: Easy to implement
-** Cons: Since ClubConnect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
+** Cons: Since Club Connect can be used by multiple people via user authentication, the default browser will have the owner of the system logged into his/her mail account.
 * **Alternative 2:** Open up the mail client in `BrowserPanel`.
 ** Pros: No dependency on third party apps.
 ** Cons: Older version browser will disallow auto-filling of email fields.
@@ -544,10 +544,15 @@ Tasks consists of the following:
 ---
 Adding Tasks is facilitated by the `AddTaskCommand`. When this command is invoked, it adds a task with the input `Description`, `Date`, and `Time`. The status of every newly created task is by default set to `Yet To Begin`. The `Assignor` and `Assignee` of the task is set to the `Matric Number` of the member who is currently logged into `Club Connect`.
 
-Figure 23 shows the flow of parsing an `AddTaskCommand` object:
+Figure 23 below shows the UML representation of `AddTaskCommand`.
+
+image::AddTaskCommandUML.png[width="350"]
+_Figure 23. UML diagram of `AddTaskCommand`._
+
+Figure 24 shows the flow of parsing an `AddTaskCommand` object:
 
 image::SDforAddTaskCommandParser.png[width="800"]
-_Figure 23. Sequence Diagram for `AddTaskCommand` parsing._
+_Figure 24. Sequence Diagram for `AddTaskCommand` parsing._
 
 The execution of the command invokes `Model#addTaskToTaskList()`. +
 The following code snippet shows the implementation:
@@ -570,10 +575,10 @@ public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
     }
 }
 
-Figure 24 depicts the high-level sequence of events that take place.
+Figure 25 depicts the high-level sequence of events that take place.
 
 image::SDforAddTask.png[width="800"]
-_Figure 24. Sequence Diagram for adding a task._
+_Figure 25. Sequence Diagram for adding a task._
 
 The task is displayed in the Task pane on the far right side.
 
@@ -588,13 +593,18 @@ Thus, the following are the required parameters:
 * `Time`
 * `Matric Number`
 
+Figure 26 below shows the UML representation of `AssignTaskCommand`.
+
+image::AssignTaskCommandUML.png[width="450"]
+_Figure 26. UML diagram of `AssignTaskCommand`._
+
 The implementation of assigning tasks is similar to that of adding tasks. The only difference is that the Assignor is set to the `Matric Number` of the member who is currently logged in.
 
 The parsing of an `AssignTaskCommand` is performed by the `AssignTaskCommandParser`. +
-Figure 25 shows the flow of parsing an `AssignTaskCommand` object:
+Figure 27 shows the flow of parsing an `AssignTaskCommand` object:
 
 image::SDforAssignTaskCommandParser.png[width="800"]
-_Figure 25. Sequence Diagram for `AssignTaskCommand` parsing._
+_Figure 27. Sequence Diagram for `AssignTaskCommand` parsing._
 
 The execution of the command invokes `Model#assignTask()`.
 The following code snippet shows the implementation:
@@ -618,10 +628,10 @@ public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFo
     }
 }
 
-Figure 26 depicts the high-level sequence of events that take place.
+Figure 28 depicts the high-level sequence of events that take place.
 
 image::SDforAssignTask.png[width="800"]
-_Figure 26. Sequence Diagram for assigning a task._
+_Figure 28. Sequence Diagram for assigning a task._
 
 
 ===== Deleting Tasks
@@ -629,11 +639,16 @@ _Figure 26. Sequence Diagram for assigning a task._
 The 'DeleteTaskCommand` is used to delete a task. A task can only be deleted if the member who is currently logged in is either the `Assignor` or the `Assignee`. +
 The command object takes in the `INDEX` of the task to be deleted.
 
+Figure 29 below shows the UML representation of `DeleteTaskCommand`.
+
+image::DeleteTaskCommandUML.png[width="350"]
+_Figure 29. UML diagram of `DeleteTaskCommand`._
+
 `DeleteTaskCommandParser` is responsible for parsing the user input into a `DeleteTaskCommand` object. +
-Figure 27 illustrates the sequence in which the parsing is done.
+Figure 30 illustrates the sequence in which the parsing is done.
 
 image::SDforDeleteTaskCommandParser.png[width="800"]
-_Figure 27. Sequence Diagram for `DeleteTaskCommand` parsing._
+_Figure 30. Sequence Diagram for `DeleteTaskCommand` parsing._
 
 The execution of the command invokes `Model#deleteTask()`.
 The following code snippet shows the implementation:
@@ -649,16 +664,83 @@ public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannot
     indicateClubBookChanged();
 }
 
-The high-level sequence of events is shown below in Figure 28.
+The high-level sequence of events is shown below in Figure 31.
 
 image::SDforDeleteTask.png[width="800"]
-_Figure 28. Sequence Diagram for deleting a task._
+_Figure 31. Sequence Diagram for deleting a task._
 
+
+===== Changing Task Assignee
+---
+
+The `ChangeAssigneeCommand` is used to change the `Assignee` of a task. +
+This command can only be used by `Exco` members and has certain restrictions:
+
+* Passing the current `Assignee` of the task in the input throws an error as there is no change.
+* As an `Exco` member, you are not allowed to change the `Assignee` of a task to a member if that member already has a similar task assigned to him/her.
+* No duplicate tasks are allowed.
+
+Figure 32 below shows the UML representation of `ChangeAssigneeCommand`.
+
+image::ChangeAssigneeCommandUML.png[width="450"]
+_Figure 32. UML Diagram of `ChangeAssigneeCommand`._
+
+`ChangeAssigneeCommandParser` is responsible for parsing the `changeassignee` command. It returns a `ChangeAssigneeCommand` object after parsing the `INDEX` and the `Assignee`.
+Figure 33 shows the sequence diagram of the `ChangeAssigneeCommandParser`.
+
+image::SDforChangeAssigneeCommandParser.png[width="800"]
+_Figure 33. Sequence Diagram of `ChangeAssigneeCommandParser`._
+
+`Model#changeAssignee` is invoked during the execution of the command. Here is the implementation:
+
+[source,java]
+@Override
+public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
+        MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
+    requireAllNonNull(taskToEdit, editedTask);
+    MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+    checkIfMemberExists(newAssigneeMatricNumber);
+    checkIfDuplicateTaskExists(editedTask);
+    checkIfTaskIsAlreadyAssigned(editedTask);
+    checkIfInputAssigneeIsSame(taskToEdit, editedTask);
+    try {
+        clubBook.updateTaskAssignee(taskToEdit, editedTask);
+    } catch (DuplicateTaskException dte) {
+        throw new AssertionError("Impossible. This check has already been made");
+    }
+    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    indicateClubBookChanged();
+}
+
+This further calls `ClubBook#updateTaskAssignee`.
+
+[source,java]
+public void updateTaskAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException {
+    requireNonNull(editedTask);
+    try {
+        tasks.setTaskIgnoreStatus(taskToEdit, editedTask);
+    } catch (DuplicateTaskException dte) {
+        throw new DuplicateTaskException();
+    }
+    logger.fine("Task assignee updated to " + editedTask.getAssignee().getAssignee());
+}
+
+
+Figure 34 below shows the high-level sequence diagram of the command execution.
+
+image::SDforChangeAssignee.png[width="800"]
+_Figure 34. Sequence Diagram of changing the `Assignee` of a task._
 
 ===== Changing Task Status
 ---
 
 Changing a task's status is made possible by the `ChangeTaskStatusCommand`. +
+
+Figure 35 below shows the UML representation of `ChangeTaskStatusCommand`.
+
+image::ChangeTaskStatusCommandUML.png[width="450"]
+_Figure 35. UML Diagram of `ChangeTaskStatusCommand`._
+
 The `Status` of a task can be changed to any one of the following:
 
 * [red]#Yet To Begin#
@@ -668,10 +750,10 @@ The `Status` of a task can be changed to any one of the following:
 The input of the command is the `INDEX` of a task, and the desired `Status`.
 
 Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
-Figure 29 below depicts the parsing of the `ChangeTaskStatusObject`.
+Figure 36 below depicts the parsing of the `ChangeTaskStatusObject`.
 
 image::SDforChangeTaskStatusCommandParser.png[width]"800" ]
-_Figure 29. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
+_Figure 36. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
 
 
 The execution of the command invokes `Model#changeStatus()`.
@@ -687,10 +769,10 @@ public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundEx
     indicateClubBookChanged();
 }
 
-Figure 30 below describes the high-level sequence of events that take place.
+Figure 37 below describes the high-level sequence of events that take place.
 
 image::SDforChangeTaskStatus.png[width="800"]
-_Figure 30. Sequence Diagram for changing the status of a task._
+_Figure 37. Sequence Diagram for changing the status of a task._
 
 ===== Viewing All Tasks
 ---
@@ -706,10 +788,10 @@ public void viewAllTasks() throws TasksCannotBeDisplayedException {
     indicateClubBookChanged();
 }
 
-The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 31.
+The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 38.
 
 image::SDforViewAllTasks.png[width="800"]
-_Figure 31. Sequence Diagram for viewing all tasks._
+_Figure 38. Sequence Diagram for viewing all tasks._
 
 ===== Viewing My Tasks
 ---
@@ -728,10 +810,10 @@ public void viewMyTasks() throws TasksAlreadyListedException {
 
 As shown in the implementation above, the method invokes the `checkIfTasksAreAlreadyListed()` method which throws `TasksAlreadyListedException` if the tasks are already listed.
 
-The sequence diagram of the command is shown below in Figure 32.
+The sequence diagram of the command is shown below in Figure 39.
 
 image::SDforViewMyTasks.png[width="800"]
-_Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member._
+_Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member._
 
 
 ==== Design Considerations
@@ -751,15 +833,15 @@ _Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member
 
 The `removegroup` mechanism is facilitated by the `RemoveGroupCommand` class. It allows `Exco` members to remove a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
 
-The `RemoveGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
+The `RemoveGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 40 below depicts the UML representation of the `Command`.
 
 image::RemoveGroupCommandUML.png[width="200" height="200"]
-_Figure 33. UML Diagram of `RemoveGroupCommand`._
+_Figure 40. UML Diagram of `RemoveGroupCommand`._
 
-`RemoveGroupCommandParser` is responsible for parsing the `removegroup` command. It returns a `RemoveGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
+`RemoveGroupCommandParser` is responsible for parsing the `removegroup` command. It returns a `RemoveGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
 
 image::SDforRemoveGroupCommandParser.png[width="800"]
-_Figure 34. Sequence Diagram for the parsing of `RemoveGroupCommand`._
+_Figure 41. Sequence Diagram for the parsing of `RemoveGroupCommand`._
 
 The execution invokes `Model#removeGroup()` with the `Group` ```toDelete``` as a parameter. This further invokes the method `ClubBook#removeGroup()`. Here is the implementation:
 
@@ -803,10 +885,10 @@ private void removeGroupFromMember(Group toRemove, Member member)
     }
 }
 
-The high-level sequence of events is depicted in Figure 35 below.
+The high-level sequence of events is depicted in Figure 42 below.
 
 image::SDforRemoveGroup.png[width="800"]
-_Figure 35. Sequence Diagram for removing a group from `Club Connect`._
+_Figure 42. Sequence Diagram for removing a group from `Club Connect`._
 
 
 ==== Design Considerations
@@ -843,25 +925,25 @@ It allows members to modify their profile photos displayed in the application.
 To facilitate this, it makes use of the `ProfilePhoto` class. `ProfilePhoto`
 
 Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
-Refer to Figure 22 for the UML diagram.
+Refer to Figure 43 for the UML diagram.
 The `ProfilePhoto` class consists of a `String` attribute to store the file path of the profile photo.
 
 image::ChangeProfilePhotoCommandUML.png[width="350"]
-_Figure 22. ChangeProfilePhotoCommand UML Diagram_
+_Figure 43. ChangeProfilePhotoCommand UML Diagram_
 
 The `displaypic` command involves the use of multiple components of Club Connect.
-Below, Figure 23 shows the interactions betweeen these components.
+Below, Figure 44 shows the interactions betweeen these components.
 As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
 
 image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 23. High Level Sequence Diagram for `changepic PATH` Command_
+_Figure 44. High Level Sequence Diagram for `changepic PATH` Command_
 
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 24 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+Figure 45 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 24. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+_Figure 45. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
 
 The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
@@ -934,10 +1016,10 @@ The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
 It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
 
 The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
-Figure 34 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+Figure 46 (shown below) depicts the UML representation of the `DeleteTagCommand`.
 
 image::placeholder.png[width="200" height="200"]
-_Figure 34. UML Diagram of `DeleteTagCommand`._
+_Figure 46. UML Diagram of `DeleteTagCommand`._
 
 ==== Design Considerations
 ===== Aspect: Implementation of `DeleteTagCommand`
@@ -954,20 +1036,20 @@ Lorem ipsum dolor sit amet
 // tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
-Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 47) or compressed(Figure 48).
 
 image::DecompressedMemberCards.png[width="300"]
-_Figure 22. Decompressed Member Cards_
+_Figure 47. Decompressed Member Cards_
 
 image::CompressedCards.png[width="300"]
-_Figure 23. Compressed Member Cards_
+_Figure 48. Compressed Member Cards_
 
 The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
-To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 24) since a `CompressedMemberCard` is a `MemberCard`.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 49) since a `CompressedMemberCard` is a `MemberCard`.
 Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
 
 image::MemberCardClassDiagram.png[width="300"]
-_Figure 24. `MemberCard` class diagram_
+_Figure 49. `MemberCard` class diagram_
 
 The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
 These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
@@ -976,16 +1058,16 @@ Due to the similar nature of the `compress` and `decompress` commands, only the 
 
 Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
 
-The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
+The user inputs 'compress' and the sequence diagram (Figure 50) below shows how the different components interact.
 
 image::SDforCompressToEventsCenter.png[width="800"]
-_Figure 25. Sequence diagram for compress command to Events Center_
+_Figure 50. Sequence diagram for compress command to Events Center_
 
-Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 25). If the cards are already compressed, no changes occur.
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 51). If the cards are already compressed, no changes occur.
 However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
 
 image::SDforCompressFromEventsCenter.png[width="800"]
-_Figure 26. Sequence diagram for compress command from Events Center_
+_Figure 51. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
@@ -1044,10 +1126,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 19 below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 52 below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 19. Screenshot of saving documentation as PDF in Chrome_
+_Figure 52. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -1545,7 +1627,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |Member |export members' info |so that I can share the details easily
 
-|`* * *` |Exco member |import data |add members' info to ClubConnect efficiently
+|`* * *` |Exco member |import data |add members' info to Club Connect efficiently
 
 |`* *` |Member |hide <<private-contact-detail,private contact details>> by default |minimize chance of someone else seeing them by accident
 
@@ -1592,11 +1674,11 @@ _{More to be added}_
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `ClubConnect` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is `Club Connect` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
 === Use case: Delete member
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Exco member
 
@@ -1605,9 +1687,9 @@ _{More to be added}_
 *MSS*
 
 1.  User requests to list members.
-2.  ClubConnect shows a list of members.
+2.  Club Connect shows a list of members.
 3.  User requests to delete a specific member in the list.
-4.  ClubConnect deletes the member.
+4.  Club Connect deletes the member.
 +
 Use case ends.
 
@@ -1621,14 +1703,14 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. ClubConnect shows an error message.
+** 3a1. Club Connect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
 === Use case: Add member
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Exco member
 
@@ -1637,9 +1719,9 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests to list members.
-2.  ClubConnect shows a list of members.
+2.  Club Connect shows a list of members.
 3.  User requests to add a member to the list.
-4.  ClubConnect adds the member.
+4.  Club Connect adds the member.
 +
 Use case ends.
 
@@ -1647,20 +1729,20 @@ Use case ends.
 
 [none]
 * 3a. The syntax of the add command is invalid.
-** 3a1. ClubConnect shows an error message.
-** 3a1. ClubConnect shows correct format for add command.
+** 3a1. Club Connect shows an error message.
+** 3a1. Club Connect shows correct format for add command.
 +
 Use case resumes at step 2.
 
-* 3a. The matric number of member already exists in ClubConnect.
-** 3a1. ClubConnect shows an error message.
+* 3a. The matric number of member already exists in Club Connect.
+** 3a1. Club Connect shows an error message.
 +
 Use case resumes at step 2.
 
 [discrete]
 === Use case: Show Help
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1669,7 +1751,7 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests help.
-2.  ClubConnect shows usage instructions.
+2.  Club Connect shows usage instructions.
 +
 Use case ends.
 
@@ -1677,7 +1759,7 @@ Use case ends.
 
 === Use case: Sort members
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1686,7 +1768,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to sort by specified field.
-2.  ClubConnect lists members sorted according to specified field.
+2.  Club Connect lists members sorted according to specified field.
 +
 Use case ends.
 
@@ -1694,18 +1776,18 @@ Use case ends.
 
 [none]
 * 1a. Invalid field specified.
-** 1a1. ClubConnect shows an error message and displays all possible valid fields.
+** 1a1. Club Connect shows an error message and displays all possible valid fields.
 +
 Use case resumes at step 1.
 * 1b. No field specified.
-** 1b2. ClubConnect shows list of members sorted by name.
+** 1b2. Club Connect shows list of members sorted by name.
 +
 Use case ends.
 
 [discrete]
 === Use case: Exit
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1713,15 +1795,15 @@ Use case ends.
 
 *MSS*
 
-1.  User requests to exit ClubConnect.
-2.  ClubConnect exits.
+1.  User requests to exit Club Connect.
+2.  Club Connect exits.
 +
 Use case ends.
 
 [discrete]
 === Use case: Undo command
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1730,7 +1812,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to undo previous command.
-2.  ClubConnect undoes previous command.
+2.  Club Connect undoes previous command.
 +
 Use case ends.
 
@@ -1738,7 +1820,7 @@ Use case ends.
 
 [none]
 * 1a. Previous command is undoable.
-** 1a1. ClubConnect undoes latest undoable command.
+** 1a1. Club Connect undoes latest undoable command.
 +
 Use case ends.
 
@@ -1749,7 +1831,7 @@ Use case ends.
 [discrete]
 === Use case: Redo command
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1758,7 +1840,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to redo.
-2.  ClubConnect redoes the change made by previous undo command.
+2.  Club Connect redoes the change made by previous undo command.
 +
 Use case ends.
 
@@ -1772,7 +1854,7 @@ Use case ends.
 [discrete]
 === Use case: Login
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1780,9 +1862,9 @@ Use case ends.
 
 *MSS*
 
-1.  ClubConnect shows login screen.
+1.  Club Connect shows login screen.
 2.  User enters username and password.
-3.  ClubConnect login as member with given username and password.
+3.  Club Connect login as member with given username and password.
 +
 Use case ends.
 
@@ -1790,14 +1872,14 @@ Use case ends.
 
 [none]
 * 1a. Username and password combination invalid.
-** 1a1. ClubConnect shows an error message.
+** 1a1. Club Connect shows an error message.
 +
 Use case resumes at step 1.
 
 [discrete]
 === Use case: Logout
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1806,14 +1888,14 @@ Use case resumes at step 1.
 *MSS*
 
 1.  User requests to logout.
-2.  ClubConnect logouts to login screen.
+2.  Club Connect logouts to login screen.
 +
 Use case ends.
 
 [discrete]
 === Use case: Find member
 
-*System* : ClubConnect
+*System* : Club Connect
 
 *Actor* : Member
 
@@ -1822,7 +1904,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to find member by specified field using keyword.
-2.  ClubConnect shows a list of members containing keyword in specified field.
+2.  Club Connect shows a list of members containing keyword in specified field.
 +
 Use case ends.
 
@@ -1830,11 +1912,11 @@ Use case ends.
 
 [none]
 * 1a. Invalid field specified.
-** 1a1. ClubConnect shows an error message and displays all possible valid fields.
+** 1a1. Club Connect shows an error message and displays all possible valid fields.
 +
 Use case resumes at step 1.
 * 1b. No field specified.
-** 1b2. ClubConnect shows a list of members containing keyword in any possible field.
+** 1b2. Club Connect shows a list of members containing keyword in any possible field.
 +
 Use case ends.
 

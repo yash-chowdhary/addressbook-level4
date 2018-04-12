@@ -93,7 +93,12 @@ include::../UserGuide.adoc[tag=assigntask]
 
 include::../UserGuide.adoc[tag=deletetask]
 
-===== ChangeTaskStatus Tasks
+===== Change Assignee of a Task
+---
+
+include::../UserGuide.adoc[tag=changeassignee]
+
+===== Change Task Status
 ---
 
 include::../UserGuide.adoc[tag=changetaskstatus]
