@@ -828,48 +828,48 @@ _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member
 // end::tasks[]
 
 // tag::removegroup[]
-=== Remove Group Mechanism
+=== Delete Group Mechanism
 ==== Current Implementation
 
-The `removegroup` mechanism is facilitated by the `RemoveGroupCommand` class. It allows `Exco` members to remove a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
+The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It allows `Exco` members to delete a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
 
-The `RemoveGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 40 below depicts the UML representation of the `Command`.
+The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
 
-image::RemoveGroupCommandUML.png[width="200" height="200"]
-_Figure 40. UML Diagram of `RemoveGroupCommand`._
+image::DeleteGroupCommandUML.png[width="200" height="200"]
+_Figure 33. UML Diagram of `DeleteGroupCommand`._
 
-`RemoveGroupCommandParser` is responsible for parsing the `removegroup` command. It returns a `RemoveGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
+`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
 
-image::SDforRemoveGroupCommandParser.png[width="800"]
-_Figure 41. Sequence Diagram for the parsing of `RemoveGroupCommand`._
+image::SDforDeleteGroupCommandParser.png[width="800"]
+_Figure 34. Sequence Diagram for the parsing of `DeleteGroupCommand`._
 
-The execution invokes `Model#removeGroup()` with the `Group` ```toDelete``` as a parameter. This further invokes the method `ClubBook#removeGroup()`. Here is the implementation:
+The execution invokes `Model#deleteGroup()` with the `Group` ```toRemove``` as a parameter. This further invokes the method `ClubBook#deleteGroup()`. Here is the implementation:
 
 [source, java]
 @Override
-public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
-    requireNonNull(toRemove);
-    clubBook.removeGroup(toRemove);
-    indicateClubBookChanged();
+public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+    checkIfGroupIsMemberOrExco(toRemove);
+    checkIfGroupIsPresent(toRemove);
+    deleteGroupFromClubBook(toRemove);
 }
 
-`ClubBook#removeGroup()` further calls `ClubBook#removeGroupFromClubBook()`.
+`ClubBook#deleteGroup()` further calls `ClubBook#deleteGroupFromClubBook()`.
 
 [source, java]
-private void removeGroupFromClubBook(Group toRemove) {
+private void deleteGroupFromClubBook(Group toRemove) {
     try {
         for (Member member : members) {
-            removeGroupFromMember(toRemove, member);
+            deleteGroupFromMember(toRemove, member);
         }
     } catch (MemberNotFoundException mnfe) {
         throw new AssertionError("Impossible: original member is obtained from the club book.");
     }
 }
 
-The final method called is `ClubBook#removeGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toDelete``` to `member`.
+The final method called is `ClubBook#deleteGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toRemove```, to `member`.
 
 [source, java]
-private void removeGroupFromMember(Group toRemove, Member member)
+private void deleteGroupFromMember(Group toRemove, Member member)
         throws MemberNotFoundException {
     if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
         return;
@@ -887,12 +887,12 @@ private void removeGroupFromMember(Group toRemove, Member member)
 
 The high-level sequence of events is depicted in Figure 42 below.
 
-image::SDforRemoveGroup.png[width="800"]
-_Figure 42. Sequence Diagram for removing a group from `Club Connect`._
+image::SDforDeleteGroup.png[width="800"]
+_Figure 42. Sequence Diagram for delete a group from `Club Connect`._
 
 
 ==== Design Considerations
-===== Aspect: Implementation of `RemoveGroupCommand`
+===== Aspect: Implementation of `DeleteGroupCommand`
 * **Alternative 1 (current choice)**: Overwrite the relevant `Member` objects with new `Member` objects.
 ** Pros: Easy to implement.
 ** Cons: Requires looping through all the members in `Club Connect`.
@@ -949,7 +949,7 @@ The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()`
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
 
 The actual reading of the profile photo from the path provided is done by the `Storage` component.
-It copies the photo to the Club Connect application's resources.
+It copies the photo as a <<bmp,bitmap image file>> (.bmp) to the Club Connect application's resources.
 
 The code used for reading and copying the file is as follows:
 
@@ -963,24 +963,23 @@ public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
         logger.info("Profile Photo is being read from " + originalPhotoPath);
 
         URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
-        originalPhoto = ImageIO.read(photoUrl);
+        newPath = SAVE_PHOTO_DIRECTORY + newPhotoName + PHOTO_FILE_EXTENSION;
+        InputStream photoStream = photoUrl.openStream();
 
-        String saveAs = newPhotoName + FILE_EXTENSION;
-        File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
-
-        createPhotoFileCopy(originalPhoto, newPath);
+        createPhotoFileCopy(photoStream, newPath);
     } catch (IOException ioe) {
         // ... exception handling ...
     }
 }
 
-public static String getCurrentDirectory() {
-    // ... getting current directory logic ...
-}
-
-public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
+public void createPhotoFileCopy(InputStream photoStream, String newPath) throws PhotoWriteException {
     // ... logging ...
-    ImageIO.write(originalPhoto, "png", newPath);
+    try {
+        FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
+        Files.copy(photoStream, Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException ioe) {
+        // ... exception handling ...
+    }
 }
 ----
 
@@ -993,6 +992,7 @@ The logged in member's details are then updated to include this new profile phot
 * **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo.
 ** Pros: Makes intuitive sense, easy to implement.
 ** Cons: There is no way for Exco members to ensure that members have appropriate profile photos.
+
 * **Alternative 2**: Exco members can change any member's profile photo.
 ** Pros: Gives Exco members a way to exercise control over members' profile photos.
 ** Cons: Implementation becomes more complicated.
@@ -1003,6 +1003,7 @@ The logged in member's details are then updated to include this new profile phot
 ** Pros: Makes application portable and non-dependent on the rest of the system.
    Members can delete the original file from the computer, without affecting the Club Connect Application.
 ** Cons: Changes made to the original source images are not reflected in the application.
+
 * **Alternative 2**: Always read the profile photo from the file path provided.
 ** Pros: Changes made in the source image are reflected in the application.
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
@@ -1056,7 +1057,7 @@ These commands do not extend from `UndoableCommand` but just from `Command` sinc
 
 Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
 
-Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 42).
 
 The user inputs 'compress' and the sequence diagram (Figure 50) below shows how the different components interact.
 
@@ -1315,15 +1316,18 @@ _Figure 21. Member details after modification_
 
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
+Figure 47 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 22. ResultDisplay before modification_
+_Figure 47. ResultDisplay before modification_
 +
 **After**
 +
+Figure 48 below shows the `ResultDisplay` after the modification.
++
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 23. ResultDisplay after modification_
+_Figure 48. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -1341,15 +1345,19 @@ _Figure 23. ResultDisplay after modification_
 
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
+Figure 49 below shows the `StatusBarFooter` before the modification.
++
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 24. StatusBarFooter before modification_
+_Figure 49. StatusBarFooter before modification_
++
+Figure 50 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 25. StatusBarFooter after modification_
+_Figure 50. StatusBarFooter after modification_
 +
 ****
 * Hints
@@ -1531,9 +1539,13 @@ Club Connect provides student organisations with a one-stop shop for all their m
 +
 Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status. This ensures transparency and accountability of the club.
 
-* Minor Feature: Email Command
+* Minor Feature: Email Command + Auto-Complete + Group Management
 +
-Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+** Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+
+** In situations where it is quite tedious to enter all of the parameters of a command, the auto-complete feature is a life-saver. Designed to reduce the chances of entering an invalid command format, it also comes to the aid of forgetful users of the application.
+
+** Every student club/organisation is sub-divided into sub-committees - each with a different set of responsibilities. `Groups` in `Club Connect` emulate this. Furthermore, a club should be given the option to do as it pleases with its sub-committees - rename them, shuffle members, and even remove the sub-committee if need be.
 
 2. Amrut Prabhu
 
@@ -1956,14 +1968,23 @@ So, abstraction provides users with information on what an object does, rather t
 
 [[attribute]] Attribute::
 An attribute is a type of detail of a member.
-For example, an attribute of a member could be phone number, email, matric number and so on.
+For example, an attribute of a member could be phone number, email, matriculation number and so on.
+
+[[bmp]] Bitmap Image File::
+Bitmap Image file (BMP) is a file format that stores bitmap graphics data.
+It is device independent and you do not need a graphics adapter to display it.
+Images stored as BMP files can be losslessly compressed.
 
 [[club]] Club::
 A student organisation or association at the National University of Singapore.
-These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups.
+Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+
+[[clubbook]] Club Book::
+The internal database of Club Connect that stores member, task and poll information.
 
 [[cli]] CLI::
-Acronym for Command Line Inerface. It is a purely text-based interface for software.
+Acronym for Command Line Interface. It is a purely text-based interface for software.
 User respond to visual prompts by typing single commands into the interface and receive results as text as well.
 An example of CLI would be MS-DOS.
 
@@ -1975,14 +1996,17 @@ This allows data to be saved in a table structured format.
 A value added to a member's attribute.
 
 [[exco-member]] Exco member::
-A member who is part of the Executive committee of the club.
-Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+A member who is part of the Executive Committee of the club.
+Exco members are seen as the leaders of the club.
+Exco members can execute certain commands and view features that are not available to other members of the club.
 
 [NOTE]
 An Exco member is still regarded as a member.
 
 [[gui]] GUI::
-Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
+Acronnym for Graphical User Interface.
+In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information.
+Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
 For example, all Windows operating systems have a GUI.
 
 [[mainstream-os]] Mainstream OS::

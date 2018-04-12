@@ -77,6 +77,7 @@ include::../DeveloperGuide.adoc[tag=email]
 ==== External Behaviour
 
 ===== Add Tasks
+
 ---
 
 #Start of Extract (from UserGuide)#
@@ -84,32 +85,38 @@ include::../DeveloperGuide.adoc[tag=email]
 include::../UserGuide.adoc[tag=addtask]
 
 ===== Assign Tasks
+
 ---
 
 include::../UserGuide.adoc[tag=assigntask]
 
 ===== Delete Tasks
+
 ---
 
 include::../UserGuide.adoc[tag=deletetask]
 
 ===== Change Assignee of a Task
+
 ---
 
 include::../UserGuide.adoc[tag=changeassignee]
 
 ===== Change Task Status
+
 ---
 
 include::../UserGuide.adoc[tag=changetaskstatus]
 
 ===== View All Tasks
+
 ---
 
 include::../UserGuide.adoc[tag=viewalltasks]
 
 
 ===== View My Tasks
+
 ---
 
 include::../UserGuide.adoc[tag=viewmytasks]

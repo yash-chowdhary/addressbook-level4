@@ -10,7 +10,7 @@ public class Status {
     public static final String NOT_STARTED_STATUS = "Yet To Begin";
     public static final String IN_PROGRESS_STATUS = "In Progress";
     public static final String COMPLETED_STATUS = "Completed";
-    public static final String MESSAGE_INVALID_STATUS = "Invalid status entered!";
+    public static final String MESSAGE_INVALID_STATUS = "Invalid task status value entered.";
 
     private String status;
 

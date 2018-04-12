@@ -31,6 +31,36 @@ public class DecompressMembersRequestEvent extends BaseEvent {
 
 }
 ```
+###### \java\seedu\club\commons\events\ui\HideResultsRequestEvent.java
+``` java
+import seedu.club.commons.events.BaseEvent;
+
+/**
+ * An event requesting to hide all poll results.
+ */
+public class HideResultsRequestEvent extends BaseEvent {
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
+###### \java\seedu\club\commons\events\ui\ShowResultsRequestEvent.java
+``` java
+import seedu.club.commons.events.BaseEvent;
+
+/**
+ * An event requesting to show all poll results.
+ */
+public class ShowResultsRequestEvent extends BaseEvent {
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
 ###### \java\seedu\club\commons\util\StringUtil.java
 ``` java
     /**
@@ -56,7 +86,138 @@ public class DecompressMembersRequestEvent extends BaseEvent {
         return sentence.toLowerCase().contains(preppedWord.toLowerCase());
     }
 ```
-###### \java\seedu\club\logic\commands\VoteCommand.java
+###### \java\seedu\club\logic\commands\AddPollCommand.java
+``` java
+import static java.util.Objects.requireNonNull;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.DuplicatePollException;
+
+/**
+ * Adds a poll to the club book.
+ */
+public class AddPollCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "addpoll";
+    public static final String COMMAND_FORMAT = "addpoll q/ ans/ [ans/...]";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "addp", "poll")
+    );
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Adds a poll for members to respond to on Club Connect.\n"
+            + "Parameters: "
+            + PREFIX_QUESTION + "QUESTION "
+            + PREFIX_ANSWER + "ANSWER...\n"
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_QUESTION + "When should the annual Appreciation Dinner be held? "
+            + PREFIX_ANSWER + "April 13 "
+            + PREFIX_ANSWER + "April 14 "
+            + PREFIX_ANSWER + "April 21 ";
+
+    public static final String MESSAGE_SUCCESS = "New poll added: %1$s";
+    public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in Club Connect.";
+
+    private final Poll toAdd;
+
+    /**
+     * Creates an AddPollCommand to add the specified {@code poll}
+     */
+    public AddPollCommand(Poll poll) {
+        requireNonNull(poll);
+        toAdd = poll;
+    }
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
+        try {
+            model.addPoll(toAdd);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        } catch (DuplicatePollException e) {
+            throw new CommandException(MESSAGE_DUPLICATE_POLL);
+        }
+
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof AddPollCommand // instanceof handles nulls
+                && toAdd.equals(((AddPollCommand) other).toAdd));
+    }
+}
+```
+###### \java\seedu\club\logic\commands\CompressCommand.java
+``` java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.CompressMembersRequestEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
+
+/**
+ * Lists all members in the club book to the user.
+ */
+public class CompressCommand extends Command {
+
+    public static final String COMMAND_WORD = "compress";
+    public static final String MESSAGE_SUCCESS = "Member list view compressed.";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "comp")
+    );
+
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        EventsCenter.getInstance().post(new CompressMembersRequestEvent());
+        requireToSignUp();
+        requireToLogIn();
+        return new CommandResult(MESSAGE_SUCCESS);
+    }
+}
+```
+###### \java\seedu\club\logic\commands\DecompressCommand.java
+``` java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.DecompressMembersRequestEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
+
+/**
+ * Lists all members in the club book to the user.
+ */
+public class DecompressCommand extends Command {
+
+    public static final String COMMAND_WORD = "decompress";
+    public static final String MESSAGE_SUCCESS = "Member list view decompressed.";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "decomp")
+    );
+
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        EventsCenter.getInstance().post(new DecompressMembersRequestEvent());
+        requireToSignUp();
+        requireToLogIn();
+        return new CommandResult(MESSAGE_SUCCESS);
+    }
+}
+```
+###### \java\seedu\club\logic\commands\DeletePollCommand.java
 ``` java
 import static java.util.Objects.requireNonNull;
 
@@ -64,6 +225,113 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import seedu.club.commons.core.Messages;
+import seedu.club.commons.core.index.Index;
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.exceptions.PollNotFoundException;
+
+/**
+ * Deletes a poll identified using it's last displayed index from the club book.
+ */
+public class DeletePollCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "deletepoll";
+    public static final String COMMAND_FORMAT = "deletepoll INDEX";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "delpoll", "rmpoll")
+    );
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Deletes the poll identified by the index number used in the last poll listing.\n"
+            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " 1";
+
+    public static final String MESSAGE_DELETE_POLL_SUCCESS = "Deleted poll: %1$s";
+
+    private final Index targetIndex;
+
+    private Poll pollToDelete;
+
+    public DeletePollCommand(Index targetIndex) {
+        this.targetIndex = targetIndex;
+    }
+
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(pollToDelete);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
+        try {
+            model.deletePoll(pollToDelete);
+        } catch (PollNotFoundException pnfe) {
+            throw new AssertionError("The target poll cannot be missing");
+        }
+
+        return new CommandResult(String.format(MESSAGE_DELETE_POLL_SUCCESS, pollToDelete));
+    }
+
+    @Override
+    protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        List<Poll> lastShownList = model.getFilteredPollList();
+        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_POLL_DISPLAYED_INDEX);
+        }
+
+        pollToDelete = lastShownList.get(targetIndex.getZeroBased());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DeletePollCommand // instanceof handles nulls
+                && this.targetIndex.equals(((DeletePollCommand) other).targetIndex) // state check
+                && Objects.equals(this.pollToDelete, ((DeletePollCommand) other).pollToDelete));
+    }
+}
+```
+###### \java\seedu\club\logic\commands\HideResultsCommand.java
+``` java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
+
+/**
+ * Hides all poll results in the club book to the user.
+ */
+public class HideResultsCommand extends Command {
+
+    public static final String COMMAND_WORD = "hideresults";
+    public static final String MESSAGE_SUCCESS = "Poll results have been hidden.";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "hideres")
+    );
+
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        EventsCenter.getInstance().post(new HideResultsRequestEvent());
+        return new CommandResult(MESSAGE_SUCCESS);
+    }
+}
+```
+###### \java\seedu\club\logic\commands\VoteCommand.java
+``` java
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
@@ -89,8 +357,8 @@ public class VoteCommand extends UndoableCommand {
             + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 3 2";
 
-    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been received";
-    public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll";
+    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.";
+    public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll.";
 
     private final Index pollIndex;
     private final Index answerIndex;
@@ -156,10 +424,151 @@ public class VoteCommand extends UndoableCommand {
         // state check
         VoteCommand e = (VoteCommand) other;
         return pollIndex.equals(e.pollIndex)
-                && answerIndex.equals(e.answerIndex)
-                && Objects.equals(pollToVoteIn, e.pollToVoteIn);
+                && answerIndex.equals(e.answerIndex);
     }
 
+}
+```
+###### \java\seedu\club\logic\parser\AddPollCommandParser.java
+``` java
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_ANSWER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_QUESTION;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.AddPollCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
+import seedu.club.model.poll.Question;
+
+/**
+ * Parses input arguments and creates a new AddPollCommand object
+ */
+public class AddPollCommandParser implements Parser<AddPollCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the AddPollCommand
+     * and returns an AddPollCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public AddPollCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_QUESTION, PREFIX_ANSWER);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_QUESTION, PREFIX_ANSWER)
+                || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddPollCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            Question question = ParserUtil.parseQuestion(argMultimap.getValue(PREFIX_QUESTION)).get();
+            List<Answer> answerList = ParserUtil.parseAnswers(argMultimap.getAllValues(PREFIX_ANSWER));
+
+            Poll poll = new Poll(question, answerList);
+
+            return new AddPollCommand(poll);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+}
+```
+###### \java\seedu\club\logic\parser\DeletePollCommandParser.java
+``` java
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import seedu.club.commons.core.index.Index;
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.DeletePollCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+
+/**
+ * Parses input arguments and creates a new DeletePollCommand object
+ */
+public class DeletePollCommandParser implements Parser<DeletePollCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the DeletePollCommand
+     * and returns a DeletePollCommand object for execution.
+     * @throws ParseException if the user input does not conform to the expected format
+     */
+    public DeletePollCommand parse(String args) throws ParseException {
+        try {
+            Index index = ParserUtil.parseIndex(args);
+            return new DeletePollCommand(index);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeletePollCommand.MESSAGE_USAGE));
+        }
+    }
+
+}
+```
+###### \java\seedu\club\logic\parser\FindCommandParser.java
+``` java
+
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
+
+import java.util.Arrays;
+
+import seedu.club.logic.commands.FindCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.member.FieldContainsKeywordsPredicate;
+
+/**
+ * Parses input arguments and creates a new FindCommand object
+ */
+public class FindCommandParser implements Parser<FindCommand> {
+
+    private static final Prefix[] FINDABLE_PREFIXES = {PREFIX_NAME, PREFIX_EMAIL, PREFIX_PHONE,
+        PREFIX_MATRIC_NUMBER, PREFIX_GROUP, PREFIX_TAG};
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand
+     * and returns an FindCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public FindCommand parse(String args) throws ParseException {
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
+        for (Prefix prefix : FINDABLE_PREFIXES) {
+            int prefixLength = prefix.toString().length();
+            if (trimmedArgs.length() >= prefixLength && trimmedArgs.substring(0, prefixLength)
+                    .equalsIgnoreCase(prefix.toString())) {
+                String[] findArgs = trimmedArgs.substring(prefixLength, trimmedArgs.length())
+                        .trim().split("\\s+");
+                return new FindCommand(new FieldContainsKeywordsPredicate(
+                        Arrays.asList(findArgs), prefix));
+            }
+        }
+
+        return new FindCommand(new FieldContainsKeywordsPredicate(
+                Arrays.asList(trimmedArgs.split("\\s+")), null));
+    }
 }
 ```
 ###### \java\seedu\club\logic\parser\ParserUtil.java
@@ -171,7 +580,7 @@ public class VoteCommand extends UndoableCommand {
      */
     public static List<Index> parseIndices(String oneBasedIndexes) throws IllegalValueException {
         String trimmedIndexes = oneBasedIndexes.trim();
-        String[] stringIndexes = trimmedIndexes.split(" ");
+        String[] stringIndexes = trimmedIndexes.split("\\s+");
         List<Index> indexes = new ArrayList<>();
         for (String s : stringIndexes) {
             if (!StringUtil.isNonZeroUnsignedInteger(s)) {
@@ -292,7 +701,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof  FieldContainsKeywordsPredicate)) {
+        if (!(other instanceof FieldContainsKeywordsPredicate)) {
             return false;
         }
         if (!(this.keywords.equals(((FieldContainsKeywordsPredicate) other).keywords))) {
@@ -361,6 +770,7 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
+
 ```
 ###### \java\seedu\club\model\poll\Answer.java
 ``` java
@@ -435,7 +845,7 @@ public class Answer {
 ###### \java\seedu\club\model\poll\exceptions\AnswerNotFoundException.java
 ``` java
 /**
- * Signals that the operation is unable to find the specified poll.
+ * Signals that the operation is unable to find the specified answer.
  */
 public class AnswerNotFoundException extends Exception {}
 ```
@@ -449,7 +859,7 @@ public class PollNotFoundException extends Exception {}
 ###### \java\seedu\club\model\poll\exceptions\UserAlreadyVotedException.java
 ``` java
 /**
- * Signals that the operation is unable to find the specified poll.
+ * Signals that the current logged in member has already voted for the poll.
  */
 public class UserAlreadyVotedException extends Exception {}
 ```
@@ -587,6 +997,8 @@ public class Poll {
 ```
 ###### \java\seedu\club\model\poll\PollIsRelevantToMemberPredicate.java
 ``` java
+import static seedu.club.model.group.Group.GROUP_EXCO;
+
 import java.util.function.Predicate;
 
 import seedu.club.model.member.Member;
@@ -598,7 +1010,6 @@ import seedu.club.model.member.Member;
  */
 public class PollIsRelevantToMemberPredicate implements Predicate<Poll> {
 
-    private static final String GROUP_EXCO = "exco";
     private final Member member;
 
     public PollIsRelevantToMemberPredicate(Member member) {
@@ -609,7 +1020,7 @@ public class PollIsRelevantToMemberPredicate implements Predicate<Poll> {
     public boolean test(Poll poll) {
         if (member == null) {
             return false;
-        } else if (member.getGroup().toString().equalsIgnoreCase("exco")) {
+        } else if (member.getGroup().toString().equalsIgnoreCase(GROUP_EXCO)) {
             return true;
         } else {
             return !poll.getPolleesMatricNumbers().contains(member.getMatricNumber());
@@ -638,9 +1049,8 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Question {
 
-    public static final String MESSAGE_QUESTION_CONSTRAINTS = "Questions may not be empty";
+    public static final String MESSAGE_QUESTION_CONSTRAINTS = "You need a question for the poll.";
     public static final String QUESTION_VALIDATION_REGEX = ".*\\S.*";
-    public static final String PREFIX_QUESTION = "Qn: ";
 
     private String value;
 
@@ -672,7 +1082,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return PREFIX_QUESTION + value;
+        return value;
     }
 }
 ```
@@ -974,7 +1384,7 @@ public class XmlAdaptedPoll {
 ``` java
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Region;
 import seedu.club.model.poll.Answer;
 
@@ -984,7 +1394,8 @@ import seedu.club.model.poll.Answer;
 public class AnswerCard extends UiPart<Region> {
 
     private static final String FXML = "AnswerListCard.fxml";
-    private static final String DESCRIPTION_VOTE_COUNT = "Vote Count: ";
+    private static final String DESCRIPTION_VOTE_COUNT = "Votes: ";
+    private static final String PERCENTAGE_SYMBOL = "%";
     private final int totalVoteCount;
 
     @FXML
@@ -997,7 +1408,10 @@ public class AnswerCard extends UiPart<Region> {
     private Label voteCount;
 
     @FXML
-    private ProgressIndicator voteCountIndicator;
+    private ProgressBar votePercentageBar;
+
+    @FXML
+    private Label votePercentage;
 
     /**
      * A constructor to initialize AnswerCard using {@value FXML} with results
@@ -1008,7 +1422,7 @@ public class AnswerCard extends UiPart<Region> {
         choice.setText(displayedIndex + ". ");
         answerValue.setText(answer.getValue());
         voteCount.setText(DESCRIPTION_VOTE_COUNT + answer.getVoteCount());
-        setVoteCountIndicator(answer);
+        setVotePercentage(answer);
     }
 
     /**
@@ -1023,11 +1437,12 @@ public class AnswerCard extends UiPart<Region> {
         answerValue.setText(answer.getValue());
     }
 
-    private void setVoteCountIndicator(Answer answer) {
+    private void setVotePercentage(Answer answer) {
         int voteCount = answer.getVoteCount();
-        double progress = totalVoteCount == 0
+        double voteFraction = totalVoteCount == 0
                 ? 0 : ((double) voteCount) / totalVoteCount;
-        voteCountIndicator.setProgress(progress);
+        votePercentageBar.setProgress(voteFraction);
+        votePercentage.setText((Math.round(voteFraction * 1000)) / 10 + PERCENTAGE_SYMBOL);
     }
 
     @Override
@@ -1046,6 +1461,53 @@ public class AnswerCard extends UiPart<Region> {
         AnswerCard card = (AnswerCard) other;
         return choice.getText().equals(card.choice.getText())
                 && answerValue.equals(card.answerValue);
+    }
+}
+```
+###### \java\seedu\club\ui\AnswerListPanel.java
+``` java
+import java.util.logging.Logger;
+
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import seedu.club.commons.core.LogsCenter;
+import seedu.club.model.poll.Answer;
+import seedu.club.model.poll.Poll;
+
+/**
+ * Panel containing the list of answers.
+ */
+public class AnswerListPanel extends UiPart<Region> {
+    private static final String FXML = "AnswerListPanel.fxml";
+    private final Logger logger = LogsCenter.getLogger(AnswerListPanel.class);
+    private final Poll poll;
+    private boolean isShowingResults;
+
+    @FXML
+    private VBox answersPlaceholder;
+
+    public AnswerListPanel(ObservableList<Answer> answerList, Poll poll, boolean isShowingResults) {
+        super(FXML);
+        this.poll = poll;
+        this.isShowingResults = isShowingResults;
+        setAnswersPlaceholder(answerList);
+    }
+
+    private void setAnswersPlaceholder(ObservableList<Answer> answerList) {
+        int totalVoteCount = poll.getTotalVoteCount();
+        ObservableList<Node> children = answersPlaceholder.getChildren();
+        if (isShowingResults) {
+            for (int index = 0; index < answerList.size(); index++) {
+                children.add(new AnswerCard(answerList.get(index), index + 1, totalVoteCount).getRoot());
+            }
+        } else {
+            for (int index = 0; index < answerList.size(); index++) {
+                children.add(new RestrictedAnswerCard(answerList.get(index), index + 1, totalVoteCount).getRoot());
+            }
+        }
     }
 }
 ```
@@ -1150,6 +1612,190 @@ public class CompressedMemberCard extends MemberCard {
         return isDisplayingCompressedMembers;
     }
 ```
+###### \java\seedu\club\ui\PollCard.java
+``` java
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import seedu.club.model.poll.Poll;
+
+/**
+ * An UI component that displays information of a {@code poll}.
+ */
+public class PollCard extends UiPart<Region> {
+
+    private static final String FXML = "PollListCard.fxml";
+    private static final String DESCRIPTION_TOTAL_VOTE_COUNT = "Total Votes: ";
+
+    public final Poll poll;
+
+    private AnswerListPanel answerListPanel;
+
+    @FXML
+    private HBox cardPane;
+
+    @FXML
+    private Label id;
+
+    @FXML
+    private Label question;
+
+    @FXML
+    private StackPane answerListPanelPlaceholder;
+
+    @FXML
+    private Label totalVoteCount;
+
+    /**
+     * A constructor to initialize PollCard using {@value FXML} with results
+     */
+    public PollCard(Poll poll, int displayedIndex) {
+        super(FXML);
+        this.poll = poll;
+        id.setText(displayedIndex + ". ");
+        question.setText(poll.getQuestion().toString());
+
+        answerListPanel = new AnswerListPanel(poll.getAnswers(), poll, true);
+        answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
+
+        totalVoteCount.setText(DESCRIPTION_TOTAL_VOTE_COUNT + poll.getTotalVoteCount());
+    }
+
+    /**
+     * A constructor to initialize PollCard using {@param fxml} without results
+     */
+    public PollCard(Poll poll, int displayedIndex, String fxml) {
+        super(fxml);
+        this.poll = poll;
+        id.setText(displayedIndex + ". ");
+        question.setText(poll.getQuestion().toString());
+
+        answerListPanel = new AnswerListPanel(poll.getAnswers(), poll, false);
+        answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof PollCard)) {
+            return false;
+        }
+
+        // state check
+        PollCard card = (PollCard) other;
+        return id.getText().equals(card.id.getText())
+                && poll.equals(card.poll);
+    }
+}
+```
+###### \java\seedu\club\ui\PollListPanel.java
+``` java
+import java.util.logging.Logger;
+
+import org.fxmisc.easybind.EasyBind;
+
+import com.google.common.eventbus.Subscribe;
+
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Region;
+import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.model.poll.Poll;
+
+/**
+ * Panel containing the list of polls.
+ */
+public class PollListPanel extends UiPart<Region> {
+    private static final String FXML = "PollListPanel.fxml";
+    private final Logger logger = LogsCenter.getLogger(PollListPanel.class);
+    private boolean isDisplayingPollResults;
+    private ObservableList<Poll> pollList;
+
+    @FXML
+    private ListView<PollCard> pollListView;
+
+    public PollListPanel(ObservableList<Poll> pollList) {
+        super(FXML);
+        this.pollList = pollList;
+        setPollListView();
+        registerAsAnEventHandler(this);
+    }
+
+    private void setPollListView() {
+        ObservableList<PollCard> mappedList = EasyBind.map(
+                pollList, (poll) -> {
+                if (isDisplayingPollResults) {
+                    return new PollCard(poll, pollList.indexOf(poll) + 1);
+                } else {
+                    return new RestrictedPollCard(poll, pollList.indexOf(poll) + 1);
+                }
+            });
+        pollListView.setItems(mappedList);
+        pollListView.setCellFactory(listView -> new PollListViewCell());
+    }
+
+    /**
+     * Shows results of polls
+     */
+    private void showPollResults() {
+        if (!isDisplayingPollResults) {
+            isDisplayingPollResults = true;
+            setPollListView();
+        }
+    }
+
+    /**
+     * Hides results of polls
+     */
+    private void hidePollResults() {
+        if (isDisplayingPollResults) {
+            isDisplayingPollResults = false;
+            setPollListView();
+        }
+    }
+
+    @Subscribe
+    private void handleShowResultsEvent(ShowResultsRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        showPollResults();
+    }
+
+    @Subscribe
+    private void handleHideResultsEvent(HideResultsRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        hidePollResults();
+    }
+
+    /**
+     * Custom {@code ListCell} that displays the graphics of a {@code PollCard}.
+     */
+    class PollListViewCell extends ListCell<PollCard> {
+
+        @Override
+        protected void updateItem(PollCard poll, boolean empty) {
+            super.updateItem(poll, empty);
+
+            if (empty || poll == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                setGraphic(poll.getRoot());
+            }
+        }
+    }
+}
+```
 ###### \java\seedu\club\ui\RestrictedAnswerCard.java
 ``` java
 import seedu.club.model.poll.Answer;
@@ -1166,11 +1812,28 @@ public class RestrictedAnswerCard extends AnswerCard {
     }
 }
 ```
+###### \java\seedu\club\ui\RestrictedPollCard.java
+``` java
+import seedu.club.model.poll.Poll;
+
+/**
+ * An UI component that displays information of a {@code poll} excluding the results.
+ */
+public class RestrictedPollCard extends PollCard {
+
+    private static final String FXML = "RestrictedPollListCard.fxml";
+
+    public RestrictedPollCard(Poll poll, int displayedIndex) {
+        super(poll, displayedIndex, FXML);
+    }
+}
+```
 ###### \resources\view\AnswerListCard.fxml
 ``` fxml
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -1178,43 +1841,59 @@ public class RestrictedAnswerCard extends AnswerCard {
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 
-    <GridPane HBox.hgrow="ALWAYS">
+    <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
         </columnConstraints>
-        <VBox alignment="CENTER_LEFT" minHeight="33.0" prefHeight="106.0" prefWidth="213.0" GridPane.columnIndex="0">
+        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="33.0" prefHeight="106.0" prefWidth="213.0" GridPane.columnIndex="0">
             <padding>
-                <Insets bottom="5" left="15" right="5" top="5"/>
+                <Insets bottom="5" left="15" right="5" top="2" />
             </padding>
-            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
-                <Label fx:id="choice" styleClass="cell_big_label">
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="65.0" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
+                <Label fx:id="choice" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true">
                     <minWidth>
-                        <Region fx:constant="USE_PREF_SIZE"/>
+                        <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" wrapText="true"/>
+                <Label fx:id="answerValue" styleClass="cell_big_label" maxHeight="1.7976931348623157E308" wrapText="true" />
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="142.0" spacing="5">
-                <children>
-                    <Label fx:id="voteCount" styleClass="cell_big_label">
+         <VBox maxHeight="1.7976931348623157E308">
+            <children>
+                    <Label fx:id="voteCount" maxHeight="1.7976931348623157E308" styleClass="cell_small_label">
                         <minWidth>
-                            <Region fx:constant="USE_PREF_SIZE"/>
+                            <Region fx:constant="USE_PREF_SIZE" />
                         </minWidth>
                     </Label>
-                    <ProgressIndicator fx:id="voteCountIndicator" prefHeight="31.0" prefWidth="38.0" progress="0.0"/>
-                </children>
-            </HBox>
+               <HBox>
+                  <children>
+                          <ProgressBar fx:id="votePercentageBar" maxWidth="160.0" prefHeight="18.0" prefWidth="160.0" progress="0.0">
+                        <HBox.margin>
+                           <Insets />
+                        </HBox.margin></ProgressBar>
+                     <Label fx:id="votePercentage" alignment="TOP_LEFT" styleClass="cell_small_label">
+                        <minWidth>
+                           <Region fx:constant="USE_PREF_SIZE" />
+                        </minWidth>
+                        <HBox.margin>
+                           <Insets />
+                        </HBox.margin>
+                     </Label>
+                  </children>
+               </HBox>
+            </children>
+         </VBox>
         </VBox>
         <rowConstraints>
-            <RowConstraints/>
+            <RowConstraints />
         </rowConstraints>
     </GridPane>
 </HBox>
 ```
 ###### \resources\view\RestrictedAnswerListCard.fxml
 ``` fxml
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -1223,26 +1902,27 @@ public class RestrictedAnswerCard extends AnswerCard {
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.121">
-    <GridPane HBox.hgrow="ALWAYS">
+
+<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
         </columnConstraints>
-        <VBox alignment="CENTER_LEFT" minHeight="33.0" prefHeight="106.0" prefWidth="213.0" GridPane.columnIndex="0">
+        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="33.0" prefWidth="213.0" GridPane.columnIndex="0">
             <padding>
-                <Insets bottom="5" left="15" right="5" top="5"/>
+                <Insets bottom="5" left="15" right="5" top="5" />
             </padding>
-            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
-                <Label fx:id="choice" styleClass="cell_big_label">
+            <HBox maxHeight="1.7976931348623157E308" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
+                <Label fx:id="choice" maxHeight="1.7976931348623157E308" styleClass="cell_big_label">
                     <minWidth>
-                        <Region fx:constant="USE_PREF_SIZE"/>
+                        <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" wrapText="true"/>
+                <Label fx:id="answerValue" maxHeight="1.7976931348623157E308" wrapText="true" styleClass="cell_big_label"/>
             </HBox>
         </VBox>
         <rowConstraints>
-            <RowConstraints/>
+            <RowConstraints />
         </rowConstraints>
     </GridPane>
 </HBox>

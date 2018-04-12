@@ -13,8 +13,8 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
-import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
-import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
+import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Before;
@@ -33,9 +33,9 @@ import seedu.club.model.member.Member;
 //@@author yash-chowdhary
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
- * {@code RemoveGroupCommand}.
+ * {@code DeleteGroupCommand}.
  */
-public class RemoveGroupCommandTest {
+public class DeleteGroupCommandTest {
     private Model model;
     private Model expectedModel;
     private ObservableList<Member> observableList;
@@ -57,31 +57,31 @@ public class RemoveGroupCommandTest {
 
     @Test
     public void execute_validGroup_success() throws Exception {
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
 
-        String expectedMessage = String.format(RemoveGroupCommand.MESSAGE_SUCCESS, groupToDelete);
-        expectedModel.removeGroup(groupToDelete);
+        String expectedMessage = String.format(DeleteGroupCommand.MESSAGE_SUCCESS, groupToDelete);
+        expectedModel.deleteGroup(groupToDelete);
 
 
-        assertCommandSuccess(removeGroupCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteGroupCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_nonExistentGroup_throwsCommandException() {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
 
         String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
-        assertCommandFailure(removeGroupCommand, model, expectedMessage);
+        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
     }
 
     @Test
     public void execute_mandatoryGroup_throwsCommandException() {
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
         String expectedMessage = String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString());
-        assertCommandFailure(removeGroupCommand, model, expectedMessage);
+        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
     }
 
     @Test
@@ -90,17 +90,17 @@ public class RemoveGroupCommandTest {
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
         // remove -> group removed
-        removeGroupCommand.execute();
-        undoRedoStack.push(removeGroupCommand);
+        deleteGroupCommand.execute();
+        undoRedoStack.push(deleteGroupCommand);
 
         // undo -> reverts Club book back to previous state
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         // redo -> same group deleted again
-        expectedModel.removeGroup(groupToDelete);
+        expectedModel.deleteGroup(groupToDelete);
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
@@ -111,10 +111,10 @@ public class RemoveGroupCommandTest {
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
 
-        // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model,
+        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
+        assertCommandFailure(deleteGroupCommand, model,
                 String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
@@ -129,10 +129,10 @@ public class RemoveGroupCommandTest {
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
 
-        // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model,
+        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
+        assertCommandFailure(deleteGroupCommand, model,
                 String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
@@ -145,32 +145,32 @@ public class RemoveGroupCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
         // remove -> removes group
-        removeGroupCommand.execute();
-        undoRedoStack.push(removeGroupCommand);
+        deleteGroupCommand.execute();
+        undoRedoStack.push(deleteGroupCommand);
 
         // undo -> reverts Club book back to previous state
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
-        expectedModel.removeGroup(groupToDelete);
-        assertEquals(groupToDelete, model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup());
+        expectedModel.deleteGroup(groupToDelete);
+        assertEquals(groupToDelete, model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup());
         // redo -> removes the same group
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
     @Test
     public void equals() {
-        RemoveGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
-        RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_TEST));
+        DeleteGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
+        DeleteGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_TEST));
 
         // same object -> returns true
         assertTrue(firstCommand.equals(firstCommand));
         assertTrue(secondCommand.equals(secondCommand));
 
         // same values -> return true
-        RemoveGroupCommand firstCommandCopy = prepareCommand(new Group(VALID_GROUP_AMY));
+        DeleteGroupCommand firstCommandCopy = prepareCommand(new Group(VALID_GROUP_AMY));
         assertTrue(firstCommand.equals(firstCommandCopy));
 
         // different types -> returns false
@@ -186,9 +186,9 @@ public class RemoveGroupCommandTest {
     /**
      * Returns a {@code DeleteCommand} with the parameter {@code index}.
      */
-    private RemoveGroupCommand prepareCommand(Group group) {
-        RemoveGroupCommand removeGroupCommand = new RemoveGroupCommand(group);
-        removeGroupCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return removeGroupCommand;
+    private DeleteGroupCommand prepareCommand(Group group) {
+        DeleteGroupCommand deleteGroupCommand = new DeleteGroupCommand(group);
+        deleteGroupCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return deleteGroupCommand;
     }
 }

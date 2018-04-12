@@ -26,7 +26,6 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -54,10 +53,10 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 public class ChangeProfilePhotoCommandTest {
 
@@ -163,6 +162,12 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
@@ -174,8 +179,8 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -186,6 +191,17 @@ public class ChangeProfilePhotoCommandTest {
 
         @Override
         public void addMember(Member member) throws DuplicateMatricNumberException  {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
             fail("This method should not be called");
         }
 
@@ -209,7 +225,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        public void viewAllTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 
@@ -235,13 +251,15 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public int deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
+        public int updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
@@ -347,7 +365,7 @@ public class ChangeProfilePhotoCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
@@ -382,7 +400,6 @@ import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.logic.commands.exceptions.IllegalExecutionException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -409,10 +426,10 @@ import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
 import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
-import seedu.club.model.task.exceptions.TasksCannotBeDisplayedException;
 
 public class ExportCommandTest {
 
@@ -513,6 +530,12 @@ public class ExportCommandTest {
         }
 
         @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
                 DuplicateTaskException {
             fail("This method should not be called");
@@ -534,9 +557,19 @@ public class ExportCommandTest {
             fail("This method should not be called");
         }
 
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -566,7 +599,7 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        public void viewAllTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 
@@ -592,13 +625,15 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public int deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
+        public int updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException {
             fail("This method should not be called.");
+            return -1;
         }
 
         @Override
@@ -701,7 +736,7 @@ public class ExportCommandTest {
         final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void exportClubConnectMembers(File exportFile) throws IOException {

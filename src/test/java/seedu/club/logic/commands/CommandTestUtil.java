@@ -109,6 +109,7 @@ public class CommandTestUtil {
     public static final String MATRIC_NUMBER_DESC_CARL = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_CARL;
     public static final String GROUP_DESC_AMY = " " + PREFIX_GROUP + VALID_GROUP_AMY;
     public static final String GROUP_DESC_BOB = " " + PREFIX_GROUP + VALID_GROUP_BOB;
+    public static final String GROUP_DESC_TEST = " " + PREFIX_GROUP + VALID_GROUP_TEST;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_HEAD;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
     public static final String USERNAME_DESC_AMY = " " + PREFIX_USERNAME + VALID_USERNAME_AMY;

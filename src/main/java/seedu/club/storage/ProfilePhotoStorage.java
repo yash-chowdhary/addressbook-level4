@@ -1,13 +1,14 @@
 //@@author amrut-prabhu
 package seedu.club.storage;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
 
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.exceptions.PhotoReadException;
@@ -19,7 +20,7 @@ import seedu.club.commons.util.FileUtil;
  */
 public class ProfilePhotoStorage implements  PhotoStorage {
 
-    public static final String PHOTO_FILE_EXTENSION = ".png";
+    public static final String PHOTO_FILE_EXTENSION = ".bmp";
     public static final String SAVE_PHOTO_DIRECTORY = "photos/";
 
     private static final String URL_PREFIX = "file:///";
@@ -29,22 +30,18 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     @Override
     public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
             throws PhotoReadException, PhotoWriteException {
-        BufferedImage originalPhoto = null;
-        File newPath = null;
-
+        String newPath = null;
         try {
             logger.info("Profile Photo is being read from " + originalPhotoPath);
 
             URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
-            originalPhoto = ImageIO.read(photoUrl);
+            newPath = SAVE_PHOTO_DIRECTORY + newPhotoName + PHOTO_FILE_EXTENSION;
+            InputStream photoStream = photoUrl.openStream();
 
-            String saveAs = newPhotoName + PHOTO_FILE_EXTENSION;
-            newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
-
-            createPhotoFileCopy(originalPhoto, newPath);
+            createPhotoFileCopy(photoStream, newPath);
         } catch (PhotoWriteException pwe) {
             logger.info("Error while writing photo file");
-            throw new PhotoWriteException(newPath.getAbsolutePath());
+            throw new PhotoWriteException(newPath);
         } catch (IOException ioe) {
             logger.info("Error while reading photo file");
             throw new PhotoReadException(originalPhotoPath);
@@ -55,13 +52,13 @@ public class ProfilePhotoStorage implements  PhotoStorage {
      * Creates a copy the given {@code originalPhoto} in the application's resources.
      * @throws PhotoWriteException if there was any problem writing to the file.
      */
-    public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
+    public void createPhotoFileCopy(InputStream photoStream, String newPath) throws PhotoWriteException {
         logger.info("Profile Photo is being copied to " + newPath);
         try {
             FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
-            ImageIO.write(originalPhoto, "png", newPath);
+            Files.copy(photoStream, Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {
-            throw new PhotoWriteException(newPath.getAbsolutePath());
+            throw new PhotoWriteException(newPath);
         }
         logger.info("Profile Photo copying successful");
     }

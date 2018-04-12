@@ -210,16 +210,17 @@ public class ModelManager extends ComponentManager implements Model {
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
-
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
+        logger.fine("Member's profile photo has been set to: "
+                + getLoggedInMember().getProfilePhoto().getPhotoPath());
     }
 
     //@@author yash-chowdhary
     @Override
-    public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+    public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
-        clubBook.removeGroup(toRemove);
+        clubBook.deleteGroup(toRemove);
         indicateClubBookChanged();
     }
 
