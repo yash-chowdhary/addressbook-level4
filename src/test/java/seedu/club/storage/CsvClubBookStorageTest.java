@@ -83,6 +83,7 @@ public class CsvClubBookStorageTest {
         csvClubBookStorage.setClubBookFile(exportFile);
 
         //Save in new file (without headers) and read back
+        FileUtil.createIfMissing(exportFile);
         for (Member member: originalMemberList) {
             csvClubBookStorage.saveData(CsvUtil.toCsvFormat(member));
         }
@@ -114,7 +115,7 @@ public class CsvClubBookStorageTest {
     @Test
     public void saveData_nullFile_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        saveData(new String(), null);
+        saveData("dummy data", null);
     }
 
     /**

@@ -113,8 +113,7 @@ public class StorageManagerTest {
                 new CsvClubBookStorageExceptionThrowingStub());
 
         File dummyFile = new File("./src/test/exportFile.csv");
-        storage.handleExportDataEvent(new NewExportDataAvailableEvent(dummyFile));
-        storage.handleExportDataEvent(new NewExportDataAvailableEvent("dummy data"));
+        storage.handleExportDataEvent(new NewExportDataAvailableEvent(dummyFile, "dummy data"));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
     //@@author
