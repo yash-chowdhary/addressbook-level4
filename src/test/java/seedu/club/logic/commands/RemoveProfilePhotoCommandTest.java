@@ -1,10 +1,6 @@
-//@@author amrut-prabhu
 package seedu.club.logic.commands;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -13,10 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TemporaryFolder;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -24,7 +17,6 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
-import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.ReadOnlyClubBook;
@@ -56,77 +48,21 @@ import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 
-public class ExportCommandTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Rule
-    public TemporaryFolder testFolder = new TemporaryFolder();
-
-    private String currentDirectoryPath = ".";
-    private File currentDirectory = new File(currentDirectoryPath);
+public  class RemoveProfilePhotoCommandTest {
 
     @Test
-    public void constructor_nullFile_throwsNullPointerException() {
-        thrown.expect(NullPointerException.class);
-        new ExportCommand(null);
-    }
+    public void execute_addProfilePhoto_success() throws Exception {
+        ModelStubAcceptingRemoveProfilePhoto modelStub = new ModelStubAcceptingRemoveProfilePhoto();
 
-    @Test
-    public void execute_exportClubConnectMembers_success() throws Exception {
-        ModelStubAcceptingExport modelStub = new ModelStubAcceptingExport();
-
-        String validFilePath = testFolder.getRoot().getPath() + "TempClubBook.csv";
-        File exportFile = new File(validFilePath);
-
-        CommandResult commandResult = getExportCommand(exportFile, modelStub).execute();
-        assertEquals(String.format(ExportCommand.MESSAGE_EXPORT_SUCCESS, exportFile), commandResult.feedbackToUser);
-    }
-
-    @Test
-    public void execute_invalidFilePath_throwsCommandException() throws Exception {
-        ModelStub modelStub = new ModelStubThrowingIoException();
-
-        String invalidFilePath = testFolder.getRoot().getPath();
-        File exportFile = new File(invalidFilePath);
-
-        thrown.expect(CommandException.class);
-        thrown.expectMessage(String.format(ExportCommand.MESSAGE_EXPORT_FAILURE, exportFile));
-
-        getExportCommand(exportFile, modelStub).execute();
-    }
-
-    @Test
-    public void equals() {
-        String exportFilePath = currentDirectory.getAbsolutePath() + "/exportEqualsTest.csv";
-        File exportFile = new File(exportFilePath);
-
-        ExportCommand exportCommand = new ExportCommand(exportFile);
-        ExportCommand sameFileExportCommand = new ExportCommand(exportFile);
-        ExportCommand differentFileExportCommand = new ExportCommand(currentDirectory);
-
-        // same object -> returns true
-        assertTrue(exportCommand.equals(exportCommand));
-
-        // same file -> returns true
-        assertTrue(exportCommand.equals(sameFileExportCommand));
-
-        // different types -> returns false
-        assertFalse(exportCommand.equals(1));
-
-        // null -> returns false
-        assertFalse(exportCommand.equals(null));
-
-        // different file -> returns false
-        assertFalse(exportCommand.equals(differentFileExportCommand));
+        CommandResult commandResult = getRemoveProfilePhotoCommand(modelStub).execute();
+        assertEquals(RemoveProfilePhotoCommand.MESSAGE_REMOVE_PROFILE_PHOTO_SUCCESS, commandResult.feedbackToUser);
     }
 
     /**
      * Generates a new ExportCommand with {@code exportFile}.
      */
-    private ExportCommand getExportCommand(File exportFile, Model model) {
-        ExportCommand command = new ExportCommand(exportFile);
+    private RemoveProfilePhotoCommand getRemoveProfilePhotoCommand(Model model) {
+        RemoveProfilePhotoCommand command = new RemoveProfilePhotoCommand();
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -147,21 +83,9 @@ public class ExportCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
-
         @Override
         public void voteInPoll(Poll poll, Index answerIndex) throws
                 PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
-                DuplicateTaskException, TaskAlreadyAssignedException {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void removeProfilePhoto() {
             fail("This method should not be called.");
         }
 
@@ -172,9 +96,31 @@ public class ExportCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public FilteredList<Poll> getFilteredPollList() {
             fail("This method should not be called.");
             return null;
+        }
+
+        @Override
+        public void viewMyTasks() throws TasksAlreadyListedException {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
+            fail("This method should not be called");
         }
 
         @Override
@@ -183,10 +129,11 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void clearClubBook() {
+        public void addMember(Member member) throws DuplicateMatricNumberException  {
             fail("This method should not be called");
         }
 
+        @Override
         public boolean getClearConfirmation() {
             fail("This method should not be called");
             return false;
@@ -198,19 +145,8 @@ public class ExportCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
-                DuplicateTaskException {
+        public void clearClubBook() {
             fail("This method should not be called");
-        }
-
-        @Override
-        public void viewMyTasks() throws TasksAlreadyListedException {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void addMember(Member member) throws DuplicateMatricNumberException {
-            fail("This method should not be called.");
         }
 
         @Override
@@ -225,7 +161,6 @@ public class ExportCommandTest {
 
         public void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException {
             fail("This method should not be called");
-            return;
         }
 
         @Override
@@ -310,6 +245,7 @@ public class ExportCommandTest {
         @Override
         public void sendEmail(String recipients, Client client, Subject subject, Body body) {
             fail("This method should not be called");
+            return;
         }
 
         @Override
@@ -338,6 +274,7 @@ public class ExportCommandTest {
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             fail("This method should not be called");
+            return;
         }
 
         @Override
@@ -349,6 +286,7 @@ public class ExportCommandTest {
         @Override
         public void updateFilteredTaskList(Predicate<Task> predicate) {
             fail("This method should not be called");
+            return;
         }
 
         @Override
@@ -360,48 +298,16 @@ public class ExportCommandTest {
     }
 
     /**
-     * A Model stub that always throws an IOException when trying to export to a file.
+     * A Model stub that always accepts remove photo.
      */
-    private class ModelStubThrowingIoException extends ModelStub {
-        final Member memberStub = new Member(new Name("Alex Yeoh"),
+    private class ModelStubAcceptingRemoveProfilePhoto extends ModelStub {
+        private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
                 getTagSet("head"));
 
         @Override
-        public void exportClubConnectMembers(File exportFile) throws IOException {
-            throw new IOException();
-        }
-        //@@author th14thmusician
-        @Override
-        public ReadOnlyClubBook getClubBook() {
-            ClubBook clubBook = new ClubBook();
-            try {
-                clubBook.addMember(memberStub);
-                clubBook.logInMember("A5215090A", "password");
-            } catch (DuplicateMatricNumberException e) {
-                e.printStackTrace();
-            }
-            return clubBook;
-        }
-        @Override
-        public Member getLoggedInMember() {
-            return memberStub;
-        }
-        //@@author amrut-prabhu
-    }
-
-    /**
-     * A Model stub that always accepts the file being exported to.
-     */
-    private class ModelStubAcceptingExport extends ModelStub {
-        final Member memberStub = new Member(new Name("Alex Yeoh"),
-                new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("head"));
-        @Override
-        public void exportClubConnectMembers(File exportFile) throws IOException {
-            requireNonNull(exportFile);
+        public void removeProfilePhoto() {
         }
 
         //@@author th14thmusician
@@ -416,6 +322,7 @@ public class ExportCommandTest {
             }
             return clubBook;
         }
+
         @Override
         public Member getLoggedInMember() {
             return memberStub;

@@ -239,10 +239,10 @@ Aliases: `pic`, `profilepic`
 ****
 
 [NOTE]
-You will face a longer delay when setting your profile photo to an image whose file size is above 500 KB.
+You may face a longer delay when setting your profile photo to an image whose file size is above 3 MB.
 
 [TIP]
-To get the abolute path, right-click on the photo file and select `Properties`.
+To get the absolute path, right-click on the photo file and select `Properties`.
 The `Location` field specifies the absolute location of the photo.
 Finally, add the complete name of the photo file to this location.
 
@@ -683,6 +683,15 @@ Deletes the `logistics` group from Club Connect.
 * `deletegroup g/pr` +
 Deletes the `pr` group from Club Connect.
 // end::removegroup[]
+
+// tag::removepic[]
+=== Removing your profile photo : `removepic` (Since v1.5)
+
+Removes your profile photo and sets it back to the default photo. +
+Format: `removepic` +
+Aliases: `rmpic`, `defaultpic`, `delpic`
+
+// end::removepic[]
 
 === Selecting a member : `select` (since v1.5rc)
 

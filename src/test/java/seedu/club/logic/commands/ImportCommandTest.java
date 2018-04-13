@@ -56,8 +56,7 @@ import seedu.club.model.task.exceptions.TaskCannotBeDeletedException;
 import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 
-public class ExportCommandTest {
-
+public class ImportCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -70,18 +69,32 @@ public class ExportCommandTest {
     @Test
     public void constructor_nullFile_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new ExportCommand(null);
+        new ImportCommand(null);
     }
 
     @Test
-    public void execute_exportClubConnectMembers_success() throws Exception {
-        ModelStubAcceptingExport modelStub = new ModelStubAcceptingExport();
+    public void execute_noMembersImported_success() throws Exception {
+        ModelStubAcceptingImportZeroImported modelStub = new ModelStubAcceptingImportZeroImported();
 
         String validFilePath = testFolder.getRoot().getPath() + "TempClubBook.csv";
-        File exportFile = new File(validFilePath);
+        File importFile = new File(validFilePath);
 
-        CommandResult commandResult = getExportCommand(exportFile, modelStub).execute();
-        assertEquals(String.format(ExportCommand.MESSAGE_EXPORT_SUCCESS, exportFile), commandResult.feedbackToUser);
+        CommandResult commandResult = getImportCommand(importFile, modelStub).execute();
+        assertEquals(String.format(ImportCommand.MESSAGE_MEMBERS_NOT_IMPORTED, importFile),
+                commandResult.feedbackToUser);
+    }
+
+    @Test
+    public void execute_membersImported_success() throws Exception {
+        ModelStubAcceptingImport modelStub = new ModelStubAcceptingImport();
+
+        String validFilePath = testFolder.getRoot().getPath() + "TempClubBook.csv";
+        File importFile = new File(validFilePath);
+        int numberImported = 1;
+
+        CommandResult commandResult = getImportCommand(importFile, modelStub).execute();
+        assertEquals(String.format(ImportCommand.MESSAGE_IMPORT_SUCCESS, numberImported, importFile),
+                commandResult.feedbackToUser);
     }
 
     @Test
@@ -89,44 +102,44 @@ public class ExportCommandTest {
         ModelStub modelStub = new ModelStubThrowingIoException();
 
         String invalidFilePath = testFolder.getRoot().getPath();
-        File exportFile = new File(invalidFilePath);
+        File importFile = new File(invalidFilePath);
 
         thrown.expect(CommandException.class);
-        thrown.expectMessage(String.format(ExportCommand.MESSAGE_EXPORT_FAILURE, exportFile));
+        thrown.expectMessage(String.format(ImportCommand.MESSAGE_IMPORT_FAILURE, importFile));
 
-        getExportCommand(exportFile, modelStub).execute();
+        getImportCommand(importFile, modelStub).execute();
     }
 
     @Test
     public void equals() {
-        String exportFilePath = currentDirectory.getAbsolutePath() + "/exportEqualsTest.csv";
-        File exportFile = new File(exportFilePath);
+        String importFilePath = currentDirectory.getAbsolutePath() + "/importEqualsTest.csv";
+        File importFile = new File(importFilePath);
 
-        ExportCommand exportCommand = new ExportCommand(exportFile);
-        ExportCommand sameFileExportCommand = new ExportCommand(exportFile);
-        ExportCommand differentFileExportCommand = new ExportCommand(currentDirectory);
+        ImportCommand importCommand = new ImportCommand(importFile);
+        ImportCommand sameFileImportCommand = new ImportCommand(importFile);
+        ImportCommand differentFileImportCommand = new ImportCommand(currentDirectory);
 
         // same object -> returns true
-        assertTrue(exportCommand.equals(exportCommand));
+        assertTrue(importCommand.equals(importCommand));
 
         // same file -> returns true
-        assertTrue(exportCommand.equals(sameFileExportCommand));
+        assertTrue(importCommand.equals(sameFileImportCommand));
 
         // different types -> returns false
-        assertFalse(exportCommand.equals(1));
+        assertFalse(importCommand.equals(1));
 
         // null -> returns false
-        assertFalse(exportCommand.equals(null));
+        assertFalse(importCommand.equals(null));
 
         // different file -> returns false
-        assertFalse(exportCommand.equals(differentFileExportCommand));
+        assertFalse(importCommand.equals(differentFileImportCommand));
     }
 
     /**
-     * Generates a new ExportCommand with {@code exportFile}.
+     * Generates a new ImportCommand with {@code importFile}.
      */
-    private ExportCommand getExportCommand(File exportFile, Model model) {
-        ExportCommand command = new ExportCommand(exportFile);
+    private ImportCommand getImportCommand(File importFile, Model model) {
+        ImportCommand command = new ImportCommand(importFile);
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -360,16 +373,16 @@ public class ExportCommandTest {
     }
 
     /**
-     * A Model stub that always throws an IOException when trying to export to a file.
+     * A Model stub that always throw a IOException when trying to import a file.
      */
     private class ModelStubThrowingIoException extends ModelStub {
         final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("A5215090A"), new Group("logistics"),
+                new MatricNumber("A5215090A"), new Group("Exco"),
                 getTagSet("head"));
 
         @Override
-        public void exportClubConnectMembers(File exportFile) throws IOException {
+        public int importMembers(File importFile) throws IOException {
             throw new IOException();
         }
         //@@author th14thmusician
@@ -392,16 +405,52 @@ public class ExportCommandTest {
     }
 
     /**
-     * A Model stub that always accepts the file being exported to.
+     * A Model stub that never imports any members from the file.
      */
-    private class ModelStubAcceptingExport extends ModelStub {
+    private class ModelStubAcceptingImportZeroImported extends ModelStub {
         final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new MatricNumber("A5215090A"), new Group("logistics"),
+                new MatricNumber("A5215090A"), new Group("Exco"),
                 getTagSet("head"));
+
         @Override
-        public void exportClubConnectMembers(File exportFile) throws IOException {
-            requireNonNull(exportFile);
+        public int importMembers(File importFile) throws IOException {
+            requireNonNull(importFile);
+            return 0;
+        }
+
+        //@@author th14thmusician
+        @Override
+        public ReadOnlyClubBook getClubBook() {
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
+        }
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+        //@@author amrut-prabhu
+    }
+
+    /**
+     * A Model stub that never imports any members from the file.
+     */
+    private class ModelStubAcceptingImport extends ModelStub {
+        final Member memberStub = new Member(new Name("Alex Yeoh"),
+                new Phone("87438807"), new Email("alexyeoh@example.com"),
+                new MatricNumber("A5215090A"), new Group("Exco"),
+                getTagSet("head"));
+
+        @Override
+        public int importMembers(File importFile) throws IOException {
+            requireNonNull(importFile);
+            return 1;
         }
 
         //@@author th14thmusician
@@ -422,5 +471,5 @@ public class ExportCommandTest {
         }
         //@@author
     }
-
 }
+

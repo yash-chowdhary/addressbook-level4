@@ -391,7 +391,7 @@ public class ChangeProfilePhotoCommandTest {
         public Member getLoggedInMember() {
             return memberStub;
         }
-        //@@author
+        //@@author amrut-prabhu
     }
 
     /**

@@ -210,7 +210,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
-        getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
+        clubBook.changeLoggedInMemberProfilePhoto(newProfilePhotoPath);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to: "
@@ -219,7 +219,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void removeProfilePhoto() {
-        getLoggedInMember().setProfilePhotoPath(ProfilePhoto.DEFAULT_PHOTO_PATH);
+        clubBook.changeLoggedInMemberProfilePhoto(ProfilePhoto.DEFAULT_PHOTO_PATH);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to default image");
