@@ -1,6 +1,6 @@
 package seedu.club.ui;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -106,6 +106,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
      * @param show
      */
     public void loadDetails (Boolean show) {
+        gridPane.setStyle("-fx-background-color: #cccccc");
         int size = gridPane.getChildren().size();
         for (int i = 0; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);
