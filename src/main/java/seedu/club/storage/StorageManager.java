@@ -125,30 +125,17 @@ public class StorageManager extends ComponentManager implements Storage {
 
     // ================ CSV Storage methods ==============================
 
-    /**
-     * Writes {@code content} to the export file.
-     * @param content Data that is to be appended to the export file.
-     * @throws IOException when there is an error writing to the file.
-     */
-    private void exportData(String content) throws IOException {
-        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
-        csvClubBookStorage.saveData(content);
-    }
-
     @Override
     @Subscribe
     public void handleExportDataEvent(NewExportDataAvailableEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Adding member data to file"));
+        assert event.exportFile != null : "exportFile should be pointing to a valid file";
+        csvClubBookStorage.setClubBookFile(event.exportFile);
 
-        if (event.exportFile != null) {
-            csvClubBookStorage.setClubBookFile(event.exportFile);
-        }
+        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
         try {
-            if (event.data != null) {
-                exportData(event.data);
-            }
+            csvClubBookStorage.saveData(event.data);
         } catch (IOException e) {
-            event.setFileChanged(false);
+            event.setDataExported(false);
             raise(new DataSavingExceptionEvent(e));
         }
     }

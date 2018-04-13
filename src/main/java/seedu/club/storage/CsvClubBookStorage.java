@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.util.FileUtil;
+import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
@@ -74,9 +74,10 @@ public class CsvClubBookStorage {
         requireNonNull(data);
         requireNonNull(file);
 
-        FileUtil.createIfMissing(file);
-        assert file.exists() : "ClubBook export file " + file + " is guaranteed to exist";
+        assert file.exists() : "ClubBook export file " + file + " must have been created";
 
-        CsvFileStorage.saveDataToFile(file, data);
+        String columnHeaders = CsvUtil.getHeaders();
+        String dataToExport = columnHeaders + data;
+        CsvFileStorage.saveDataToFile(file, dataToExport);
     }
 }
