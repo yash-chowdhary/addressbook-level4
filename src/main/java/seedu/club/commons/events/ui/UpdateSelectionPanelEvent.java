@@ -14,7 +14,8 @@ public class UpdateSelectionPanelEvent extends BaseEvent {
     private Tag tagToDelete;
     private boolean toUndo;
 
-    public UpdateSelectionPanelEvent (Member toEditMember, Member editedMember, boolean toDelete, Tag removedTag, boolean toUndo) {
+    public UpdateSelectionPanelEvent (Member toEditMember, Member editedMember, boolean toDelete,
+                                      Tag removedTag, boolean toUndo) {
         this.toEditMember = toEditMember;
         this.editedMember = editedMember;
         this.toDelete = toDelete;

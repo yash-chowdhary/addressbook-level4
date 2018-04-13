@@ -164,8 +164,14 @@ public class MemberOverviewPanel extends UiPart<Region> {
                 undoStack.push(currentlySelectedMember);
                 Set<Tag> memberTags = new HashSet<>(currentlySelectedMember.getTags());
                 memberTags.remove(event.getTagToDelete());
-                currentlySelectedMember = new Member(currentlySelectedMember.getName(), currentlySelectedMember.getPhone(), currentlySelectedMember.getEmail(), currentlySelectedMember.getMatricNumber(),
-                        currentlySelectedMember.getGroup(), memberTags, currentlySelectedMember.getCredentials(), currentlySelectedMember.getProfilePhoto());
+                currentlySelectedMember = new Member(currentlySelectedMember.getName(),
+                        currentlySelectedMember.getPhone(),
+                        currentlySelectedMember.getEmail(),
+                        currentlySelectedMember.getMatricNumber(),
+                        currentlySelectedMember.getGroup(),
+                        memberTags,
+                        currentlySelectedMember.getCredentials(),
+                        currentlySelectedMember.getProfilePhoto());
                 loadMemberPage(currentlySelectedMember);
             }
         } else if (event.isToDelete()) {
