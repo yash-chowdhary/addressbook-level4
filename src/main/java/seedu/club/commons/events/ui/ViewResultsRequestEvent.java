@@ -3,9 +3,9 @@ package seedu.club.commons.events.ui;
 import seedu.club.commons.events.BaseEvent;
 
 /**
- * An event requesting to show all poll results.
+ * An event requesting to view all poll results.
  */
-public class ShowResultsRequestEvent extends BaseEvent {
+public class ViewResultsRequestEvent extends BaseEvent {
 
     @Override
     public String toString() {
