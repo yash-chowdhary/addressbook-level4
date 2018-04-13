@@ -53,8 +53,8 @@ public class GuiTestAssert {
         assertEquals(expectedTask.getDescription().description, actualCard.getDescription());
         assertEquals(dueDate + expectedTask.getDate().getDate(), actualCard.getDate());
         assertEquals(time + expectedTask.getTime().getTime(), actualCard.getTime());
-        assertEquals(assignedBy + expectedTask.getAssignor().getAssignor(), actualCard.getAssignor());
-        assertEquals(assignedTo + expectedTask.getAssignee().getAssignee(), actualCard.getAssignee());
+        assertEquals(assignedBy + expectedTask.getAssignor().getValue(), actualCard.getAssignor());
+        assertEquals(assignedTo + expectedTask.getAssignee().getValue(), actualCard.getAssignee());
         assertEquals(status + expectedTask.getStatus().getStatus(), actualCard.getStatus());
     }
 

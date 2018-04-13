@@ -328,8 +328,8 @@ public class ModelManager extends ComponentManager implements Model {
     private void checkIfStatusCanBeEdited(Task taskToEdit, String currentMember)
             throws TaskStatusCannotBeEditedException {
         assert currentMember != null : "Null value of currentMember";
-        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getAssignor())
-                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getAssignee())) {
+        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getValue())
+                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getValue())) {
             throw new TaskStatusCannotBeEditedException();
         }
     }
@@ -338,7 +338,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
             MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
         requireAllNonNull(taskToEdit, editedTask);
-        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getValue());
         checkIfMemberExists(newAssigneeMatricNumber);
         checkIfDuplicateTaskExists(editedTask);
         checkIfTaskIsAlreadyAssigned(editedTask);
@@ -456,8 +456,8 @@ public class ModelManager extends ComponentManager implements Model {
         assert assignor != null : "Null value of Assignor";
         assert assignee != null : "Null value of Assignee";
         assert currentMember != null : "Null value of currentMember";
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+        if (!currentMember.equalsIgnoreCase(assignor.getValue())
+                && !currentMember.equalsIgnoreCase(assignee.getValue())) {
             throw new TaskCannotBeDeletedException();
         }
     }

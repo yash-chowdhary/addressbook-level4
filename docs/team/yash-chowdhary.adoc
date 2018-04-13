@@ -135,7 +135,6 @@ include::../DeveloperGuide.adoc[tag=dataencryption2]
 
 === Other contributions
 
-
 *** Managed all releases on GitHub and Milestones.
 *** Assumed responsibility of the Team Leader where I took important decisions regarding the product development.
 *** Maintained User Guide.

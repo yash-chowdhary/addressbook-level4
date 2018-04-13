@@ -559,7 +559,7 @@ public class ClubBook implements ReadOnlyClubBook {
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
         }
-        logger.fine("Task assignee updated to " + editedTask.getAssignee().getAssignee());
+        logger.fine("Task assignee updated to " + editedTask.getAssignee().getValue());
     }
 
     /**
@@ -580,8 +580,8 @@ public class ClubBook implements ReadOnlyClubBook {
             String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
             String targetMemberMatricNumberString = target.getMatricNumber().toString();
 
-            if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)
+                    && task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
@@ -590,14 +590,14 @@ public class ClubBook implements ReadOnlyClubBook {
                         newAssignor, newAssignee, task.getStatus());
                 tasks.setTaskIgnoreStatus(task, editedTask);
                 numberOfTasksUpdated++;
-            } else if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            } else if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
                 editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
                         newAssignor, task.getAssignee(), task.getStatus());
                 tasks.setTaskIgnoreStatus(task, editedTask);
                 numberOfTasksUpdated++;
-            } else if (task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            } else if (task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
                         task.getAssignor(), newAssignee, task.getStatus());
@@ -619,7 +619,7 @@ public class ClubBook implements ReadOnlyClubBook {
         Iterator<Task> it = tasks.iterator();
         while (it.hasNext()) {
             Task task = it.next();
-            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+            if (task.getAssignee().getValue().equalsIgnoreCase(member.getMatricNumber().toString())) {
                 it.remove();
                 numberOfTasksRemoved++;
             }
@@ -639,7 +639,7 @@ public class ClubBook implements ReadOnlyClubBook {
             if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
                     && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
                     && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                    && task.getAssignee().getValue().equalsIgnoreCase(toAdd.getAssignee().getValue())) {
                 throw new TaskAlreadyAssignedException();
             }
         }
@@ -655,8 +655,8 @@ public class ClubBook implements ReadOnlyClubBook {
             if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
                     && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
                     && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
-                    && task.getAssignor().getAssignor().equalsIgnoreCase(toAdd.getAssignor().getAssignor())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                    && task.getAssignor().getValue().equalsIgnoreCase(toAdd.getAssignor().getValue())
+                    && task.getAssignee().getValue().equalsIgnoreCase(toAdd.getAssignee().getValue())) {
                 throw new DuplicateTaskException();
             }
         }
