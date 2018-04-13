@@ -1413,14 +1413,14 @@ Figure 57 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 58. ResultDisplay before modification_
+_Figure 57. ResultDisplay before modification_
 +
 **After**
 +
-Figure 59 below shows the `ResultDisplay` after the modification.
+Figure 58 below shows the `ResultDisplay` after the modification.
 +
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 60. ResultDisplay after modification_
+_Figure 58. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -1438,19 +1438,19 @@ _Figure 60. ResultDisplay after modification_
 
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
-Figure 61 below shows the `StatusBarFooter` before the modification.
+Figure 59 below shows the `StatusBarFooter` before the modification.
 +
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 62. StatusBarFooter before modification_
+_Figure 59. StatusBarFooter before modification_
 +
-Figure 63 below shows the `StatusBarFooter` after the modification.
+Figure 60 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 64. StatusBarFooter after modification_
+_Figure 60. StatusBarFooter after modification_
 +
 ****
 * Hints
