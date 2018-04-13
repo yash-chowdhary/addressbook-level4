@@ -102,10 +102,10 @@ public class FileUtil {
     }
 
     /**
-     * Returns true if {@code file} does not represent the absolute path of a file.
+     * Returns true if {@code file} represents the absolute path of a file.
      */
-    public static boolean isNotAbsoluteFilePath(File file) {
-        return !file.isAbsolute() || file.isDirectory();
+    public static boolean isAbsoluteFilePath(File file) {
+        return file.isAbsolute() && !file.isDirectory();
     }
 
     /**

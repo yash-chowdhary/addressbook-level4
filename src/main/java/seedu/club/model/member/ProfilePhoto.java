@@ -3,16 +3,25 @@ package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Represents a member's profile photo in the club book.
  */
 public class ProfilePhoto {
 
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
-            "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
-    public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
+            "The photo path should be an absolute path to a JPG or PNG image file.";
+    public static final String IMAGE_PATH_VALIDATION_UNIX_REGEX = ".:(.*/)*.+/.+(png|jpg|PNG|JPG)";
+    public static final String IMAGE_PATH_VALIDATION_WINDOWS_REGEX = ".:(.*\\\\)*.+\\\\.+(png|jpg|jpeg|PNG|JPG|JPEG)";
+
+    private static final ArrayList<String> validFileExtensions = new ArrayList<>(
+            Arrays.asList("jpg", "png", "JPG", "PNG")
+    );
 
     private String profilePhotoPath;
+
 
     /**
      * Constructs a {@code ProfilePhoto}.
@@ -20,17 +29,20 @@ public class ProfilePhoto {
      * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
+        requireNonNull(path);
         this.profilePhotoPath = path;
     }
 
     /**
-     * Returns true if a given string is a valid photo path.
+     * Returns true if {@code path} represents the path of a JPG (.jpg) or PNG (.png) file.
      *
-     * @param test Path whose validity is to be checked.
+     * @param path Path whose validity is to be checked.
      */
-    public static boolean isValidProfilePhoto(String test) {
-        return test.matches(IMAGE_PATH_VALIDATION_REGEX);
+    public static boolean isValidPhotoFile(String path) {
+        int length = path.length();
+        String fileExtension = path.substring(length - 3);
+
+        return validFileExtensions.contains(fileExtension);
     }
 
     /**
@@ -39,7 +51,6 @@ public class ProfilePhoto {
      */
     public void setNewPhotoPath(String path) {
         requireNonNull(path);
-        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 

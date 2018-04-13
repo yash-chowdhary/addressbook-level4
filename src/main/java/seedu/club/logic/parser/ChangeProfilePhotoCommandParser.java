@@ -3,6 +3,7 @@ package seedu.club.logic.parser;
 
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.member.ProfilePhoto;
@@ -19,14 +20,13 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
      */
     public ChangeProfilePhotoCommand parse(String args) throws ParseException {
 
-        String path = args.trim();
-
-        if (path.isEmpty()) {
+        try {
+            ProfilePhoto profilePhoto = ParserUtil.parseProfilePhoto(args);
+            return new ChangeProfilePhotoCommand(profilePhoto);
+        } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeProfilePhotoCommand.MESSAGE_USAGE));
         }
-
-        return new ChangeProfilePhotoCommand(new ProfilePhoto(path));
     }
 
 }
