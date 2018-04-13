@@ -919,7 +919,7 @@ who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer`of
 ** Pros: Easy to implement
 ** Cons: No anonymity since information of who voted for which Answer is stored inside Set<MatricNumber> of an `Answer`
 
-// end::pollss[]
+// end::polls[]
 
 // tag::removegroup[]
 === Delete Group Mechanism
@@ -1659,9 +1659,10 @@ Adding a profile photo makes it easier to know what other members look like and 
 +
 Exco members can create polls and look at the results to help ascertain the needs and wants of other members. Members can vote for polls to express what they require from the club.
 
-* Minor Feature: Compress/Decompress feature
+* Minor Feature: Improve navigability of member list by adding compress/decompress mechanism and revamping `Find` command
 +
-Users can use compress command to clear clutter from member information in member list. Users can use decompress command to see more information about members in member list.
+Users can use compress command to clear clutter from member information in member list. Users can also use decompress command to see more information about members in member list.
+`Find` command can now search for members by partial matches, search by specified field (e.g. by email) or just search by all fields.
 
 4. Song Weiyang
 
