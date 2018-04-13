@@ -79,7 +79,7 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
 
         /* Case add task with fields in random order -> added */
         command = AddTaskCommand.COMMAND_WORD + " " + "desc/Book Auditorium "
-                + "d/02/04/2018 " + "ti/13:00 ";
+                + "d/02/05/2018 " + "ti/13:00 ";
         assertCommandSuccess(command, model, expectedMessage);
 
         /* --------------------- Perform addtask operations on the shown filtered list -------------------------- */

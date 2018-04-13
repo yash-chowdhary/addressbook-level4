@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import guitests.guihandles.MemberCardHandle;
 import guitests.guihandles.MemberListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
+import guitests.guihandles.TaskCardHandle;
 import seedu.club.model.member.Member;
+import seedu.club.model.task.Task;
 
 /**
  * A set of assertion methods useful for writing GUI tests.
@@ -36,6 +38,24 @@ public class GuiTestAssert {
         assertEquals(expectedMember.getMatricNumber().value, actualCard.getMatricNumber());
         assertEquals(expectedMember.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
                 actualCard.getTags());
+    }
+
+    /**
+     * Asserts that {@code actualCard} displays the details of {@code expectedTask}.
+     */
+    public static void assertCardDisplaysTask(Task expectedTask, TaskCardHandle actualCard) {
+        String dueDate = "Due Date: ";
+        String time = "Time: ";
+        String assignedBy = "Assigned by: ";
+        String assignedTo = "Assigned to: ";
+        String status = "Status: ";
+
+        assertEquals(expectedTask.getDescription().description, actualCard.getDescription());
+        assertEquals(dueDate + expectedTask.getDate().getDate(), actualCard.getDate());
+        assertEquals(time + expectedTask.getTime().getTime(), actualCard.getTime());
+        assertEquals(assignedBy + expectedTask.getAssignor().getValue(), actualCard.getAssignor());
+        assertEquals(assignedTo + expectedTask.getAssignee().getValue(), actualCard.getAssignee());
+        assertEquals(status + expectedTask.getStatus().getStatus(), actualCard.getStatus());
     }
 
     /**

@@ -6,8 +6,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import java.text.SimpleDateFormat;
 import java.util.stream.Stream;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
@@ -37,6 +39,22 @@ public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
             Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
             Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME).get());
             MatricNumber matricNumber = ParserUtil.parseMatricNumber(argMultimap.getValue(PREFIX_MATRIC_NUMBER).get());
+
+            long currentTimeMillis = System.currentTimeMillis();
+            String enteredDateString = date.getDate() + " " + time.getTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            long enteredDateMillis = Long.MIN_VALUE;
+
+            try {
+                java.util.Date enteredDate = formatter.parse(enteredDateString);
+                enteredDateMillis = enteredDate.getTime();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (enteredDateMillis < currentTimeMillis) {
+                throw new IllegalValueException(Messages.MESSAGE_DATE_ALREADY_PASSED);
+            }
 
             Task newTask = new Task(description, time, date);
 
