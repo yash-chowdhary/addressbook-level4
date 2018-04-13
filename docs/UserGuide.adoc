@@ -733,8 +733,8 @@ Selects the 2nd member in Club Connect.
 `s 1` +
 Selects the 1st member in the results of the `find` command.
 
-// tag::showresults[]
-=== Showing results of polls : `showresults` (Since v1.4)
+// tag::viewresults[]
+=== Viewing results of polls : `viewresults` (Since v1.4)
 
 Displays the results of polls in Club Connect.
 
@@ -744,12 +744,12 @@ This is a command that can be used to monitor polls in Club Connect. +
 [NOTE]
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
 
-Format: `showresults` +
-Alias: `showres`
+Format: `viewresults` +
+Alias: `viewres`
 
 [IMPORTANT]
 This command is for `Exco` members only.
-// end::showresults[]
+// end::viewresults[]
 
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
@@ -891,7 +891,7 @@ e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 e.g. `deletepoll 2`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
 e.g. `vote 10 2`
-* *Show results of polls* : `showresults`
+* *View results of polls* : `viewresults`
 * *Hide results of polls* : `hideresults`
 * *Change Display Picture* : `changepic PHOTO_PATH` +
 e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +

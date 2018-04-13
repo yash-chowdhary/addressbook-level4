@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
-import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.commons.events.ui.ViewResultsRequestEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 
 /**
  * Shows all poll results in the club book to the user.
  */
-public class ShowResultsCommand extends Command {
+public class ViewResultsCommand extends Command {
 
-    public static final String COMMAND_WORD = "showresults";
+    public static final String COMMAND_WORD = "viewresults";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
-            Arrays.asList(COMMAND_WORD, "showres")
+            Arrays.asList(COMMAND_WORD, "viewres")
     );
-    public static final String MESSAGE_SUCCESS = "Poll results shown.";
+    public static final String MESSAGE_SUCCESS = "Poll results displayed.";
 
 
     @Override
@@ -24,7 +24,7 @@ public class ShowResultsCommand extends Command {
         requireToSignUp();
         requireToLogIn();
         requireExcoLogIn();
-        EventsCenter.getInstance().post(new ShowResultsRequestEvent());
+        EventsCenter.getInstance().post(new ViewResultsRequestEvent());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
