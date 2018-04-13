@@ -5,6 +5,8 @@ import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -29,7 +31,7 @@ public class UndoCommand extends Command {
         if (!undoRedoStack.canUndo()) {
             throw new CommandException(MESSAGE_FAILURE);
         }
-
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(null, null, false, null, true));
         undoRedoStack.popUndo().undo();
         return new CommandResult(MESSAGE_SUCCESS);
     }
