@@ -47,8 +47,8 @@ public class TaskCard extends UiPart<Region> {
         description.setText(task.getDescription().getDescription());
         date.setText("Due Date: " + task.getDate().getDate());
         time.setText("Time: " + task.getTime().getTime());
-        assignor.setText("Assigned by: " + task.getAssignor().getAssignor());
-        assignee.setText("Assigned to: " + task.getAssignee().getAssignee());
+        assignor.setText("Assigned by: " + task.getAssignor().getValue());
+        assignee.setText("Assigned to: " + task.getAssignee().getValue());
         status.setText("Status: " + task.getStatus().getStatus());
     }
 

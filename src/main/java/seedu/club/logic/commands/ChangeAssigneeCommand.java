@@ -76,7 +76,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
         taskToEdit = lastShownList.get(index.getZeroBased());
         editedTask = createEditedTask(taskToEdit);
 
-        if (taskToEdit.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+        if (taskToEdit.getAssignee().getValue().equalsIgnoreCase(editedTask.getAssignee().getValue())) {
             throw new CommandException(MESSAGE_NOT_CHANGED);
         }
     }
@@ -95,7 +95,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_NOT_CHANGED);
         }
         return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription(),
-                newAssignee.getAssignee()));
+                newAssignee.getValue()));
     }
 
     /**
@@ -108,7 +108,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
         Description description = new Description(taskToEdit.getDescription().getDescription());
         Time time = new Time(taskToEdit.getTime().getTime());
         Date date = new Date(taskToEdit.getDate().getDate());
-        Assignor assignor = new Assignor(taskToEdit.getAssignor().getAssignor());
+        Assignor assignor = new Assignor(taskToEdit.getAssignor().getValue());
         Status status = new Status(taskToEdit.getStatus().getStatus());
 
         return new Task(description, time, date, assignor, newAssignee, status);

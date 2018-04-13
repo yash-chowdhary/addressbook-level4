@@ -184,8 +184,8 @@ public class ClubBookTest {
         Member amy = new MemberBuilder(AMY).build();
         Task buyFood = new TaskBuilder()
                 .withDescription(BUY_FOOD.getDescription().getDescription())
-                .withAssignor(BUY_FOOD.getAssignor().getAssignor())
-                .withAssignee(BUY_FOOD.getAssignee().getAssignee())
+                .withAssignor(BUY_FOOD.getAssignor().getValue())
+                .withAssignee(BUY_FOOD.getAssignee().getValue())
                 .withDate(BUY_FOOD.getDate().getDate())
                 .withTime(BUY_FOOD.getTime().getTime())
                 .withStatus(Status.IN_PROGRESS_STATUS)

@@ -2,6 +2,7 @@ package seedu.club.logic.commands;
 //@@author yash-chowdhary
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
@@ -16,15 +17,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javafx.collections.ObservableList;
-import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.member.Member;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 
@@ -34,9 +32,6 @@ public class ChangeTaskStatusCommandTest {
 
     private Model model;
     private Model expectedModel;
-    private ObservableList<Task> taskList;
-    private ObservableList<Member> memberList;
-    private Member member;
 
 
     @Before
@@ -72,12 +67,23 @@ public class ChangeTaskStatusCommandTest {
     }
 
     @Test
+    public void execute_invalidIndex_throwsException() {
+        Index invalidIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
+        ChangeTaskStatusCommand command = prepareCommand(invalidIndex,
+                new Status(Status.IN_PROGRESS_STATUS));
+
+        String expectedMessage = MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
+
+        assertCommandFailure(command, model, expectedMessage);
+    }
+
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
         ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(outOfBoundIndex,
                 new Status(Status.IN_PROGRESS_STATUS));
 
-        assertCommandFailure(changeTaskStatusCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+        assertCommandFailure(changeTaskStatusCommand, model, MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
     }
 
     @Test
@@ -114,7 +120,7 @@ public class ChangeTaskStatusCommandTest {
         ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(outOfBoundIndex,
                 new Status(Status.IN_PROGRESS_STATUS));
 
-        assertCommandFailure(changeTaskStatusCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+        assertCommandFailure(changeTaskStatusCommand, model, MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
 
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
         assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);

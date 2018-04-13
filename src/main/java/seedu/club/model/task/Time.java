@@ -10,8 +10,8 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Time {
 
-    public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in the format HH:MM and can be separated "
-            + "by ':'";
+    public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in 24-Hour format (HH:MM) and can be separated"
+            + " by ':'";
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-time-in-24-hours-format-
      * with-regular-expression/}

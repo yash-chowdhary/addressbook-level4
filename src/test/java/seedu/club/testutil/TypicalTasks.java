@@ -20,16 +20,25 @@ public class TypicalTasks {
 
     public static final Task BOOK_AUDITORIUM = new TaskBuilder()
             .withDescription("Book Auditorium")
-            .withDate("02/04/2018")
+            .withDate("02/05/2018")
             .withTime("13:00")
             .withAssignor("A8389539B")
             .withAssignee("A8389539B")
             .withStatus("Yet To Begin")
             .build();
 
+    public static final Task BOOK_AUDITORIUM_COPY = new TaskBuilder()
+            .withDescription("Book Auditorium")
+            .withDate("02/05/2018")
+            .withTime("13:00")
+            .withAssignor("A8389539B")
+            .withAssignee("A9210701B")
+            .withStatus("Yet To Begin")
+            .build();
+
     public static final Task BUY_CONFETTI = new TaskBuilder()
             .withDescription("Buy Confetti")
-            .withDate("01/04/2018")
+            .withDate("01/05/2018")
             .withTime("17:00")
             .withAssignor("A9210701B")
             .withAssignee("A9210701B")
@@ -38,7 +47,7 @@ public class TypicalTasks {
 
     public static final Task ADVERTISE_EVENT = new TaskBuilder()
             .withDescription("Advertise event")
-            .withDate("31/03/2018")
+            .withDate("12/05/2018")
             .withTime("19:00")
             .withAssignor("A9210701B")
             .withAssignee("A9210701B")
