@@ -16,7 +16,7 @@ By: `Team W15-B4`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-Club Connect is an application targeted at club members who are students at the National University of Singapore (NUS).
+Club Connect is a computer application targeted at club members who are students at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier are more effective.
 It provides features that are essential for a club to function smoothly such as user authentication, assigning tasks, email blasts, conducting polls, and importing and exporting member details.
 This guide provides the necessary information for developers who are interested in contributing to the application - from the steps required to set-up, to detailed descriptions of the current features that the application sports.
@@ -343,7 +343,8 @@ The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, an
 If the `redoStack` is empty, then there are no other commands left to be redone, and an `Exception` will be thrown when popping the `redoStack`.
 
 The user now decides to execute a new command, `clear`. As before, `clear` will be pushed into the `undoStack`.
-This time the `redoStack` is no longer empty. It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern desktop applications follow). (Refer to Figure 16)
+This time the `redoStack` is no longer empty.
+It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern computer applications follow). (Refer to figure 16)
 
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
 _Figure 16. State of `undoStack` and `redoStack` after executing `clear` command._
