@@ -156,8 +156,8 @@ public class MemberOverviewPanel extends UiPart<Region> {
             if (currentlySelectedMember.equals(event.getUpdatedMember())) {
                 loadDetails(false);
             }
-        } else if (currentlySelectedMember.equals(event.getUpdatedMember())){
-                loadMemberPage(event.getUpdatedMember());
+        } else if (currentlySelectedMember.equals(event.getUpdatedMember())) {
+            loadMemberPage(event.getUpdatedMember());
         }
     }
     //@@author
