@@ -518,7 +518,7 @@ Task-management commands require a member to be logged in (and thus by extension
 
 Figure 22 below shows the UML diagram of the `Task` class.
 
-image::TaskUML.png[width="500"]
+image::TaskUML.png[width="300" align="center"]
 _Figure 22. Task UML Diagram_
 
 Tasks consists of the following:
@@ -536,18 +536,18 @@ Adding Tasks is facilitated by the `AddTaskCommand`. When this command is invoke
 
 Figure 23 below shows the UML representation of `AddTaskCommand`.
 
-image::AddTaskCommandUML.png[width="350"]
+image::AddTaskCommandUML.png[width="150" align="center"]
 _Figure 23. UML diagram of `AddTaskCommand`._
 
 Figure 24 shows the flow of parsing an `AddTaskCommand` object:
 
-image::SDforAddTaskCommandParser.png[width="600"]
+image::SDforAddTaskCommandParser.png[width="400" align="center"]
 _Figure 24. Sequence Diagram for `AddTaskCommand` parsing._
 
 
 Figure 25 depicts the high-level sequence of events that take place.
 
-image::SDforAddTask.png[width="600"]
+image::SDforAddTask.png[width="400" align="center"]
 _Figure 25. Sequence Diagram for adding a task._
 
 ===== Assigning Tasks
@@ -557,7 +557,7 @@ Assigning tasks can be accomplished with the `AssignTaskCommand`. Tasks are assi
 
 Figure 26 below shows the UML representation of `AssignTaskCommand`.
 
-image::AssignTaskCommandUML.png[width="350"]
+image::AssignTaskCommandUML.png[width="150" align="center"]
 _Figure 26. UML diagram of `AssignTaskCommand`._
 
 The implementation of assigning tasks is similar to that of adding tasks. The only difference is that the Assignor is set to the `Matric Number` of the member who is currently logged in.
@@ -565,12 +565,12 @@ The implementation of assigning tasks is similar to that of adding tasks. The on
 The parsing of an `AssignTaskCommand` is performed by the `AssignTaskCommandParser`. +
 Figure 27 shows the flow of parsing an `AssignTaskCommand` object:
 
-image::SDforAssignTaskCommandParser.png[width="600"]
+image::SDforAssignTaskCommandParser.png[width="400" align="center"]
 _Figure 27. Sequence Diagram for `AssignTaskCommand` parsing._
 
 Figure 28 depicts the high-level sequence of events that take place.
 
-image::SDforAssignTask.png[width="600"]
+image::SDforAssignTask.png[width="400" align="center"]
 _Figure 28. Sequence Diagram for assigning a task._
 
 
@@ -581,18 +581,18 @@ The command object takes in the `INDEX` of the task to be deleted.
 
 Figure 29 below shows the UML representation of `DeleteTaskCommand`.
 
-image::DeleteTaskCommandUML.png[width="350"]
+image::DeleteTaskCommandUML.png[width="150" align="center"]
 _Figure 29. UML diagram of `DeleteTaskCommand`._
 
 `DeleteTaskCommandParser` is responsible for parsing the user input into a `DeleteTaskCommand` object. +
 Figure 30 illustrates the sequence in which the parsing is done.
 
-image::SDforDeleteTaskCommandParser.png[width="600"]
+image::SDforDeleteTaskCommandParser.png[width="400" align="center"]
 _Figure 30. Sequence Diagram for `DeleteTaskCommand` parsing._
 
 The high-level sequence of events is shown below in Figure 31.
 
-image::SDforDeleteTask.png[width="600"]
+image::SDforDeleteTask.png[width="400" align="center"]
 _Figure 31. Sequence Diagram for deleting a task._
 
 
@@ -603,18 +603,18 @@ The `ChangeAssigneeCommand` is used to change the `Assignee` of a task. +
 
 Figure 32 below shows the UML representation of `ChangeAssigneeCommand`.
 
-image::ChangeAssigneeCommandUML.png[width="350"]
+image::ChangeAssigneeCommandUML.png[width="150" align="center"]
 _Figure 32. UML Diagram of `ChangeAssigneeCommand`._
 
 `ChangeAssigneeCommandParser` is responsible for parsing the `changeassignee` command. It returns a `ChangeAssigneeCommand` object after parsing the `INDEX` and the `Assignee`.
 Figure 33 shows the sequence diagram of the `ChangeAssigneeCommandParser`.
 
-image::SDforChangeAssigneeCommandParser.png[width="600"]
+image::SDforChangeAssigneeCommandParser.png[width="400" align="center"]
 _Figure 33. Sequence Diagram of `ChangeAssigneeCommandParser`._
 
 Figure 34 below shows the high-level sequence diagram of the command execution.
 
-image::SDforChangeAssignee.png[width="600"]
+image::SDforChangeAssignee.png[width="400" align="center"]
 _Figure 34. Sequence Diagram of changing the `Assignee` of a task._
 
 ===== Changing Task Status
@@ -624,18 +624,18 @@ Changing a task's status is made possible by the `ChangeTaskStatusCommand`. +
 
 Figure 35 below shows the UML representation of `ChangeTaskStatusCommand`.
 
-image::ChangeTaskStatusCommandUML.png[width="350"]
+image::ChangeTaskStatusCommandUML.png[width="150" align="center"]
 _Figure 35. UML Diagram of `ChangeTaskStatusCommand`._
 
 Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
 Figure 36 below depicts the parsing of the `ChangeTaskStatusObject`.
 
-image::SDforChangeTaskStatusCommandParser.png[width="600"]
+image::SDforChangeTaskStatusCommandParser.png[width="400" align="center"]
 _Figure 36. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
 
 Figure 37 below describes the high-level sequence of events that take place.
 
-image::SDforChangeTaskStatus.png[width="600"]
+image::SDforChangeTaskStatus.png[width="400" align="center"]
 _Figure 37. Sequence Diagram for changing the status of a task._
 
 ===== Viewing All Tasks
@@ -645,7 +645,7 @@ _Figure 37. Sequence Diagram for changing the status of a task._
 
 The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 38.
 
-image::SDforViewAllTasks.png[width="600"]
+image::SDforViewAllTasks.png[width="400" align="center"]
 _Figure 38. Sequence Diagram for viewing all tasks._
 
 ===== Viewing My Tasks
@@ -663,7 +663,7 @@ public boolean test(Task task) {
 
 The sequence diagram of the `viewmytasks` command is shown below in Figure 39.
 
-image::SDforViewMyTasks.png[width="600"]
+image::SDforViewMyTasks.png[width="400" align="center"]
 _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member._
 
 
@@ -686,7 +686,7 @@ The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It
 
 The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 40 below depicts the UML representation of the `Command`.
 
-image::DeleteGroupCommandUML.png[width="150"]
+image::DeleteGroupCommandUML.png[width="150" align="center"]
 _Figure 40. UML Diagram of `DeleteGroupCommand`._
 
 `DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
@@ -710,12 +710,12 @@ private void deleteGroupFromMember(Group toRemove, Member member)
     }
 }
 
-image::SDforDeleteGroupCommandParser.png[width="600"]
+image::SDforDeleteGroupCommandParser.png[width="400" align="center"]
 _Figure 41. Sequence Diagram for the parsing of `DeleteGroupCommand`._
 
 The high-level sequence of events is depicted in Figure 42 below.
 
-image::SDforDeleteGroup.png[width="600"]
+image::SDforDeleteGroup.png[width="400" align="center"]
 _Figure 42. Sequence Diagram for delete a group from `Club Connect`._
 
 
