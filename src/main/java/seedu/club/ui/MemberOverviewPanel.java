@@ -55,9 +55,9 @@ public class MemberOverviewPanel extends UiPart<Region> {
                                                 "orange", "blue", "violet"};
 
     private static final String DIRECTORY_PATH = "view/";
-    private static final String TASK_YET_TO_BEGIN_CSS = DIRECTORY_PATH + "TaskYetToBegin.css";
-    private static final String TASK_IN_PROGRESS_CSS = DIRECTORY_PATH + "TaskInProgress.css";
-    private static final String TASK_COMPLETED_CSS = DIRECTORY_PATH + "TaskCompleted.css";
+    private static final String TASK_YET_TO_BEGIN_CSS = DIRECTORY_PATH + "LightTaskYetToBegin.css";
+    private static final String TASK_IN_PROGRESS_CSS = DIRECTORY_PATH + "LightTaskInProgress.css";
+    private static final String TASK_COMPLETED_CSS = DIRECTORY_PATH + "LightTaskCompleted.css";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private ObservableList<Task> taskList;

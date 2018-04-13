@@ -131,6 +131,7 @@ Examples:
 * `add n/Betsy Crowe p/95462159 e/betsycrowe@u.nus.edu m/A0145625K g/Logistics t/Head`
 // end::add[]
 
+// tag::addpoll[]
 === Adding a poll: `addpoll` (Since v1.3)
 
 Adds a poll to Club Connect. +
@@ -152,6 +153,7 @@ The answers to choose from are `I-Cube` and `LT7`.
 
 [IMPORTANT]
 This command is for `Exco` members only.
+// end::addpoll[]
 
 // tag::addtask[]
 === Adding a task: `addtask` (Since v1.3)
@@ -236,6 +238,9 @@ Aliases: `pic`, `profilepic`
 * This command is only guaranteed to work for ,jpeg, .jpg, and .png files.
 ****
 
+[NOTE]
+You will face a longer delay when setting your profile photo to an image whose file size is above 500 KB.
+
 [TIP]
 To get the abolute path, right-click on the photo file and select `Properties`.
 The `Location` field specifies the absolute location of the photo.
@@ -302,6 +307,7 @@ Execute the clear command, and confirming it.
 * `Clear` -> `Clear N`
 Execute the clear command, and cancelling it.
 
+// tag::compressdecompress[]
 === Compressing member details : `compress` (Since v1.2)
 
 Compresses the details of members in the member list +
@@ -324,6 +330,7 @@ Alias: `decomp`
 * No changes if member details are already decompressed
 * Use this to see more detailed information of members in contact list
 ****
+// end::compressdecompress[]
 
 === Deleting a member : `delete`
 
@@ -353,6 +360,7 @@ Deletes the 2nd member in the member listing.
 `delete 1` +
 Deletes the 1st member in the results of the `find` command.
 
+// tag::deletepoll[]
 === Deleting a poll : `deletepoll` (Since v1.3)
 
 Deletes the specified poll from the Club Connect. +
@@ -373,6 +381,7 @@ Examples:
 Deletes the 2nd poll in the poll listing.
 * `deletepoll 4` +
 Deletes the 4th poll in the poll listing.
+// end::deletepoll[]
 
 // tag::deletetag[]
 === Deleting a tag : `deletetag` (Since v1.1)
@@ -507,9 +516,9 @@ Examples:
 Exports all members in Club Connect to "members.csv" file on `John Doe` 's Desktop.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
 Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
-
 // end::export[]
 
+// tag::find[]
 === Locating members: `find` (Since v1.2)
 
 Finds members whose details contain any of the given keywords. +
@@ -545,6 +554,7 @@ Returns all members having names containing `Betsy`, `Tim`, or `John`.
 Returns all members in the logistics `group`
 * `find p/ 123` +
 Returns any member having phone number containing 123.
+// end::find[]
 
 === Viewing help : `help`
 
@@ -552,6 +562,7 @@ Opens the Club Connect help window (see <<help-window,Figure 2>>). +
 Format : `help` +
 Aliases : `h`, `info`
 
+// tag::hideresults[]
 === Hiding results of polls : `hideresults` (Since v1.4)
 
 Hides the results of all polls in Club Connect.
@@ -562,7 +573,7 @@ Format: `hideresults` +
 Alias: `hideres`
 [IMPORTANT]
 This command is for `Exco` members only.
-
+// end::hideresults[]
 
 === Listing entered commands : `history`
 
@@ -649,10 +660,10 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 
 // tag::removegroup[]
-=== Deleting a group : `removegroup` (Since v1.1)
+=== Deleting a group : `deletegroup` (Since v1.1)
 
 Deletes the specified group from Club Connect. +
-Format: `removegroup g/GROUP` +
+Format: `deletegroup g/GROUP` +
 Aliases: `rmgroup`, `delgroup`
 ****
 * Deletes the specified group from Club Connect.
@@ -666,10 +677,10 @@ This command is for `Exco` members only.
 
 Examples:
 
-* `removegroup g/logistics` +
+* `deletegroup g/logistics` +
 Deletes the `logistics` group from Club Connect.
 
-* `removegroup g/pr` +
+* `deletegroup g/pr` +
 Deletes the `pr` group from Club Connect.
 // end::removegroup[]
 
@@ -694,6 +705,7 @@ Selects the 2nd member in Club Connect.
 `s 1` +
 Selects the 1st member in the results of the `find` command.
 
+// tag::showresults[]
 === Showing results of polls : `showresults` (Since v1.4)
 
 Displays the results of polls in Club Connect.
@@ -709,7 +721,7 @@ Alias: `showres`
 
 [IMPORTANT]
 This command is for `Exco` members only.
-
+// end::showresults[]
 
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
@@ -779,6 +791,7 @@ Format: `viewmytasks` +
 Alias: `mytasks`
 // end::viewmytasks[]
 
+// tag::vote[]
 === Voting in a poll : `vote` (Since v1.4)
 
 Votes for the specified answer in the specified poll in Club Connect . +
@@ -798,6 +811,7 @@ Examples:
 Votes for the 2nd answer in the 1st poll of the poll listing
 * `vote 5 1` +
 Votes for the 1st answer in the 5th poll of the poll listing
+// end::vote[]
 
 === Auto-Complete Command (Since v1.3)
 Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
@@ -823,8 +837,8 @@ e.g. `assigntask desc/Buy Confetti d/03.04.2018 ti/19:00 n/Bernice Yu`
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Delete Group* : `removegroup g/GROUP` +
-e.g. `removegroup g/Publicity`
+* *Delete Group* : `deletegroup g/GROUP` +
+e.g. `deletegroup g/Publicity`
 * *Delete Tag* : `deletetag t/TAG` +
 e.g. `deletetag t/EventHelper`
 * *Delete Task* : `deletetask INDEX` +

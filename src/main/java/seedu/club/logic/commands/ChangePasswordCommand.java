@@ -17,7 +17,7 @@ import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemb
 import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 
-//@@author Song Weiyang
+//@@author th14thmusician
 /**
  * Changes the password of a member in the ClubBook
  */
@@ -71,3 +71,4 @@ public class ChangePasswordCommand extends Command {
         super.setData(model, history, undoRedoStack);
     }
 }
+//@@author

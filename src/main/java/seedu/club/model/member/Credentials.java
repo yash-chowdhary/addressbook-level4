@@ -1,5 +1,5 @@
 package seedu.club.model.member;
-
+//@@author th14thmusician
 /**
  * Stores the username and password for a specific member
  */
@@ -33,3 +33,4 @@ public class Credentials {
         this.password = password;
     }
 }
+//@@author

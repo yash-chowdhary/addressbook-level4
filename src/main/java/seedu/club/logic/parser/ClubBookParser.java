@@ -19,6 +19,7 @@ import seedu.club.logic.commands.Command;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.DeleteTaskCommand;
@@ -35,7 +36,6 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
-import seedu.club.logic.commands.RemoveGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
@@ -127,8 +127,8 @@ public class ClubBookParser {
             return new LogOutCommand();
         } else if (isRedoCommand(commandWord)) {
             return new RedoCommand();
-        } else if (isRemoveGroupCommand(commandWord)) {
-            return new RemoveGroupCommandParser().parse(arguments);
+        } else if (isDeleteGroupCommand(commandWord)) {
+            return new DeleteGroupCommandParser().parse(arguments);
         } else if (isSelectCommand(commandWord)) {
             return new SelectCommandParser().parse(arguments);
         } else if (isShowResultsCommand(commandWord)) {
@@ -269,10 +269,10 @@ public class ClubBookParser {
     }
 
     /**
-     * Returns true if {@code commandWord} matches any of RemoveGroupCommand's aliases
+     * Returns true if {@code commandWord} matches any of DeleteGroupCommand's aliases
      */
-    private boolean isRemoveGroupCommand(String commandWord) {
-        for (String commandAlias : RemoveGroupCommand.COMMAND_ALIASES) {
+    private boolean isDeleteGroupCommand(String commandWord) {
+        for (String commandAlias : DeleteGroupCommand.COMMAND_ALIASES) {
             if (commandWord.equals(commandAlias)) {
                 return true;
             }

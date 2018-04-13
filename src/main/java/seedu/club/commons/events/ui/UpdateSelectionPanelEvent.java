@@ -1,5 +1,5 @@
 package seedu.club.commons.events.ui;
-
+//@@author th14thmusician
 import seedu.club.commons.events.BaseEvent;
 import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
