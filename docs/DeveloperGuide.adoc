@@ -705,10 +705,10 @@ To restrict the commands that only `Exco` members can execute, the `AddPollComma
 [source, java]
 requireExcoLogIn();
 
-Figure 33 below shows the UML diagram of the `Poll` class.
+Figure 40 below shows the UML diagram of the `Poll` class.
 
 image::PollUML.png[width="800"]
-_Figure 33. Poll UML Diagram_
+_Figure 40. Poll UML Diagram_
 
 A `Poll` consists of the following:
 
@@ -716,10 +716,10 @@ A `Poll` consists of the following:
 * ObservableList<Answer>: Represents the answers of the poll.
 * Set<MatricNumber>: Represents all members that have voted in the poll.
 
-Figure 34 below shows the UML diagram of the `Answer` class.
+Figure 41 below shows the UML diagram of the `Answer` class.
 
 image::AnswerUML.png[width="100"]
-_Figure 34. Poll UML Diagram_
+_Figure 41. Poll UML Diagram_
 
 An `Answer` consists of the following:
 
@@ -732,10 +732,10 @@ Adding Polls is facilitated by the `AddPollCommand` which inherits from `Undoabl
 When a poll is created by the `AddPollCommand`, it's Set<MatricNumber>
 is initialized as empty because no member has voted in the poll.
 
-Figure 35 shows the flow of adding a poll:
+Figure 42 shows the flow of adding a poll:
 
 image::SDforAddPoll.png[width="800"]
-_Figure 35. Sequence Diagram for `AddPollCommand` parsing._
+_Figure 42. Sequence Diagram for `AddPollCommand` parsing._
 
 The execution of the command invokes `Model#addPoll(poll)`. +
 The following code snippet shows the implementation:
@@ -755,10 +755,10 @@ After successful execution, the poll will be added to the Club Book and the poll
 ---
 Deleting Polls is facilitated by the `DeletePollCommand` which inherits from `UndoableCommand` to make deleting polls undoable.
 
-Figure 36 shows the flow of deleting a poll:
+Figure 43 shows the flow of deleting a poll:
 
 image::SDforDeletePoll.png[width="800"]
-_Figure 36. Sequence Diagram for `DeletePollCommand` parsing._
+_Figure 43. Sequence Diagram for `DeletePollCommand` parsing._
 
 The execution of the command invokes `Model#deletePoll()`.
 The following code snippet shows the implementation:
@@ -780,10 +780,10 @@ Voting in polls is facilitated by the `VoteCommand` which inherits from `Undoabl
 
 The input of the command is the `POLL_INDEX` of a poll and `ANSWER_INDEX` of the answer of the poll
 
-Figure 37 shows the flow of voting in a poll:
+Figure 44 shows the flow of voting in a poll:
 
 image::SDforVote.png[width]"800" ]
-_Figure 37. Sequence Diagram for voting a poll_
+_Figure 44. Sequence Diagram for voting a poll_
 
 The execution of the command invokes `Model#voteInPoll()`.
 The following code snippet shows the implementation:
@@ -806,27 +806,27 @@ the poll will be removed from the poll `ListView` GUI, otherwise it will remain 
 
 Viewing and Hiding Poll Results is facilitated by the `ViewResultsCommand` and `HideResultsCommand`.
 
-By default poll results are not shown(Figure 38), but when `ViewResultsCommand` is executed, results consisting of
-how many people voted in a poll and how many voted for each answer will be shown(Figure 39).
+By default poll results are not shown(Figure 45), but when `ViewResultsCommand` is executed, results consisting of
+how many people voted in a poll and how many voted for each answer will be shown(Figure 46).
 
 image::PollWithoutResults.png[width="400"]
-_Figure 38. Poll Without Results_
+_Figure 45. Poll Without Results_
 
 image::PollWithResults.png[width="400"]
-_Figure 39. Poll With Results_
+_Figure 46. Poll With Results_
 
 Since viewing and hiding results of polls are similar in implementation, only viewing results of polls will be discussed.
 
-When an `Exco` member inputs 'viewresults', the sequence diagram (Figure 40) below shows how the different components interact
+When an `Exco` member inputs 'viewresults', the sequence diagram (Figure 47) below shows how the different components interact
 to post a `ViewResultsRequestEvent`.
 
 image::HighLevelSDforViewResultsToEventsCenter.png[width="800"]
-_Figure 40. Sequence Diagram to `EventsCenter` for viewing poll results ._
+_Figure 47. Sequence Diagram to `EventsCenter` for viewing poll results ._
 
-Then, the `PollListPanel` which contains the poll `ListView`, will handle the event (Figure 41) by showing results of results of all polls (Figure 39).
+Then, the `PollListPanel` which contains the poll `ListView`, will handle the event (Figure 48) by showing results of results of all polls (Figure 46).
 
 image::HighLevelSDforViewResultsFromEventsCenter.png[width="800"]
-_Figure 41. Sequence Diagram from `EventsCenter` for viewing poll results._
+_Figure 48. Sequence Diagram from `EventsCenter` for viewing poll results._
 
 The following code snippet shows the implementation:
 
@@ -859,12 +859,12 @@ who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer` o
 
 The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It allows `Exco` members to delete a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
 
-The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 40 below depicts the UML representation of the `Command`.
+The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 49 below depicts the UML representation of the `Command`.
 
 image::DeleteGroupCommandUML.png[width="150"]
-_Figure 40. UML Diagram of `DeleteGroupCommand`._
+_Figure 49. UML Diagram of `DeleteGroupCommand`._
 
-`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
+`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 50.
 
 The method where the deletion takes place in each member is `ClubBook#deleteGroupFromMember`.
 
@@ -886,12 +886,12 @@ private void deleteGroupFromMember(Group toRemove, Member member)
 }
 
 image::SDforDeleteGroupCommandParser.png[width="600"]
-_Figure 41. Sequence Diagram for the parsing of `DeleteGroupCommand`._
+_Figure 50. Sequence Diagram for the parsing of `DeleteGroupCommand`._
 
-The high-level sequence of events is depicted in Figure 42 below.
+The high-level sequence of events is depicted in Figure 51 below.
 
 image::SDforDeleteGroup.png[width="600"]
-_Figure 42. Sequence Diagram for delete a group from `Club Connect`._
+_Figure 51. Sequence Diagram for delete a group from `Club Connect`._
 
 ==== Design Considerations
 ===== Aspect: Implementation of `DeleteGroupCommand`
@@ -928,25 +928,25 @@ To facilitate this, it makes use of the `ProfilePhoto` class. `ProfilePhoto`
 
 Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
 
-Refer to Figure 43 for the UML diagram.
+Refer to Figure 52 for the UML diagram.
 The `ProfilePhoto` class consists of a `String` attribute to store the file path of the profile photo.
 
 image::ChangeProfilePhotoCommandUML.png[width="350"]
-_Figure 43. ChangeProfilePhotoCommand UML Diagram_
+_Figure 52. ChangeProfilePhotoCommand UML Diagram_
 
 The `displaypic` command involves the use of multiple components of Club Connect.
-Below, Figure 44 shows the interactions betweeen these components.
+Below, Figure 53 shows the interactions betweeen these components.
 As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
 
 image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 44. High Level Sequence Diagram for `changepic PATH` Command_
+_Figure 53. High Level Sequence Diagram for `changepic PATH` Command_
 
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 45 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+Figure 54 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 45. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+_Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
 
 The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
@@ -1021,10 +1021,10 @@ It allows any `Exco` member to delete a tag from all members tagged with it (and
 
 The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
 
-Figure 46 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+Figure 55 (shown below) depicts the UML representation of the `DeleteTagCommand`.
 
 image::placeholder.png[width="200" height="200"]
-_Figure 46. UML Diagram of `DeleteTagCommand`._
+_Figure 55. UML Diagram of `DeleteTagCommand`._
 
 ==== Design Considerations
 ===== Aspect: Implementation of `DeleteTagCommand`
@@ -1042,39 +1042,39 @@ Lorem ipsum dolor sit amet
 === Compress/Decompress Mechanism
 ==== Current Implementation
 
-Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 47) or compressed(Figure 48).
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 56) or compressed(Figure 57).
 
 image::DecompressedMemberCards.png[width="300"]
-_Figure 47. Decompressed Member Cards_
+_Figure 56. Decompressed Member Cards_
 
 image::CompressedCards.png[width="300"]
-_Figure 48. Compressed Member Cards_
+_Figure 57. Compressed Member Cards_
 
 The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
-To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 49) since a `CompressedMemberCard` is a `MemberCard`.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 58) since a `CompressedMemberCard` is a `MemberCard`.
 Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
 
 image::MemberCardClassDiagram.png[width="300"]
-_Figure 49. `MemberCard` class diagram_
+_Figure 58. `MemberCard` class diagram_
 
 The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
 These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
 
 Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
 
-Suppose that the user has just launched the application. The member cards would be decompressed (Figure 50).
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 56).
 
 
-The user inputs 'compress' and the sequence diagram (Figure 50) below shows how the different components interact.
+The user inputs 'compress' and the sequence diagram (Figure 59) below shows how the different components interact.
 
 image::SDforCompressToEventsCenter.png[width="800"]
-_Figure 50. Sequence diagram for compress command to Events Center_
+_Figure 59. Sequence diagram for compress command to Events Center_
 
-Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 51). If the cards are already compressed, no changes occur.
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 60). If the cards are already compressed, no changes occur.
 However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
 
 image::SDforCompressFromEventsCenter.png[width="800"]
-_Figure 51. Sequence diagram for compress command from Events Center_
+_Figure 60. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
@@ -1134,10 +1134,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
 
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 52 below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 61 below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 52. Screenshot of saving documentation as PDF in Chrome_
+_Figure 61. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -1298,23 +1298,23 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 [TIP]
 Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 53.
+. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 62.
 +
-Figure 53 below shows the member details before the modification.
+Figure 62 below shows the member details before the modification.
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
 
-_Figure 53. Member details before modification_
+_Figure 62. Member details before modification_
 +
-Figure 54 below shows the member details after the modification.
+Figure 63 below shows the member details after the modification.
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
 
-_Figure 54. Member details after modification_
+_Figure 63. Member details after modification_
 +
 ****
 * Hints
@@ -1330,18 +1330,18 @@ _Figure 54. Member details after modification_
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
 
-Figure 55 below shows the `ResultDisplay` before the modification. +
+Figure 64 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 55. ResultDisplay before modification_
+_Figure 64. ResultDisplay before modification_
 +
 **After**
 +
-Figure 56 below shows the `ResultDisplay` after the modification.
+Figure 65 below shows the `ResultDisplay` after the modification.
 +
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 56. ResultDisplay after modification_
+_Figure 65. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -1360,21 +1360,21 @@ _Figure 56. ResultDisplay after modification_
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
 
-Figure 57 below shows the `StatusBarFooter` before the modification.
+Figure 66 below shows the `StatusBarFooter` before the modification.
 +
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
 
-_Figure 57. StatusBarFooter before modification_
+_Figure 66. StatusBarFooter before modification_
 +
-Figure 58 below shows the `StatusBarFooter` after the modification.
+Figure 67 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
 
-_Figure 58. StatusBarFooter after modification_
+_Figure 67. StatusBarFooter after modification_
 +
 ****
 * Hints
