@@ -164,7 +164,8 @@ Aliases: `addt`, `task`
 
 *****
 * The `date` and `time` attributes must be valid dates and time (in 24-hour format).
-* By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in. This cannot be changed.
+* The range of the year in the `Date` is 1900 - 2099.
+* By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in.
 * If you wish to assign taks to other members in the capacity of an Exco member, use the `assigntask` command.
 * The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
 *****
@@ -214,12 +215,14 @@ Changes the status of a task in Club Connect. +
 Format: `changeassignee INDEX m/MATRIC_NUMBER` +
 Alias: `assignee`
 
+
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
-* Club Connect detects if there is no change in the `ASSIGNEE`.
-* Club Connect also detects if the command results in a duplicate task in the task list.
-* You cannot change the `ASSIGNEE` to a member who has already been assigned a similar task by another `Exco` member.
+* You cannot change the `ASSIGNEE` to a member who has already been assigned a task with identical attributes by another `Exco` member.
+* Passing the current `Assignee` of the task in the input throws an error as there is no change.
+* No duplicate tasks are allowed.
 ****
+
 
 [IMPORTANT]
 This command is only for `Exco` members.

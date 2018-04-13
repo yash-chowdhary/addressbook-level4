@@ -550,18 +550,10 @@ Figure 25 depicts the high-level sequence of events that take place.
 image::SDforAddTask.png[width="600"]
 _Figure 25. Sequence Diagram for adding a task._
 
-The task is displayed in the Task pane on the far right side.
-
 ===== Assigning Tasks
 ---
 
 Assigning tasks can be accomplished with the `AssignTaskCommand`. Tasks are assigned to members through the `Matric Number` attribute. +
-Thus, the following are the required parameters:
-
-* `Description`
-* `Date`
-* `Time`
-* `Matric Number`
 
 Figure 26 below shows the UML representation of `AssignTaskCommand`.
 
@@ -608,11 +600,6 @@ _Figure 31. Sequence Diagram for deleting a task._
 ---
 
 The `ChangeAssigneeCommand` is used to change the `Assignee` of a task. +
-This command can only be used by `Exco` members and has certain restrictions:
-
-* Passing the current `Assignee` of the task in the input throws an error as there is no change.
-* As an `Exco` member, you are not allowed to change the `Assignee` of a task to a member if that member already has a similar task assigned to him/her.
-* No duplicate tasks are allowed.
 
 Figure 32 below shows the UML representation of `ChangeAssigneeCommand`.
 
@@ -640,14 +627,6 @@ Figure 35 below shows the UML representation of `ChangeTaskStatusCommand`.
 image::ChangeTaskStatusCommandUML.png[width="350"]
 _Figure 35. UML Diagram of `ChangeTaskStatusCommand`._
 
-The `Status` of a task can be changed to any one of the following:
-
-* [red]#Yet To Begin#
-* [yellow]#In Progress#
-* [green]#Completed#
-
-The input of the command is the `INDEX` of a task, and the desired `Status`.
-
 Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
 Figure 36 below depicts the parsing of the `ChangeTaskStatusObject`.
 
@@ -674,9 +653,15 @@ _Figure 38. Sequence Diagram for viewing all tasks._
 
 `Exco` members need a way to toggle between all tasks in `Club Connect` and the tasks that are related to them (i.e. tasks that they have assigned or been assigned to). This is achieved by the `ViewMyTasksCommand`.
 
-As shown in the implementation above, the method invokes the `checkIfTasksAreAlreadyListed()` method which throws `TasksAlreadyListedException` if the tasks are already listed.
+The `Predicate` used is `TaskIsRelatedToMemberPredicate`. Here is the overridden `TaskIsRelatedToMemberPredicate#test` method.
+[source, java]
+@Override
+public boolean test(Task task) {
+    return member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignor().getValue())
+            || member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignee().getValue());
+}
 
-The sequence diagram of the command is shown below in Figure 39.
+The sequence diagram of the `viewmytasks` command is shown below in Figure 39.
 
 image::SDforViewMyTasks.png[width="600"]
 _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member._
@@ -705,6 +690,25 @@ image::DeleteGroupCommandUML.png[width="150"]
 _Figure 40. UML Diagram of `DeleteGroupCommand`._
 
 `DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
+
+The method where the deletion takes place in each member is `ClubBook#deleteGroupFromMember`.
+
+[source, java]
+private void deleteGroupFromMember(Group toRemove, Member member)
+        throws MemberNotFoundException {
+    if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
+        return;
+    }
+    Group defaultGroup = new Group(Group.DEFAULT_GROUP);
+    Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
+            defaultGroup, member.getTags());
+    try {
+        updateMember(member, newMember);
+    } catch (DuplicateMatricNumberException dme) {
+        throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
+                + "See member#equals(Object).");
+    }
+}
 
 image::SDforDeleteGroupCommandParser.png[width="600"]
 _Figure 41. Sequence Diagram for the parsing of `DeleteGroupCommand`._
@@ -1882,5 +1886,78 @@ These instructions only provide a starting point for testers to work on; testers
    Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 .. Test case: `delete 0` +
    Expected: No member is deleted. Error details shown in the status message. Status bar remains the same.
-.. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
+.. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size), `delete -1` (index must be a positive integer) +
    Expected: Similar to previous.
+
+=== Adding a task
+
+. Adding a task
+
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `addtask desc/Test Task 1 d/20/05/2018 t/19:00` +
+   Expected: A task is created and its details are displayed on the task pane(far right). Timestamp in the status bar is updated.
+.. Test case: `addtask desc/Test Task 2 d/20/05/2018` +
+   Expected: No task is added. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect commands to try: `addtask desc/Test Task 3 d/20/05/2018 t/19:65` (invalid time) `addtask desc/Test Task 4 d/29/02/2018 t/19:00` (invalid leap day)
+   Expected: Similar to previous.
+
+=== Assigning a task
+
+. Assigning a task
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+.. Test case: `assigntask desc/Assigned Task 1 d/20/05/2018 t/18:00 m/A0123456H` +
+   Expected: A task is created and assigned to `A0123456H`. Task details displayed on the task pane. Timestamp in the status bar is updated.
+.. Test case: `assigntask desc/Assigned Task 1 d/20/05/2018` +
+   Expected: No task is added. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect commands to try: `assigntask`, `assigntask desc/Assigned Task 1 d/20/05/2018 t/18:00 m/A1234T`, `assigntask desc/Assigned Task 1 d/20/05/2018 m/A0123456K` (missing time field) +
+   Expected: Similar to previous.
+
+=== Deleting a task
+
+. Deleting a task while all tasks are listed
+
+.. Prerequisites: List all your tasks using the `viewmytasks` command. Multiple tasks in the list.
+.. Test case: `deletetask 1` +
+   Expected: First task is deleted from the list. Details of the deleted task shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `delete 0` +
+   Expected: No task is deleted. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect commands to try: `deletetask`, `deletetask x` (where x is larger than the task list size), `deletetask -1` (index must be a positive integer) +
+   Expected: Similar to previous.
+
+=== Changing a task's status
+
+. Changing a task's status while all tasks are listed
+
+.. Prerequisites: List all your tasks using the `viewmytasks` command. Multiple tasks in the list. All tasks are set to `Yet To Begin`.
+.. Test case: `changestatus 1 st/Completed` +
+ Expected: First task's status is changed to `Completed`. Description of the modified task shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `changestatus 0 st/Completed` +
+ Expected: No task is affected. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect commands to try: `changestatus`, `changestatus x st/In Progress` (where x is larger than the task list size), `changestatus -1 st/Completed` (index must be a positive integer) +
+ Expected: Similar to previous.
+
+=== Changing a task's assignee
+
+. Changing a task's assignee while all tasks are listed
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member. List all the tasks using the `viewalltasks` command. Multiple tasks in the list.
+.. Test case: `changeassignee 1 m/A0123456H` +
+Expected: First task's assignee is changed to `A0123456H`. Description of the modified task shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `changeassignee 0 m/A0123456H` +
+Expected: No task is affected. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect commands to try: `changeassignee`, `changeassignee x m/A1234567H` (where x is larger than the task list size), `changeassignee -1 m/A2233445G` (index must be a positive integer) +
+Expected: Similar to previous.
+
+=== Deleting a group
+
+. Deleting a group from Club Connect
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+.. Test case: `deletegroup g/Logistics` +
+   Expected: The group of all members previously part of the `Logistics` group will be changed to `Member`. The name of the deleted group shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `deletegroup g/Member` +
+   Expected: No group is deleted. Error details shown in the status message. Status bar remains the same.
+.. Test case: `deletegroup`, `deletegroup g/Exco` (mandatory group)
+   Expected: Similar to previous.
+
