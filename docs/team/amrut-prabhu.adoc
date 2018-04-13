@@ -188,9 +188,9 @@ include::../DeveloperGuide.adoc[tag=glossary]
 
 #End of Extract (from Developer Guide)#
 
-*** Added `ProfilePhoto` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/106[Pull Request #106].
-*** Refactored the codebase to fit the context of our application.
-*** Maintained the Developer Guide.
-*** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-T16-B2/main/issues?utf8=%E2%9C%93&q=is%3Aissue+amrut+-prabhu[Peer Testing] session.
-
-
+*** Added `ProfilePhoto` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/106[Pull Request #106]
+*** Refactored the codebase to fit the context of our application
+*** Maintained the Developer Guide
+*** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-T16-B2/main/issues?utf8=%E2%9C%93&q=is%3Aissue+amrut+-prabhu[Peer Testing] session
+*** Ensured that codebase was consistent and clean
+*** Took up the GitHub project management role
