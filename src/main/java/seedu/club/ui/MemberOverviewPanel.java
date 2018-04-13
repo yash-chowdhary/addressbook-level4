@@ -137,7 +137,6 @@ public class MemberOverviewPanel extends UiPart<Region> {
 
     @Subscribe
     public void handleMemberPanelSelectionChangeEvent(MemberPanelSelectionChangedEvent event) {
-        System.out.println(event.getNewSelection().member.toString());
         currentlySelectedMember = event.getNewSelection().member;
         loadMemberPage(event.getNewSelection().member);
         setConnections(taskList, event.getNewSelection().member);
@@ -154,9 +153,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
 
     @Subscribe
     public void handleUpdateSelectionPanelEvent (UpdateSelectionPanelEvent event) {
-        System.out.println(currentlySelectedMember);
         if (event.isToUndo()) {
-            System.out.println(undoStack.peek());
             loadMemberPage(undoStack.pop());
         }
         if (event.getTagToDelete() != null) {
