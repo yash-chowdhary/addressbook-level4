@@ -166,6 +166,11 @@
      -fx-background-color: derive(skyblue, 75%);
 }
 
+.loginpane {
+    -fx-background-color: derive(orange, 30%);
+    -fx-border-style: solid;
+}
+
 .pane-with-border {
      -fx-background-color: white;
      -fx-border-color: derive(white, 40%);

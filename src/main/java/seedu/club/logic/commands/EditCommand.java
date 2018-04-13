@@ -23,6 +23,7 @@ import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -107,6 +108,7 @@ public class EditCommand extends UndoableCommand {
         }
         model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToEdit, editedMember, false, null, false));
+        EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
         if (!(GROUP_EXCO.equalsIgnoreCase(editedMember.getGroup().toString()))) {
             EventsCenter.getInstance().post(new HideResultsRequestEvent());
         }
