@@ -31,7 +31,7 @@ public class ModifiedTaskCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         description.setText(task.getDescription().getDescription());
         date.setText("Due Date: " + task.getDate().getDate());
-        assignor.setText("Assigned by: " + task.getAssignor().getAssignor());
+        assignor.setText("Assigned by: " + task.getAssignor().getValue());
     }
     public boolean isTaskYetToBegin() {
         return task.hasTaskNotBegun();

@@ -1,6 +1,5 @@
 package seedu.club.logic.commands;
 //@@author yash-chowdhary
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -8,10 +7,13 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_TASK;
+import static seedu.club.testutil.TypicalIndexes.INDEX_THIRD_TASK;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.CARL;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
+import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM_COPY;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import org.junit.Before;
@@ -28,12 +30,8 @@ import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Task;
-import seedu.club.model.task.exceptions.DuplicateTaskException;
-import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
-import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TaskBuilder;
@@ -47,8 +45,13 @@ public class ChangeAssigneeCommandTest {
 
     @Before
     public void setUp() {
-        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
-                .withTask(BOOK_AUDITORIUM).build();
+        ClubBook clubBook = new ClubBookBuilder()
+                .withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD)
+                .withTask(BOOK_AUDITORIUM)
+                .withTask(BOOK_AUDITORIUM_COPY)
+                .build();
         model = new ModelManager(clubBook, new UserPrefs());
         model.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
@@ -62,6 +65,7 @@ public class ChangeAssigneeCommandTest {
 
     @Test
     public void execute_validAssignee_success() throws Exception {
+        model.updateFilteredTaskList(Model.PREDICATE_SHOW_ALL_TASKS);
         Member alice = new MemberBuilder(ALICE).build();
         Member benson = new MemberBuilder(BENSON).build();
         Task buyFood = new TaskBuilder().withDescription(BUY_FOOD.getDescription().getDescription())
@@ -72,38 +76,53 @@ public class ChangeAssigneeCommandTest {
                 .withStatus(BUY_FOOD.getStatus().getStatus())
                 .build();
         Task bookAuditorium = new TaskBuilder(BOOK_AUDITORIUM).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
-                .withTask(bookAuditorium).build();
+        String expectedMessage = String.format(ChangeAssigneeCommand.MESSAGE_CHANGE_SUCCESS,
+                buyFood.getDescription().getDescription(), benson.getMatricNumber().toString());
 
-        model.changeAssignee(BUY_FOOD, buyFood);
-        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        ClubBook expectedClubBook = new ClubBookBuilder()
+                .withMember(alice)
+                .withMember(benson)
+                .withTask(buyFood)
+                .withTask(bookAuditorium)
+                .build();
+
+        expectedModel = new ModelManager(expectedClubBook, new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
 
-        assertEquals(expectedModel, model);
+        ChangeAssigneeCommand command = prepareCommand(INDEX_THIRD_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidAssignee_throwsException() {
-        Member alice = new MemberBuilder(ALICE).build();
-        Member benson = new MemberBuilder(BENSON).build();
-        Task buyFood = new TaskBuilder(BUY_FOOD).build();
-        Task bookAuditorium = new TaskBuilder(BOOK_AUDITORIUM).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
-                .withTask(bookAuditorium).build();
-        Task editedTask = new TaskBuilder(buyFood).build();
-        editedTask.setAssignee(new Assignee(CARL.getMatricNumber().toString()));
+        String expectedMessage = ChangeAssigneeCommand.MESSAGE_MEMBER_NOT_FOUND;
 
-        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
-                ALICE.getCredentials().getPassword().value);
-        try {
-            model.changeAssignee(BUY_FOOD, editedTask);
-        } catch (MemberNotFoundException mnfe) {
-            assertEquals(expectedModel, model);
-        } catch (DuplicateTaskException | TaskAlreadyAssignedException | TaskAssigneeUnchangedException e) {
-            return;
-        }
+        ChangeAssigneeCommand command = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(CARL.getMatricNumber().toString()));
+
+        assertCommandFailure(command, model, expectedMessage);
+    }
+
+
+    @Test
+    public void execute_unchangedAssignee_throwsException() {
+        String expectedMessage = ChangeAssigneeCommand.MESSAGE_NOT_CHANGED;
+        ChangeAssigneeCommand command = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(ALICE.getMatricNumber().toString()));
+
+        assertCommandFailure(command, model, expectedMessage);
+    }
+
+    @Test
+    public void execute_duplicateTask_throwsException() {
+        String expectedMessage = ChangeAssigneeCommand.MESSAGE_DUPLICATE_TASK;
+        ChangeAssigneeCommand command = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        assertCommandFailure(command, model, expectedMessage);
     }
 
     @Test
@@ -118,7 +137,7 @@ public class ChangeAssigneeCommandTest {
         Task taskToEdit = new TaskBuilder(BUY_FOOD).build();
         Task editedTask = new TaskBuilder(taskToEdit).build();
         editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
-        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(INDEX_FIRST_TASK,
+        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(INDEX_SECOND_TASK,
                 new Assignee(BENSON.getMatricNumber().toString()));
 
         expectedModel = new ModelManager(expectedClubBook, new UserPrefs());

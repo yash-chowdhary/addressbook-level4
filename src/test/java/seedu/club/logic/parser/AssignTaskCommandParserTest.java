@@ -1,6 +1,7 @@
 package seedu.club.logic.parser;
 //@@author yash-chowdhary
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC_PASSED;
 import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_2;
@@ -19,6 +20,7 @@ import static seedu.club.testutil.TypicalMembers.BOB;
 
 import org.junit.Test;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.task.Task;
@@ -45,6 +47,14 @@ public class AssignTaskCommandParserTest {
         assertParseSuccess(parser, " " + TASK_DESCRIPTION_DESC_FOOD + TASK_DATE_DESC_1
                         + TASK_TIME_DESC_1 + MATRIC_NUMBER_DESC_BOB,
                 new AssignTaskCommand(expectedTask, matricNumber));
+    }
+
+    @Test
+    public void parse_dateAlreadyPassed_throwsException() {
+        String expectedMessage = Messages.MESSAGE_DATE_ALREADY_PASSED;
+        assertParseFailure(parser, " " + TASK_DESCRIPTION_DESC_FOOD + INVALID_DATE_DESC_PASSED
+                + TASK_TIME_DESC_1 + MATRIC_NUMBER_DESC_BOB, expectedMessage);
+
     }
 
     @Test
