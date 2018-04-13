@@ -13,8 +13,6 @@ public class ProfilePhoto {
 
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "The photo path should be an absolute path to a JPG or PNG image file.";
-    public static final String IMAGE_PATH_VALIDATION_UNIX_REGEX = ".:(.*/)*.+/.+(png|jpg|PNG|JPG)";
-    public static final String IMAGE_PATH_VALIDATION_WINDOWS_REGEX = ".:(.*\\\\)*.+\\\\.+(png|jpg|jpeg|PNG|JPG|JPEG)";
 
     private static final ArrayList<String> validFileExtensions = new ArrayList<>(
             Arrays.asList("jpg", "png", "JPG", "PNG")
@@ -25,11 +23,8 @@ public class ProfilePhoto {
 
     /**
      * Constructs a {@code ProfilePhoto}.
-     *
-     * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        requireNonNull(path);
         this.profilePhotoPath = path;
     }
 
