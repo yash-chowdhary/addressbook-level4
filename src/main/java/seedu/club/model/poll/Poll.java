@@ -125,7 +125,7 @@ public class Poll {
      */
     @Override
     public String toString() {
-        return "[ " + question + " ]"
-                + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
+        return "[ " + question + " ] "
+                + answers.stream().map(Answer::toString).collect(Collectors.joining(", "));
     }
 }

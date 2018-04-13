@@ -2151,3 +2151,135 @@ These instructions only provide a starting point for testers to work on; testers
    Expected: No member is deleted. Error details shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
+
+=== Adding a poll
+
+. Adding a poll as an `Exco` member
+
+.. Prerequisites: Login as `Exco member`.
+.. Test case: `addpoll q/Which is the right answer? ans/Left ans/Right` +
+   Expected: New poll added in poll list with question "Which is the right answer?" and answers "Left" and "Right".
+   Details of the added poll shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `addpoll q/hello ans/bye ans/bye ans/jane` +
+   Expected: New poll added in poll list with question "hello" and answers "bye" and "jane".
+   Details of the added poll shown in the status message. Timestamp in the status bar is updated.
+.. Test case: Type `addpoll q/hi ans/a ans/b ans/c` twice +
+   Expected: For first command, new poll added in poll list with question "hi" and answers "a" and "b".
+   Details of the added poll shown in the status message. Timestamp in the status bar is updated. Then for the second,
+   no poll is added. Duplicate poll error will be shown in status message. Status bar remains the same.
+.. Other incorrect addpoll commands to try: `addpoll`, `addpoll x` (where x is larger than the list size or is negative) +
+   Expected: No poll is added. Error details shown in the status message. Status bar remains the same.
+
+. Adding a poll as an a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member
+.. Test case: `addpoll q/Which is the right answer? ans/Left ans/Right` +
+   Expected: No poll is deleted. Error details shown in the status message. Status bar remains the same.
+
+=== Deleting a poll
+
+. Deleting a poll as an `Exco` member
+
+.. Prerequisites: Login as `Exco member` and there are polls listed.
+.. Test case: `deletepoll 1` +
+   Expected: First poll is deleted from the list. Details of the deleted poll shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `deletepoll 0` +
+   Expected: No poll is deleted. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect delete commands to try: `deletepoll`, `deletepoll x` (where x is larger than the list size or is negative) +
+   Expected: Similar to previous.
+
+. Deleting a poll as an a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and there are polls listed.
+.. Test case: `deletepoll 1` +
+   Expected: No poll is deleted. Command requires Exco-member shown in status message. Status bar remains the same.
+
+=== Voting in a poll
+
+. Voting in a poll as an `Exco` member
+
+.. Prerequisites: Login as `Exco member` and all polls in poll list are not yet voted by user.
+.. Test case: `vote 1 1` +
+   Expected: Vote success shown the status message. Timestamp in the status bar is updated.
+.. Other incorrect vote commands to try: `vote`, `vote x y` (where x and/or y is larger than the poll list size or is negative) +
+   Expected: No poll is voted for. Error details shown in the status message. Status bar remains the same.
+
+. Voting in a poll as a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and all polls in poll list are not yet voted by user.
+.. Test case: `vote 1 1` +
+   Expected: Vote success shown in the status message. Timestamp in the status bar is updated. Poll is removed from poll list.
+.. Other incorrect vote commands to try: `vote`, `vote x y` (where x and/or y is larger than the poll list size or is negative) +
+   Expected: No poll is voted for. Error details shown in the status message. Status bar remains the same.
+
+=== Viewing results of polls
+
+. Viewing results of polls as an `Exco` member
+
+.. Prerequisites: Login as `Exco member`, there are polls in the poll list and polls don't display results.
+.. Test case: `viewresults` +
+   Expected: Results of polls shown in poll list. View results success shown in status message. Timestamp in the status bar is updated.
+
+. Viewing results of polls as a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and there are polls in the poll list.
+.. Test case: `viewresults` +
+   Expected: No results are shown in poll list. Command requires Exco-member shown in status message. Status bar remains the same.
+
+=== Hiding results of polls
+
+. Hiding results of polls as an `Exco` member
+
+.. Prerequisites: Login as `Exco member` and there are polls in the poll list and polls display results.
+.. Test case: `hideresults` +
+   Expected: Results of polls hidden in poll list. Hide results success shown in status message. Timestamp in the status bar is updated.
+
+. Hiding results of polls as a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and there are polls in the poll list.
+.. Test case: `vote 1 1` +
+   Expected: No results are shown in poll list. Command requires Exco-member shown in status message. Status bar remains the same.
+
+=== Compressing member cards
+
+. Compressing members cards when they are decompressed
+
+.. Prerequisites: Login and membercards are decompressed
+.. Test case: `compress` +
+   Expected: Member cards become compressed. Compress success shown in status message. Timestamp in the status bar is updated.
+
+. Compressing members cards when they are already compressed
+
+.. Prerequisites: Login and membercards are compressed
+.. Test case: `compress` +
+   Expected: Member cards remain compressed. Compress success shown in status message. Timestamp in the status bar is updated.
+
+=== Decompressing member cards
+
+. Decompressing members cards when they are compressed
+
+.. Prerequisites: Login and membercards are decompressed
+.. Test case: `decompress` +
+   Expected: Member cards become decompressed. Decompress success shown in status message. Timestamp in the status bar is updated.
+
+. Decompressing members cards when they are already compressed
+
+.. Prerequisites: Login and membercards are decompressed
+.. Test case: `compress` +
+   Expected: Member cards remain decompressed. Decompress success shown in status message. Timestamp in the status bar is updated.
+
+=== Finding members
+
+. Find by specified field
+
+.. Prerequisites: Login and there are more than 5 members in the application
+.. Test case: `find n/John` +
+   Expected: Member list filtered to members with name containing John. Number of members found shown in status message. Timestamp in the status bar is updated.
+.. Other find commands to try: `find PREFIX` (where PREFIX refers to the prefix of the field to narrow down the search. Possible prefixes defined in UserGuide.adoc) +
+   Expected: Find command will narrow down search by the specified field given by PREFIX
+
+. Find by all fields
+
+.. Prerequisites: Login and there are more than 5 members in the application
+.. Test case: `find lala` +
+   Expected: Member list filtered to members with fields containing lala. Number of members found shown in status message. Timestamp in the status bar is updated.
