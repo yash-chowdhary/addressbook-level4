@@ -88,6 +88,13 @@ public class FileUtil {
 
     //@@author amrut-prabhu
     /**
+     * Returns true if {@code file} is empty.
+     */
+    public static boolean isEmptyFile(File file) {
+        return file.length() == 0;
+    }
+
+    /**
      * Appends given string to a file.
      */
     public static void appendToFile(File file, String content) throws IOException {
@@ -97,7 +104,7 @@ public class FileUtil {
     /**
      * Returns true if {@code file} does not represent the absolute path of a file.
      */
-    public static boolean isNotValidFileName(File file) {
+    public static boolean isNotAbsoluteFilePath(File file) {
         return !file.isAbsolute() || file.isDirectory();
     }
 
