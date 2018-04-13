@@ -318,23 +318,23 @@ public class CsvUtil {
     // ================ CSV File level methods ==============================
 
     /**
-     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
+     * Returns true if {@code path} represents the path of a CSV (.csv) file.
+     *
+     * @param path Path whose validity is to be checked.
      */
-    public static boolean isNotValidCsvFileName(String path) {
+    public static boolean isValidCsvFileName(String path) {
         String csvFileExtension = ".csv";
 
         int length = path.length();
         String fileExtension = path.substring(length - 4);
 
-        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
+        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
     }
 
     /**
-     * Saves the data in the file in csv format.
-     * Assumes file exists.
+     * Saves the data to the file in csv format.
      *
-     * @param file Points to a valid csv file.
-     *             Cannot be null.
+     * @param file A valid existing csv file.
      * @throws IOException Thrown if there is an error writing to the file.
      */
     public static void saveDataToFile(File file, String data) throws IOException {
@@ -355,7 +355,7 @@ public class CsvUtil {
      * @throws IOException Thrown if there is an error reading from the file.
      */
     public static UniqueMemberList getDataFromFile(File file) throws IOException {
-
+        requireNonNull(file);
         UniqueMemberList importedMembers = new UniqueMemberList();
         String data = FileUtil.readFromFile(file);
         String[] membersData = data.split("\n");

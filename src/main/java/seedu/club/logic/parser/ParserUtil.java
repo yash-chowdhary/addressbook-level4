@@ -232,13 +232,14 @@ public class ParserUtil {
      *
      * @throws IllegalValueException if the given {@code photo} is invalid.
      */
-    public static ProfilePhoto parseProfilePhoto(String photo) throws IllegalValueException {
-        requireNonNull(photo);
-        String trimmedProfilePhoto = photo.trim();
-        if (!ProfilePhoto.isValidProfilePhoto(trimmedProfilePhoto)) {
+    public static ProfilePhoto parseProfilePhoto(String photoPath) throws IllegalValueException {
+        requireNonNull(photoPath);
+        String trimmedPath = photoPath.trim();
+        File photoFile = new File(trimmedPath);
+        if (!FileUtil.isAbsoluteFilePath(photoFile) || !ProfilePhoto.isValidPhotoFile(trimmedPath)) {
             throw new IllegalValueException(ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
         }
-        return new ProfilePhoto(trimmedProfilePhoto);
+        return new ProfilePhoto(trimmedPath);
     }
 
     /**
@@ -249,7 +250,7 @@ public class ParserUtil {
     public static File parseImportPath(String path) throws IllegalValueException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotAbsoluteFilePath(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (!FileUtil.isAbsoluteFilePath(file) || !CsvUtil.isValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
@@ -264,7 +265,7 @@ public class ParserUtil {
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotAbsoluteFilePath(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (!FileUtil.isAbsoluteFilePath(file) || !CsvUtil.isValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
