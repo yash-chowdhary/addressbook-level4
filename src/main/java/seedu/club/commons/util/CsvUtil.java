@@ -48,16 +48,7 @@ public class CsvUtil {
 
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
-    /**
-     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
-     */
-    public static boolean isNotValidCsvFileName(String path) {
-        String csvFileExtension = ".csv";
-
-        int length = path.length();
-        String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
-    }
+    // ================ Import CSV data methods ==============================
 
     /**
      * Returns {@code this} Member's data in the format of a CSV record.
@@ -67,11 +58,11 @@ public class CsvUtil {
     public static String getHeaders() {
         final StringBuilder builder = new StringBuilder();
 
-        addCsvField(builder, "Name");
-        addCsvField(builder, "Phone");
-        addCsvField(builder, "Email");
-        addCsvField(builder, "Matriculation Number");
-        addCsvField(builder, "Group");
+        addFieldInCsv(builder, "Name");
+        addFieldInCsv(builder, "Phone");
+        addFieldInCsv(builder, "Email");
+        addFieldInCsv(builder, "Matriculation Number");
+        addFieldInCsv(builder, "Group");
         addLastCsvField(builder, "Tags");
 
         builder.append(NEWLINE);
@@ -80,9 +71,11 @@ public class CsvUtil {
     }
 
     /**
-     * Returns {@code this} Member's data in the format of a CSV record.
+     * Returns {@code objectToConver}'s data in the format of a CSV record.
+     * objectToConvert is expected to be a {@code Member} object.
      *
-     * @return {@code String} containing the data in CSV format.
+     *  @return {@code String} containing the data in CSV format.
+     * @see Member
      */
     public static String toCsvFormat(Object objectToConvert) {
         requireNonNull(objectToConvert);
@@ -91,21 +84,51 @@ public class CsvUtil {
         if (objectToConvert instanceof Member) {
             memberToConvert = (Member) objectToConvert;
         } else {
+            assert false : "Object to convert to CSV is expected to be a Member object";
             return EMPTY_STRING;
         }
 
-        final StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
-        addCsvField(builder, memberToConvert.getName().toString());
-        addCsvField(builder, memberToConvert.getPhone().toString());
-        addCsvField(builder, memberToConvert.getEmail().toString());
-        addCsvField(builder, memberToConvert.getMatricNumber().toString());
-        addCsvField(builder, memberToConvert.getGroup().toString());
+        addFieldInCsv(builder, memberToConvert.getName().toString());
+        addFieldInCsv(builder, memberToConvert.getPhone().toString());
+        addFieldInCsv(builder, memberToConvert.getEmail().toString());
+        addFieldInCsv(builder, memberToConvert.getMatricNumber().toString());
+        addFieldInCsv(builder, memberToConvert.getGroup().toString());
         addCsvTags(builder, memberToConvert);
 
         builder.append(NEWLINE);
 
         return builder.toString();
+    }
+
+    /**
+     * Appends (@code builder} with {@code field} in CSV format.
+     *
+     * @param builder StringBuilder which is to be appended to.
+     * @param field Field value that is to be appended.
+     */
+    private static void addFieldInCsv(StringBuilder builder, String field) {
+        assert field != null : "Field cannot be null in Member object";
+
+        builder.append(CSV_FIELD_SURROUNDER)
+                .append(field)
+                .append(CSV_FIELD_SURROUNDER)
+                .append(CSV_FIELD_SEPARATOR);
+    }
+
+    /**
+     * Appends (@code builder} with last {@code field} in CSV format without suffixing with {@code CSV_FIELD_SEPARATOR}.
+     *
+     * @param builder StringBuilder which is to be appended to.
+     * @param field The final field value that is to be appended.
+     */
+    private static void addLastCsvField(StringBuilder builder, String field) {
+        assert field != null : "Field cannot be null in Member object";
+
+        builder.append(CSV_FIELD_SURROUNDER)
+                .append(field)
+                .append(CSV_FIELD_SURROUNDER);
     }
 
     /**
@@ -121,78 +144,7 @@ public class CsvUtil {
         builder.append(CSV_FIELD_SURROUNDER); //No CSV_FIELD_SEPARATOR as this is the last field.
     }
 
-    /**
-     * Appends (@code builder} with {@code field} in CSV format.
-     *
-     * @param builder StringBuilder which is to be appended.
-     * @param field Field value that is to be appended.
-     */
-    private static void addCsvField(StringBuilder builder, String field) {
-        assert field != null : "Field cannot be null in Member object";
-
-        builder.append(CSV_FIELD_SURROUNDER)
-                .append(field)
-                .append(CSV_FIELD_SURROUNDER)
-                .append(CSV_FIELD_SEPARATOR);
-    }
-
-    /**
-     * Appends (@code builder} with last {@code field} in CSV format without suffixing with{@code CSV_FIELD_SEPARATOR}.
-     *
-     * @param builder StringBuilder which is to be appended.
-     * @param field The final field value that is to be appended.
-     */
-    private static void addLastCsvField(StringBuilder builder, String field) {
-        assert field != null : "Field cannot be null in Member object";
-
-        builder.append(CSV_FIELD_SURROUNDER)
-                .append(field)
-                .append(CSV_FIELD_SURROUNDER);
-    }
-
-    /**
-     * Saves the data in the file in csv format.
-     * Assumes file exists.
-     *
-     * @param file Points to a valid csv file.
-     *             Cannot be null.
-     * @throws IOException Thrown if there is an error writing to the file.
-     */
-    public static void saveDataToFile(File file, String data) throws IOException {
-        requireNonNull(file);
-        requireNonNull(data);
-
-        FileUtil.appendToFile(file, data);
-    }
-
-    /**
-     * Loads a {@code UniqueMemberList} from the data in the csv file.
-     * Assumes file exists.
-     * Ignores DataConversionException and DuplicateMemberException.
-     *
-     * @param file Points to a valid csv file containing data that match the {@code Member}.
-     *             Cannot be null.
-     * @throws IOException Thrown if there is an error reading from the file.
-     */
-    public static UniqueMemberList getDataFromFile(File file) throws IOException {
-
-        UniqueMemberList importedMembers = new UniqueMemberList();
-        String data = FileUtil.readFromFile(file);
-        String[] membersData = data.split("\n");
-
-        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
-            try {
-                Member member = getMember(membersData[i]);
-                importedMembers.add(member);
-            } catch (DataConversionException dce) {
-                logger.warning("DataConversionException encountered while converting " + membersData[i]);
-            } catch (DuplicateMatricNumberException dmne) {
-                logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
-            }
-        }
-
-        return importedMembers;
-    }
+    // ================ Import CSV data methods ==============================
 
     /**
      * Returns a {@code Member} created using the given raw {@code rawData}.
@@ -263,28 +215,11 @@ public class CsvUtil {
     }
 
     /**
-     * Removes leading and trailing whitespaces and double quotes (") from {@code data}.
-     */
-    private static String removeExcessCharacters(String data) {
-        requireNonNull(data);
-
-        data = data.trim();
-        //Remove double quotes(")
-        if (data.length() > 0 && data.charAt(0) == '\"') { //First character is "
-            data = data.substring(1);
-        } else if (data.length() > 0 && data.charAt(data.length() - 1) == '\"') { //Last character is "
-            data = data.substring(0, data.length() - 1);
-        }
-
-        return data;
-    }
-
-    /**
      * Appends {@code dataToAdd} to {@code memberData} in the required format.
      *
      * @param memberData The current data of the member.
      * @param prefix The prefix needed, depending on the type of {@code dataToAdd}.
-     * @param dataToAdd
+     * @param dataToAdd The data that is to be added to {@code memberData}.
      * @return {@code memberData} appended with {@code dataToAdd} in the required format.
      */
     private static String addMemberData(String memberData, String prefix, String dataToAdd) {
@@ -324,6 +259,25 @@ public class CsvUtil {
     }
 
     /**
+     * Removes leading and trailing whitespaces and double quotes (") from {@code data}.
+     */
+    private static String removeExcessCharacters(String data) {
+        requireNonNull(data);
+
+        //Remove whitespace
+        data = data.trim();
+
+        //Remove double quotes(")
+        if (data.length() > 0 && data.charAt(0) == '\"') { //First character is "
+            data = data.substring(1);
+        } else if (data.length() > 0 && data.charAt(data.length() - 1) == '\"') { //Last character is "
+            data = data.substring(0, data.length() - 1);
+        }
+
+        return data;
+    }
+
+    /**
      * Returns a member created by parsing {@code memberData}.
      *
      * @param memberData Data of the member with cli prefixes.
@@ -358,6 +312,66 @@ public class CsvUtil {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+
+    // ================ CSV File level methods ==============================
+
+    /**
+     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
+     */
+    public static boolean isNotValidCsvFileName(String path) {
+        String csvFileExtension = ".csv";
+
+        int length = path.length();
+        String fileExtension = path.substring(length - 4);
+
+        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
+    }
+
+    /**
+     * Saves the data in the file in csv format.
+     * Assumes file exists.
+     *
+     * @param file Points to a valid csv file.
+     *             Cannot be null.
+     * @throws IOException Thrown if there is an error writing to the file.
+     */
+    public static void saveDataToFile(File file, String data) throws IOException {
+        requireNonNull(file);
+        requireNonNull(data);
+
+        logger.fine("Writing headers and info of members to the file");
+        FileUtil.writeToFile(file, data);
+    }
+
+    /**
+     * Loads a {@code UniqueMemberList} from the data in the csv file.
+     * Assumes file exists.
+     * Ignores DataConversionException and DuplicateMemberException.
+     *
+     * @param file Points to a valid csv file containing data that match the {@code Member}.
+     *             Cannot be null.
+     * @throws IOException Thrown if there is an error reading from the file.
+     */
+    public static UniqueMemberList getDataFromFile(File file) throws IOException {
+
+        UniqueMemberList importedMembers = new UniqueMemberList();
+        String data = FileUtil.readFromFile(file);
+        String[] membersData = data.split("\n");
+
+        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
+            try {
+                Member member = getMember(membersData[i]);
+                importedMembers.add(member);
+            } catch (DataConversionException dce) {
+                logger.warning("DataConversionException encountered while converting " + membersData[i]);
+            } catch (DuplicateMatricNumberException dmne) {
+                logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
+            }
+        }
+
+        return importedMembers;
     }
 
 }
