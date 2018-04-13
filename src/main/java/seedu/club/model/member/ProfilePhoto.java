@@ -9,6 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class ProfilePhoto {
 
     public static final String EMPTY_STRING = "";
+    public static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "The photo path should be an absolute path to a JPG or PNG image file.";
 
@@ -17,7 +18,6 @@ public class ProfilePhoto {
     private static final int PNG_INDEX = 1;
 
     private String profilePhotoPath;
-
 
     /**
      * Constructs a {@code ProfilePhoto}.

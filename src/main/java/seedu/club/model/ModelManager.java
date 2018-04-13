@@ -35,6 +35,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
@@ -214,6 +215,14 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to: "
                 + getLoggedInMember().getProfilePhoto().getPhotoPath());
+    }
+
+    @Override
+    public void removeProfilePhoto() {
+        getLoggedInMember().setProfilePhotoPath(ProfilePhoto.DEFAULT_PHOTO_PATH);
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        indicateClubBookChanged();
+        logger.fine("Member's profile photo has been set to default image");
     }
 
     //@@author yash-chowdhary

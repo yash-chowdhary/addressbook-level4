@@ -32,6 +32,7 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.RemoveProfilePhotoCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.ShowResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
@@ -85,6 +86,7 @@ public class CommandList {
         commandList.add(ChangePasswordCommand.COMMAND_FORMAT);
         commandList.add(HistoryCommand.COMMAND_WORD);
         commandList.add(ChangeAssigneeCommand.COMMAND_FORMAT);
+        commandList.add(RemoveProfilePhotoCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;

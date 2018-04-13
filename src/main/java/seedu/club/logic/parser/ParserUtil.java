@@ -236,6 +236,7 @@ public class ParserUtil {
         requireNonNull(photoPath);
         String trimmedPath = photoPath.trim();
         File photoFile = new File(trimmedPath);
+
         if (!FileUtil.isAbsoluteFilePath(photoFile) || !ProfilePhoto.isValidPhotoFile(trimmedPath)) {
             throw new IllegalValueException(ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
         }

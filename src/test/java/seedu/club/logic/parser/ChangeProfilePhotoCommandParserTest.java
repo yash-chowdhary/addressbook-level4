@@ -22,7 +22,7 @@ public class ChangeProfilePhotoCommandParserTest {
     private File currentDirectory = new File(currentDirectoryPath);
 
     @Test
-    public void parse_validArgs_returnsExportCommand() throws Exception {
+    public void parse_validArgs_returnsChangeProfilePhotoommand() throws Exception {
         File imageFile = temporaryFolder.newFile("dummy.jpg");
         String expectedImageFilePath = imageFile.getAbsolutePath();
         ProfilePhoto expectedPhoto = new ProfilePhoto(expectedImageFilePath);

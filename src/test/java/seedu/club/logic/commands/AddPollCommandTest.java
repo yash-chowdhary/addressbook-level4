@@ -246,6 +246,11 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public Member getLoggedInMember() {
             fail("This method should not be called.");
             return null;

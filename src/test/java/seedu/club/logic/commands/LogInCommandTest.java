@@ -214,6 +214,11 @@ public class LogInCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void exportClubConnectMembers(File exportFile) {
             fail("This method should not be called.");
         }

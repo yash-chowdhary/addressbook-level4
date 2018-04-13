@@ -1,8 +1,10 @@
 package seedu.club.ui;
 
+import static seedu.club.model.member.ProfilePhoto.DEFAULT_PHOTO_PATH;
+import static seedu.club.model.member.ProfilePhoto.EMPTY_STRING;
+
 import java.awt.Desktop;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.logging.Logger;
 
@@ -50,7 +52,6 @@ public class MemberOverviewPanel extends UiPart<Region> {
     private static final String DEFAULT_PHOTO = "/images/defaultProfilePhoto.png";
     private static final String PHONE_ICON = "/images/phone_icon.png";
     private static final String EMAIL_ICON = "/images/email_icon.png";
-    private static final String EMPTY_STRING = "";
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
                                                 "orange", "blue", "violet"};
 
@@ -260,21 +261,14 @@ public class MemberOverviewPanel extends UiPart<Region> {
     private void setProfilePhoto(Member member) {
         Image photo;
         String photoPath = member.getProfilePhoto().getPhotoPath();
-        if (photoPath.equals(EMPTY_STRING)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
-                    PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+        if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO), PHOTO_WIDTH, PHOTO_HEIGHT,
+                    false, true);
         } else {
-            try {
-                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
-                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
-            } catch (NullPointerException npe) {
-                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
-                        PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
-            }
+            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
         }
         profilePhoto.setImage(photo);
     }
-    //@@author
 
     //@@author yash-chowdhary
     /**
