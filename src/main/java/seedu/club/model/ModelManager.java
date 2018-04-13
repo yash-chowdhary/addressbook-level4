@@ -154,6 +154,7 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author MuhdNurKamal
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+        requireNonNull(poll);
         clubBook.addPoll(poll);
         updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
@@ -170,6 +171,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+        requireNonNull(target);
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }

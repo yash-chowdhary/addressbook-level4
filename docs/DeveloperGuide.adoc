@@ -745,6 +745,162 @@ _Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member
 
 // end::tasks[]
 
+// tag::polls[]
+=== Polls-feature
+
+A poll contains a question and any number of answers. Any member can vote in a poll but only once. Only 'Exco' members
+are allowed to add/delete polls and view/hide poll results.
+
+==== Current Implementation
+The poll feature is facilitated by the command classes below:
+
+* `AddPollCommand`
+* `DeletePollCommand`
+* `VoteCommand`
+* `ViewResultsCommand`
+* `HideResultsCommand`
+
+To restrict the commands that only `Exco` members can execute, the `AddPollCommand`, `DeletePollCommand`,
+`ViewResultsCommand` and `HideResultsCommand` will have the statement below in their `execute` method.
+
+[source, java]
+requireToSignUp();
+
+`VoteCommand` will have the statement below in it's execute method since it doesn't require `Exco` priviledge but still
+require that the user is logged in to keep track of who is voting.
+
+[source, java]
+requireToLogIn();
+
+Figure 22 below shows the UML diagram of the `Poll` class.
+
+image::TaskUML.png[width="800"]
+_Figure 22. Task UML Diagram_
+
+A Poll object consists of the following:
+
+* Question: Represents the question of the poll.
+* ObservableList<Answer>: Represents the answers of the poll.
+* Set<MatricNumber>: Represents all members that have voted in the poll.
+
+===== Adding Polls
+---
+Adding Polls is facilitated by the `AddPollCommand`. When a poll is created by the `AddPollCommand`, it's Set<MatricNumber>
+is initialized as empty to show that no member has voted for the poll.
+
+Figure 23 shows the flow of adding a poll:
+
+image::SDforAddTaskCommandParser.png[width="800"]
+_Figure 23. Sequence Diagram for `AddPollCommand` parsing._
+
+The execution of the command invokes `Model#addPoll(poll)`. +
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+    clubBook.addPoll(poll);
+    updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
+    indicateClubBookChanged();
+}
+
+Figure 24 depicts the high-level sequence of events that take place.
+
+image::SDforAddTask.png[width="800"]
+_Figure 24. Sequence Diagram for adding a poll._
+
+The poll will be displayed in the poll list.
+
+===== Deleting Polls
+---
+Deleting Polls is facilitated by the `DeletePollCommand`.
+
+Figure 23 shows the flow of deleting a poll:
+
+image::SDforDeleteTaskCommandParser.png[width="800"]
+_Figure 27. Sequence Diagram for `DeletePollCommand` parsing._
+
+The execution of the command invokes `Model#deleteTask()`.
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+    clubBook.removePoll(target);
+    indicateClubBookChanged();
+}
+
+The high-level sequence of events is shown below in Figure 28.
+
+image::SDforDeleteTask.png[width="800"]
+_Figure 28. Sequence Diagram for deleting a poll._
+
+
+===== Voting in Polls
+---
+
+Deleting Polls is facilitated by the `VoteCommand`.
+
+The input of the command is the `POLL_INDEX` of a poll and `ANSWER_INDEX` of the answer of the poll
+
+Figure 23 shows the flow of voting in a poll:
+
+image::SDforChangeTaskStatusCommandParser.png[width]"800" ]
+_Figure 29. Sequence Diagram for voting a poll_
+
+
+The execution of the command invokes `Model#voteInPoll()`.
+The following code snippet shows the implementation:
+
+[source,java]
+@Override
+public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+        DuplicateTaskException {
+    requireAllNonNull(taskToEdit, editedTask);
+    clubBook.updateTask(taskToEdit, editedTask);
+    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    indicateClubBookChanged();
+}
+
+Figure 30 below describes the high-level sequence of events that take place.
+
+image::SDforChangeTaskStatus.png[width="800"]
+_Figure 30. Sequence Diagram for changing the status of a task._
+
+===== Viewing/Hiding All Poll Results
+---
+
+`Exco` members can view all the tasks in `Club Connect` using the `ViewAllTasksCommand`.
+
+The implementation makes use of a `Predicate` and is as follows:
+
+[source, java]
+@Override
+public void viewAllTasks() throws TasksCannotBeDisplayedException {
+    updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+    indicateClubBookChanged();
+}
+
+The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 31.
+
+image::SDforViewAllTasks.png[width="800"]
+_Figure 31. Sequence Diagram for viewing all tasks._
+
+
+==== Design Considerations
+===== Aspect: Keeping track of how many members voted for each answer of a poll and who has voted in a poll
+* **Alternative 1 (current choice)**: Make each `Answer` keep track of how many votes it has received and each `Poll`
+keep track of who has voted in it using a Set<MatricNumber>
+** Pros: Easy to implement
+** Cons: If data of a poll in club book file is corrupted, the sum of votes for all the poll's answers might not be
+equal to the size of the Set<MatricNumber> of the poll.
+* **Alternative 2:** Make each `Answer` contain a Set<MatricNumber>. It's size is the number of voters and to keep track of
+who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer`of a `Poll`
+** Pros: Reduces clutter in the `TaskListPanel` and is easy on the eye.
+** Cons: Relatively difficult to implement.
+
+// end::pollss[]
+
 // tag::removegroup[]
 === Delete Group Mechanism
 ==== Current Implementation
