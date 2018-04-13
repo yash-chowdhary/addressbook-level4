@@ -1223,7 +1223,7 @@ import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.ShowResultsCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
