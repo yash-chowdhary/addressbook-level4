@@ -44,7 +44,7 @@ include::../UserGuide.adoc[tag=find]
 
 include::../UserGuide.adoc[tag=compressdecompress]
 
-include::../UserGuide.adoc[tag=showresults]
+include::../UserGuide.adoc[tag=viewresults]
 
 include::../UserGuide.adoc[tag=hideresults]
 
