@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
@@ -31,8 +30,8 @@ public class VoteCommand extends UndoableCommand {
             + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 3 2";
 
-    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been received";
-    public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll";
+    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.";
+    public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll.";
 
     private final Index pollIndex;
     private final Index answerIndex;
@@ -98,8 +97,7 @@ public class VoteCommand extends UndoableCommand {
         // state check
         VoteCommand e = (VoteCommand) other;
         return pollIndex.equals(e.pollIndex)
-                && answerIndex.equals(e.answerIndex)
-                && Objects.equals(pollToVoteIn, e.pollToVoteIn);
+                && answerIndex.equals(e.answerIndex);
     }
 
 }

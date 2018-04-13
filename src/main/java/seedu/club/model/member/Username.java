@@ -1,5 +1,5 @@
 package seedu.club.model.member;
-
+//@@author th14thmusician
 /**
  * Represents a member's username.
  */
@@ -15,3 +15,4 @@ public class Username {
         return value;
     }
 }
+//@@author

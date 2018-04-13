@@ -1,10 +1,12 @@
 //@@author amrut-prabhu
 package seedu.club.storage;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static seedu.club.storage.ProfilePhotoStorage.PHOTO_FILE_EXTENSION;
+import static seedu.club.storage.ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,17 +37,14 @@ public class ProfilePhotoStorageTest {
      * Ensures no exception is thrown and command happens successfully.
      */
     @Test
-    public void copyProfilePhoto_validPath_success() {
-        Exception expectedException = null;
-        try {
-            ProfilePhotoStorageStubAcceptingCreateCopy profilePhotoStorage =
-                    new ProfilePhotoStorageStubAcceptingCreateCopy();
-            String photoPath = testFolder.newFile("testPhoto.png").getAbsolutePath();
-            profilePhotoStorage.copyOriginalPhotoFile(photoPath, "testCopy");
-        } catch (Exception e) {
-            expectedException = e;
-        }
-        assertEquals(null, expectedException);
+    public void copyProfilePhoto_validPath_success() throws Exception {
+        String photoPath = null;
+        String copyName = "testCopy";
+
+        ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
+        photoPath = testFolder.newFile("testPhoto.png").getAbsolutePath();
+        profilePhotoStorage.copyOriginalPhotoFile(photoPath, copyName);
+        assertTrue(new File(SAVE_PHOTO_DIRECTORY + copyName + PHOTO_FILE_EXTENSION).exists());
     }
 
     /**
@@ -60,26 +59,13 @@ public class ProfilePhotoStorageTest {
     }
 
     /**
-     * A Stub class that always accepts the createPhotoFileCopy method.
-     */
-    private class ProfilePhotoStorageStubAcceptingCreateCopy extends ProfilePhotoStorage {
-
-        @Override
-        public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
-            return;
-        }
-
-    }
-
-    /**
      * A Stub class to throw an exception when the createPhotoFileCopy method is called.
      */
     class ProfilePhotoStorageExceptionThrowingStub extends ProfilePhotoStorage {
-
         @Override
-        public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
+        public void createPhotoFileCopy(InputStream photoInputStream, String newPath) throws PhotoWriteException {
             throw new PhotoWriteException("dummy exception");
         }
-
     }
+
 }

@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_DESCRIPTION + "DESCRIPTION "
             + PREFIX_TIME + "TIME "
             + PREFIX_DATE + "DATE "
-            + PREFIX_NAME + "NAME\n"
+            + PREFIX_MATRIC_NUMBER + "MATRICULATION_NUMBER\n"
             + "Example " + COMMAND_WORD + " "
             + PREFIX_DESCRIPTION + "Arrange DJ for Music Night "
             + PREFIX_DATE + "10/05/2018 "
@@ -45,10 +44,10 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_MATRIC_NUMBER + "A1234567H";
 
     public static final String MESSAGE_SUCCESS = "New task created and assigned to %1$s";
-    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists";
+    public static final String MESSAGE_DUPLICATE_TASK = "This task already exists.";
     public static final String MESSAGE_ALREADY_ASSIGNED = "This task has already been assigned to this member by "
-            + "another EXCO member";
-    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member doesn't exist in the club book";
+            + "another Exco member.";
+    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member does not exist in Club Connect.";
 
     private final Task toAdd;
     private final MatricNumber matricNumber;

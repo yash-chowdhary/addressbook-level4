@@ -110,6 +110,12 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
+                DuplicateTaskException, TaskAlreadyAssignedException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void resetData(ReadOnlyClubBook newData) {
             fail("This method should not be called");
         }
@@ -121,7 +127,7 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void viewAllTasks() throws TasksCannotBeDisplayedException {
+        public void viewAllTasks() throws TasksAlreadyListedException {
             fail("This method should not be called");
         }
 
@@ -131,8 +137,8 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void assignTask(Task toAdd, Name name) throws MemberNotFoundException, DuplicateTaskException,
-                IllegalExecutionException {
+        public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException,
+                DuplicateTaskException {
             fail("This method should not be called");
         }
 
@@ -143,9 +149,9 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void deleteMember(Member target) throws MemberNotFoundException {
+        public int deleteMember(Member target) throws MemberNotFoundException {
             fail("This method should not be called");
-            return;
+            return -1;
         }
 
         @Override
@@ -155,10 +161,10 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
+        public int updateMember(Member target, Member editedMember) throws DuplicateMatricNumberException,
                 MemberNotFoundException {
             fail("This method should not be called");
-            return;
+            return -1;
         }
 
         @Override
@@ -299,6 +305,17 @@ public class AddTaskCommandTest {
         public void clearClubBook() {
             fail("This method should not be called");
         }
+
+        @Override
+        public boolean getClearConfirmation() {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
+        public void setClearConfirmation(Boolean b) {
+            fail("This method should not be called");
+        }
     }
 
     /**
@@ -308,13 +325,209 @@ public class AddTaskCommandTest {
         private final Member memberStub = new Member(new Name("Alex Yeoh"),
                 new Phone("87438807"), new Email("alexyeoh@example.com"),
                 new MatricNumber("A5215090A"), new Group("logistics"),
-                getTagSet("friends"));
+                getTagSet("head"));
 
         @Override
         public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
             throw new DuplicateTaskException();
         }
 
+```
+###### \java\seedu\club\logic\commands\ChangeAssigneeCommandTest.java
+``` java
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
+import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.club.testutil.TypicalMembers.ALICE;
+import static seedu.club.testutil.TypicalMembers.BENSON;
+import static seedu.club.testutil.TypicalMembers.CARL;
+import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
+import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import seedu.club.commons.core.Messages;
+import seedu.club.commons.core.index.Index;
+import seedu.club.logic.CommandHistory;
+import seedu.club.logic.UndoRedoStack;
+import seedu.club.model.ClubBook;
+import seedu.club.model.Model;
+import seedu.club.model.ModelManager;
+import seedu.club.model.UserPrefs;
+import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.MemberNotFoundException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
+import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
+import seedu.club.testutil.ClubBookBuilder;
+import seedu.club.testutil.MemberBuilder;
+import seedu.club.testutil.TaskBuilder;
+
+public class ChangeAssigneeCommandTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    private Model model;
+    private Model expectedModel;
+
+    @Before
+    public void setUp() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
+                .withTask(BOOK_AUDITORIUM).build();
+        model = new ModelManager(clubBook, new UserPrefs());
+        model.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+    }
+
+    @Test
+    public void constructor_nullTask_throwsNullPointerException() {
+        thrown.expect(NullPointerException.class);
+        new ChangeAssigneeCommand(null, null);
+    }
+
+    @Test
+    public void execute_validAssignee_success() throws Exception {
+        Member alice = new MemberBuilder(ALICE).build();
+        Member benson = new MemberBuilder(BENSON).build();
+        Task buyFood = new TaskBuilder().withDescription(BUY_FOOD.getDescription().getDescription())
+                .withDate(BUY_FOOD.getDate().getDate())
+                .withTime(BUY_FOOD.getTime().getTime())
+                .withAssignor(alice.getMatricNumber().toString())
+                .withAssignee(benson.getMatricNumber().toString())
+                .withStatus(BUY_FOOD.getStatus().getStatus())
+                .build();
+        Task bookAuditorium = new TaskBuilder(BOOK_AUDITORIUM).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
+                .withTask(bookAuditorium).build();
+
+        model.changeAssignee(BUY_FOOD, buyFood);
+        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void execute_invalidAssignee_throwsException() {
+        Member alice = new MemberBuilder(ALICE).build();
+        Member benson = new MemberBuilder(BENSON).build();
+        Task buyFood = new TaskBuilder(BUY_FOOD).build();
+        Task bookAuditorium = new TaskBuilder(BOOK_AUDITORIUM).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
+                .withTask(bookAuditorium).build();
+        Task editedTask = new TaskBuilder(buyFood).build();
+        editedTask.setAssignee(new Assignee(CARL.getMatricNumber().toString()));
+
+        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        try {
+            model.changeAssignee(BUY_FOOD, editedTask);
+        } catch (MemberNotFoundException mnfe) {
+            assertEquals(expectedModel, model);
+        } catch (DuplicateTaskException | TaskAlreadyAssignedException | TaskAssigneeUnchangedException e) {
+            return;
+        }
+    }
+
+    @Test
+    public void executeUndoRedo_validIndexUnfilteredList_success() throws Exception {
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
+                .withTask(BOOK_AUDITORIUM).build();
+
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
+        Task taskToEdit = new TaskBuilder(BUY_FOOD).build();
+        Task editedTask = new TaskBuilder(taskToEdit).build();
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        expectedModel = new ModelManager(expectedClubBook, new UserPrefs());
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        changeAssigneeCommand.execute();
+        undoRedoStack.push(changeAssigneeCommand);
+        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+
+        expectedModel.changeAssignee(taskToEdit, editedTask);
+        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void executeUndoRedo_invalidIndexUnfilteredList_failure() {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
+        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(outOfBoundIndex,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        assertCommandFailure(changeAssigneeCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+
+        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
+        assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
+    }
+
+    @Test
+    public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
+        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(outOfBoundIndex,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        assertCommandFailure(changeAssigneeCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+    }
+
+    private ChangeAssigneeCommand prepareCommand(Index index, Assignee assignee) {
+        ChangeAssigneeCommand changeAssigneeCommand = new ChangeAssigneeCommand(index, assignee);
+        changeAssigneeCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return changeAssigneeCommand;
+    }
+
+    @Test
+    public void equals() throws Exception {
+        ChangeAssigneeCommand changeAssigneeFirstCommand = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+        ChangeAssigneeCommand changeAssigneeSecondCommand = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(CARL.getMatricNumber().toString()));
+
+        changeAssigneeFirstCommand.preprocessUndoableCommand();
+        changeAssigneeSecondCommand.preprocessUndoableCommand();
+
+        // same object -> returns true
+        assertTrue(changeAssigneeFirstCommand.equals(changeAssigneeFirstCommand));
+
+        // same values -> returns true
+        ChangeAssigneeCommand changeAssigneeFirstCommandCopy = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+        assertTrue(changeAssigneeFirstCommand.equals(changeAssigneeFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(changeAssigneeFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(changeAssigneeFirstCommand.equals(null));
+
+        // different member -> returns false
+        assertFalse(changeAssigneeFirstCommand.equals(changeAssigneeSecondCommand));
+    }
+
+}
 ```
 ###### \java\seedu\club\logic\commands\ChangeTaskStatusCommandTest.java
 ``` java
@@ -367,7 +580,7 @@ public class ChangeTaskStatusCommandTest {
     @Test
     public void constructor_nullTask_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
-        new AssignTaskCommand(null, null);
+        new ChangeTaskStatusCommand(null, null);
     }
 
     @Test
@@ -403,18 +616,19 @@ public class ChangeTaskStatusCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
         Task taskToEdit = model.getClubBook().getTaskList().get(INDEX_FIRST_TASK.getZeroBased());
         Task editedTask = new Task(taskToEdit);
         editedTask.setStatus(new Status(Status.COMPLETED_STATUS));
         ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(INDEX_FIRST_TASK,
                 new Status(Status.IN_PROGRESS_STATUS));
+
         expectedModel = new ModelManager(getTypicalClubBookWithTasks(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
 
         changeTaskStatusCommand.execute();
         undoRedoStack.push(changeTaskStatusCommand);
-
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.changeStatus(taskToEdit, editedTask);
@@ -701,30 +915,30 @@ public class RemoveGroupCommandTest {
     @Test
     public void execute_validGroup_success() throws Exception {
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(ALICE.getGroup());
 
         String expectedMessage = String.format(RemoveGroupCommand.MESSAGE_SUCCESS, groupToDelete);
         expectedModel.removeGroup(groupToDelete);
 
 
-        assertCommandSuccess(removeGroupCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(deleteGroupCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_nonExistentGroup_throwsCommandException() {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
 
         String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
-        assertCommandFailure(removeGroupCommand, model, expectedMessage);
+        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
     }
 
     @Test
     public void execute_mandatoryGroup_throwsCommandException() {
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
         String expectedMessage = String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString());
-        assertCommandFailure(removeGroupCommand, model, expectedMessage);
+        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
     }
 
     @Test
@@ -734,10 +948,10 @@ public class RemoveGroupCommandTest {
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(ALICE.getGroup());
         // remove -> group removed
-        removeGroupCommand.execute();
-        undoRedoStack.push(removeGroupCommand);
+        deleteGroupCommand.execute();
+        undoRedoStack.push(deleteGroupCommand);
 
         // undo -> reverts Club book back to previous state
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
@@ -754,10 +968,10 @@ public class RemoveGroupCommandTest {
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(nonExistentGroup);
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
 
-        // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model,
+        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
+        assertCommandFailure(deleteGroupCommand, model,
                 String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
@@ -772,10 +986,10 @@ public class RemoveGroupCommandTest {
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
         Group mandatoryGroup = new Group(MANDATORY_GROUP);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(mandatoryGroup);
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
 
-        // execution failed -> removeGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(removeGroupCommand, model,
+        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
+        assertCommandFailure(deleteGroupCommand, model,
                 String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
 
         // no commands in undoRedoStack -> undoCommand and redoCommand fail
@@ -788,11 +1002,11 @@ public class RemoveGroupCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        RemoveGroupCommand removeGroupCommand = prepareCommand(ALICE.getGroup());
+        RemoveGroupCommand deleteGroupCommand = prepareCommand(ALICE.getGroup());
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
         // remove -> removes group
-        removeGroupCommand.execute();
-        undoRedoStack.push(removeGroupCommand);
+        deleteGroupCommand.execute();
+        undoRedoStack.push(deleteGroupCommand);
 
         // undo -> reverts Club book back to previous state
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
@@ -806,7 +1020,7 @@ public class RemoveGroupCommandTest {
     @Test
     public void equals() {
         RemoveGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
-        RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_BOB));
+        RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_TEST));
 
         // same object -> returns true
         assertTrue(firstCommand.equals(firstCommand));
@@ -830,9 +1044,9 @@ public class RemoveGroupCommandTest {
      * Returns a {@code DeleteCommand} with the parameter {@code index}.
      */
     private RemoveGroupCommand prepareCommand(Group group) {
-        RemoveGroupCommand removeGroupCommand = new RemoveGroupCommand(group);
-        removeGroupCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return removeGroupCommand;
+        RemoveGroupCommand deleteGroupCommand = new RemoveGroupCommand(group);
+        deleteGroupCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return deleteGroupCommand;
     }
 }
 ```
@@ -847,6 +1061,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -893,7 +1108,7 @@ public class ViewAllTasksCommandTest {
         model.logsInMember(BENSON.getCredentials().getUsername().value,
                 BENSON.getCredentials().getPassword().value);
         model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
-        String expectedMessage = ViewAllTasksCommand.MESSAGE_CANNOT_VIEW;
+        String expectedMessage = Messages.MESSAGE_REQUIRE_EXCO_LOG_IN;
         assertCommandFailure(viewAllTasksCommand, model, expectedMessage);
     }
 
@@ -1020,13 +1235,13 @@ public class AddTaskCommandParserTest {
 ###### \java\seedu\club\logic\parser\AssignTaskCommandParserTest.java
 ``` java
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_2;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_FOOD;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_2;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DATE_1;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DESCRIPTION_CONFETTI;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TASK_DESCRIPTION_FOOD;
@@ -1039,7 +1254,7 @@ import static seedu.club.testutil.TypicalMembers.BOB;
 import org.junit.Test;
 
 import seedu.club.logic.commands.AssignTaskCommand;
-import seedu.club.model.member.Name;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.task.Task;
 import seedu.club.testutil.TaskBuilder;
 
@@ -1060,34 +1275,97 @@ public class AssignTaskCommandParserTest {
                 .withStatus(VALID_TASK_STATUS_TO_BEGIN)
                 .build();
 
-        Name name = BOB.getName();
+        MatricNumber matricNumber = BOB.getMatricNumber();
         assertParseSuccess(parser, " " + TASK_DESCRIPTION_DESC_FOOD + TASK_DATE_DESC_1
-                        + TASK_TIME_DESC_1 + NAME_DESC_BOB,
-                new AssignTaskCommand(expectedTask, name));
+                        + TASK_TIME_DESC_1 + MATRIC_NUMBER_DESC_BOB,
+                new AssignTaskCommand(expectedTask, matricNumber));
     }
 
     @Test
     public void parse_fieldsMissing_failure() {
+        // missing time prefix
         assertParseFailure(parser, TASK_DESCRIPTION_DESC_FOOD + TASK_DATE_DESC_1
-                + VALID_TASK_TIME_1 + NAME_DESC_BOB, expectedMessage);
+                + VALID_TASK_TIME_1 + MATRIC_NUMBER_DESC_BOB, expectedMessage);
 
+        // missing description prefix
         assertParseFailure(parser, TASK_DATE_DESC_2 + TASK_TIME_DESC_2 + VALID_TASK_DESCRIPTION_CONFETTI
-                + NAME_DESC_BOB,
+                + MATRIC_NUMBER_DESC_BOB,
                 expectedMessage);
 
+        // missing date prefix
         assertParseFailure(parser,  TASK_TIME_DESC_1 + TASK_DESCRIPTION_DESC_FOOD + VALID_TASK_DATE_1
-                + NAME_DESC_BOB,
+                + MATRIC_NUMBER_DESC_BOB,
                 expectedMessage);
 
+        // missing matric number prefix
         assertParseFailure(parser,  TASK_TIME_DESC_1 + TASK_DESCRIPTION_DESC_FOOD + TASK_DATE_DESC_1
-                + VALID_NAME_BOB,
+                + VALID_MATRIC_NUMBER_BOB,
                 expectedMessage);
+
+        /*------------------------------------MISSING PARAMETERS------------------------------------------------------*/
 
         assertParseFailure(parser, TASK_DATE_DESC_1 + VALID_TASK_DATE_1, expectedMessage);
 
         assertParseFailure(parser, VALID_TASK_DESCRIPTION_FOOD + VALID_TASK_DATE_1, expectedMessage);
 
         assertParseFailure(parser, VALID_TASK_DESCRIPTION_FOOD + VALID_TASK_TIME_1, expectedMessage);
+    }
+
+}
+```
+###### \java\seedu\club\logic\parser\ChangeAssigneeCommandParserTest.java
+``` java
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_MATRIC_NUMBER;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_AMY;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BOB;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_TASK;
+
+import org.junit.Test;
+
+import seedu.club.logic.commands.ChangeAssigneeCommand;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.task.Assignee;
+
+public class ChangeAssigneeCommandParserTest {
+    private ChangeAssigneeCommandParser parser = new ChangeAssigneeCommandParser();
+
+    @Test
+    public void parse_validArgs_returnsChangeAssigneeCommand() {
+        assertParseSuccess(parser, " 1 "
+                        + " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER,
+                new ChangeAssigneeCommand(INDEX_FIRST_TASK, new Assignee(VALID_MATRIC_NUMBER)));
+        assertParseSuccess(parser, " 2 "
+                        + " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_BOB,
+                new ChangeAssigneeCommand(INDEX_SECOND_TASK, new Assignee(VALID_MATRIC_NUMBER_BOB)));
+    }
+
+    @Test
+    public void parse_invalidArgs_throwsParseException() {
+        assertParseFailure(parser, " a",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeAssigneeCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, " one",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeAssigneeCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidIndex_throwsParseException() {
+        assertParseFailure(parser, " -1" + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_AMY,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeAssigneeCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, " 0" + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_BOB,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeAssigneeCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidStatus_throwsParseException() {
+        // invalid matric number
+        assertParseFailure(parser, " 1 " + PREFIX_MATRIC_NUMBER + INVALID_MATRIC_NUMBER,
+                MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
     }
 
 }
@@ -1196,6 +1474,20 @@ public class RemoveGroupCommandParserTest {
     }
 
     @Test
+    public void deleteMember_validMemberWithTasks_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BOOK_AUDITORIUM)
+                .withTask(BUY_CONFETTI).build();
+        clubBook.removeMember(BENSON);
+        clubBook.removeTasksOfMember(BENSON);
+
+        Member alice = new MemberBuilder(ALICE).build();
+        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withTask(buyConfetti).build();
+
+        assertEquals(expectedClubBook, clubBook);
+    }
+
+    @Test
     public void deleteTask_validTask_success() throws Exception {
         ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
         clubBook.deleteTask(BUY_CONFETTI);
@@ -1285,7 +1577,7 @@ public class RemoveGroupCommandParserTest {
         editedTask.setStatus(new Status(Status.IN_PROGRESS_STATUS));
 
         try {
-            clubBook.updateTask(taskToEdit, editedTask);
+            clubBook.updateTaskStatus(taskToEdit, editedTask);
         } catch (DuplicateTaskException | TaskNotFoundException e) {
             fail("This will not be executed");
         }
@@ -1309,12 +1601,29 @@ public class RemoveGroupCommandParserTest {
         Task editedTask = new Task(BUY_FOOD);
 
         try {
-            clubBook.updateTask(taskToEdit, editedTask);
+            clubBook.updateTaskStatus(taskToEdit, editedTask);
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedClubBook, clubBook);
         } catch (TaskNotFoundException tnfe) {
             fail("This will not be executed");
         }
+    }
+
+    @Test
+    public void updateTaskAssignee_validAssignee_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_CONFETTI).withTask(BUY_FOOD).build();
+
+        Task taskToEdit = BUY_FOOD;
+        Task editedTask = new TaskBuilder(BUY_FOOD).build();
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON)
+                .withTask(editedTask).withTask(BUY_CONFETTI).build();
+
+        clubBook.updateTaskAssignee(taskToEdit, editedTask);
+        assertEquals(expectedClubBook, clubBook);
     }
 ```
 ###### \java\seedu\club\model\ModelManagerTest.java
@@ -1411,7 +1720,7 @@ public class RemoveGroupCommandParserTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         String expectedRecipients = modelManager.generateEmailRecipients(null,
-                new Tag(VALID_TAG_FRIEND));
+                new Tag(VALID_TAG_HEAD));
         modelManager.sendEmail(expectedRecipients, new Client(Client.VALID_CLIENT_GMAIL),
                 new Subject(Subject.TEST_SUBJECT_STRING), new Body(Body.TEST_BODY_STRING));
 
@@ -1420,35 +1729,31 @@ public class RemoveGroupCommandParserTest {
 
     @Test
     public void addTask_validTask_success() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         modelManager.addTaskToTaskList(BUY_FOOD);
 
-        Member amy = new MemberBuilder(AMY).build();
-        Task buyFood = new TaskBuilder(BUY_FOOD).build();
-        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
-        ClubBook expectedClubBook = new ClubBookBuilder()
-                .withMember(amy)
-                .withTask(buyConfetti)
-                .withTask(buyFood)
-                .build();
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         assertEquals(expectedModel, modelManager);
     }
 
     @Test
     public void addTask_duplicateTask_throwsException() {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withTask(BUY_CONFETTI).build();
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
         try {
             modelManager.addTaskToTaskList(BUY_CONFETTI);
         } catch (DuplicateTaskException dte) {
@@ -1457,36 +1762,20 @@ public class RemoveGroupCommandParserTest {
     }
 
     @Test
-    public void assignTask_validTask_throwsException() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).withTask(BUY_CONFETTI).build();
+    public void assignTask_validTask_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BOB).withTask(BUY_CONFETTI).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.logsInMember(AMY.getCredentials().getUsername().value,
-                AMY.getCredentials().getPassword().value);
-        modelManager.assignTask(BUY_FOOD, BOB.getName());
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
 
-        Member amy = new MemberBuilder(AMY).build();
-        Member bob = new MemberBuilder(BOB).build();
-        Task buyFood = new TaskBuilder()
-                .withDescription("Buy Food")
-                .withDate("02/05/2018")
-                .withTime("19:00")
-                .withAssignor("Alice Pauline")
-                .withAssignee("Bob Choo")
-                .withStatus("Yet To Begin")
-                .build();
-        Task buyConfetti = new TaskBuilder(BUY_CONFETTI).build();
-        ClubBook expectedClubBook = new ClubBookBuilder()
-                .withMember(amy)
-                .withMember(bob)
-                .withTask(buyConfetti)
-                .withTask(buyFood)
-                .build();
 
-        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
-        expectedModel.logsInMember(AMY.getCredentials().getUsername().value,
-                AMY.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        boolean isEqual = expectedModel.equals(modelManager);
         assertEquals(expectedModel, modelManager);
     }
 
@@ -1508,12 +1797,10 @@ public class RemoveGroupCommandParserTest {
         ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
-            modelManager.assignTask(BUY_FOOD, BOB.getName());
+            modelManager.assignTask(BUY_FOOD, BOB.getMatricNumber());
         } catch (DuplicateTaskException dte) {
             assertEquals(expectedModel, modelManager);
-        } catch (MemberNotFoundException mnfe) {
-            fail("This exception should not be caught");
-        } catch (IllegalExecutionException iee) {
+        } catch (MemberNotFoundException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         }
     }
@@ -1528,13 +1815,11 @@ public class RemoveGroupCommandParserTest {
         ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
         expectedModel.logsInMember(AMY.getCredentials().getUsername().value, AMY.getCredentials().getPassword().value);
         try {
-            modelManager.assignTask(BUY_CONFETTI, BOB.getName());
-        } catch (DuplicateTaskException dte) {
+            modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
+        } catch (DuplicateTaskException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
         } catch (MemberNotFoundException mnfe) {
             assertEquals(expectedModel, modelManager);
-        } catch (IllegalExecutionException iee) {
-            fail("This exception should not be caught");
         }
     }
 
@@ -1549,15 +1834,10 @@ public class RemoveGroupCommandParserTest {
         expectedModel.logsInMember(BOB.getCredentials().getUsername().value, BOB.getCredentials().getPassword().value);
 
         try {
-            modelManager.assignTask(BUY_CONFETTI, AMY.getName());
-        } catch (DuplicateTaskException dte) {
+            modelManager.assignTask(BUY_CONFETTI, BOB.getMatricNumber());
+        } catch (DuplicateTaskException | MemberNotFoundException | TaskAlreadyAssignedException e) {
             fail("This exception should not be caught");
-        } catch (MemberNotFoundException mnfe) {
-            fail("This exception should not be caught");
-        } catch (IllegalExecutionException iee) {
-            assertEquals(expectedModel, modelManager);
         }
-
     }
 
     @Test
@@ -1596,7 +1876,7 @@ public class RemoveGroupCommandParserTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (TaskNotFoundException | DuplicateTaskException | IllegalExecutionException e) {
+        } catch (TaskNotFoundException | DuplicateTaskException | TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         }
 
@@ -1620,7 +1900,7 @@ public class RemoveGroupCommandParserTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (DuplicateTaskException | IllegalExecutionException | TaskNotFoundException e) {
+        } catch (DuplicateTaskException | TaskNotFoundException | TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         }
     }
@@ -1641,10 +1921,116 @@ public class RemoveGroupCommandParserTest {
 
         try {
             modelManager.changeStatus(taskToEdit, editedTask);
-        } catch (IllegalExecutionException iee) {
+        } catch (TaskStatusCannotBeEditedException e) {
             assertEquals(expectedModel, modelManager);
         } catch (TaskNotFoundException | DuplicateTaskException e) {
-            fail("This will not be executed");
+            fail("This will not execute");
+        }
+    }
+
+    @Test
+    public void changeAssignee_validAssignee_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        modelManager.changeAssignee(taskToEdit, editedTask);
+
+        assertEquals(expectedModel, modelManager);
+    }
+
+    @Test
+    public void changeAssignee_invalidMember_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setAssignee(new Assignee(CARL.getMatricNumber().toString()));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeAssignee(taskToEdit, editedTask);
+        } catch (MemberNotFoundException mnfe) {
+            assertEquals(expectedModel, modelManager);
+        } catch (TaskAlreadyAssignedException | DuplicateTaskException | TaskAssigneeUnchangedException e) {
+            return;
+        }
+    }
+
+    @Test
+    public void changeAssignee_unchangedAssignee_throwsException() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeAssignee(taskToEdit, editedTask);
+        } catch (TaskAssigneeUnchangedException e) {
+            assertEquals(expectedModel, modelManager);
+        } catch (TaskAlreadyAssignedException | DuplicateTaskException | MemberNotFoundException e) {
+            return;
+        }
+    }
+
+    @Test
+    public void changeAssignee_taskAlreadyAssigned_throwsException() {
+        Task buyFoodModified = new TaskBuilder(BUY_FOOD).build();
+        buyFoodModified.setAssignor(new Assignor(BENSON.getMatricNumber().toString()));
+        buyFoodModified.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD).withTask(buyFoodModified).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        Task taskToEdit = new Task(BUY_FOOD);
+        Task editedTask = new Task(taskToEdit);
+        editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+        ModelManager expectedModel = new ModelManager(clubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        try {
+            modelManager.changeAssignee(taskToEdit, editedTask);
+        } catch (TaskAlreadyAssignedException e) {
+            assertEquals(expectedModel, modelManager);
+        } catch (MemberNotFoundException | DuplicateTaskException | TaskAssigneeUnchangedException e) {
+            return;
         }
     }
 
@@ -1678,7 +2064,7 @@ public class RemoveGroupCommandParserTest {
                 BENSON.getCredentials().getPassword().value);
         try {
             modelManager.viewAllTasks();
-        } catch (TasksCannotBeDisplayedException tdbde) {
+        } catch (TasksAlreadyListedException e) {
             assertEquals(expectedModel, modelManager);
         }
     }
@@ -1719,6 +2105,26 @@ public class RemoveGroupCommandParserTest {
         String expectedMessage = ViewMyTasksCommand.MESSAGE_ALREADY_LISTED;
         Assert.assertThrows(TasksAlreadyListedException.class, modelManager::viewMyTasks);
         Assert.assertThrows(TasksAlreadyListedException.class, expectedMessage, modelManager::viewMyTasks);
+    }
+
+    @Test
+    public void deleteMember_validMemberWithTasks_success() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BOOK_AUDITORIUM)
+                .withTask(BUY_CONFETTI).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        modelManager.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        modelManager.deleteMember(BENSON);
+
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(ALICE).withTask(BUY_CONFETTI).build();
+        ModelManager expectedModel = new ModelManager(expectedClubBook, userPrefs);
+        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
+                ALICE.getCredentials().getPassword().value);
+
+        assertEquals(expectedModel, modelManager);
     }
 
 ```
@@ -2071,8 +2477,8 @@ public class TypicalTasks {
             .withDescription("Book Auditorium")
             .withDate("02/04/2018")
             .withTime("13:00")
-            .withAssignor("Benson Meier")
-            .withAssignee("Benson Meier")
+            .withAssignor("A8389539B")
+            .withAssignee("A8389539B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -2080,8 +2486,8 @@ public class TypicalTasks {
             .withDescription("Buy Confetti")
             .withDate("01/04/2018")
             .withTime("17:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("A9210701B")
+            .withAssignee("A9210701B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -2089,8 +2495,8 @@ public class TypicalTasks {
             .withDescription("Advertise event")
             .withDate("31/03/2018")
             .withTime("19:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("A9210701B")
+            .withAssignee("A9210701B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -2098,8 +2504,8 @@ public class TypicalTasks {
             .withDescription("Buy Food")
             .withDate("02/05/2018")
             .withTime("19:00")
-            .withAssignor("Alice Pauline")
-            .withAssignee("Alice Pauline")
+            .withAssignor("A9210701B")
+            .withAssignee("A9210701B")
             .withStatus("Yet To Begin")
             .build();
 
@@ -2304,36 +2710,36 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
 ###### \java\systemtests\AssignTaskCommandSystemTest.java
 ``` java
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_PERMISSIONS;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.CommandTestUtil.EMPTY_STRING;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_MATRIC_NUMBER_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_BENSON;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_BOB;
-import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_CARL;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BENSON;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_CARL;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_2;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_CONFETTI;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_FOOD;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_2;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_BENSON;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_NAME_CARL;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_BENSON;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_MATRIC_NUMBER_CARL;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
+import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.Name;
 import seedu.club.model.task.Date;
 import seedu.club.model.task.Description;
 import seedu.club.model.task.Time;
@@ -2355,9 +2761,9 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
          * command with leading spaces and trailing spaces -> added
          */
         String command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
 
-        String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+        String expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case:undo assigning BUY_FOOD to Benson -> BUY_FOOD deleted */
@@ -2372,37 +2778,37 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: assign task with all fields same as another task in address book except task description -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_CONFETTI + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: assign task with all fields same as another task in address book except task date -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: assign task with all fields same as another task in address book except task time -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_2 + " " + NAME_DESC_BENSON;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_BENSON);
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_2 + " " + MATRIC_NUMBER_DESC_BENSON;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_BENSON);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* Case: assign task with all fields same as another task in address book except task assignee -> added */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_CARL;
-        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_NAME_CARL);
+                + TASK_DATE_DESC_2 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_CARL;
+        expectedMessage = String.format(AssignTaskCommand.MESSAGE_SUCCESS, VALID_MATRIC_NUMBER_CARL);
         assertCommandSuccess(command, model, expectedMessage);
 
         /* --------------------------------- Perform invalid assigntask operations ------------------------------ */
         /* Case: member not found -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BOB;
+                + MATRIC_NUMBER_DESC_BOB;
         assertCommandFailure(command, AssignTaskCommand.MESSAGE_MEMBER_NOT_FOUND);
 
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, AssignTaskCommand.MESSAGE_DUPLICATE_TASK);
 
         /* --------------------- Perform assigntask operations on the shown filtered list ----------------------- */
@@ -2411,6 +2817,7 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
         String logoutCommand = " " + LogOutCommand.COMMAND_WORD;
         executeCommand(logoutCommand);
 
+        // login Benson
         logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(1).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
@@ -2419,13 +2826,14 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
          * command with leading spaces and trailing spaces -> REJECTED because Benson is not an EXCO member.
          */
         command = " " + AssignTaskCommand.COMMAND_WORD + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + NAME_DESC_CARL;
+                + TASK_DATE_DESC_1 + " " + TASK_TIME_DESC_1 + " " + MATRIC_NUMBER_DESC_CARL;
 
-        assertCommandFailure(command, MESSAGE_INVALID_PERMISSIONS);
+        assertCommandFailure(command, Messages.MESSAGE_REQUIRE_EXCO_LOG_IN);
 
         logoutCommand = " " + LogOutCommand.COMMAND_WORD;
         executeCommand(logoutCommand);
 
+        // login Alice
         logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
@@ -2433,17 +2841,17 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
 
         /* Case: missing description -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
         /* Case: missing date -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_TIME_DESC_1 + " " + TASK_DESCRIPTION_DESC_FOOD + " " + NAME_DESC_BENSON;
+                + TASK_TIME_DESC_1 + " " + TASK_DESCRIPTION_DESC_FOOD + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
         /* Case: missing time -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
-                + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_DATE_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
         /* Case: missing assignee -> rejected */
@@ -2451,38 +2859,36 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
                 + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + TASK_DESCRIPTION_DESC_FOOD;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
 
-        /* Case: missing description -> rejected */
+        /* Case: invalid command word -> rejected */
         command = "assignatask" + " " + TASK_DESCRIPTION_DESC_FOOD + " "
-                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + NAME_DESC_BENSON;
+                + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " " + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, MESSAGE_UNKNOWN_COMMAND);
 
         /* Case: invalid description -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + PREFIX_DESCRIPTION + EMPTY_STRING + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BENSON;
+                + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, Description.MESSAGE_DESCRIPTION_CONSTRAINTS);
 
         /* Case: invalid date -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + INVALID_DATE_DESC + " "
-                + NAME_DESC_BENSON;
+                + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, Date.MESSAGE_DATE_CONSTRAINTS);
 
         /* Case: invalid time -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + INVALID_TIME_DESC + " " + TASK_DATE_DESC_1 + " "
-                + NAME_DESC_BENSON;
+                + MATRIC_NUMBER_DESC_BENSON;
         assertCommandFailure(command, Time.MESSAGE_TIME_CONSTRAINTS
 
         );
 
-        /* Case: invalid name -> rejected */
+        /* Case: invalid matric number -> rejected */
         command = AssignTaskCommand.COMMAND_WORD + " "
                 + TASK_DESCRIPTION_DESC_FOOD + " " + TASK_TIME_DESC_1 + " " + TASK_DATE_DESC_1 + " "
-                + INVALID_NAME_DESC;
-        assertCommandFailure(command, Name.MESSAGE_NAME_CONSTRAINTS);
-
-
+                + INVALID_MATRIC_NUMBER_DESC;
+        assertCommandFailure(command, MatricNumber.MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
 
     }
 
@@ -2635,18 +3041,11 @@ public class DeleteTaskCommandSystemTest extends ClubBookSystemTest {
      * Performs the same verification as {@code assertCommandSuccess(String, Model, String)} except that the browser url
      * and selected card are expected to update accordingly depending on the card at {@code expectedSelectedCardIndex}.
      * @see DeleteCommandSystemTest#assertCommandSuccess(String, Model, String)
-     * @see ClubBookSystemTest#assertSelectedCardChanged(Index)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage,
                                       Index expectedSelectedCardIndex) {
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-
-        if (expectedSelectedCardIndex != null) {
-            assertSelectedCardChanged(expectedSelectedCardIndex);
-        } else {
-            assertSelectedCardUnchanged();
-        }
 
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();
@@ -2701,6 +3100,7 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_SUBJECT;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
@@ -2743,7 +3143,7 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         command = "  " + EmailCommand.COMMAND_WORD + "  " + PREFIX_GROUP + NON_EXISTENT_GROUP + " "
                 + PREFIX_CLIENT + VALID_CLIENT + " " + PREFIX_SUBJECT + Subject.TEST_SUBJECT_STRING
                 + " " + PREFIX_BODY + Body.TEST_BODY_STRING;
-        expectedResultMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP);
+        expectedResultMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, WordUtils.capitalize(NON_EXISTENT_GROUP));
         assertCommandFailure(command, expectedResultMessage);
 
         /* Case: valid command entered -> email client opened */
@@ -2804,14 +3204,15 @@ import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.RemoveGroupCommand.MESSAGE_SUCCESS;
+import static seedu.club.logic.commands.DeleteGroupCommand.MESSAGE_SUCCESS;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.RedoCommand;
-import seedu.club.logic.commands.RemoveGroupCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.model.Model;
 import seedu.club.model.group.Group;
@@ -2867,7 +3268,8 @@ public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
         command = " " + RemoveGroupCommand.COMMAND_WORD + " " + NON_EXISTENT_GROUP_DESC + " ";
         deletedGroup = deleteGroup(expectedModel, NON_EXISTENT_GROUP);
         assertEquals(null, deletedGroup);
-        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP, NON_EXISTENT_GROUP));
+        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP,
+                WordUtils.capitalize(NON_EXISTENT_GROUP)));
     }
 
     /**

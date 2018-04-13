@@ -118,7 +118,6 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
      * Verifications 1, 3 and 4 are performed by
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
-     * @see ClubBookSystemTest#assertSelectedCardChanged(Index)
      */
     private void assertCommandSuccess(String command, Index expectedSelectedCardIndex) {
         Model expectedModel = getModel();
@@ -129,11 +128,6 @@ public class SelectCommandSystemTest extends ClubBookSystemTest {
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
 
-        if (preExecutionSelectedCardIndex == expectedSelectedCardIndex.getZeroBased()) {
-            assertSelectedCardUnchanged();
-        } else {
-            assertSelectedCardChanged(expectedSelectedCardIndex);
-        }
 
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchanged();

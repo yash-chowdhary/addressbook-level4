@@ -1,5 +1,7 @@
 package seedu.club.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Clock;
 import java.util.Date;
 import java.util.logging.Logger;
@@ -19,8 +21,9 @@ import seedu.club.commons.events.model.ClubBookChangedEvent;
  */
 public class StatusBarFooter extends UiPart<Region> {
 
-    public static final String SYNC_STATUS_INITIAL = "Not updated yet in this session";
-    public static final String SYNC_STATUS_UPDATED = "Last Updated: %s";
+    public static final String SYNC_STATUS_INITIAL = "Not updated Club Connect yet in this session";
+    public static final String SYNC_STATUS_UPDATED = "Last Updated Club Connect at: %s";
+    public static final String SAVE_LOCATION = "Data saved in %s";
 
     /**
      * Used to generate time stamps.
@@ -64,7 +67,15 @@ public class StatusBarFooter extends UiPart<Region> {
     }
 
     private void setSaveLocation(String location) {
-        Platform.runLater(() -> this.saveLocationStatus.setText(location));
+        //@@author amrut-prabhu
+        try {
+            String saveFileLocation = new File(location).getCanonicalPath();
+            Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
+        } catch (IOException ioe) {
+            String saveFileLocation = new File(location).getAbsolutePath();
+            Platform.runLater(() -> this.saveLocationStatus.setText(String.format(SAVE_LOCATION, saveFileLocation)));
+        }
+        //@@author
     }
 
     private void setSyncStatus(String status) {

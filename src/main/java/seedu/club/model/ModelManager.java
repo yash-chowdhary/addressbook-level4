@@ -39,6 +39,7 @@ import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -174,7 +175,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateClubBookChanged();
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     @Override
     public void logsInMember(String username, String password) {
         requireAllNonNull(username, password);
@@ -210,17 +211,18 @@ public class ModelManager extends ComponentManager implements Model {
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
         getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
-
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
+        logger.fine("Member's profile photo has been set to: "
+                + getLoggedInMember().getProfilePhoto().getPhotoPath());
     }
 
     //@@author yash-chowdhary
     @Override
-    public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+    public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
 
-        clubBook.removeGroup(toRemove);
+        clubBook.deleteGroup(toRemove);
         indicateClubBookChanged();
     }
 
@@ -355,9 +357,12 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     @Override
     public void logOutMember() {
+        updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
         clubBook.logOutMember();
         updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
         updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
@@ -499,85 +504,45 @@ public class ModelManager extends ComponentManager implements Model {
         return numberMembers;
     }
 
-    @Override
-    public void exportClubConnectMembers(File exportFile) throws IOException {
-        requireNonNull(exportFile);
-        indicateNewExport(exportFile);
-
-        exportHeaders(exportFile);
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
-        for (Member member: members) {
-            exportMember(member);
-        }
-    }
-
     /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
+     * Raises a {@code NewMemberAvailableEvent} to indicate that {@code data} is to be written to {@code exportFile}.
      *
+     * @param exportFile CSV file to be exported to.
      * @param data Member data to be added to the file.
      * @throws IOException if there was an error writing to file.
      */
-    private void indicateNewExport(String data) throws IOException {
-        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(data);
+    private void indicateNewExport(File exportFile, String data) throws IOException {
+        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile, data);
         raise(newExportDataAvailableEvent);
-        if (!newExportDataAvailableEvent.isFileChanged()) {
+        if (!newExportDataAvailableEvent.isDataExported()) {
             throw new IOException();
         }
     }
 
-    /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
-     *
-     * @param exportFile CSV file to be exported to.
-     * @throws IOException if there was an error writing to file.
-     */
-    private void indicateNewExport(File exportFile) throws IOException {
-        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile);
-        raise(newExportDataAvailableEvent);
-        if (!newExportDataAvailableEvent.isFileChanged()) {
-            throw new IOException();
-        }
+    @Override
+    public void exportClubConnectMembers(File exportFile) throws IOException {
+        requireNonNull(exportFile);
+
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+        StringBuilder csvMemberList = new StringBuilder();
+        /*for (Member member: members) {
+            csvMemberList.append(getMemberDataToExport(member));
+        }*/
+        members.forEach(member -> csvMemberList.append(getMemberDataToExport(member)));
+        indicateNewExport(exportFile, csvMemberList.toString());
     }
 
     /**
-     * Returns true if {@code file} is empty.
-     */
-    private boolean isEmptyFile(File file) {
-        return file.length() == 0;
-    }
-
-    /**
-     * Exports the header fields of {@code Member} object if the file is empty.
-     */
-    private void exportHeaders(File exportFile) throws IOException {
-        if (isEmptyFile(exportFile)) {
-            String headers = CsvUtil.getHeaders();
-            indicateNewExport(headers);
-        }
-    }
-
-    /**
-     * Exports the information of {@code member} to the file.
+     * Returns the CSV representation of the data of a {@code member} that is to be exported.
      *
      * @param member Member whose data is to be exported.
-     */
-    private void exportMember(Member member) throws IOException {
-        String memberData = convertMemberToCsv(member);
-        indicateNewExport(memberData);
-    }
-
-    /**
-     * Returns the CSV representation of {@code member}.
-     *
-     * @param member Member who is to be converted to CSV format.
      * @return Member data in CSV format.
      */
-    private String convertMemberToCsv(Member member) {
+    private String getMemberDataToExport(Member member) {
         return CsvUtil.toCsvFormat(member);
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Changes the password of {@code member} in the clubBook
       * @param username
@@ -585,10 +550,12 @@ public class ModelManager extends ComponentManager implements Model {
      * @param newPassword
      */
     public void changePassword (String username, String oldPassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         clubBook.changePassword(username, oldPassword, newPassword);
         indicateClubBookChanged();
     }
+    //@@author
 
     //@@author amrut-prabhu
     //=========== Filtered Tag List Accessors =============================================================
@@ -637,14 +604,13 @@ public class ModelManager extends ComponentManager implements Model {
         filteredTasks.setPredicate(predicate);
     }
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     @Override
     public void signUpMember(Member member) throws MemberListNotEmptyException {
         clubBook.signUpMember(member);
         filteredMembers.setPredicate(PREDICATE_NOT_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
     }
-    //@@author
 
     @Override
     public void clearClubBook() {
@@ -662,7 +628,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void setClearConfirmation(Boolean b) {
         isConfirmedClear = b;
     }
-
+    //@@author
 
     @Override
     public ObservableList<Poll> getFilteredPollList() {

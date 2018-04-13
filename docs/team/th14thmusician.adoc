@@ -1,0 +1,59 @@
+= Song Weiyang - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: Club Connect
+
+---
+
+== Overview
+
+*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+It aims to make the tedious process of club management easier and more effective.
+
+*Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI). All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
+
+*Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/th14thmusician.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/yash-chowdhary.md[Test code]]
+
+== Summary of contributions
+
+* *Major enhancement*: added *Account Management*
+** What it does: It allows individual to set up a club by signing up and allows members of existing clubs to log into their own personal account. In addition to the sign up and log in features, users are able to change their password to ensure that their own account is secure.
+** Justification: This enhancement consist of 3 features which allows members to have their own personal account. Furthermore, it grants administrator rights to a group of users for them to execute commands that only administrator users can execute. This feature will allow administrator to manage member accounts as well.
+** Highlights: This enhancement affects existing commands and commands to be added in future. As almost every command executed will require the log in or sign up feature. Since we are using local database, this feature can be further improved by linking it to a backend server.
+
+* *Minor enhancement*: Revamped the User Interface of the select function.
+
+* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+
+* *Other contributions*:
+
+** Enhancements to existing features:
+*** Implemented Sort function where member shown will always be sorted in alphabetical order (Pull requests https://github.com[#97])
+*** Reported some existing bugs to teammates
+** Documentation:
+*** Did cosmetic tweaks to existing contents of the Developer Guide.
+** Community:
+*** Reported bugs and suggestions for other teams in the class.
+
+_{you can add/remove categories in the list above}_
+
+== Contributions to the User Guide
+
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=SignUp]
+
+== Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+include::../DeveloperGuide.adoc[tag=Signup]
+
+include::../DeveloperGuide.adoc[tag=Login]
+

@@ -24,6 +24,7 @@ import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -238,7 +239,7 @@ public class ClubBook implements ReadOnlyClubBook {
     }
     //@@author
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Logs in a member
      */
@@ -261,6 +262,7 @@ public class ClubBook implements ReadOnlyClubBook {
         Member member = syncWithMasterTagList(p);
         members.signup(member);
     }
+    //@@author
 
     //@@author yash-chowdhary
 
@@ -268,19 +270,19 @@ public class ClubBook implements ReadOnlyClubBook {
      * Removes the Group {@code toRemove} from the Club Book. Every member who was once a part of {@code toRemove}
      * will be assigned the default group - "member".
      */
-    public void removeGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
-        checkIfGroupIsMember(toRemove);
+    public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+        checkIfGroupIsMemberOrExco(toRemove);
         checkIfGroupIsPresent(toRemove);
-        removeGroupFromClubBook(toRemove);
+        deleteGroupFromClubBook(toRemove);
     }
 
     /**
      * Removes the Group {@code toRemove} from Club Connect.
      */
-    private void removeGroupFromClubBook(Group toRemove) {
+    private void deleteGroupFromClubBook(Group toRemove) {
         try {
             for (Member member : members) {
-                removeGroupFromMember(toRemove, member);
+                deleteGroupFromMember(toRemove, member);
             }
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
@@ -308,9 +310,10 @@ public class ClubBook implements ReadOnlyClubBook {
      * Checks if {@code toRemove} is "member".
      * @throws GroupCannotBeRemovedException if {@code toRemove} is "member".
      */
-    private void checkIfGroupIsMember(Group toRemove) throws GroupCannotBeRemovedException {
-        Group notToBeDeleted = new Group("member");
-        if (toRemove.equals(notToBeDeleted)) {
+    private void checkIfGroupIsMemberOrExco(Group toRemove) throws GroupCannotBeRemovedException {
+        Group groupMember = new Group("member");
+        Group groupExco = new Group("exco");
+        if (toRemove.equals(groupMember) || toRemove.equals(groupExco)) {
             throw new GroupCannotBeRemovedException();
         }
     }
@@ -318,7 +321,7 @@ public class ClubBook implements ReadOnlyClubBook {
     /**
      * Removes the Group {@code toRemove} from the {@code member} if the member's group matches the one to be removed.
      */
-    private void removeGroupFromMember(Group toRemove, Member member)
+    private void deleteGroupFromMember(Group toRemove, Member member)
             throws MemberNotFoundException {
         if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
             return;
@@ -439,7 +442,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
 
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                member.getGroup(), memberTags);
+                member.getGroup(), memberTags, member.getCredentials(), member.getProfilePhoto());
         try {
             updateMember(member, newMember);
         } catch (DuplicateMatricNumberException dme) {
@@ -448,8 +451,7 @@ public class ClubBook implements ReadOnlyClubBook {
         }
     }
 
-
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Change the password of {@code member} in the ClubBook.
      * @param username
@@ -457,13 +459,24 @@ public class ClubBook implements ReadOnlyClubBook {
      * @param newPassword
      */
     public void changePassword (String username, String oldpassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException {
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException {
         members.changePassword(username, oldpassword, newPassword);
     }
-    //@@author
+
+    @Override
+    public void setLoggedInMember(Member target) {
+        members.setCurrentlyLogInMember(target);
+    }
+
+    @Override
+    public Member getLoggedInMember() {
+        return members.getCurrentlyLogInMember();
+    }
     public void clearClubBook() {
         members.clear();
     }
+    //@@author
 
     //// util methods
     @Override
@@ -501,15 +514,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 && this.tags.equalsOrderInsensitive(((ClubBook) other).tags));
     }
 
-    @Override
-    public void setLoggedInMember(Member target) {
-        members.setCurrentlyLogInMember(target);
-    }
 
-    @Override
-    public Member getLoggedInMember() {
-        return members.getCurrentlyLogInMember();
-    }
 
     @Override
     public int hashCode() {

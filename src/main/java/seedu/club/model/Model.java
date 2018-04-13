@@ -18,6 +18,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
 import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
+import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
@@ -145,17 +146,17 @@ public interface Model {
      */
     void updateFilteredPollList(Predicate<Poll> predicate);
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Logs In a member in the club
      */
     void logsInMember(String username, String password);
 
-    //@@author Song Weiyang
     /**
      * Returns the member who is currently logged in to Club Connect.
      */
     Member getLoggedInMember();
+    //@@author
 
     //@@author amrut-prabhu
 
@@ -202,13 +203,13 @@ public interface Model {
     void updateFilteredTagList(Predicate<Tag> predicate);
 
     //@@author yash-chowdhary
-    void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
+    void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 
     void sendEmail(String recipients, Client client, Subject subject, Body body);
 
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Logs out a member from clubbook
      */
@@ -219,7 +220,7 @@ public interface Model {
     void deleteTask(Task taskToDelete) throws TaskNotFoundException, TaskCannotBeDeletedException;
 
     void updateFilteredTaskList(Predicate<Task> predicate);
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Changes the password of the member in that list
      * @param username
@@ -228,7 +229,8 @@ public interface Model {
      * @throws PasswordIncorrectException
      */
     void changePassword(String username, String oldPassword, String newPassword)
-            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException;
+            throws PasswordIncorrectException, DataToChangeIsNotCurrentlyLoggedInMemberException,
+            MatricNumberNotFoundException;
 
     /**
      * Signs up a member if the clubbook is empty

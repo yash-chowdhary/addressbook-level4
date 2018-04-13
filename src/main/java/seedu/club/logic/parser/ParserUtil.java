@@ -76,7 +76,7 @@ public class ParserUtil {
      */
     public static List<Index> parseIndices(String oneBasedIndexes) throws IllegalValueException {
         String trimmedIndexes = oneBasedIndexes.trim();
-        String[] stringIndexes = trimmedIndexes.split(" ");
+        String[] stringIndexes = trimmedIndexes.split("\\s+");
         List<Index> indexes = new ArrayList<>();
         for (String s : stringIndexes) {
             if (!StringUtil.isNonZeroUnsignedInteger(s)) {
@@ -185,7 +185,7 @@ public class ParserUtil {
         requireNonNull(email);
         return email.isPresent() ? Optional.of(parseEmail(email.get())) : Optional.empty();
     }
-    //@@author Song Weiyang
+    //@@author th14thmusician
     /**
      * Parses a {@code String username} into an {@code Username}.
      * Leading and trailing whitespaces will be trimmed.
@@ -249,7 +249,7 @@ public class ParserUtil {
     public static File parseImportPath(String path) throws IllegalValueException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotAbsoluteFilePath(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
@@ -264,11 +264,11 @@ public class ParserUtil {
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (FileUtil.isNotAbsoluteFilePath(file) || CsvUtil.isNotValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
-        file.createNewFile();
+        FileUtil.createIfMissing(file);
         return file;
     }
 

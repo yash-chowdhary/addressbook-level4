@@ -43,12 +43,12 @@ public class ChangeAssigneeCommand extends UndoableCommand {
 
     public static final String MESSAGE_CHANGE_SUCCESS = "Assignee of task - %1$s, changed successfully to "
             + "%2$s";
-    public static final String MESSAGE_NOT_CHANGED = "Assignee of task unchanged as the input assignee is "
-            + "same as the identified task's assignee!";
-    public static final String MESSAGE_DUPLICATE_TASK = "This operation would result in a duplicate task!";
+    public static final String MESSAGE_NOT_CHANGED = "Assignee of task is unchanged as the assignee provided is "
+            + "the same as the task's existing assignee.";
+    public static final String MESSAGE_DUPLICATE_TASK = "This operation would result in a duplicate task.";
     public static final String MESSAGE_ALREADY_ASSIGNED = "Assignee of task could not be changed as there is an "
-            + "identical task assigned to this member";
-    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member doesn't exist in the club book";
+            + "identical task assigned to this member.";
+    public static final String MESSAGE_MEMBER_NOT_FOUND = "This member does not exist in Club Connect.";
 
     private final Index index;
     private Task taskToEdit;

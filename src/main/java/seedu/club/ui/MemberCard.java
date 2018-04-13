@@ -21,8 +21,8 @@ public class MemberCard extends UiPart<Region> {
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
         "orange", "blue", "violet"};
     //@@author amrut-prabhu
-    private static final Integer PHOTO_WIDTH = 90;
-    private static final Integer PHOTO_HEIGHT = 120;
+    private static final Integer PHOTO_WIDTH = 100;
+    private static final Integer PHOTO_HEIGHT = 130;
     private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     private static final String EMPTY_STRING = "";
 

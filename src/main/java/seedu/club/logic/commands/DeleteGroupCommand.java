@@ -16,10 +16,10 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 /**
  * Removes a group from the Club Book
  */
-public class RemoveGroupCommand extends UndoableCommand {
+public class DeleteGroupCommand extends UndoableCommand {
 
-    public static final String COMMAND_WORD = "removegroup";
-    public static final String COMMAND_FORMAT = "removegroup g/ ";
+    public static final String COMMAND_WORD = "deletegroup";
+    public static final String COMMAND_FORMAT = "deletegroup g/ ";
     public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
             Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
     );
@@ -28,14 +28,14 @@ public class RemoveGroupCommand extends UndoableCommand {
             + "Parameters: "
             + PREFIX_GROUP + "GROUP";
 
-    public static final String MESSAGE_SUCCESS = "Group deleted from Club Connect: %1$s";
+    public static final String MESSAGE_SUCCESS = "Deleted group: %1$s";
 
     private final Group toRemove;
 
     /**
      * Creates an AddCommand to add the specified {@code member}
      */
-    public RemoveGroupCommand(Group group) {
+    public DeleteGroupCommand(Group group) {
         requireNonNull(group);
         toRemove = group;
     }
@@ -47,7 +47,7 @@ public class RemoveGroupCommand extends UndoableCommand {
         requireToLogIn();
         requireExcoLogIn();
         try {
-            model.removeGroup(toRemove);
+            model.deleteGroup(toRemove);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
         } catch (GroupNotFoundException gnfe) {
             throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, toRemove));
@@ -60,7 +60,7 @@ public class RemoveGroupCommand extends UndoableCommand {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof RemoveGroupCommand // instanceof handles nulls
-                && toRemove.equals(((RemoveGroupCommand) other).toRemove));
+                || (other instanceof DeleteGroupCommand // instanceof handles nulls
+                && toRemove.equals(((DeleteGroupCommand) other).toRemove));
     }
 }

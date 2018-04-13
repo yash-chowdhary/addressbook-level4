@@ -16,7 +16,7 @@ By: `Team W15-B4`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-Club Connect is an application targeted at club members who are students at the National University of Singapore (NUS).
+Club Connect is a computer application targeted at club members who are students at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier are more effective.
 It provides features that are essential for a club to function smoothly such as user authentication, assigning tasks, email blasts, conducting polls, and importing and exporting member details.
 This guide provides the necessary information for developers who are interested in contributing to the application - from the steps required to set-up, to detailed descriptions of the current features that the application sports.
@@ -343,7 +343,8 @@ The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, an
 If the `redoStack` is empty, then there are no other commands left to be redone, and an `Exception` will be thrown when popping the `redoStack`.
 
 The user now decides to execute a new command, `clear`. As before, `clear` will be pushed into the `undoStack`.
-This time the `redoStack` is no longer empty. It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern desktop applications follow). (Refer to figure 16)
+This time the `redoStack` is no longer empty.
+It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern computer applications follow). (Refer to figure 16)
 
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
 _Figure 16. State of `undoStack` and `redoStack` after executing `clear` command._
@@ -452,13 +453,13 @@ ClubConnect currently doesn't support sending emails to members belonging to BOT
 The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command.
 Refer to Figure 19 for the UML diagram.
 
-image::EmailCommandUML.png[width="600"]
+image::EmailCommandUML.png[width="800"]
 _Figure 19. EmailCommand UML Diagram_
 
 `EmailCommandParser` is responsible for parsing the `email` command. It returns a `EmailCommand` object after parsing `Client`, `Subject`, `Body`, `Group`, and `Tag`.
 Figure 20 depicts the sequence of parsing the command.
 
-image::SDforEmailCommandParser.png[width="650"]
+image::SDforEmailCommandParser.png[width="800"]
 _Figure 20. Sequence Diagram for Email Command parsing_
 
 [NOTE]
@@ -503,6 +504,337 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ** Cons: Older version browser will disallow auto-filling of email fields.
 // end::email[]
 
+// tag::tasks[]
+=== Task-Management
+Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `Exco` members.
+
+==== Current Implementation
+The task-management mechanism is facilitated by several command classes in Club Connect, namely: +
+
+* `AddTaskCommand`
+* `AssignTaskCommand`
+* `DeleteTaskCommand`
+* `ChangeTaskStatusCommand`
+* `ChangeAssigneeCommand`
+* `ViewAllTasksCommand`
+* `ViewMyTasksCommand`
+
+All of these commands require a member to be logged in (and thus by extension, an initial sign-up).
+Hence, they all share the following lines of code in their respective implementations:
+
+[source, java]
+requireToSignUp();
+requireToLogIn();
+
+
+Figure 22 below shows the UML diagram of the `Task` class.
+
+image::TaskUML.png[width="800"]
+_Figure 22. Task UML Diagram_
+
+Tasks consists of the following:
+
+* Description: Represents the description of a task.
+* Date: Represents the due date of a task.
+* Time: Represents the time before which a task must be completed.
+* Assignor: Represents the member who has assigned the task.
+* Assignee: Represents the member who has been assigned the task.
+* Status: Represents the status of a task - one of `Yet To Begin`, `In Progress`, and `Completed`.
+
+===== Adding Tasks
+---
+Adding Tasks is facilitated by the `AddTaskCommand`. When this command is invoked, it adds a task with the input `Description`, `Date`, and `Time`. The status of every newly created task is by default set to `Yet To Begin`. The `Assignor` and `Assignee` of the task is set to the `Matric Number` of the member who is currently logged into `Club Connect`.
+
+Figure 23 shows the flow of parsing an `AddTaskCommand` object:
+
+image::SDforAddTaskCommandParser.png[width="800"]
+_Figure 23. Sequence Diagram for `AddTaskCommand` parsing._
+
+The execution of the command invokes `Model#addTaskToTaskList()`. +
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
+    try {
+        Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+        Assignee assignee = new Assignee(clubBook.getLoggedInMember().getMatricNumber().toString());
+        Status status = new Status(Status.NOT_STARTED_STATUS);
+        toAdd.setAssignor(assignor);
+        toAdd.setAssignee(assignee);
+        toAdd.setStatus(status);
+        clubBook.addTaskToTaskList(toAdd);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    } catch (DuplicateTaskException dte) {
+        throw new DuplicateTaskException();
+    }
+}
+
+Figure 24 depicts the high-level sequence of events that take place.
+
+image::SDforAddTask.png[width="800"]
+_Figure 24. Sequence Diagram for adding a task._
+
+The task is displayed in the Task pane on the far right side.
+
+===== Assigning Tasks
+---
+
+Assigning tasks can be accomplished with the `AssignTaskCommand`. Tasks are assigned to members through the `Matric Number` attribute. +
+Thus, the following are the required parameters:
+
+* `Description`
+* `Date`
+* `Time`
+* `Matric Number`
+
+The implementation of assigning tasks is similar to that of adding tasks. The only difference is that the Assignor is set to the `Matric Number` of the member who is currently logged in.
+
+The parsing of an `AssignTaskCommand` is performed by the `AssignTaskCommandParser`. +
+Figure 25 shows the flow of parsing an `AssignTaskCommand` object:
+
+image::SDforAssignTaskCommandParser.png[width="800"]
+_Figure 25. Sequence Diagram for `AssignTaskCommand` parsing._
+
+The execution of the command invokes `Model#assignTask()`.
+The following code snippet shows the implementation:
+
+[source,java]
+@Override
+public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException {
+    checkIfMemberExists(matricNumber);
+    try {
+        Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
+        Assignee assignee = new Assignee(matricNumber.toString());
+        Status status = new Status(Status.NOT_STARTED_STATUS);
+        toAdd.setAssignor(assignor);
+        toAdd.setAssignee(assignee);
+        toAdd.setStatus(status);
+        clubBook.addTaskToTaskList(toAdd);
+        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+        indicateClubBookChanged();
+    } catch (DuplicateTaskException dte) {
+        throw new DuplicateTaskException();
+    }
+}
+
+Figure 26 depicts the high-level sequence of events that take place.
+
+image::SDforAssignTask.png[width="800"]
+_Figure 26. Sequence Diagram for assigning a task._
+
+
+===== Deleting Tasks
+---
+The 'DeleteTaskCommand` is used to delete a task. A task can only be deleted if the member who is currently logged in is either the `Assignor` or the `Assignee`. +
+The command object takes in the `INDEX` of the task to be deleted.
+
+`DeleteTaskCommandParser` is responsible for parsing the user input into a `DeleteTaskCommand` object. +
+Figure 27 illustrates the sequence in which the parsing is done.
+
+image::SDforDeleteTaskCommandParser.png[width="800"]
+_Figure 27. Sequence Diagram for `DeleteTaskCommand` parsing._
+
+The execution of the command invokes `Model#deleteTask()`.
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
+    Assignor assignor = targetTask.getAssignor();
+    Assignee assignee = targetTask.getAssignee();
+    String currentMember = getLoggedInMember().getMatricNumber().toString();
+    checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
+    clubBook.deleteTask(targetTask);
+    indicateClubBookChanged();
+}
+
+The high-level sequence of events is shown below in Figure 28.
+
+image::SDforDeleteTask.png[width="800"]
+_Figure 28. Sequence Diagram for deleting a task._
+
+
+===== Changing Task Status
+---
+
+Changing a task's status is made possible by the `ChangeTaskStatusCommand`. +
+The `Status` of a task can be changed to any one of the following:
+
+* [red]#Yet To Begin#
+* [yellow]#In Progress#
+* [green]#Completed#
+
+The input of the command is the `INDEX` of a task, and the desired `Status`.
+
+Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
+Figure 29 below depicts the parsing of the `ChangeTaskStatusObject`.
+
+image::SDforChangeTaskStatusCommandParser.png[width]"800" ]
+_Figure 29. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
+
+
+The execution of the command invokes `Model#changeStatus()`.
+The following code snippet shows the implementation:
+
+[source,java]
+@Override
+public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
+        DuplicateTaskException {
+    requireAllNonNull(taskToEdit, editedTask);
+    clubBook.updateTask(taskToEdit, editedTask);
+    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+    indicateClubBookChanged();
+}
+
+Figure 30 below describes the high-level sequence of events that take place.
+
+image::SDforChangeTaskStatus.png[width="800"]
+_Figure 30. Sequence Diagram for changing the status of a task._
+
+===== Viewing All Tasks
+---
+
+`Exco` members can view all the tasks in `Club Connect` using the `ViewAllTasksCommand`.
+
+The implementation makes use of a `Predicate` and is as follows:
+
+[source, java]
+@Override
+public void viewAllTasks() throws TasksCannotBeDisplayedException {
+    updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
+    indicateClubBookChanged();
+}
+
+The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 31.
+
+image::SDforViewAllTasks.png[width="800"]
+_Figure 31. Sequence Diagram for viewing all tasks._
+
+===== Viewing My Tasks
+---
+
+`Exco` members need a way to toggle between all tasks in `Club Connect` and the tasks that are related to them (i.e. tasks that they have assigned or been assigned to). This is achieved by the `ViewMyTasksCommand`.
+
+`Model#viewMyTasks()` is called during the execution of the command.
+Here is the implementation:
+
+[source,java]
+@Override
+public void viewMyTasks() throws TasksAlreadyListedException {
+    checkIfTasksAreAlreadyListed();
+    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
+}
+
+As shown in the implementation above, the method invokes the `checkIfTasksAreAlreadyListed()` method which throws `TasksAlreadyListedException` if the tasks are already listed.
+
+The sequence diagram of the command is shown below in Figure 32.
+
+image::SDforViewMyTasks.png[width="800"]
+_Figure 32. Sequence Diagram for viewing tasks of the currently logged-in member._
+
+
+==== Design Considerations
+===== Aspect: Displaying similar tasks for different Assignees
+* **Alternative 1 (current choice)**: Make a copy of the task for every new `Assignee` if all other parameters are same.
+** Pros: Easy to implement
+** Cons: Clutters the `TaskListPanel` because of redundancies.
+* **Alternative 2:** Maintain a list of `Assignee` s in a task .
+** Pros: Reduces clutter in the `TaskListPanel` and is easy on the eye.
+** Cons: Relatively difficult to implement.
+
+// end::tasks[]
+
+// tag::removegroup[]
+=== Delete Group Mechanism
+==== Current Implementation
+
+The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It allows `Exco` members to delete a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
+
+The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 33 below depicts the UML representation of the `Command`.
+
+image::DeleteGroupCommandUML.png[width="200" height="200"]
+_Figure 33. UML Diagram of `DeleteGroupCommand`._
+
+`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 34.
+
+image::SDforDeleteGroupCommandParser.png[width="800"]
+_Figure 34. Sequence Diagram for the parsing of `DeleteGroupCommand`._
+
+The execution invokes `Model#deleteGroup()` with the `Group` ```toRemove``` as a parameter. This further invokes the method `ClubBook#deleteGroup()`. Here is the implementation:
+
+[source, java]
+@Override
+public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+    checkIfGroupIsMemberOrExco(toRemove);
+    checkIfGroupIsPresent(toRemove);
+    deleteGroupFromClubBook(toRemove);
+}
+
+`ClubBook#deleteGroup()` further calls `ClubBook#deleteGroupFromClubBook()`.
+
+[source, java]
+private void deleteGroupFromClubBook(Group toRemove) {
+    try {
+        for (Member member : members) {
+            deleteGroupFromMember(toRemove, member);
+        }
+    } catch (MemberNotFoundException mnfe) {
+        throw new AssertionError("Impossible: original member is obtained from the club book.");
+    }
+}
+
+The final method called is `ClubBook#deleteGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toRemove```, to `member`.
+
+[source, java]
+private void deleteGroupFromMember(Group toRemove, Member member)
+        throws MemberNotFoundException {
+    if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
+        return;
+    }
+    Group defaultGroup = new Group(Group.DEFAULT_GROUP);
+    Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
+            defaultGroup, member.getTags());
+    try {
+        updateMember(member, newMember);
+    } catch (DuplicateMatricNumberException dme) {
+        throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
+                + "See member#equals(Object).");
+    }
+}
+
+The high-level sequence of events is depicted in Figure 35 below.
+
+image::SDforDeleteGroup.png[width="800"]
+_Figure 35. Sequence Diagram for delete a group from `Club Connect`._
+
+
+==== Design Considerations
+===== Aspect: Implementation of `DeleteGroupCommand`
+* **Alternative 1 (current choice)**: Overwrite the relevant `Member` objects with new `Member` objects.
+** Pros: Easy to implement.
+** Cons: Requires looping through all the members in `Club Connect`.
+* **Alternative 2:** To maintain a `UniqueGroupList`
+** Pros: Cleaner implementation.
+** Cons: Relatively difficult to implement.
+
+// end::removegroup[]
+
+// tag::import[]
+=== Importing Members
+==== Current Implementation
+Lorem ipsum dolor sit amet
+
+// end::import[]
+
+// tag::export[]
+=== Exporting Members
+==== Current Implementation
+Lorem ipsum dolor sit amet
+
+// end::export[]
+
 // tag::profilephoto[]
 === Changing Profile Photo Mechanism
 ==== Current Implementation
@@ -519,24 +851,24 @@ image::ChangeProfilePhotoCommandUML.png[width="350"]
 _Figure 22. ChangeProfilePhotoCommand UML Diagram_
 
 The `displaypic` command involves the use of multiple components of Club Connect.
-Below, Figure 23 shows the interactions betweeen these components.
+Below, Figure 36 shows the interactions betweeen these components.
 As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
 
 image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 23. High Level Sequence Diagram for `changepic PATH` Command_
+_Figure 36. High Level Sequence Diagram for `changepic PATH` Command_
 
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 24 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+Figure 37 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 24. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+_Figure 37. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command_
 
 The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
 
 The actual reading of the profile photo from the path provided is done by the `Storage` component.
-It copies the photo to the Club Connect application's resources.
+It copies the photo as a <<bmp,bitmap image file>> (.bmp) to the Club Connect application's resources.
 
 The code used for reading and copying the file is as follows:
 
@@ -550,24 +882,23 @@ public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
         logger.info("Profile Photo is being read from " + originalPhotoPath);
 
         URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
-        originalPhoto = ImageIO.read(photoUrl);
+        newPath = SAVE_PHOTO_DIRECTORY + newPhotoName + PHOTO_FILE_EXTENSION;
+        InputStream photoStream = photoUrl.openStream();
 
-        String saveAs = newPhotoName + FILE_EXTENSION;
-        File newPath = new File(getCurrentDirectory() + SAVE_PHOTO_DIRECTORY, saveAs);
-
-        createPhotoFileCopy(originalPhoto, newPath);
+        createPhotoFileCopy(photoStream, newPath);
     } catch (IOException ioe) {
         // ... exception handling ...
     }
 }
 
-public static String getCurrentDirectory() {
-    // ... getting current directory logic ...
-}
-
-public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws IOException {
+public void createPhotoFileCopy(InputStream photoStream, String newPath) throws PhotoWriteException {
     // ... logging ...
-    ImageIO.write(originalPhoto, "png", newPath);
+    try {
+        FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
+        Files.copy(photoStream, Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException ioe) {
+        // ... exception handling ...
+    }
 }
 ----
 
@@ -580,6 +911,7 @@ The logged in member's details are then updated to include this new profile phot
 * **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo.
 ** Pros: Makes intuitive sense, easy to implement.
 ** Cons: There is no way for Exco members to ensure that members have appropriate profile photos.
+
 * **Alternative 2**: Exco members can change any member's profile photo.
 ** Pros: Gives Exco members a way to exercise control over members' profile photos.
 ** Cons: Implementation becomes more complicated.
@@ -590,46 +922,72 @@ The logged in member's details are then updated to include this new profile phot
 ** Pros: Makes application portable and non-dependent on the rest of the system.
    Members can delete the original file from the computer, without affecting the Club Connect Application.
 ** Cons: Changes made to the original source images are not reflected in the application.
+
 * **Alternative 2**: Always read the profile photo from the file path provided.
 ** Pros: Changes made in the source image are reflected in the application.
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
 // end::profilephoto[]
-// end::profilephoto[]
 
+// tag::deletetag[]
+=== Delete Tag Mechanism
+==== Current Implementation
+
+The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
+It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
+
+The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
+Figure 38 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+
+image::placeholder.png[width="200" height="200"]
+_Figure 38. UML Diagram of `DeleteTagCommand`._
+
+==== Design Considerations
+===== Aspect: Implementation of `DeleteTagCommand`
+Lorem ipsum dolor sit amet
+// end::deletetag[]
+
+// tag::uitheme[]
+=== UI Look and Feel
+==== Current Implementation
+Lorem ipsum dolor sit amet
+
+// end::uitheme[]
+
+// tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
-Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 22) or compressed(Figure 23).
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 39) or compressed(Figure 40).
 
 image::DecompressedMemberCards.png[width="300"]
-_Figure 22. Decompressed Member Cards_
+_Figure 39. Decompressed Member Cards_
 
 image::CompressedCards.png[width="300"]
-_Figure 23. Compressed Member Cards_
+_Figure 40. Compressed Member Cards_
 
 The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
-To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 24) since a `CompressedMemberCard` is a `MemberCard`.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 41) since a `CompressedMemberCard` is a `MemberCard`.
 Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
 
 image::MemberCardClassDiagram.png[width="300"]
-_Figure 24. `MemberCard` class diagram_
+_Figure 41. `MemberCard` class diagram_
 
 The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
 These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
 
 Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
 
-Suppose that the user has just launched the application. The member cards would be decompressed (Figure 22).
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 42).
 
-The user inputs 'compress' and the sequence diagram (Figure 24) below shows how the different components interact.
+The user inputs 'compress' and the sequence diagram (Figure 42) below shows how the different components interact.
 
 image::SDforCompressToEventsCenter.png[width="800"]
-_Figure 25. Sequence diagram for compress command to Events Center_
+_Figure 42. Sequence diagram for compress command to Events Center_
 
-Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 25). If the cards are already compressed, no changes occur.
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 43). If the cards are already compressed, no changes occur.
 However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
 
 image::SDforCompressFromEventsCenter.png[width="800"]
-_Figure 26. Sequence diagram for compress command from Events Center_
+_Figure 43. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
@@ -640,6 +998,7 @@ just for compress/decompress but for other events as well.
 * **Alternative 2:** Keep a `Ui` attribute in every command just like `Model`
 ** Pros: Easy to implement.
 ** Cons: Increases coupling
+// end::compressdecompress[]
 
 === Logging
 
@@ -687,10 +1046,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 19 below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 44 below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 19. Screenshot of saving documentation as PDF in Chrome_
+_Figure 44. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -851,17 +1210,17 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 [TIP]
 Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 21.
+. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 46.
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
-_Figure 20. Member details before modification_
+_Figure 45. Member details before modification_
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
-_Figure 21. Member details after modification_
+_Figure 46. Member details after modification_
 +
 ****
 * Hints
@@ -876,15 +1235,18 @@ _Figure 21. Member details after modification_
 
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
+Figure 47 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 22. ResultDisplay before modification_
+_Figure 47. ResultDisplay before modification_
 +
 **After**
 +
+Figure 48 below shows the `ResultDisplay` after the modification.
++
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 23. ResultDisplay after modification_
+_Figure 48. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -902,15 +1264,19 @@ _Figure 23. ResultDisplay after modification_
 
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
+Figure 49 below shows the `StatusBarFooter` before the modification.
++
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 24. StatusBarFooter before modification_
+_Figure 49. StatusBarFooter before modification_
++
+Figure 50 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 25. StatusBarFooter after modification_
+_Figure 50. StatusBarFooter after modification_
 +
 ****
 * Hints
@@ -1092,9 +1458,13 @@ Club Connect provides student organisations with a one-stop shop for all their m
 +
 Each member of a student club / organization is responsible for carrying out tasks that are assigned to him/her. Managing tasks encompasses adding tasks or maintaining a To-Do List for yourself, being assigned tasks by Exco members, removing a task from the list once it has been completed, and updating a task's status. This ensures transparency and accountability of the club.
 
-* Minor Feature: Email Command
+* Minor Feature: Email Command + Auto-Complete + Group Management
 +
-Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+** Every student club / organisation makes use of email blasts to communicate with its members. Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
+
+** In situations where it is quite tedious to enter all of the parameters of a command, the auto-complete feature is a life-saver. Designed to reduce the chances of entering an invalid command format, it also comes to the aid of forgetful users of the application.
+
+** Every student club/organisation is sub-divided into sub-committees - each with a different set of responsibilities. `Groups` in `Club Connect` emulate this. Furthermore, a club should be given the option to do as it pleases with its sub-committees - rename them, shuffle members, and even remove the sub-committee if need be.
 
 2. Amrut Prabhu
 
@@ -1112,11 +1482,11 @@ Adding a profile photo makes it easier to know what other members look like and 
 
 * Major Feature: Polling system
 +
-Exco members can create polls and look at the results to help ascertain the needs and want of other members. Members can vote for polls to express what they require from the club.
+Exco members can create polls and look at the results to help ascertain the needs and wants of other members. Members can vote for polls to express what they require from the club.
 
-* Minor Feature: Findby Command
+* Minor Feature: Compress/Decompress feature
 +
-Instead of just finding a member by name, Findby Command is used to search members by a specified field which includes: Name, Phone, Email, Matric Number, Tags and Group. This increases navigability of the contacts inside Club Connect.
+Users can use compress command to clear clutter from member information in member list. Users can use decompress command to see more information about members in member list.
 
 4. Song Weiyang
 
@@ -1506,30 +1876,56 @@ Use case ends.
 _{More to be added}_
 
 [appendix]
+
+// tag::glossary[]
+
 == Glossary
 
 [[abstraction]] Abstraction::
+In Object-oriented Programming, abstraction is the mechanism by which users are provided with only the functionality, and not the implementation details.
+So, abstraction provides users with information on what an object does, rather than how it does it.
 
 [[attribute]] Attribute::
-An attribute is a type of detail of a member. For example, an attribute of a member could be phone number, email, matric number and so on.
+An attribute is a type of detail of a member.
+For example, an attribute of a member could be phone number, email, matriculation number and so on.
+
+[[bmp]] Bitmap Image File::
+Bitmap Image file (BMP) is a file format that stores bitmap graphics data.
+It is device independent and you do not need a graphics adapter to display it.
+Images stored as BMP files can be losslessly compressed.
 
 [[club]] Club::
-A student organisation or association at the National University of Singapore. These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups. Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+A student organisation or association at the National University of Singapore.
+These include (but are not limited to) Faculty/Non-Faculty clubs, Academic/Non-Academic Societies, Interest Groups and Sports groups.
+Some examples include Computing Club, Mathematics Society and Basketball Varsity Team.
+
+[[clubbook]] Club Book::
+The internal database of Club Connect that stores member, task and poll information.
 
 [[cli]] CLI::
-Acronym for Command Line Inerface. It is a purely text-based interface for software. User respond to visual prompts by typing single commands into the interface and receive results as text as well.
+Acronym for Command Line Interface. It is a purely text-based interface for software.
+User respond to visual prompts by typing single commands into the interface and receive results as text as well.
 An example of CLI would be MS-DOS.
 
 [[csv]] CSV::
+A comma-separated values (CSV) file is a text file that uses a comma (",") to separate values.
+This allows data to be saved in a table structured format.
 
 [[entry]] Entry::
 A value added to a member's attribute.
 
 [[exco-member]] Exco member::
-A member who is part of the Executive committee of the club. Exco members are seen as the leaders of the club. Exco members can execute certain commands and view features that are not available to other members of the club.
+A member who is part of the Executive Committee of the club.
+Exco members are seen as the leaders of the club.
+Exco members can execute certain commands and view features that are not available to other members of the club.
+
+[NOTE]
+An Exco member is still regarded as a member.
 
 [[gui]] GUI::
-Acronnym for Graphical User Interface. In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information. Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
+Acronnym for Graphical User Interface.
+In a GUI, the software interface consists of graphical icons, menus and/or other visual indicators to display information.
+Users can typically interact with these graphics, rather than just using text in the <<cli,command line>>.
 For example, all Windows operating systems have a GUI.
 
 [[mainstream-os]] Mainstream OS::
@@ -1538,33 +1934,13 @@ Windows, Linux, Unix, OS-X
 [[member]] Member::
 One of the members who compose a group organization. They are the target users of our application.
 
-[NOTE]
-An Exco member is also regarded as a member.
-
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
 
 [[profile]] Profile::
 Visual display of the information (attributes and entries) of a member.
 
-[[uml]] UML Diagram::
-
-[appendix]
-== Product Survey
-
-*Product Name*
-
-Author: ...
-
-Pros:
-
-* ...
-* ...
-
-Cons:
-
-* ...
-* ...
+// end::glossary[]
 
 [appendix]
 == Instructions for Manual Testing
@@ -1588,8 +1964,6 @@ These instructions only provide a starting point for testers to work on; testers
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
 
-_{ more test cases ... }_
-
 === Deleting a member
 
 . Deleting a member while all members are listed
@@ -1601,13 +1975,3 @@ _{ more test cases ... }_
    Expected: No member is deleted. Error details shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
-
-_{ more test cases ... }_
-
-=== Saving data
-
-. Dealing with missing/corrupted data files
-
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
-
-_{ more test cases ... }_

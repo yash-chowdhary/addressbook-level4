@@ -12,7 +12,7 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 
 === Yash Chowdhary
 image::yash-chowdhary.png[width="150", align="left"]
-{empty}[https://github.com/yash-chowdhary[github]] [<<yashchowdhary#, portfolio>>]
+{empty}[https://github.com/yash-chowdhary[github]] [https://github.com/CS2103JAN2018-W15-B4/main/tree/master/docs/team/yash-chowdhary.adoc[portfolio]]
 
 Role: Team lead +
 Responsibilities: In charge of Model, Deliverables and deadlines
@@ -21,10 +21,17 @@ Responsibilities: In charge of Model, Deliverables and deadlines
 
 === Amrut Prabhu
 image::amrut-prabhu.png[width="150", align="left"]
-{empty}[https://github.com/amrut-prabhu[github]] [<<amrutprabhu#, portfolio>>]
+{empty}[https://github.com/amrut-prabhu[github]] [https://github.com/CS2103JAN2018-W15-B4/main/tree/master/docs/team/amrut-prabhu.adoc[portfolio]]
 
 Role: DevOps +
-Responsibilities: In charge of Logic, Documentation and Project Management
+Responsibilities:
+
+* Implementation of importing and exporting data of members
+* Implementation of profile photo
+* Look and feel of the UI
+* Developer guide documentation
+* Code clean up and consistency
+* Project management
 
 '''
 

@@ -276,7 +276,6 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
      * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      *
      * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
-     * @see ClubBookSystemTest#assertSelectedCardChanged(Index)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage,
                                       Index expectedSelectedCardIndex) {
@@ -284,11 +283,6 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertCommandBoxShowsDefaultStyle();
-        if (expectedSelectedCardIndex != null) {
-            assertSelectedCardChanged(expectedSelectedCardIndex);
-        } else {
-            assertSelectedCardUnchanged();
-        }
         assertStatusBarUnchangedExceptSyncStatus();
     }
 

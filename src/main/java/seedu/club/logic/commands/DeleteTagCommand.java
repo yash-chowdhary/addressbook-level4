@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -27,7 +29,7 @@ public class DeleteTagCommand extends UndoableCommand {
             + "Parameters: TAG (must be an existing tag)\n"
             + "Example: " + COMMAND_WORD + " t/EventHelper";
 
-    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted Tag: %1$s";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted tag: %1$s";
     public static final String MESSAGE_NON_EXISTENT_TAG = "This tag does not exist in Club Connect.";
 
     private Tag tagToDelete;
@@ -44,6 +46,7 @@ public class DeleteTagCommand extends UndoableCommand {
         requireExcoLogIn();
         try {
             model.deleteTag(tagToDelete);
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(MESSAGE_NON_EXISTENT_TAG);

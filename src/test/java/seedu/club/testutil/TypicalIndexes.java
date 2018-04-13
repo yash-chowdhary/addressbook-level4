@@ -16,6 +16,9 @@ public class TypicalIndexes {
     public static final Index INDEX_FIRST_POLL = Index.fromOneBased(1);
     public static final Index INDEX_SECOND_POLL = Index.fromOneBased(2);
 
+    public static final Index INDEX_FIRST_ANSWER = Index.fromOneBased(1);
+    public static final Index INDEX_SECOND_ANSWER = Index.fromOneBased(2);
+
     public static final Index INDEX_FIRST_TASK = Index.fromOneBased(1);
     public static final Index INDEX_SECOND_TASK = Index.fromOneBased(2);
 }

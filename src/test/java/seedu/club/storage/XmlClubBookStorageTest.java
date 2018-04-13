@@ -83,7 +83,7 @@ public class XmlClubBookStorageTest {
         ReadOnlyClubBook readBack = xmlClubBookStorage.readClubBook(filePath).get();
         assertEquals(original, new ClubBook(readBack));
 
-        //Modify data, overwrite exiting file, and read back
+        //Modify data, overwrite existing file, and read back
         original.addMember(HOON);
         original.removeMember(ALICE);
         xmlClubBookStorage.saveClubBook(original, filePath);
