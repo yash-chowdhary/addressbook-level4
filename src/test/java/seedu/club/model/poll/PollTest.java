@@ -21,7 +21,7 @@ public class PollTest {
                 .withAnswers(VALID_ANSWER_ONE, VALID_ANSWER_TWO)
                 .withPolleesMatricNumbers(VALID_MATRIC_NUMBER_AMY, VALID_MATRIC_NUMBER_BOB)
                 .build();
-        assertEquals(poll.toString(), "[ " + new Question(VALID_QUESTION_LIFE) + " ]"
-                + PREFIX_ANSWER + VALID_ANSWER_ONE + "," + PREFIX_ANSWER + VALID_ANSWER_TWO);
+        assertEquals(poll.toString(), "[ " + new Question(VALID_QUESTION_LIFE) + " ] "
+                + PREFIX_ANSWER + VALID_ANSWER_ONE + ", " + PREFIX_ANSWER + VALID_ANSWER_TWO);
     }
 }
