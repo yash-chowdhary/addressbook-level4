@@ -102,7 +102,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
      */
     public void loadDetails (Boolean show) {
         int size = gridPane.getChildren().size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 1; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);
         }
     }
