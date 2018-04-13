@@ -164,7 +164,6 @@ public class ModelManager extends ComponentManager implements Model {
     public void voteInPoll(Poll poll, Index answerIndex)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         requireAllNonNull(poll, answerIndex);
-
         clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
         indicateClubBookChanged();
     }
