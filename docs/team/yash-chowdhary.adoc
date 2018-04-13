@@ -42,34 +42,6 @@ include::../DeveloperGuide.adoc[tag=removegroup]
 #End of Extract (from Developer Guide)#
 
 ---
-=== Enhancement Added: Email Feature
-
-==== External Behavior
-
----
-#Start of Extract (from User Guide)#
-
-include::../UserGuide.adoc[tag=email]
-
-#End of Extract (from User Guide)#
-
----
-
-==== Justification
-Every student club / organisation makes use of email blasts to communicate with its members.
-Whether it is for general communication or for club-related events, the ability to email members is essential to the smooth functioning of an organization.
-
----
-==== Implementation
-
----
-#Start of Extract (from Developer Guide)#
-
-include::../DeveloperGuide.adoc[tag=email]
-
-#End of Extract (from Developer Guide)#
-
----
 === Enhancement Added: Task-Management
 
 ==== External Behaviour
@@ -119,7 +91,7 @@ include::../UserGuide.adoc[tag=viewalltasks]
 
 include::../UserGuide.adoc[tag=viewmytasks]
 
-#Start of Extract (from User Guide)#
+#End of Extract (from User Guide)#
 
 ---
 === Justification
@@ -153,7 +125,9 @@ Data privacy is a hot topic in today's world. When personal data falls into the 
 
 #Start of Extract (from Developer Guide)#
 
-include::../DeveloperGuide.adoc[tag=dataencryption]
+include::../DeveloperGuide.adoc[tag=dataencryption1]
+
+include::../DeveloperGuide.adoc[tag=dataencryption2]
 
 #End of Extract (from Developer Guide)#
 
@@ -172,7 +146,7 @@ include::../DeveloperGuide.adoc[tag=dataencryption]
 == Project: NUS Sports Update
 
 === Overview
-The main source of motivation behind this project is the lack of real time organized information regarding sports events on campus – fixtures, timings, and (most importantly) results, unless you know somebody on the team or unless you yourself are a part of the team. The app also seeks to eliminate the use of Google forms and other unofficial means of signing up and indication of interest, that may be easily missed by a significant number of students. This application seeks to take care of these problems and mainly caters to the needs of NUS students. The user-friendliness of the app makes the job of the organizers simpler by providing organized access to all information. Live-scores and fixtures help engage more students in the sports events around campus, and improve the reach of these events.
+The main source of motivation behind this project is the lack of real time organized information regarding sports events on campus – fixtures, timings, and (most importantly) results. The app also seeks to eliminate the use of Google forms and other unofficial means of signing up. Live-scores and fixtures help engage more students in the sports events around campus and improve the reach of these events.
 
 
 link:https://github.com/O-impossible/NUS_Sports_Update[`Link to GitHub Repository`]

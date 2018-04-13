@@ -404,12 +404,14 @@ _Figure 18. Activity Diagram for Undo-Redo_
 Furthermore, the "Single Responsibility" and "Separation of Concerns" principles are violated as `HistoryManager` now needs to do two * different things.
 // end::undoredo[]
 
-// tag::dataencryption[]
+// tag::dataencryption1[]
 === [Proposed] Data Encryption
 ==== Rationale
 Data encryption is key to any App that deals with personal data of individuals.
 
 We plan to use Symmetric Key Encryption to ensure the confidentiality of data.
+
+// end::dataencryption1[]
 
 ==== How Symmetric Key Encryption works
 Symmetric key encryption is an encryption philosophy where the two communicating parties share a pre-established secret key *k*.
@@ -420,6 +422,7 @@ The 2 algorithms `E` and `D` are efficient algorithms, such that:
 * *D*(*E*(*k*,m)) = m, where 'm' is the message that needs to be kept confidential.
 * For *k* chosen uniformly at random, *E*(*k*,m) gives no additional information about 'm' to an adversary.
 
+// tag::dataencryption2[]
 ==== Proposed Implementation
 We plan to make use of classes that are defined in Javax's Crypto package.
 
@@ -432,7 +435,7 @@ The construction of a symmetric key is done by passing the algorithm the encrypt
 We plan to use the Advanced Encryption Scheme (AES) algorithm. For that reason, we will use a 128-bit AES symmetric key.
 
 Once the key is generated, all data will be encrypted with AES. Anyone who wishes to view the decrypted form of the data must possess the secret key.
-// end::dataencryption[]
+// end::dataencryption2[]
 
 // tag::email[]
 === Email Mechanism
@@ -453,13 +456,13 @@ Club Connect currently doesn't support sending emails to members belonging to BO
 The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command.
 Refer to Figure 19 for the UML diagram.
 
-image::EmailCommandUML.png[width="800"]
+image::EmailCommandUML.png[width="500"]
 _Figure 19. EmailCommand UML Diagram_
 
 `EmailCommandParser` is responsible for parsing the `email` command. It returns a `EmailCommand` object after parsing `Client`, `Subject`, `Body`, `Group`, and `Tag`.
 Figure 20 depicts the sequence of parsing the command.
 
-image::SDforEmailCommandParser.png[width="800"]
+image::SDforEmailCommandParser.png[width="600"]
 _Figure 20. Sequence Diagram for Email Command parsing_
 
 [NOTE]
@@ -476,7 +479,7 @@ The `EmailCommand#execute()` calls the following methods of `model`:
 `EmailCommand#sendEmail()` raises an event `SendEmailRequestEvent`, which triggers the system's default browser to open the chosen mail client's 'Compose Message' page with all the relevant fields filled-in.
 Figure 21 depicts the high-level sequence of events that take place.
 
-image::SDforEmail.png[width="800"]
+image::SDforEmail.png[width="600"]
 _Figure 21. Sequence Diagram for Email Command_
 
 
@@ -509,27 +512,13 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `Exco` members.
 
 ==== Current Implementation
-The task-management mechanism is facilitated by several command classes in Club Connect, namely: +
+The task-management mechanism is facilitated by several command classes in Club Connect, which will be covered in subsequent sub-sections.
 
-* `AddTaskCommand`
-* `AssignTaskCommand`
-* `DeleteTaskCommand`
-* `ChangeTaskStatusCommand`
-* `ChangeAssigneeCommand`
-* `ViewAllTasksCommand`
-* `ViewMyTasksCommand`
-
-All of these commands require a member to be logged in (and thus by extension, an initial sign-up).
-Hence, they all share the following lines of code in their respective implementations:
-
-[source, java]
-requireToSignUp();
-requireToLogIn();
-
+Task-management commands require a member to be logged in (and thus by extension, an initial sign-up).
 
 Figure 22 below shows the UML diagram of the `Task` class.
 
-image::TaskUML.png[width="800"]
+image::TaskUML.png[width="500"]
 _Figure 22. Task UML Diagram_
 
 Tasks consists of the following:
@@ -552,33 +541,13 @@ _Figure 23. UML diagram of `AddTaskCommand`._
 
 Figure 24 shows the flow of parsing an `AddTaskCommand` object:
 
-image::SDforAddTaskCommandParser.png[width="800"]
+image::SDforAddTaskCommandParser.png[width="600"]
 _Figure 24. Sequence Diagram for `AddTaskCommand` parsing._
 
-The execution of the command invokes `Model#addTaskToTaskList()`. +
-The following code snippet shows the implementation:
-
-[source, java]
-@Override
-public void addTaskToTaskList(Task toAdd) throws DuplicateTaskException {
-    try {
-        Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
-        Assignee assignee = new Assignee(clubBook.getLoggedInMember().getMatricNumber().toString());
-        Status status = new Status(Status.NOT_STARTED_STATUS);
-        toAdd.setAssignor(assignor);
-        toAdd.setAssignee(assignee);
-        toAdd.setStatus(status);
-        clubBook.addTaskToTaskList(toAdd);
-        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-        indicateClubBookChanged();
-    } catch (DuplicateTaskException dte) {
-        throw new DuplicateTaskException();
-    }
-}
 
 Figure 25 depicts the high-level sequence of events that take place.
 
-image::SDforAddTask.png[width="800"]
+image::SDforAddTask.png[width="600"]
 _Figure 25. Sequence Diagram for adding a task._
 
 The task is displayed in the Task pane on the far right side.
@@ -596,7 +565,7 @@ Thus, the following are the required parameters:
 
 Figure 26 below shows the UML representation of `AssignTaskCommand`.
 
-image::AssignTaskCommandUML.png[width="450"]
+image::AssignTaskCommandUML.png[width="350"]
 _Figure 26. UML diagram of `AssignTaskCommand`._
 
 The implementation of assigning tasks is similar to that of adding tasks. The only difference is that the Assignor is set to the `Matric Number` of the member who is currently logged in.
@@ -604,34 +573,12 @@ The implementation of assigning tasks is similar to that of adding tasks. The on
 The parsing of an `AssignTaskCommand` is performed by the `AssignTaskCommandParser`. +
 Figure 27 shows the flow of parsing an `AssignTaskCommand` object:
 
-image::SDforAssignTaskCommandParser.png[width="800"]
+image::SDforAssignTaskCommandParser.png[width="600"]
 _Figure 27. Sequence Diagram for `AssignTaskCommand` parsing._
-
-The execution of the command invokes `Model#assignTask()`.
-The following code snippet shows the implementation:
-
-[source,java]
-@Override
-public void assignTask(Task toAdd, MatricNumber matricNumber) throws MemberNotFoundException, DuplicateTaskException {
-    checkIfMemberExists(matricNumber);
-    try {
-        Assignor assignor = new Assignor(clubBook.getLoggedInMember().getMatricNumber().toString());
-        Assignee assignee = new Assignee(matricNumber.toString());
-        Status status = new Status(Status.NOT_STARTED_STATUS);
-        toAdd.setAssignor(assignor);
-        toAdd.setAssignee(assignee);
-        toAdd.setStatus(status);
-        clubBook.addTaskToTaskList(toAdd);
-        updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-        indicateClubBookChanged();
-    } catch (DuplicateTaskException dte) {
-        throw new DuplicateTaskException();
-    }
-}
 
 Figure 28 depicts the high-level sequence of events that take place.
 
-image::SDforAssignTask.png[width="800"]
+image::SDforAssignTask.png[width="600"]
 _Figure 28. Sequence Diagram for assigning a task._
 
 
@@ -648,26 +595,12 @@ _Figure 29. UML diagram of `DeleteTaskCommand`._
 `DeleteTaskCommandParser` is responsible for parsing the user input into a `DeleteTaskCommand` object. +
 Figure 30 illustrates the sequence in which the parsing is done.
 
-image::SDforDeleteTaskCommandParser.png[width="800"]
+image::SDforDeleteTaskCommandParser.png[width="600"]
 _Figure 30. Sequence Diagram for `DeleteTaskCommand` parsing._
-
-The execution of the command invokes `Model#deleteTask()`.
-The following code snippet shows the implementation:
-
-[source, java]
-@Override
-public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
-    Assignor assignor = targetTask.getAssignor();
-    Assignee assignee = targetTask.getAssignee();
-    String currentMember = getLoggedInMember().getMatricNumber().toString();
-    checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
-    clubBook.deleteTask(targetTask);
-    indicateClubBookChanged();
-}
 
 The high-level sequence of events is shown below in Figure 31.
 
-image::SDforDeleteTask.png[width="800"]
+image::SDforDeleteTask.png[width="600"]
 _Figure 31. Sequence Diagram for deleting a task._
 
 
@@ -683,53 +616,18 @@ This command can only be used by `Exco` members and has certain restrictions:
 
 Figure 32 below shows the UML representation of `ChangeAssigneeCommand`.
 
-image::ChangeAssigneeCommandUML.png[width="450"]
+image::ChangeAssigneeCommandUML.png[width="350"]
 _Figure 32. UML Diagram of `ChangeAssigneeCommand`._
 
 `ChangeAssigneeCommandParser` is responsible for parsing the `changeassignee` command. It returns a `ChangeAssigneeCommand` object after parsing the `INDEX` and the `Assignee`.
 Figure 33 shows the sequence diagram of the `ChangeAssigneeCommandParser`.
 
-image::SDforChangeAssigneeCommandParser.png[width="800"]
+image::SDforChangeAssigneeCommandParser.png[width="600"]
 _Figure 33. Sequence Diagram of `ChangeAssigneeCommandParser`._
-
-`Model#changeAssignee` is invoked during the execution of the command. Here is the implementation:
-
-[source,java]
-@Override
-public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
-        MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
-    requireAllNonNull(taskToEdit, editedTask);
-    MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
-    checkIfMemberExists(newAssigneeMatricNumber);
-    checkIfDuplicateTaskExists(editedTask);
-    checkIfTaskIsAlreadyAssigned(editedTask);
-    checkIfInputAssigneeIsSame(taskToEdit, editedTask);
-    try {
-        clubBook.updateTaskAssignee(taskToEdit, editedTask);
-    } catch (DuplicateTaskException dte) {
-        throw new AssertionError("Impossible. This check has already been made");
-    }
-    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-    indicateClubBookChanged();
-}
-
-This further calls `ClubBook#updateTaskAssignee`.
-
-[source,java]
-public void updateTaskAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException {
-    requireNonNull(editedTask);
-    try {
-        tasks.setTaskIgnoreStatus(taskToEdit, editedTask);
-    } catch (DuplicateTaskException dte) {
-        throw new DuplicateTaskException();
-    }
-    logger.fine("Task assignee updated to " + editedTask.getAssignee().getAssignee());
-}
-
 
 Figure 34 below shows the high-level sequence diagram of the command execution.
 
-image::SDforChangeAssignee.png[width="800"]
+image::SDforChangeAssignee.png[width="600"]
 _Figure 34. Sequence Diagram of changing the `Assignee` of a task._
 
 ===== Changing Task Status
@@ -739,7 +637,7 @@ Changing a task's status is made possible by the `ChangeTaskStatusCommand`. +
 
 Figure 35 below shows the UML representation of `ChangeTaskStatusCommand`.
 
-image::ChangeTaskStatusCommandUML.png[width="450"]
+image::ChangeTaskStatusCommandUML.png[width="350"]
 _Figure 35. UML Diagram of `ChangeTaskStatusCommand`._
 
 The `Status` of a task can be changed to any one of the following:
@@ -753,26 +651,12 @@ The input of the command is the `INDEX` of a task, and the desired `Status`.
 Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
 Figure 36 below depicts the parsing of the `ChangeTaskStatusObject`.
 
-image::SDforChangeTaskStatusCommandParser.png[width]"800" ]
+image::SDforChangeTaskStatusCommandParser.png[width="600"]
 _Figure 36. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
-
-
-The execution of the command invokes `Model#changeStatus()`.
-The following code snippet shows the implementation:
-
-[source,java]
-@Override
-public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
-        DuplicateTaskException {
-    requireAllNonNull(taskToEdit, editedTask);
-    clubBook.updateTask(taskToEdit, editedTask);
-    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-    indicateClubBookChanged();
-}
 
 Figure 37 below describes the high-level sequence of events that take place.
 
-image::SDforChangeTaskStatus.png[width="800"]
+image::SDforChangeTaskStatus.png[width="600"]
 _Figure 37. Sequence Diagram for changing the status of a task._
 
 ===== Viewing All Tasks
@@ -780,18 +664,9 @@ _Figure 37. Sequence Diagram for changing the status of a task._
 
 `Exco` members can view all the tasks in `Club Connect` using the `ViewAllTasksCommand`.
 
-The implementation makes use of a `Predicate` and is as follows:
-
-[source, java]
-@Override
-public void viewAllTasks() throws TasksCannotBeDisplayedException {
-    updateFilteredTaskList(PREDICATE_SHOW_ALL_TASKS);
-    indicateClubBookChanged();
-}
-
 The high-level sequence of events on executing the `ViewAllTasksCommand` is described below in Figure 38.
 
-image::SDforViewAllTasks.png[width="800"]
+image::SDforViewAllTasks.png[width="600"]
 _Figure 38. Sequence Diagram for viewing all tasks._
 
 ===== Viewing My Tasks
@@ -799,21 +674,11 @@ _Figure 38. Sequence Diagram for viewing all tasks._
 
 `Exco` members need a way to toggle between all tasks in `Club Connect` and the tasks that are related to them (i.e. tasks that they have assigned or been assigned to). This is achieved by the `ViewMyTasksCommand`.
 
-`Model#viewMyTasks()` is called during the execution of the command.
-Here is the implementation:
-
-[source,java]
-@Override
-public void viewMyTasks() throws TasksAlreadyListedException {
-    checkIfTasksAreAlreadyListed();
-    updateFilteredTaskList(new TaskIsRelatedToMemberPredicate(getLoggedInMember()));
-}
-
 As shown in the implementation above, the method invokes the `checkIfTasksAreAlreadyListed()` method which throws `TasksAlreadyListedException` if the tasks are already listed.
 
 The sequence diagram of the command is shown below in Figure 39.
 
-image::SDforViewMyTasks.png[width="800"]
+image::SDforViewMyTasks.png[width="600"]
 _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member._
 
 
@@ -836,59 +701,17 @@ The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It
 
 The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 40 below depicts the UML representation of the `Command`.
 
-image::DeleteGroupCommandUML.png[width="200" height="200"]
+image::DeleteGroupCommandUML.png[width="150"]
 _Figure 40. UML Diagram of `DeleteGroupCommand`._
 
 `DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
 
-image::SDforDeleteGroupCommandParser.png[width="800"]
+image::SDforDeleteGroupCommandParser.png[width="600"]
 _Figure 41. Sequence Diagram for the parsing of `DeleteGroupCommand`._
-
-The execution invokes `Model#deleteGroup()` with the `Group` ```toRemove``` as a parameter. This further invokes the method `ClubBook#deleteGroup()`. Here is the implementation:
-
-[source, java]
-@Override
-public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
-    checkIfGroupIsMemberOrExco(toRemove);
-    checkIfGroupIsPresent(toRemove);
-    deleteGroupFromClubBook(toRemove);
-}
-
-`ClubBook#deleteGroup()` further calls `ClubBook#deleteGroupFromClubBook()`.
-
-[source, java]
-private void deleteGroupFromClubBook(Group toRemove) {
-    try {
-        for (Member member : members) {
-            deleteGroupFromMember(toRemove, member);
-        }
-    } catch (MemberNotFoundException mnfe) {
-        throw new AssertionError("Impossible: original member is obtained from the club book.");
-    }
-}
-
-The final method called is `ClubBook#deleteGroupFromMember()` which loops through all members and sets the group of all members that have the group ```toRemove```, to `member`.
-
-[source, java]
-private void deleteGroupFromMember(Group toRemove, Member member)
-        throws MemberNotFoundException {
-    if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
-        return;
-    }
-    Group defaultGroup = new Group(Group.DEFAULT_GROUP);
-    Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-            defaultGroup, member.getTags());
-    try {
-        updateMember(member, newMember);
-    } catch (DuplicateMatricNumberException dme) {
-        throw new AssertionError("Deleting a member's group only should not result in a duplicate. "
-                + "See member#equals(Object).");
-    }
-}
 
 The high-level sequence of events is depicted in Figure 42 below.
 
-image::SDforDeleteGroup.png[width="800"]
+image::SDforDeleteGroup.png[width="600"]
 _Figure 42. Sequence Diagram for delete a group from `Club Connect`._
 
 
