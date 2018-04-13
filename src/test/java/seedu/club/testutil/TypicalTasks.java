@@ -27,6 +27,15 @@ public class TypicalTasks {
             .withStatus("Yet To Begin")
             .build();
 
+    public static final Task BOOK_AUDITORIUM_COPY = new TaskBuilder()
+            .withDescription("Book Auditorium")
+            .withDate("02/05/2018")
+            .withTime("13:00")
+            .withAssignor("A8389539B")
+            .withAssignee("A9210701B")
+            .withStatus("Yet To Begin")
+            .build();
+
     public static final Task BUY_CONFETTI = new TaskBuilder()
             .withDescription("Buy Confetti")
             .withDate("01/05/2018")
