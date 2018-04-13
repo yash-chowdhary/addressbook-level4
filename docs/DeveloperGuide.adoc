@@ -915,7 +915,7 @@ keep track of who has voted in it using a Set<MatricNumber>
 ** Pros: Voters are not tied to any specific answer hence ensuring anonymity
 ** Cons: Harder to ensure sum of vote count of all `Answer`s in a `Poll` must equal to size of Set<MatricNumber> in the poll
 * **Alternative 2:** Make each `Answer` contain a Set<MatricNumber>. It's size is the number of voters and to keep track of
-who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer`of a `Poll`
+who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer` of a `Poll`
 ** Pros: Easy to implement
 ** Cons: No anonymity since information of who voted for which Answer is stored inside Set<MatricNumber> of an `Answer`
 
