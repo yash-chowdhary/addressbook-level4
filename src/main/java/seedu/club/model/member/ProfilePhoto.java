@@ -3,20 +3,18 @@ package seedu.club.model.member;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Represents a member's profile photo in the club book.
  */
 public class ProfilePhoto {
 
+    public static final String EMPTY_STRING = "";
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
             "The photo path should be an absolute path to a JPG or PNG image file.";
 
-    private static final ArrayList<String> validFileExtensions = new ArrayList<>(
-            Arrays.asList("jpg", "png", "JPG", "PNG")
-    );
+    private static final String[] validFileExtensions = {".jpg", ".png"};
+    private static final int JPG_INDEX = 0;
+    private static final int PNG_INDEX = 1;
 
     private String profilePhotoPath;
 
@@ -35,9 +33,10 @@ public class ProfilePhoto {
      */
     public static boolean isValidPhotoFile(String path) {
         int length = path.length();
-        String fileExtension = path.substring(length - 3);
+        String fileExtension = path.substring(length - validFileExtensions[JPG_INDEX].length());
 
-        return validFileExtensions.contains(fileExtension);
+        return fileExtension.compareToIgnoreCase(validFileExtensions[JPG_INDEX]) == 0
+                || fileExtension.compareToIgnoreCase(validFileExtensions[PNG_INDEX]) == 0;
     }
 
     /**

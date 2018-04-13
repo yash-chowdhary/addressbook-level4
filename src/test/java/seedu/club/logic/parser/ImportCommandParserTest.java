@@ -10,30 +10,29 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.club.logic.commands.ExportCommand;
+import seedu.club.logic.commands.ImportCommand;
 
-public class ExportCommandParserTest {
-
+public class ImportCommandParserTest {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    private ExportCommandParser parser = new ExportCommandParser();
-    private String currentDirectoryPath = ".";
+    private ImportCommandParser parser = new ImportCommandParser();
+    private String currentDirectoryPath = "./";
     private File currentDirectory = new File(currentDirectoryPath);
 
     @Test
-    public void parse_validArgs_returnsExportCommand() throws Exception {
-        File exportFile = temporaryFolder.newFile("dummy.csv");
+    public void parse_validArgs_returnsImportCommand() throws Exception {
+        File importFile = temporaryFolder.newFile("dummy.csv");
 
-        String expectedExportFilePath = exportFile.getAbsolutePath();
-        File expectedExportFile = new File(expectedExportFilePath);
-        assertParseSuccess(parser, expectedExportFile.getAbsolutePath(), new ExportCommand(expectedExportFile));
+        String expectedImportFilePath = importFile.getAbsolutePath();
+        File expectedImportFile = new File(expectedImportFilePath);
+        assertParseSuccess(parser, expectedImportFile.getAbsolutePath(), new ImportCommand(expectedImportFile));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
         //non absolute file path
-        assertParseFailure(parser, "data/exportTestFile.csv", ParserUtil.MESSAGE_INVALID_CSV_PATH);
+        assertParseFailure(parser, "data/dummy.csv", ParserUtil.MESSAGE_INVALID_CSV_PATH);
 
         //invalid file path
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/",

@@ -1,7 +1,5 @@
 package seedu.club.ui;
 
-import java.io.InputStream;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -97,14 +95,7 @@ public class MemberCard extends UiPart<Region> {
             photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
                     false, true);
         } else {
-            try {
-                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
-                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
-            } catch (NullPointerException npe) {
-                //Different path (instead of DEFAULT_PHOTO_PATH) used for testing purposes: indicates exception
-                photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
-                        false, true);
-            }
+            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
         }
         profilePhoto.setImage(photo);
     }

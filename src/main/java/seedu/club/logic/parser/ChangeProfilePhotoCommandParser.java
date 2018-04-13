@@ -1,8 +1,6 @@
 //@@author amrut-prabhu
 package seedu.club.logic.parser;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
@@ -24,8 +22,7 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
             ProfilePhoto profilePhoto = ParserUtil.parseProfilePhoto(args);
             return new ChangeProfilePhotoCommand(profilePhoto);
         } catch (IllegalValueException ive) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeProfilePhotoCommand.MESSAGE_USAGE));
+            throw new ParseException(ive.getMessage(), ive);
         }
     }
 
