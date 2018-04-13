@@ -844,6 +844,9 @@ Votes for the 1st answer in the 5th poll of the poll listing
 === Auto-Complete Command (Since v1.3)
 Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
 
+[NOTE]
+The feature is only meant for command words, and not their aliases.
+
 === Saving the data
 
 Club Connect data is saved in the hard disk automatically after any command that changes the data. +
