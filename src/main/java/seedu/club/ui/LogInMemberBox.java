@@ -27,7 +27,6 @@ public class LogInMemberBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(LogInMemberBox.class);
     private final Integer photoWidth = 34;
     private final Integer photoHeight = 45;
-    private final String notLoggedInImage = "/images/not_logged_in.png";
 
     @FXML
     private Label currentlyloginMember;
@@ -43,7 +42,7 @@ public class LogInMemberBox extends UiPart<Region> {
     private void handleUpdateCurrentlyLogInMemberEvent (UpdateCurrentlyLogInMemberEvent event) {
         if (event.getCurrentlyLogIn() == null) {
             currentlyloginMember.setText("Log in to use Club Connect");
-            setProfilePhoto(new ProfilePhoto(notLoggedInImage));
+            profilePhoto.setVisible(false);
         } else {
             currentlyloginMember.setText("Logged In: " + event.getCurrentlyLogIn().getName().toString());
             setProfilePhoto(event.getCurrentlyLogIn().getProfilePhoto());

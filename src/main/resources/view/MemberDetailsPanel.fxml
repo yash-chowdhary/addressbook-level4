@@ -56,14 +56,14 @@
         </ListView>
     </VBox>
     <rowConstraints>
-        <RowConstraints minHeight="251" prefHeight="251" />
-        <RowConstraints minHeight="20.0" prefHeight="30.0" />
-        <RowConstraints minHeight="15.0" prefHeight="25.0" />
-        <RowConstraints minHeight="15.0" prefHeight="25.0" />
-        <RowConstraints minHeight="15.0" prefHeight="25.0" />
-        <RowConstraints minHeight="15.0" prefHeight="25.0" />
-        <RowConstraints minHeight="30.0" prefHeight="40.0" />
-        <RowConstraints minHeight="230.0" prefHeight="230.0" />
+        <RowConstraints prefHeight="251" />
+        <RowConstraints prefHeight="30.0" />
+        <RowConstraints prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints prefHeight="40.0" />
+        <RowConstraints  prefHeight="230.0" />
     </rowConstraints>
 </GridPane>
 </VBox>
