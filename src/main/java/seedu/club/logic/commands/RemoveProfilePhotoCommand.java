@@ -27,7 +27,8 @@ public class RemoveProfilePhotoCommand extends Command {
         requireToSignUp();
         requireToLogIn();
         model.removeProfilePhoto();
-        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null,
+                false, null, false));
         return new CommandResult(MESSAGE_REMOVE_PROFILE_PHOTO_SUCCESS);
     }
 

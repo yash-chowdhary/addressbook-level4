@@ -55,7 +55,7 @@ public class DeleteCommand extends UndoableCommand {
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
         }
-        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToDelete, true));
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToDelete, null, true, null, false));
         return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete, numberOfTasksDeleted));
     }
 

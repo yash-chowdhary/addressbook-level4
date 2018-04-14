@@ -43,6 +43,6 @@ public class ViewResultsCommandTest {
         CommandResult result = resultsCommand.execute();
         assertEquals(ViewResultsCommand.MESSAGE_SUCCESS, result.feedbackToUser);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ViewResultsRequestEvent);
-        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
     }
 }
