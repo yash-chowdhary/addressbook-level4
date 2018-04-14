@@ -110,6 +110,11 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
                 DuplicateTaskException, TaskAlreadyAssignedException {
             fail("This method should not be called");
@@ -244,7 +249,7 @@ public class AddTaskCommandTest {
         }
 
         @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
             fail("This method should not be called");
             return;
         }
@@ -335,7 +340,6 @@ public class AddTaskCommandTest {
 ```
 ###### \java\seedu\club\logic\commands\ChangeAssigneeCommandTest.java
 ``` java
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -343,10 +347,13 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
+import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_TASK;
+import static seedu.club.testutil.TypicalIndexes.INDEX_THIRD_TASK;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.CARL;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
+import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM_COPY;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
 
 import org.junit.Before;
@@ -363,12 +370,8 @@ import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
-import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.task.Assignee;
 import seedu.club.model.task.Task;
-import seedu.club.model.task.exceptions.DuplicateTaskException;
-import seedu.club.model.task.exceptions.TaskAlreadyAssignedException;
-import seedu.club.model.task.exceptions.TaskAssigneeUnchangedException;
 import seedu.club.testutil.ClubBookBuilder;
 import seedu.club.testutil.MemberBuilder;
 import seedu.club.testutil.TaskBuilder;
@@ -382,8 +385,13 @@ public class ChangeAssigneeCommandTest {
 
     @Before
     public void setUp() {
-        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).withTask(BUY_FOOD)
-                .withTask(BOOK_AUDITORIUM).build();
+        ClubBook clubBook = new ClubBookBuilder()
+                .withMember(ALICE)
+                .withMember(BENSON)
+                .withTask(BUY_FOOD)
+                .withTask(BOOK_AUDITORIUM)
+                .withTask(BOOK_AUDITORIUM_COPY)
+                .build();
         model = new ModelManager(clubBook, new UserPrefs());
         model.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
@@ -397,6 +405,7 @@ public class ChangeAssigneeCommandTest {
 
     @Test
     public void execute_validAssignee_success() throws Exception {
+        model.updateFilteredTaskList(Model.PREDICATE_SHOW_ALL_TASKS);
         Member alice = new MemberBuilder(ALICE).build();
         Member benson = new MemberBuilder(BENSON).build();
         Task buyFood = new TaskBuilder().withDescription(BUY_FOOD.getDescription().getDescription())
@@ -407,38 +416,53 @@ public class ChangeAssigneeCommandTest {
                 .withStatus(BUY_FOOD.getStatus().getStatus())
                 .build();
         Task bookAuditorium = new TaskBuilder(BOOK_AUDITORIUM).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
-                .withTask(bookAuditorium).build();
+        String expectedMessage = String.format(ChangeAssigneeCommand.MESSAGE_CHANGE_SUCCESS,
+                buyFood.getDescription().getDescription(), benson.getMatricNumber().toString());
 
-        model.changeAssignee(BUY_FOOD, buyFood);
-        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
+        ClubBook expectedClubBook = new ClubBookBuilder()
+                .withMember(alice)
+                .withMember(benson)
+                .withTask(buyFood)
+                .withTask(bookAuditorium)
+                .build();
+
+        expectedModel = new ModelManager(expectedClubBook, new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
 
-        assertEquals(expectedModel, model);
+        ChangeAssigneeCommand command = prepareCommand(INDEX_THIRD_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidAssignee_throwsException() {
-        Member alice = new MemberBuilder(ALICE).build();
-        Member benson = new MemberBuilder(BENSON).build();
-        Task buyFood = new TaskBuilder(BUY_FOOD).build();
-        Task bookAuditorium = new TaskBuilder(BOOK_AUDITORIUM).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(alice).withMember(benson).withTask(buyFood)
-                .withTask(bookAuditorium).build();
-        Task editedTask = new TaskBuilder(buyFood).build();
-        editedTask.setAssignee(new Assignee(CARL.getMatricNumber().toString()));
+        String expectedMessage = ChangeAssigneeCommand.MESSAGE_MEMBER_NOT_FOUND;
 
-        expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
-        expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
-                ALICE.getCredentials().getPassword().value);
-        try {
-            model.changeAssignee(BUY_FOOD, editedTask);
-        } catch (MemberNotFoundException mnfe) {
-            assertEquals(expectedModel, model);
-        } catch (DuplicateTaskException | TaskAlreadyAssignedException | TaskAssigneeUnchangedException e) {
-            return;
-        }
+        ChangeAssigneeCommand command = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(CARL.getMatricNumber().toString()));
+
+        assertCommandFailure(command, model, expectedMessage);
+    }
+
+
+    @Test
+    public void execute_unchangedAssignee_throwsException() {
+        String expectedMessage = ChangeAssigneeCommand.MESSAGE_NOT_CHANGED;
+        ChangeAssigneeCommand command = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(ALICE.getMatricNumber().toString()));
+
+        assertCommandFailure(command, model, expectedMessage);
+    }
+
+    @Test
+    public void execute_duplicateTask_throwsException() {
+        String expectedMessage = ChangeAssigneeCommand.MESSAGE_DUPLICATE_TASK;
+        ChangeAssigneeCommand command = prepareCommand(INDEX_FIRST_TASK,
+                new Assignee(BENSON.getMatricNumber().toString()));
+
+        assertCommandFailure(command, model, expectedMessage);
     }
 
     @Test
@@ -453,7 +477,7 @@ public class ChangeAssigneeCommandTest {
         Task taskToEdit = new TaskBuilder(BUY_FOOD).build();
         Task editedTask = new TaskBuilder(taskToEdit).build();
         editedTask.setAssignee(new Assignee(BENSON.getMatricNumber().toString()));
-        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(INDEX_FIRST_TASK,
+        ChangeAssigneeCommand changeAssigneeCommand = prepareCommand(INDEX_SECOND_TASK,
                 new Assignee(BENSON.getMatricNumber().toString()));
 
         expectedModel = new ModelManager(expectedClubBook, new UserPrefs());
@@ -533,6 +557,7 @@ public class ChangeAssigneeCommandTest {
 ``` java
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
@@ -547,15 +572,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javafx.collections.ObservableList;
-import seedu.club.commons.core.Messages;
 import seedu.club.commons.core.index.Index;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.member.Member;
 import seedu.club.model.task.Status;
 import seedu.club.model.task.Task;
 
@@ -565,9 +587,6 @@ public class ChangeTaskStatusCommandTest {
 
     private Model model;
     private Model expectedModel;
-    private ObservableList<Task> taskList;
-    private ObservableList<Member> memberList;
-    private Member member;
 
 
     @Before
@@ -603,12 +622,23 @@ public class ChangeTaskStatusCommandTest {
     }
 
     @Test
+    public void execute_invalidIndex_throwsException() {
+        Index invalidIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
+        ChangeTaskStatusCommand command = prepareCommand(invalidIndex,
+                new Status(Status.IN_PROGRESS_STATUS));
+
+        String expectedMessage = MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
+
+        assertCommandFailure(command, model, expectedMessage);
+    }
+
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
         ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(outOfBoundIndex,
                 new Status(Status.IN_PROGRESS_STATUS));
 
-        assertCommandFailure(changeTaskStatusCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+        assertCommandFailure(changeTaskStatusCommand, model, MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
     }
 
     @Test
@@ -645,7 +675,7 @@ public class ChangeTaskStatusCommandTest {
         ChangeTaskStatusCommand changeTaskStatusCommand = prepareCommand(outOfBoundIndex,
                 new Status(Status.IN_PROGRESS_STATUS));
 
-        assertCommandFailure(changeTaskStatusCommand, model, Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+        assertCommandFailure(changeTaskStatusCommand, model, MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
 
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
         assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
@@ -683,6 +713,170 @@ public class ChangeTaskStatusCommandTest {
 
         // different member -> returns false
         assertFalse(changeTaskStatusFirstCommand.equals(changeTaskStatusSecondCommand));
+    }
+}
+```
+###### \java\seedu\club\logic\commands\DeleteGroupCommandTest.java
+``` java
+/**
+ * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
+ * {@code DeleteGroupCommand}.
+ */
+public class DeleteGroupCommandTest {
+    private Model model;
+    private Model expectedModel;
+    private ObservableList<Member> observableList;
+    private Member member;
+
+    @Before
+    public void setUp() throws CommandException {
+        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
+        observableList = model.getClubBook().getMemberList();
+        member = observableList.get(0);
+        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
+                member.getCredentials().getPassword());
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
+        command.execute();
+    }
+
+    @Test
+    public void execute_validGroup_success() throws Exception {
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
+
+        String expectedMessage = String.format(DeleteGroupCommand.MESSAGE_SUCCESS, groupToDelete);
+        expectedModel.deleteGroup(groupToDelete);
+
+
+        assertCommandSuccess(deleteGroupCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_nonExistentGroup_throwsCommandException() {
+        Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
+
+        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
+        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
+    }
+
+    @Test
+    public void execute_mandatoryGroup_throwsCommandException() {
+        Group mandatoryGroup = new Group(MANDATORY_GROUP);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
+        String expectedMessage = String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString());
+        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
+    }
+
+    @Test
+    public void executeUndoRedo_validGroup_success() throws Exception {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
+        // remove -> group removed
+        deleteGroupCommand.execute();
+        undoRedoStack.push(deleteGroupCommand);
+
+        // undo -> reverts Club book back to previous state
+        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+
+        // redo -> same group deleted again
+        expectedModel.deleteGroup(groupToDelete);
+        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void executeUndoRedo_nonExistentGroup_failure() {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
+        Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
+
+        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
+        assertCommandFailure(deleteGroupCommand, model,
+                String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup));
+
+        // no commands in undoRedoStack -> undoCommand and redoCommand fail
+        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
+        assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
+    }
+
+    @Test
+    public void executeUndoRedo_mandatoryGroup_failure() {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+
+        Group mandatoryGroup = new Group(MANDATORY_GROUP);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
+
+        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
+        assertCommandFailure(deleteGroupCommand, model,
+                String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
+
+        // no commands in undoRedoStack -> undoCommand and redoCommand fail
+        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
+        assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
+    }
+
+    @Test
+    public void executeUndoRedo_validGroup_sameGroupDeleted() throws Exception {
+        UndoRedoStack undoRedoStack = new UndoRedoStack();
+        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
+        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        // remove -> removes group
+        deleteGroupCommand.execute();
+        undoRedoStack.push(deleteGroupCommand);
+
+        // undo -> reverts Club book back to previous state
+        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+
+        expectedModel.deleteGroup(groupToDelete);
+        assertEquals(groupToDelete, model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup());
+        // redo -> removes the same group
+        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void equals() {
+        DeleteGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
+        DeleteGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_TEST));
+
+        // same object -> returns true
+        assertTrue(firstCommand.equals(firstCommand));
+        assertTrue(secondCommand.equals(secondCommand));
+
+        // same values -> return true
+        DeleteGroupCommand firstCommandCopy = prepareCommand(new Group(VALID_GROUP_AMY));
+        assertTrue(firstCommand.equals(firstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(firstCommand.equals(true));
+
+        // null -> returns false
+        assertFalse(secondCommand.equals(null));
+
+        // different group -> returns false
+        assertFalse(firstCommand.equals(secondCommand));
+    }
+
+    /**
+     * Returns a {@code DeleteCommand} with the parameter {@code index}.
+     */
+    private DeleteGroupCommand prepareCommand(Group group) {
+        DeleteGroupCommand deleteGroupCommand = new DeleteGroupCommand(group);
+        deleteGroupCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return deleteGroupCommand;
     }
 }
 ```
@@ -886,170 +1080,6 @@ public class EmailCommandTest {
     }
 }
 ```
-###### \java\seedu\club\logic\commands\RemoveGroupCommandTest.java
-``` java
-/**
- * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
- * {@code RemoveGroupCommand}.
- */
-public class RemoveGroupCommandTest {
-    private Model model;
-    private Model expectedModel;
-    private ObservableList<Member> observableList;
-    private Member member;
-
-    @Before
-    public void setUp() throws CommandException {
-        model = new ModelManager(getTypicalClubBook(), new UserPrefs());
-        expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
-        observableList = model.getClubBook().getMemberList();
-        member = observableList.get(0);
-        LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
-                member.getCredentials().getPassword());
-        command.setData(model, new CommandHistory(), new UndoRedoStack());
-        command.execute();
-        command.setData(expectedModel, new CommandHistory(), new UndoRedoStack());
-        command.execute();
-    }
-
-    @Test
-    public void execute_validGroup_success() throws Exception {
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(ALICE.getGroup());
-
-        String expectedMessage = String.format(RemoveGroupCommand.MESSAGE_SUCCESS, groupToDelete);
-        expectedModel.removeGroup(groupToDelete);
-
-
-        assertCommandSuccess(deleteGroupCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_nonExistentGroup_throwsCommandException() {
-        Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
-
-        String expectedMessage = String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup);
-        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
-    }
-
-    @Test
-    public void execute_mandatoryGroup_throwsCommandException() {
-        Group mandatoryGroup = new Group(MANDATORY_GROUP);
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
-        String expectedMessage = String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString());
-        assertCommandFailure(deleteGroupCommand, model, expectedMessage);
-    }
-
-    @Test
-    public void executeUndoRedo_validGroup_success() throws Exception {
-        UndoRedoStack undoRedoStack = new UndoRedoStack();
-        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
-        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(ALICE.getGroup());
-        // remove -> group removed
-        deleteGroupCommand.execute();
-        undoRedoStack.push(deleteGroupCommand);
-
-        // undo -> reverts Club book back to previous state
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
-
-        // redo -> same group deleted again
-        expectedModel.removeGroup(groupToDelete);
-        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
-    }
-
-    @Test
-    public void executeUndoRedo_nonExistentGroup_failure() {
-        UndoRedoStack undoRedoStack = new UndoRedoStack();
-        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
-        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-
-        Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(nonExistentGroup);
-
-        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(deleteGroupCommand, model,
-                String.format(MESSAGE_NON_EXISTENT_GROUP, nonExistentGroup));
-
-        // no commands in undoRedoStack -> undoCommand and redoCommand fail
-        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
-        assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
-    }
-
-    @Test
-    public void executeUndoRedo_mandatoryGroup_failure() {
-        UndoRedoStack undoRedoStack = new UndoRedoStack();
-        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
-        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-
-        Group mandatoryGroup = new Group(MANDATORY_GROUP);
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(mandatoryGroup);
-
-        // execution failed -> deleteGroupCommand not pushed onto undoRedoStack
-        assertCommandFailure(deleteGroupCommand, model,
-                String.format(MESSAGE_MANDATORY_GROUP, mandatoryGroup.toString()));
-
-        // no commands in undoRedoStack -> undoCommand and redoCommand fail
-        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
-        assertCommandFailure(redoCommand, model, RedoCommand.MESSAGE_FAILURE);
-    }
-
-    @Test
-    public void executeUndoRedo_validGroup_sameGroupDeleted() throws Exception {
-        UndoRedoStack undoRedoStack = new UndoRedoStack();
-        UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
-        RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        RemoveGroupCommand deleteGroupCommand = prepareCommand(ALICE.getGroup());
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
-        // remove -> removes group
-        deleteGroupCommand.execute();
-        undoRedoStack.push(deleteGroupCommand);
-
-        // undo -> reverts Club book back to previous state
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
-
-        expectedModel.removeGroup(groupToDelete);
-        assertEquals(groupToDelete, model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup());
-        // redo -> removes the same group
-        assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
-    }
-
-    @Test
-    public void equals() {
-        RemoveGroupCommand firstCommand = prepareCommand(new Group(VALID_GROUP_AMY));
-        RemoveGroupCommand secondCommand = prepareCommand(new Group(VALID_GROUP_TEST));
-
-        // same object -> returns true
-        assertTrue(firstCommand.equals(firstCommand));
-        assertTrue(secondCommand.equals(secondCommand));
-
-        // same values -> return true
-        RemoveGroupCommand firstCommandCopy = prepareCommand(new Group(VALID_GROUP_AMY));
-        assertTrue(firstCommand.equals(firstCommandCopy));
-
-        // different types -> returns false
-        assertFalse(firstCommand.equals(true));
-
-        // null -> returns false
-        assertFalse(secondCommand.equals(null));
-
-        // different group -> returns false
-        assertFalse(firstCommand.equals(secondCommand));
-    }
-
-    /**
-     * Returns a {@code DeleteCommand} with the parameter {@code index}.
-     */
-    private RemoveGroupCommand prepareCommand(Group group) {
-        RemoveGroupCommand deleteGroupCommand = new RemoveGroupCommand(group);
-        deleteGroupCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return deleteGroupCommand;
-    }
-}
-```
 ###### \java\seedu\club\logic\commands\ViewAllTasksCommandTest.java
 ``` java
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -1173,6 +1203,7 @@ public class ViewMyTasksCommandTest {
 ###### \java\seedu\club\logic\parser\AddTaskCommandParserTest.java
 ``` java
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC_PASSED;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DESCRIPTION_DESC_FOOD;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_TIME_DESC_1;
@@ -1186,6 +1217,7 @@ import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import org.junit.Test;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.model.task.Task;
 import seedu.club.testutil.TaskBuilder;
@@ -1214,6 +1246,14 @@ public class AddTaskCommandParserTest {
     }
 
     @Test
+    public void parse_dateAlreadyPassed_throwsException() {
+        String expectedMessage = Messages.MESSAGE_DATE_ALREADY_PASSED;
+        assertParseFailure(parser, " " + TASK_DESCRIPTION_DESC_FOOD + INVALID_DATE_DESC_PASSED
+                + TASK_TIME_DESC_1, expectedMessage);
+
+    }
+
+    @Test
     public void parse_fieldsMissing_failure() {
         assertParseFailure(parser, TASK_DESCRIPTION_DESC_FOOD + TASK_DATE_DESC_1
                 + VALID_TASK_TIME_1, expectedMessage);
@@ -1235,6 +1275,7 @@ public class AddTaskCommandParserTest {
 ###### \java\seedu\club\logic\parser\AssignTaskCommandParserTest.java
 ``` java
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_DATE_DESC_PASSED;
 import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_1;
 import static seedu.club.logic.commands.CommandTestUtil.TASK_DATE_DESC_2;
@@ -1253,6 +1294,7 @@ import static seedu.club.testutil.TypicalMembers.BOB;
 
 import org.junit.Test;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.logic.commands.AssignTaskCommand;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.task.Task;
@@ -1279,6 +1321,14 @@ public class AssignTaskCommandParserTest {
         assertParseSuccess(parser, " " + TASK_DESCRIPTION_DESC_FOOD + TASK_DATE_DESC_1
                         + TASK_TIME_DESC_1 + MATRIC_NUMBER_DESC_BOB,
                 new AssignTaskCommand(expectedTask, matricNumber));
+    }
+
+    @Test
+    public void parse_dateAlreadyPassed_throwsException() {
+        String expectedMessage = Messages.MESSAGE_DATE_ALREADY_PASSED;
+        assertParseFailure(parser, " " + TASK_DESCRIPTION_DESC_FOOD + INVALID_DATE_DESC_PASSED
+                + TASK_TIME_DESC_1 + MATRIC_NUMBER_DESC_BOB, expectedMessage);
+
     }
 
     @Test
@@ -1370,6 +1420,45 @@ public class ChangeAssigneeCommandParserTest {
 
 }
 ```
+###### \java\seedu\club\logic\parser\DeleteGroupCommandParserTest.java
+``` java
+public class DeleteGroupCommandParserTest {
+    private DeleteGroupCommandParser parser = new DeleteGroupCommandParser();
+
+    @Test
+    public void parse_fieldPresent_success() {
+        assertParseSuccess(parser, GROUP_DESC_BOB, new DeleteGroupCommand(new Group(VALID_GROUP_BOB)));
+        assertParseSuccess(parser, GROUP_DESC_AMY, new DeleteGroupCommand(new Group(VALID_GROUP_AMY)));
+    }
+
+    @Test
+    public void parse_incorrectField_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteGroupCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
+        assertParseFailure(parser, MATRIC_NUMBER_DESC_AMY, expectedMessage);
+    }
+
+    @Test
+    public void parse_invalidGroupFormat_failure() {
+        String expectedMessage = Group.MESSAGE_GROUP_CONSTRAINTS;
+        assertParseFailure(parser, INVALID_GROUP_DESC, Group.MESSAGE_GROUP_CONSTRAINTS);
+        assertParseFailure(parser, " " + PREFIX_GROUP.toString() + " ", expectedMessage);
+    }
+
+    @Test
+    public void parse_fieldNotPresent_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteGroupCommand.MESSAGE_USAGE);
+
+        // blank space
+        assertParseFailure(parser, " ", expectedMessage);
+        // newline character
+        assertParseFailure(parser, "\n", expectedMessage);
+        // group should be preceded by group prefix 'g/'
+        assertParseFailure(parser, VALID_GROUP_AMY, expectedMessage);
+        assertParseFailure(parser, VALID_GROUP_BOB, expectedMessage);
+    }
+}
+```
 ###### \java\seedu\club\logic\parser\DeleteTaskCommandParserTest.java
 ``` java
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -1400,51 +1489,12 @@ public class DeleteTaskCommandParserTest {
     }
 }
 ```
-###### \java\seedu\club\logic\parser\RemoveGroupCommandParserTest.java
-``` java
-public class RemoveGroupCommandParserTest {
-    private RemoveGroupCommandParser parser = new RemoveGroupCommandParser();
-
-    @Test
-    public void parse_fieldPresent_success() {
-        assertParseSuccess(parser, GROUP_DESC_BOB, new RemoveGroupCommand(new Group(VALID_GROUP_BOB)));
-        assertParseSuccess(parser, GROUP_DESC_AMY, new RemoveGroupCommand(new Group(VALID_GROUP_AMY)));
-    }
-
-    @Test
-    public void parse_incorrectField_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE);
-        assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
-        assertParseFailure(parser, MATRIC_NUMBER_DESC_AMY, expectedMessage);
-    }
-
-    @Test
-    public void parse_invalidGroupFormat_failure() {
-        String expectedMessage = Group.MESSAGE_GROUP_CONSTRAINTS;
-        assertParseFailure(parser, INVALID_GROUP_DESC, Group.MESSAGE_GROUP_CONSTRAINTS);
-        assertParseFailure(parser, " " + PREFIX_GROUP.toString() + " ", expectedMessage);
-    }
-
-    @Test
-    public void parse_fieldNotPresent_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE);
-
-        // blank space
-        assertParseFailure(parser, " ", expectedMessage);
-        // newline character
-        assertParseFailure(parser, "\n", expectedMessage);
-        // group should be preceded by group prefix 'g/'
-        assertParseFailure(parser, VALID_GROUP_AMY, expectedMessage);
-        assertParseFailure(parser, VALID_GROUP_BOB, expectedMessage);
-    }
-}
-```
 ###### \java\seedu\club\model\ClubBookTest.java
 ``` java
     @Test
     public void removeGroup_nonExistentGroup_unchangedClubBook() throws Exception {
         try {
-            clubBookWithBobAndAmy.removeGroup(new Group(NON_EXISTENT_GROUP));
+            clubBookWithBobAndAmy.deleteGroup(new Group(NON_EXISTENT_GROUP));
         } catch (GroupNotFoundException gnfe) {
             ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
@@ -1454,7 +1504,7 @@ public class RemoveGroupCommandParserTest {
     @Test
     public void removeGroup_mandatoryGroup_unchangedClubBook() throws Exception {
         try {
-            clubBookWithBobAndAmy.removeGroup(new Group(MANDATORY_GROUP));
+            clubBookWithBobAndAmy.deleteGroup(new Group(MANDATORY_GROUP));
         } catch (GroupCannotBeRemovedException e) {
             ClubBook expectedClubBook = new ClubBookBuilder().withMember(BOB).withMember(AMY).build();
             assertEquals(expectedClubBook, clubBookWithBobAndAmy);
@@ -1463,14 +1513,15 @@ public class RemoveGroupCommandParserTest {
 
     @Test
     public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
-        clubBookWithBobAndAmy.removeGroup(new Group(VALID_GROUP_BOB));
+        ClubBook clubBookWithBensonAndAlice = new ClubBookBuilder().withMember(ALICE).withMember(BENSON)
+                .build();
+        clubBookWithBensonAndAlice.deleteGroup(new Group(BENSON.getGroup().toString()));
 
-        Member bobNotInLogistics = new MemberBuilder(BOB).withGroup().build();
-        Member amyNotInLogistics = new MemberBuilder(AMY).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bobNotInLogistics)
-                .withMember(amyNotInLogistics).build();
-
-        assertEquals(expectedClubBook, clubBookWithBobAndAmy);
+        Member bensonNotInPr = new MemberBuilder(ALICE).withGroup().build();
+        Member aliceNotInPr = new MemberBuilder(BENSON).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(bensonNotInPr)
+                .withMember(aliceNotInPr).build();
+        assertEquals(expectedClubBook, clubBookWithBensonAndAlice);
     }
 
     @Test
@@ -1562,8 +1613,8 @@ public class RemoveGroupCommandParserTest {
         Member amy = new MemberBuilder(AMY).build();
         Task buyFood = new TaskBuilder()
                 .withDescription(BUY_FOOD.getDescription().getDescription())
-                .withAssignor(BUY_FOOD.getAssignor().getAssignor())
-                .withAssignee(BUY_FOOD.getAssignee().getAssignee())
+                .withAssignor(BUY_FOOD.getAssignor().getValue())
+                .withAssignee(BUY_FOOD.getAssignee().getValue())
                 .withDate(BUY_FOOD.getDate().getDate())
                 .withTime(BUY_FOOD.getTime().getTime())
                 .withStatus(Status.IN_PROGRESS_STATUS)
@@ -1635,7 +1686,7 @@ public class RemoveGroupCommandParserTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         try {
-            modelManager.removeGroup(new Group(NON_EXISTENT_GROUP));
+            modelManager.deleteGroup(new Group(NON_EXISTENT_GROUP));
         } catch (GroupNotFoundException gnfe) {
             assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
         }
@@ -1648,24 +1699,24 @@ public class RemoveGroupCommandParserTest {
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
         try {
-            modelManager.removeGroup(new Group(MANDATORY_GROUP));
+            modelManager.deleteGroup(new Group(MANDATORY_GROUP));
         } catch (GroupCannotBeRemovedException e) {
             assertEquals(new ModelManager(clubBook, userPrefs), modelManager);
         }
     }
 
     @Test
-    public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+    public void deleteGroup_atLeastOneMemberInGroup_groupDeleted() throws Exception {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
 
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.removeGroup(new Group(VALID_GROUP_AMY));
+        modelManager.deleteGroup(new Group(BENSON.getGroup().toString()));
 
-        Member amyNotInPublicity = new MemberBuilder(AMY).withGroup().build();
-        Member bobNotInPublicity = new MemberBuilder(BOB).build();
-        ClubBook expectedClubBook = new ClubBookBuilder().withMember(amyNotInPublicity)
-                .withMember(bobNotInPublicity).build();
+        Member aliceNotInPr = new MemberBuilder(ALICE).withGroup().build();
+        Member bensonNotInPr = new MemberBuilder(BENSON).build();
+        ClubBook expectedClubBook = new ClubBookBuilder().withMember(aliceNotInPr)
+                .withMember(bensonNotInPr).build();
 
         assertEquals(new ModelManager(expectedClubBook, userPrefs), modelManager);
 
@@ -2309,12 +2360,12 @@ public class XmlAdaptedTaskTest {
 
         XmlAdaptedTask firstXmlAdaptedTask = new XmlAdaptedTask(BUY_CONFETTI.getDescription().getDescription(),
                 BUY_CONFETTI.getTime().getTime(), BUY_CONFETTI.getDate().getDate(),
-                BUY_CONFETTI.getAssignor().getAssignor(), BUY_CONFETTI.getAssignee().getAssignee(),
+                BUY_CONFETTI.getAssignor().getValue(), BUY_CONFETTI.getAssignee().getValue(),
                 BUY_CONFETTI.getStatus().getStatus());
 
         XmlAdaptedTask secondXmlAdaptedTask = new XmlAdaptedTask(BUY_FOOD.getDescription().getDescription(),
                 BUY_FOOD.getTime().getTime(), BUY_FOOD.getDate().getDate(),
-                BUY_FOOD.getAssignor().getAssignor(), BUY_FOOD.getAssignee().getAssignee(),
+                BUY_FOOD.getAssignor().getValue(), BUY_FOOD.getAssignee().getValue(),
                 BUY_FOOD.getStatus().getStatus());
 
         assertTrue(firstXmlAdaptedTask.equals(firstXmlAdaptedTask));
@@ -2340,7 +2391,7 @@ import seedu.club.model.task.Time;
  */
 public class TaskBuilder {
     public static final String DEFAULT_DESCRIPTION = "Book Auditorium";
-    public static final String DEFAULT_DATE = "01/01/2018";
+    public static final String DEFAULT_DATE = "01/05/2018";
     public static final String DEFAULT_TIME = "15:00";
     public static final String DEFAULT_ASSIGNOR = "";
     public static final String DEFAULT_ASSIGNEE = "";
@@ -2475,16 +2526,25 @@ public class TypicalTasks {
 
     public static final Task BOOK_AUDITORIUM = new TaskBuilder()
             .withDescription("Book Auditorium")
-            .withDate("02/04/2018")
+            .withDate("02/05/2018")
             .withTime("13:00")
             .withAssignor("A8389539B")
             .withAssignee("A8389539B")
             .withStatus("Yet To Begin")
             .build();
 
+    public static final Task BOOK_AUDITORIUM_COPY = new TaskBuilder()
+            .withDescription("Book Auditorium")
+            .withDate("02/05/2018")
+            .withTime("13:00")
+            .withAssignor("A8389539B")
+            .withAssignee("A9210701B")
+            .withStatus("Yet To Begin")
+            .build();
+
     public static final Task BUY_CONFETTI = new TaskBuilder()
             .withDescription("Buy Confetti")
-            .withDate("01/04/2018")
+            .withDate("01/05/2018")
             .withTime("17:00")
             .withAssignor("A9210701B")
             .withAssignee("A9210701B")
@@ -2493,7 +2553,7 @@ public class TypicalTasks {
 
     public static final Task ADVERTISE_EVENT = new TaskBuilder()
             .withDescription("Advertise event")
-            .withDate("31/03/2018")
+            .withDate("12/05/2018")
             .withTime("19:00")
             .withAssignor("A9210701B")
             .withAssignee("A9210701B")
@@ -2619,7 +2679,7 @@ public class AddTaskCommandSystemTest extends ClubBookSystemTest {
 
         /* Case add task with fields in random order -> added */
         command = AddTaskCommand.COMMAND_WORD + " " + "desc/Book Auditorium "
-                + "d/02/04/2018 " + "ti/13:00 ";
+                + "d/02/05/2018 " + "ti/13:00 ";
         assertCommandSuccess(command, model, expectedMessage);
 
         /* --------------------- Perform addtask operations on the shown filtered list -------------------------- */
@@ -2936,6 +2996,149 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
     }
 }
 ```
+###### \java\systemtests\DeleteGroupCommandSystemTest.java
+``` java
+import static org.junit.Assert.assertEquals;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_TEST;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
+import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
+import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_TEST;
+import static seedu.club.logic.commands.DeleteGroupCommand.MESSAGE_SUCCESS;
+
+import org.apache.commons.lang3.text.WordUtils;
+import org.junit.Test;
+
+import javafx.collections.ObservableList;
+import seedu.club.logic.commands.DeleteGroupCommand;
+import seedu.club.logic.commands.LogInCommand;
+import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.UndoCommand;
+import seedu.club.model.Model;
+import seedu.club.model.group.Group;
+import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.club.model.group.exceptions.GroupNotFoundException;
+import seedu.club.model.member.Member;
+
+public class DeleteGroupCommandSystemTest extends ClubBookSystemTest {
+
+    @Test
+    public void removeGroup() {
+        Model expectedModel = getModel();
+        Model modelBeforeDeletingGroup = getModel();
+        ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+                + " pw/password";
+        executeCommand(logInCommand);
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
+        modelBeforeDeletingGroup.updateFilteredMemberList(modelBeforeDeletingGroup.PREDICATE_SHOW_ALL_MEMBERS);
+        Group deletedGroup;
+        String command;
+        /* ------------------------ Perform removegroup operations on the shown unfiltered list -------------------- */
+
+        /* Case: delete a valid group which is present in the club book */
+        command = " " + DeleteGroupCommand.COMMAND_WORD + " " + GROUP_DESC_TEST + " ";
+        deletedGroup = deleteGroup(expectedModel, VALID_GROUP_TEST);
+        String expectedResultMessage = String.format(MESSAGE_SUCCESS, deletedGroup);
+        assertCommandSuccess(command, expectedModel, expectedResultMessage);
+
+        /* Case: undo deleting the group -> group restored in relevant members */
+        command = UndoCommand.COMMAND_WORD;
+        expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
+        assertCommandSuccess(command, modelBeforeDeletingGroup, expectedResultMessage);
+
+        /*Case: redo deleting the group -> deleted */
+        command = RedoCommand.COMMAND_WORD;
+        expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
+        assertCommandSuccess(command, expectedModel, expectedResultMessage);
+
+        /* Case: delete an invalid group */
+        command = " " + DeleteGroupCommand.COMMAND_WORD + " " + INVALID_GROUP_DESC + " ";
+        deletedGroup = deleteGroup(expectedModel, INVALID_GROUP);
+        assertEquals(null, deletedGroup);
+        assertCommandFailure(command, Group.MESSAGE_GROUP_CONSTRAINTS);
+
+        /* Case: delete a mandatory group */
+        command = " " + DeleteGroupCommand.COMMAND_WORD + " " + MANDATORY_GROUP_DESC + " ";
+        deletedGroup = deleteGroup(expectedModel, MANDATORY_GROUP);
+        assertEquals(null, deletedGroup);
+        assertCommandFailure(command, String.format(MESSAGE_MANDATORY_GROUP, MANDATORY_GROUP));
+
+        /* Case: delete a non-existent group */
+        command = " " + DeleteGroupCommand.COMMAND_WORD + " " + NON_EXISTENT_GROUP_DESC + " ";
+        deletedGroup = deleteGroup(expectedModel, NON_EXISTENT_GROUP);
+        assertEquals(null, deletedGroup);
+        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP,
+                WordUtils.capitalize(NON_EXISTENT_GROUP)));
+    }
+
+    /**
+     * Executes {@code command} and in addition,<br>
+     * 1. Asserts that the command box displays {@code command}.<br>
+     * 2. Asserts that result display box displays {@code expectedResultMessage}.<br>
+     * 3. Asserts that the model related components equal to the current model.<br>
+     * 4. Asserts that the command box has the error style.<br>
+     *
+     *
+     * Verifications 1 to 3 are performed by
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandFailure(String command, String expectedResultMessage) {
+        executeCommand(command);
+        Model expectedModel = getModel();
+        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
+        assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
+        assertCommandBoxShowsErrorStyle();
+        assertStatusBarUnchanged();
+    }
+
+    /**
+     * Executes {@code command} and in addition,<br>
+     * 1. Asserts that the command box displays an empty string.<br>
+     * 2. Asserts that the result display box displays {@code expectedResultMessage}.<br>
+     * 3. Asserts that the model related components equal to {@code expectedModel}.<br>
+     * 4. Asserts that the status bar's sync status changes.<br>
+     * 5. Asserts that the command box has the default style class.<br>
+     * Verifications 1 to 3 are performed by
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandSuccess(String command, Model model, String expectedResultMessage) {
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", expectedResultMessage, model);
+
+        assertCommandBoxShowsDefaultStyle();
+        assertStatusBarUnchangedExceptSyncStatus();
+    }
+
+    /**
+     * Removes the group from model
+     * @param model expected model
+     * @param group new Group object to be created with this string
+     * @return either a valid Group object if the group has been deleted; null otherwise
+     */
+    private Group deleteGroup(Model model, String group) {
+        if (Group.isValidGroup(group)) {
+            try {
+                model.deleteGroup(new Group(group));
+            } catch (GroupNotFoundException gnfe) {
+                return null;
+            } catch (GroupCannotBeRemovedException e) {
+                return null;
+            }
+
+            return new Group(group);
+        }
+        return null;
+    }
+}
+```
 ###### \java\systemtests\DeleteTaskCommandSystemTest.java
 ``` java
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX;
@@ -3189,148 +3392,5 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
     }
 
 
-}
-```
-###### \java\systemtests\RemoveGroupCommandSystemTest.java
-``` java
-import static org.junit.Assert.assertEquals;
-import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
-import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
-import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
-import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
-import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP;
-import static seedu.club.logic.commands.CommandTestUtil.MANDATORY_GROUP_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP;
-import static seedu.club.logic.commands.CommandTestUtil.NON_EXISTENT_GROUP_DESC;
-import static seedu.club.logic.commands.CommandTestUtil.VALID_GROUP_AMY;
-import static seedu.club.logic.commands.DeleteGroupCommand.MESSAGE_SUCCESS;
-
-import org.apache.commons.lang3.text.WordUtils;
-import org.junit.Test;
-
-import javafx.collections.ObservableList;
-import seedu.club.logic.commands.LogInCommand;
-import seedu.club.logic.commands.RedoCommand;
-import seedu.club.logic.commands.DeleteGroupCommand;
-import seedu.club.logic.commands.UndoCommand;
-import seedu.club.model.Model;
-import seedu.club.model.group.Group;
-import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
-import seedu.club.model.group.exceptions.GroupNotFoundException;
-import seedu.club.model.member.Member;
-
-public class RemoveGroupCommandSystemTest extends ClubBookSystemTest {
-
-    @Test
-    public void removeGroup() {
-        Model expectedModel = getModel();
-        Model modelBeforeDeletingGroup = getModel();
-        ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
-        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
-                + " pw/password";
-        executeCommand(logInCommand);
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
-        modelBeforeDeletingGroup.updateFilteredMemberList(modelBeforeDeletingGroup.PREDICATE_SHOW_ALL_MEMBERS);
-        Group deletedGroup;
-        String command;
-        /* ------------------------ Perform removegroup operations on the shown unfiltered list -------------------- */
-
-        /* Case: delete a valid group which is present in the club book */
-        command = " " + RemoveGroupCommand.COMMAND_WORD + " " + GROUP_DESC_AMY + " ";
-        deletedGroup = deleteGroup(expectedModel, VALID_GROUP_AMY);
-        String expectedResultMessage = String.format(MESSAGE_SUCCESS, deletedGroup);
-        assertCommandSuccess(command, expectedModel, expectedResultMessage);
-
-        /* Case: undo deleting the group -> group restored in relevant members */
-        command = UndoCommand.COMMAND_WORD;
-        expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
-        assertCommandSuccess(command, modelBeforeDeletingGroup, expectedResultMessage);
-
-        /*Case: redo deleting the group -> deleted */
-        command = RedoCommand.COMMAND_WORD;
-        expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
-        assertCommandSuccess(command, expectedModel, expectedResultMessage);
-
-        /* Case: delete an invalid group */
-        command = " " + RemoveGroupCommand.COMMAND_WORD + " " + INVALID_GROUP_DESC + " ";
-        deletedGroup = deleteGroup(expectedModel, INVALID_GROUP);
-        assertEquals(null, deletedGroup);
-        assertCommandFailure(command, Group.MESSAGE_GROUP_CONSTRAINTS);
-
-        /* Case: delete a mandatory group */
-        command = " " + RemoveGroupCommand.COMMAND_WORD + " " + MANDATORY_GROUP_DESC + " ";
-        deletedGroup = deleteGroup(expectedModel, MANDATORY_GROUP);
-        assertEquals(null, deletedGroup);
-        assertCommandFailure(command, String.format(MESSAGE_MANDATORY_GROUP, MANDATORY_GROUP));
-
-        /* Case: delete a non-existent group */
-        command = " " + RemoveGroupCommand.COMMAND_WORD + " " + NON_EXISTENT_GROUP_DESC + " ";
-        deletedGroup = deleteGroup(expectedModel, NON_EXISTENT_GROUP);
-        assertEquals(null, deletedGroup);
-        assertCommandFailure(command, String.format(MESSAGE_NON_EXISTENT_GROUP,
-                WordUtils.capitalize(NON_EXISTENT_GROUP)));
-    }
-
-    /**
-     * Executes {@code command} and in addition,<br>
-     * 1. Asserts that the command box displays {@code command}.<br>
-     * 2. Asserts that result display box displays {@code expectedResultMessage}.<br>
-     * 3. Asserts that the model related components equal to the current model.<br>
-     * 4. Asserts that the command box has the error style.<br>
-     *
-     *
-     * Verifications 1 to 3 are performed by
-     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
-     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
-     */
-    private void assertCommandFailure(String command, String expectedResultMessage) {
-        executeCommand(command);
-        Model expectedModel = getModel();
-        expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
-        assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
-        assertCommandBoxShowsErrorStyle();
-        assertStatusBarUnchanged();
-    }
-
-    /**
-     * Executes {@code command} and in addition,<br>
-     * 1. Asserts that the command box displays an empty string.<br>
-     * 2. Asserts that the result display box displays {@code expectedResultMessage}.<br>
-     * 3. Asserts that the model related components equal to {@code expectedModel}.<br>
-     * 4. Asserts that the status bar's sync status changes.<br>
-     * 5. Asserts that the command box has the default style class.<br>
-     * Verifications 1 to 3 are performed by
-     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.
-     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
-     */
-    private void assertCommandSuccess(String command, Model model, String expectedResultMessage) {
-        executeCommand(command);
-        assertApplicationDisplaysExpected("", expectedResultMessage, model);
-
-        assertCommandBoxShowsDefaultStyle();
-        assertStatusBarUnchangedExceptSyncStatus();
-    }
-
-    /**
-     * Removes the group from model
-     * @param model expected model
-     * @param group new Group object to be created with this string
-     * @return either a valid Group object if the group has been deleted; null otherwise
-     */
-    private Group deleteGroup(Model model, String group) {
-        if (Group.isValidGroup(group)) {
-            try {
-                model.removeGroup(new Group(group));
-            } catch (GroupNotFoundException gnfe) {
-                return null;
-            } catch (GroupCannotBeRemovedException e) {
-                return null;
-            }
-
-            return new Group(group);
-        }
-        return null;
-    }
 }
 ```

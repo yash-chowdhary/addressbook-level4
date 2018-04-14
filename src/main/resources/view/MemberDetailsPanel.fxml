@@ -20,12 +20,12 @@
     <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
         <Text fill="darkblue" text="MEMBER PROFILE" VBox.vgrow="NEVER" />
     </TextFlow>
-<GridPane fx:id="gridPane" prefHeight="543.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane" prefHeight="660.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
     </columnConstraints>
-    <ImageView fx:id="profilePhoto" fitHeight="152.0" fitWidth="114.0" style="-fx-background-color:white" GridPane.halignment="CENTER">
+    <ImageView fx:id="profilePhoto" fitHeight="228.0" fitWidth="171.0" style="-fx-background-color:white" GridPane.halignment="CENTER">
         <HBox.margin>
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
@@ -36,7 +36,7 @@
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
     </ImageView>
-    <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="130.0" styleClass="label-group-panel" text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+    <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="171.0" styleClass="label-group-panel" text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
         <font>
             <Font size="18.0" />
         </font></Label>
@@ -50,20 +50,20 @@
         </padding>
     </FlowPane>
 
-    <Text styleClass="cell_medium_label" text="Related Tasks" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+    <Text fill="darkblue" styleClass="cell_medium_label" text="Related Tasks" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
     <VBox GridPane.rowIndex="7">
-        <ListView fx:id="modifiedTaskCardListView" prefHeight="155.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
+        <ListView fx:id="modifiedTaskCardListView" prefHeight="407.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
         </ListView>
     </VBox>
     <rowConstraints>
-        <RowConstraints />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="200.0" />
+        <RowConstraints prefHeight="251" />
+        <RowConstraints prefHeight="30.0" />
+        <RowConstraints prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints prefHeight="40.0" />
+        <RowConstraints  prefHeight="230.0" />
     </rowConstraints>
 </GridPane>
 </VBox>

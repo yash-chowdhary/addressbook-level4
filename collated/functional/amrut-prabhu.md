@@ -14,32 +14,25 @@ public class NewExportDataAvailableEvent extends BaseEvent {
 
     public final File exportFile;
     public final String data;
-    private boolean isFileChanged;
+    private boolean isDataExported;
 
-    public NewExportDataAvailableEvent(File exportFile) {
+    public NewExportDataAvailableEvent(File exportFile, String data) {
         this.exportFile = exportFile;
-        this.data = null;
-        this.isFileChanged = true;
-
-    }
-
-    public NewExportDataAvailableEvent(String data) {
         this.data = data;
-        this.exportFile = null;
-        this.isFileChanged = true;
+        this.isDataExported = true;
     }
 
-    public boolean isFileChanged() {
-        return isFileChanged;
+    public boolean isDataExported() {
+        return isDataExported;
     }
 
-    public void setFileChanged(boolean isFileChanged) {
-        this.isFileChanged = isFileChanged;
+    public void setDataExported(boolean isDataExported) {
+        this.isDataExported = isDataExported;
     }
 
     @Override
     public String toString() {
-        return "add " + data + " to file";
+        return "add " + data + " to file " + exportFile.getAbsolutePath();
     }
 }
 ```
@@ -203,16 +196,7 @@ public class CsvUtil {
 
     private static final Logger logger = LogsCenter.getLogger(CsvUtil.class);
 
-    /**
-     * Returns true if {@code path} does not represent the path of a CSV (.csv) file.
-     */
-    public static boolean isNotValidCsvFileName(String path) {
-        String csvFileExtension = ".csv";
-
-        int length = path.length();
-        String fileExtension = path.substring(length - 4);
-        return fileExtension.compareToIgnoreCase(csvFileExtension) != 0;
-    }
+    // ================ Import CSV data methods ==============================
 
     /**
      * Returns {@code this} Member's data in the format of a CSV record.
@@ -222,11 +206,11 @@ public class CsvUtil {
     public static String getHeaders() {
         final StringBuilder builder = new StringBuilder();
 
-        addCsvField(builder, "Name");
-        addCsvField(builder, "Phone");
-        addCsvField(builder, "Email");
-        addCsvField(builder, "Matriculation Number");
-        addCsvField(builder, "Group");
+        addFieldInCsv(builder, "Name");
+        addFieldInCsv(builder, "Phone");
+        addFieldInCsv(builder, "Email");
+        addFieldInCsv(builder, "Matriculation Number");
+        addFieldInCsv(builder, "Group");
         addLastCsvField(builder, "Tags");
 
         builder.append(NEWLINE);
@@ -235,9 +219,11 @@ public class CsvUtil {
     }
 
     /**
-     * Returns {@code this} Member's data in the format of a CSV record.
+     * Returns {@code objectToConver}'s data in the format of a CSV record.
+     * objectToConvert is expected to be a {@code Member} object.
      *
-     * @return {@code String} containing the data in CSV format.
+     *  @return {@code String} containing the data in CSV format.
+     * @see Member
      */
     public static String toCsvFormat(Object objectToConvert) {
         requireNonNull(objectToConvert);
@@ -246,21 +232,51 @@ public class CsvUtil {
         if (objectToConvert instanceof Member) {
             memberToConvert = (Member) objectToConvert;
         } else {
+            assert false : "Object to convert to CSV is expected to be a Member object";
             return EMPTY_STRING;
         }
 
-        final StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
-        addCsvField(builder, memberToConvert.getName().toString());
-        addCsvField(builder, memberToConvert.getPhone().toString());
-        addCsvField(builder, memberToConvert.getEmail().toString());
-        addCsvField(builder, memberToConvert.getMatricNumber().toString());
-        addCsvField(builder, memberToConvert.getGroup().toString());
+        addFieldInCsv(builder, memberToConvert.getName().toString());
+        addFieldInCsv(builder, memberToConvert.getPhone().toString());
+        addFieldInCsv(builder, memberToConvert.getEmail().toString());
+        addFieldInCsv(builder, memberToConvert.getMatricNumber().toString());
+        addFieldInCsv(builder, memberToConvert.getGroup().toString());
         addCsvTags(builder, memberToConvert);
 
         builder.append(NEWLINE);
 
         return builder.toString();
+    }
+
+    /**
+     * Appends (@code builder} with {@code field} in CSV format.
+     *
+     * @param builder StringBuilder which is to be appended to.
+     * @param field Field value that is to be appended.
+     */
+    private static void addFieldInCsv(StringBuilder builder, String field) {
+        assert field != null : "Field cannot be null in Member object";
+
+        builder.append(CSV_FIELD_SURROUNDER)
+                .append(field)
+                .append(CSV_FIELD_SURROUNDER)
+                .append(CSV_FIELD_SEPARATOR);
+    }
+
+    /**
+     * Appends (@code builder} with last {@code field} in CSV format without suffixing with {@code CSV_FIELD_SEPARATOR}.
+     *
+     * @param builder StringBuilder which is to be appended to.
+     * @param field The final field value that is to be appended.
+     */
+    private static void addLastCsvField(StringBuilder builder, String field) {
+        assert field != null : "Field cannot be null in Member object";
+
+        builder.append(CSV_FIELD_SURROUNDER)
+                .append(field)
+                .append(CSV_FIELD_SURROUNDER);
     }
 
     /**
@@ -276,78 +292,7 @@ public class CsvUtil {
         builder.append(CSV_FIELD_SURROUNDER); //No CSV_FIELD_SEPARATOR as this is the last field.
     }
 
-    /**
-     * Appends (@code builder} with {@code field} in CSV format.
-     *
-     * @param builder StringBuilder which is to be appended.
-     * @param field Field value that is to be appended.
-     */
-    private static void addCsvField(StringBuilder builder, String field) {
-        assert field != null : "Field cannot be null in Member object";
-
-        builder.append(CSV_FIELD_SURROUNDER)
-                .append(field)
-                .append(CSV_FIELD_SURROUNDER)
-                .append(CSV_FIELD_SEPARATOR);
-    }
-
-    /**
-     * Appends (@code builder} with last {@code field} in CSV format without suffixing with{@code CSV_FIELD_SEPARATOR}.
-     *
-     * @param builder StringBuilder which is to be appended.
-     * @param field The final field value that is to be appended.
-     */
-    private static void addLastCsvField(StringBuilder builder, String field) {
-        assert field != null : "Field cannot be null in Member object";
-
-        builder.append(CSV_FIELD_SURROUNDER)
-                .append(field)
-                .append(CSV_FIELD_SURROUNDER);
-    }
-
-    /**
-     * Saves the data in the file in csv format.
-     * Assumes file exists.
-     *
-     * @param file Points to a valid csv file.
-     *             Cannot be null.
-     * @throws IOException Thrown if there is an error writing to the file.
-     */
-    public static void saveDataToFile(File file, String data) throws IOException {
-        requireNonNull(file);
-        requireNonNull(data);
-
-        FileUtil.appendToFile(file, data);
-    }
-
-    /**
-     * Loads a {@code UniqueMemberList} from the data in the csv file.
-     * Assumes file exists.
-     * Ignores DataConversionException and DuplicateMemberException.
-     *
-     * @param file Points to a valid csv file containing data that match the {@code Member}.
-     *             Cannot be null.
-     * @throws IOException Thrown if there is an error reading from the file.
-     */
-    public static UniqueMemberList getDataFromFile(File file) throws IOException {
-
-        UniqueMemberList importedMembers = new UniqueMemberList();
-        String data = FileUtil.readFromFile(file);
-        String[] membersData = data.split("\n");
-
-        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
-            try {
-                Member member = getMember(membersData[i]);
-                importedMembers.add(member);
-            } catch (DataConversionException dce) {
-                logger.warning("DataConversionException encountered while converting " + membersData[i]);
-            } catch (DuplicateMatricNumberException dmne) {
-                logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
-            }
-        }
-
-        return importedMembers;
-    }
+    // ================ Import CSV data methods ==============================
 
     /**
      * Returns a {@code Member} created using the given raw {@code rawData}.
@@ -418,28 +363,11 @@ public class CsvUtil {
     }
 
     /**
-     * Removes leading and trailing whitespaces and double quotes (") from {@code data}.
-     */
-    private static String removeExcessCharacters(String data) {
-        requireNonNull(data);
-
-        data = data.trim();
-        //Remove double quotes(")
-        if (data.length() > 0 && data.charAt(0) == '\"') { //First character is "
-            data = data.substring(1);
-        } else if (data.length() > 0 && data.charAt(data.length() - 1) == '\"') { //Last character is "
-            data = data.substring(0, data.length() - 1);
-        }
-
-        return data;
-    }
-
-    /**
      * Appends {@code dataToAdd} to {@code memberData} in the required format.
      *
      * @param memberData The current data of the member.
      * @param prefix The prefix needed, depending on the type of {@code dataToAdd}.
-     * @param dataToAdd
+     * @param dataToAdd The data that is to be added to {@code memberData}.
      * @return {@code memberData} appended with {@code dataToAdd} in the required format.
      */
     private static String addMemberData(String memberData, String prefix, String dataToAdd) {
@@ -479,6 +407,25 @@ public class CsvUtil {
     }
 
     /**
+     * Removes leading and trailing whitespaces and double quotes (") from {@code data}.
+     */
+    private static String removeExcessCharacters(String data) {
+        requireNonNull(data);
+
+        //Remove whitespace
+        data = data.trim();
+
+        //Remove double quotes(")
+        if (data.length() > 0 && data.charAt(0) == '\"') { //First character is "
+            data = data.substring(1);
+        } else if (data.length() > 0 && data.charAt(data.length() - 1) == '\"') { //Last character is "
+            data = data.substring(0, data.length() - 1);
+        }
+
+        return data;
+    }
+
+    /**
      * Returns a member created by parsing {@code memberData}.
      *
      * @param memberData Data of the member with cli prefixes.
@@ -515,22 +462,75 @@ public class CsvUtil {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
+
+    // ================ CSV File level methods ==============================
+
+    /**
+     * Returns true if {@code path} represents the path of a CSV (.csv) file.
+     *
+     * @param path Path whose validity is to be checked.
+     */
+    public static boolean isValidCsvFileName(String path) {
+        String csvFileExtension = ".csv";
+
+        int length = path.length();
+        String fileExtension = path.substring(length - 4);
+
+        return fileExtension.compareToIgnoreCase(csvFileExtension) == 0;
+    }
+
+    /**
+     * Saves the data to the file in csv format.
+     *
+     * @param file A valid existing csv file.
+     * @throws IOException Thrown if there is an error writing to the file.
+     */
+    public static void saveDataToFile(File file, String data) throws IOException {
+        requireNonNull(file);
+        requireNonNull(data);
+
+        logger.fine("Writing headers and info of members to the file");
+        FileUtil.writeToFile(file, data);
+    }
+
+    /**
+     * Loads a {@code UniqueMemberList} from the data in the csv file.
+     * Assumes file exists.
+     * Ignores DataConversionException and DuplicateMemberException.
+     *
+     * @param file Points to a valid csv file containing data that match the {@code Member}.
+     *             Cannot be null.
+     * @throws IOException Thrown if there is an error reading from the file.
+     */
+    public static UniqueMemberList getDataFromFile(File file) throws IOException {
+        requireNonNull(file);
+        UniqueMemberList importedMembers = new UniqueMemberList();
+        String data = FileUtil.readFromFile(file);
+        String[] membersData = data.split("\n");
+
+        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
+            try {
+                Member member = getMember(membersData[i]);
+                importedMembers.add(member);
+            } catch (DataConversionException dce) {
+                logger.warning("DataConversionException encountered while converting " + membersData[i]);
+            } catch (DuplicateMatricNumberException dmne) {
+                logger.warning("DuplicateMemberException encountered due to " + membersData[i]);
+            }
+        }
+
+        return importedMembers;
+    }
+
 }
 ```
 ###### \java\seedu\club\commons\util\FileUtil.java
 ``` java
     /**
-     * Appends given string to a file.
+     * Returns true if {@code file} represents the absolute path of a file.
      */
-    public static void appendToFile(File file, String content) throws IOException {
-        Files.write(file.toPath(), content.getBytes(CHARSET), StandardOpenOption.APPEND);
-    }
-
-    /**
-     * Returns true if {@code file} does not represent the absolute path of a file.
-     */
-    public static boolean isNotValidFileName(File file) {
-        return !file.isAbsolute() || file.isDirectory();
+    public static boolean isAbsoluteFilePath(File file) {
+        return file.isAbsolute() && !file.isDirectory();
     }
 
     /**
@@ -596,13 +596,13 @@ public class ChangeProfilePhotoCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        //Defensive programming
         assert profilePhoto.getPhotoPath() != null : "Photo path should not be null.";
         requireToSignUp();
         requireToLogIn();
         try {
             model.addProfilePhoto(profilePhoto.getPhotoPath());
-            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null, false,
+                    null, false));
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {
             throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH, profilePhoto.getPhotoPath()));
@@ -676,7 +676,7 @@ public class DeleteTagCommand extends UndoableCommand {
         requireExcoLogIn();
         try {
             model.deleteTag(tagToDelete);
-            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(null, null, false, tagToDelete, false));
             return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
@@ -824,7 +824,7 @@ public class ImportCommand extends UndoableCommand {
         try {
             int numberImported = model.importMembers(importFile);
             if (numberImported == 0) {
-                return new CommandResult(String.format(MESSAGE_MEMBERS_NOT_IMPORTED, numberImported, importFile));
+                return new CommandResult(String.format(MESSAGE_MEMBERS_NOT_IMPORTED, importFile));
             }
             return new CommandResult(String.format(MESSAGE_IMPORT_SUCCESS, numberImported, importFile));
         } catch (IOException ioe) {
@@ -840,12 +840,48 @@ public class ImportCommand extends UndoableCommand {
     }
 }
 ```
+###### \java\seedu\club\logic\commands\RemoveProfilePhotoCommand.java
+``` java
+package seedu.club.logic.commands;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
+import seedu.club.logic.commands.exceptions.CommandException;
+
+/**
+ * Removes the profile photo of the currently logged in member and sets it to the default image.
+ */
+public class RemoveProfilePhotoCommand extends Command {
+
+    public static final String COMMAND_WORD = "removepic";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "rmpic", "defaultpic", "delpic")
+    );
+    public static final String COMMAND_FORMAT = COMMAND_WORD;
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes your profile photo.\n";
+    public static final String MESSAGE_REMOVE_PROFILE_PHOTO_SUCCESS = "Your profile photo has been removed.";
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        model.removeProfilePhoto();
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null,
+                false, null, false));
+        return new CommandResult(MESSAGE_REMOVE_PROFILE_PHOTO_SUCCESS);
+    }
+
+}
+```
 ###### \java\seedu\club\logic\parser\ChangeProfilePhotoCommandParser.java
 ``` java
 package seedu.club.logic.parser;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
+import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
 import seedu.club.model.member.ProfilePhoto;
@@ -862,14 +898,12 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
      */
     public ChangeProfilePhotoCommand parse(String args) throws ParseException {
 
-        String path = args.trim();
-
-        if (path.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ChangeProfilePhotoCommand.MESSAGE_USAGE));
+        try {
+            ProfilePhoto profilePhoto = ParserUtil.parseProfilePhoto(args);
+            return new ChangeProfilePhotoCommand(profilePhoto);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
         }
-
-        return new ChangeProfilePhotoCommand(new ProfilePhoto(path));
     }
 
 }
@@ -931,8 +965,6 @@ public class DeleteTagCommandParser implements Parser<DeleteTagCommand> {
 ``` java
 package seedu.club.logic.parser;
 
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -957,8 +989,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
             File exportFile = ParserUtil.parseExportPath(args);
             return new ExportCommand(exportFile);
         } catch (IllegalValueException ive) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
+            throw new ParseException(ive.getMessage());
         } catch (IOException ioe) {
             throw new ParseException(String.format(MESSAGE_FILE_CREATION_ERROR, args));
         }
@@ -991,8 +1022,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
             File importFile = ParserUtil.parseImportPath(args);
             return new ImportCommand(importFile);
         } catch (IllegalValueException ive) {
-            throw new ParseException(
-                    String.format(ive.getMessage(), ImportCommand.MESSAGE_USAGE));
+            throw new ParseException(ive.getMessage());
         }
     }
 
@@ -1006,13 +1036,15 @@ public class ImportCommandParser implements Parser<ImportCommand> {
      *
      * @throws IllegalValueException if the given {@code photo} is invalid.
      */
-    public static ProfilePhoto parseProfilePhoto(String photo) throws IllegalValueException {
-        requireNonNull(photo);
-        String trimmedProfilePhoto = photo.trim();
-        if (!ProfilePhoto.isValidProfilePhoto(trimmedProfilePhoto)) {
+    public static ProfilePhoto parseProfilePhoto(String photoPath) throws IllegalValueException {
+        requireNonNull(photoPath);
+        String trimmedPath = photoPath.trim();
+        File photoFile = new File(trimmedPath);
+
+        if (!FileUtil.isAbsoluteFilePath(photoFile) || !ProfilePhoto.isValidPhotoFile(trimmedPath)) {
             throw new IllegalValueException(ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
         }
-        return new ProfilePhoto(trimmedProfilePhoto);
+        return new ProfilePhoto(trimmedPath);
     }
 
     /**
@@ -1023,7 +1055,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
     public static File parseImportPath(String path) throws IllegalValueException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (!FileUtil.isAbsoluteFilePath(file) || !CsvUtil.isValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
@@ -1038,11 +1070,11 @@ public class ImportCommandParser implements Parser<ImportCommand> {
     public static File parseExportPath(String path) throws IllegalValueException, IOException {
         File file = FileUtil.parsePath(path);
 
-        if (FileUtil.isNotValidFileName(file) || CsvUtil.isNotValidCsvFileName(path)) {
+        if (!FileUtil.isAbsoluteFilePath(file) || !CsvUtil.isValidCsvFileName(path)) {
             throw new IllegalValueException(MESSAGE_INVALID_CSV_PATH);
         }
 
-        file.createNewFile();
+        FileUtil.createIfMissing(file);
         return file;
     }
 
@@ -1228,29 +1260,35 @@ import static java.util.Objects.requireNonNull;
  */
 public class ProfilePhoto {
 
+    public static final String EMPTY_STRING = "";
+    public static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
-            "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
-    public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
+            "The photo path should be an absolute path to a JPG or PNG image file.";
+
+    private static final String[] validFileExtensions = {".jpg", ".png"};
+    private static final int JPG_INDEX = 0;
+    private static final int PNG_INDEX = 1;
 
     private String profilePhotoPath;
 
     /**
      * Constructs a {@code ProfilePhoto}.
-     *
-     * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 
     /**
-     * Returns true if a given string is a valid photo path.
+     * Returns true if {@code path} represents the path of a JPG (.jpg) or PNG (.png) file.
      *
-     * @param test Path whose validity is to be checked.
+     * @param path Path whose validity is to be checked.
      */
-    public static boolean isValidProfilePhoto(String test) {
-        return test.matches(IMAGE_PATH_VALIDATION_REGEX);
+    public static boolean isValidPhotoFile(String path) {
+        int length = path.length();
+        String fileExtension = path.substring(length - validFileExtensions[JPG_INDEX].length());
+
+        return fileExtension.compareToIgnoreCase(validFileExtensions[JPG_INDEX]) == 0
+                || fileExtension.compareToIgnoreCase(validFileExtensions[PNG_INDEX]) == 0;
     }
 
     /**
@@ -1259,7 +1297,6 @@ public class ProfilePhoto {
      */
     public void setNewPhotoPath(String path) {
         requireNonNull(path);
-        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 
@@ -1338,6 +1375,11 @@ public class ProfilePhoto {
     void addProfilePhoto(String originalPhotoPath) throws PhotoReadException;
 
     /**
+     * Removes the current profile photo of the logged in member and sets it back to the default image.
+     */
+    void removeProfilePhoto();
+
+    /**
      * Exports Club Connect's members' details to the specified file.
      *
      * @param exportFile File to which data is exported.
@@ -1386,11 +1428,19 @@ public class ProfilePhoto {
         indicateProfilePhotoChanged(originalPhotoPath, newFileName);
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
-        getLoggedInMember().setProfilePhotoPath(newProfilePhotoPath);
+        clubBook.changeLoggedInMemberProfilePhoto(newProfilePhotoPath);
         updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to: "
                 + getLoggedInMember().getProfilePhoto().getPhotoPath());
+    }
+
+    @Override
+    public void removeProfilePhoto() {
+        clubBook.changeLoggedInMemberProfilePhoto(ProfilePhoto.DEFAULT_PHOTO_PATH);
+        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
+        indicateClubBookChanged();
+        logger.fine("Member's profile photo has been set to default image");
     }
 
 ```
@@ -1424,81 +1474,41 @@ public class ProfilePhoto {
         return numberMembers;
     }
 
-    @Override
-    public void exportClubConnectMembers(File exportFile) throws IOException {
-        requireNonNull(exportFile);
-        indicateNewExport(exportFile);
-
-        exportHeaders(exportFile);
-        List<Member> members = new ArrayList<>(clubBook.getMemberList());
-
-        for (Member member: members) {
-            exportMember(member);
-        }
-    }
-
     /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that new data is ready to be exported.
+     * Raises a {@code NewMemberAvailableEvent} to indicate that {@code data} is to be written to {@code exportFile}.
      *
+     * @param exportFile CSV file to be exported to.
      * @param data Member data to be added to the file.
      * @throws IOException if there was an error writing to file.
      */
-    private void indicateNewExport(String data) throws IOException {
-        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(data);
+    private void indicateNewExport(File exportFile, String data) throws IOException {
+        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile, data);
         raise(newExportDataAvailableEvent);
-        if (!newExportDataAvailableEvent.isFileChanged()) {
+        if (!newExportDataAvailableEvent.isDataExported()) {
             throw new IOException();
         }
     }
 
-    /**
-     * Raises a {@code NewMemberAvailableEvent} to indicate that data is to be written to {@code exportFile}.
-     *
-     * @param exportFile CSV file to be exported to.
-     * @throws IOException if there was an error writing to file.
-     */
-    private void indicateNewExport(File exportFile) throws IOException {
-        NewExportDataAvailableEvent newExportDataAvailableEvent = new NewExportDataAvailableEvent(exportFile);
-        raise(newExportDataAvailableEvent);
-        if (!newExportDataAvailableEvent.isFileChanged()) {
-            throw new IOException();
-        }
+    @Override
+    public void exportClubConnectMembers(File exportFile) throws IOException {
+        requireNonNull(exportFile);
+
+        List<Member> members = new ArrayList<>(clubBook.getMemberList());
+        StringBuilder csvMemberList = new StringBuilder();
+        /*for (Member member: members) {
+            csvMemberList.append(getMemberDataToExport(member));
+        }*/
+        members.forEach(member -> csvMemberList.append(getMemberDataToExport(member)));
+        indicateNewExport(exportFile, csvMemberList.toString());
     }
 
     /**
-     * Returns true if {@code file} is empty.
-     */
-    private boolean isEmptyFile(File file) {
-        return file.length() == 0;
-    }
-
-    /**
-     * Exports the header fields of {@code Member} object if the file is empty.
-     */
-    private void exportHeaders(File exportFile) throws IOException {
-        if (isEmptyFile(exportFile)) {
-            String headers = CsvUtil.getHeaders();
-            indicateNewExport(headers);
-        }
-    }
-
-    /**
-     * Exports the information of {@code member} to the file.
+     * Returns the CSV representation of the data of a {@code member} that is to be exported.
      *
      * @param member Member whose data is to be exported.
-     */
-    private void exportMember(Member member) throws IOException {
-        String memberData = convertMemberToCsv(member);
-        indicateNewExport(memberData);
-    }
-
-    /**
-     * Returns the CSV representation of {@code member}.
-     *
-     * @param member Member who is to be converted to CSV format.
      * @return Member data in CSV format.
      */
-    private String convertMemberToCsv(Member member) {
+    private String getMemberDataToExport(Member member) {
         return CsvUtil.toCsvFormat(member);
     }
 
@@ -1558,7 +1568,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.util.FileUtil;
+import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
@@ -1623,10 +1633,11 @@ public class CsvClubBookStorage {
         requireNonNull(data);
         requireNonNull(file);
 
-        FileUtil.createIfMissing(file);
-        assert file.exists() : "ClubBook export file " + file + " is guaranteed to exist";
+        assert file.exists() : "ClubBook export file " + file + " must have been created";
 
-        CsvFileStorage.saveDataToFile(file, data);
+        String columnHeaders = CsvUtil.getHeaders();
+        String dataToExport = columnHeaders + data;
+        CsvFileStorage.saveDataToFile(file, dataToExport);
     }
 }
 ```
@@ -1646,7 +1657,7 @@ import seedu.club.model.member.UniqueMemberList;
 public class CsvFileStorage {
 
     /**
-     * Saves the given clubBook data to the specified file.
+     * Saves the given clubBook {@code data} to the specified file.
      */
     public static void saveDataToFile(File file, String data) throws IOException {
         try {
@@ -1694,13 +1705,14 @@ public interface PhotoStorage {
 ``` java
 package seedu.club.storage;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
 
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.exceptions.PhotoReadException;
@@ -1712,7 +1724,7 @@ import seedu.club.commons.util.FileUtil;
  */
 public class ProfilePhotoStorage implements  PhotoStorage {
 
-    public static final String PHOTO_FILE_EXTENSION = ".png";
+    public static final String PHOTO_FILE_EXTENSION = ".bmp";
     public static final String SAVE_PHOTO_DIRECTORY = "photos/";
 
     private static final String URL_PREFIX = "file:///";
@@ -1722,22 +1734,18 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     @Override
     public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
             throws PhotoReadException, PhotoWriteException {
-        BufferedImage originalPhoto = null;
-        File newPath = null;
-
+        String newPath = null;
         try {
             logger.info("Profile Photo is being read from " + originalPhotoPath);
 
             URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
-            originalPhoto = ImageIO.read(photoUrl);
+            newPath = SAVE_PHOTO_DIRECTORY + newPhotoName + PHOTO_FILE_EXTENSION;
+            InputStream photoStream = photoUrl.openStream();
 
-            String saveAs = newPhotoName + PHOTO_FILE_EXTENSION;
-            newPath = new File(SAVE_PHOTO_DIRECTORY + saveAs);
-
-            createPhotoFileCopy(originalPhoto, newPath);
+            createPhotoFileCopy(photoStream, newPath);
         } catch (PhotoWriteException pwe) {
             logger.info("Error while writing photo file");
-            throw new PhotoWriteException(newPath.getAbsolutePath());
+            throw new PhotoWriteException(newPath);
         } catch (IOException ioe) {
             logger.info("Error while reading photo file");
             throw new PhotoReadException(originalPhotoPath);
@@ -1748,13 +1756,13 @@ public class ProfilePhotoStorage implements  PhotoStorage {
      * Creates a copy the given {@code originalPhoto} in the application's resources.
      * @throws PhotoWriteException if there was any problem writing to the file.
      */
-    public void createPhotoFileCopy(BufferedImage originalPhoto, File newPath) throws PhotoWriteException {
+    public void createPhotoFileCopy(InputStream photoStream, String newPath) throws PhotoWriteException {
         logger.info("Profile Photo is being copied to " + newPath);
         try {
             FileUtil.createDirs(new File(SAVE_PHOTO_DIRECTORY));
-            ImageIO.write(originalPhoto, "png", newPath);
+            Files.copy(photoStream, Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {
-            throw new PhotoWriteException(newPath.getAbsolutePath());
+            throw new PhotoWriteException(newPath);
         }
         logger.info("Profile Photo copying successful");
     }
@@ -1805,30 +1813,17 @@ public class ProfilePhotoStorage implements  PhotoStorage {
 
     // ================ CSV Storage methods ==============================
 
-    /**
-     * Writes {@code content} to the export file.
-     * @param content Data that is to be appended to the export file.
-     * @throws IOException when there is an error writing to the file.
-     */
-    private void exportData(String content) throws IOException {
-        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
-        csvClubBookStorage.saveData(content);
-    }
-
     @Override
     @Subscribe
     public void handleExportDataEvent(NewExportDataAvailableEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Adding member data to file"));
+        assert event.exportFile != null : "exportFile should be pointing to a valid file";
+        csvClubBookStorage.setClubBookFile(event.exportFile);
 
-        if (event.exportFile != null) {
-            csvClubBookStorage.setClubBookFile(event.exportFile);
-        }
+        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
         try {
-            if (event.data != null) {
-                exportData(event.data);
-            }
+            csvClubBookStorage.saveData(event.data);
         } catch (IOException e) {
-            event.setFileChanged(false);
+            event.setDataExported(false);
             raise(new DataSavingExceptionEvent(e));
         }
     }
@@ -1837,8 +1832,6 @@ public class ProfilePhotoStorage implements  PhotoStorage {
 ``` java
     private static final Integer PHOTO_WIDTH = 100;
     private static final Integer PHOTO_HEIGHT = 130;
-    private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
-    private static final String EMPTY_STRING = "";
 
 ```
 ###### \java\seedu\club\ui\MemberCard.java
@@ -1849,18 +1842,11 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     private void setProfilePhoto(Member member) {
         Image photo;
         String photoPath = member.getProfilePhoto().getPhotoPath();
-        if (photoPath.equals(EMPTY_STRING)) {
+        if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
             photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
                     false, true);
         } else {
-            try {
-                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
-                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
-            } catch (NullPointerException npe) {
-                //Different path (instead of DEFAULT_PHOTO_PATH) used for testing purposes: indicates exception
-                photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
-                        false, true);
-            }
+            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
         }
         profilePhoto.setImage(photo);
     }
@@ -1874,20 +1860,15 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     private void setProfilePhoto(Member member) {
         Image photo;
         String photoPath = member.getProfilePhoto().getPhotoPath();
-        if (photoPath.equals(EMPTY_STRING)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO),
-                    PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+        if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO), PHOTO_WIDTH, PHOTO_HEIGHT,
+                    false, true);
         } else {
-            try {
-                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
-                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
-            } catch (NullPointerException npe) {
-                photo = new Image(MainApp.class.getResourceAsStream("/images/default.png"), //DEFAULT_PHOTO),
-                        PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
-            }
+            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
         }
         profilePhoto.setImage(photo);
     }
+
 ```
 ###### \java\seedu\club\ui\StatusBarFooter.java
 ``` java
@@ -1908,14 +1889,6 @@ public class ProfilePhotoStorage implements  PhotoStorage {
       </HBox.margin>
     </ImageView>
   </HBox>
-```
-###### \resources\view\MemberDetailsPanel.fxml
-``` fxml
-    <VBox>
-        <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
-            <Text text="MEMBER PROFILE" fill="darkblue" VBox.vgrow="NEVER" />
-        </TextFlow>
-    </VBox>
 ```
 ###### \resources\view\MemberListCard.fxml
 ``` fxml

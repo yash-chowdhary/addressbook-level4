@@ -48,25 +48,70 @@ public class ModifiedTaskPanelSelecetionChangedEvent extends BaseEvent {
     }
 }
 ```
-###### \java\seedu\club\commons\events\ui\UpdateSelectionPanelEvent.java
+###### \java\seedu\club\commons\events\ui\UpdateCurrentlyLogInMemberEvent.java
 ``` java
 import seedu.club.commons.events.BaseEvent;
 import seedu.club.model.member.Member;
 
 /**
+ * Represent a change in log in member
+ */
+public class UpdateCurrentlyLogInMemberEvent extends BaseEvent {
+    private Member currentlyLogIn;
+
+    public UpdateCurrentlyLogInMemberEvent(Member member) {
+        this.currentlyLogIn = member;
+    }
+
+    public Member getCurrentlyLogIn() {
+        return currentlyLogIn;
+    }
+
+    @Override
+    public String toString() {
+        return null;
+    }
+}
+```
+###### \java\seedu\club\commons\events\ui\UpdateSelectionPanelEvent.java
+``` java
+import seedu.club.commons.events.BaseEvent;
+import seedu.club.model.member.Member;
+import seedu.club.model.tag.Tag;
+
+/**
  *
  */
 public class UpdateSelectionPanelEvent extends BaseEvent {
-    private Member member;
+    private Member toEditMember;
+    private Member editedMember;
     private boolean toDelete;
+    private Tag tagToDelete;
+    private boolean toUndo;
 
-    public UpdateSelectionPanelEvent (Member member, boolean toDelete) {
-        this.member = member;
+    public UpdateSelectionPanelEvent (Member toEditMember, Member editedMember, boolean toDelete,
+                                      Tag removedTag, boolean toUndo) {
+        this.toEditMember = toEditMember;
+        this.editedMember = editedMember;
         this.toDelete = toDelete;
+        this.tagToDelete = removedTag;
+        this.toUndo = toUndo;
     }
 
-    public Member getUpdatedMember() {
-        return this.member;
+    public Member getToEditMember() {
+        return toEditMember;
+    }
+
+    public Member getEditedMember() {
+        return editedMember;
+    }
+
+    public boolean isToUndo() {
+        return toUndo;
+    }
+
+    public Tag getTagToDelete() {
+        return tagToDelete;
     }
 
     public boolean isToDelete() {
@@ -264,6 +309,7 @@ public class LogInCommand extends Command {
         requireToLogOut();
         model.logsInMember(username.value, password.value);
         if (model.getLoggedInMember() != null) {
+            EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
             return new CommandResult(String.format(MESSAGE_SUCCESS, model.getLoggedInMember().getName().toString()));
         }
         return new CommandResult(MESSAGE_FAILURE);
@@ -285,6 +331,7 @@ import java.util.Arrays;
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -312,6 +359,7 @@ public class LogOutCommand extends Command {
         EventsCenter.getInstance().post(new HideResultsRequestEvent());
         model.logOutMember();
         EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
+        EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(null));
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
@@ -630,6 +678,7 @@ public class SignUpCommandParser {
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
+
     public void clearClubBook() {
         members.clear();
     }
@@ -710,6 +759,18 @@ public class Password {
     public String toString() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this    //short circuit if same object
+                || (other instanceof Password    //handles nulls
+                && this.value.equals(((Password) other).value));   //state check
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }
 ```
 ###### \java\seedu\club\model\member\UniqueMemberList.java
@@ -721,9 +782,7 @@ public class Password {
     public void logsInMember(String username, String password) {
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
-            currentlyLogInMember = new Member(checkMember.getName(), checkMember.getPhone(),
-                    checkMember.getEmail(), checkMember.getMatricNumber(),
-                    checkMember.getGroup(), checkMember.getTags());
+            currentlyLogInMember = checkMember;
         }
     }
 
@@ -829,6 +888,18 @@ public class Username {
     @Override
     public String toString() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this    //short circuit if same object
+                || (other instanceof Username    //handles nulls
+                && this.value.equals(((Username) other).value));   //state check
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }
 ```
@@ -953,6 +1024,46 @@ public class Username {
         isConfirmedClear = b;
     }
 ```
+###### \java\seedu\club\ui\LogInMemberBox.java
+``` java
+import java.util.logging.Logger;
+
+import com.google.common.eventbus.Subscribe;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
+import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
+
+/**
+ * The currently logged in panel of the application
+ */
+public class LogInMemberBox extends UiPart<Region> {
+
+    private static final String FXML = "CurrentlyLogInMemberBox.fxml";
+
+    private final Logger logger = LogsCenter.getLogger(LogInMemberBox.class);
+
+
+    @FXML
+    private Label currentlyloginMember;
+
+    public LogInMemberBox () {
+        super(FXML);
+        registerAsAnEventHandler(this);
+    }
+
+    @Subscribe
+    private void handleUpdateCurrentlyLogInMemberEvent (UpdateCurrentlyLogInMemberEvent event) {
+        if (event.getCurrentlyLogIn() == null) {
+            currentlyloginMember.setText("No one is currently logged in.");
+        } else {
+            currentlyloginMember.setText("Currently Logged In: " + event.getCurrentlyLogIn().getName().toString());
+        }
+    }
+}
+```
 ###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
 
@@ -961,6 +1072,7 @@ public class Username {
      * @param show
      */
     public void loadDetails (Boolean show) {
+        gridPane.setStyle("-fx-background-color: #cccccc");
         int size = gridPane.getChildren().size();
         for (int i = 0; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);
@@ -992,6 +1104,7 @@ public class Username {
 
     @Subscribe
     public void handleMemberPanelSelectionChangeEvent(MemberPanelSelectionChangedEvent event) {
+        currentlySelectedMember = event.getNewSelection().member;
         loadMemberPage(event.getNewSelection().member);
         setConnections(taskList, event.getNewSelection().member);
     }
@@ -1007,15 +1120,33 @@ public class Username {
 
     @Subscribe
     public void handleUpdateSelectionPanelEvent (UpdateSelectionPanelEvent event) {
-        System.out.println(currentlySelectedMember);
-        if (event.isToDelete()) {
-            if (currentlySelectedMember.equals(event.getUpdatedMember())) {
+        if (event.isToUndo()) {
+            loadMemberPage(undoStack.pop());
+        }
+        if (event.getTagToDelete() != null) {
+            if (currentlySelectedMember.hasTag(event.getTagToDelete())) {
+                undoStack.push(currentlySelectedMember);
+                Set<Tag> memberTags = new HashSet<>(currentlySelectedMember.getTags());
+                memberTags.remove(event.getTagToDelete());
+                currentlySelectedMember = new Member(currentlySelectedMember.getName(),
+                        currentlySelectedMember.getPhone(),
+                        currentlySelectedMember.getEmail(),
+                        currentlySelectedMember.getMatricNumber(),
+                        currentlySelectedMember.getGroup(),
+                        memberTags,
+                        currentlySelectedMember.getCredentials(),
+                        currentlySelectedMember.getProfilePhoto());
+                loadMemberPage(currentlySelectedMember);
+            }
+        } else if (event.isToDelete()) {
+            if (currentlySelectedMember.equals(event.getToEditMember())) {
+                undoStack.push(currentlySelectedMember);
                 loadDetails(false);
             }
-        } else {
-            if (currentlySelectedMember != null) {
-                loadMemberPage(event.getUpdatedMember());
-            }
+        } else if (currentlySelectedMember.equals(event.getToEditMember())) {
+            undoStack.push(currentlySelectedMember);
+            currentlySelectedMember = event.getEditedMember();
+            loadMemberPage(event.getEditedMember());
         }
     }
 ```
@@ -1085,7 +1216,7 @@ public class ModifiedTaskCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         description.setText(task.getDescription().getDescription());
         date.setText("Due Date: " + task.getDate().getDate());
-        assignor.setText("Assigned by: " + task.getAssignor().getAssignor());
+        assignor.setText("Assigned by: " + task.getAssignor().getValue());
     }
     public boolean isTaskYetToBegin() {
         return task.hasTaskNotBegun();
@@ -1118,6 +1249,17 @@ public class ModifiedTaskCard extends UiPart<Region> {
     }
 }
 ```
+###### \resources\view\CurrentlyLogInMemberBox.fxml
+``` fxml
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane styleClass="loginpane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="currentlyloginMember" maxHeight="25.0" text="No one is currently logged in.">
+    </Label>
+</StackPane>
+```
 ###### \resources\view\MemberDetailsPanel.fxml
 ``` fxml
 
@@ -1132,13 +1274,60 @@ public class ModifiedTaskCard extends UiPart<Region> {
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
-<GridPane fx:id="gridPane" prefHeight="543.0" prefWidth="244.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.text.TextFlow?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
+        <Text fill="darkblue" text="MEMBER PROFILE" VBox.vgrow="NEVER" />
+    </TextFlow>
+<GridPane fx:id="gridPane" prefHeight="543.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
     </columnConstraints>
+    <ImageView fx:id="profilePhoto" fitHeight="152.0" fitWidth="114.0" style="-fx-background-color:white" GridPane.halignment="CENTER">
+        <HBox.margin>
+            <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
+        </HBox.margin>
+    </ImageView>
+    <Label fx:id="name" styleClass="cell_medium_label" text="/$name" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+    <ImageView fx:id="phoneIcon" fitHeight="21.0" fitWidth="21.0" translateX="10.0" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+        <HBox.margin>
+            <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
+        </HBox.margin>
+    </ImageView>
+    <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="130.0" styleClass="label-group-panel" text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+        <font>
+            <Font size="18.0" />
+        </font></Label>
+    <Label fx:id="matricNumber" styleClass="cell_medium_label" text="/$matricnumber" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+    <Label fx:id="phone" styleClass="cell_medium_label" text="/$mobile" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+    <Label fx:id="email" prefHeight="28.0" prefWidth="243.0" styleClass="cell_medium_label" text="/$email" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+    <ImageView fx:id="emailIcon" fitHeight="21.0" fitWidth="21.0" layoutX="10.0" layoutY="227.0" translateX="10.0" GridPane.rowIndex="5" />
+    <FlowPane fx:id="tags" GridPane.rowIndex="1">
+        <padding>
+            <Insets bottom="5" top="5" />
+        </padding>
+    </FlowPane>
+
+    <Text styleClass="cell_medium_label" text="Related Tasks" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+    <VBox GridPane.rowIndex="7">
+        <ListView fx:id="modifiedTaskCardListView" prefHeight="155.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
+        </ListView>
+    </VBox>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints minHeight="10.0" prefHeight="200.0" />
+    </rowConstraints>
+</GridPane>
+</VBox>
 ```
 ###### \resources\view\ModifiedTaskListCard.fxml
 ``` fxml
