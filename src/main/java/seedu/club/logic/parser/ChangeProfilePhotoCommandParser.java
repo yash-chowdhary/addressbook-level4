@@ -24,8 +24,8 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
             ProfilePhoto profilePhoto = ParserUtil.parseProfilePhoto(args);
             return new ChangeProfilePhotoCommand(profilePhoto);
         } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ive.getMessage() + "\n"
-                    + ChangeProfilePhotoCommand.MESSAGE_USAGE), ive);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS + ChangeProfilePhotoCommand.MESSAGE_USAGE), ive);
         }
     }
 

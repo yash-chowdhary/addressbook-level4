@@ -92,6 +92,7 @@ This is how you should interpret the commands in this user guide.
 ====
 
 Here are some things to take note of before you begin using Club Connect.
+[[constraints]]
 ====
 *Valid Entries*
 
@@ -965,7 +966,7 @@ To get the absolute path of a file on MacOS, follow these steps:
 
 [[csv-data-format]]
 * *CSV format for `import`* +
-In order to successfully import data of members from the specified file, it has to follow the format shown in <<csv-format,Figure 3>>.
+In order to successfully import data of members from the specified file, it has to follow the format shown in Figure 4.
 +
 [[csv-format]]
 .Required format of data in the file
@@ -973,8 +974,12 @@ image::CSV_format.png[height="350"]
 +
 The columns in the import file should be in the same order as shown in the figure above.
 All the tags of a member should be in a single cell, separated by commas (",").
-Also, to successfully import the data of a member, you have to make sure that their details conform to the constraints of the <<add-command,`add` command>>.
-
+Also, to successfully import the data of a member, you have to make sure that their details conform to the <<constraints>>.
+Figure 5 shows some examples of invalid entries with the corresponding reasons in red.
++
+[[invalid-csv-format]]
+.Invalid format of data in the file (reasons are shown in red)
+image::invalid_CSV_format.png[height="300"]
 // end::tips[]
 
 == Coming in v2.0
