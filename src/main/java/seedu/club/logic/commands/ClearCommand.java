@@ -48,7 +48,7 @@ public class ClearCommand extends Command {
         } else {
             if (args == null) {
                 return new CommandResult(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, COMMAND_FORMAT));
-            } else if (args.equals(" Y")) {
+            } else if (args.equalsIgnoreCase(" Y")) {
                 model.resetData(new ClubBook());
                 model.clearClubBook();
                 EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));

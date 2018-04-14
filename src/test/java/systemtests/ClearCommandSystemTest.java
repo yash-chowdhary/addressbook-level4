@@ -33,34 +33,6 @@ public class ClearCommandSystemTest extends ClubBookSystemTest {
         assertCommandSuccess(ClearCommand.COMMAND_WORD + " Y");
         assertSelectedCardUnchanged();
 
-        /* Case: undo clearing club book -> original club book restored */
-        /*String command = UndoCommand.COMMAND_WORD;
-        String expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
-        assertCommandSuccess(command,  expectedResultMessage, defaultModel);
-        assertSelectedCardUnchanged();*/
-
-        /* Case: redo clearing club book -> cleared */
-        /*command = RedoCommand.COMMAND_WORD;
-        expectedResultMessage = RedoCommand.MESSAGE_SUCCESS;
-        assertCommandSuccess(command, expectedResultMessage, new ModelManager());
-        assertSelectedCardUnchanged();*/
-
-        /* Case: selects first card in member list and clears club book -> cleared and no card selected */
-        /*executeCommand(UndoCommand.COMMAND_WORD); // restores the original club book
-        selectMember(Index.fromOneBased(1));
-        assertCommandSuccess(ClearCommand.COMMAND_WORD);
-        assertSelectedCardDeselected();*/
-
-        /* Case: filters the member list before clearing -> entire club book cleared */
-        /*executeCommand(UndoCommand.COMMAND_WORD); // restores the original club book
-        showMembersWithName(KEYWORD_MATCHING_MEIER);
-        assertCommandSuccess(ClearCommand.COMMAND_WORD);
-        assertSelectedCardUnchanged();*/
-
-        /* Case: clear empty club book -> cleared *//*
-        assertCommandFailure("clear", Messages.MESSAGE_REQUIRE_SIGN_UP);
-        assertSelectedCardUnchanged();*/
-
         /* Case: mixed case command word -> rejected */
         assertCommandFailure("ClEaR", MESSAGE_UNKNOWN_COMMAND);
     }

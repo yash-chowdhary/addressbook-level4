@@ -314,7 +314,7 @@ Changes the status of the 3rd task to `Completed` in the task listing.
 
 Clears all entries from Club Connect. +
 Format A: `clear` +
-Format B: `clear LETTER`
+Format B: `clear LETTER` +
 Aliases: `c`, `erase`
 
 ****
@@ -322,18 +322,20 @@ Aliases: `c`, `erase`
 * A confirmation message will be shown.
 * To confirm clearing all entries from Club Connect, enter Format B into the command line.
 * Format B has to be executed immediately after executing Format A.
-* LETTER must be equals to "Y" to confirm clearing data from Club Connect
-* Any other LETTER will cancell the execution
+* `LETTER` must be equals to "Y" (case-insensitive) to confirm clearing data from Club Connect
+* Any other `LETTER` will cancel the execution
 ****
 [IMPORTANT]
 This command is for `Exco` members only.
 
 Examples:
 
-* `Clear` -> `Clear Y`
-Execute the clear command, and confirming it.
-* `Clear` -> `Clear N`
-Execute the clear command, and cancelling it.
+* `Clear` +
+`Clear Y` +
+Executes the clear command, and confirms it.
+* `Clear` +
+`Clear N` +
+Executes the clear command, and aborts it.
 
 // tag::compressdecompress[]
 === Compressing member details : `compress` (Since v1.2)
