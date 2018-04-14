@@ -1,5 +1,5 @@
 .background {
-    -fx-background-color: derive(purple, 20%);
+    -fx-background-color: derive(grey, 20%);
     background-color: white; /* Used in the default.html file */
 }
 
@@ -70,8 +70,8 @@
     -fx-base: #1d1d1d;
     -fx-control-inner-background: pink;
     -fx-background-color: brown;
-    -fx-table-cell-border-color: green;
-    -fx-table-header-border-color: purple;
+    -fx-table-cell-border-color: grey;
+    -fx-table-header-border-color: grey;
     -fx-padding: 25;
 }
 
@@ -82,10 +82,10 @@
 .table-view .column-header, .table-view .filler {
     -fx-size: 35;
     -fx-border-width: 0 0 1 0;
-    -fx-background-color: green;
+    -fx-background-color: skyblue;
     -fx-border-color:
-        green
-        green
+        grey
+        grey
         derive(-fx-base, 80%)
         transparent;
     -fx-border-insets: 0 10 1 0;
@@ -178,8 +178,8 @@
 }
 
 .status-bar {
-    -fx-background-color: derive(purple, 20%);
-    -fx-text-fill: yellow;
+    -fx-background-color: derive(grey, 20%);
+    -fx-text-fill: black;
 }
 
 .result-display {
@@ -192,7 +192,7 @@
 }
 
 .result-display .label {
-    -fx-text-fill: yellow !important;
+    -fx-text-fill: black !important;
 }
 
 .status-bar .label {
@@ -201,8 +201,8 @@
 }
 
 .status-bar-with-border {
-    -fx-background-color: derive(purple, 30%);
-    -fx-border-color: derive(green, 25%);
+    -fx-background-color: derive(grey, 30%);
+    -fx-border-color: derive(grey, 25%);
     -fx-border-width: 1px;
 }
 
@@ -211,9 +211,7 @@
 }
 
 .grid-pane {
-    -fx-background-color: derive(purple, 30%);
-    /*-fx-border-color: derive(green, 30%);
-    -fx-border-width: 1px;*/
+    -fx-background-color: derive(skyblue, 30%);
 }
 
 .grid-pane .anchor-pane {
@@ -225,7 +223,7 @@
 }
 
 .context-menu .label {
-    -fx-text-fill: green;
+    -fx-text-fill: black;
 }
 
 .menu-bar {
@@ -240,7 +238,7 @@
 }
 
 .menu .left-container {
-    -fx-background-color: purple;
+    -fx-background-color: grey;
 }
 
 /*
@@ -314,7 +312,7 @@
 .dialog-pane:header *.header-panel *.label {
     -fx-font-size: 18px;
     -fx-font-style: italic;
-    -fx-fill: green;
+    -fx-fill: skyblue;
     -fx-text-fill: black;
 }
 
@@ -367,7 +365,7 @@
 }
 
 #filterField, #memberListPanel, #memberWebpage {
-    -fx-effect: dropshadow(gaussian, purple, 100, 100, 100, 100);
+    -fx-effect: dropshadow(gaussian, grey, 100, 100, 100, 100);
 }
 
 #resultDisplay .content {
