@@ -87,8 +87,8 @@ public class UniqueTaskList implements Iterable<Task> {
             if (task.getDescription().getDescription().equalsIgnoreCase(editedTask.getDescription().getDescription())
                     && task.getTime().getTime().equalsIgnoreCase(editedTask.getTime().getTime())
                     && task.getDate().getDate().equalsIgnoreCase(editedTask.getDate().getDate())
-                    && task.getAssignor().getAssignor().equalsIgnoreCase(editedTask.getAssignor().getAssignor())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+                    && task.getAssignor().getValue().equalsIgnoreCase(editedTask.getAssignor().getValue())
+                    && task.getAssignee().getValue().equalsIgnoreCase(editedTask.getAssignee().getValue())) {
                 throw new DuplicateTaskException();
             }
         }

@@ -1,6 +1,7 @@
 package seedu.club.ui;
 
-import java.io.InputStream;
+import static seedu.club.model.member.ProfilePhoto.DEFAULT_PHOTO_PATH;
+import static seedu.club.model.member.ProfilePhoto.EMPTY_STRING;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -23,8 +24,6 @@ public class MemberCard extends UiPart<Region> {
     //@@author amrut-prabhu
     private static final Integer PHOTO_WIDTH = 100;
     private static final Integer PHOTO_HEIGHT = 130;
-    private static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
-    private static final String EMPTY_STRING = "";
 
     //@@author
     /**
@@ -93,18 +92,11 @@ public class MemberCard extends UiPart<Region> {
     private void setProfilePhoto(Member member) {
         Image photo;
         String photoPath = member.getProfilePhoto().getPhotoPath();
-        if (photoPath.equals(EMPTY_STRING)) {
+        if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
             photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
                     false, true);
         } else {
-            try {
-                InputStream photoStream = MainApp.class.getResourceAsStream(photoPath);
-                photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, false);
-            } catch (NullPointerException npe) {
-                //Different path (instead of DEFAULT_PHOTO_PATH) used for testing purposes: indicates exception
-                photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
-                        false, true);
-            }
+            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
         }
         profilePhoto.setImage(photo);
     }

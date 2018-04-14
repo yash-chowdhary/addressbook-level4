@@ -43,7 +43,6 @@ public class ChangeProfilePhotoCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        //Defensive programming
         assert profilePhoto.getPhotoPath() != null : "Photo path should not be null.";
         requireToSignUp();
         requireToLogIn();

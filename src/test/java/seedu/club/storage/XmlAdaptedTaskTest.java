@@ -120,12 +120,12 @@ public class XmlAdaptedTaskTest {
 
         XmlAdaptedTask firstXmlAdaptedTask = new XmlAdaptedTask(BUY_CONFETTI.getDescription().getDescription(),
                 BUY_CONFETTI.getTime().getTime(), BUY_CONFETTI.getDate().getDate(),
-                BUY_CONFETTI.getAssignor().getAssignor(), BUY_CONFETTI.getAssignee().getAssignee(),
+                BUY_CONFETTI.getAssignor().getValue(), BUY_CONFETTI.getAssignee().getValue(),
                 BUY_CONFETTI.getStatus().getStatus());
 
         XmlAdaptedTask secondXmlAdaptedTask = new XmlAdaptedTask(BUY_FOOD.getDescription().getDescription(),
                 BUY_FOOD.getTime().getTime(), BUY_FOOD.getDate().getDate(),
-                BUY_FOOD.getAssignor().getAssignor(), BUY_FOOD.getAssignee().getAssignee(),
+                BUY_FOOD.getAssignor().getValue(), BUY_FOOD.getAssignee().getValue(),
                 BUY_FOOD.getStatus().getStatus());
 
         assertTrue(firstXmlAdaptedTask.equals(firstXmlAdaptedTask));

@@ -15,7 +15,7 @@ import seedu.club.model.task.Time;
  */
 public class TaskBuilder {
     public static final String DEFAULT_DESCRIPTION = "Book Auditorium";
-    public static final String DEFAULT_DATE = "01/01/2018";
+    public static final String DEFAULT_DATE = "01/05/2018";
     public static final String DEFAULT_TIME = "15:00";
     public static final String DEFAULT_ASSIGNOR = "";
     public static final String DEFAULT_ASSIGNEE = "";

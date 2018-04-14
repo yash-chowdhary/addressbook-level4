@@ -9,7 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
-import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.commons.events.ui.ViewResultsRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -19,7 +19,7 @@ import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
 import seedu.club.ui.testutil.EventsCollectorRule;
 
-public class ShowResultsCommandTest {
+public class ViewResultsCommandTest {
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     private Model model;
@@ -38,11 +38,11 @@ public class ShowResultsCommandTest {
     }
     @Test
     public void execute_help_success() throws CommandException {
-        ShowResultsCommand resultsCommand = new ShowResultsCommand();
+        ViewResultsCommand resultsCommand = new ViewResultsCommand();
         resultsCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         CommandResult result = resultsCommand.execute();
-        assertEquals(ShowResultsCommand.MESSAGE_SUCCESS, result.feedbackToUser);
-        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ShowResultsRequestEvent);
+        assertEquals(ViewResultsCommand.MESSAGE_SUCCESS, result.feedbackToUser);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ViewResultsRequestEvent);
         assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
     }
 }

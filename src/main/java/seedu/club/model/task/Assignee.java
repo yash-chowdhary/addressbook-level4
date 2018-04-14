@@ -15,7 +15,7 @@ public class Assignee {
         this.assignee = assignee;
     }
 
-    public String getAssignee() {
+    public String getValue() {
         return assignee;
     }
 

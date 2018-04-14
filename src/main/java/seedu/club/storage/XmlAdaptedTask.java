@@ -70,8 +70,8 @@ public class XmlAdaptedTask {
         description = source.getDescription().getDescription();
         time = source.getTime().getTime();
         date = source.getDate().getDate();
-        assignor = source.getAssignor().getAssignor();
-        assignee = source.getAssignee().getAssignee();
+        assignor = source.getAssignor().getValue();
+        assignee = source.getAssignee().getValue();
         status = source.getStatus().getStatus();
     }
 
