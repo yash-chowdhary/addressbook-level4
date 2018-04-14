@@ -18,7 +18,6 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 * *Major enhancement*: Added *voting system*
 ** What it does: Allows `Exco` members to create/delete polls and view/hide results of polls. Members can vote in polls.
 ** Justification: This feature improves the product significantly because the `Exco` members can accurately determine the views of other members so that they can take the best path of action for the club.
-** Highlights: This enhancement extensively covers . It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
 
 * *Minor enhancement*: Improved navigability of member list by adding compress/decompress mechanism and revamping `Find` command
 
@@ -40,15 +39,20 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-include::../UserGuide.adoc[tag=find]
+include::../UserGuide.adoc[tag=addpoll]
 
-include::../UserGuide.adoc[tag=compressdecompress]
+include::../UserGuide.adoc[tag=deletepoll]
+
+include::../UserGuide.adoc[tag=vote]
 
 include::../UserGuide.adoc[tag=viewresults]
 
 include::../UserGuide.adoc[tag=hideresults]
 
-include::../UserGuide.adoc[tag=vote]
+include::../UserGuide.adoc[tag=find]
+
+include::../UserGuide.adoc[tag=compressdecompress]
+
 
 == Contributions to the Developer Guide
 
