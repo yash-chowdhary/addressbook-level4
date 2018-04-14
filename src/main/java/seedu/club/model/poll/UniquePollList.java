@@ -65,17 +65,19 @@ public class UniquePollList implements Iterable<Poll> {
      * @throws AnswerNotFoundException if answerIndex is not answerIndex of any answers of poll
      * @throws UserAlreadyVotedException if pollee has already voted in the poll
      */
-    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+    public String voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         int pollIndex = internalList.indexOf(poll);
+        String voteDetails;
         if (pollIndex == -1) {
             throw new PollNotFoundException();
         } else {
             Poll pollDeepCopy = new Poll(new Question(poll.getQuestion().getValue()),
                     poll.getAnswers(), poll.getPolleesMatricNumbers());
-            pollDeepCopy.vote(answerIndex, polleeMatricNumber);
+            voteDetails = pollDeepCopy.vote(answerIndex, polleeMatricNumber);
             internalList.set(pollIndex, pollDeepCopy);
         }
+        return voteDetails;
     }
     //@@author
 

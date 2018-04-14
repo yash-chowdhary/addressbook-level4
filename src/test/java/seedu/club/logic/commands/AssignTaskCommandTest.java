@@ -154,10 +154,10 @@ public class AssignTaskCommandTest {
      */
     private class ModelStub implements Model {
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) {
+        public String voteInPoll(Poll poll, Index answerIndex) {
             fail("This method should not be called");
+            return null;
         }
-
         @Override
         public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
                 DuplicateTaskException {

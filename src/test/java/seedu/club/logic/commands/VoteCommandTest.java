@@ -16,6 +16,8 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalPolls.getTypicalClubBookWithPolls;
 
+import java.util.stream.Collectors;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +30,7 @@ import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
+import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
 
 public class VoteCommandTest {
@@ -70,7 +73,8 @@ public class VoteCommandTest {
         expectedModel = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
-        String expectedMessage = MESSAGE_VOTE_SUCCESS;
+        String expectedMessage = String.format(MESSAGE_VOTE_SUCCESS, pollToVote.getQuestion() + "\n" + pollToVote.getAnswers()
+        .get(INDEX_FIRST_ANSWER.getZeroBased()));
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
                 pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());

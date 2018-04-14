@@ -100,8 +100,10 @@ public interface Model {
     /**
      * Votes current user in the given {@code poll} for the answer
      * specified by {@code answerIndex} in the answer list of the poll.
+     *
+     * @return details of the vote.
      */
-    void voteInPoll(Poll poll, Index answerIndex) throws
+    String voteInPoll(Poll poll, Index answerIndex) throws
             PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException;
 
     /**

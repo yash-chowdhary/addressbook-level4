@@ -148,9 +148,9 @@ public class ChangeProfilePhotoCommandTest {
      */
     private class ModelStub implements Model {
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) throws
-                PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
-            fail("This method should not be called.");
+        public String voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+            return null;
         }
 
         @Override

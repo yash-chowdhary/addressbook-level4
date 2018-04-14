@@ -30,7 +30,7 @@ public class VoteCommand extends UndoableCommand {
             + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 3 2";
 
-    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.";
+    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.\n%s";
     public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll.";
 
     private final Index pollIndex;
@@ -53,8 +53,9 @@ public class VoteCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        String voteDetails;
         try {
-            model.voteInPoll(pollToVoteIn, answerIndex);
+            voteDetails = model.voteInPoll(pollToVoteIn, answerIndex);
         } catch (UserAlreadyVotedException userAlreadyVotedException) {
             throw new CommandException(MESSAGE_VOTE_FAIL_ALREADY_VOTED);
         } catch (PollNotFoundException questionNotFoundException) {
@@ -62,7 +63,7 @@ public class VoteCommand extends UndoableCommand {
         } catch (AnswerNotFoundException answerNotFoundException) {
             throw new AssertionError("The target answer cannot be missing");
         }
-        return new CommandResult(String.format(MESSAGE_VOTE_SUCCESS));
+        return new CommandResult(String.format(MESSAGE_VOTE_SUCCESS, voteDetails));
     }
 
     @Override

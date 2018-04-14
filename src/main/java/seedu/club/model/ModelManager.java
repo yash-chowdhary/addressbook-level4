@@ -161,11 +161,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void voteInPoll(Poll poll, Index answerIndex)
+    public String voteInPoll(Poll poll, Index answerIndex)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         requireAllNonNull(poll, answerIndex);
-        clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
+        String voteDetails = clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
         indicateClubBookChanged();
+        return voteDetails;
     }
 
     @Override

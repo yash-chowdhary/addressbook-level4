@@ -12,7 +12,7 @@ public class Answer {
     public static final String MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS =
             "Number answered for an answer should be non-negative";
     public static final String ANSWER_VALIDATION_REGEX = ".*\\S.*";
-    public static final String PREFIX_ANSWER = "Ans: ";
+    public static final String ANSWER_LABEL = "Ans: ";
     public static final int NUMBER_ZERO_VOTE_COUNT = 0;
 
     private String value;
@@ -64,6 +64,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return PREFIX_ANSWER + value;
+        return ANSWER_LABEL + value;
     }
 }
