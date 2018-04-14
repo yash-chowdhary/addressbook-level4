@@ -147,6 +147,11 @@ public class AddTaskCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void changeAssignee(Task taskToEdit, Task editedTask) throws MemberNotFoundException,
                 DuplicateTaskException, TaskAlreadyAssignedException {
             fail("This method should not be called");

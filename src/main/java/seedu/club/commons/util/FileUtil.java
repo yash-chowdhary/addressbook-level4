@@ -6,7 +6,6 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 
@@ -88,24 +87,10 @@ public class FileUtil {
 
     //@@author amrut-prabhu
     /**
-     * Returns true if {@code file} is empty.
+     * Returns true if {@code file} represents the absolute path of a file.
      */
-    public static boolean isEmptyFile(File file) {
-        return file.length() == 0;
-    }
-
-    /**
-     * Appends given string to a file.
-     */
-    public static void appendToFile(File file, String content) throws IOException {
-        Files.write(file.toPath(), content.getBytes(CHARSET), StandardOpenOption.APPEND);
-    }
-
-    /**
-     * Returns true if {@code file} does not represent the absolute path of a file.
-     */
-    public static boolean isNotAbsoluteFilePath(File file) {
-        return !file.isAbsolute() || file.isDirectory();
+    public static boolean isAbsoluteFilePath(File file) {
+        return file.isAbsolute() && !file.isDirectory();
     }
 
     /**

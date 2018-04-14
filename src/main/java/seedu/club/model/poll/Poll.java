@@ -68,6 +68,7 @@ public class Poll {
     }
 
     private void setAnswers(List<Answer> answers) {
+        assert answers != null && !answers.isEmpty();
         List<Answer> clonedAnswers = new ArrayList<>();
         for (Answer answer : answers) {
             clonedAnswers.add(new Answer(answer.getValue(), answer.getVoteCount()));

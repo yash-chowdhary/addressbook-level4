@@ -14,6 +14,7 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_POLL;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_TASK;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ import org.junit.rules.ExpectedException;
 import seedu.club.logic.commands.AddCommand;
 import seedu.club.logic.commands.AddPollCommand;
 import seedu.club.logic.commands.AddTaskCommand;
+import seedu.club.logic.commands.ChangeProfilePhotoCommand;
 import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
@@ -36,12 +38,15 @@ import seedu.club.logic.commands.EditCommand;
 import seedu.club.logic.commands.EditCommand.EditMemberDescriptor;
 import seedu.club.logic.commands.EmailCommand;
 import seedu.club.logic.commands.ExitCommand;
+import seedu.club.logic.commands.ExportCommand;
 import seedu.club.logic.commands.FindCommand;
 import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.HideResultsCommand;
 import seedu.club.logic.commands.HistoryCommand;
+import seedu.club.logic.commands.ImportCommand;
 import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.RemoveProfilePhotoCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
@@ -90,6 +95,13 @@ public class ClubBookParserTest {
         AddTaskCommand command = (AddTaskCommand) parser.parseCommand(TaskUtil.getAddTaskCommand(task));
         assertEquals(new AddTaskCommand(task), command);
     }
+    @Test
+    public void parseCommand_changePhoto() throws Exception {
+        String filePath = "./dummy.png";
+        File file = new File(filePath);
+        assertTrue(parser.parseCommand(ChangeProfilePhotoCommand.COMMAND_WORD + " " + file.getAbsolutePath())
+                instanceof ChangeProfilePhotoCommand);
+    }
 
     @Test
     public void parseCommand_clear() throws Exception {
@@ -128,6 +140,14 @@ public class ClubBookParserTest {
     }
 
     @Test
+    public void parseCommand_export() throws Exception {
+        String filePath = "./dummy.csv";
+        File file = new File(filePath);
+        assertTrue(parser.parseCommand(ExportCommand.COMMAND_WORD + " " + file.getAbsolutePath())
+                instanceof ExportCommand);
+    }
+
+    @Test
     public void parseCommand_exit() throws Exception {
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD) instanceof ExitCommand);
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3") instanceof ExitCommand);
@@ -160,6 +180,13 @@ public class ClubBookParserTest {
         } catch (ParseException pe) {
             assertEquals(MESSAGE_UNKNOWN_COMMAND, pe.getMessage());
         }
+    }
+    @Test
+    public void parseCommand_import() throws Exception {
+        String filePath = "./dummy.csv";
+        File file = new File(filePath);
+        assertTrue(parser.parseCommand(ImportCommand.COMMAND_WORD + " " + file.getAbsolutePath())
+                instanceof ImportCommand);
     }
 
     @Test
@@ -246,5 +273,11 @@ public class ClubBookParserTest {
     @Test
     public void parseCommand_hideResults() throws Exception {
         assertTrue(parser.parseCommand(HideResultsCommand.COMMAND_WORD) instanceof HideResultsCommand);
+    }
+
+    @Test
+    public void parseCommand_removeProfilePhoto() throws Exception {
+        assertTrue(parser.parseCommand(RemoveProfilePhotoCommand.COMMAND_WORD)
+                instanceof RemoveProfilePhotoCommand);
     }
 }

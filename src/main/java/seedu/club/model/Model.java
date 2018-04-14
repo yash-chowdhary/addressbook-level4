@@ -175,6 +175,11 @@ public interface Model {
     void addProfilePhoto(String originalPhotoPath) throws PhotoReadException;
 
     /**
+     * Removes the current profile photo of the logged in member and sets it back to the default image.
+     */
+    void removeProfilePhoto();
+
+    /**
      * Exports Club Connect's members' details to the specified file.
      *
      * @param exportFile File to which data is exported.

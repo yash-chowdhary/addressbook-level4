@@ -58,4 +58,4 @@ include::../UserGuide.adoc[tag=vote]
 
 include::../DeveloperGuide.adoc[tag=compressdecompress]
 
-include::../UserGuide.adoc[tag=polls]
+include::../DeveloperGuide.adoc[tag=polls]

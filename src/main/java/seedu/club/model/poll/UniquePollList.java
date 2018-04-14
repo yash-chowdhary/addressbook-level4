@@ -54,11 +54,12 @@ public class UniquePollList implements Iterable<Poll> {
 
     //@@author MuhdNurKamal
     /**
-     * Replaces the specified poll with a deep copy except that the copy has the specified answer
-     * increased it's vote count by 1.
+     * Replaces the specified {@code poll} with a deep copy except that the copy has the {@code answer}
+     * specified by {@code answerIndex} increased it's vote count by 1 and the {@code polleeMatricNumber} will be added
+     * to the {@code polleesMatricNumber} of the {@code poll}
      *
      * @param poll to be copied
-     * @param answerIndex of poll to be voted for
+     * @param answerIndex of the answer of the poll to be voted for
      * @param polleeMatricNumber of pollee who wants to vote for the answer of the poll
      *
      * @throws PollNotFoundException if poll is not in this list

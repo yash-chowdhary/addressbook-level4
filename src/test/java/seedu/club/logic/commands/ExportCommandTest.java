@@ -162,6 +162,11 @@ public class ExportCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
                 DuplicateTaskException {
             fail("This method should not be called");
@@ -356,7 +361,7 @@ public class ExportCommandTest {
     }
 
     /**
-     * A Model stub that always throw a IOException when trying to export to a file.
+     * A Model stub that always throws an IOException when trying to export to a file.
      */
     private class ModelStubThrowingIoException extends ModelStub {
         final Member memberStub = new Member(new Name("Alex Yeoh"),
@@ -384,11 +389,11 @@ public class ExportCommandTest {
         public Member getLoggedInMember() {
             return memberStub;
         }
-        //@@author
+        //@@author amrut-prabhu
     }
 
     /**
-     * A Model stub that always accept the file being exported to.
+     * A Model stub that always accepts the file being exported to.
      */
     private class ModelStubAcceptingExport extends ModelStub {
         final Member memberStub = new Member(new Name("Alex Yeoh"),

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.ClearMemberSelectPanelEvent;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -35,6 +36,7 @@ public class LogOutCommand extends Command {
         EventsCenter.getInstance().post(new HideResultsRequestEvent());
         model.logOutMember();
         EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
+        EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(null));
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

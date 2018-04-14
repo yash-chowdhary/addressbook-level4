@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -34,11 +33,6 @@ public class CsvClubBookStorageTest {
 
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
-
-    @Before
-    public void init() {
-        File file = new File(temp.getRoot(), FILE_NAME);
-    }
 
     private File addToTestDataFileIfNotNull(File prefsFileInTestDataFolder) {
         return prefsFileInTestDataFolder != null
