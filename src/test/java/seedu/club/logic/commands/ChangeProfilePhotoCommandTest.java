@@ -43,10 +43,8 @@ import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
-import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
-import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -66,6 +64,18 @@ public class ChangeProfilePhotoCommandTest {
 
     private String testPhotoPath = "./src/test/resources/photos/testPhoto.png";
     private File testPhotoFile = new File(testPhotoPath);
+
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    private static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
+    }
 
     @Test
     public void constructor_nullProfilePhoto_throwsNullPointerException() {
@@ -131,17 +141,6 @@ public class ChangeProfilePhotoCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
-    /**
-     * Returns a tag set containing the list of strings given.
-     */
-    private static Set<Tag> getTagSet(String... strings) {
-        HashSet<Tag> tags = new HashSet<>();
-        for (String s : strings) {
-            tags.add(new Tag(s));
-        }
-
-        return tags;
-    }
 
     /**
      * A default model stub that have all of the methods failing.
@@ -193,7 +192,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMatricNumberException  {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called");
         }
 
@@ -374,6 +373,7 @@ public class ChangeProfilePhotoCommandTest {
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             throw new PhotoReadException();
         }
+
         //@@author th14thmusician
         @Override
         public ReadOnlyClubBook getClubBook() {

@@ -1,5 +1,6 @@
 package seedu.club.logic.commands;
 //@@author MuhdNurKamal
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX;
@@ -16,8 +17,6 @@ import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_POLL;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalPolls.getTypicalClubBookWithPolls;
 
-import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +29,6 @@ import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.Model;
 import seedu.club.model.ModelManager;
 import seedu.club.model.UserPrefs;
-import seedu.club.model.poll.Answer;
 import seedu.club.model.poll.Poll;
 
 public class VoteCommandTest {
@@ -46,6 +44,7 @@ public class VoteCommandTest {
         model.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
     }
+
     @Test
     public void constructor_nullPollIndex_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
@@ -63,6 +62,7 @@ public class VoteCommandTest {
         thrown.expect(NullPointerException.class);
         new VoteCommand(null, null);
     }
+
     @Test
     public void execute_validIndices_voteSuccess() throws Exception {
         Poll pollToVote = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
@@ -74,7 +74,7 @@ public class VoteCommandTest {
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
         String expectedMessage = String.format(MESSAGE_VOTE_SUCCESS, pollToVote.getQuestion() + "\n" + pollToVote.getAnswers()
-        .get(INDEX_FIRST_ANSWER.getZeroBased()));
+                .get(INDEX_FIRST_ANSWER.getZeroBased()));
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
                 pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());
@@ -109,7 +109,7 @@ public class VoteCommandTest {
 
         Poll pollToVote = model.getClubBook().getPollList().get(INDEX_FIRST_POLL.getZeroBased());
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
-            pollToVote.getPolleesMatricNumbers());
+                pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());
         VoteCommand voteCommand = prepareCommand(INDEX_FIRST_POLL, INDEX_FIRST_ANSWER);
 
