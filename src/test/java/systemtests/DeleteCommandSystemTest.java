@@ -1,6 +1,5 @@
 package systemtests;
 
-import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_MEMBER_DISPLAYED_INDEX;
 import static seedu.club.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.club.logic.commands.DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS;
@@ -35,7 +34,7 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         /* Case: delete the first member in the list, command with leading spaces and trailing spaces -> deleted */
         Model expectedModel = getModel();
         ObservableList<Member> memberObservableList = expectedModel.getClubBook().getMemberList();
-        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
+        String logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(1).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
         expectedModel = getModel();
@@ -73,10 +72,6 @@ public class DeleteCommandSystemTest extends ClubBookSystemTest {
         logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(0).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
-        showMembersWithName(KEYWORD_MATCHING_MEIER);
-        Index index = INDEX_FIRST_MEMBER;
-        assertTrue(index.getZeroBased() < getModel().getFilteredMemberList().size());
-        assertCommandSuccess(index);
 
         /* Case: filtered member list, delete index within bounds of club book but out of bounds of member list
          * -> rejected

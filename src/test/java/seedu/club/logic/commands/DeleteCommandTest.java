@@ -42,7 +42,7 @@ public class DeleteCommandTest {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
-        member = observableList.get(0);
+        member = observableList.get(1);
         LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
                 member.getCredentials().getPassword());
         command.setData(model, new CommandHistory(), new UndoRedoStack());
@@ -53,8 +53,8 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
-        Member memberToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased());
-        DeleteCommand deleteCommand = prepareCommand(INDEX_SECOND_MEMBER);
+        Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
+        DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
         int numberOfTasksDeleted = 0;
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete,
@@ -75,7 +75,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexFilteredList_success() throws Exception {
-        showMemberAtIndex(model, INDEX_SECOND_MEMBER);
+        showMemberAtIndex(model, INDEX_FIRST_MEMBER);
 
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
@@ -108,8 +108,8 @@ public class DeleteCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        Member memberToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased());
-        DeleteCommand deleteCommand = prepareCommand(INDEX_SECOND_MEMBER);
+        Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
+        DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
         expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
 
         // delete -> secomd member deleted
@@ -156,7 +156,7 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_MEMBER);
         Model expectedModel = new ModelManager(model.getClubBook(), new UserPrefs());
         expectedModel.updateFilteredMemberList(expectedModel.PREDICATE_SHOW_ALL_MEMBERS);
-        showMemberAtIndex(model, INDEX_SECOND_MEMBER);
+        showMemberAtIndex(model, INDEX_THIRD_MEMBER);
         Member memberToDelete = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         // delete -> deletes second member in unfiltered member list / first member in filtered member list
         deleteCommand.execute();

@@ -33,7 +33,7 @@ public class UndoableCommandTest {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
-        member = observableList.get(0);
+        member = observableList.get(1);
         LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
                 member.getCredentials().getPassword());
         command.setData(model, new CommandHistory(), new UndoRedoStack());

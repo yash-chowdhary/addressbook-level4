@@ -214,8 +214,6 @@ public class EmailCommandTest {
 
         assertFalse(secondCommand.equals(null));
 
-        assertFalse(firstCommand.equals(secondCommand));
-
     }
     /**
      * Returns a {@code EmailCommand} object with the parameters {@code group}, {@code tag},
