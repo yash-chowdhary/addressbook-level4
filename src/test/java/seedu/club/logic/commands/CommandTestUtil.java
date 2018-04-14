@@ -30,6 +30,7 @@ import seedu.club.model.ClubBook;
 import seedu.club.model.Model;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.poll.QuestionContainsAnyKeywordsPredicate;
@@ -56,9 +57,9 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_CARL = "heinz@example.com";
     public static final String VALID_GROUP_AMY = "Exco";
     public static final String VALID_GROUP_BOB = "EXCO";
-    public static final String VALID_GROUP_TEST = "pr";
-    public static final String VALID_TAG_HEAD = "Head";
+    public static final String VALID_GROUP_TEST = "publicity";
     public static final String VALID_TAG_HUSBAND = "Husband";
+    public static final String VALID_TAG_HEAD = "Head";
     public static final String VALID_TAG_OWES_MONEY = "OwesMoney";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member
     public static final String VALID_TAG_UNUSED_DESC = " " + PREFIX_TAG + VALID_TAG_UNUSED;
@@ -259,7 +260,7 @@ public class CommandTestUtil {
     /**
      * Deletes the first member in {@code model}'s filtered list from {@code model}'s club book.
      */
-    public static void deleteFirstMember(Model model) {
+    public static void deleteFirstMember(Model model) throws DeleteCurrentUserException {
         Member firstMember = model.getFilteredMemberList().get(0);
         try {
             model.deleteMember(firstMember);
