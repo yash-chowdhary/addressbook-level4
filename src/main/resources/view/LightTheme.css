@@ -41,7 +41,7 @@
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 18;
-    -fx-font-style: bold;
+    /*-fx-font-style: bold;*/
 }
 
 .text-field {
@@ -128,10 +128,14 @@
 
 .list-cell:filled:even {
     -fx-background-color: #d3ffff;
+    -fx-border-width: 4 10 4 10;
+    -fx-border-color: #cccccc;
 }
 
 .list-cell:filled:odd {
     -fx-background-color: #d3ffff;
+    -fx-border-width: 4 10 4 10;
+    -fx-border-color: #cccccc;
 }
 
 .list-cell:filled:selected {
@@ -343,8 +347,6 @@
 }
 
 #cardPane {
-    -fx-border-width: 4 10 4 10;
-    -fx-border-color: #cccccc;
     -fx-padding: 5 5 5 5;
 }
 
