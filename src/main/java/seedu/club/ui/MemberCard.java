@@ -21,11 +21,12 @@ public class MemberCard extends UiPart<Region> {
     private static final String FXML = "MemberListCard.fxml";
     private static final String[] TAG_COLORS = {"red", "yellow", "grey", "brown", "pink", "white",
         "orange", "blue", "violet"};
-    //@@author amrut-prabhu
-    private static final Integer PHOTO_WIDTH = 100;
-    private static final Integer PHOTO_HEIGHT = 130;
 
-    //@@author
+    public final Member member;
+
+    private final Integer photoWidth = 100;
+    private final Integer photoHeight = 130;
+
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -33,8 +34,6 @@ public class MemberCard extends UiPart<Region> {
      *
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
-
-    public final Member member;
 
     @FXML
     private HBox cardPane;
@@ -93,10 +92,10 @@ public class MemberCard extends UiPart<Region> {
         Image photo;
         String photoPath = member.getProfilePhoto().getPhotoPath();
         if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), photoWidth, photoHeight,
                     false, true);
         } else {
-            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+            photo = new Image("file:" + photoPath, photoWidth, photoHeight, false, true);
         }
         profilePhoto.setImage(photo);
     }

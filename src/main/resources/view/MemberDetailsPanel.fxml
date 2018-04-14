@@ -20,7 +20,7 @@
     <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
         <Text fill="darkblue" text="MEMBER PROFILE" VBox.vgrow="NEVER" />
     </TextFlow>
-<GridPane fx:id="gridPane" prefHeight="543.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane" prefHeight="800.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
@@ -50,20 +50,20 @@
         </padding>
     </FlowPane>
 
-    <Text styleClass="cell_medium_label" text="Related Tasks" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+    <Text fill="darkblue" styleClass="cell_medium_label" text="Related Tasks" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
     <VBox GridPane.rowIndex="7">
-        <ListView fx:id="modifiedTaskCardListView" prefHeight="155.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
+        <ListView fx:id="modifiedTaskCardListView" prefHeight="341.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
         </ListView>
     </VBox>
     <rowConstraints>
         <RowConstraints />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="200.0" />
+        <RowConstraints minHeight="10.0" prefHeight="60.0" />
+        <RowConstraints minHeight="10.0" prefHeight="45.0" />
+        <RowConstraints minHeight="10.0" prefHeight="45.0" />
+        <RowConstraints minHeight="10.0" prefHeight="45.0" />
+        <RowConstraints minHeight="10.0" prefHeight="45.0" />
+      <RowConstraints minHeight="10.0" prefHeight="70.0" />
+        <RowConstraints minHeight="10.0" prefHeight="400.0" />
     </rowConstraints>
 </GridPane>
 </VBox>

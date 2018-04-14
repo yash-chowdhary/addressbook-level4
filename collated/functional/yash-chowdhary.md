@@ -213,7 +213,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
         taskToEdit = lastShownList.get(index.getZeroBased());
         editedTask = createEditedTask(taskToEdit);
 
-        if (taskToEdit.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+        if (taskToEdit.getAssignee().getValue().equalsIgnoreCase(editedTask.getAssignee().getValue())) {
             throw new CommandException(MESSAGE_NOT_CHANGED);
         }
     }
@@ -232,7 +232,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_NOT_CHANGED);
         }
         return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription(),
-                newAssignee.getAssignee()));
+                newAssignee.getValue()));
     }
 
     /**
@@ -245,7 +245,7 @@ public class ChangeAssigneeCommand extends UndoableCommand {
         Description description = new Description(taskToEdit.getDescription().getDescription());
         Time time = new Time(taskToEdit.getTime().getTime());
         Date date = new Date(taskToEdit.getDate().getDate());
-        Assignor assignor = new Assignor(taskToEdit.getAssignor().getAssignor());
+        Assignor assignor = new Assignor(taskToEdit.getAssignor().getValue());
         Status status = new Status(taskToEdit.getStatus().getStatus());
 
         return new Task(description, time, date, assignor, newAssignee, status);
@@ -257,6 +257,73 @@ public class ChangeAssigneeCommand extends UndoableCommand {
                 || (other instanceof ChangeAssigneeCommand
                 && index.equals(((ChangeAssigneeCommand) other).index)
                 && newAssignee.equals(((ChangeAssigneeCommand) other).newAssignee)));
+    }
+}
+```
+###### \java\seedu\club\logic\commands\DeleteGroupCommand.java
+``` java
+import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
+import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.group.Group;
+import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
+import seedu.club.model.group.exceptions.GroupNotFoundException;
+
+/**
+ * Removes a group from the Club Book
+ */
+public class DeleteGroupCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "deletegroup";
+    public static final String COMMAND_FORMAT = "deletegroup g/ ";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
+    );
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Connect.\n"
+            + "Parameters: "
+            + PREFIX_GROUP + "GROUP";
+
+    public static final String MESSAGE_SUCCESS = "Deleted group: %1$s";
+
+    private final Group toRemove;
+
+    /**
+     * Creates an AddCommand to add the specified {@code member}
+     */
+    public DeleteGroupCommand(Group group) {
+        requireNonNull(group);
+        toRemove = group;
+    }
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
+        try {
+            model.deleteGroup(toRemove);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
+        } catch (GroupNotFoundException gnfe) {
+            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, toRemove));
+        } catch (GroupCannotBeRemovedException gcbre) {
+            throw new CommandException(String.format(MESSAGE_MANDATORY_GROUP, toRemove.toString()));
+        }
+
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DeleteGroupCommand // instanceof handles nulls
+                && toRemove.equals(((DeleteGroupCommand) other).toRemove));
     }
 }
 ```
@@ -437,73 +504,6 @@ public class EmailCommand extends Command {
     }
 }
 ```
-###### \java\seedu\club\logic\commands\RemoveGroupCommand.java
-``` java
-import static java.util.Objects.requireNonNull;
-import static seedu.club.commons.core.Messages.MESSAGE_MANDATORY_GROUP;
-import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import seedu.club.logic.commands.exceptions.CommandException;
-import seedu.club.model.group.Group;
-import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
-import seedu.club.model.group.exceptions.GroupNotFoundException;
-
-/**
- * Removes a group from the Club Book
- */
-public class RemoveGroupCommand extends UndoableCommand {
-
-    public static final String COMMAND_WORD = "removegroup";
-    public static final String COMMAND_FORMAT = "removegroup g/ ";
-    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
-            Arrays.asList(COMMAND_WORD, "rmgroup", "delgroup")
-    );
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a Group from the Club Connect.\n"
-            + "Parameters: "
-            + PREFIX_GROUP + "GROUP";
-
-    public static final String MESSAGE_SUCCESS = "Deleted group: %1$s";
-
-    private final Group toRemove;
-
-    /**
-     * Creates an AddCommand to add the specified {@code member}
-     */
-    public RemoveGroupCommand(Group group) {
-        requireNonNull(group);
-        toRemove = group;
-    }
-
-    @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
-        requireNonNull(model);
-        requireToSignUp();
-        requireToLogIn();
-        requireExcoLogIn();
-        try {
-            model.removeGroup(toRemove);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
-        } catch (GroupNotFoundException gnfe) {
-            throw new CommandException(String.format(MESSAGE_NON_EXISTENT_GROUP, toRemove));
-        } catch (GroupCannotBeRemovedException gcbre) {
-            throw new CommandException(String.format(MESSAGE_MANDATORY_GROUP, toRemove.toString()));
-        }
-
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof RemoveGroupCommand // instanceof handles nulls
-                && toRemove.equals(((RemoveGroupCommand) other).toRemove));
-    }
-}
-```
 ###### \java\seedu\club\logic\commands\ViewMyTasksCommand.java
 ``` java
 import static java.util.Objects.requireNonNull;
@@ -548,8 +548,10 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
 
+import java.text.SimpleDateFormat;
 import java.util.stream.Stream;
 
+import seedu.club.commons.core.Messages;
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.AddTaskCommand;
 import seedu.club.logic.parser.exceptions.ParseException;
@@ -577,6 +579,22 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
             Description description = ParserUtil.parseDescription(argMultimap.getValue(PREFIX_DESCRIPTION).get());
             Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
             Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME).get());
+
+            long currentTimeMillis = System.currentTimeMillis();
+            String enteredDateString = date.getDate() + " " + time.getTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            long enteredDateMillis = Long.MIN_VALUE;
+
+            try {
+                java.util.Date enteredDate = formatter.parse(enteredDateString);
+                enteredDateMillis = enteredDate.getTime();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (enteredDateMillis < currentTimeMillis) {
+                throw new IllegalValueException(Messages.MESSAGE_DATE_ALREADY_PASSED);
+            }
 
             Task newTask = new Task(description, time, date);
 
@@ -717,8 +735,6 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
             return new ExitCommand();
         } else if (isExportCommand(commandWord)) {
             return new ExportCommandParser().parse(arguments);
-        } else if (isImportCommand(commandWord)) {
-            return new ImportCommandParser().parse(arguments);
         } else if (isFindCommand(commandWord)) {
             return new FindCommandParser().parse(arguments);
         } else if (isHelpCommand(commandWord)) {
@@ -727,6 +743,8 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
             return new HideResultsCommand();
         } else if (isHistoryCommand(commandWord)) {
             return new HistoryCommand();
+        } else if (isImportCommand(commandWord)) {
+            return new ImportCommandParser().parse(arguments);
         } else if (isListCommand(commandWord)) {
             return new ListCommand();
         } else if (isLoginCommand(commandWord)) {
@@ -735,12 +753,14 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
             return new LogOutCommand();
         } else if (isRedoCommand(commandWord)) {
             return new RedoCommand();
-        } else if (isRemoveGroupCommand(commandWord)) {
-            return new RemoveGroupCommandParser().parse(arguments);
+        } else if (isRemovePicCommand(commandWord)) {
+            return new RemoveProfilePhotoCommand();
+        } else if (isDeleteGroupCommand(commandWord)) {
+            return new DeleteGroupCommandParser().parse(arguments);
         } else if (isSelectCommand(commandWord)) {
             return new SelectCommandParser().parse(arguments);
-        } else if (isShowResultsCommand(commandWord)) {
-            return new ShowResultsCommand();
+        } else if (isViewResultsCommand(commandWord)) {
+            return new ViewResultsCommand();
         } else if (isSignUpCommand(commandWord)) {
             return new SignUpCommandParser().parse(arguments);
         } else if (isUndoCommand(commandWord)) {
@@ -853,10 +873,10 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
     }
 
     /**
-     * Returns true if {@code commandWord} matches any of ShowResultsCommand's aliases
+     * Returns true if {@code commandWord} matches any of ViewResultsCommand's aliases
      */
-    private boolean isShowResultsCommand(String commandWord) {
-        for (String commandAlias : ShowResultsCommand.COMMAND_ALIASES) {
+    private boolean isViewResultsCommand(String commandWord) {
+        for (String commandAlias : ViewResultsCommand.COMMAND_ALIASES) {
             if (commandWord.equals(commandAlias)) {
                 return true;
             }
@@ -877,10 +897,10 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
     }
 
     /**
-     * Returns true if {@code commandWord} matches any of RemoveGroupCommand's aliases
+     * Returns true if {@code commandWord} matches any of DeleteGroupCommand's aliases
      */
-    private boolean isRemoveGroupCommand(String commandWord) {
-        for (String commandAlias : RemoveGroupCommand.COMMAND_ALIASES) {
+    private boolean isDeleteGroupCommand(String commandWord) {
+        for (String commandAlias : DeleteGroupCommand.COMMAND_ALIASES) {
             if (commandWord.equals(commandAlias)) {
                 return true;
             }
@@ -1187,9 +1207,22 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
         }
         return false;
     }
+
+    /**
+     * Returns true if {@code commandWord} matches any of RemoveProfilePhotoCommand's aliases
+     */
+    private boolean isRemovePicCommand(String commandWord) {
+        for (String commandAlias : RemoveProfilePhotoCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
 ```
 ###### \java\seedu\club\logic\parser\CommandList.java
 ``` java
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -1205,6 +1238,7 @@ import seedu.club.logic.commands.ClearCommand;
 import seedu.club.logic.commands.CompressCommand;
 import seedu.club.logic.commands.DecompressCommand;
 import seedu.club.logic.commands.DeleteCommand;
+import seedu.club.logic.commands.DeleteGroupCommand;
 import seedu.club.logic.commands.DeletePollCommand;
 import seedu.club.logic.commands.DeleteTagCommand;
 import seedu.club.logic.commands.DeleteTaskCommand;
@@ -1221,13 +1255,13 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
-import seedu.club.logic.commands.DeleteGroupCommand;
+import seedu.club.logic.commands.RemoveProfilePhotoCommand;
 import seedu.club.logic.commands.SelectCommand;
-import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
 import seedu.club.logic.commands.ViewAllTasksCommand;
 import seedu.club.logic.commands.ViewMyTasksCommand;
+import seedu.club.logic.commands.ViewResultsCommand;
 import seedu.club.logic.commands.VoteCommand;
 
 /**
@@ -1254,12 +1288,12 @@ public class CommandList {
         commandList.add(ListCommand.COMMAND_WORD);
         commandList.add(LogInCommand.COMMAND_FORMAT);
         commandList.add(RedoCommand.COMMAND_WORD);
-        commandList.add(RemoveGroupCommand.COMMAND_FORMAT);
+        commandList.add(DeleteGroupCommand.COMMAND_FORMAT);
         commandList.add(SelectCommand.COMMAND_FORMAT);
         commandList.add(UndoCommand.COMMAND_WORD);
         commandList.add(AddTaskCommand.COMMAND_FORMAT);
         commandList.add(DeleteTaskCommand.COMMAND_FORMAT);
-        commandList.add(ShowResultsCommand.COMMAND_WORD);
+        commandList.add(ViewResultsCommand.COMMAND_WORD);
         commandList.add(HideResultsCommand.COMMAND_WORD);
         commandList.add(ViewAllTasksCommand.COMMAND_WORD);
         commandList.add(ViewMyTasksCommand.COMMAND_WORD);
@@ -1275,9 +1309,58 @@ public class CommandList {
         commandList.add(ChangePasswordCommand.COMMAND_FORMAT);
         commandList.add(HistoryCommand.COMMAND_WORD);
         commandList.add(ChangeAssigneeCommand.COMMAND_FORMAT);
+        commandList.add(RemoveProfilePhotoCommand.COMMAND_FORMAT);
 
         Collections.sort(commandList);
         return commandList;
+    }
+}
+```
+###### \java\seedu\club\logic\parser\DeleteGroupCommandParser.java
+``` java
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
+
+import java.util.stream.Stream;
+
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.DeleteGroupCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.group.Group;
+
+/**
+ * Parses input arguments and creates a new DeleteGroupCommand object
+ */
+public class DeleteGroupCommandParser implements Parser<DeleteGroupCommand> {
+    /**
+     * Parses the given {@code String} of arguments in the context of the DeleteGroupCommand
+     * and returns an DeleteGroupCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public DeleteGroupCommand parse(String args) throws ParseException {
+        ArgumentMultimap argumentMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_GROUP);
+
+        if (!arePrefixesPresent(argumentMultimap, PREFIX_GROUP)
+                || !argumentMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteGroupCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            Group group = ParserUtil.parseGroup(argumentMultimap.getValue(PREFIX_GROUP).get());
+
+            return new DeleteGroupCommand(group);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty values in the given
+     * {@code ArgumentMultimap}
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
 ```
@@ -1565,54 +1648,6 @@ public class EmailCommandParser implements Parser<EmailCommand> {
     }
 
 ```
-###### \java\seedu\club\logic\parser\RemoveGroupCommandParser.java
-``` java
-import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.club.logic.parser.CliSyntax.PREFIX_GROUP;
-
-import java.util.stream.Stream;
-
-import seedu.club.commons.exceptions.IllegalValueException;
-import seedu.club.logic.commands.DeleteGroupCommand;
-import seedu.club.logic.parser.exceptions.ParseException;
-import seedu.club.model.group.Group;
-
-/**
- * Parses input arguments and creates a new RemoveGroupCommand object
- */
-public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
-    /**
-     * Parses the given {@code String} of arguments in the context of the RemoveGroupCommand
-     * and returns an RemoveGroupCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
-     */
-    public RemoveGroupCommand parse(String args) throws ParseException {
-        ArgumentMultimap argumentMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_GROUP);
-
-        if (!arePrefixesPresent(argumentMultimap, PREFIX_GROUP)
-                || !argumentMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGroupCommand.MESSAGE_USAGE));
-        }
-
-        try {
-            Group group = ParserUtil.parseGroup(argumentMultimap.getValue(PREFIX_GROUP).get());
-
-            return new RemoveGroupCommand(group);
-        } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage(), ive);
-        }
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty values in the given
-     * {@code ArgumentMultimap}
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-}
-```
 ###### \java\seedu\club\model\ClubBook.java
 ``` java
 
@@ -1620,19 +1655,20 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
      * Removes the Group {@code toRemove} from the Club Book. Every member who was once a part of {@code toRemove}
      * will be assigned the default group - "member".
      */
-    public void removeGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
-        checkIfGroupIsMember(toRemove);
+    public void deleteGroup(Group toRemove) throws GroupCannotBeRemovedException, GroupNotFoundException {
+        checkIfGroupIsMemberOrExco(toRemove);
         checkIfGroupIsPresent(toRemove);
-        removeGroupFromClubBook(toRemove);
+        deleteGroupFromClubBook(toRemove);
+        logger.fine("Group " + toRemove + " has been removed.");
     }
 
     /**
      * Removes the Group {@code toRemove} from Club Connect.
      */
-    private void removeGroupFromClubBook(Group toRemove) {
+    private void deleteGroupFromClubBook(Group toRemove) {
         try {
             for (Member member : members) {
-                removeGroupFromMember(toRemove, member);
+                deleteGroupFromMember(toRemove, member);
             }
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("Impossible: original member is obtained from the club book.");
@@ -1660,9 +1696,10 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
      * Checks if {@code toRemove} is "member".
      * @throws GroupCannotBeRemovedException if {@code toRemove} is "member".
      */
-    private void checkIfGroupIsMember(Group toRemove) throws GroupCannotBeRemovedException {
-        Group notToBeDeleted = new Group("member");
-        if (toRemove.equals(notToBeDeleted)) {
+    private void checkIfGroupIsMemberOrExco(Group toRemove) throws GroupCannotBeRemovedException {
+        Group groupMember = new Group("member");
+        Group groupExco = new Group("exco");
+        if (toRemove.equals(groupMember) || toRemove.equals(groupExco)) {
             throw new GroupCannotBeRemovedException();
         }
     }
@@ -1670,7 +1707,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
     /**
      * Removes the Group {@code toRemove} from the {@code member} if the member's group matches the one to be removed.
      */
-    private void removeGroupFromMember(Group toRemove, Member member)
+    private void deleteGroupFromMember(Group toRemove, Member member)
             throws MemberNotFoundException {
         if (!member.getGroup().toString().equalsIgnoreCase(toRemove.toString())) {
             return;
@@ -1693,10 +1730,16 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
      */
     public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
         tasks.add(taskToAdd);
+        logger.fine("Task added to task list.");
     }
 
+    /**
+     * Deletes {@code targetTask} from the list of tasks.
+     * @throws TaskNotFoundException if the task doesn't exist.
+     */
     public void deleteTask(Task targetTask) throws TaskNotFoundException {
         tasks.remove(targetTask);
+        logger.fine("Task removed from task list.");
     }
 
     public void setTasks(Set<Task> tasks) {
@@ -1715,6 +1758,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
             TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+        logger.fine("Task status updated to " + editedTask.getStatus().getStatus());
     }
 
     /**
@@ -1730,6 +1774,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
         }
+        logger.fine("Task assignee updated to " + editedTask.getAssignee().getValue());
     }
 
     /**
@@ -1750,8 +1795,8 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
             String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
             String targetMemberMatricNumberString = target.getMatricNumber().toString();
 
-            if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)
+                    && task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
@@ -1760,14 +1805,14 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
                         newAssignor, newAssignee, task.getStatus());
                 tasks.setTaskIgnoreStatus(task, editedTask);
                 numberOfTasksUpdated++;
-            } else if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            } else if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
                 editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
                         newAssignor, task.getAssignee(), task.getStatus());
                 tasks.setTaskIgnoreStatus(task, editedTask);
                 numberOfTasksUpdated++;
-            } else if (task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            } else if (task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
                         task.getAssignor(), newAssignee, task.getStatus());
@@ -1775,7 +1820,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
                 numberOfTasksUpdated++;
             }
         }
-
+        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
         return numberOfTasksUpdated;
 
     }
@@ -1789,11 +1834,12 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
         Iterator<Task> it = tasks.iterator();
         while (it.hasNext()) {
             Task task = it.next();
-            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+            if (task.getAssignee().getValue().equalsIgnoreCase(member.getMatricNumber().toString())) {
                 it.remove();
                 numberOfTasksRemoved++;
             }
         }
+        logger.info("Removed " + numberOfTasksRemoved + "tasks from task list.");
         return numberOfTasksRemoved;
     }
 
@@ -1808,7 +1854,7 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
             if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
                     && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
                     && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                    && task.getAssignee().getValue().equalsIgnoreCase(toAdd.getAssignee().getValue())) {
                 throw new TaskAlreadyAssignedException();
             }
         }
@@ -1824,8 +1870,8 @@ public class RemoveGroupCommandParser implements Parser<RemoveGroupCommand> {
             if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
                     && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
                     && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
-                    && task.getAssignor().getAssignor().equalsIgnoreCase(toAdd.getAssignor().getAssignor())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                    && task.getAssignor().getValue().equalsIgnoreCase(toAdd.getAssignor().getValue())
+                    && task.getAssignee().getValue().equalsIgnoreCase(toAdd.getAssignee().getValue())) {
                 throw new DuplicateTaskException();
             }
         }
@@ -2029,7 +2075,7 @@ public class Group {
 ```
 ###### \java\seedu\club\model\Model.java
 ``` java
-    void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
+    void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException;
 
     String generateEmailRecipients(Group group, Tag tag) throws GroupNotFoundException, TagNotFoundException;
 
@@ -2039,10 +2085,9 @@ public class Group {
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
     @Override
-    public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+    public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
-
-        clubBook.removeGroup(toRemove);
+        clubBook.deleteGroup(toRemove);
         indicateClubBookChanged();
     }
 
@@ -2062,6 +2107,7 @@ public class Group {
      * @throws TagNotFoundException if {@code Tag toSendEmailTo} doesn't exist in the club book
      */
     private String generateTagEmailRecipients(Tag toSendEmailTo) throws TagNotFoundException {
+        assert toSendEmailTo != null : "Null value of Tag";
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
@@ -2094,6 +2140,7 @@ public class Group {
      * @throws GroupNotFoundException if {@code Group toSendEmailTo} doesn't exist in the club book
      */
     private String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+        assert toSendEmailTo != null : "Null value of Group";
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
@@ -2141,8 +2188,9 @@ public class Group {
      */
     private void checkIfStatusCanBeEdited(Task taskToEdit, String currentMember)
             throws TaskStatusCannotBeEditedException {
-        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getAssignor())
-                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getAssignee())) {
+        assert currentMember != null : "Null value of currentMember";
+        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getValue())
+                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getValue())) {
             throw new TaskStatusCannotBeEditedException();
         }
     }
@@ -2151,7 +2199,7 @@ public class Group {
     public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
             MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
         requireAllNonNull(taskToEdit, editedTask);
-        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getValue());
         checkIfMemberExists(newAssigneeMatricNumber);
         checkIfDuplicateTaskExists(editedTask);
         checkIfTaskIsAlreadyAssigned(editedTask);
@@ -2231,6 +2279,7 @@ public class Group {
      * @throws MemberNotFoundException if {@code matricNumber} doesn't map to any member.
      */
     private void checkIfMemberExists(MatricNumber matricNumber) throws MemberNotFoundException {
+        assert matricNumber != null : "Null value of matricNumber";
         boolean found = false;
         for (Member member : clubBook.getMemberList()) {
             if (member.getMatricNumber().equals(matricNumber)) {
@@ -2258,8 +2307,11 @@ public class Group {
      */
     private void checkIfTaskCanBeDeleted(Assignor assignor, Assignee assignee, String currentMember)
             throws TaskCannotBeDeletedException {
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+        assert assignor != null : "Null value of Assignor";
+        assert assignee != null : "Null value of Assignee";
+        assert currentMember != null : "Null value of currentMember";
+        if (!currentMember.equalsIgnoreCase(assignor.getValue())
+                && !currentMember.equalsIgnoreCase(assignee.getValue())) {
             throw new TaskCannotBeDeletedException();
         }
     }
@@ -2307,7 +2359,7 @@ public class Assignee {
         this.assignee = assignee;
     }
 
-    public String getAssignee() {
+    public String getValue() {
         return assignee;
     }
 
@@ -2341,7 +2393,7 @@ public class Assignor {
         this.assignor = assignor;
     }
 
-    public String getAssignor() {
+    public String getValue() {
         return assignor;
     }
 
@@ -2375,7 +2427,9 @@ public class Date {
     public static final String DATE_SPLITTER = "[///./-]";
     public static final String DATE_SEPARATOR = "/";
     public static final String MESSAGE_DATE_CONSTRAINTS = "Date should be a string separated by '.', '/', or "
-            + "'-' in the format DD-MM-YYYY";
+            + "'-' in the format DD-MM-YYYY\nClub Connect detects invalid leap days.\nThe valid range of Year is "
+            + "1900-2099.";
+
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-date-with-regular-expression/}
      */
@@ -2675,8 +2729,8 @@ public class TaskIsRelatedToMemberPredicate implements Predicate<Task> {
 
     @Override
     public boolean test(Task task) {
-        return member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignor().getAssignor())
-                || member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignee().getAssignee());
+        return member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignor().getValue())
+                || member.getMatricNumber().toString().equalsIgnoreCase(task.getAssignee().getValue());
     }
 
     public Member getMember() {
@@ -2702,8 +2756,8 @@ import static seedu.club.commons.util.AppUtil.checkArgument;
  */
 public class Time {
 
-    public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in the format HH:MM and can be separated "
-            + "by ':'";
+    public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in 24-Hour format (HH:MM) and can be separated"
+            + " by ':'";
     /**
      * Adapted from {@linktourl http://www.mkyong.com/regular-expressions/how-to-validate-time-in-24-hours-format-
      * with-regular-expression/}
@@ -2858,8 +2912,8 @@ public class UniqueTaskList implements Iterable<Task> {
             if (task.getDescription().getDescription().equalsIgnoreCase(editedTask.getDescription().getDescription())
                     && task.getTime().getTime().equalsIgnoreCase(editedTask.getTime().getTime())
                     && task.getDate().getDate().equalsIgnoreCase(editedTask.getDate().getDate())
-                    && task.getAssignor().getAssignor().equalsIgnoreCase(editedTask.getAssignor().getAssignor())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(editedTask.getAssignee().getAssignee())) {
+                    && task.getAssignor().getValue().equalsIgnoreCase(editedTask.getAssignor().getValue())
+                    && task.getAssignee().getValue().equalsIgnoreCase(editedTask.getAssignee().getValue())) {
                 throw new DuplicateTaskException();
             }
         }
@@ -3051,8 +3105,8 @@ public class XmlAdaptedTask {
         description = source.getDescription().getDescription();
         time = source.getTime().getTime();
         date = source.getDate().getDate();
-        assignor = source.getAssignor().getAssignor();
-        assignee = source.getAssignee().getAssignee();
+        assignor = source.getAssignor().getValue();
+        assignee = source.getAssignee().getValue();
         status = source.getStatus().getStatus();
     }
 
@@ -3307,8 +3361,8 @@ public class TaskCard extends UiPart<Region> {
         description.setText(task.getDescription().getDescription());
         date.setText("Due Date: " + task.getDate().getDate());
         time.setText("Time: " + task.getTime().getTime());
-        assignor.setText("Assigned by: " + task.getAssignor().getAssignor());
-        assignee.setText("Assigned to: " + task.getAssignee().getAssignee());
+        assignor.setText("Assigned by: " + task.getAssignor().getValue());
+        assignee.setText("Assigned to: " + task.getAssignee().getValue());
         status.setText("Status: " + task.getStatus().getStatus());
     }
 

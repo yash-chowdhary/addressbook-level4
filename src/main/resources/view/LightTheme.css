@@ -167,7 +167,7 @@
 }
 
 .loginpane {
-    -fx-background-color: derive(orange, 30%);
+    -fx-background-color: #fff4b7;
     -fx-border-style: solid;
 }
 
@@ -217,7 +217,7 @@
 }
 
 .grid-pane .anchor-pane {
-    -fx-background-color: derive(#cccccc, 30%);
+    -fx-background-color: derive(#cccccc, 20%);
 }
 
 .context-menu {
@@ -230,7 +230,7 @@
 
 .menu-bar {
     -fx-background-color: derive(white, 20%);
-    -fx-border-color: black;
+    -fx-border-color: black transparent black transparent;
 }
 
 .menu-bar .label {

@@ -46,14 +46,14 @@ public class HideResultsRequestEvent extends BaseEvent {
     }
 }
 ```
-###### \java\seedu\club\commons\events\ui\ShowResultsRequestEvent.java
+###### \java\seedu\club\commons\events\ui\ViewResultsRequestEvent.java
 ``` java
 import seedu.club.commons.events.BaseEvent;
 
 /**
- * An event requesting to show all poll results.
+ * An event requesting to view all poll results.
  */
-public class ShowResultsRequestEvent extends BaseEvent {
+public class ViewResultsRequestEvent extends BaseEvent {
 
     @Override
     public String toString() {
@@ -1710,7 +1710,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.HideResultsRequestEvent;
-import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.commons.events.ui.ViewResultsRequestEvent;
 import seedu.club.model.poll.Poll;
 
 /**
@@ -1719,7 +1719,7 @@ import seedu.club.model.poll.Poll;
 public class PollListPanel extends UiPart<Region> {
     private static final String FXML = "PollListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PollListPanel.class);
-    private boolean isDisplayingPollResults;
+    private boolean isShowingPollResults;
     private ObservableList<Poll> pollList;
 
     @FXML
@@ -1735,7 +1735,7 @@ public class PollListPanel extends UiPart<Region> {
     private void setPollListView() {
         ObservableList<PollCard> mappedList = EasyBind.map(
                 pollList, (poll) -> {
-                if (isDisplayingPollResults) {
+                if (isShowingPollResults) {
                     return new PollCard(poll, pollList.indexOf(poll) + 1);
                 } else {
                     return new RestrictedPollCard(poll, pollList.indexOf(poll) + 1);
@@ -1749,8 +1749,8 @@ public class PollListPanel extends UiPart<Region> {
      * Shows results of polls
      */
     private void showPollResults() {
-        if (!isDisplayingPollResults) {
-            isDisplayingPollResults = true;
+        if (!isShowingPollResults) {
+            isShowingPollResults = true;
             setPollListView();
         }
     }
@@ -1759,14 +1759,14 @@ public class PollListPanel extends UiPart<Region> {
      * Hides results of polls
      */
     private void hidePollResults() {
-        if (isDisplayingPollResults) {
-            isDisplayingPollResults = false;
+        if (isShowingPollResults) {
+            isShowingPollResults = false;
             setPollListView();
         }
     }
 
     @Subscribe
-    private void handleShowResultsEvent(ShowResultsRequestEvent event) {
+    private void handleViewResultsEvent(ViewResultsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         showPollResults();
     }

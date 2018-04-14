@@ -247,13 +247,18 @@ public class AddPollCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public Member getLoggedInMember() {
             fail("This method should not be called.");
             return null;
         }
 
         @Override
-        public void removeGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
+        public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
             fail("This method should not be called.");
         }
 
@@ -411,7 +416,7 @@ public class CompressCommandTest {
         CommandResult result = compressCommand.execute();
         assertEquals(CompressCommand.MESSAGE_SUCCESS, result.feedbackToUser);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof CompressMembersRequestEvent);
-        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
     }
 }
 ```
@@ -770,7 +775,7 @@ public class FindCommandTest {
     }
 }
 ```
-###### \java\seedu\club\logic\commands\ShowResultsCommandTest.java
+###### \java\seedu\club\logic\commands\ViewResultsCommandTest.java
 ``` java
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -781,7 +786,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
-import seedu.club.commons.events.ui.ShowResultsRequestEvent;
+import seedu.club.commons.events.ui.ViewResultsRequestEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -791,7 +796,7 @@ import seedu.club.model.UserPrefs;
 import seedu.club.model.member.Member;
 import seedu.club.ui.testutil.EventsCollectorRule;
 
-public class ShowResultsCommandTest {
+public class ViewResultsCommandTest {
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     private Model model;
@@ -810,12 +815,12 @@ public class ShowResultsCommandTest {
     }
     @Test
     public void execute_help_success() throws CommandException {
-        ShowResultsCommand resultsCommand = new ShowResultsCommand();
+        ViewResultsCommand resultsCommand = new ViewResultsCommand();
         resultsCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         CommandResult result = resultsCommand.execute();
-        assertEquals(ShowResultsCommand.MESSAGE_SUCCESS, result.feedbackToUser);
-        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ShowResultsRequestEvent);
-        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+        assertEquals(ViewResultsCommand.MESSAGE_SUCCESS, result.feedbackToUser);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ViewResultsRequestEvent);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
     }
 }
 ```
