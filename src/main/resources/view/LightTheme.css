@@ -339,7 +339,7 @@
 }
 
 #cardPane {
-    -fx-border-width: 6 10 3 10;
+    -fx-border-width: 4 10 4 10;
     -fx-border-color: #cccccc;
     -fx-padding: 5 5 5 5;
 }

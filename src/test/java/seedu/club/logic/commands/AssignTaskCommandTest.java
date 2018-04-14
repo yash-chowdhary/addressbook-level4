@@ -176,6 +176,11 @@ public class AssignTaskCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public ReadOnlyClubBook getClubBook() {
             fail("This method should not be called");
             return null;

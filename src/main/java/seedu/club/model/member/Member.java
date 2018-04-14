@@ -1,7 +1,7 @@
 package seedu.club.model.member;
 
-import static com.sun.org.apache.xml.internal.utils.LocaleUtility.EMPTY_STRING;
 import static seedu.club.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.club.model.member.ProfilePhoto.EMPTY_STRING;
 
 import java.util.Collections;
 import java.util.HashMap;
