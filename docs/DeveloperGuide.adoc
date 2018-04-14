@@ -707,7 +707,7 @@ requireExcoLogIn();
 
 Figure 40 below shows the UML diagram of the `Poll` class.
 
-image::PollUML.png[width="800"]
+image::PollUML.png[width="400"]
 _Figure 40. Poll UML Diagram_
 
 A `Poll` consists of the following:
@@ -726,6 +726,10 @@ An `Answer` consists of the following:
 * String: Represents the sequence of characters making up the answer
 * int: Represents the number of members who voted for this answer
 
+// end::polls[]
+
+
+// tag::addpoll[]
 ===== Adding Polls
 ---
 Adding Polls is facilitated by the `AddPollCommand` which inherits from `UndoableCommand` to make adding polls undoable.
@@ -735,7 +739,7 @@ is initialized as empty because no member has voted in the poll.
 Figure 42 shows the flow of adding a poll:
 
 image::SDforAddPoll.png[width="800"]
-_Figure 42. Sequence Diagram for `AddPollCommand` parsing._
+_Figure 42. Sequence Diagram for adding a poll_
 
 The execution of the command invokes `Model#addPoll(poll)`. +
 The following code snippet shows the implementation:
@@ -750,7 +754,9 @@ public synchronized void addPoll(Poll poll) throws DuplicatePollException {
 }
 
 After successful execution, the poll will be added to the Club Book and the poll `ListView` GUI.
+// end::addpoll[]
 
+// tag::deletepoll[]
 ===== Deleting Polls
 ---
 Deleting Polls is facilitated by the `DeletePollCommand` which inherits from `UndoableCommand` to make deleting polls undoable.
@@ -758,7 +764,7 @@ Deleting Polls is facilitated by the `DeletePollCommand` which inherits from `Un
 Figure 43 shows the flow of deleting a poll:
 
 image::SDforDeletePoll.png[width="800"]
-_Figure 43. Sequence Diagram for `DeletePollCommand` parsing._
+_Figure 43. Sequence Diagram for deleting a poll_
 
 The execution of the command invokes `Model#deletePoll()`.
 The following code snippet shows the implementation:
@@ -772,7 +778,9 @@ public synchronized void deletePoll(Poll target) throws PollNotFoundException {
 }
 
 After successful execution, the poll will be deleted from the Club Book and the poll `ListView` GUI.
+// end::deletepoll[]
 
+// tag::vote[]
 ===== Voting in Polls
 ---
 
@@ -782,8 +790,8 @@ The input of the command is the `POLL_INDEX` of a poll and `ANSWER_INDEX` of the
 
 Figure 44 shows the flow of voting in a poll:
 
-image::SDforVote.png[width]"800" ]
-_Figure 44. Sequence Diagram for voting a poll_
+image::SDforVote.png[width]"550" ]
+_Figure 44. Sequence Diagram for voting in a poll_
 
 The execution of the command invokes `Model#voteInPoll()`.
 The following code snippet shows the implementation:
@@ -800,8 +808,9 @@ public String voteInPoll(Poll poll, Index answerIndex)
 
 After successful execution, the voteCount of the answer in the poll will increment by 1. If the user is not an `Exco` member
 the poll will be removed from the poll `ListView` GUI, otherwise it will remain in the GUI for `Exco` members to monitor the results.
+// end::vote[]
 
-
+// tag::viewhide[]
 ===== Viewing/Hiding All Poll Results
 ---
 
@@ -810,10 +819,10 @@ Viewing and Hiding Poll Results is facilitated by the `ViewResultsCommand` and `
 By default poll results are not shown(Figure 45), but when `ViewResultsCommand` is executed, results consisting of
 how many people voted in a poll and how many voted for each answer will be shown(Figure 46).
 
-image::PollWithoutResults.png[width="400"]
+image::PollWithoutResults.png[width="300"]
 _Figure 45. Poll Without Results_
 
-image::PollWithResults.png[width="400"]
+image::PollWithResults.png[width="300"]
 _Figure 46. Poll With Results_
 
 Since viewing and hiding results of polls are similar in implementation, only viewing results of polls will be discussed.
@@ -851,8 +860,7 @@ keep track of who has voted in it using a Set<MatricNumber>
 who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer` of a `Poll`
 ** Pros: Easy to implement
 ** Cons: No anonymity since information of who voted for which Answer is stored inside Set<MatricNumber> of an `Answer`
-
-// end::polls[]
+// end::viewhide[]
 
 // tag::removegroup[]
 === Delete Group Mechanism

@@ -144,10 +144,10 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+* `addpoll q/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
 Creates a poll asking members to vote for which day Free Ice-Cream Day should be held on.
 The options to choose from are `Monday`, `Wednesday` and `Friday`.
-* `addpoll p/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+* `addpoll q/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
 Creates a poll asking members to vote for where the annual sports meeting should be held.
 The answers to choose from are `I-Cube` and `LT7`.
 
@@ -572,14 +572,15 @@ t/ = `TAG` +
 
 Examples:
 
-* `find John` +
-Returns `john` and `John Doe`.
-* `find Betsy Tim John` +
+* `find n/Betsy Tim John` +
 Returns all members having names containing `Betsy`, `Tim`, or `John`.
 * `find g/logistics` +
 Returns all members in the logistics `group`
 * `find p/123` +
 Returns any member having phone number containing 123.
+* `find 9119` +
+Returns all members containing `9119` in any field (e.g. phone number or email)
+
 // end::find[]
 
 === Viewing help : `help`
