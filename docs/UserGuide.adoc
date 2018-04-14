@@ -144,10 +144,10 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+* `addpoll q/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
 Creates a poll asking members to vote for which day Free Ice-Cream Day should be held on.
 The options to choose from are `Monday`, `Wednesday` and `Friday`.
-* `addpoll p/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+* `addpoll q/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
 Creates a poll asking members to vote for where the annual sports meeting should be held.
 The answers to choose from are `I-Cube` and `LT7`.
 
@@ -175,9 +175,9 @@ Duplicate tasks are not allowed.
 
 Examples:
 
-* `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00` +
+* `addtask desc/Book PGP Function Room 3 d/02/06/2018 ti/19:00` +
 Adds a task with description `Book PGP Function Room 3` due on `02/06/2018` at `19:00`.
-* `addtask desc/Buy Food d/03.04.2018 ti/15:00` +
+* `addtask desc/Buy Food d/03.06.2018 ti/15:00` +
 Adds a task with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::addtask[]
 
@@ -202,9 +202,9 @@ This command assigns the task to the member based on the entered `MATRIC_NUMBER`
 
 Examples:
 
-* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 m/A1234567H` +
+* `assigntask desc/Book PGP Function Room 3 d/02/06/2018 ti/19:00 m/A1234567H` +
 Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on `02/06/2018` at `19:00`.
-* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 m/A1122334K` +
+* `assigntask desc/Buy Food d/03.06.2018 ti/15:00 m/A1122334K` +
 Assigns a task to `A1122334K` with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::assigntask[]
 
@@ -449,7 +449,7 @@ Aliases: `deltask`, `rmtask`
 ****
 
 [NOTE]
-Only Members who are either the `Assignor` or the `Assignee` can delete their respective tasks.
+Only Members who are the `Assignor` can delete their respective tasks.
 
 Examples:
 
