@@ -73,7 +73,8 @@ public class VoteCommandTest {
         expectedModel = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
-        String expectedMessage = String.format(MESSAGE_VOTE_SUCCESS, pollToVote.getQuestion() + "\n" + pollToVote.getAnswers()
+        String expectedMessage = String.format(MESSAGE_VOTE_SUCCESS, pollToVote.getQuestion() + "\n"
+                + pollToVote.getAnswers()
                 .get(INDEX_FIRST_ANSWER.getZeroBased()));
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
                 pollToVote.getPolleesMatricNumbers());
