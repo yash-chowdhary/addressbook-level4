@@ -153,6 +153,7 @@ public class CommandTestUtil {
 
     public static final String INVALID_TASK_DESCRIPTION = "Buy* Books"; // no special characters allowed
     public static final String INVALID_TASK_DATE = "01/13/2018";    // invalid month
+    public static final String INVALID_TASK_DATE_PASSED = "01/01/2018";    // old date
     public static final String INVALID_TASK_TIME = "8 AM";  // invalid time format
 
     public static final String EMPTY_STRING = "";
@@ -168,6 +169,7 @@ public class CommandTestUtil {
 
     public static final String INVALID_DESCRIPTION_DESC = " " + PREFIX_DESCRIPTION + INVALID_TASK_DESCRIPTION;
     public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + INVALID_TASK_DATE;
+    public static final String INVALID_DATE_DESC_PASSED = " " + PREFIX_DATE + INVALID_TASK_DATE_PASSED;
     public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + INVALID_TASK_TIME;
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";

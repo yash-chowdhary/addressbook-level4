@@ -221,7 +221,6 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void deleteGroup(Group toRemove) throws GroupNotFoundException, GroupCannotBeRemovedException {
         requireNonNull(toRemove);
-
         clubBook.deleteGroup(toRemove);
         indicateClubBookChanged();
     }
@@ -248,6 +247,7 @@ public class ModelManager extends ComponentManager implements Model {
      * @throws TagNotFoundException if {@code Tag toSendEmailTo} doesn't exist in the club book
      */
     private String generateTagEmailRecipients(Tag toSendEmailTo) throws TagNotFoundException {
+        assert toSendEmailTo != null : "Null value of Tag";
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
@@ -280,6 +280,7 @@ public class ModelManager extends ComponentManager implements Model {
      * @throws GroupNotFoundException if {@code Group toSendEmailTo} doesn't exist in the club book
      */
     private String generateGroupEmailRecipients(Group toSendEmailTo) throws GroupNotFoundException {
+        assert toSendEmailTo != null : "Null value of Group";
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
 
         List<String> emailRecipients = new ArrayList<>();
@@ -327,8 +328,9 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private void checkIfStatusCanBeEdited(Task taskToEdit, String currentMember)
             throws TaskStatusCannotBeEditedException {
-        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getAssignor())
-                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getAssignee())) {
+        assert currentMember != null : "Null value of currentMember";
+        if (!currentMember.equalsIgnoreCase(taskToEdit.getAssignor().getValue())
+                && !currentMember.equalsIgnoreCase(taskToEdit.getAssignee().getValue())) {
             throw new TaskStatusCannotBeEditedException();
         }
     }
@@ -337,7 +339,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void changeAssignee(Task taskToEdit, Task editedTask) throws DuplicateTaskException,
             MemberNotFoundException, TaskAlreadyAssignedException, TaskAssigneeUnchangedException {
         requireAllNonNull(taskToEdit, editedTask);
-        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getAssignee());
+        MatricNumber newAssigneeMatricNumber = new MatricNumber(editedTask.getAssignee().getValue());
         checkIfMemberExists(newAssigneeMatricNumber);
         checkIfDuplicateTaskExists(editedTask);
         checkIfTaskIsAlreadyAssigned(editedTask);
@@ -427,6 +429,7 @@ public class ModelManager extends ComponentManager implements Model {
      * @throws MemberNotFoundException if {@code matricNumber} doesn't map to any member.
      */
     private void checkIfMemberExists(MatricNumber matricNumber) throws MemberNotFoundException {
+        assert matricNumber != null : "Null value of matricNumber";
         boolean found = false;
         for (Member member : clubBook.getMemberList()) {
             if (member.getMatricNumber().equals(matricNumber)) {
@@ -454,8 +457,11 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private void checkIfTaskCanBeDeleted(Assignor assignor, Assignee assignee, String currentMember)
             throws TaskCannotBeDeletedException {
-        if (!currentMember.equalsIgnoreCase(assignor.getAssignor())
-                && !currentMember.equalsIgnoreCase(assignee.getAssignee())) {
+        assert assignor != null : "Null value of Assignor";
+        assert assignee != null : "Null value of Assignee";
+        assert currentMember != null : "Null value of currentMember";
+        if (!currentMember.equalsIgnoreCase(assignor.getValue())
+                && !currentMember.equalsIgnoreCase(assignee.getValue())) {
             throw new TaskCannotBeDeletedException();
         }
     }

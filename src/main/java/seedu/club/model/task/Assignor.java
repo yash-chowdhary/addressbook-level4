@@ -15,7 +15,7 @@ public class Assignor {
         this.assignor = assignor;
     }
 
-    public String getAssignor() {
+    public String getValue() {
         return assignor;
     }
 

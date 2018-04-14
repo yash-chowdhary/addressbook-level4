@@ -164,7 +164,8 @@ Aliases: `addt`, `task`
 
 *****
 * The `date` and `time` attributes must be valid dates and time (in 24-hour format).
-* By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in. This cannot be changed.
+* The range of the year in the `Date` is 1900 - 2099.
+* By default, the `Assignor` and `Assignee` of the task is the member that is currently logged in.
 * If you wish to assign taks to other members in the capacity of an Exco member, use the `assigntask` command.
 * The default `Status` given to a newly created task is `Yet to Begin`. This can be updated using the `changetaskstatus` command.
 *****
@@ -206,6 +207,33 @@ Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on
 * `assigntask desc/Buy Food d/03.04.2018 ti/15:00 m/A1122334K` +
 Assigns a task to `A1122334K` with description `Buy Food` due on `03/04/2018` at `15:00`.
 // end::assigntask[]
+
+// tag::changeassignee[]
+=== Changing the assignee of a task : `changeassignee` (Since v1.5rc)
+
+Changes the status of a task in Club Connect. +
+Format: `changeassignee INDEX m/MATRIC_NUMBER` +
+Alias: `assignee`
+
+
+****
+* `INDEX` *must be a positive integer* 1, 2, 3, ...
+* You cannot change the `ASSIGNEE` to a member who has already been assigned a task with identical attributes by another `Exco` member.
+* Passing the current `Assignee` of the task in the input throws an error as there is no change.
+* No duplicate tasks are allowed.
+****
+
+
+[IMPORTANT]
+This command is only for `Exco` members.
+
+Examples:
+
+* `changeassignee 1 m/A0123456H` +
+Changes the assignee of the 1st task to `A0123456H` in the task listing.
+* `assignee 3 m/A6656789H` +
+Changes the assignee of the 3rd task to `A6656789H` in the task listing.
+// end::changeassignee[]
 
 === Changing password : `changepass` (Since v1.4)
 
@@ -363,7 +391,7 @@ Deletes the 1st member in the results of the `find` command.
 // tag::deletepoll[]
 === Deleting a poll : `deletepoll` (Since v1.3)
 
-Deletes the specified poll from the Club Connect. +
+Deletes the specified poll from Club Connect. +
 Format: `deletepoll INDEX` +
 Aliases: `rmpoll`, `delpoll`
 
@@ -705,23 +733,23 @@ Selects the 2nd member in Club Connect.
 `s 1` +
 Selects the 1st member in the results of the `find` command.
 
-// tag::showresults[]
-=== Showing results of polls : `showresults` (Since v1.4)
+// tag::viewresults[]
+=== Viewing results of polls : `viewresults` (Since v1.4)
 
 Displays the results of polls in Club Connect.
 
 [NOTE]
-This is a command that can be used to monitor polls in the Club Connect. +
+This is a command that can be used to monitor polls in Club Connect. +
 
 [NOTE]
 Results include number of voters for each answer of a poll and total number of voters who took part in the poll. Results are anonymous. +
 
-Format: `showresults` +
-Alias: `showres`
+Format: `viewresults` +
+Alias: `viewres`
 
 [IMPORTANT]
 This command is for `Exco` members only.
-// end::showresults[]
+// end::viewresults[]
 
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
@@ -816,6 +844,9 @@ Votes for the 1st answer in the 5th poll of the poll listing
 === Auto-Complete Command (Since v1.3)
 Auto-completes the command on pressing the kbd:[TAB] key. Cycles through all possible commands based on user input.
 
+[NOTE]
+The feature is only meant for command words, and not their aliases.
+
 === Saving the data
 
 Club Connect data is saved in the hard disk automatically after any command that changes the data. +
@@ -863,7 +894,7 @@ e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 e.g. `deletepoll 2`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
 e.g. `vote 10 2`
-* *Show results of polls* : `showresults`
+* *View results of polls* : `viewresults`
 * *Hide results of polls* : `hideresults`
 * *Change Display Picture* : `changepic PHOTO_PATH` +
 e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +

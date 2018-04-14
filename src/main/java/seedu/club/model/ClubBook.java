@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
+import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.core.index.Index;
 import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
@@ -55,6 +57,7 @@ public class ClubBook implements ReadOnlyClubBook {
     private final UniqueTagList tags;
     private final UniquePollList polls;
     private final UniqueTaskList tasks;
+    private final Logger logger = LogsCenter.getLogger(this.getClass());
 
         /*
         * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid duplication
@@ -274,6 +277,7 @@ public class ClubBook implements ReadOnlyClubBook {
         checkIfGroupIsMemberOrExco(toRemove);
         checkIfGroupIsPresent(toRemove);
         deleteGroupFromClubBook(toRemove);
+        logger.fine("Group " + toRemove + " has been removed.");
     }
 
     /**
@@ -344,10 +348,16 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public void addTaskToTaskList(Task taskToAdd) throws DuplicateTaskException {
         tasks.add(taskToAdd);
+        logger.fine("Task added to task list.");
     }
 
+    /**
+     * Deletes {@code targetTask} from the list of tasks.
+     * @throws TaskNotFoundException if the task doesn't exist.
+     */
     public void deleteTask(Task targetTask) throws TaskNotFoundException {
         tasks.remove(targetTask);
+        logger.fine("Task removed from task list.");
     }
 
     public void setTasks(Set<Task> tasks) {
@@ -473,6 +483,7 @@ public class ClubBook implements ReadOnlyClubBook {
     public Member getLoggedInMember() {
         return members.getCurrentlyLogInMember();
     }
+
     public void clearClubBook() {
         members.clear();
     }
@@ -533,6 +544,7 @@ public class ClubBook implements ReadOnlyClubBook {
             TaskNotFoundException {
         requireNonNull(editedTask);
         tasks.setTask(taskToEdit, editedTask);
+        logger.fine("Task status updated to " + editedTask.getStatus().getStatus());
     }
 
     /**
@@ -548,6 +560,7 @@ public class ClubBook implements ReadOnlyClubBook {
         } catch (DuplicateTaskException dte) {
             throw new DuplicateTaskException();
         }
+        logger.fine("Task assignee updated to " + editedTask.getAssignee().getValue());
     }
 
     /**
@@ -568,8 +581,8 @@ public class ClubBook implements ReadOnlyClubBook {
             String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
             String targetMemberMatricNumberString = target.getMatricNumber().toString();
 
-            if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)
+                    && task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
@@ -578,14 +591,14 @@ public class ClubBook implements ReadOnlyClubBook {
                         newAssignor, newAssignee, task.getStatus());
                 tasks.setTaskIgnoreStatus(task, editedTask);
                 numberOfTasksUpdated++;
-            } else if (task.getAssignor().getAssignor().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            } else if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
                 Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
                 editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
                         newAssignor, task.getAssignee(), task.getStatus());
                 tasks.setTaskIgnoreStatus(task, editedTask);
                 numberOfTasksUpdated++;
-            } else if (task.getAssignee().getAssignee().equalsIgnoreCase(targetMemberMatricNumberString)) {
+            } else if (task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
                 Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
                 editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
                         task.getAssignor(), newAssignee, task.getStatus());
@@ -593,7 +606,7 @@ public class ClubBook implements ReadOnlyClubBook {
                 numberOfTasksUpdated++;
             }
         }
-
+        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
         return numberOfTasksUpdated;
 
     }
@@ -607,11 +620,12 @@ public class ClubBook implements ReadOnlyClubBook {
         Iterator<Task> it = tasks.iterator();
         while (it.hasNext()) {
             Task task = it.next();
-            if (task.getAssignee().getAssignee().equalsIgnoreCase(member.getMatricNumber().toString())) {
+            if (task.getAssignee().getValue().equalsIgnoreCase(member.getMatricNumber().toString())) {
                 it.remove();
                 numberOfTasksRemoved++;
             }
         }
+        logger.info("Removed " + numberOfTasksRemoved + "tasks from task list.");
         return numberOfTasksRemoved;
     }
 
@@ -626,7 +640,7 @@ public class ClubBook implements ReadOnlyClubBook {
             if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
                     && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
                     && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                    && task.getAssignee().getValue().equalsIgnoreCase(toAdd.getAssignee().getValue())) {
                 throw new TaskAlreadyAssignedException();
             }
         }
@@ -642,8 +656,8 @@ public class ClubBook implements ReadOnlyClubBook {
             if (task.getDescription().getDescription().equalsIgnoreCase(toAdd.getDescription().getDescription())
                     && task.getDate().getDate().equalsIgnoreCase(toAdd.getDate().getDate())
                     && task.getTime().getTime().equalsIgnoreCase(toAdd.getTime().getTime())
-                    && task.getAssignor().getAssignor().equalsIgnoreCase(toAdd.getAssignor().getAssignor())
-                    && task.getAssignee().getAssignee().equalsIgnoreCase(toAdd.getAssignee().getAssignee())) {
+                    && task.getAssignor().getValue().equalsIgnoreCase(toAdd.getAssignor().getValue())
+                    && task.getAssignee().getValue().equalsIgnoreCase(toAdd.getAssignee().getValue())) {
                 throw new DuplicateTaskException();
             }
         }
