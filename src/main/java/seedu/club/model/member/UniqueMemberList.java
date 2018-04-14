@@ -163,6 +163,7 @@ public class UniqueMemberList implements Iterable<Member> {
      * @return
      */
     public void logsInMember(String username, String password) {
+        username = username.toUpperCase();
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
             currentlyLogInMember = checkMember;

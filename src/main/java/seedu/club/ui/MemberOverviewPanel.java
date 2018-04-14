@@ -184,9 +184,8 @@ public class MemberOverviewPanel extends UiPart<Region> {
             loadMemberPage(event.getEditedMember());
         }
     }
-    //@@author
 
-    //@@author yash-chowdhary
+    //@@author
     /**
      * Loads the client page based on {@code client}
      */
@@ -235,7 +234,6 @@ public class MemberOverviewPanel extends UiPart<Region> {
             }
         }
     }
-    //@@author
 
     //@@author th14thmusician
     /**
