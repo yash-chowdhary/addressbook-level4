@@ -4,9 +4,7 @@
 
 == PROJECT: Club Connect
 
----
-
-== Overview
+== 1. Overview
 
 *Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier and more effective.
@@ -14,11 +12,72 @@ It aims to make the tedious process of club management easier and more effective
 *Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI).
 All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
 
-*Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]]
-[https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
+== 2. About this portfolio
+
+This project portfolio documents my contributions to the Club Connect project.
+It includes a summary of features that I implemented, other ways in which I contributed to the project,
+and extracts of my documentation in the Club Connect User Guide and Developer Guide.
+
+== 3. Summary of contributions
+
+* *Major enhancement*: This enhancement added functionality to *manage information of club members*.
+** What it does: The import feature adds all members in a specified CSV (comma separated values) file to Club Connect.
+                Conversely, the export feature makes it possible to add the details of all members in Club Connect to a CSV file.
+** Justification: During recruitment events (such as the annual Student Life Fair at the National University of Singapore),
+                  club representatives collect data of prospective members using software like Microsoft Excel.
+                  They will then have to update Club Connect's database to include the data of the inducted members.
+                  The `import` command allows Executive Committee (Exco) members to add all these new members in one go. +
+                   +
+                  For club administration tasks where you need to get a list of all members of the club and their details
+                  (signing up all members to NUSync, for example), the `export` command comes in handy.
+                  It generates a file containing all the relevant information in a user friendly form.
+                  This information can then be easily managed and modified outside the application.
+** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software, from `Commons` to `Storage`.
+                Though the implementation of these features is intuitive and makes use of existing code wherever possible,
+                it was challenging as it required the creation of a CsvUtil class (to handle parsing) from scratch.
+                It is also made robust in order to prevent frustration in users.
+** Relevant pull requests:
+
+* *Minor enhancement*: This enhancement added support for a profile photos for each member.
+** What it does: allows the currently logged in member to change their profile photo.
+                Similarly, they can choose to remove their profile photo as well.
+** Justification: Since most student clubs have a large number of members, members may find it difficult to identify others by name alone.
+                  Having the ability to add a profile photo for yourself makes it much easier for others to identify you when they need to contact you.
+** Highlights: This enhancement is an end-to-end feature and makes use of all components of the software, from `Commons` to `Ui`.
+                It was challenging as the feature had to handle the image files efficiently, and had to allow the application to remain portable.
+
+* *Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
+
+* *Other contributions*:
+** Project management on GitHub:
+*** Created necessary labels
+*** Updated descriptions and labels of PRs (where necessary)
+*** Organised and assigned issues
+*** Managed releases `v1.5rc` and `v1.5` (2 releases)
+
+** Enhancements to existing features:
+*** Updated the GUI look and color scheme (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/218[#218],
+    https://github.com/CS2103JAN2018-W15-B4/main/pull/219[#219], https://github.com/CS2103JAN2018-W15-B4/main/pull/224[#224]
+    and https://github.com/CS2103JAN2018-W15-B4/main/pull/234[#234])
+*** Refactored the codebase to fit the context of our application (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/76/files[#76],
+    https://github.com/CS2103JAN2018-W15-B4/main/pull/86[#86] and https://github.com/CS2103JAN2018-W15-B4/main/pull/87[#87])
+
+** Documentation:
+*** Added the `Tips` section to the User Guide
+*** Added the `Glossary` section to the Developer Guide
+*** Maintained the Developer Guide
+
+** Community:
+*** Ensured that codebase was consistent and clean
+*** Reported bugs and suggestions for other teams in the class (https://github.com/CS2103JAN2018-T16-B2/main/issues/151[1],
+https://github.com/CS2103JAN2018-T16-B2/main/issues/136[2], https://github.com/CS2103JAN2018-T16-B2/main/issues/133[3],
+https://github.com/CS2103JAN2018-T16-B2/main/issues/161[4], https://github.com/CS2103JAN2018-T16-B2/main/issues/131[5],
+https://github.com/CS2103JAN2018-T16-B2/main/issues/134[6], https://github.com/CS2103JAN2018-T16-B2/main/issues/157[7],
+https://github.com/CS2103JAN2018-T16-B2/main/issues/138[8])
+
+*** PRs reviewed (with non-trivial review comments): https://github.com[#12], https://github.com[#32], https://github.com[#19], https://github.com[#42]
 
 === Major Enhancement Added: Data Handling
-
 ==== External Behaviour
 
 ===== Import Members
@@ -169,28 +228,3 @@ include::../DeveloperGuide.adoc[tag=uitheme]
 #End of Extract (from Developer Guide)#
 
 ---
-
-=== Other Contributions: General Documentation
-
-*** Added the `Tips` section to the User Guide.
-
-#Start of Extract (from User Guide)#
-
-include::../UserGuide.adoc[tag=tips]
-
-#End of Extract (from User Guide)#
-
-*** Added the `Glossary` section to the Developer Guide.
-
-#Start of Extract (from Developer Guide)#
-
-include::../DeveloperGuide.adoc[tag=glossary]
-
-#End of Extract (from Developer Guide)#
-
-*** Added `ProfilePhoto` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/106[Pull Request #106]
-*** Refactored the codebase to fit the context of our application
-*** Maintained the Developer Guide
-*** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-T16-B2/main/issues?utf8=%E2%9C%93&q=is%3Aissue+amrut+-prabhu[Peer Testing] session
-*** Ensured that codebase was consistent and clean
-*** Took up the GitHub project management role
