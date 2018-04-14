@@ -29,7 +29,8 @@ public class LogInCommand extends Command {
     public static final String COMMAND_FORMAT = "login u/ pw/ ";
 
     public static final String MESSAGE_SUCCESS = "Hi %1$s. Welcome to Club Connect!";
-    public static final String MESSAGE_FAILURE = "Login unsuccessful. Please try again.";
+    public static final String MESSAGE_FAILURE = "Login unsuccessful."
+            + " Incorrect Username or Password entered. Please try again.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Allows you to log in to Club Connect.\n"
             + "Parameters: "
             + PREFIX_USERNAME + "USERNAME "

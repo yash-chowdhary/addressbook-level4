@@ -109,7 +109,7 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
         executeCommand(logoutCommand);
 
         // login Benson
-        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(1).getMatricNumber().value
+        logInCommand = LogInCommand.COMMAND_WORD + " u/" + memberObservableList.get(3).getMatricNumber().value
                 + " pw/password";
         executeCommand(logInCommand);
 

@@ -39,7 +39,7 @@ public class AssignTaskCommand extends UndoableCommand {
             + PREFIX_MATRIC_NUMBER + "MATRICULATION_NUMBER\n"
             + "Example " + COMMAND_WORD + " "
             + PREFIX_DESCRIPTION + "Arrange DJ for Music Night "
-            + PREFIX_DATE + "10/05/2018 "
+            + PREFIX_DATE + "10/06/2018 "
             + PREFIX_TIME + "16:00 "
             + PREFIX_MATRIC_NUMBER + "A1234567H";
 

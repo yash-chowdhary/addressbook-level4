@@ -100,6 +100,7 @@ public class FindCommandTest {
     @Test
     public void execute_multipleKeywords_multipleMembersFound() throws CommandException {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 3);
+        String expectedMessage2 = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 1);
         FindCommand command = prepareCommand("Kurz Elle Kunz", PREFIX_NAME);
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
@@ -113,7 +114,7 @@ public class FindCommandTest {
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
         command = prepareCommand("marketing operations", PREFIX_GROUP);
-        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+        assertCommandSuccess(command, expectedMessage2, Arrays.asList(FIONA));
 
         expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 7);
         command = prepareCommand("head heads owesMoney", PREFIX_TAG);

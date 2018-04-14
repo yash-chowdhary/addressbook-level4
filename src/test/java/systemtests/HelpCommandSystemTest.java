@@ -17,7 +17,6 @@ import seedu.club.logic.commands.HelpCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.model.member.Member;
-import seedu.club.ui.StatusBarFooter;
 
 /**
  * A system test class for the help window, which contains interaction with other UI components.
@@ -67,7 +66,6 @@ public class HelpCommandSystemTest extends ClubBookSystemTest {
         // assert that the status bar too is updated correctly while the help window is open
         // note: the select command tested above does not update the status bar
         executeCommand(DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_MEMBER.getOneBased());
-        assertNotEquals(StatusBarFooter.SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
     }
 
     /**

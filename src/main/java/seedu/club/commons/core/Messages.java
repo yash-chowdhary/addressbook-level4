@@ -20,6 +20,7 @@ public class Messages {
     public static final String MESSAGE_REQUIRE_SIGN_UP = "Please sign up to use Club Connect.";
     public static final String MESSAGE_REQUIRE_EXCO_LOG_IN = "You need to be an Exco member to use this feature.";
     public static final String MESSAGE_REQUIRE_LOG_OUT = "Please logout before logging in to another account.";
+    public static final String MESSAGE_UNABLE_TO_DELETE_CURRENT_USER = "Unable to delete yourself.";
     public static final String MESSAGE_DATE_ALREADY_PASSED = "The date and time you have entered has already passed! "
             + "Please enter a future date and time.";
 }

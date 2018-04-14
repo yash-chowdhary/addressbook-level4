@@ -19,6 +19,8 @@ import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.BOB;
 import static seedu.club.testutil.TypicalMembers.CARL;
+import static seedu.club.testutil.TypicalMembers.DANIEL;
+import static seedu.club.testutil.TypicalMembers.ELLE;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
 import static seedu.club.testutil.TypicalTasks.BUY_FOOD;
@@ -111,14 +113,16 @@ public class ModelManagerTest {
 
     @Test
     public void deleteGroup_atLeastOneMemberInGroup_groupDeleted() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+
+        ClubBook clubBookWithDanielAndElle = new ClubBookBuilder().withMember(DANIEL).withMember(ELLE)
+                .build();
         UserPrefs userPrefs = new UserPrefs();
 
-        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-        modelManager.deleteGroup(new Group(BENSON.getGroup().toString()));
+        ModelManager modelManager = new ModelManager(clubBookWithDanielAndElle, userPrefs);
+        clubBookWithDanielAndElle.deleteGroup(new Group(DANIEL.getGroup().toString()));
 
-        Member aliceNotInPr = new MemberBuilder(ALICE).withGroup().build();
-        Member bensonNotInPr = new MemberBuilder(BENSON).build();
+        Member bensonNotInPr = new MemberBuilder(DANIEL).withGroup().build();
+        Member aliceNotInPr = new MemberBuilder(ELLE).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withMember(aliceNotInPr)
                 .withMember(bensonNotInPr).build();
 

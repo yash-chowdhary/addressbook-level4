@@ -38,7 +38,7 @@ public class UndoCommandTest {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
         expectedModel = new ModelManager(getTypicalClubBook(), new UserPrefs());
         observableList = model.getClubBook().getMemberList();
-        member = observableList.get(0);
+        member = observableList.get(2);
         LogInCommand command = new LogInCommand(member.getCredentials().getUsername(),
                 member.getCredentials().getPassword());
         command.setData(model, new CommandHistory(), new UndoRedoStack());

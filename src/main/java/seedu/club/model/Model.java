@@ -16,6 +16,7 @@ import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
@@ -80,7 +81,7 @@ public interface Model {
      * Deletes the given member, and returns the number of tasks that have been deleted from the
      * main task list.
      */
-    int deleteMember(Member target) throws MemberNotFoundException;
+    int deleteMember(Member target) throws MemberNotFoundException, DeleteCurrentUserException;
 
     /**
      * Adds the given member
