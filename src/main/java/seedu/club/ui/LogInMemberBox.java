@@ -44,6 +44,7 @@ public class LogInMemberBox extends UiPart<Region> {
             currentlyloginMember.setText("Log in to use Club Connect");
             profilePhoto.setVisible(false);
         } else {
+            profilePhoto.setVisible(true);
             currentlyloginMember.setText("Logged In: " + event.getCurrentlyLogIn().getName().toString());
             setProfilePhoto(event.getCurrentlyLogIn().getProfilePhoto());
         }
