@@ -10,6 +10,7 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
+:important-caption: :caution:
 :format-caption:
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-W15-B4/main
@@ -255,6 +256,7 @@ Changes the password of the member with username `A0123456H` to `pword`.
 Changes the password of the member with username `A1234567H` to `brandnewpassword`.
 
 // tag::changepic[]
+[[changepic]]
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo. +
@@ -263,16 +265,18 @@ Aliases: `pic`, `profilepic`
 
 ****
 * PHOTO_PATH must be an absolute path to the photo.
-* This command is only guaranteed to work for ,jpeg, .jpg, and .png files.
+* This command is only guaranteed to work for JPG (.jpg), and PNG (.png) files.
+* Since `changepic` is not an undoable command, you need to use the <<removepic,`removepic`>> command to reset your profile photo back to the default image.
 ****
 
 [NOTE]
-You may face a longer delay when setting your profile photo to an image whose file size is above 3 MB.
+Profile photos are displayed with a 4:3 height to width ratio in Club Connect.
+
+[NOTE]
+It may take longer to set your profile photo to an image whose file size is above 1 MB.
 
 [TIP]
-To get the absolute path, right-click on the photo file and select `Properties`.
-The `Location` field specifies the absolute location of the photo.
-Finally, add the complete name of the photo file to this location.
+To get the absolute path to the photo, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
@@ -528,22 +532,25 @@ Format: 'export CSV_FILE_PATH` +
 Alias: `exp`
 
 ****
-* Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members added to Club Connect.
+* Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members in Club Connect to a CSV file.
 * CSV_FILE_PATH must be an absolute path to the CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
-* If the CSV file already exists, then the member data is added to the end of the file (i.e. it does not overwrite the existing file).
+* If the CSV file already exists, then the data in the file is overwritten.
 ****
 
 [NOTE]
-You can import the generated CSV file on Microsoft Excel to get an even better view of the data.
+You can import the generated CSV file from Microsoft Excel to get an even better view of the data.
+
+[TIP]
+TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
 * `export C:/Users/John Doe/Desktop/members.csv` +
-Exports all members in Club Connect to "members.csv" file on `John Doe` 's Desktop.
+Exports all members in Club Connect to the "members.csv" file on `John Doe` 's Desktop.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
-Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
+Exports all members in Club Connect to the "clubbook.csv" file on `Jane Doe` 's Desktop.
 // end::export[]
 
 // tag::find[]
@@ -627,11 +634,17 @@ Alias: `imp`
 * In order for this command to work correctly, ensure that none of the data values contain double quoutes (").
 ****
 
-[NOTE]
-You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
-
 [IMPORTANT]
 This command is for `Exco` members only.
+
+[NOTE]
+You cannot overwrite existing members (i.e. you cannot edit details of members in Club Connect) by using the `import` command.
+
+[TIP]
+You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving the file.
+
+[TIP]
+TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
@@ -713,12 +726,15 @@ Deletes the `pr` group from Club Connect.
 // end::removegroup[]
 
 // tag::removepic[]
+[[removepic]]
 === Removing your profile photo : `removepic` (Since v1.5)
 
 Removes your profile photo and sets it back to the default photo. +
 Format: `removepic` +
 Aliases: `rmpic`, `defaultpic`, `delpic`
 
+[NOTE]
+This command cannot be undone. You will have to set your profile photo by using the <<changepic,`changepic`>> command again.
 // end::removepic[]
 
 === Selecting a member : `select` (since v1.5rc)
@@ -920,9 +936,9 @@ Not satisfied with your productivity while using Club Connect?
 Can't remember the command names?
 Here are some tips and tricks:
 
-* *Transferring data to another computer* +
-Install the Club Connect app on the other computer.
-Then, overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
+* *Data transfer to another computer* +
+. Install the Club Connect app on the other computer.
+. Overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
 
 * *Alternative command names*
 If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
@@ -932,6 +948,20 @@ So, both commands shown below can be used change your profile picture to the "jo
 `changepic C:/Users/John Doe/Desktop/john_doe.jpg`
 +
 `pic C:/Users/John Doe/Desktop/john_doe.jpg` +
+
+[[absolute-path]]
+* *Absolute path of a file*
+To get the absolute path of a file on Windows, follow these steps:
+
+. Right-click on the file and select `Properties`. This will bring up a window containing the properties of the file.
+. Locate the path in the `General` section, next to the keywprd `Location`.
+. Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
+
+To get the absolute path of a file on MacOS, follow these steps:
+
+. Select the file and press kbd:[Command]+kbd:[I] to open the information window for it.
+. Locate the path in the `General` section, next to the keyword `Where`.
+. Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
 
 [[csv-data-format]]
 * *CSV format for `import`* +
