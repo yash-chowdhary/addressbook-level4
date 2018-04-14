@@ -10,6 +10,7 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
+:inportant-caption: :warning:
 :format-caption:
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-W15-B4/main
@@ -29,6 +30,7 @@ Interested? Continue on to <<Quick Start>> to get started.
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
+⚠   : Important +
   💡  : Tip +
 `code`: Commands that can be entered into *Club Connect* or Technical keywords +
 kbd:[key]: Button on your keyboard +
@@ -292,7 +294,7 @@ Aliases: `cts`, `changestatus`, `status`
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
 * The `STATUS` can be one of ```Yet To Begin```, ```In Progress```, and ```Completed```.
-* You can only change the status of a task that you have been assigned.
+* You can only change the status of a task that you have been assigned or a task that you have assigned.
 * Club Connect detects if there is no change in the `STATUS`.
 ****
 
