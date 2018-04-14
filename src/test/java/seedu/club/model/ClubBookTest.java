@@ -35,6 +35,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.poll.Poll;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -306,6 +307,19 @@ public class ClubBookTest {
 
         assertEquals(expectedClubBook, clubBookUpdatedToAmy);
     }
+
+    //@@author amrut-prabhu
+    @Test
+    public void updateMember_detailsChanged_clubBookunchanged() throws Exception {
+        ClubBook clubBookUpdatedToAmy = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+        try {
+            clubBookUpdatedToAmy.updateMember(AMY, BOB);
+        } catch (DuplicateMatricNumberException dme) {
+            ClubBook expectedClubBook = new ClubBookBuilder().withMember(AMY).withMember(BOB).build();
+            assertEquals(expectedClubBook, clubBookUpdatedToAmy);
+        }
+    }
+    //@@author
 
     @Test
     public void deleteTag_nonExistentTag_clubBookUnchanged() {

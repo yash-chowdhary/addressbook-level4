@@ -58,7 +58,7 @@ public class DeleteCommand extends UndoableCommand {
         } catch (DeleteCurrentUserException e) {
             throw new CommandException(Messages.MESSAGE_UNABLE_TO_DELETE_CURRENT_USER);
         }
-        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToDelete, true));
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToDelete, null, true, null, false));
         return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete, numberOfTasksDeleted));
     }
 

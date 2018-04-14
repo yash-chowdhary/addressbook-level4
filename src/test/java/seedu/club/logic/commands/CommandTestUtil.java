@@ -51,13 +51,16 @@ public class CommandTestUtil {
     public static final String VALID_MATRIC_NUMBER_CARL = "A6076201A";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
+    public static final String VALID_PHONE_CARL = "95352563";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
+    public static final String VALID_EMAIL_CARL = "heinz@example.com";
     public static final String VALID_GROUP_AMY = "Exco";
     public static final String VALID_GROUP_BOB = "EXCO";
     public static final String VALID_GROUP_TEST = "publicity";
     public static final String VALID_TAG_HUSBAND = "Husband";
     public static final String VALID_TAG_HEAD = "Head";
+    public static final String VALID_TAG_OWES_MONEY = "OwesMoney";
     public static final String VALID_TAG_UNUSED = "unused"; //this tag should not be used when creating a member
     public static final String VALID_TAG_UNUSED_DESC = " " + PREFIX_TAG + VALID_TAG_UNUSED;
     public static final String VALID_USERNAME_AMY = "AmyBee";
@@ -102,8 +105,10 @@ public class CommandTestUtil {
     public static final String NAME_DESC_CARL = " " + PREFIX_NAME + VALID_NAME_CARL;
     public static final String PHONE_DESC_AMY = " " + PREFIX_PHONE + VALID_PHONE_AMY;
     public static final String PHONE_DESC_BOB = " " + PREFIX_PHONE + VALID_PHONE_BOB;
+    public static final String PHONE_DESC_CARL = " " + PREFIX_PHONE + VALID_PHONE_CARL;
     public static final String EMAIL_DESC_AMY = " " + PREFIX_EMAIL + VALID_EMAIL_AMY;
     public static final String EMAIL_DESC_BOB = " " + PREFIX_EMAIL + VALID_EMAIL_BOB;
+    public static final String EMAIL_DESC_CARL = " " + PREFIX_EMAIL + VALID_EMAIL_CARL;
     public static final String MATRIC_NUMBER_DESC_AMY = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_AMY;
     public static final String MATRIC_NUMBER_DESC_BOB = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_BOB;
     public static final String MATRIC_NUMBER_DESC_BENSON = " " + PREFIX_MATRIC_NUMBER + VALID_MATRIC_NUMBER_BENSON;

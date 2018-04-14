@@ -8,29 +8,35 @@ import static java.util.Objects.requireNonNull;
  */
 public class ProfilePhoto {
 
+    public static final String EMPTY_STRING = "";
+    public static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
-            "the photo path should follow the format of this example: C:/Downloads/.../mypic.png";
-    public static final String IMAGE_PATH_VALIDATION_REGEX = ".:(.*/)*.+/.+(png|jpg|jpeg|PNG|JPG)";
+            "The photo path should be an absolute path to a JPG or PNG image file.";
+
+    private static final String[] validFileExtensions = {".jpg", ".png"};
+    private static final int JPG_INDEX = 0;
+    private static final int PNG_INDEX = 1;
 
     private String profilePhotoPath;
 
     /**
      * Constructs a {@code ProfilePhoto}.
-     *
-     * @param path A valid image path.
      */
     public ProfilePhoto(String path) {
-        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 
     /**
-     * Returns true if a given string is a valid photo path.
+     * Returns true if {@code path} represents the path of a JPG (.jpg) or PNG (.png) file.
      *
-     * @param test Path whose validity is to be checked.
+     * @param path Path whose validity is to be checked.
      */
-    public static boolean isValidProfilePhoto(String test) {
-        return test.matches(IMAGE_PATH_VALIDATION_REGEX);
+    public static boolean isValidPhotoFile(String path) {
+        int length = path.length();
+        String fileExtension = path.substring(length - validFileExtensions[JPG_INDEX].length());
+
+        return fileExtension.compareToIgnoreCase(validFileExtensions[JPG_INDEX]) == 0
+                || fileExtension.compareToIgnoreCase(validFileExtensions[PNG_INDEX]) == 0;
     }
 
     /**
@@ -39,7 +45,6 @@ public class ProfilePhoto {
      */
     public void setNewPhotoPath(String path) {
         requireNonNull(path);
-        //checkArgument(isValidProfilePhoto(path), IMAGE_PATH_VALIDATION_REGEX);
         this.profilePhotoPath = path;
     }
 

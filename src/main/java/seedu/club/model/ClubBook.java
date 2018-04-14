@@ -189,6 +189,14 @@ public class ClubBook implements ReadOnlyClubBook {
         tags.setTags(allTags);
     }
 
+    /**
+     * Changes the profile photo of the logged in member to the photo specified by {@code newPhotoPath}.
+     *
+     * @param newPhotoPath Path to the new photo file of the logged in member.
+     */
+    public void changeLoggedInMemberProfilePhoto(String newPhotoPath) {
+        getLoggedInMember().setProfilePhotoPath(newPhotoPath);
+    }
     //@@author
     /**
      * Updates the master tag list to include tags in {@code member} that are not in the list.

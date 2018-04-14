@@ -49,7 +49,7 @@ public class ImportCommand extends UndoableCommand {
         try {
             int numberImported = model.importMembers(importFile);
             if (numberImported == 0) {
-                return new CommandResult(String.format(MESSAGE_MEMBERS_NOT_IMPORTED, numberImported, importFile));
+                return new CommandResult(String.format(MESSAGE_MEMBERS_NOT_IMPORTED, importFile));
             }
             return new CommandResult(String.format(MESSAGE_IMPORT_SUCCESS, numberImported, importFile));
         } catch (IOException ioe) {

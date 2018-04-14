@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import seedu.club.model.member.Email;
 import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Name;
 import seedu.club.model.member.Phone;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.tag.Tag;
 import seedu.club.testutil.Assert;
 
@@ -33,16 +35,19 @@ public class ParserUtilTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_MATRIC_NUMBER = "1234567";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_TAG = "#president";
     private static final String INVALID_CLIENT = "yahoo";
+    private static final String INVALID_PHOTO_PATH_1 = new File("./dummy.java").getAbsolutePath();
+    private static final String INVALID_PHOTO_PATH_2 = "./dummy.jpg";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_MATRIC_NUMBER = "A1234567Y";
     private static final String VALID_EMAIL = "rachel@example.com";
-    private static final String VALID_TAG_1 = "friend";
-    private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_TAG_1 = "president";
+    private static final String VALID_TAG_2 = "event-in-charge";
     private static final String VALID_CLIENT = "gmail";
+    private static final String VALID_PHOTO_PATH = new File("./dummy.png").getAbsolutePath();
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -308,5 +313,30 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    //@@author amrut-prabhu
+    @Test
+    public void parsePhotoPath_null_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseProfilePhoto((String) null));
+    }
+
+    @Test
+    public void parsePhotoPath_invalidValues_throwsIllegalValueException() {
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseProfilePhoto(INVALID_PHOTO_PATH_1));
+        Assert.assertThrows(IllegalValueException.class, () -> ParserUtil.parseProfilePhoto(INVALID_PHOTO_PATH_2));
+    }
+
+    @Test
+    public void parsePhotoPath_validValueWithoutWhitespace_returnsProfilePhoto() throws Exception {
+        ProfilePhoto expectedProfilePhoto = new ProfilePhoto(VALID_PHOTO_PATH);
+        assertEquals(expectedProfilePhoto, ParserUtil.parseProfilePhoto(VALID_PHOTO_PATH));
+    }
+
+    @Test
+    public void parsePhotoPath_validValueWithWhitespace_returnsTrimmedProfilePhoto() throws Exception {
+        String photoPathWithWhitespace = WHITESPACE + VALID_PHOTO_PATH + WHITESPACE;
+        ProfilePhoto expectedProfilePhoto = new ProfilePhoto(VALID_PHOTO_PATH);
+        assertEquals(expectedProfilePhoto, ParserUtil.parseProfilePhoto(photoPathWithWhitespace));
     }
 }

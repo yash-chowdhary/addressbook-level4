@@ -44,6 +44,6 @@ public class DecompressCommandTest {
         CommandResult result = decompressCommand.execute();
         assertEquals(DecompressCommand.MESSAGE_SUCCESS, result.feedbackToUser);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DecompressMembersRequestEvent);
-        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
     }
 }
