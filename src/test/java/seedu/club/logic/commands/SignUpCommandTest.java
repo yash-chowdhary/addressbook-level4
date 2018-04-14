@@ -79,6 +79,11 @@ public class SignUpCommandTest {
         }
 
         @Override
+        public void removeProfilePhoto() {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void changeStatus(Task taskToEdit, Task editedTask) throws TaskNotFoundException,
                 DuplicateTaskException {
             fail("This method should not be called");

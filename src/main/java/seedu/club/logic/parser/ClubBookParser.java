@@ -36,6 +36,7 @@ import seedu.club.logic.commands.ListCommand;
 import seedu.club.logic.commands.LogInCommand;
 import seedu.club.logic.commands.LogOutCommand;
 import seedu.club.logic.commands.RedoCommand;
+import seedu.club.logic.commands.RemoveProfilePhotoCommand;
 import seedu.club.logic.commands.SelectCommand;
 import seedu.club.logic.commands.SignUpCommand;
 import seedu.club.logic.commands.UndoCommand;
@@ -109,8 +110,6 @@ public class ClubBookParser {
             return new ExitCommand();
         } else if (isExportCommand(commandWord)) {
             return new ExportCommandParser().parse(arguments);
-        } else if (isImportCommand(commandWord)) {
-            return new ImportCommandParser().parse(arguments);
         } else if (isFindCommand(commandWord)) {
             return new FindCommandParser().parse(arguments);
         } else if (isHelpCommand(commandWord)) {
@@ -119,6 +118,8 @@ public class ClubBookParser {
             return new HideResultsCommand();
         } else if (isHistoryCommand(commandWord)) {
             return new HistoryCommand();
+        } else if (isImportCommand(commandWord)) {
+            return new ImportCommandParser().parse(arguments);
         } else if (isListCommand(commandWord)) {
             return new ListCommand();
         } else if (isLoginCommand(commandWord)) {
@@ -127,6 +128,8 @@ public class ClubBookParser {
             return new LogOutCommand();
         } else if (isRedoCommand(commandWord)) {
             return new RedoCommand();
+        } else if (isRemovePicCommand(commandWord)) {
+            return new RemoveProfilePhotoCommand();
         } else if (isDeleteGroupCommand(commandWord)) {
             return new DeleteGroupCommandParser().parse(arguments);
         } else if (isSelectCommand(commandWord)) {
@@ -573,6 +576,18 @@ public class ClubBookParser {
      */
     private boolean isAddCommand(String commandWord) {
         for (String commandAlias : AddCommand.COMMAND_ALIASES) {
+            if (commandWord.equals(commandAlias)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if {@code commandWord} matches any of RemoveProfilePhotoCommand's aliases
+     */
+    private boolean isRemovePicCommand(String commandWord) {
+        for (String commandAlias : RemoveProfilePhotoCommand.COMMAND_ALIASES) {
             if (commandWord.equals(commandAlias)) {
                 return true;
             }

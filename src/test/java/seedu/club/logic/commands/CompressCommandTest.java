@@ -45,6 +45,6 @@ public class CompressCommandTest {
         CommandResult result = compressCommand.execute();
         assertEquals(CompressCommand.MESSAGE_SUCCESS, result.feedbackToUser);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof CompressMembersRequestEvent);
-        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
     }
 }

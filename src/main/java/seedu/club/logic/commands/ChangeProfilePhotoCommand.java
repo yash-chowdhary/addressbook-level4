@@ -43,13 +43,13 @@ public class ChangeProfilePhotoCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        //Defensive programming
         assert profilePhoto.getPhotoPath() != null : "Photo path should not be null.";
         requireToSignUp();
         requireToLogIn();
         try {
             model.addProfilePhoto(profilePhoto.getPhotoPath());
-            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null, false,
+                    null, false));
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {
             throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH, profilePhoto.getPhotoPath()));
