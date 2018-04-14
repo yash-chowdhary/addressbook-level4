@@ -13,7 +13,7 @@ It aims to make the tedious process of club management easier and more effective
 
 *Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI). All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
 
-*Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/th14thmusician.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/yash-chowdhary.md[Test code]]
+*Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/th14thmusician.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/th14thmusician.md[Test code]]
 
 == Summary of contributions
 
