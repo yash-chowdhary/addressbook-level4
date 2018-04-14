@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.EMAIL_DESC_CARL;
 import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.GROUP_DESC_BOB;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
@@ -14,11 +15,14 @@ import static seedu.club.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.MATRIC_NUMBER_DESC_CARL;
 import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.NAME_DESC_CARL;
 import static seedu.club.logic.commands.CommandTestUtil.PASSWORD_DESC;
 import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
+import static seedu.club.logic.commands.CommandTestUtil.PHONE_DESC_CARL;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.club.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.USERNAME_DESC_BOB;
@@ -31,6 +35,7 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FIFTH_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_FIRST_MEMBER;
 import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
 import static seedu.club.testutil.TypicalMembers.AMY;
@@ -119,6 +124,11 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         editedMember = new MemberBuilder(memberToEdit).withTags().build();
         assertCommandSuccess(command, index, editedMember);
 
+        /* Case: results in duplicate member -> rejected */
+        index = INDEX_FIFTH_MEMBER;
+        command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + NAME_DESC_CARL + " " + PHONE_DESC_CARL
+                + " " + EMAIL_DESC_CARL + " " + MATRIC_NUMBER_DESC_CARL;
+        assertCommandFailure(command, EditCommand.MESSAGE_DUPLICATE_MATRIC_NUMBER);
         /* ------------------ Performing edit operation while a filtered list is being shown ------------------------ */
 
         /* Case: filtered member list, edit index within bounds of club book and member list -> edited */

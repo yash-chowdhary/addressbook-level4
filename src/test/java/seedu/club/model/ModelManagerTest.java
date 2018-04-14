@@ -11,6 +11,9 @@ import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HEAD;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_TAG_UNUSED;
 import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
+import static seedu.club.model.member.ProfilePhoto.DEFAULT_PHOTO_PATH;
+import static seedu.club.storage.ProfilePhotoStorage.PHOTO_FILE_EXTENSION;
+import static seedu.club.storage.ProfilePhotoStorage.SAVE_PHOTO_DIRECTORY;
 import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BENSON;
@@ -39,6 +42,7 @@ import seedu.club.model.group.exceptions.GroupCannotBeRemovedException;
 import seedu.club.model.group.exceptions.GroupNotFoundException;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.NameContainsKeywordsPredicate;
+import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
@@ -614,21 +618,42 @@ public class ModelManagerTest {
     //@@author amrut-prabhu
     @Test
     public void addProfilePhoto_eventRaised() throws Exception {
-        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        String photoDirectory = "./src/test/resources/photos/";
+        String photoFileName = "testPhoto.png";
+
+
+        ClubBook clubBook = new ClubBookBuilder().withMember(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
         ModelManager modelManager = new ModelManager(clubBook, userPrefs);
-
         modelManager.logsInMember(BENSON.getCredentials().getUsername().value,
                 BENSON.getCredentials().getPassword().value);
 
-        String photoDirectory = "./src/test/resources/photos/";
-        String photoFileName = "testPhoto.png";
+        ProfilePhoto newPhoto = new ProfilePhoto(SAVE_PHOTO_DIRECTORY + BENSON.getMatricNumber()
+                + PHOTO_FILE_EXTENSION);
+
         modelManager.addProfilePhoto(photoDirectory + photoFileName);
 
         //2 events are raised: ProfilePhotoChangedEvent and ClubBookChangedEvent
         assertTrue(eventsCollectorRule.eventsCollector.getSize() == 2);
         //Last event raised is ClubBookChangedEvent
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ClubBookChangedEvent);
+
+        assertEquals(newPhoto, modelManager.getLoggedInMember().getProfilePhoto());
+    }
+
+    @Test
+    public void removeProfilePhoto_success() {
+        ClubBook clubBook = new ClubBookBuilder().withMember(ALICE).withMember(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager modelManager = new ModelManager(clubBook, userPrefs);
+        ProfilePhoto defaultPhoto = new ProfilePhoto(DEFAULT_PHOTO_PATH);
+
+        modelManager.logsInMember(BENSON.getCredentials().getUsername().value,
+                BENSON.getCredentials().getPassword().value);
+
+        modelManager.removeProfilePhoto();
+
+        assertEquals(defaultPhoto, modelManager.getLoggedInMember().getProfilePhoto());
     }
 
     @Test
