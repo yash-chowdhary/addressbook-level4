@@ -32,7 +32,7 @@
             <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
           </Menu>
         </MenuBar>
-        <SplitPane dividerPositions="0.9">
+        <SplitPane dividerPositions="0.95">
             <StackPane VBox.vgrow="NEVER" fx:id="commandBoxPlaceholder" styleClass="pane-with-border">
               <padding>
                 <Insets top="5" right="5" bottom="5" left="10" />
@@ -60,11 +60,12 @@
             <StackPane fx:id="memberListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
 
-          <StackPane fx:id="browserPlaceholder" minWidth="300" prefWidth="300" SplitPane.resizableWithParent="true">
+          <VBox minWidth="280" prefWidth="280" SplitPane.resizableWithParent="true">
             <padding>
               <Insets top="10" right="0" bottom="10" left="10" />
             </padding>
-          </StackPane>
+            <StackPane fx:id="browserPlaceholder" VBox.vgrow="ALWAYS"/>
+          </VBox>
 
           <VBox fx:id="pollList" minWidth="280" prefWidth="280" SplitPane.resizableWithParent="true">
             <padding>

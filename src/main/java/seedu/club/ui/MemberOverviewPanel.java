@@ -107,7 +107,11 @@ public class MemberOverviewPanel extends UiPart<Region> {
      * @param show
      */
     public void loadDetails (Boolean show) {
-        gridPane.setStyle("-fx-background-color: #cccccc");
+        if (show) {
+            gridPane.setStyle("-fx-background-color: #cccccc");
+        } else {
+            gridPane.setStyle("-fx-background-color: #d6d6d6");
+        }
         int size = gridPane.getChildren().size();
         for (int i = 0; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);
@@ -184,9 +188,8 @@ public class MemberOverviewPanel extends UiPart<Region> {
             loadMemberPage(event.getEditedMember());
         }
     }
-    //@@author
 
-    //@@author yash-chowdhary
+    //@@author
     /**
      * Loads the client page based on {@code client}
      */
@@ -235,7 +238,6 @@ public class MemberOverviewPanel extends UiPart<Region> {
             }
         }
     }
-    //@@author
 
     //@@author th14thmusician
     /**

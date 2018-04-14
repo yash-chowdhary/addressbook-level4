@@ -13,6 +13,7 @@ import seedu.club.commons.core.index.Index;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 import seedu.club.model.member.Member;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 
 /**
@@ -54,6 +55,8 @@ public class DeleteCommand extends UndoableCommand {
             numberOfTasksDeleted = model.deleteMember(memberToDelete);
         } catch (MemberNotFoundException mnfe) {
             throw new AssertionError("The target member cannot be missing");
+        } catch (DeleteCurrentUserException e) {
+            throw new CommandException(Messages.MESSAGE_UNABLE_TO_DELETE_CURRENT_USER);
         }
         EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToDelete, null, true, null, false));
         return new CommandResult(String.format(MESSAGE_DELETE_MEMBER_SUCCESS, memberToDelete, numberOfTasksDeleted));

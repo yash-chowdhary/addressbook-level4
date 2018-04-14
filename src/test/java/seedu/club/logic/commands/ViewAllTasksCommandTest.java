@@ -2,7 +2,7 @@ package seedu.club.logic.commands;
 //@@author yash-chowdhary
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.club.testutil.TypicalMembers.BENSON;
+import static seedu.club.testutil.TypicalMembers.DANIEL;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Before;
@@ -53,8 +53,8 @@ public class ViewAllTasksCommandTest {
 
     @Test
     public void execute_taskCannotBeDisplayed_noChange() {
-        model.logsInMember(BENSON.getCredentials().getUsername().value,
-                BENSON.getCredentials().getPassword().value);
+        model.logsInMember(DANIEL.getCredentials().getUsername().value,
+                DANIEL.getCredentials().getPassword().value);
         model.updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
         String expectedMessage = Messages.MESSAGE_REQUIRE_EXCO_LOG_IN;
         assertCommandFailure(viewAllTasksCommand, model, expectedMessage);

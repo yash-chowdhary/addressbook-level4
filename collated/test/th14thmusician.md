@@ -337,6 +337,60 @@ public class ChangePasswordCommandTest {
             return memberStub;
         }
 ```
+###### \java\seedu\club\logic\commands\ImportCommandTest.java
+``` java
+        @Override
+        public ReadOnlyClubBook getClubBook() {
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
+        }
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+```
+###### \java\seedu\club\logic\commands\ImportCommandTest.java
+``` java
+        @Override
+        public ReadOnlyClubBook getClubBook() {
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
+        }
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+```
+###### \java\seedu\club\logic\commands\ImportCommandTest.java
+``` java
+        @Override
+        public ReadOnlyClubBook getClubBook() {
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
+        }
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
+        }
+```
 ###### \java\seedu\club\logic\commands\LogInCommandTest.java
 ``` java
         @Override
@@ -371,5 +425,24 @@ public class ChangePasswordCommandTest {
         @Override
         public Member getLoggedInMember() {
             return null;
+        }
+```
+###### \java\seedu\club\logic\commands\RemoveProfilePhotoCommandTest.java
+``` java
+        @Override
+        public ReadOnlyClubBook getClubBook() {
+            ClubBook clubBook = new ClubBook();
+            try {
+                clubBook.addMember(memberStub);
+                clubBook.logInMember("A5215090A", "password");
+            } catch (DuplicateMatricNumberException e) {
+                e.printStackTrace();
+            }
+            return clubBook;
+        }
+
+        @Override
+        public Member getLoggedInMember() {
+            return memberStub;
         }
 ```

@@ -38,6 +38,7 @@ import seedu.club.model.member.Member;
 import seedu.club.model.member.ProfilePhoto;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
@@ -121,7 +122,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized int deleteMember(Member target) throws MemberNotFoundException {
+    public synchronized int deleteMember(Member target) throws MemberNotFoundException, DeleteCurrentUserException {
         clubBook.removeMember(target);
         int numberOfTasksRemoved = clubBook.removeTasksOfMember(target);
         filteredMembers.remove(target);
@@ -376,6 +377,9 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
         updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
         clubBook.logOutMember();
+        updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
     }
 
     //@@author yash-chowdhary

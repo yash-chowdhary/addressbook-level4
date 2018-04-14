@@ -11,7 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.club.model.task.Task;
 
 /**
@@ -36,17 +35,6 @@ public class TaskListPanel extends UiPart<Region> {
 
     public void setConnections(ObservableList<Task> taskList) {
         setMemberListView(taskList);
-        setEventHandlerForSelectionChangeEvent();
-    }
-
-    private void setEventHandlerForSelectionChangeEvent() {
-        taskListView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        logger.fine("Selection in task list panel changed to : '" + newValue + "'");
-                        raise(new TaskPanelSelectionChangedEvent(newValue));
-                    }
-                });
     }
 
     public void setMemberListView(ObservableList<Task> taskList) {

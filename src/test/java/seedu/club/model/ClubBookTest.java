@@ -11,6 +11,8 @@ import static seedu.club.testutil.TypicalMembers.ALICE;
 import static seedu.club.testutil.TypicalMembers.AMY;
 import static seedu.club.testutil.TypicalMembers.BENSON;
 import static seedu.club.testutil.TypicalMembers.BOB;
+import static seedu.club.testutil.TypicalMembers.DANIEL;
+import static seedu.club.testutil.TypicalMembers.ELLE;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 import static seedu.club.testutil.TypicalTasks.BOOK_AUDITORIUM;
 import static seedu.club.testutil.TypicalTasks.BUY_CONFETTI;
@@ -84,15 +86,15 @@ public class ClubBookTest {
 
     @Test
     public void removeGroup_atLeastOneMemberInGroup_groupRemoved() throws Exception {
-        ClubBook clubBookWithBensonAndAlice = new ClubBookBuilder().withMember(ALICE).withMember(BENSON)
+        ClubBook clubBookWithDanielAndElle = new ClubBookBuilder().withMember(DANIEL).withMember(ELLE)
                 .build();
-        clubBookWithBensonAndAlice.deleteGroup(new Group(BENSON.getGroup().toString()));
+        clubBookWithDanielAndElle.deleteGroup(new Group(DANIEL.getGroup().toString()));
 
-        Member bensonNotInPr = new MemberBuilder(ALICE).withGroup().build();
-        Member aliceNotInPr = new MemberBuilder(BENSON).build();
+        Member bensonNotInPr = new MemberBuilder(DANIEL).withGroup().build();
+        Member aliceNotInPr = new MemberBuilder(ELLE).build();
         ClubBook expectedClubBook = new ClubBookBuilder().withMember(bensonNotInPr)
                 .withMember(aliceNotInPr).build();
-        assertEquals(expectedClubBook, clubBookWithBensonAndAlice);
+        assertEquals(expectedClubBook, clubBookWithDanielAndElle);
     }
 
     @Test
