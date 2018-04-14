@@ -107,7 +107,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
      * @param show
      */
     public void loadDetails (Boolean show) {
-        gridPane.setStyle("-fx-background-color: #cccccc");
+        gridPane.setStyle("-fx-background-color: #d6d6d6");
         int size = gridPane.getChildren().size();
         for (int i = 0; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);

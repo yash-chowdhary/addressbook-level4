@@ -20,7 +20,7 @@
     <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
         <Text fill="darkblue" text="MEMBER PROFILE" VBox.vgrow="NEVER" />
     </TextFlow>
-<GridPane fx:id="gridPane" prefHeight="800.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane" prefHeight="660.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
@@ -63,7 +63,7 @@
         <RowConstraints minHeight="15.0" prefHeight="25.0" />
         <RowConstraints minHeight="15.0" prefHeight="25.0" />
         <RowConstraints minHeight="30.0" prefHeight="40.0" />
-        <RowConstraints minHeight="300.0" prefHeight="300.0" />
+        <RowConstraints minHeight="230.0" prefHeight="230.0" />
     </rowConstraints>
 </GridPane>
 </VBox>
