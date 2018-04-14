@@ -39,7 +39,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         for (Prefix prefix : FINDABLE_PREFIXES) {
             int prefixLength = prefix.toString().length();
             if (trimmedArgs.length() >= prefixLength && trimmedArgs.substring(0, prefixLength)
-                    .equalsIgnoreCase(prefix.toString())) {
+                    .equals(prefix.toString())) {
                 String[] findArgs = trimmedArgs.substring(prefixLength, trimmedArgs.length())
                         .trim().split("\\s+");
                 return new FindCommand(new FieldContainsKeywordsPredicate(

@@ -15,12 +15,12 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 
 == Summary of contributions
 
-* *Major enhancement*: added *voting system*
+* *Major enhancement*: Added *voting system*
 ** What it does: Allows `Exco` members to create/delete polls and view/hide results of polls. Members can vote in polls.
 ** Justification: This feature improves the product significantly because the `Exco` members can accurately determine the views of other members so that they can take the best path of action for the club.
 ** Highlights: This enhancement extensively covers . It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
 
-* *Minor enhancement*: added *compress/decompress mechanism* for users to navigate through member list easily.
+* *Minor enhancement*: Improved navigability of member list by adding compress/decompress mechanism and revamping `Find` command
 
 * *Code contributed*: [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/MuhdNurKamal.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/MuhdNurKamal.md[Test code]]
 
@@ -29,11 +29,10 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 ** Project management:
 *** Managed release `Peer Testing` on GitHub
 ** Enhancements to existing features:
-*** Replaced Address field of members to Matriculation Number
-*** Improved the Find Command to either search according to specified field (eg. email) or according to all fields
+*** Replaced Address field of members to Matriculation Number https://github.com/CS2103JAN2018-W15-B4/main/pull/67[#67]
 ** Community:
 *** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/168[#168], https://github.com/CS2103JAN2018-W15-B4/main/pull/167[#167], https://github.com/CS2103JAN2018-W15-B4/main/pull/149[#149], https://github.com/CS2103JAN2018-W15-B4/main/pull/125[#125]
-*** Reported bugs and suggestions for other teams in the class (examples:  https://github.com[1], https://github.com[2], https://github.com[3])
+*** Fixed bug that caused most System tests to fail https://github.com/CS2103JAN2018-W15-B4/main/pull/154[#154]
 
 == Contributions to the User Guide
 
@@ -58,3 +57,5 @@ include::../UserGuide.adoc[tag=vote]
 |===
 
 include::../DeveloperGuide.adoc[tag=compressdecompress]
+
+include::../DeveloperGuide.adoc[tag=polls]

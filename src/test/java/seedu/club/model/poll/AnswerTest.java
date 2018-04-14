@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_ANSWER_ONE;
-import static seedu.club.model.poll.Answer.PREFIX_ANSWER;
+import static seedu.club.model.poll.Answer.ANSWER_LABEL;
 
 import org.junit.Test;
 
@@ -45,10 +45,10 @@ public class AnswerTest {
         Answer testAnswerOne = new Answer("hello");
         Answer testAnswerTwo = new Answer("world");
 
-        assertTrue(testAnswerOne.toString().equals(PREFIX_ANSWER + "hello"));
-        assertFalse(testAnswerOne.toString().equals(PREFIX_ANSWER + "world"));
-        assertTrue(testAnswerTwo.toString().equals(PREFIX_ANSWER + "world"));
-        assertFalse(testAnswerTwo.toString().equals(PREFIX_ANSWER + "hello"));
+        assertTrue(testAnswerOne.toString().equals(ANSWER_LABEL + "hello"));
+        assertFalse(testAnswerOne.toString().equals(ANSWER_LABEL + "world"));
+        assertTrue(testAnswerTwo.toString().equals(ANSWER_LABEL + "world"));
+        assertFalse(testAnswerTwo.toString().equals(ANSWER_LABEL + "hello"));
     }
 
     @Test

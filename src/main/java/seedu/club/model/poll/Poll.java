@@ -68,6 +68,7 @@ public class Poll {
     }
 
     private void setAnswers(List<Answer> answers) {
+        assert answers != null && !answers.isEmpty();
         List<Answer> clonedAnswers = new ArrayList<>();
         for (Answer answer : answers) {
             clonedAnswers.add(new Answer(answer.getValue(), answer.getVoteCount()));
@@ -101,17 +102,21 @@ public class Poll {
      * @throws AnswerNotFoundException   if answerIndex is not answerIndex of any answers of this poll
      * @throws UserAlreadyVotedException if pollee has already voted in the poll
      */
-    public void vote(Index answerIndex, MatricNumber polleeMatricNumber) throws
+    public String vote(Index answerIndex, MatricNumber polleeMatricNumber) throws
             AnswerNotFoundException, UserAlreadyVotedException {
+        Answer answer;
         if (polleesMatricNumbers.contains(polleeMatricNumber)) {
             throw new UserAlreadyVotedException();
         } else {
             try {
-                answers.get(answerIndex.getZeroBased()).voteThisAnswer();
+                answer = answers.get(answerIndex.getZeroBased());
+                answer.voteThisAnswer();
+
             } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                 throw new AnswerNotFoundException();
             }
             polleesMatricNumbers.add(polleeMatricNumber);
+            return this.question + "\n" + answer;
         }
     }
 
@@ -125,7 +130,7 @@ public class Poll {
      */
     @Override
     public String toString() {
-        return "[ " + question + " ]"
-                + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
+        return question + "\n"
+                + answers.stream().map(Answer::toString).collect(Collectors.joining("\n"));
     }
 }

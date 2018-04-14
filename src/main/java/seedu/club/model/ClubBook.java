@@ -244,9 +244,9 @@ public class ClubBook implements ReadOnlyClubBook {
         polls.add(poll);
     }
 
-    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+    public String voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
-        polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
+        return polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
     }
     //@@author
 

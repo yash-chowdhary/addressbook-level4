@@ -678,18 +678,194 @@ _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member
 
 // end::tasks[]
 
+// tag::polls[]
+=== Polls-feature
+
+A poll contains a question and any number of answers. Any member can vote in a poll but only once. Only 'Exco' members
+are allowed to add/delete polls and view/hide poll results. Polls are displayed in the poll `ListView` GUI of Club Connect.
+
+==== Current Implementation
+The poll feature is facilitated by the command classes below:
+
+* `AddPollCommand`
+* `DeletePollCommand`
+* `VoteCommand`
+* `ViewResultsCommand`
+* `HideResultsCommand`
+
+Since all the commands above require the user be logged in, the statements below are present in their `execute` methods.
+
+[source, java]
+requireToSignUp();
+requireToLogIn();
+
+To restrict the commands that only `Exco` members can execute, the `AddPollCommand`, `DeletePollCommand`,
+`ViewResultsCommand` and `HideResultsCommand` will have the statement below in their `execute` methods.
+
+[source, java]
+requireExcoLogIn();
+
+Figure 40 below shows the UML diagram of the `Poll` class.
+
+image::PollUML.png[width="800"]
+_Figure 40. Poll UML Diagram_
+
+A `Poll` consists of the following:
+
+* Question: Represents the question of the poll.
+* ObservableList<Answer>: Represents the answers of the poll.
+* Set<MatricNumber>: Represents all members that have voted in the poll.
+
+Figure 41 below shows the UML diagram of the `Answer` class.
+
+image::AnswerUML.png[width="100"]
+_Figure 41. Poll UML Diagram_
+
+An `Answer` consists of the following:
+
+* String: Represents the sequence of characters making up the answer
+* int: Represents the number of members who voted for this answer
+
+===== Adding Polls
+---
+Adding Polls is facilitated by the `AddPollCommand` which inherits from `UndoableCommand` to make adding polls undoable.
+When a poll is created by the `AddPollCommand`, it's Set<MatricNumber>
+is initialized as empty because no member has voted in the poll.
+
+Figure 42 shows the flow of adding a poll:
+
+image::SDforAddPoll.png[width="800"]
+_Figure 42. Sequence Diagram for `AddPollCommand` parsing._
+
+The execution of the command invokes `Model#addPoll(poll)`. +
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+    requireNonNull(poll);
+    clubBook.addPoll(poll);
+    updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
+    indicateClubBookChanged();
+}
+
+After successful execution, the poll will be added to the Club Book and the poll `ListView` GUI.
+
+===== Deleting Polls
+---
+Deleting Polls is facilitated by the `DeletePollCommand` which inherits from `UndoableCommand` to make deleting polls undoable.
+
+Figure 43 shows the flow of deleting a poll:
+
+image::SDforDeletePoll.png[width="800"]
+_Figure 43. Sequence Diagram for `DeletePollCommand` parsing._
+
+The execution of the command invokes `Model#deletePoll()`.
+The following code snippet shows the implementation:
+
+[source, java]
+@Override
+public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+    requireNonNull(target);
+    clubBook.removePoll(target);
+    indicateClubBookChanged();
+}
+
+After successful execution, the poll will be deleted from the Club Book and the poll `ListView` GUI.
+
+===== Voting in Polls
+---
+
+Voting in polls is facilitated by the `VoteCommand` which inherits from `UndoableCommand` to make voting undoable.
+
+The input of the command is the `POLL_INDEX` of a poll and `ANSWER_INDEX` of the answer of the poll
+
+Figure 44 shows the flow of voting in a poll:
+
+image::SDforVote.png[width]"800" ]
+_Figure 44. Sequence Diagram for voting a poll_
+
+The execution of the command invokes `Model#voteInPoll()`.
+The following code snippet shows the implementation:
+
+[source,java]
+@Override
+public String voteInPoll(Poll poll, Index answerIndex)
+        throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
+    requireAllNonNull(poll, answerIndex);
+    String voteDetails = clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
+    indicateClubBookChanged();
+    return voteDetails;
+}
+
+After successful execution, the voteCount of the answer in the poll will increment by 1. If the user is not an `Exco` member
+the poll will be removed from the poll `ListView` GUI, otherwise it will remain in the GUI for `Exco` members to monitor the results.
+
+
+===== Viewing/Hiding All Poll Results
+---
+
+Viewing and Hiding Poll Results is facilitated by the `ViewResultsCommand` and `HideResultsCommand`.
+
+By default poll results are not shown(Figure 45), but when `ViewResultsCommand` is executed, results consisting of
+how many people voted in a poll and how many voted for each answer will be shown(Figure 46).
+
+image::PollWithoutResults.png[width="400"]
+_Figure 45. Poll Without Results_
+
+image::PollWithResults.png[width="400"]
+_Figure 46. Poll With Results_
+
+Since viewing and hiding results of polls are similar in implementation, only viewing results of polls will be discussed.
+
+When an `Exco` member inputs 'viewresults', the sequence diagram (Figure 47) below shows how the different components interact
+to post a `ViewResultsRequestEvent`.
+
+image::HighLevelSDforViewResultsToEventsCenter.png[width="800"]
+_Figure 47. Sequence Diagram to `EventsCenter` for viewing poll results ._
+
+Then, the `PollListPanel` which contains the poll `ListView`, will handle the event (Figure 48) by showing results of results of all polls (Figure 46).
+
+image::HighLevelSDforViewResultsFromEventsCenter.png[width="800"]
+_Figure 48. Sequence Diagram from `EventsCenter` for viewing poll results._
+
+The following code snippet shows the implementation:
+
+[source, java]
+@Subscribe
+private void handleViewResultsEvent(ViewResultsRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    showPollResults();
+}
+
+Hiding results of polls will be done in a similar manner except `HideResultsRequestEvent` is posted and handled instead
+of `ViewResultsRequestEvent`.
+
+==== Design Considerations
+===== Aspect: Keeping track of how many members voted for each answer of a poll and who has voted in a poll
+* **Alternative 1 (current choice)**: Make each `Answer` keep track of how many votes it has received and each `Poll`
+keep track of who has voted in it using a Set<MatricNumber>
+** Pros: Voters are not tied to any specific answer hence ensuring anonymity
+** Cons: Harder to ensure sum of vote count of all `Answer`s in a `Poll` must equal to size of Set<MatricNumber> in the poll
+* **Alternative 2:** Make each `Answer` contain a Set<MatricNumber>. It's size is the number of voters and to keep track of
+who voted, check user's `MatricNumber` with all `MatricNumber` in all `Answer` of a `Poll`
+** Pros: Easy to implement
+** Cons: No anonymity since information of who voted for which Answer is stored inside Set<MatricNumber> of an `Answer`
+
+// end::polls[]
+
 // tag::removegroup[]
 === Delete Group Mechanism
 ==== Current Implementation
 
 The `deletegroup` mechanism is facilitated by the `DeleteGroupCommand` class. It allows `Exco` members to delete a group from `Club Connect`. The group of all members part of the group that is to be deleted will be changed to the default group - `member`.
 
-The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 40 below depicts the UML representation of the `Command`.
+The `DeleteGroupCommand` extends from `UndoableCommand` as it is an undoable command. Figure 49 below depicts the UML representation of the `Command`.
 
 image::DeleteGroupCommandUML.png[width="150" align="center"]
-_Figure 40. UML Diagram of `DeleteGroupCommand`._
+_Figure 49. UML Diagram of `DeleteGroupCommand`._
 
-`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 41.
+`DeleteGroupCommandParser` is responsible for parsing the `deletegroup` command. It returns a `DeleteGroupCommand` object after parsing the `Group`. The parsing of the command is shown below in Figure 50.
 
 The method where the deletion takes place in each member is `ClubBook#deleteGroupFromMember`.
 
@@ -711,12 +887,12 @@ private void deleteGroupFromMember(Group toRemove, Member member)
 }
 
 image::SDforDeleteGroupCommandParser.png[width="400" align="center"]
-_Figure 41. Sequence Diagram for the parsing of `DeleteGroupCommand`._
+_Figure 50. Sequence Diagram for the parsing of `DeleteGroupCommand`._
 
-The high-level sequence of events is depicted in Figure 42 below.
+The high-level sequence of events is depicted in Figure 51 below.
 
 image::SDforDeleteGroup.png[width="400" align="center"]
-_Figure 42. Sequence Diagram for delete a group from `Club Connect`._
+_Figure 51. Sequence Diagram for delete a group from `Club Connect`._
 
 
 ==== Design Considerations
@@ -753,25 +929,26 @@ It allows members to modify their profile photos displayed in the application.
 To facilitate this, it makes use of the `ProfilePhoto` class. `ProfilePhoto`
 
 Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
-Refer to Figure 43 for the UML diagram.
+
+Refer to Figure 52 for the UML diagram.
 The `ProfilePhoto` class consists of a `String` attribute to store the file path of the profile photo.
 
 image::ChangeProfilePhotoCommandUML.png[width="350"]
-_Figure 43. ChangeProfilePhotoCommand UML Diagram_
+_Figure 52. ChangeProfilePhotoCommand UML Diagram_
 
 The `displaypic` command involves the use of multiple components of Club Connect.
-Below, Figure 44 shows the interactions betweeen these components.
+Below, Figure 53 shows the interactions betweeen these components.
 As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
 
 image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 44. High Level Sequence Diagram for `changepic PATH` Command_
+_Figure 53. High Level Sequence Diagram for `changepic PATH` Command_
 
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 45 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+Figure 54 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 45. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+_Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
 
 The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
@@ -845,10 +1022,11 @@ The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
 It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
 
 The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
-Figure 46 (shown below) depicts the UML representation of the `DeleteTagCommand`.
+
+Figure 55 (shown below) depicts the UML representation of the `DeleteTagCommand`.
 
 image::placeholder.png[width="200" height="200"]
-_Figure 46. UML Diagram of `DeleteTagCommand`._
+_Figure 55. UML Diagram of `DeleteTagCommand`._
 
 ==== Design Considerations
 ===== Aspect: Implementation of `DeleteTagCommand`
@@ -865,38 +1043,40 @@ Lorem ipsum dolor sit amet
 // tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
-Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 47) or compressed(Figure 48).
+
+Member details are shown as cards in the GUI. Cards can either be decompressed(Figure 56) or compressed(Figure 57).
 
 image::DecompressedMemberCards.png[width="300"]
-_Figure 47. Decompressed Member Cards_
+_Figure 56. Decompressed Member Cards_
 
 image::CompressedCards.png[width="300"]
-_Figure 48. Compressed Member Cards_
+_Figure 57. Compressed Member Cards_
 
 The `MemberCard` class provides an abstraction for the member card shown in the GUI. By default, it shows a member card that is decompressed.
-To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 49) since a `CompressedMemberCard` is a `MemberCard`.
+To differentiate between compressed and decompressed member card, we introduced a `CompressedMemberCard` class. This class extends `MemberCard` (Figure 58) since a `CompressedMemberCard` is a `MemberCard`.
 Each of these classes contain a different static String showing location of the actual `FXML` file that determines layout of the member card, hence we get different layouts.
 
 image::MemberCardClassDiagram.png[width="300"]
-_Figure 49. `MemberCard` class diagram_
+_Figure 58. `MemberCard` class diagram_
 
 The `compress` and `decompress` commands allows members to select whether they want to see detailed information of members or see a compressed version for easy viewing.
 These commands do not extend from `UndoableCommand` but just from `Command` since they do not change the state of the club book.
 
 Due to the similar nature of the `compress` and `decompress` commands, only the `compress` command will be discussed.
 
-Suppose that the user has just launched the application. The member cards would be decompressed (Figure 42).
+Suppose that the user has just launched the application. The member cards would be decompressed (Figure 56).
 
-The user inputs 'compress' and the sequence diagram (Figure 50) below shows how the different components interact.
+
+The user inputs 'compress' and the sequence diagram (Figure 59) below shows how the different components interact.
 
 image::SDforCompressToEventsCenter.png[width="800"]
-_Figure 50. Sequence diagram for compress command to Events Center_
+_Figure 59. Sequence diagram for compress command to Events Center_
 
-Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 51). If the cards are already compressed, no changes occur.
+Then, the `MemberListPanel`, which contains the `MemberCard` objects will handle the event (Figure 60). If the cards are already compressed, no changes occur.
 However, if the cards are decompressed, the `MemberCard` objects would be converted to `CompressedMemberCard` objects.
 
 image::SDforCompressFromEventsCenter.png[width="800"]
-_Figure 51. Sequence diagram for compress command from Events Center_
+_Figure 60. Sequence diagram for compress command from Events Center_
 
 ==== Design Considerations
 ===== Aspect: How to interact from Logic to Ui
@@ -955,10 +1135,11 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 52 below.
+
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 61 below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 52. Screenshot of saving documentation as PDF in Chrome_
+_Figure 61. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -1119,21 +1300,23 @@ Do take a look at <<Design-Model>> before attempting to modify the `Model` compo
 [TIP]
 Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 53.
+. Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 62.
 +
-Figure 53 below shows the member details before the modification.
+Figure 62 below shows the member details before the modification.
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
-_Figure 53. Member details before modification_
+
+_Figure 62. Member details before modification_
 +
-Figure 54 below shows the member details after the modification.
+Figure 63 below shows the member details after the modification.
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
-_Figure 54. Member details after modification_
+
+_Figure 63. Member details after modification_
 +
 ****
 * Hints
@@ -1148,18 +1331,19 @@ _Figure 54. Member details after modification_
 
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
-Figure 55 below shows the `ResultDisplay` before the modification. +
+
+Figure 64 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 55. ResultDisplay before modification_
+_Figure 64. ResultDisplay before modification_
 +
 **After**
 +
-Figure 56 below shows the `ResultDisplay` after the modification.
+Figure 65 below shows the `ResultDisplay` after the modification.
 +
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 56. ResultDisplay after modification_
+_Figure 65. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -1177,19 +1361,22 @@ _Figure 56. ResultDisplay after modification_
 
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
-Figure 57 below shows the `StatusBarFooter` before the modification.
+
+Figure 66 below shows the `StatusBarFooter` before the modification.
 +
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 57. StatusBarFooter before modification_
+
+_Figure 66. StatusBarFooter before modification_
 +
-Figure 58 below shows the `StatusBarFooter` after the modification.
+Figure 67 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 58. StatusBarFooter after modification_
+
+_Figure 67. StatusBarFooter after modification_
 +
 ****
 * Hints
@@ -1397,9 +1584,10 @@ Adding a profile photo makes it easier to know what other members look like and 
 +
 Exco members can create polls and look at the results to help ascertain the needs and wants of other members. Members can vote for polls to express what they require from the club.
 
-* Minor Feature: Compress/Decompress feature
+* Minor Feature: Improve navigability of member list by adding compress/decompress mechanism and revamping `Find` command
 +
-Users can use compress command to clear clutter from member information in member list. Users can use decompress command to see more information about members in member list.
+Users can use compress command to clear clutter from member information in member list. Users can also use decompress command to see more information about members in member list.
+`Find` command can now search for members by partial matches, search by specified field (e.g. by email) or just search by all fields.
 
 4. Song Weiyang
 
@@ -1961,3 +2149,134 @@ Expected: Similar to previous.
 .. Test case: `deletegroup`, `deletegroup g/Exco` (mandatory group)
    Expected: Similar to previous.
 
+=== Adding a poll
+
+. Adding a poll as an `Exco` member
+
+.. Prerequisites: Login as `Exco member`.
+.. Test case: `addpoll q/Which is the right answer? ans/Left ans/Right` +
+   Expected: New poll added in poll list with question "Which is the right answer?" and answers "Left" and "Right".
+   Details of the added poll shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `addpoll q/hello ans/bye ans/bye ans/jane` +
+   Expected: New poll added in poll list with question "hello" and answers "bye" and "jane".
+   Details of the added poll shown in the status message. Timestamp in the status bar is updated.
+.. Test case: Type `addpoll q/hi ans/a ans/b ans/c` twice +
+   Expected: For first command, new poll added in poll list with question "hi" and answers "a" and "b".
+   Details of the added poll shown in the status message. Timestamp in the status bar is updated. Then for the second,
+   no poll is added. Duplicate poll error will be shown in status message. Status bar remains the same.
+.. Other incorrect addpoll commands to try: `addpoll`, `addpoll x` (where x is larger than the list size or is negative) +
+   Expected: No poll is added. Error details shown in the status message. Status bar remains the same.
+
+. Adding a poll as an a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member
+.. Test case: `addpoll q/Which is the right answer? ans/Left ans/Right` +
+   Expected: No poll is deleted. Error details shown in the status message. Status bar remains the same.
+
+=== Deleting a poll
+
+. Deleting a poll as an `Exco` member
+
+.. Prerequisites: Login as `Exco member` and there are polls listed.
+.. Test case: `deletepoll 1` +
+   Expected: First poll is deleted from the list. Details of the deleted poll shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `deletepoll 0` +
+   Expected: No poll is deleted. Error details shown in the status message. Status bar remains the same.
+.. Other incorrect delete commands to try: `deletepoll`, `deletepoll x` (where x is larger than the list size or is negative) +
+   Expected: Similar to previous.
+
+. Deleting a poll as an a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and there are polls listed.
+.. Test case: `deletepoll 1` +
+   Expected: No poll is deleted. Command requires Exco-member shown in status message. Status bar remains the same.
+
+=== Voting in a poll
+
+. Voting in a poll as an `Exco` member
+
+.. Prerequisites: Login as `Exco member` and all polls in poll list are not yet voted by user.
+.. Test case: `vote 1 1` +
+   Expected: Vote success shown the status message. Timestamp in the status bar is updated.
+.. Other incorrect vote commands to try: `vote`, `vote x y` (where x and/or y is larger than the poll list size or is negative) +
+   Expected: No poll is voted for. Error details shown in the status message. Status bar remains the same.
+
+. Voting in a poll as a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and all polls in poll list are not yet voted by user.
+.. Test case: `vote 1 1` +
+   Expected: Vote success shown in the status message. Timestamp in the status bar is updated. Poll is removed from poll list.
+.. Other incorrect vote commands to try: `vote`, `vote x y` (where x and/or y is larger than the poll list size or is negative) +
+   Expected: No poll is voted for. Error details shown in the status message. Status bar remains the same.
+
+=== Viewing results of polls
+
+. Viewing results of polls as an `Exco` member
+
+.. Prerequisites: Login as `Exco member`, there are polls in the poll list and polls don't display results.
+.. Test case: `viewresults` +
+   Expected: Results of polls shown in poll list. View results success shown in status message. Timestamp in the status bar is updated.
+
+. Viewing results of polls as a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and there are polls in the poll list.
+.. Test case: `viewresults` +
+   Expected: No results are shown in poll list. Command requires Exco-member shown in status message. Status bar remains the same.
+
+=== Hiding results of polls
+
+. Hiding results of polls as an `Exco` member
+
+.. Prerequisites: Login as `Exco member` and there are polls in the poll list and polls display results.
+.. Test case: `hideresults` +
+   Expected: Results of polls hidden in poll list. Hide results success shown in status message. Timestamp in the status bar is updated.
+
+. Hiding results of polls as a non-`Exco` member
+
+.. Prerequisites: Login as a non-`Exco` member and there are polls in the poll list.
+.. Test case: `vote 1 1` +
+   Expected: No results are shown in poll list. Command requires Exco-member shown in status message. Status bar remains the same.
+
+=== Compressing member cards
+
+. Compressing members cards when they are decompressed
+
+.. Prerequisites: Login and membercards are decompressed
+.. Test case: `compress` +
+   Expected: Member cards become compressed. Compress success shown in status message. Timestamp in the status bar is updated.
+
+. Compressing members cards when they are already compressed
+
+.. Prerequisites: Login and membercards are compressed
+.. Test case: `compress` +
+   Expected: Member cards remain compressed. Compress success shown in status message. Timestamp in the status bar is updated.
+
+=== Decompressing member cards
+
+. Decompressing members cards when they are compressed
+
+.. Prerequisites: Login and membercards are decompressed
+.. Test case: `decompress` +
+   Expected: Member cards become decompressed. Decompress success shown in status message. Timestamp in the status bar is updated.
+
+. Decompressing members cards when they are already compressed
+
+.. Prerequisites: Login and membercards are decompressed
+.. Test case: `compress` +
+   Expected: Member cards remain decompressed. Decompress success shown in status message. Timestamp in the status bar is updated.
+
+=== Finding members
+
+. Find by specified field
+
+.. Prerequisites: Login and there are more than 5 members in the application
+.. Test case: `find n/John` +
+   Expected: Member list filtered to members with name containing John. Number of members found shown in status message. Timestamp in the status bar is updated.
+.. Other find commands to try: `find PREFIX` (where PREFIX refers to the prefix of the field to narrow down the search. Possible prefixes defined in UserGuide.adoc) +
+   Expected: Find command will narrow down search by the specified field given by PREFIX
+
+. Find by all fields
+
+.. Prerequisites: Login and there are more than 5 members in the application
+.. Test case: `find lala` +
+   Expected: Member list filtered to members with fields containing lala. Number of members found shown in status message. Timestamp in the status bar is updated.

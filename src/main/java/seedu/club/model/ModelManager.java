@@ -156,22 +156,24 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author MuhdNurKamal
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+        requireNonNull(poll);
         clubBook.addPoll(poll);
         updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
     @Override
-    public void voteInPoll(Poll poll, Index answerIndex)
+    public String voteInPoll(Poll poll, Index answerIndex)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         requireAllNonNull(poll, answerIndex);
-
-        clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
+        String voteDetails = clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
         indicateClubBookChanged();
+        return voteDetails;
     }
 
     @Override
     public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+        requireNonNull(target);
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
