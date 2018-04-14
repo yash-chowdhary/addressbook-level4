@@ -790,11 +790,12 @@ The following code snippet shows the implementation:
 
 [source,java]
 @Override
-public void voteInPoll(Poll poll, Index answerIndex)
+public String voteInPoll(Poll poll, Index answerIndex)
         throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
     requireAllNonNull(poll, answerIndex);
-    clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
+    String voteDetails = clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
     indicateClubBookChanged();
+    return voteDetails;
 }
 
 After successful execution, the voteCount of the answer in the poll will increment by 1. If the user is not an `Exco` member

@@ -160,11 +160,11 @@ public class ImportCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
-
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) throws
+        public String voteInPoll(Poll poll, Index answerIndex) throws
                 PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
             fail("This method should not be called.");
+            return null;
         }
 
         @Override
