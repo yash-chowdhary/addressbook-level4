@@ -108,6 +108,67 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
 ====
+// tag::SignUp[]
+=== Signing up a member: `signup` (since v1.4)
+Signs up a member to Club Connect. +
+Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
+Aliases: `register`, `enroll` +
+[TIP]
+A member can have any number of tags (including 0).
+
+****
+* You must not specify a group while signing up.
+* The member who signed up will be automatically be added to a group named exco.
+* You can only sign-up once.
+* You must use the credentials of the signed-up member to continue using Club Connect.
+****
+
+[NOTE]
+Refer to `login` command documentation for user credentials.
+
+Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
+// end::SignUp[]
+
+// tag::LogIn[]
+=== Logging in to the application: `login` (Since v1.3)
+Logs in a member to Club Connect. +
+Format: `login u/USERNAME pw/PASSWORD` +
+Alias: `signin`
+
+Example: `login u/A0123456H pw/password`
+
+* Use your `MATRIC NUMBER` as your username.
+* The default password is `password`. We advise you to change your password using the `changepass` command once you've logged in.
+// end::LogIn[]
+
+// tag::ChangePass[]
+=== Changing password : `changepass` (Since v1.4)
+
+Changes your password, if you are logged in.
+
+Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
+Alias: `changepw`
+
+****
+* Members are only able to change their own password.
+* Exco members can change the password of any member. The member is indicated by their username.
+****
+
+Examples:
+
+* `changepass u/A0123456H pw/password npw/pword` +
+Changes the password of the member with username `A0123456H` to `pword`.
+* `changepass u/A1234567H pw/password npw/brandnewpassword` +
+Changes the password of the member with username `A1234567H` to `brandnewpassword`.
+// end::ChangePass[]
+
+// tag::LogOut[]
+=== Logging out of the application : `logout` (Since v1.4)
+
+Logouts out the user from Club Connect. +
+Format: `logout` +
+Alias: `signout`
+// end::LogOut[]
 
 // tag::add[]
 === Adding a member: `add`
@@ -234,25 +295,6 @@ Changes the assignee of the 1st task to `A0123456H` in the task listing.
 * `assignee 3 m/A6656789H` +
 Changes the assignee of the 3rd task to `A6656789H` in the task listing.
 // end::changeassignee[]
-
-=== Changing password : `changepass` (Since v1.4)
-
-Changes your password, if you are logged in.
-
-Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
-Alias: `changepw`
-
-****
-* Members are only able to change their own password.
-* Exco members can change the password of any member. The member is indicated by their username.
-****
-
-Examples:
-
-* `changepass u/A0123456H pw/password npw/pword` +
-Changes the password of the member with username `A0123456H` to `pword`.
-* `changepass u/A1234567H pw/password npw/brandnewpassword` +
-Changes the password of the member with username `A1234567H` to `brandnewpassword`.
 
 // tag::changepic[]
 === Changing your profile photo : `changepic` (Since v1.2)
@@ -648,22 +690,6 @@ Shows a list of all members in Club Connect. +
 Format: `list` +
 Alias: `l`
 
-=== Logging in to the application: `login` (Since v1.3)
-Logs in a member to Club Connect. +
-Format: `login u/USERNAME pw/PASSWORD` +
-Alias: `signin`
-
-Example: `login u/A0123456H pw/password`
-
-* Use your `MATRIC NUMBER` as your username.
-* The default password is `password`. We advise you to change your password using the `changepass` command once you've logged in.
-
-=== Logging out of the application : `logout` (Since v1.4)
-
-Logouts out the user from Club Connect. +
-Format: `logout` +
-Alias: `signout`
-
 === Redoing the previously undone command : `redo`
 
 Reverses the most recent `undo` command. +
@@ -721,6 +747,7 @@ Aliases: `rmpic`, `defaultpic`, `delpic`
 
 // end::removepic[]
 
+// tag::select[]
 === Selecting a member : `select` (since v1.5rc)
 
 Selects the member identified by the index number used in the most recent member listing. +
@@ -741,6 +768,7 @@ Selects the 2nd member in Club Connect.
 * `find Betsy` +
 `s 1` +
 Selects the 1st member in the results of the `find` command.
+// end::select[]
 
 // tag::viewresults[]
 === Viewing results of polls : `viewresults` (Since v1.4)
@@ -759,25 +787,6 @@ Alias: `viewres`
 [IMPORTANT]
 This command is for `Exco` members only.
 // end::viewresults[]
-
-=== Signing up a member: `signup` (since v1.4)
-Signs up a member to Club Connect. +
-Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
-Aliases: `register`, `enroll` +
-[TIP]
-A member can have any number of tags (including 0).
-
-****
-* You must not specify a group while signing up.
-* The member who signed up will be automatically be added to a group named exco.
-* You can only sign-up once.
-* You must use the credentials of the signed-up member to continue using Club Connect.
-****
-
-[NOTE]
-Refer to `login` command documentation for user credentials.
-
-Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
 
 === Undoing previous command : `undo`
 
