@@ -997,13 +997,13 @@ Figure 5 shows some examples of invalid entries with the corresponding reasons i
 +
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
-image::invalid_CSV_format.png[height="300"]
+image::invalid_CSV_format.png[height="150"]
 
-* *Select UI* +
-In order to get the intended UI, ensure the following conditions are met.
+* *Member Profile* +
+In order for the member profile to look as intended when a member is selected using the `select` command, ensure that:
 
-** Names of selected member cannot be more than 36 characters.
-** Tags of selected member cannot be more than 7.
+** The name of selected member does not exceed the width of the panel.
+** The tags of selected member can be displayed in one line.
 // end::csv-data-format[]
 
 // end::tips[]
