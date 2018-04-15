@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
@@ -51,25 +50,6 @@ public class DeleteTagCommand extends UndoableCommand {
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
         }
-    }
-
-    @Override
-    protected void preprocessUndoableCommand() throws CommandException {
-        requireToSignUp();
-        requireToLogIn();
-        requireExcoLogIn();
-        List<Tag> lastShownList = model.getFilteredTagList();
-
-        if (!getMasterTagList().contains(tagToDelete)) {
-            throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
-        }
-
-        int targetIndex = lastShownList.indexOf(tagToDelete);
-        tagToDelete = lastShownList.get(targetIndex);
-    }
-
-    private List<Tag> getMasterTagList() {
-        return new ArrayList<>(model.getClubBook().getTagList());
     }
 
     @Override

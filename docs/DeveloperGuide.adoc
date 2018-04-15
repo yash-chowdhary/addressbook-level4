@@ -909,15 +909,46 @@ _Figure 51. Sequence Diagram for delete a group from `Club Connect`._
 // tag::import[]
 === Importing Members
 ==== Current Implementation
-Lorem ipsum dolor sit amet
 
+==== Design Considerations
+
+===== Aspect: Implementation of `ImportCommand`
+
+* **Alternative 1 (current choice)**: Implement parser for CSV files ourselves
+** Pros: Greater control over what the format in the file to be imported from should be
+** Cons: Harder to implement, less flexible in terms of how data can be stored in the file as the data values are not binded to tags
+
+* **Alternative 2**: Use existing libraries (such as http://opencsv.sourceforge.net/[OpenCSV] and
+https://github.com/FasterXML/jackson-dataformats-text/tree/master/csv[Jackson])
+** Pros: More flexible in terms of how the data can be stored in the import file
+** Cons: Security issues or bugs in the external library cannot be fixed, licensing issues, difficult to use due to poor documentation
+
+===== Aspect: Input file format
+
+* **Alternative 1 (current choice)**: Import from a CSV file
+** Pros: Easier for users to create and modify their data in a CSV file
+** Cons: Implementation becomes more complex and may become less robust as support for parsing data from CSV files has to be added.
+
+* **Alternative 2**: Import from a XML file
+** Pros: Easier to implement and parse data, as the code already supports the reading of data from XML format
+** Cons: Harder for non-technical users to create and modify their data in a XML file
 // end::import[]
 
 // tag::export[]
 === Exporting Members
 ==== Current Implementation
-Lorem ipsum dolor sit amet
 
+==== Design Considerations
+
+===== Aspect: Output file format
+
+* **Alternative 1 (current choice)**: Export to a CSV file
+** Pros: More user-friendly in terms of understandability, generated file is compatible with the `import` command
+** Cons: Harder to implement as support for converting data of `Member` to CSV format needs to be added
+
+* **Alternative 2**: Export to a XML file
+** Pros: Easier to implement and as the code already supports the writing of data in XML format
+** Cons: Raw file provides a less intuitive view of data, generated file is not compatible with the `import` command
 // end::export[]
 
 // tag::profilephoto[]
@@ -994,24 +1025,24 @@ The logged in member's details are then updated to include this new profile phot
 
 ===== Aspect: Implementation of `ChangeProfilePhotoCommand`
 
-* **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo.
-** Pros: Makes intuitive sense, easy to implement.
-** Cons: There is no way for Exco members to ensure that members have appropriate profile photos.
+* **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo
+** Pros: Easy to implement, makes intuitive sense
+** Cons: There is no way for Exco members to ensure that members have appropriate profile photos
 
-* **Alternative 2**: Exco members can change any member's profile photo.
-** Pros: Gives Exco members a way to exercise control over members' profile photos.
-** Cons: Implementation becomes more complicated.
+* **Alternative 2**: Exco members can change any member's profile photo
+** Pros: Exco members have the ability to exercise control over members' profile photos
+** Cons: Implementation becomes more complicated
 
 ===== Aspect: Source files of profile photos
 
-* **Alternative 1 (current choice)**: Make a copy the source image provided to the applications resources.
-** Pros: Makes application portable and non-dependent on the rest of the system.
-   Members can delete the original file from the computer, without affecting the Club Connect Application.
-** Cons: Changes made to the original source images are not reflected in the application.
+* **Alternative 1 (current choice)**: Make a copy the source image provided to the applications resources
+** Pros: Application becomes portable and independent from the rest of the system.
+   Members can delete the original file from the computer, without affecting the Club Connect Application
+** Cons: Changes made to the original source images are not reflected in the application
 
-* **Alternative 2**: Always read the profile photo from the file path provided.
-** Pros: Changes made in the source image are reflected in the application.
-** Cons: Application becomes highly dependent on the system, in terms of profile photos.
+* **Alternative 2**: Always read the profile photo from the file path provided
+** Pros: Changes made in the source image are reflected in the application
+** Cons: Application becomes highly dependent on the system, in terms of profile photos
 // end::profilephoto[]
 
 // tag::compressdecompress[]
@@ -2262,7 +2293,7 @@ Expected: Similar to previous.
 
 .. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
 .. Test case: `import C:/Users/John/Desktop/correctly_formatted_data.csv` +
-   Expected: All members who have valid entries and do not have the same matriculation member of any member in Club Connect
+   Expected: All members in the file `C:/Users/John/Desktop/correctly_formatted_data.csv` who have valid entries and do not share the same matriculation member with any member in Club Connect
    are added to `Club Members`. The number of members imported is shown in the status message. Timestamp in the status bar is updated.
 .. Test case: `import C:/Users/John/Desktop/data_in_incorrect_format.csv` +
    Expected: No members are added to Club Connect. Error details are shown in the status message. Timestamp in the status bar is updated.
@@ -2358,7 +2389,7 @@ Expected: Similar to previous.
  shown in the status message. Timestamp in the status bar is updated.
 .. Test case: `deletetag t/This-does-not-exist` +
    Expected: No tag is deleted as the tag does not exist. Error details are shown in the status message. Status bar remains the same.
-.. Incorrect delete tag commands to try: `deletetag`, `deletegroup t/invalid format tag`
+.. Incorrect delete tag commands to try: `deletetag`, `deletetag t/invalid format tag`
    Expected: No tag is deleted as the tag name format is invalid. Error details are shown in the status message. Status bar remains the same.
 
 . Deleting a tag as a non-`Exco` member
@@ -2368,6 +2399,6 @@ Expected: Similar to previous.
    Expected: No tags are deleted from members. Command requires Exco-member shown in status message. Status bar remains the same.
 .. Test case: `deletetag t/This-does-not-exist` +
    Expected: Similar to previous.
-.. Incorrect delete tag commands to try: `deletetag`, `deletegroup t/invalid format tag`
-   Expected: No tag is deleted as the tag name format is invalid. Error details are shown in the status message. Status bar remains the same.
+.. Incorrect delete tag commands to try: `deletetag`, `deletetag t/invalid format tag`
+   Expected: No tag is deleted as the tag name format is invalid. Relevant error details are shown in the status message. Status bar remains the same.
 // end::ap-manual-testing[]
