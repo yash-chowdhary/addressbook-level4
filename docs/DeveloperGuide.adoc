@@ -406,6 +406,91 @@ Furthermore, the "Single Responsibility" and "Separation of Concerns" principles
 
 
 
+// tag::AccountManagementTag[]
+=== Account Management
+Account Management are authentication which members can store unique data into, logs into their own account to modify their account details and also start the Club Connect by Signing up the first user.
+
+==== Current Implementation
+Account Management mechanism is facilitated by several command classes in Club Connect.
+
+===== Signing up
+`signup` mechanism is fascilitated by the `SignUpCommand` class.
+It allows the setting up of Club Connect.
+
+[NOTE]
+SignUpCommand can only be executed once. Only can be executed again after clearing Club Connect.
+
+The `SignUpCommand` extends for `Command`. It is not an undoable command.
+Figure 19 (shown below) depicts the UML representation of the `SignUpCommand`.
+
+image::SignUpCommandUML.png[width="200"]
+_Figure 19. UML Diagram of `SignUpCommand`._
+
+Parsing of command is performed by `SignUpCommandParser`, which returns a `SignUpCommand` object after parsing Name, Phone, Email, Matric Number, [Tags].
+Figure 20 below shows the sequence diagram of the `SignUpCommandParser`.
+
+image::SDforSignUpCommand.png[width="800"]
+_Figure 20. Sequence Diagram for the parsing of `SignUpCommandParser.`_
+
+Figure 21 below shows the high-level sequence diagram of the command execution.
+
+image::SDSignUp.png[widit="800"]
+_Figure 21. High-Level Sequence diagram of signing up a member._
+
+===== Logging in
+`login` mechanism is facilitated by the `LogInCommand` class.
+It allows `Exco` members to use `Exco` privileges in the Club Book. It also allows both `Members` and `Exco` to have their own account.
+The `LogInCommand` consists of the following fields:
+
+* Username - Username of the member.
+* Password - Password of the member.
+
+The `LogInCommand` extends for `Command`. It is not an undoable command.
+Figure 22 (shown below) depicts the UML representation of the `LogInCommand`.
+
+image::LogInCommandUML.png[width="350"]
+_Figure 22. UML Diagram of `LogInCommand`._
+
+Parsing of command is performed by `LogInCommandParser`, which returns a `LogInCommand` object after parsing Username and Password object.
+Figure 23 below shows the sequence diagram of the `LogInCommandParser`.
+
+image::SDforLogInCommand.png[width="800"]
+_Figure 23. Sequence diagram of `LogInCommandParser`._
+
+Figure 24 below shows the high-level sequence diagram of the command execution.
+
+image::SDLogIn.png[width="800"]
+_Figure 24. High-Level Sequence diagram of logging in a member._
+
+==== Changing Password
+`changepass` mechanism is facilitated by the `ChangePasswordCommand` class.
+It allows `Members` to change their current password to a new password.
+The `ChangePasswordCommand` consist fo the following fields:
+
+* Username - Username of the member.
+* Password - Current Password of the member.
+* NewPassword - New Password given by the member.
+
+`ChangePasswordCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command.
+Figure 25 (shown below) depicts the UML representation of the `ChangePasswordCommand`.
+
+image::ChangePasswordUML.png[width="400"]
+_Figure 25. UML Diagram of `ChangePasswordCommand`.
+
+Parsing of command is performed by `ChangePasswordCommandParser`, which returns a `ChangePassword` object after parsing Username, Password and Newpassword.
+Figure 26 below shows the sequence diagram of the `ChangePasswordCommandParser`.
+
+image::SDforChangePasswordCommand.png[width="800"]
+_Figure 26. Sequence diagram of `ChangePasswordCommmandParser`.
+
+Figure 27 below shows the high-level sequence diagram of the command execution.
+
+image::SDChangePassword.png[width="800"]
+_Figure 27. High-Level Sequence diagam of changing the password of a member
+// end::AccountManagementTag[]
+
+
+
 // tag::email[]
 === Email Mechanism
 ==== Current Implementation

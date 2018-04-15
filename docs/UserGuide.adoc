@@ -112,6 +112,67 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
 ====
+// tag::SignUp[]
+=== Signing up a member: `signup` (since v1.4)
+Signs up a member to Club Connect. +
+Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
+Aliases: `register`, `enroll` +
+[TIP]
+A member can have any number of tags (including 0).
+
+****
+* You must not specify a group while signing up.
+* The member who signed up will be automatically be added to a group named exco.
+* You can only sign-up once.
+* You must use the credentials of the signed-up member to continue using Club Connect.
+****
+
+[NOTE]
+Refer to `login` command documentation for user credentials.
+
+Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
+// end::SignUp[]
+
+// tag::LogIn[]
+=== Logging in to the application: `login` (Since v1.3)
+Logs in a member to Club Connect. +
+Format: `login u/USERNAME pw/PASSWORD` +
+Alias: `signin`
+
+Example: `login u/A0123456H pw/password`
+
+* Use your `MATRIC NUMBER` as your username.
+* The default password is `password`. We advise you to change your password using the `changepass` command once you've logged in.
+// end::LogIn[]
+
+// tag::ChangePass[]
+=== Changing password : `changepass` (Since v1.4)
+
+Changes your password, if you are logged in.
+
+Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
+Alias: `changepw`
+
+****
+* Members are only able to change their own password.
+* Exco members can change the password of any member. The member is indicated by their username.
+****
+
+Examples:
+
+* `changepass u/A0123456H pw/password npw/pword` +
+Changes the password of the member with username `A0123456H` to `pword`.
+* `changepass u/A1234567H pw/password npw/brandnewpassword` +
+Changes the password of the member with username `A1234567H` to `brandnewpassword`.
+// end::ChangePass[]
+
+// tag::LogOut[]
+=== Logging out of the application : `logout` (Since v1.4)
+
+Logouts out the user from Club Connect. +
+Format: `logout` +
+Alias: `signout`
+// end::LogOut[]
 // end::valid-entries[]
 
 // tag::add[]
@@ -240,27 +301,9 @@ Changes the assignee of the 1st task to `A0123456H` in the task listing.
 Changes the assignee of the 3rd task to `A6656789H` in the task listing.
 // end::changeassignee[]
 
-=== Changing password : `changepass` (Since v1.4)
-
-Changes your password, if you are logged in.
-
-Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
-Alias: `changepw`
-
-****
-* Members are only able to change their own password.
-* Exco members can change the password of any member. The member is indicated by their username.
-****
-
-Examples:
-
-* `changepass u/A0123456H pw/password npw/pword` +
-Changes the password of the member with username `A0123456H` to `pword`.
-* `changepass u/A1234567H pw/password npw/brandnewpassword` +
-Changes the password of the member with username `A1234567H` to `brandnewpassword`.
-
 [[changepic]]
 // tag::changepic[]
+
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo. +
@@ -667,22 +710,6 @@ Shows a list of all members in Club Connect. +
 Format: `list` +
 Alias: `l`
 
-=== Logging in to the application: `login` (Since v1.3)
-Logs in a member to Club Connect. +
-Format: `login u/USERNAME pw/PASSWORD` +
-Alias: `signin`
-
-Example: `login u/A0123456H pw/password`
-
-* Use your `MATRIC NUMBER` as your username.
-* The default password is `password`. We advise you to change your password using the `changepass` command once you've logged in.
-
-=== Logging out of the application : `logout` (Since v1.4)
-
-Logouts out the user from Club Connect. +
-Format: `logout` +
-Alias: `signout`
-
 === Redoing the previously undone command : `redo`
 
 Reverses the most recent `undo` command. +
@@ -746,6 +773,7 @@ This command cannot be undone. You will have to set your profile photo by using 
 If you have not set a profile photo, your profile photo will remain as the default photo.
 // end::removepic[]
 
+// tag::select[]
 === Selecting a member : `select` (since v1.5rc)
 
 Selects the member identified by the index number used in the most recent member listing. +
@@ -758,6 +786,9 @@ Aliases: `s`, `show`
 * The index *must be a positive integer* `1, 2, 3, ...`
 ****
 
+[TIP]
+In order to get the UI to look as intended, check out <<Tips>>.
+
 Examples:
 
 * `list` +
@@ -766,6 +797,7 @@ Selects the 2nd member in Club Connect.
 * `find Betsy` +
 `s 1` +
 Selects the 1st member in the results of the `find` command.
+// end::select[]
 
 // tag::viewresults[]
 === Viewing results of polls : `viewresults` (Since v1.4)
@@ -784,25 +816,6 @@ Alias: `viewres`
 [IMPORTANT]
 This command is for `Exco` members only.
 // end::viewresults[]
-
-=== Signing up a member: `signup` (since v1.4)
-Signs up a member to Club Connect. +
-Format: `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
-Aliases: `register`, `enroll` +
-[TIP]
-A member can have any number of tags (including 0).
-
-****
-* You must not specify a group while signing up.
-* The member who signed up will be automatically be added to a group named exco.
-* You can only sign-up once.
-* You must use the credentials of the signed-up member to continue using Club Connect.
-****
-
-[NOTE]
-Refer to `login` command documentation for user credentials.
-
-Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
 
 === Undoing previous command : `undo`
 
@@ -1000,7 +1013,13 @@ Figure 5 shows some examples of invalid entries with the corresponding reasons i
 +
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
-image::invalid_CSV_format.png[height="300"]
+image::invalid_CSV_format.png[height="150"]
+
+* *Member Profile* +
+In order for the member profile to look as intended when a member is selected using the `select` command, ensure that:
+
+** The name of selected member does not exceed the width of the panel.
+** The tags of selected member can be displayed in one line.
 // end::csv-data-format[]
 
 // end::tips[]
