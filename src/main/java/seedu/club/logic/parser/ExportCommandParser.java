@@ -1,6 +1,8 @@
 //@@author amrut-prabhu
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +27,8 @@ public class ExportCommandParser implements Parser<ExportCommand> {
             File exportFile = ParserUtil.parseExportPath(args);
             return new ExportCommand(exportFile);
         } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage());
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                    + ExportCommand.MESSAGE_USAGE));
         } catch (IOException ioe) {
             throw new ParseException(String.format(MESSAGE_FILE_CREATION_ERROR, args));
         }

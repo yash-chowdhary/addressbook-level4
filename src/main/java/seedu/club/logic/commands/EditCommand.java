@@ -7,7 +7,6 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.club.model.Model.PREDICATE_SHOW_ALL_MEMBERS;
 import static seedu.club.model.group.Group.GROUP_EXCO;
 
 import java.util.ArrayList;
@@ -106,8 +105,8 @@ public class EditCommand extends UndoableCommand {
         } catch (DuplicateTaskException dte) {
             throw new CommandException(MESSAGE_DUPLICATE_TASK);
         }
-        model.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
-        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToEdit, editedMember, false, null, false));
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(memberToEdit, editedMember,
+                false, null, false));
         EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
         if (!(GROUP_EXCO.equalsIgnoreCase(editedMember.getGroup().toString()))) {
             EventsCenter.getInstance().post(new HideResultsRequestEvent());

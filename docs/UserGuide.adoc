@@ -10,6 +10,7 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
+:important-caption: :warning:
 :format-caption:
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-W15-B4/main
@@ -29,6 +30,7 @@ Interested? Continue on to <<Quick Start>> to get started.
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
+⚠   : Important +
   💡  : Tip +
 `code`: Commands that can be entered into *Club Connect* or Technical keywords +
 kbd:[key]: Button on your keyboard +
@@ -90,7 +92,9 @@ This is how you should interpret the commands in this user guide.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 ====
 
+// tag::valid-entries[]
 Here are some things to take note of before you begin using Club Connect.
+[[constraints]]
 ====
 *Valid Entries*
 
@@ -169,6 +173,7 @@ Logouts out the user from Club Connect. +
 Format: `logout` +
 Alias: `signout`
 // end::LogOut[]
+// end::valid-entries[]
 
 // tag::add[]
 === Adding a member: `add`
@@ -205,10 +210,10 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+* `addpoll q/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
 Creates a poll asking members to vote for which day Free Ice-Cream Day should be held on.
 The options to choose from are `Monday`, `Wednesday` and `Friday`.
-* `addpoll p/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+* `addpoll q/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
 Creates a poll asking members to vote for where the annual sports meeting should be held.
 The answers to choose from are `I-Cube` and `LT7`.
 
@@ -236,9 +241,9 @@ Duplicate tasks are not allowed.
 
 Examples:
 
-* `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00` +
+* `addtask desc/Book PGP Function Room 3 d/02/06/2018 ti/19:00` +
 Adds a task with description `Book PGP Function Room 3` due on `02/06/2018` at `19:00`.
-* `addtask desc/Buy Food d/03.04.2018 ti/15:00` +
+* `addtask desc/Buy Food d/03.06.2018 ti/15:00` +
 Adds a task with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::addtask[]
 
@@ -263,9 +268,9 @@ This command assigns the task to the member based on the entered `MATRIC_NUMBER`
 
 Examples:
 
-* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 m/A1234567H` +
+* `assigntask desc/Book PGP Function Room 3 d/02/06/2018 ti/19:00 m/A1234567H` +
 Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on `02/06/2018` at `19:00`.
-* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 m/A1122334K` +
+* `assigntask desc/Buy Food d/03.06.2018 ti/15:00 m/A1122334K` +
 Assigns a task to `A1122334K` with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::assigntask[]
 
@@ -296,6 +301,29 @@ Changes the assignee of the 1st task to `A0123456H` in the task listing.
 Changes the assignee of the 3rd task to `A6656789H` in the task listing.
 // end::changeassignee[]
 
+=======
+=== Changing password : `changepass` (Since v1.4)
+
+Changes your password, if you are logged in.
+
+Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
+Alias: `changepw`
+
+****
+* Members are only able to change their own password.
+* Exco members can change the password of any member. The member is indicated by their username.
+****
+
+Examples:
+
+* `changepass u/A0123456H pw/password npw/pword` +
+Changes the password of the member with username `A0123456H` to `pword`.
+* `changepass u/A1234567H pw/password npw/brandnewpassword` +
+Changes the password of the member with username `A1234567H` to `brandnewpassword`.
+
+[[changepic]]
+
+
 // tag::changepic[]
 === Changing your profile photo : `changepic` (Since v1.2)
 
@@ -305,16 +333,18 @@ Aliases: `pic`, `profilepic`
 
 ****
 * PHOTO_PATH must be an absolute path to the photo.
-* This command is only guaranteed to work for ,jpeg, .jpg, and .png files.
+* This command is only guaranteed to work for JPG (.jpg), and PNG (.png) files.
+* Since `changepic` is not an undoable command, you need to use the <<removepic,`removepic`>> command to reset your profile photo back to the default image.
 ****
 
 [NOTE]
-You may face a longer delay when setting your profile photo to an image whose file size is above 3 MB.
+Profile photos are displayed with a 4:3 height to width ratio in Club Connect.
+
+[NOTE]
+It may take longer to set your profile photo to an image whose file size is above 1 MB.
 
 [TIP]
-To get the absolute path, right-click on the photo file and select `Properties`.
-The `Location` field specifies the absolute location of the photo.
-Finally, add the complete name of the photo file to this location.
+To get the absolute path to the photo, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
@@ -334,7 +364,7 @@ Aliases: `cts`, `changestatus`, `status`
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
 * The `STATUS` can be one of ```Yet To Begin```, ```In Progress```, and ```Completed```.
-* You can only change the status of a task that you have been assigned.
+* You can only change the status of a task that you have been assigned or a task that you have assigned.
 * Club Connect detects if there is no change in the `STATUS`.
 ****
 
@@ -356,7 +386,7 @@ Changes the status of the 3rd task to `Completed` in the task listing.
 
 Clears all entries from Club Connect. +
 Format A: `clear` +
-Format B: `clear LETTER`
+Format B: `clear LETTER` +
 Aliases: `c`, `erase`
 
 ****
@@ -364,18 +394,20 @@ Aliases: `c`, `erase`
 * A confirmation message will be shown.
 * To confirm clearing all entries from Club Connect, enter Format B into the command line.
 * Format B has to be executed immediately after executing Format A.
-* LETTER must be equals to "Y" to confirm clearing data from Club Connect
-* Any other LETTER will cancell the execution
+* `LETTER` must be equals to "Y" (case-insensitive) to confirm clearing data from Club Connect
+* Any other `LETTER` will cancel the execution
 ****
 [IMPORTANT]
 This command is for `Exco` members only.
 
 Examples:
 
-* `Clear` -> `Clear Y`
-Execute the clear command, and confirming it.
-* `Clear` -> `Clear N`
-Execute the clear command, and cancelling it.
+* `Clear` +
+`Clear Y` +
+Executes the clear command, and confirms it.
+* `Clear` +
+`Clear N` +
+Executes the clear command, and aborts it.
 
 // tag::compressdecompress[]
 === Compressing member details : `compress` (Since v1.2)
@@ -383,7 +415,6 @@ Execute the clear command, and cancelling it.
 Compresses the details of members in the member list +
 Format: `compress` +
 Alias: `comp`
-
 
 ****
 * No changes if member details are already compressed
@@ -463,8 +494,8 @@ Aliases: `rmtag`, `deltag`
 This command is for `Exco` members only.
 
 ****
-* Deletes the specified tag from Club Connect.
 * Deletes the specified tag for all members who are tagged with it.
+* Deletes the specified tag from Club Connect.
 ****
 
 Examples:
@@ -489,7 +520,7 @@ Aliases: `deltask`, `rmtask`
 ****
 
 [NOTE]
-Only Members who are either the `Assignor` or the `Assignee` can delete their respective tasks.
+Only Members who are the `Assignor` can delete their respective tasks.
 
 Examples:
 
@@ -570,22 +601,25 @@ Format: 'export CSV_FILE_PATH` +
 Alias: `exp`
 
 ****
-* Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members added to Club Connect.
+* Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members in Club Connect to a CSV file.
 * CSV_FILE_PATH must be an absolute path to the CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
-* If the CSV file already exists, then the member data is added to the end of the file (i.e. it does not overwrite the existing file).
+* If the CSV file already exists, then the data in the file is overwritten.
 ****
 
 [NOTE]
-You can import the generated CSV file on Microsoft Excel to get an even better view of the data.
+You can import the generated CSV file from Microsoft Excel to get an even better view of the data.
+
+[TIP]
+TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
 * `export C:/Users/John Doe/Desktop/members.csv` +
-Exports all members in Club Connect to "members.csv" file on `John Doe` 's Desktop.
+Exports all members in Club Connect to the "members.csv" file on `John Doe` 's Desktop.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
-Exports all members in Club Connect to "clubbook.csv" file on `Jane Doe` 's Desktop.
+Exports all members in Club Connect to the "clubbook.csv" file on `Jane Doe` 's Desktop.
 // end::export[]
 
 // tag::find[]
@@ -602,11 +636,9 @@ m/ = `MATRIC NUMBER` +
 g/ = `GROUP` +
 t/ = `TAG` +
 
-[NOTE]
-If you wish to find by a `PREFIX`, enter a space after the `PREFIX` while typing the command. This enables you to search for multiple keywords without having to enter the `PREFIX`.
-
 ****
 * An additional `PREFIX` can be stated after `find` to narrow search to a particular field. e.g e/ for email
+* A maximum of 1 `PREFIX` should be stated. Additional prefixes are considered as keywords
 * If no `PREFIX` is stated, all member fields will be searched.
 * The search is case insensitive. e.g `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
@@ -616,14 +648,15 @@ If you wish to find by a `PREFIX`, enter a space after the `PREFIX` while typing
 
 Examples:
 
-* `find John` +
-Returns `john` and `John Doe`.
-* `find Betsy Tim John` +
+* `find n/Betsy Tim John` +
 Returns all members having names containing `Betsy`, `Tim`, or `John`.
-* `find g/ logistics` +
+* `find g/logistics` +
 Returns all members in the logistics `group`
-* `find p/ 123` +
+* `find p/123` +
 Returns any member having phone number containing 123.
+* `find 9119` +
+Returns all members containing `9119` in any field (e.g. phone number or email)
+
 // end::find[]
 
 === Viewing help : `help`
@@ -659,21 +692,29 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 // tag::import[]
 === Importing members into Club Connect: `import` (Since v1.4)
 
-Imports the details of all members in the specified CSV file into Club Connect.
+Imports the details of all valid members in the specified CSV file into Club Connect.
 Format: 'import CSV_FILE_PATH` +
 Alias: `imp`
 
 ****
 * CSV_FILE_PATH must be an absolute path to the CSV file.
 * The CSV file should organise its data in the format required by this application (see <<csv-data-format, CSV file format>>).
+* Members who do have <<constraints,valid values>> or are duplicates of members already in Club Connect
+  (i.e. they have the same matriculation number) are not imported from the file.
 * In order for this command to work correctly, ensure that none of the data values contain double quoutes (").
 ****
 
-[NOTE]
-You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving.
-
 [IMPORTANT]
 This command is for `Exco` members only.
+
+[NOTE]
+You cannot overwrite existing members (i.e. you cannot edit details of members in Club Connect) by using the `import` command.
+
+[TIP]
+You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving the file.
+
+[TIP]
+TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
@@ -739,12 +780,18 @@ Deletes the `pr` group from Club Connect.
 // end::removegroup[]
 
 // tag::removepic[]
+[[removepic]]
 === Removing your profile photo : `removepic` (Since v1.5)
 
-Removes your profile photo and sets it back to the default photo. +
+Removes your profile photo and sets it back to Club Connect's default profile photo. +
 Format: `removepic` +
 Aliases: `rmpic`, `defaultpic`, `delpic`
 
+[NOTE]
+This command cannot be undone. You will have to set your profile photo by using the <<changepic,`changepic`>> command again.
+
+[NOTE]
+If you have not set a profile photo, your profile photo will remain as the default photo.
 // end::removepic[]
 
 // tag::select[]
@@ -929,9 +976,9 @@ Not satisfied with your productivity while using Club Connect?
 Can't remember the command names?
 Here are some tips and tricks:
 
-* *Transferring data to another computer* +
-Install the Club Connect app on the other computer.
-Then, overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
+* *Data transfer to another computer* +
+. Install the Club Connect app on the other computer.
+. Overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
 
 * *Alternative command names*
 If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
@@ -942,20 +989,41 @@ So, both commands shown below can be used change your profile picture to the "jo
 +
 `pic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
+[[absolute-path]]
+* *Absolute path of a file*
+To get the absolute path of a file on Windows, follow these steps:
+
+. Right-click on the file and select `Properties`. This will bring up a window containing the properties of the file.
+. Locate the path in the `General` section, next to the keywprd `Location`.
+. Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
+
+To get the absolute path of a file on MacOS, follow these steps:
+
+. Select the file and press kbd:[Command]+kbd:[I] to open the information window for it.
+. Locate the path in the `General` section, next to the keyword `Where`.
+. Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
+
 [[csv-data-format]]
+// tag::csv-data-format[]
 * *CSV format for `import`* +
-In order to successfully import data of members from the specified file, it has to follow the format shown in <<csv-format,Figure 3>>.
+In order to successfully import data of members from the specified file, it has to follow the format shown in Figure 4.
 +
-[[csv-format]]
 .Required format of data in the file
 image::CSV_format.png[height="350"]
 +
 The columns in the import file should be in the same order as shown in the figure above.
 All the tags of a member should be in a single cell, separated by commas (",").
-Also, to successfully import the data of a member, you have to make sure that their details conform to the constraints of the <<add-command,`add` command>>.
+Also, to successfully import the data of a member, you have to make sure that their details conform to the <<constraints>>.
+Figure 5 shows some examples of invalid entries with the corresponding reasons in red.
++
+[[invalid-csv-format]]
+.Invalid format of data in the file (reasons are shown in red)
+image::invalid_CSV_format.png[height="300"]
+// end::csv-data-format[]
 
 // end::tips[]
 
+// tag::v2.0[]
 == Coming in v2.0
 
 * *Encrypt data files* : `encrypt` +
@@ -971,4 +1039,4 @@ Tired of sending the same message to multiple members? The *Group Chat* feature 
 * *Submit anonymous feedback* : `feedback` +
 Not satisfied with certain aspects of the club? Afraid to speak up? +
 Fret not, Club Connect provides you with a platform to voice your opinions. And yes, we guarantee your anonymity.
-
+// end::v2.0[]
