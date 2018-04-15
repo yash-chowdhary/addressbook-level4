@@ -249,7 +249,7 @@ Adds a task with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::addtask[]
 
 // tag::assigntask[]
-=== Adding a task: `assigntask` (Since v1.4)
+=== Assigning a task: `assigntask` (Since v1.4)
 
 Adds a task to Club Connect and assigns it to a member. +
 Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME m/MATRIC_NUMBER` +
