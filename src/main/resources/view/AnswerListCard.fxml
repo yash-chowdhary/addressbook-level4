@@ -23,12 +23,12 @@
                 <Insets bottom="5" left="15" right="5" top="2" />
             </padding>
             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="65.0" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
-                <Label fx:id="choice" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true">
+                <Label fx:id="choice" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true">
                     <minWidth>
                         <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true" />
+                <Label fx:id="answerValue" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true" />
             </HBox>
          <VBox maxHeight="1.7976931348623157E308">
             <children>
