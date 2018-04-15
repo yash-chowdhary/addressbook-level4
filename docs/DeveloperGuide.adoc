@@ -133,7 +133,7 @@ image::Architecture.png[width="600"]
 _Figure 1. Architecture Diagram_
 
 
-`Main` has only one class called link:{repoURL}/src/main/java/seedu/club/MainApp.java[`MainApp`].
+`Main` is a component that has only one class called link:{repoURL}/src/main/java/seedu/club/MainApp.java[`MainApp`].
 It is responsible for the following:
 
 * At app launch: Initializes the components in the correct sequence and connects them up with each other.
@@ -182,7 +182,7 @@ _Figure 4. Component interactions for `delete 1` command (part 2)_
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them.
 This is an example of how this Event Driven approach helps us reduce direct coupling between components.
 
-The sections below give more details of each component.
+The sections below describe the four components in greater detail.
 
 [[Design-Ui]]
 === UI component
@@ -523,16 +523,16 @@ Emails can only be sent to members belonging to EITHER a Group OR a Tag.
 Club Connect currently doesn't support sending emails to members belonging to BOTH a Group and a Tag.
 
 The `EmailCommand` extends from `Command` and not from `UndoableCommand`, as it is not an undoable command.
-Refer to Figure 19 for the UML diagram.
+Refer to Figure 28 for the UML diagram.
 
 image::EmailCommandUML.png[width="500"]
-_Figure 19. EmailCommand UML Diagram_
+_Figure 28. EmailCommand UML Diagram_
 
 `EmailCommandParser` is responsible for parsing the `email` command. It returns a `EmailCommand` object after parsing `Client`, `Subject`, `Body`, `Group`, and `Tag`.
-Figure 20 depicts the sequence of parsing the command.
+Figure 29 depicts the sequence of parsing the command.
 
 image::SDforEmailCommandParser.png[width="600"]
-_Figure 20. Sequence Diagram for Email Command parsing_
+_Figure 29. Sequence Diagram for Email Command parsing_
 
 [NOTE]
 Since `Subject` and `Body` are optional fields, their default values are `EMPTY_SUBJECT_STRING` and `EMPTY_BODY_STRING` which store blank Strings.
@@ -546,10 +546,10 @@ The `EmailCommand#execute()` calls the following methods of `model`:
 . ```sendEmail()``` - takes in the recipient string, and an object each of `Client`, `Subject`, and `Body`.
 
 `EmailCommand#sendEmail()` raises an event `SendEmailRequestEvent`, which triggers the system's default browser to open the chosen mail client's 'Compose Message' page with all the relevant fields filled-in.
-Figure 21 depicts the high-level sequence of events that take place.
+Figure 30 depicts the high-level sequence of events that take place.
 
 image::SDforEmail.png[width="600"]
-_Figure 21. Sequence Diagram for Email Command_
+_Figure 30. Sequence Diagram for Email Command_
 
 
 The browser URL for composing the email is generated as follows:
@@ -585,54 +585,54 @@ The task-management mechanism is facilitated by several command classes in Club 
 
 Task-management commands require a member to be logged in (and thus by extension, an initial sign-up).
 
-Figure 22 below shows the UML diagram of the `Task` class.
+Figure 31 below shows the UML diagram of the `Task` class.
 
 image::TaskUML.png[width="500" align="center"]
-_Figure 22. Task UML Diagram_
+_Figure 31. Task UML Diagram_
 
 
 ===== Adding Tasks
 ---
 Adding Tasks is facilitated by the `AddTaskCommand`. When this command is invoked, it adds a task with the input `Description`, `Date`, and `Time`. The status of every newly created task is by default set to `Yet To Begin`. The `Assignor` and `Assignee` of the task is set to the `Matric Number` of the member who is currently logged into `Club Connect`.
 
-Figure 23 below shows the UML representation of `AddTaskCommand`.
+Figure 32 below shows the UML representation of `AddTaskCommand`.
 
 image::AddTaskCommandUML.png[width="150" align="center"]
-_Figure 23. UML diagram of `AddTaskCommand`._
+_Figure 32. UML diagram of `AddTaskCommand`._
 
-Figure 24 shows the flow of parsing an `AddTaskCommand` object:
+Figure 33 shows the flow of parsing an `AddTaskCommand` object:
 
 image::SDforAddTaskCommandParser.png[width="400" align="center"]
-_Figure 24. Sequence Diagram for `AddTaskCommand` parsing._
+_Figure 33. Sequence Diagram for `AddTaskCommand` parsing._
 
 
-Figure 25 depicts the high-level sequence of events that take place.
+Figure 34 depicts the high-level sequence of events that take place.
 
 image::SDforAddTask.png[width="400" align="center"]
-_Figure 25. Sequence Diagram for adding a task._
+_Figure 34. Sequence Diagram for adding a task._
 
 ===== Assigning Tasks
 ---
 
 Assigning tasks can be accomplished with the `AssignTaskCommand`. Tasks are assigned to members through the `Matric Number` attribute. +
 
-Figure 26 below shows the UML representation of `AssignTaskCommand`.
+Figure 35 below shows the UML representation of `AssignTaskCommand`.
 
 image::AssignTaskCommandUML.png[width="150" align="center"]
-_Figure 26. UML diagram of `AssignTaskCommand`._
+_Figure 35. UML diagram of `AssignTaskCommand`._
 
 The implementation of assigning tasks is similar to that of adding tasks. The only difference is that the Assignor is set to the `Matric Number` of the member who is currently logged in.
 
 The parsing of an `AssignTaskCommand` is performed by the `AssignTaskCommandParser`. +
-Figure 27 shows the flow of parsing an `AssignTaskCommand` object:
+Figure 36 shows the flow of parsing an `AssignTaskCommand` object:
 
 image::SDforAssignTaskCommandParser.png[width="400" align="center"]
-_Figure 27. Sequence Diagram for `AssignTaskCommand` parsing._
+_Figure 36. Sequence Diagram for `AssignTaskCommand` parsing._
 
-Figure 28 depicts the high-level sequence of events that take place.
+Figure 37 depicts the high-level sequence of events that take place.
 
 image::SDforAssignTask.png[width="400" align="center"]
-_Figure 28. Sequence Diagram for assigning a task._
+_Figure 37. Sequence Diagram for assigning a task._
 
 // end::tasks1[]
 
@@ -642,21 +642,21 @@ _Figure 28. Sequence Diagram for assigning a task._
 The 'DeleteTaskCommand` is used to delete a task. A task can only be deleted if the member who is currently logged in is either the `Assignor` or the `Assignee`. +
 The command object takes in the `INDEX` of the task to be deleted.
 
-Figure 29 below shows the UML representation of `DeleteTaskCommand`.
+Figure 38 below shows the UML representation of `DeleteTaskCommand`.
 
 image::DeleteTaskCommandUML.png[width="150" align="center"]
-_Figure 29. UML diagram of `DeleteTaskCommand`._
+_Figure 38. UML diagram of `DeleteTaskCommand`._
 
 `DeleteTaskCommandParser` is responsible for parsing the user input into a `DeleteTaskCommand` object. +
-Figure 30 illustrates the sequence in which the parsing is done.
+Figure 39 illustrates the sequence in which the parsing is done.
 
 image::SDforDeleteTaskCommandParser.png[width="400" align="center"]
-_Figure 30. Sequence Diagram for `DeleteTaskCommand` parsing._
+_Figure 39. Sequence Diagram for `DeleteTaskCommand` parsing._
 
-The high-level sequence of events is shown below in Figure 31.
+The high-level sequence of events is shown below in Figure 40.
 
 image::SDforDeleteTask.png[width="400" align="center"]
-_Figure 31. Sequence Diagram for deleting a task._
+_Figure 40. Sequence Diagram for deleting a task._
 // end::tasks-delete[]
 
 
@@ -666,37 +666,37 @@ _Figure 31. Sequence Diagram for deleting a task._
 
 The `ChangeAssigneeCommand` is used to change the `Assignee` of a task. +
 
-Figure 32 below shows the UML representation of `ChangeAssigneeCommand`.
+Figure 41 below shows the UML representation of `ChangeAssigneeCommand`.
 
 image::ChangeAssigneeCommandUML.png[width="150" align="center"]
-_Figure 32. UML Diagram of `ChangeAssigneeCommand`._
+_Figure 41. UML Diagram of `ChangeAssigneeCommand`._
 
 `ChangeAssigneeCommandParser` is responsible for parsing the `changeassignee` command. It returns a `ChangeAssigneeCommand` object after parsing the `INDEX` and the `Assignee`.
-Figure 33 shows the sequence diagram of the `ChangeAssigneeCommandParser`.
+Figure 42 shows the sequence diagram of the `ChangeAssigneeCommandParser`.
 
 image::SDforChangeAssigneeCommandParser.png[width="400" align="center"]
-_Figure 33. Sequence Diagram of `ChangeAssigneeCommandParser`._
+_Figure 42. Sequence Diagram of `ChangeAssigneeCommandParser`._
 
-Figure 34 below shows the high-level sequence diagram of the command execution.
+Figure 43 below shows the high-level sequence diagram of the command execution.
 
 image::SDforChangeAssignee.png[width="400" align="center"]
-_Figure 34. Sequence Diagram of changing the `Assignee` of a task._
+_Figure 43. Sequence Diagram of changing the `Assignee` of a task._
 
 ===== Changing Task Status
 ---
 
 Changing a task's status is made possible by the `ChangeTaskStatusCommand`. +
 
-Figure 35 below shows the UML representation of `ChangeTaskStatusCommand`.
+Figure 44 below shows the UML representation of `ChangeTaskStatusCommand`.
 
 image::ChangeTaskStatusCommandUML.png[width="150" align="center"]
-_Figure 35. UML Diagram of `ChangeTaskStatusCommand`._
+_Figure 44. UML Diagram of `ChangeTaskStatusCommand`._
 
 Parsing of the command is performed by `ChangeTaskStatusCommandParser`, which returns a `ChangeTaskStatusCommand` object. +
-Figure 36 below depicts the parsing of the `ChangeTaskStatusObject`.
+Figure 45 below depicts the parsing of the `ChangeTaskStatusObject`.
 
 image::SDforChangeTaskStatusCommandParser.png[width="400" align="center"]
-_Figure 36. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
+_Figure 45. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
 
 Figure 37 below describes the high-level sequence of events that take place.
 
