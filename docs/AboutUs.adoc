@@ -30,7 +30,7 @@ Responsibilities: In charge of UI Theme, Code Consistency and Project Management
 
 === Muhammad Nur Kamal Bin Mohammed Ariff
 image::muhdnurkamal.png[width="150", align="left"]
-{empty}[https://github.com/MuhdNurKamal[github]] [<<muhdnurkamal#, portfolio>>]
+{empty}[https://github.com/MuhdNurKamal[github]] [https://cs2103jan2018-w15-b4.github.io/main/team/MuhdNurKamal.html[portfolio]]
 
 Role: Developer +
 Responsibilities: In charge of Storage, Testing
@@ -39,7 +39,8 @@ Responsibilities: In charge of Storage, Testing
 
 === Song Weiyang
 image::th14thmusician.png[width="150", align="left"]
-{empty}[https://github.com/th14thmusician[github]] [<<songweiyan#, portfolio>>]
+{empty}[https://github.com/th14thmusician[github]] [https://cs2103jan2018-w15-b4.github.io/main/team/th14thmusician.html[portfolio]]
+
 
 Role: Developer +
 Responsibilities: In charge of UI, Integration
