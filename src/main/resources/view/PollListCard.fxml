@@ -19,7 +19,7 @@
       <padding>
         <Insets bottom="5" left="15" right="5" top="5" />
       </padding>
-      <HBox alignment="CENTER_LEFT" spacing="5">
+      <HBox maxHeight="1.7976931348623157E308" spacing="5" VBox.vgrow="ALWAYS">
         <Label fx:id="id" alignment="TOP_LEFT" styleClass="cell_big_label">
           <minWidth>
             <!-- Ensures that the label text is never truncated -->
