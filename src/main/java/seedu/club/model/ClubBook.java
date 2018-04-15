@@ -274,7 +274,6 @@ public class ClubBook implements ReadOnlyClubBook {
         Member member = syncWithMasterTagList(p);
         members.signup(member);
     }
-    //@@author
 
     //@@author yash-chowdhary
 
