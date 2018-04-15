@@ -110,6 +110,7 @@ public class EditCommandTest {
     @Test
     public void execute_filteredList_success() throws Exception {
         showMemberAtIndex(model, INDEX_FIRST_MEMBER);
+        showMemberAtIndex(expectedModel, INDEX_FIRST_MEMBER);
 
         Member memberInFilteredList = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased());
         Member editedMember = new MemberBuilder(memberInFilteredList).withName(VALID_NAME_BOB).build();

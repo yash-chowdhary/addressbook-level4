@@ -214,7 +214,6 @@ public class ModelManager extends ComponentManager implements Model {
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
         clubBook.changeLoggedInMemberProfilePhoto(newProfilePhotoPath);
-        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to: "
                 + getLoggedInMember().getProfilePhoto().getPhotoPath());
@@ -455,24 +454,21 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
-        Assignee assignee = targetTask.getAssignee();
         String currentMember = getLoggedInMember().getMatricNumber().toString();
-        checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
+        checkIfTaskCanBeDeleted(assignor, currentMember);
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
 
     /**
-     * Checks if the {@code String currentMember} is either the {@code assignor} or the {@code assignee} of the task.
+     * Checks if the {@code String currentMember} is the {@code assignor} of the task.
      * @throws TaskCannotBeDeletedException if the task cannot be deleted.
      */
-    private void checkIfTaskCanBeDeleted(Assignor assignor, Assignee assignee, String currentMember)
+    private void checkIfTaskCanBeDeleted(Assignor assignor, String currentMember)
             throws TaskCannotBeDeletedException {
         assert assignor != null : "Null value of Assignor";
-        assert assignee != null : "Null value of Assignee";
         assert currentMember != null : "Null value of currentMember";
-        if (!currentMember.equalsIgnoreCase(assignor.getValue())
-                && !currentMember.equalsIgnoreCase(assignee.getValue())) {
+        if (!currentMember.equalsIgnoreCase(assignor.getValue())) {
             throw new TaskCannotBeDeletedException();
         }
     }

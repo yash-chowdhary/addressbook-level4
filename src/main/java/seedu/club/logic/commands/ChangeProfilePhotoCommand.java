@@ -49,8 +49,8 @@ public class ChangeProfilePhotoCommand extends Command {
         requireToLogIn();
         try {
             model.addProfilePhoto(profilePhoto.getPhotoPath());
-            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null, false,
-                    null, false));
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(),
+                    model.getLoggedInMember(), false, null, false));
             EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {

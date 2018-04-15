@@ -10,7 +10,7 @@
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
-:important-caption: :caution:
+:important-caption: :warning:
 :format-caption:
 endif::[]
 :repoURL: https://github.com/CS2103JAN2018-W15-B4/main
@@ -30,6 +30,7 @@ Interested? Continue on to <<Quick Start>> to get started.
 
 The symbols and formatting used in this document, along with their corresponding meanings, are: +
 ℹ️: Note +
+⚠   : Important +
   💡  : Tip +
 `code`: Commands that can be entered into *Club Connect* or Technical keywords +
 kbd:[key]: Button on your keyboard +
@@ -148,10 +149,10 @@ Aliases: `addp`, `poll`
 ****
 Examples:
 
-* `addpoll p/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
+* `addpoll q/Which day should be Free Ice-Cream Day? ans/Monday ans/Wednesday ans/Friday` +
 Creates a poll asking members to vote for which day Free Ice-Cream Day should be held on.
 The options to choose from are `Monday`, `Wednesday` and `Friday`.
-* `addpoll p/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
+* `addpoll q/Where should the annual sports meeting be held? ans/I-Cube ans/LT7` +
 Creates a poll asking members to vote for where the annual sports meeting should be held.
 The answers to choose from are `I-Cube` and `LT7`.
 
@@ -179,9 +180,9 @@ Duplicate tasks are not allowed.
 
 Examples:
 
-* `addtask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00` +
+* `addtask desc/Book PGP Function Room 3 d/02/06/2018 ti/19:00` +
 Adds a task with description `Book PGP Function Room 3` due on `02/06/2018` at `19:00`.
-* `addtask desc/Buy Food d/03.04.2018 ti/15:00` +
+* `addtask desc/Buy Food d/03.06.2018 ti/15:00` +
 Adds a task with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::addtask[]
 
@@ -206,9 +207,9 @@ This command assigns the task to the member based on the entered `MATRIC_NUMBER`
 
 Examples:
 
-* `assigntask desc/Book PGP Function Room 3 d/02/04/2018 ti/19:00 m/A1234567H` +
+* `assigntask desc/Book PGP Function Room 3 d/02/06/2018 ti/19:00 m/A1234567H` +
 Assigns a task to `A1234567H` with description `Book PGP Function Room 3` due on `02/06/2018` at `19:00`.
-* `assigntask desc/Buy Food d/03.04.2018 ti/15:00 m/A1122334K` +
+* `assigntask desc/Buy Food d/03.06.2018 ti/15:00 m/A1122334K` +
 Assigns a task to `A1122334K` with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::assigntask[]
 
@@ -299,7 +300,7 @@ Aliases: `cts`, `changestatus`, `status`
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
 * The `STATUS` can be one of ```Yet To Begin```, ```In Progress```, and ```Completed```.
-* You can only change the status of a task that you have been assigned.
+* You can only change the status of a task that you have been assigned or a task that you have assigned.
 * Club Connect detects if there is no change in the `STATUS`.
 ****
 
@@ -321,7 +322,7 @@ Changes the status of the 3rd task to `Completed` in the task listing.
 
 Clears all entries from Club Connect. +
 Format A: `clear` +
-Format B: `clear LETTER`
+Format B: `clear LETTER` +
 Aliases: `c`, `erase`
 
 ****
@@ -329,18 +330,20 @@ Aliases: `c`, `erase`
 * A confirmation message will be shown.
 * To confirm clearing all entries from Club Connect, enter Format B into the command line.
 * Format B has to be executed immediately after executing Format A.
-* LETTER must be equals to "Y" to confirm clearing data from Club Connect
-* Any other LETTER will cancell the execution
+* `LETTER` must be equals to "Y" (case-insensitive) to confirm clearing data from Club Connect
+* Any other `LETTER` will cancel the execution
 ****
 [IMPORTANT]
 This command is for `Exco` members only.
 
 Examples:
 
-* `Clear` -> `Clear Y`
-Execute the clear command, and confirming it.
-* `Clear` -> `Clear N`
-Execute the clear command, and cancelling it.
+* `Clear` +
+`Clear Y` +
+Executes the clear command, and confirms it.
+* `Clear` +
+`Clear N` +
+Executes the clear command, and aborts it.
 
 // tag::compressdecompress[]
 === Compressing member details : `compress` (Since v1.2)
@@ -453,7 +456,7 @@ Aliases: `deltask`, `rmtask`
 ****
 
 [NOTE]
-Only Members who are either the `Assignor` or the `Assignee` can delete their respective tasks.
+Only Members who are the `Assignor` can delete their respective tasks.
 
 Examples:
 
