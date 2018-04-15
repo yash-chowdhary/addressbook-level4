@@ -1,5 +1,5 @@
 package seedu.club.commons.events.ui;
-
+//@@author yash-chowdhary
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -8,7 +8,7 @@ import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 
-//@@author yash-chowdhary
+
 public class SendEmailRequestEventTest {
 
     @Test
