@@ -938,18 +938,18 @@ e.g. `import C:/Users/Admin/Desktop/members.csv`
 * *Login* : `login u/USERNAME pw/PASSWORD` +
 * *Logout* : `logout`
 e.g. `login u/A0123456H pw/password`
+* *Redo* : `redo`
 * *Remove Profile Picture* : `removepic` +
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *Sign Up* : `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
 e.g.`signup n/John Doe p/89876765 e/johnd@gmail.com m/A0987654L t/President`
+* *Undo* : `undo`
 * *View All Tasks* : `viewalltasks`
 * *View My Tasks* : `viewmytasks`
 * *View results of polls* : `viewresults`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
 e.g. `vote 10 2`
-* *Undo* : `undo`
-* *Redo* : `redo`
 
 // tag::tips[]
 == Tips
