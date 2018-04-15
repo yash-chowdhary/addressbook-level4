@@ -139,8 +139,9 @@ public class AddPollCommandTest {
      */
     private class ModelStub implements Model {
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) {
+        public String voteInPoll(Poll poll, Index answerIndex) {
             fail("This method should not be called");
+            return null;
         }
 
         @Override
@@ -695,6 +696,7 @@ public class FindCommandTest {
     @Test
     public void execute_multipleKeywords_multipleMembersFound() throws CommandException {
         String expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 3);
+        String expectedMessage2 = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 1);
         FindCommand command = prepareCommand("Kurz Elle Kunz", PREFIX_NAME);
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
@@ -708,7 +710,7 @@ public class FindCommandTest {
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
 
         command = prepareCommand("marketing operations", PREFIX_GROUP);
-        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+        assertCommandSuccess(command, expectedMessage2, Arrays.asList(FIONA));
 
         expectedMessage = String.format(MESSAGE_MEMBERS_LISTED_OVERVIEW, 7);
         command = prepareCommand("head heads owesMoney", PREFIX_TAG);
@@ -826,6 +828,7 @@ public class ViewResultsCommandTest {
 ```
 ###### \java\seedu\club\logic\commands\VoteCommandTest.java
 ``` java
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX;
@@ -869,6 +872,7 @@ public class VoteCommandTest {
         model.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
     }
+
     @Test
     public void constructor_nullPollIndex_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
@@ -886,6 +890,7 @@ public class VoteCommandTest {
         thrown.expect(NullPointerException.class);
         new VoteCommand(null, null);
     }
+
     @Test
     public void execute_validIndices_voteSuccess() throws Exception {
         Poll pollToVote = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
@@ -896,7 +901,9 @@ public class VoteCommandTest {
         expectedModel = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
-        String expectedMessage = MESSAGE_VOTE_SUCCESS;
+        String expectedMessage = String.format(MESSAGE_VOTE_SUCCESS, pollToVote.getQuestion() + "\n"
+                + pollToVote.getAnswers()
+                .get(INDEX_FIRST_ANSWER.getZeroBased()));
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
                 pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());
@@ -931,7 +938,7 @@ public class VoteCommandTest {
 
         Poll pollToVote = model.getClubBook().getPollList().get(INDEX_FIRST_POLL.getZeroBased());
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
-            pollToVote.getPolleesMatricNumbers());
+                pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());
         VoteCommand voteCommand = prepareCommand(INDEX_FIRST_POLL, INDEX_FIRST_ANSWER);
 
