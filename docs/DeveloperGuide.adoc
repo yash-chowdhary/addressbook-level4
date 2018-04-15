@@ -885,15 +885,46 @@ _Figure 51. Sequence Diagram for delete a group from `Club Connect`._
 // tag::import[]
 === Importing Members
 ==== Current Implementation
-Lorem ipsum dolor sit amet
 
+==== Design Considerations
+
+===== Aspect: Implementation of `ImportCommand`
+
+* **Alternative 1 (current choice)**: Implement parser for CSV files ourselves
+** Pros: Greater control over what the format in the file to be imported from should be
+** Cons: Harder to implement, less flexible in terms of how data can be stored in the file as the data values are not binded to tags
+
+* **Alternative 2**: Use existing libraries (such as http://opencsv.sourceforge.net/[OpenCSV] and
+https://github.com/FasterXML/jackson-dataformats-text/tree/master/csv[Jackson])
+** Pros: More flexible in terms of how the data can be stored in the import file
+** Cons: Security issues or bugs in the external library cannot be fixed, licensing issues, difficult to use due to poor documentation
+
+===== Aspect: Input file format
+
+* **Alternative 1 (current choice)**: Import from a CSV file
+** Pros: Easier for users to create and modify their data in a CSV file
+** Cons: Implementation becomes more complex and may become less robust as support for parsing data from CSV files has to be added.
+
+* **Alternative 2**: Import from a XML file
+** Pros: Easier to implement and parse data, as the code already supports the reading of data from XML format
+** Cons: Harder for non-technical users to create and modify their data in a XML file
 // end::import[]
 
 // tag::export[]
 === Exporting Members
 ==== Current Implementation
-Lorem ipsum dolor sit amet
 
+==== Design Considerations
+
+===== Aspect: Output file format
+
+* **Alternative 1 (current choice)**: Export to a CSV file
+** Pros: More user-friendly in terms of understandability, generated file is compatible with the `import` command
+** Cons: Harder to implement as support for converting data of `Member` to CSV format needs to be added
+
+* **Alternative 2**: Export to a XML file
+** Pros: Easier to implement and as the code already supports the writing of data in XML format
+** Cons: Raw file provides a less intuitive view of data, generated file is not compatible with the `import` command
 // end::export[]
 
 // tag::profilephoto[]
@@ -970,51 +1001,25 @@ The logged in member's details are then updated to include this new profile phot
 
 ===== Aspect: Implementation of `ChangeProfilePhotoCommand`
 
-* **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo.
-** Pros: Makes intuitive sense, easy to implement.
-** Cons: There is no way for Exco members to ensure that members have appropriate profile photos.
+* **Alternative 1 (current choice)**: Logged in member can only change his/her own profile photo
+** Pros: Easy to implement, makes intuitive sense
+** Cons: There is no way for Exco members to ensure that members have appropriate profile photos
 
-* **Alternative 2**: Exco members can change any member's profile photo.
-** Pros: Gives Exco members a way to exercise control over members' profile photos.
-** Cons: Implementation becomes more complicated.
+* **Alternative 2**: Exco members can change any member's profile photo
+** Pros: Exco members have the ability to exercise control over members' profile photos
+** Cons: Implementation becomes more complicated
 
 ===== Aspect: Source files of profile photos
 
-* **Alternative 1 (current choice)**: Make a copy the source image provided to the applications resources.
-** Pros: Makes application portable and non-dependent on the rest of the system.
-   Members can delete the original file from the computer, without affecting the Club Connect Application.
-** Cons: Changes made to the original source images are not reflected in the application.
+* **Alternative 1 (current choice)**: Make a copy the source image provided to the applications resources
+** Pros: Application becomes portable and independent from the rest of the system.
+   Members can delete the original file from the computer, without affecting the Club Connect Application
+** Cons: Changes made to the original source images are not reflected in the application
 
-* **Alternative 2**: Always read the profile photo from the file path provided.
-** Pros: Changes made in the source image are reflected in the application.
-** Cons: Application becomes highly dependent on the system, in terms of profile photos.
+* **Alternative 2**: Always read the profile photo from the file path provided
+** Pros: Changes made in the source image are reflected in the application
+** Cons: Application becomes highly dependent on the system, in terms of profile photos
 // end::profilephoto[]
-
-// tag::deletetag[]
-=== Delete Tag Mechanism
-==== Current Implementation
-
-The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
-It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
-
-The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
-
-Figure 55 (shown below) depicts the UML representation of the `DeleteTagCommand`.
-
-image::placeholder.png[width="200" height="200"]
-_Figure 55. UML Diagram of `DeleteTagCommand`._
-
-==== Design Considerations
-===== Aspect: Implementation of `DeleteTagCommand`
-Lorem ipsum dolor sit amet
-// end::deletetag[]
-
-// tag::uitheme[]
-=== UI Look and Feel
-==== Current Implementation
-Lorem ipsum dolor sit amet
-
-// end::uitheme[]
 
 // tag::compressdecompress[]
 === Compress/Decompress Mechanism
@@ -1650,7 +1655,7 @@ Each member of a student club / organization is responsible for carrying out tas
 After recruitment events like SLF at NUS or other situations in which details of incoming members are recorded on an Excel sheet, the data can be imported from the Club Connect application instead of manually adding all the members.
 The list of members from the Club Connect application can be exported to formats such as .csv or .txt so that the club members can have access to a readable and sharable version of the member list outside the Club Connect application.
 
-* Minor Feature: Add a profile photo
+* Minor Feature: Profile photo
 +
 All the members of a club are not known by each other, which is especially the case in larger clubs.
 Adding a profile photo makes it easier to know what other members look like and to differentiate between members with similar names.
@@ -2146,7 +2151,8 @@ These instructions only provide a starting point for testers to work on; testers
 
 . Deleting a member while all members are listed
 
-.. Prerequisites: List all members using the `list` command. Multiple members in the list.
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+   List all members using the `list` command. Multiple members in the list.
 .. Test case: `delete 1` +
    Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 .. Test case: `delete 0` +
@@ -2357,3 +2363,119 @@ Expected: Similar to previous.
 .. Prerequisites: Login and there are more than 5 members in the application
 .. Test case: `find lala` +
    Expected: Member list filtered to members with fields containing lala. Number of members found shown in status message. Timestamp in the status bar is updated.
+
+// tag::ap-manual-testing[]
+=== Importing members
+. Importing members as an `Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+.. Test case: `import C:/Users/John/Desktop/correctly_formatted_data.csv` +
+   Expected: All members in the file `C:/Users/John/Desktop/correctly_formatted_data.csv` who have valid entries and do not share the same matriculation member with any member in Club Connect
+   are added to `Club Members`. The number of members imported is shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `import C:/Users/John/Desktop/data_in_incorrect_format.csv` +
+   Expected: No members are added to Club Connect. Error details are shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `import C:/Users/John/Desktop/does_not_exist.csv` +
+   Expected: No members are added to Club Connect. Error window pops up. Error details are shown in the status message. Status bar remains the same.
+.. Incorrect import commands to try: `import`, `import C:/Users/John/members.txt`
+   Expected: No members are added to Club Connect. Error details are shown in the status message. Status bar remains the same.
+
+. Importing members as a non-`Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect and you must not be an `Exco` member.
+.. Test case: `import C:/Users/John/Desktop/correctly_formatted_data.csv` +
+   Expected: No members are added to Club Connect. Command requires Exco-member shown in status message. Status bar remains the same.
+.. Test case: `import C:/Users/John/Desktop/data_in_incorrect_format.csv` +
+   Expected: Similar to previous.
+.. Incorrect import commands to try: `import`, `import C:/Users/John/members.txt`
+   Expected: No members are added to Club Connect. Error details are shown in the status message. Status bar remains the same.
+
+=== Exporting members
+. Exporting members as a member
+
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `export C:/Users/John/Desktop/does_not_exist.csv` +
+   Expected: Writes data of all members in Club Connect to `C:/Users/John/Desktop/does_not_exist.csv`.
+   Success message is shown in the status message. Status bar remains the same.
+.. Test case: `export C:/Users/John/Desktop/already_exists.csv` +
+   Expected: Overwrites `C:/Users/John/Desktop/already_exists.csv` with data of all members in Club Connect.
+             Success message is shown in the status message.Status bar remains the same.
+.. Incorrect export commands to try: `export`, `export C:/Users/John/members.txt`
+   Expected: No members are exported to a file. Error details are shown in the status message. Status bar remains the same.
+
+=== Changing profile photo
+. Changing your profile photo when you have selected yourself
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `changepic C:/Users/John/Desktop/valid_photo.jpg` +
+   Expected: Your profile photo changes to the image at `C:/Users/John/Desktop/valid_photo.jpg`.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel changes to this new photo.
+   Timestamp in the status bar is updated.
+.. Test case: `changepic C:/Users/John/Desktop/does_not_exist.jpg` +
+   Expected: Your profile photo is unchanged. Error window pops up. Invalid photo path is shown in status message.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel remains the same.
+   Status bar remains the same.
+.. Test case: `changepic C:/Users/John/Desktop/` +
+   Expected: Your profile photo is unchanged. Error details are shown in status message.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel remains the same.
+   Status bar remains the same.
+.. Other incorrect change photo commands to try: `changepic`, `changepic C:/Users/John/image.bmp`
+   Expected: Similar to previous.
+
+. Changing your profile photo when you have not selected yourself
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `changepic C:/Users/John/Desktop/valid_photo.jpg` +
+   Expected: Your profile photo changes to the image at `C:/Users/John/Desktop/valid_photo.jpg`.
+   Your image in the `Logged in` panel and the `Club Members` panel changes. Timestamp in the status bar is updated.
+.. Test case: `changepic C:/Users/John/Desktop/does_not_exist.jpg` +
+   Expected: Your profile photo is unchanged. Error window pops up. Invalid photo path is shown in status message.
+   Your image in the `Logged in` panel and the `Club Members` panel remains the same.
+   Status bar remains the same.
+.. Test case: `changepic C:/Users/John/Desktop/` +
+   Expected: Your profile photo is unchanged. Error details are shown in status message.
+   Your image in the `Logged in` panel and the `Club Members` panel panel remains the same.
+   Status bar remains the same.
+.. Other incorrect change photo commands to try: `changepic`, `changepic C:/Users/John/image.bmp`
+   Expected: Similar to previous.
+
+=== Removing profile photo
+. Removing your profile photo when it is not the default photo and you have selected yourself
+.. Prerequisites: You must be logged in to Club Connect. You must have changed your profile photo.
+.. Test case: `removepic` +
+   Expected: Your profile photo changes to Club Connect's default profile photo.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel changes.
+   Timestamp in the status bar is updated.
+
+. Removing your profile photo when it is not the default photo and you have not selected yourself
+.. Prerequisites: You must be logged in to Club Connect. You must have changed your profile photo.
+.. Test case: `removepic` +
+   Expected: Your profile photo changes to Club Connect's default profile photo.
+   Your image in the `Logged in` panel and the `Club Members` panel changes. Timestamp in the status bar is updated.
+
+. Removing your profile photo when it is the default photo
+.. Prerequisites: You must be logged in to Club Connect. You must have not changed your profile photo.
+.. Test case: `removepic` +
+   Expected: Your profile photo remains as Club Connect's default profile photo.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel remains the same.
+   Timestamp in the status bar is updated.
+
+=== Deleting a tag
+. Deleting a tag as an `Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+.. Test case: `deletetag t/Head` +
+   Expected: The tag from all members previously tagged with `Head` will be removed. The name of the deleted taglogin u/A0123456H pw/password
+ shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `deletetag t/This-does-not-exist` +
+   Expected: No tag is deleted as the tag does not exist. Error details are shown in the status message. Status bar remains the same.
+.. Incorrect delete tag commands to try: `deletetag`, `deletetag t/invalid format tag`
+   Expected: No tag is deleted as the tag name format is invalid. Error details are shown in the status message. Status bar remains the same.
+
+. Deleting a tag as a non-`Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect and you must not be an `Exco` member.
+.. Test case: `deletetag t/Head` +
+   Expected: No tags are deleted from members. Command requires Exco-member shown in status message. Status bar remains the same.
+.. Test case: `deletetag t/This-does-not-exist` +
+   Expected: Similar to previous.
+.. Incorrect delete tag commands to try: `deletetag`, `deletetag t/invalid format tag`
+   Expected: No tag is deleted as the tag name format is invalid. Relevant error details are shown in the status message. Status bar remains the same.
+// end::ap-manual-testing[]

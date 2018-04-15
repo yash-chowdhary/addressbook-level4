@@ -8,14 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
  * A class to manage storage of ClubBook data as a csv file on the hard disk.
  */
-public class CsvClubBookStorage {
+public class CsvClubBookStorage extends ComponentManager {
 
     private static final Logger logger = LogsCenter.getLogger(CsvClubBookStorage.class);
 
@@ -43,7 +45,12 @@ public class CsvClubBookStorage {
      * @throws IOException if there was any problem when reading from the storage.
      */
     public UniqueMemberList readClubBook() throws IOException {
-        return readClubBook(file);
+        try {
+            return readClubBook(file);
+        } catch (IOException ioe) {
+            raise(new DataReadingExceptionEvent(ioe));
+            throw ioe;
+        }
     }
 
     /**
