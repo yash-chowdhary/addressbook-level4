@@ -50,7 +50,7 @@ This app will not work with earlier versions of Java 8.
 [[launch-app]]
 [.text-center]
 .Club Connect application on launch
-image::startup.png[width="550"]
+image::clubconnectlaunch.png[width="550"]
 +
 . Execute the `signup` command. No other command will work unless you sign up.
 . Execute the `login` command once you've signed up. The GUI should look similar to Figure 2.
@@ -75,7 +75,10 @@ image::help-window.png[height="450"]
 * *`delete`*`3` : deletes the 3rd member shown in the current list
 * *`exit`* : exits the Club Connect app
 
-.  Continue to the next section, <<Features>>, for details of each command and its usage.
+Figure 4 helps you familiarise yourself with the GUI. The different components of the GUI are labelled below.
+
+.Club Connect GUI.
+image::clubconnectgui.png[width="650"]
 
 [[Features]]
 == Features
@@ -133,6 +136,11 @@ A member can have any number of tags (including 0).
 Refer to `login` command documentation for user credentials.
 
 Example: `signup n/Alan Walker p/97456895 e/alanw@gmail.com m/A0156489C t/President`
+
+Figure 5 shows the output of the `signup` command.
+
+.Output of signup command.
+image::signupoutput.png[width="400"]
 // end::SignUp[]
 
 // tag::LogIn[]
@@ -145,6 +153,11 @@ Example: `login u/A0123456H pw/password`
 
 * Use your `MATRIC NUMBER` as your username.
 * The default password is `password`. We advise you to change your password using the `changepass` command once you've logged in.
+
+Figure 6 shows the output of the `login` command.
+
+.Output of login command.
+image::loginoutput.png[width="350"]
 // end::LogIn[]
 
 // tag::ChangePass[]
@@ -166,6 +179,14 @@ Examples:
 Changes the password of the member with username `A0123456H` to `pword`.
 * `changepass u/A1234567H pw/password npw/brandnewpassword` +
 Changes the password of the member with username `A1234567H` to `brandnewpassword`.
+
+Figures 7 and 8 show the output of the `changepass` command (before and after).
+
+.Before the changepass command has been executed.
+image::changepassbefore.png[width="350"]
+
+.After the changepass command has been executed.
+image::changepassafter.png[width="350"]
 // end::ChangePass[]
 
 // tag::LogOut[]
@@ -174,6 +195,11 @@ Changes the password of the member with username `A1234567H` to `brandnewpasswor
 Logouts out the user from Club Connect. +
 Format: `logout` +
 Alias: `signout`
+
+Figure 9 shows the output of the `logout` command.
+
+.Output of logout command.
+image::logoutoutput.png[width="350"]
 // end::LogOut[]
 
 // tag::add[]
@@ -221,6 +247,11 @@ The answers to choose from are `I-Cube` and `LT7`.
 
 [IMPORTANT]
 This command is for `Exco` members only.
+
+Figure 10 shows the a sample poll.
+
+.Sample poll created using the addpoll command.
+image::samplepoll.png[width="350"]
 // end::addpoll[]
 
 // tag::addtask[]
@@ -333,6 +364,11 @@ Examples:
 Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's `Desktop`.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
 Changes your profile picture to the "CathyRay.png" image in your `Downloads` folder.
+
+Figure 11 shows the output of the `changepic` command.
+
+.Output of changepic command.
+image::changepicoutput.png[width="400"]
 // end::changepic[]
 
 // tag::changetaskstatus[]
@@ -361,6 +397,17 @@ Examples:
 Changes the status of the 1st task to `In Progress` in the task listing.
 * `status 3 st/Completed` +
 Changes the status of the 3rd task to `Completed` in the task listing.
+
+The three types of statuses are shown below in Figures 12, 13 and 14.
+
+.A task that is a member is yet to begin.
+image::yettobegin.png[width="450"]
+
+.A task in progress.
+image::inprogress.png[width="450"]
+
+.A completed task.
+image::completed.png[width="450"]
 // end::changetaskstatus[]
 
 === Clearing all entries : `clear`
@@ -390,6 +437,14 @@ Executes the clear command, and confirms it.
 `Clear N` +
 Executes the clear command, and aborts it.
 
+Figures 15 and 16 show the output of the `clear` and `clear Y` commands respectively.
+
+.Output of clear command.
+image::clearbefore.png[width="500"]
+
+.Output of clear Y command.
+image::clearafter.png[width="350"]
+
 // tag::compressdecompress[]
 === Compressing member details : `compress` (Since v1.2)
 
@@ -402,6 +457,11 @@ Alias: `comp`
 * Use this to remove clutter in contact list
 ****
 
+Figure 17 shows the output of the `compress` command.
+
+.Compressed cards.
+image::compress.png[width="350"]
+
 === Decompressing member details : `decompress` (Since v1.2)
 
 Decompresses the details of members in the member list +
@@ -412,6 +472,11 @@ Alias: `decomp`
 * No changes if member details are already decompressed
 * Use this to see more detailed information of members in contact list
 ****
+
+Figure 18 shows the output of the `decompress` command.
+
+.Decompressed cards.
+image::decompress.png[width="350"]
 // end::compressdecompress[]
 
 === Deleting a member : `delete`
@@ -485,6 +550,11 @@ Examples:
 Deletes the `Treasurer` tag for all members tagged with `Treasurer` in Club Connect.
 * `deletetag t/EventInCharge` +
 Deletes the `EventInCharge` tag for all members tagged with `EventInCharge` in Club Connect.
+
+Figure 19 shows the output of the `deletetag` command.
+
+.Output of deletetag command.
+image::deletetagoutput.png[width="350"]
 // end::deletetag[]
 
 // tag::deletetask[]
@@ -540,6 +610,10 @@ Edits the name of the 2nd member to `Betsy Crower` and clears all existing tags.
 * `edit 3 g/finance` +
 Edits the group of the 3rd member to be `finance`.
 
+Figure 20 shows the output of the `edit` command.
+
+.Output of edit command.
+image::editoutput.png[width="550"]
 // tag::email[]
 === Emailing club members: `email` (Since v1.2)
 
@@ -639,6 +713,11 @@ Returns any member having phone number containing 123.
 * `find 9119` +
 Returns all members containing `9119` in any field (e.g. phone number or email)
 
+Figure 21 shows the output of the `find` command.
+
+.Output of find command.
+image::findoutput.png[width="350"]
+
 // end::find[]
 
 === Viewing help : `help`
@@ -705,6 +784,10 @@ Imports all members in the "members.csv" file on `John Doe` 's Desktop to Club C
 * `import /Users/Jane Doe/Desktop/clubbook.csv` +
 Imports all members in the "clubbook.csv" file on `Jane Doe` 's Desktop to Club Connect.
 
+Figure 22 shows the output of the `import` command.
+
+.Output of import command.
+image::importoutput.png[width="350"]
 // end::import[]
 
 === Listing all members : `list`
@@ -713,6 +796,10 @@ Shows a list of all members in Club Connect. +
 Format: `list` +
 Alias: `l`
 
+Figure 23 shows the output of the `list` command.
+
+.Output of list command.
+image::listoutput.png[width="300"]
 === Redoing the previously undone command : `redo`
 
 Reverses the most recent `undo` command. +
@@ -759,6 +846,11 @@ Deletes the `logistics` group from Club Connect.
 
 * `deletegroup g/pr` +
 Deletes the `pr` group from Club Connect.
+
+Figure 24 shows the output of the `deletegroup` command.
+
+.Output of deletegroup command.
+image::deletegroupoutput.png[width="350"]
 // end::removegroup[]
 
 // tag::removepic[]
@@ -800,6 +892,11 @@ Selects the 2nd member in Club Connect.
 * `find Betsy` +
 `s 1` +
 Selects the 1st member in the results of the `find` command.
+
+Figure 25 shows the output of the `select` command.
+
+.Member overview panel with a member's details.
+image::selectoutput.png[width="350"]
 // end::select[]
 
 // tag::viewresults[]
@@ -818,6 +915,11 @@ Alias: `viewres`
 
 [IMPORTANT]
 This command is for `Exco` members only.
+
+Figure 26 shows the output of the `viewresults` command.
+
+.Output of viewresults command.
+image::viewresults.png[width="350"]
 // end::viewresults[]
 
 === Undoing previous command : `undo`
@@ -889,6 +991,11 @@ Examples:
 Votes for the 2nd answer in the 1st poll of the poll listing
 * `vote 5 1` +
 Votes for the 1st answer in the 5th poll of the poll listing
+
+Figure 27 shows the output of the `vote` command.
+
+.Output of the vote command.
+image::samplevote.png[width="450"]
 // end::vote[]
 
 === Auto-Complete Command (Since v1.3)
@@ -1006,7 +1113,7 @@ To get the absolute path of a file on MacOS, follow these steps:
 [[csv-data-format]]
 // tag::csv-data-format[]
 * *CSV format for `import`* +
-In order to successfully import data of members from the specified file, it has to follow the format shown in Figure 4.
+In order to successfully import data of members from the specified file, it has to follow the format shown in Figure 28.
 +
 .Required format of data in the file
 image::CSV_format.png[height="350"]
@@ -1014,7 +1121,7 @@ image::CSV_format.png[height="350"]
 The columns in the import file should be in the same order as shown in the figure above.
 All the tags of a member should be in a single cell, separated by commas (",").
 Also, to successfully import the data of a member, you have to make sure that their details conform to the <<constraints, constraints>>.
-Figure 5 shows some examples of invalid entries with the corresponding reasons in red.
+Figure 29 shows some examples of invalid entries with the corresponding reasons in red.
 +
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
