@@ -774,7 +774,7 @@ You cannot overwrite existing members (i.e. you cannot edit details of members i
 You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving the file.
 
 [TIP]
-TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
+To get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
