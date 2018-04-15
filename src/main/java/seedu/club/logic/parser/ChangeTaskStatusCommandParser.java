@@ -22,8 +22,7 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STATUS);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_STATUS)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!arePrefixesPresent(argMultimap, PREFIX_STATUS)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ChangeTaskStatusCommand.MESSAGE_USAGE));
         }

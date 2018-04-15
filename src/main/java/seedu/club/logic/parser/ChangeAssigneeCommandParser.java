@@ -22,8 +22,7 @@ public class ChangeAssigneeCommandParser implements Parser<ChangeAssigneeCommand
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_MATRIC_NUMBER);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_MATRIC_NUMBER)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (!arePrefixesPresent(argMultimap, PREFIX_MATRIC_NUMBER)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ChangeAssigneeCommand.MESSAGE_USAGE));
         }
