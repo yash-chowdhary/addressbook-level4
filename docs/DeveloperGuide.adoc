@@ -1014,32 +1014,6 @@ The logged in member's details are then updated to include this new profile phot
 ** Cons: Application becomes highly dependent on the system, in terms of profile photos.
 // end::profilephoto[]
 
-// tag::deletetag[]
-=== Delete Tag Mechanism
-==== Current Implementation
-
-The `deletetag` mechanism is facilitated by the `DeleteTagCommand` class.
-It allows any `Exco` member to delete a tag from all members tagged with it (and consequently, from Club Connect).
-
-The `DeleteTagCommand` extends from `UndoableCommand` as it is an undoable command.
-
-Figure 55 (shown below) depicts the UML representation of the `DeleteTagCommand`.
-
-image::placeholder.png[width="200" height="200"]
-_Figure 55. UML Diagram of `DeleteTagCommand`._
-
-==== Design Considerations
-===== Aspect: Implementation of `DeleteTagCommand`
-Lorem ipsum dolor sit amet
-// end::deletetag[]
-
-// tag::uitheme[]
-=== UI Look and Feel
-==== Current Implementation
-Lorem ipsum dolor sit amet
-
-// end::uitheme[]
-
 // tag::compressdecompress[]
 === Compress/Decompress Mechanism
 ==== Current Implementation
@@ -1573,7 +1547,7 @@ Each member of a student club / organization is responsible for carrying out tas
 After recruitment events like SLF at NUS or other situations in which details of incoming members are recorded on an Excel sheet, the data can be imported from the Club Connect application instead of manually adding all the members.
 The list of members from the Club Connect application can be exported to formats such as .csv or .txt so that the club members can have access to a readable and sharable version of the member list outside the Club Connect application.
 
-* Minor Feature: Add a profile photo
+* Minor Feature: Profile photo
 +
 All the members of a club are not known by each other, which is especially the case in larger clubs.
 Adding a profile photo makes it easier to know what other members look like and to differentiate between members with similar names.

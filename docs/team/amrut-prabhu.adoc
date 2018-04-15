@@ -120,11 +120,23 @@ include::../UserGuide.adoc[tag=removepic]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
+=== 4.1. Major Enhancement : Member Data Management
+
+This section contains extracts from the Developer Guide that are related to management of the data of members.
+
 #Start of Extract (from Developer Guide)#
 
 include::../DeveloperGuide.adoc[tag=import]
 
 include::../DeveloperGuide.adoc[tag=export]
+
+#End of Extract (from Developer Guide)#
+
+=== 4.2. Minor Enhancement : Changing Profile Photo
+
+This section contains extracts from the Developer Guide that are related to changing your profile photo.
+
+#Start of Extract (from Developer Guide)#
 
 include::../DeveloperGuide.adoc[tag=profilephoto]
 
