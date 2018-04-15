@@ -572,11 +572,9 @@ m/ = `MATRIC NUMBER` +
 g/ = `GROUP` +
 t/ = `TAG` +
 
-[NOTE]
-If you wish to find by a `PREFIX`, enter a space after the `PREFIX` while typing the command. This enables you to search for multiple keywords without having to enter the `PREFIX`.
-
 ****
 * An additional `PREFIX` can be stated after `find` to narrow search to a particular field. e.g e/ for email
+* A maximum of 1 `PREFIX` should be stated. Additional prefixes are considered as keywords
 * If no `PREFIX` is stated, all member fields will be searched.
 * The search is case insensitive. e.g `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
@@ -586,14 +584,15 @@ If you wish to find by a `PREFIX`, enter a space after the `PREFIX` while typing
 
 Examples:
 
-* `find John` +
-Returns `john` and `John Doe`.
-* `find Betsy Tim John` +
+* `find n/Betsy Tim John` +
 Returns all members having names containing `Betsy`, `Tim`, or `John`.
-* `find g/ logistics` +
+* `find g/logistics` +
 Returns all members in the logistics `group`
-* `find p/ 123` +
+* `find p/123` +
 Returns any member having phone number containing 123.
+* `find 9119` +
+Returns all members containing `9119` in any field (e.g. phone number or email)
+
 // end::find[]
 
 === Viewing help : `help`

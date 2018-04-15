@@ -16,13 +16,15 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 == Summary of contributions
 
 * *Major enhancement*: Added *voting system*
-** What it does: Allows `Exco` members to create/delete polls and view/hide results of polls. Members can vote in polls.
+** What it does: Allows `Exco` members to add/delete polls and view/hide results of polls. Members can vote in polls.
 ** Justification: This feature improves the product significantly because the `Exco` members can accurately determine the views of other members so that they can take the best path of action for the club.
-** Highlights: This enhancement extensively covers . It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
 
-* *Minor enhancement*: Improved navigability of member list by adding compress/decompress mechanism and revamping `Find` command
+* *Minor enhancement*: Improved navigability of member list by adding compress/decompress mechanism and making `Find` command able to search by field or by all fields instead of just name.
+** Justification: This feature improves the product significantly since it saves time when looking for information
+of other members. More time can be spent on doing more important actions such as adding polls and assigning tasks.
 
-* *Code contributed*: [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/MuhdNurKamal.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/MuhdNurKamal.md[Test code]]
+* *Code contributed*: https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/MuhdNurKamal.md[Functional code]
+https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/MuhdNurKamal.md[Test code]
 
 * *Other contributions*:
 
@@ -40,15 +42,11 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-include::../UserGuide.adoc[tag=find]
-
-include::../UserGuide.adoc[tag=compressdecompress]
-
-include::../UserGuide.adoc[tag=viewresults]
-
-include::../UserGuide.adoc[tag=hideresults]
+include::../UserGuide.adoc[tag=addpoll]
 
 include::../UserGuide.adoc[tag=vote]
+
+include::../UserGuide.adoc[tag=find]
 
 == Contributions to the Developer Guide
 
@@ -56,6 +54,8 @@ include::../UserGuide.adoc[tag=vote]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-include::../DeveloperGuide.adoc[tag=compressdecompress]
-
 include::../DeveloperGuide.adoc[tag=polls]
+
+include::../DeveloperGuide.adoc[tag=vote]
+
+include::../DeveloperGuide.adoc[tag=viewhide]

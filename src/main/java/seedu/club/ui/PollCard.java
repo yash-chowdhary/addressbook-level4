@@ -41,7 +41,7 @@ public class PollCard extends UiPart<Region> {
         super(FXML);
         this.poll = poll;
         id.setText(displayedIndex + ". ");
-        question.setText(poll.getQuestion().toString());
+        question.setText(poll.getQuestion().getValue());
 
         answerListPanel = new AnswerListPanel(poll.getAnswers(), poll, true);
         answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
@@ -56,7 +56,7 @@ public class PollCard extends UiPart<Region> {
         super(fxml);
         this.poll = poll;
         id.setText(displayedIndex + ". ");
-        question.setText(poll.getQuestion().toString());
+        question.setText(poll.getQuestion().getValue());
 
         answerListPanel = new AnswerListPanel(poll.getAnswers(), poll, false);
         answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
