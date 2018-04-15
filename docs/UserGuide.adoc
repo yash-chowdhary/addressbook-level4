@@ -1016,7 +1016,7 @@ Figure 5 shows some examples of invalid entries with the corresponding reasons i
 +
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
-image::invalid_CSV_format.png[height="150"]
+image::invalid_CSV_format.png[height="125"]
 
 * *Member Profile* +
 In order for the member profile to look as intended when a member is selected using the `select` command, ensure that:
