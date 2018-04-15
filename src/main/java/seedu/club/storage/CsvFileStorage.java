@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import seedu.club.commons.util.CsvUtil;
+import seedu.club.commons.util.FileUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
@@ -16,11 +17,7 @@ public class CsvFileStorage {
      * Saves the given clubBook {@code data} to the specified file.
      */
     public static void saveDataToFile(File file, String data) throws IOException {
-        try {
-            CsvUtil.saveDataToFile(file, data);
-        } catch (IOException ioe) {
-            throw new IOException("Unexpected error " + ioe.getMessage());
-        }
+        FileUtil.writeToFile(file, data);
     }
 
     /**

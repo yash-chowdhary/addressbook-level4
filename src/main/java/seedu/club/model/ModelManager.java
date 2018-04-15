@@ -501,8 +501,8 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author amrut-prabhu
     @Override
     public int importMembers(File importFile) throws IOException {
-        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
-        UniqueMemberList importedMembers = storage.readClubBook();
+        CsvClubBookStorage csvStorage = new CsvClubBookStorage(importFile);
+        UniqueMemberList importedMembers = csvStorage.readClubBook();
         int numberMembers = 0;
 
         for (Member member: importedMembers) {
@@ -538,9 +538,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
         StringBuilder csvMemberList = new StringBuilder();
-        /*for (Member member: members) {
-            csvMemberList.append(getMemberDataToExport(member));
-        }*/
         members.forEach(member -> csvMemberList.append(getMemberDataToExport(member)));
         indicateNewExport(exportFile, csvMemberList.toString());
     }

@@ -1,5 +1,6 @@
 package seedu.club.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -41,6 +42,16 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
     void handleClubBookChangedEvent(ClubBookChangedEvent cbce);
 
     //@@author amrut-prabhu
+
+    /**
+     * Makes a copy of the image specified by {@code originalPhotoPath} with the {@code newPhotoName}.
+     *
+     * @param originalPhotoPath The absolute file path of the {@link seedu.club.model.member.ProfilePhoto}.
+     * @param newPhotoName The file name of the copy of the photo specified by {@code originalPhotoPath}.
+     *
+     * @throws PhotoReadException if the {@code originalPhotoPath} is invalid.
+     * @throws PhotoWriteException if there was an error while copying the photo.
+     */
     void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
             throws PhotoReadException, PhotoWriteException;
 
@@ -49,6 +60,15 @@ public interface Storage extends ClubBookStorage, UserPrefsStorage, PhotoStorage
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleProfilePictureChangedEvent(ProfilePhotoChangedEvent event);
+
+    /**
+     * Writes the {@code data} to the {@code exportFile}.
+     *
+     * @param data Data that is to be written to the file.
+     * @param exportFile File to which data is to be exported.
+     * @throws IOException Thrown if there is an error writing to the file.
+     */
+    void exportDataToFile(String data, File exportFile) throws IOException;
 
     /**
      * Writes data to a CSV file on the hard disk.

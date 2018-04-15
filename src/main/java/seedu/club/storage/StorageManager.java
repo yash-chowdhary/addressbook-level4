@@ -1,5 +1,6 @@
 package seedu.club.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -27,15 +28,15 @@ public class StorageManager extends ComponentManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private ClubBookStorage clubBookStorage;
     private UserPrefsStorage userPrefsStorage;
-    private ProfilePhotoStorage profilePhotoStorage;
+    private PhotoStorage photoStorage;
     private  CsvClubBookStorage csvClubBookStorage;
 
     public StorageManager(ClubBookStorage clubBookStorage, UserPrefsStorage userPrefsStorage,
-                          ProfilePhotoStorage profilePhotoStorage, CsvClubBookStorage csvClubBookStorage) {
+                          PhotoStorage photoStorage, CsvClubBookStorage csvClubBookStorage) {
         super();
         this.clubBookStorage = clubBookStorage;
         this.userPrefsStorage = userPrefsStorage;
-        this.profilePhotoStorage = profilePhotoStorage;
+        this.photoStorage = photoStorage;
         this.csvClubBookStorage = csvClubBookStorage;
     }
 
@@ -105,7 +106,7 @@ public class StorageManager extends ComponentManager implements Storage {
     public void copyOriginalPhotoFile(String originalPath, String newPhotoName)
             throws PhotoReadException, PhotoWriteException {
         logger.fine("Attempting to read photo from file: " + originalPath);
-        profilePhotoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
+        photoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
     }
 
     @Override
@@ -126,14 +127,19 @@ public class StorageManager extends ComponentManager implements Storage {
     // ================ CSV Storage methods ==============================
 
     @Override
+    public void exportDataToFile(String data, File exportFile) throws IOException {
+        csvClubBookStorage.setClubBookFile(exportFile);
+        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
+        csvClubBookStorage.saveData(data);
+    }
+
+    @Override
     @Subscribe
     public void handleExportDataEvent(NewExportDataAvailableEvent event) {
         assert event.exportFile != null : "exportFile should be pointing to a valid file";
-        csvClubBookStorage.setClubBookFile(event.exportFile);
 
-        logger.fine("Attempting to export data to file: " + csvClubBookStorage.getClubBookFile());
         try {
-            csvClubBookStorage.saveData(event.data);
+            exportDataToFile(event.data, event.exportFile);
         } catch (IOException e) {
             event.setDataExported(false);
             raise(new DataSavingExceptionEvent(e));

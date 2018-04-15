@@ -6,11 +6,15 @@
 
 == 1. Overview
 
-*Club Connect* is a computer application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+*Club Connect* is a computer application targeted at student club members at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier and more effective.
+It provides all members of the club with they ability to browse through profiles of other members, participate in polls,
+and manage club-related tasks.
 
-*Club Connect* is an application that would be preferred by those who prefer using the keyboard over a mouse, i.e., it uses a Command Line Interface (CLI).
-All output is displayed in a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
+*Club Connect* is an application that is targeted at those who prefer using the keyboard over a mouse.
+So, it uses a Command Line Interface (CLI) for input.
+However, all the output is displayed in a traditional Graphical User Interface (GUI) -
+which is just computer jargon for a display that includes panes, menus and message boxes.
 
 == 2. About this portfolio
 
@@ -122,11 +126,9 @@ include::../UserGuide.adoc[tag=removepic]
 
 === 4.1. Major Enhancement : Member Data Management
 
-This section contains extracts from the Developer Guide that are related to management of the data of members.
+This section contains an extract from the Developer Guide that is related to management of members' data.
 
 #Start of Extract (from Developer Guide)#
-
-include::../DeveloperGuide.adoc[tag=import]
 
 include::../DeveloperGuide.adoc[tag=export]
 
@@ -134,7 +136,7 @@ include::../DeveloperGuide.adoc[tag=export]
 
 === 4.2. Minor Enhancement : Changing Profile Photo
 
-This section contains extracts from the Developer Guide that are related to changing your profile photo.
+This section contains an extract from the Developer Guide that is related to changing your profile photo.
 
 #Start of Extract (from Developer Guide)#
 
@@ -176,8 +178,8 @@ include::../UserGuide.adoc[tag=v2.0]
 
 #Start of Extract (from Developer Guide)#
 
-include::../DeveloperGuide.adoc[tag=glossary]
+include::../DeveloperGuide.adoc[tag=import]
 
-include::../DeveloperGuide.adoc[tag=ap-manual-testing]
+include::../DeveloperGuide.adoc[tag=glossary]
 
 #End of Extract (from Developer Guide)#
