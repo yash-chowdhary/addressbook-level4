@@ -22,7 +22,7 @@ shows my ability to write clearly.
 == Summary of contributions
 
 * *Major enhancement*: Added *voting system*
-** What it does: Allows `Exco` members to add/delete polls and view/hide results of polls. Members can vote in polls.
+** What it does: Allows `Exco` members to add/delete polls and view/hide results of polls. It also allows any member to vote in polls, but only once for each poll
 ** Justification: This feature improves the product significantly because the `Exco` members can accurately determine the views of other members so that they can take the best path of action for the club.
 
 * *Minor enhancement*: Improved navigability of member list by adding compress/decompress mechanism and making `Find` command able to search by field or by all fields instead of just name.
