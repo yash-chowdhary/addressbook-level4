@@ -124,6 +124,15 @@ public class UpdateSelectionPanelEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\club\logic\CommandHistory.java
+``` java
+    /**
+     * Clears user input history
+     */
+    public void clear() {
+        userInputHistory.clear();
+    }
+```
 ###### \java\seedu\club\logic\commands\ChangePasswordCommand.java
 ``` java
 /**
@@ -218,10 +227,11 @@ public class ClearCommand extends Command {
         } else {
             if (args == null) {
                 return new CommandResult(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, COMMAND_FORMAT));
-            } else if (args.equals(" Y")) {
+            } else if (args.equalsIgnoreCase(" Y")) {
                 model.resetData(new ClubBook());
                 model.clearClubBook();
                 EventsCenter.getInstance().post(new ClearMemberSelectPanelEvent(true));
+                EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(null));
                 return new CommandResult(MESSAGE_SUCCESS);
             } else {
                 model.setClearConfirmation(false);
@@ -286,7 +296,8 @@ public class LogInCommand extends Command {
     public static final String COMMAND_FORMAT = "login u/ pw/ ";
 
     public static final String MESSAGE_SUCCESS = "Hi %1$s. Welcome to Club Connect!";
-    public static final String MESSAGE_FAILURE = "Login unsuccessful. Please try again.";
+    public static final String MESSAGE_FAILURE = "Login unsuccessful."
+            + " Incorrect Username or Password entered. Please try again.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Allows you to log in to Club Connect.\n"
             + "Parameters: "
             + PREFIX_USERNAME + "USERNAME "
@@ -780,6 +791,7 @@ public class Password {
      * @return
      */
     public void logsInMember(String username, String password) {
+        username = username.toUpperCase();
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
             currentlyLogInMember = checkMember;
@@ -980,6 +992,9 @@ public class Username {
         updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
         updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
         clubBook.logOutMember();
+        updateFilteredMemberList(Model.PREDICATE_NOT_SHOW_ALL_MEMBERS);
+        updateFilteredTaskList(Model.PREDICATE_NOT_SHOW_ALL_TASKS);
+        updateFilteredPollList(Model.PREDICATE_NOT_SHOW_ALL_POLLS);
     }
 
 ```
@@ -1026,15 +1041,22 @@ public class Username {
 ```
 ###### \java\seedu\club\ui\LogInMemberBox.java
 ``` java
+import static seedu.club.model.member.ProfilePhoto.DEFAULT_PHOTO_PATH;
+import static seedu.club.model.member.ProfilePhoto.EMPTY_STRING;
+
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
+import seedu.club.MainApp;
 import seedu.club.commons.core.LogsCenter;
 import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
+import seedu.club.model.member.ProfilePhoto;
 
 /**
  * The currently logged in panel of the application
@@ -1044,10 +1066,13 @@ public class LogInMemberBox extends UiPart<Region> {
     private static final String FXML = "CurrentlyLogInMemberBox.fxml";
 
     private final Logger logger = LogsCenter.getLogger(LogInMemberBox.class);
-
+    private final Integer photoWidth = 34;
+    private final Integer photoHeight = 45;
 
     @FXML
     private Label currentlyloginMember;
+    @FXML
+    private ImageView profilePhoto;
 
     public LogInMemberBox () {
         super(FXML);
@@ -1057,12 +1082,15 @@ public class LogInMemberBox extends UiPart<Region> {
     @Subscribe
     private void handleUpdateCurrentlyLogInMemberEvent (UpdateCurrentlyLogInMemberEvent event) {
         if (event.getCurrentlyLogIn() == null) {
-            currentlyloginMember.setText("No one is currently logged in.");
+            currentlyloginMember.setText("Log in to use Club Connect");
+            profilePhoto.setVisible(false);
         } else {
-            currentlyloginMember.setText("Currently Logged In: " + event.getCurrentlyLogIn().getName().toString());
+            profilePhoto.setVisible(true);
+            currentlyloginMember.setText("Logged In: " + event.getCurrentlyLogIn().getName().toString());
+            setProfilePhoto(event.getCurrentlyLogIn().getProfilePhoto());
         }
     }
-}
+
 ```
 ###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
@@ -1072,7 +1100,11 @@ public class LogInMemberBox extends UiPart<Region> {
      * @param show
      */
     public void loadDetails (Boolean show) {
-        gridPane.setStyle("-fx-background-color: #cccccc");
+        if (show) {
+            gridPane.setStyle("-fx-background-color: #cccccc");
+        } else {
+            gridPane.setStyle("-fx-background-color: #d6d6d6");
+        }
         int size = gridPane.getChildren().size();
         for (int i = 0; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);
@@ -1149,6 +1181,7 @@ public class LogInMemberBox extends UiPart<Region> {
             loadMemberPage(event.getEditedMember());
         }
     }
+
 ```
 ###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
@@ -1255,9 +1288,18 @@ public class ModifiedTaskCard extends UiPart<Region> {
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
 
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
 <StackPane styleClass="loginpane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-    <Label fx:id="currentlyloginMember" maxHeight="25.0" text="No one is currently logged in.">
-    </Label>
+    <HBox>
+        <ImageView fx:id="profilePhoto" fitHeight="45.0" fitWidth="34.0" style="-fx-background-color:white">
+            <HBox.margin>
+                <Insets bottom="1" left="1" right="4" top="1" />
+            </HBox.margin>
+        </ImageView>
+        <Label fx:id="currentlyloginMember" maxHeight="25.0" text="Log in to use Club Connect" translateY="10" />
+    </HBox>
 </StackPane>
 ```
 ###### \resources\view\MemberDetailsPanel.fxml
@@ -1281,12 +1323,12 @@ public class ModifiedTaskCard extends UiPart<Region> {
     <TextFlow styleClass="text-panel-header" textAlignment="CENTER">
         <Text fill="darkblue" text="MEMBER PROFILE" VBox.vgrow="NEVER" />
     </TextFlow>
-<GridPane fx:id="gridPane" prefHeight="543.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane" prefHeight="660.0" prefWidth="244.0" translateY="4.0" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
 
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
     </columnConstraints>
-    <ImageView fx:id="profilePhoto" fitHeight="152.0" fitWidth="114.0" style="-fx-background-color:white" GridPane.halignment="CENTER">
+    <ImageView fx:id="profilePhoto" fitHeight="228.0" fitWidth="171.0" style="-fx-background-color:white" GridPane.halignment="CENTER">
         <HBox.margin>
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
@@ -1297,7 +1339,7 @@ public class ModifiedTaskCard extends UiPart<Region> {
             <Insets bottom="7.5" left="7.5" right="5.0" top="7.5" />
         </HBox.margin>
     </ImageView>
-    <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="130.0" styleClass="label-group-panel" text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+    <Label fx:id="group" contentDisplay="TOP" layoutX="10.0" layoutY="169.0" prefHeight="27.0" prefWidth="171.0" styleClass="label-group-panel" text="/$group" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
         <font>
             <Font size="18.0" />
         </font></Label>
@@ -1311,20 +1353,20 @@ public class ModifiedTaskCard extends UiPart<Region> {
         </padding>
     </FlowPane>
 
-    <Text styleClass="cell_medium_label" text="Related Tasks" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+    <Text fill="darkblue" styleClass="cell_medium_label" text="Related Tasks" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
     <VBox GridPane.rowIndex="7">
-        <ListView fx:id="modifiedTaskCardListView" prefHeight="155.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
+        <ListView fx:id="modifiedTaskCardListView" prefHeight="407.0" prefWidth="244.0" GridPane.rowIndex="6" VBox.vgrow="ALWAYS">
         </ListView>
     </VBox>
     <rowConstraints>
-        <RowConstraints />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        <RowConstraints minHeight="10.0" prefHeight="200.0" />
+        <RowConstraints prefHeight="251" />
+        <RowConstraints prefHeight="30.0" />
+        <RowConstraints prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints  prefHeight="25.0" />
+        <RowConstraints prefHeight="40.0" />
+        <RowConstraints  prefHeight="230.0" />
     </rowConstraints>
 </GridPane>
 </VBox>

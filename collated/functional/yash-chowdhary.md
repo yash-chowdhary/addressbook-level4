@@ -1,6 +1,12 @@
 # yash-chowdhary
 ###### \java\seedu\club\commons\events\ui\SendEmailRequestEvent.java
 ``` java
+import seedu.club.commons.events.BaseEvent;
+import seedu.club.model.email.Body;
+import seedu.club.model.email.Client;
+import seedu.club.model.email.Subject;
+
+
 /**
  * Event to send an email.
  */
@@ -101,7 +107,7 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_TIME + "TIME\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_DESCRIPTION + "Book YIH Function Room 4 "
-            + PREFIX_DATE + "02/04/2018 "
+            + PREFIX_DATE + "02/06/2018 "
             + PREFIX_TIME + "17:00";
 
     public static final String MESSAGE_SUCCESS = "New task created.";
@@ -260,6 +266,123 @@ public class ChangeAssigneeCommand extends UndoableCommand {
     }
 }
 ```
+###### \java\seedu\club\logic\commands\ChangeTaskStatusCommand.java
+``` java
+import static seedu.club.logic.parser.CliSyntax.PREFIX_STATUS;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.text.WordUtils;
+
+import seedu.club.commons.core.Messages;
+import seedu.club.commons.core.index.Index;
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.task.Assignee;
+import seedu.club.model.task.Assignor;
+import seedu.club.model.task.Date;
+import seedu.club.model.task.Description;
+import seedu.club.model.task.Status;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.Time;
+import seedu.club.model.task.exceptions.DuplicateTaskException;
+import seedu.club.model.task.exceptions.TaskNotFoundException;
+import seedu.club.model.task.exceptions.TaskStatusCannotBeEditedException;
+
+/**
+ * Edits the status of a existing task in the club book.
+ */
+public class ChangeTaskStatusCommand extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "changetaskstatus";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "status", "changestatus", "cts")
+    );
+    public static final String COMMAND_FORMAT = COMMAND_WORD + " INDEX " + PREFIX_STATUS + "STATUS";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Modifies the status of the task identified "
+            + "by the index number used in the last task listing. "
+            + "The existing status will be overwritten by the status provided in the command.\n"
+            + "Parameters: INDEX (must be a positive integer) "
+            + "st/STATUS\n"
+            + "Example: " + COMMAND_WORD + " 1 "
+            + PREFIX_STATUS + "Completed";
+
+    public static final String MESSAGE_INVALID_PERMISSION = "This task's status cannot be updated "
+            + "as you are neither the assignor nor the assignee of the task.";
+    public static final String MESSAGE_CHANGE_SUCCESS = "Status of task - %1$s, successfully changed.";
+    public static final String MESSAGE_NOT_CHANGED = "Status of task is unchanged as the status provided is the "
+            + "same as the task's existing status.";
+
+    private final Index index;
+    private Task taskToEdit;
+    private Task editedTask;
+    private final Status newStatus;
+
+    public ChangeTaskStatusCommand(Index index, Status newStatus) {
+        this.index = index;
+        String status = newStatus.getStatus();
+        String capitalizedStatus = WordUtils.capitalize(status);
+        this.newStatus = new Status(capitalizedStatus);
+
+    }
+
+    @Override
+    protected void preprocessUndoableCommand() throws CommandException {
+        requireToSignUp();
+        requireToLogIn();
+        List<Task> lastShownList = model.getFilteredTaskList();
+
+        if (index.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX);
+        }
+
+        taskToEdit = lastShownList.get(index.getZeroBased());
+        editedTask = createEditedTask(taskToEdit);
+    }
+
+    @Override
+    protected CommandResult executeUndoableCommand() throws CommandException {
+        try {
+            requireToSignUp();
+            requireToLogIn();
+            model.changeStatus(taskToEdit, editedTask);
+        } catch (TaskNotFoundException tnfe) {
+            throw new AssertionError("The target task cannot be missing");
+        } catch (DuplicateTaskException dte) {
+            throw new CommandException(MESSAGE_NOT_CHANGED);
+        } catch (TaskStatusCannotBeEditedException e) {
+            throw new CommandException(MESSAGE_INVALID_PERMISSION);
+        }
+        return new CommandResult(String.format(MESSAGE_CHANGE_SUCCESS, editedTask.getDescription().getDescription()));
+    }
+
+    /**
+     * Creates and returns a {@code task} with the details of {@code taskToEdit}
+     * edited with {@code newStatus}.
+     */
+    private Task createEditedTask(Task taskToEdit) {
+        assert taskToEdit != null;
+
+        Description description = new Description(taskToEdit.getDescription().getDescription());
+        Time time = new Time(taskToEdit.getTime().getTime());
+        Date date = new Date(taskToEdit.getDate().getDate());
+        Assignor assignor = new Assignor(taskToEdit.getAssignor().getValue());
+        Assignee assignee = new Assignee(taskToEdit.getAssignee().getValue());
+
+        return new Task(description, time, date, assignor, assignee, newStatus);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other == this
+                || (other instanceof ChangeTaskStatusCommand
+                && index.equals(((ChangeTaskStatusCommand) other).index)
+                && newStatus.equals(((ChangeTaskStatusCommand) other).newStatus)));
+    }
+}
+```
 ###### \java\seedu\club\logic\commands\DeleteGroupCommand.java
 ``` java
 import static java.util.Objects.requireNonNull;
@@ -362,7 +485,7 @@ public class DeleteTaskCommand extends UndoableCommand {
 
     public static final String MESSAGE_DELETE_TASK_SUCCESS = "Deleted task: %1$s";
     public static final String MESSAGE_TASK_CANNOT_BE_DELETED = "This task cannot be deleted as you are "
-            + " neither the assignor nor the assignee of the task.";
+            + " not the Assignor of the task.";
     public static final String MESSAGE_TASK_NOT_FOUND = "This task does not exist in Club Connect.";
 
     private final Index targetIndex;
@@ -415,7 +538,6 @@ public class DeleteTaskCommand extends UndoableCommand {
 ```
 ###### \java\seedu\club\logic\commands\EmailCommand.java
 ``` java
-
 import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_BODY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;
@@ -501,6 +623,47 @@ public class EmailCommand extends Command {
                 && (group == ((EmailCommand) other).group || group.equals(((EmailCommand) other).group))
                 && (tag == ((EmailCommand) other).tag || tag.equals(((EmailCommand) other).tag))
                 && client.equals(((EmailCommand) other).client));
+    }
+}
+```
+###### \java\seedu\club\logic\commands\ViewAllTasksCommand.java
+``` java
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import seedu.club.logic.commands.exceptions.CommandException;
+import seedu.club.model.task.exceptions.TasksAlreadyListedException;
+
+/**
+ * Lists all tasks in the club book to the user.
+ */
+public class ViewAllTasksCommand extends Command {
+
+    public static final String COMMAND_WORD = "viewalltasks";
+    public static final ArrayList<String> COMMAND_ALIASES = new ArrayList<>(
+            Arrays.asList(COMMAND_WORD, "alltasks")
+    );
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Displays all tasks in Club Connect.";
+
+    public static final String MESSAGE_SUCCESS = "All tasks are displayed.";
+    public static final String MESSAGE_CANNOT_VIEW = "You do not have permission to view all tasks.";
+    public static final String MESSAGE_ALREADY_LISTED = "All the tasks in Club Connect are already listed.";
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        requireNonNull(model);
+        requireToSignUp();
+        requireToLogIn();
+        requireExcoLogIn();
+        try {
+            model.viewAllTasks();
+        } catch (TasksAlreadyListedException e) {
+            throw new CommandException(MESSAGE_ALREADY_LISTED);
+        }
+        return new CommandResult(MESSAGE_SUCCESS);
     }
 }
 ```
@@ -614,11 +777,88 @@ public class AddTaskCommandParser implements Parser<AddTaskCommand> {
     }
 }
 ```
+###### \java\seedu\club\logic\parser\AssignTaskCommandParser.java
+``` java
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+import static seedu.club.logic.parser.CliSyntax.PREFIX_TIME;
+
+import java.text.SimpleDateFormat;
+import java.util.stream.Stream;
+
+import seedu.club.commons.core.Messages;
+import seedu.club.commons.exceptions.IllegalValueException;
+import seedu.club.logic.commands.AssignTaskCommand;
+import seedu.club.logic.parser.exceptions.ParseException;
+import seedu.club.model.member.MatricNumber;
+import seedu.club.model.task.Date;
+import seedu.club.model.task.Description;
+import seedu.club.model.task.Task;
+import seedu.club.model.task.Time;
+
+/**
+ * Parses input arguments and creates a new AssignTaskCommand object
+ */
+public class AssignTaskCommandParser implements Parser<AssignTaskCommand> {
+
+    @Override
+    public AssignTaskCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_DESCRIPTION, PREFIX_TIME, PREFIX_DATE, PREFIX_MATRIC_NUMBER);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_DESCRIPTION, PREFIX_TIME, PREFIX_DATE, PREFIX_MATRIC_NUMBER)
+                || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignTaskCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            Description description = ParserUtil.parseDescription(argMultimap.getValue(PREFIX_DESCRIPTION).get());
+            Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get());
+            Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME).get());
+            MatricNumber matricNumber = ParserUtil.parseMatricNumber(argMultimap.getValue(PREFIX_MATRIC_NUMBER).get());
+
+            long currentTimeMillis = System.currentTimeMillis();
+            String enteredDateString = date.getDate() + " " + time.getTime();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            long enteredDateMillis = Long.MIN_VALUE;
+
+            try {
+                java.util.Date enteredDate = formatter.parse(enteredDateString);
+                enteredDateMillis = enteredDate.getTime();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (enteredDateMillis < currentTimeMillis) {
+                throw new IllegalValueException(Messages.MESSAGE_DATE_ALREADY_PASSED);
+            }
+
+            Task newTask = new Task(description, time, date);
+
+            return new AssignTaskCommand(newTask, matricNumber);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+}
+```
 ###### \java\seedu\club\logic\parser\ChangeAssigneeCommandParser.java
 ``` java
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_MATRIC_NUMBER;
+
+import java.util.stream.Stream;
 
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
@@ -635,6 +875,11 @@ public class ChangeAssigneeCommandParser implements Parser<ChangeAssigneeCommand
     public ChangeAssigneeCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_MATRIC_NUMBER);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_MATRIC_NUMBER)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ChangeAssigneeCommand.MESSAGE_USAGE));
+        }
 
         Index index;
 
@@ -653,6 +898,14 @@ public class ChangeAssigneeCommandParser implements Parser<ChangeAssigneeCommand
             throw new ParseException(ive.getMessage(), ive);
         }
     }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
 }
 ```
 ###### \java\seedu\club\logic\parser\ChangeTaskStatusCommandParser.java
@@ -660,6 +913,8 @@ public class ChangeAssigneeCommandParser implements Parser<ChangeAssigneeCommand
 import static java.util.Objects.requireNonNull;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_STATUS;
+
+import java.util.stream.Stream;
 
 import seedu.club.commons.core.index.Index;
 import seedu.club.commons.exceptions.IllegalValueException;
@@ -677,6 +932,11 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STATUS);
 
+        if (!arePrefixesPresent(argMultimap, PREFIX_STATUS)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ChangeTaskStatusCommand.MESSAGE_USAGE));
+        }
+
         Index index;
 
         try {
@@ -692,6 +952,14 @@ public class ChangeTaskStatusCommandParser implements Parser<ChangeTaskStatusCom
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
 ```
@@ -1715,7 +1983,7 @@ public class EmailCommandParser implements Parser<EmailCommand> {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                defaultGroup, member.getTags());
+                defaultGroup, member.getTags(), member.getCredentials(), member.getProfilePhoto());
 
         try {
             updateMember(member, newMember);
@@ -1782,14 +2050,24 @@ public class EmailCommandParser implements Parser<EmailCommand> {
      * @return number of tasks updated.
      * @throws DuplicateTaskException if there is already a task with similar attributes (regardless of status).
      */
-    public int updateTask(Member target, Member editedMember) throws DuplicateTaskException {
+    public int updateTaskHelper(Member target, Member editedMember) throws DuplicateTaskException {
         ObservableList<Task> taskObservableList = tasks.asObservableList();
         if (target.getMatricNumber().equals(editedMember.getMatricNumber())) {
-            return 0;
+            return ZERO;
         }
+        int numberOfTasksUpdated = ZERO;
+        numberOfTasksUpdated = updateTasks(target, editedMember, taskObservableList, numberOfTasksUpdated);
+        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
+        return numberOfTasksUpdated;
 
-        int numberOfTasksUpdated = 0;
+    }
 
+    /**
+     * Updates tasks by looping through the task list.
+     * @throws DuplicateTaskException if the update causes a duplicate task.
+     */
+    private int updateTasks(Member target, Member editedMember, ObservableList<Task> taskObservableList,
+                            int numberOfTasksUpdated) throws DuplicateTaskException {
         for (Task task : taskObservableList) {
             Task editedTask = null;
             String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
@@ -1798,31 +2076,66 @@ public class EmailCommandParser implements Parser<EmailCommand> {
             if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)
                     && task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
-                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
-                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
-
-                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
-                        newAssignor, newAssignee, task.getStatus());
-                tasks.setTaskIgnoreStatus(task, editedTask);
-                numberOfTasksUpdated++;
+                numberOfTasksUpdated = updateWhenSameAssignorAndAssignee(numberOfTasksUpdated, task,
+                        editedMemberMatricNumberString);
             } else if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
-                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
-                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
-                        newAssignor, task.getAssignee(), task.getStatus());
-                tasks.setTaskIgnoreStatus(task, editedTask);
-                numberOfTasksUpdated++;
+                numberOfTasksUpdated = updateWhenSameAssignor(numberOfTasksUpdated, task,
+                        editedMemberMatricNumberString);
             } else if (task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
-                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
-                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
-                        task.getAssignor(), newAssignee, task.getStatus());
-                tasks.setTaskIgnoreStatus(task, editedTask);
-                numberOfTasksUpdated++;
+
+                numberOfTasksUpdated = updateWhenSameAssignee(numberOfTasksUpdated, task,
+                        editedMemberMatricNumberString);
             }
         }
-        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
         return numberOfTasksUpdated;
+    }
 
+    /**
+     * Updates task which has Assignee same as targetMember's Matric Number
+     * @throws DuplicateTaskException if the update results in a duplicate task.
+     */
+    private int updateWhenSameAssignee(int numberOfTasksUpdated, Task task,
+                                       String editedMemberMatricNumberString) throws DuplicateTaskException {
+        Task editedTask;
+        Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+        editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                task.getAssignor(), newAssignee, task.getStatus());
+        tasks.setTaskIgnoreStatus(task, editedTask);
+        numberOfTasksUpdated++;
+        return numberOfTasksUpdated;
+    }
+
+    /**
+     * Updates task which has Assignor same as targetMember's Matric Number
+     * @throws DuplicateTaskException if the update results in a duplicate task.
+     */
+    private int updateWhenSameAssignor(int numberOfTasksUpdated, Task task,
+                                       String editedMemberMatricNumberString) throws DuplicateTaskException {
+        Task editedTask;
+        Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+        editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                newAssignor, task.getAssignee(), task.getStatus());
+        tasks.setTaskIgnoreStatus(task, editedTask);
+        numberOfTasksUpdated++;
+        return numberOfTasksUpdated;
+    }
+
+    /**
+     * Updates task which has Assignor and Assignee same as targetMember's Matric Number
+     * @throws DuplicateTaskException if the update results in a duplicate task.
+     */
+    private int updateWhenSameAssignorAndAssignee(int numberOfTasksUpdated, Task task,
+                                                  String editedMemberMatricNumberString) throws DuplicateTaskException {
+        Task editedTask;
+        Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+        Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+
+        editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                newAssignor, newAssignee, task.getStatus());
+        tasks.setTaskIgnoreStatus(task, editedTask);
+        numberOfTasksUpdated++;
+        return numberOfTasksUpdated;
     }
 
     /**
@@ -1830,7 +2143,7 @@ public class EmailCommandParser implements Parser<EmailCommand> {
      */
     public int removeTasksOfMember(Member member) {
 
-        int numberOfTasksRemoved = 0;
+        int numberOfTasksRemoved = ZERO;
         Iterator<Task> it = tasks.iterator();
         while (it.hasNext()) {
             Task task = it.next();
@@ -2294,24 +2607,21 @@ public class Group {
     @Override
     public void deleteTask(Task targetTask) throws TaskNotFoundException, TaskCannotBeDeletedException {
         Assignor assignor = targetTask.getAssignor();
-        Assignee assignee = targetTask.getAssignee();
         String currentMember = getLoggedInMember().getMatricNumber().toString();
-        checkIfTaskCanBeDeleted(assignor, assignee, currentMember);
+        checkIfTaskCanBeDeleted(assignor, currentMember);
         clubBook.deleteTask(targetTask);
         indicateClubBookChanged();
     }
 
     /**
-     * Checks if the {@code String currentMember} is either the {@code assignor} or the {@code assignee} of the task.
+     * Checks if the {@code String currentMember} is the {@code assignor} of the task.
      * @throws TaskCannotBeDeletedException if the task cannot be deleted.
      */
-    private void checkIfTaskCanBeDeleted(Assignor assignor, Assignee assignee, String currentMember)
+    private void checkIfTaskCanBeDeleted(Assignor assignor, String currentMember)
             throws TaskCannotBeDeletedException {
         assert assignor != null : "Null value of Assignor";
-        assert assignee != null : "Null value of Assignee";
         assert currentMember != null : "Null value of currentMember";
-        if (!currentMember.equalsIgnoreCase(assignor.getValue())
-                && !currentMember.equalsIgnoreCase(assignee.getValue())) {
+        if (!currentMember.equalsIgnoreCase(assignor.getValue())) {
             throw new TaskCannotBeDeletedException();
         }
     }
@@ -3202,57 +3512,6 @@ public class XmlAdaptedTask {
 ```
 ###### \java\seedu\club\ui\MemberOverviewPanel.java
 ``` java
-    /**
-     * Loads the client page based on {@code client}
-     */
-    private void callClient(String client, String recipients, String subject, String body) {
-        if (client.equalsIgnoreCase(Client.VALID_CLIENT_GMAIL)) {
-            String gMailUrl = String.format(GMAIL_URL, recipients, subject, body);
-            loadGmailPage(gMailUrl);
-        } else if (client.equalsIgnoreCase(Client.VALID_CLIENT_OUTLOOK)) {
-            String outlookUrl = String.format(OUTLOOK_URL, recipients, subject, body);
-            loadOutlookPage(outlookUrl);
-        }
-    }
-
-    /**
-     * loads the 'Compose Email' page based on the {@code outlookUrl} in Outlook
-     * adapted from https://www.codeproject.com/Questions/398241/how-to-open-url-in-java
-     */
-    private void loadOutlookPage(String outlookUrl) {
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                try {
-                    desktop.browse(URI.create(outlookUrl));
-                    return;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * loads the 'Compose Email' page based on the {@code gMailUrl} in GMail
-     * adapted from https://www.codeproject.com/Questions/398241/how-to-open-url-in-java
-     */
-    private void loadGmailPage(String gMailUrl) {
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                try {
-                    desktop.browse(URI.create(gMailUrl));
-                    return;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-```
-###### \java\seedu\club\ui\MemberOverviewPanel.java
-``` java
     @Subscribe
     private void handleSendingEmailEvent(SendEmailRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Sending email via "
@@ -3410,7 +3669,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.club.commons.core.LogsCenter;
-import seedu.club.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.club.model.task.Task;
 
 /**
@@ -3435,17 +3693,6 @@ public class TaskListPanel extends UiPart<Region> {
 
     public void setConnections(ObservableList<Task> taskList) {
         setMemberListView(taskList);
-        setEventHandlerForSelectionChangeEvent();
-    }
-
-    private void setEventHandlerForSelectionChangeEvent() {
-        taskListView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        logger.fine("Selection in task list panel changed to : '" + newValue + "'");
-                        raise(new TaskPanelSelectionChangedEvent(newValue));
-                    }
-                });
     }
 
     public void setMemberListView(ObservableList<Task> taskList) {
