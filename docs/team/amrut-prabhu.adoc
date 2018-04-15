@@ -8,19 +8,18 @@
 
 *Club Connect* is a computer application targeted at student club members at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier and more effective.
-It provides all members of the club with they ability to browse through profiles of other members, participate in polls,
+It provides all members of the club with the ability to browse through profiles of other members, participate in polls,
 and manage club-related tasks.
 
-*Club Connect* is an application that is targeted at those who prefer using the keyboard over a mouse.
-So, it uses a Command Line Interface (CLI) for input.
+Since Club Connect is targeted at those who prefer using the keyboard over a mouse, it uses a Command Line Interface (CLI) for input.
 However, all the output is displayed in a traditional Graphical User Interface (GUI) -
 which is just computer jargon for a display that includes panes, menus and message boxes.
 
 == 2. About this portfolio
 
-This project portfolio documents my contributions to the Club Connect project.
-It includes a summary of features that I implemented, other ways in which I contributed to the project,
-and extracts of my documentation in the Club Connect User Guide and Developer Guide.
+This project portfolio documents my contributions to the *Club Connect* project.
+It includes a summary of features that I implemented and other contributions to the project.
+Some extracts of my documentation in the Club Connect User Guide and Developer Guide are also included.
 
 == 3. Summary of contributions
 
@@ -36,37 +35,35 @@ and extracts of my documentation in the Club Connect User Guide and Developer Gu
                   (signing up all members to NUSync, for example), the `export` command comes in handy.
                   It generates a file containing all the relevant information in a user friendly form.
                   This information can then be easily managed and modified outside the application.
-** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software, from `Commons` to `Storage`.
+** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software.
                 Though the implementation of these features is intuitive and makes use of existing code wherever possible,
                 it was challenging as it required the creation of a CsvUtil class (to handle parsing) from scratch.
                 It is also made robust in order to prevent frustration in users.
-** Relevant pull requests:
+** Relevant pull requests: https://github.com/CS2103JAN2018-W15-B4/main/pull/126[#126] and https://github.com/CS2103JAN2018-W15-B4/main/pull/155[#155],
 
-* *Minor enhancement*: This enhancement added support for a profile photos for each member.
+* *Minor enhancement*: This enhancement added support for a profile photo for each member.
 ** What it does: This enhancement allows the logged in members to change their profile photo.
                 Similarly, they can choose to remove their profile photo as well.
 ** Justification: Since most student clubs have a large number of members, members may find it difficult to identify others by name alone.
                   Having the ability to add a profile photo for yourself makes it much easier for others to identify you when they need to contact you.
-** Highlights: This enhancement is an end-to-end feature and makes use of all components of the software, from `Commons` to `Ui`.
-                It was challenging as the feature had to handle the image files efficiently, and had to allow the application to remain portable.
+** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software, from `Storage` to `Ui`.
+                It was challenging as the feature had to handle the reading and writing of image files efficiently, and had to allow the application to remain portable.
+** Relevant pull requests: https://github.com/CS2103JAN2018-W15-B4/main/pull/106[#106]
 
-* *Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
+* *Code contributed*: [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
 
 * *Other contributions*:
 ** Project management on GitHub:
 *** Created necessary labels
 *** Updated descriptions and labels of PRs (where necessary)
 *** Organised and assigned issues
-*** Managed releases `v1.5rc` and `v1.5` (2 releases)
+*** Managed release `v1.5rc` (1 release)
 
 ** Enhancements to existing features:
 *** Changed the implementation of UniqueTagList and added the `deletetag` command
     (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/68[#68] and https://github.com/CS2103JAN2018-W15-B4/main/pull/77[#77])
-*** Updated the GUI look and color scheme (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/218[#218],
-    https://github.com/CS2103JAN2018-W15-B4/main/pull/219[#219], https://github.com/CS2103JAN2018-W15-B4/main/pull/224[#224]
-    and https://github.com/CS2103JAN2018-W15-B4/main/pull/234[#234])
-*** Refactored the codebase to fit the context of our application (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/76/files[#76],
-    https://github.com/CS2103JAN2018-W15-B4/main/pull/86[#86] and https://github.com/CS2103JAN2018-W15-B4/main/pull/87[#87])
+*** Updated the GUI look and color scheme (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/219[#219] and https://github.com/CS2103JAN2018-W15-B4/main/pull/224[#224])
+*** Refactored the codebase to fit the context of our application (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/86[#86] and https://github.com/CS2103JAN2018-W15-B4/main/pull/87[#87])
 
 ** Documentation:
 *** General updates to the User Guide (Pull request https://github.com/CS2103JAN2018-W15-B4/main/pull/95[#95])
@@ -74,17 +71,14 @@ and extracts of my documentation in the Club Connect User Guide and Developer Gu
     https://github.com/CS2103JAN2018-W15-B4/main/pull/95[#95] and https://github.com/CS2103JAN2018-W15-B4/main/pull/172[#172])
 *** Maintained the `Glossary` section of the Developer Guide (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/48[#48] and
     https://github.com/CS2103JAN2018-W15-B4/main/pull/60[#60])
-*** Maintained the Developer Guide
 
 ** Community:
 *** Ensured that codebase was consistent and clean
 *** Reported bugs and suggestions for other teams in the class (https://github.com/CS2103JAN2018-T16-B2/main/issues/151[1],
-https://github.com/CS2103JAN2018-T16-B2/main/issues/136[2], https://github.com/CS2103JAN2018-T16-B2/main/issues/133[3],
-https://github.com/CS2103JAN2018-T16-B2/main/issues/161[4], https://github.com/CS2103JAN2018-T16-B2/main/issues/131[5],
-https://github.com/CS2103JAN2018-T16-B2/main/issues/134[6], https://github.com/CS2103JAN2018-T16-B2/main/issues/157[7] and
-https://github.com/CS2103JAN2018-T16-B2/main/issues/138[8])
+https://github.com/CS2103JAN2018-T16-B2/main/issues/136[2], https://github.com/CS2103JAN2018-T16-B2/main/issues/133[3] and
+https://github.com/CS2103JAN2018-T16-B2/main/issues/161[4]
 
-*** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/53[#53],
+*** PRs reviewed (with non-trivial review comments):
 https://github.com/CS2103JAN2018-W15-B4/main/pull/74[#74], https://github.com/CS2103JAN2018-W15-B4/main/pull/146[#146] and
 https://github.com/CS2103JAN2018-W15-B4/main/pull/167[#167])
 
@@ -94,9 +88,9 @@ https://github.com/CS2103JAN2018-W15-B4/main/pull/167[#167])
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-=== 4.1. Major Enhancement : Member Data Management
+=== 4.1. Major Enhancement: Member Data Management
 
-This section contains extracts from the User Guide that are related to management of the data of members.
+This section contains extracts from the User Guide that are related to management of members' data.
 
 #Start of Extract (from User Guide)#
 
@@ -106,7 +100,7 @@ include::../UserGuide.adoc[tag=export]
 
 #End of Extract (from User Guide)#
 
-=== 4.2. Minor Enhancement : Profile Photo
+=== 4.2. Minor Enhancement: Profile Photo
 
 This section contains extracts from the User Guide that are related to profile photos.
 
@@ -121,10 +115,10 @@ include::../UserGuide.adoc[tag=removepic]
 == 5. Contributions to the Developer Guide
 
 |===
-|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|_Given below are sections that I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-=== 4.1. Major Enhancement : Member Data Management
+=== 5.1. Major Enhancement: Member Data Management
 
 This section contains an extract from the Developer Guide that is related to management of members' data.
 
@@ -134,7 +128,7 @@ include::../DeveloperGuide.adoc[tag=import]
 
 #End of Extract (from Developer Guide)#
 
-=== 4.2. Minor Enhancement : Changing Profile Photo
+=== 5.2. Minor Enhancement: Changing Profile Photo
 
 This section contains an extract from the Developer Guide that is related to changing your profile photo.
 
@@ -144,10 +138,10 @@ include::../DeveloperGuide.adoc[tag=profilephoto]
 
 #End of Extract (from Developer Guide)#
 
-== Appendix A : Other Sections in the User Guide
+== Appendix A: Other Sections in the User Guide
 
 |===
-|_Given below are other sections I contributed to the User Guide._
+|_Given below are other sections that I contributed to the User Guide._
 |===
 
 === A.1. Delete tag feature
@@ -170,10 +164,10 @@ include::../UserGuide.adoc[tag=v2.0]
 
 #End of Extract (from User Guide)#
 
-== Appendix B : Other Sections in the Developer Guide
+== Appendix B: Other Sections in the Developer Guide
 
 |===
-|_Given below are other sections I contributed to the Developer Guide._
+|_Given below are other sections that I contributed to the Developer Guide._
 |===
 
 #Start of Extract (from Developer Guide)#
