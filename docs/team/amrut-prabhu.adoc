@@ -57,16 +57,13 @@ Some extracts of my documentation in the Club Connect User Guide and Developer G
 *** Created necessary labels
 *** Updated descriptions and labels of PRs (where necessary)
 *** Organised and assigned issues
-*** Managed releases `v1.5rc` and `v1.5` (2 releases)
+*** Managed release `v1.5rc` (1 release)
 
 ** Enhancements to existing features:
 *** Changed the implementation of UniqueTagList and added the `deletetag` command
     (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/68[#68] and https://github.com/CS2103JAN2018-W15-B4/main/pull/77[#77])
-*** Updated the GUI look and color scheme (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/218[#218],
-    https://github.com/CS2103JAN2018-W15-B4/main/pull/219[#219], https://github.com/CS2103JAN2018-W15-B4/main/pull/224[#224]
-    and https://github.com/CS2103JAN2018-W15-B4/main/pull/234[#234])
-*** Refactored the codebase to fit the context of our application (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/76/files[#76],
-    https://github.com/CS2103JAN2018-W15-B4/main/pull/86[#86] and https://github.com/CS2103JAN2018-W15-B4/main/pull/87[#87])
+*** Updated the GUI look and color scheme (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/219[#219] and https://github.com/CS2103JAN2018-W15-B4/main/pull/224[#224])
+*** Refactored the codebase to fit the context of our application (Pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/86[#86] and https://github.com/CS2103JAN2018-W15-B4/main/pull/87[#87])
 
 ** Documentation:
 *** General updates to the User Guide (Pull request https://github.com/CS2103JAN2018-W15-B4/main/pull/95[#95])
@@ -81,7 +78,7 @@ Some extracts of my documentation in the Club Connect User Guide and Developer G
 https://github.com/CS2103JAN2018-T16-B2/main/issues/136[2], https://github.com/CS2103JAN2018-T16-B2/main/issues/133[3] and
 https://github.com/CS2103JAN2018-T16-B2/main/issues/161[4]
 
-*** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/53[#53],
+*** PRs reviewed (with non-trivial review comments):
 https://github.com/CS2103JAN2018-W15-B4/main/pull/74[#74], https://github.com/CS2103JAN2018-W15-B4/main/pull/146[#146] and
 https://github.com/CS2103JAN2018-W15-B4/main/pull/167[#167])
 
