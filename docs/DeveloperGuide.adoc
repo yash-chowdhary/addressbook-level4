@@ -925,38 +925,43 @@ As you can see, the `ExportCommand` is driven by the `NewExportDataAvailableEven
 image::SDforExport.png[width="800"]
 _Figure 53. High Level Sequence Diagram for the `export C:/Users/Admin/members.csv` Command_
 
-This event is handled by the `Storage` component.
-It makes use of the `CsvClubBookStorage` and `CsvUtil` classes to write data to the file specified by the export path.
-This is illustrated in Figure.
+This event is handled by the `Storage` component as shown in Figure 54.
 
-image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
+image::SDforExportEventHandling.png[width="650"]
+_Figure 54. High Level Sequence Diagram showing how the `Storage` component handles the `NewExportDataAvailableEvent`
 
-The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
-Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
-
-The actual reading of the profile photo from the path provided is done by the `Storage` component.
-It copies the photo as a <<bmp,bitmap image file>> (.bmp) to the Club Connect application's resources.
-
-The code used for reading and copying the file is as follows:
+`Storage` makes use of a `CsvClubBookStorage` object to write data to the file specified by the export path.
+This is shown in the code snippet below:
 
 [source, java]
 ----
-@Override
-public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException {
-    BufferedImage originalPhoto = null;
-
-    try {
-        logger.info("Profile Photo is being read from " + originalPhotoPath);
-
-        URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
-    . exception handling ...
-    }
+public void exportDataToFile(String data, File exportFile) throws IOException {
+    csvClubBookStorage.setClubBookFile(exportFile);
+    // ... logging ...
+    csvClubBookStorage.saveData(data);
 }
 ----
 
-The logged in member's details are then updated to include this new profile photo.
+Then, the `csvClubBookStorage` object gets the column headers for the file from the `CsvUtil` class:
 
+[source, java]
+----
+public void saveData(String data, File file) throws IOException {
+    // ... logging ...
+    String columnHeaders = CsvUtil.getHeaders();
+    String dataToExport = columnHeaders + data;
+    CsvFileStorage.saveDataToFile(file, dataToExport);
+}
+----
+
+Finally, the `CsvFileStorage` class saves the data to the file by using the `writeToFile` method from the `FileUtil` class.
+
+[source, java]
+----
+public static void saveDataToFile(File file, String data) throws IOException {
+    FileUtil.writeToFile(file, data);
+}
+----
 
 ==== Design Considerations
 

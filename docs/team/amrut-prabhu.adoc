@@ -122,11 +122,9 @@ include::../UserGuide.adoc[tag=removepic]
 
 === 4.1. Major Enhancement : Member Data Management
 
-This section contains extracts from the Developer Guide that are related to management of the data of members.
+This section contains an extract from the Developer Guide that is related to management of members' data.
 
 #Start of Extract (from Developer Guide)#
-
-include::../DeveloperGuide.adoc[tag=import]
 
 include::../DeveloperGuide.adoc[tag=export]
 
@@ -134,7 +132,7 @@ include::../DeveloperGuide.adoc[tag=export]
 
 === 4.2. Minor Enhancement : Changing Profile Photo
 
-This section contains extracts from the Developer Guide that are related to changing your profile photo.
+This section contains an extract from the Developer Guide that is related to changing your profile photo.
 
 #Start of Extract (from Developer Guide)#
 
@@ -175,6 +173,8 @@ include::../UserGuide.adoc[tag=v2.0]
 |===
 
 #Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=import]
 
 include::../DeveloperGuide.adoc[tag=glossary]
 
