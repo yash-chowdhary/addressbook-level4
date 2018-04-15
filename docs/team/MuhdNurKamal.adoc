@@ -2,6 +2,11 @@
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
+== About
+
+This project portfolio serves as a document to showcase my aptitude as a developer to potential employers.
+More projects will be added as I develop more applications.
+
 == PROJECT: Club Connect
 
 ---
