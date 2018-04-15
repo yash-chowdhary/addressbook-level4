@@ -659,7 +659,7 @@ Alias: `exp`
 ****
 * Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members in Club Connect to a CSV file.
 * CSV_FILE_PATH must be the absolute path to a CSV file.
-* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+* In order for this command to work correctly, ensure that none of the members have double quotes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
 * If the CSV file already exists, then the data in the file is overwritten.
 ****
@@ -775,7 +775,7 @@ You cannot overwrite existing members (i.e. you cannot edit details of members i
 You can save a Microsoft Excel spreadsheet as a CSV file by changing the file extension while saving the file.
 
 [TIP]
-TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
+To get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 

@@ -58,10 +58,6 @@ This portfolio page describes the contribution I have made to Club Connect’s d
 
 include::../UserGuide.adoc[tag=addtask]
 
-include::../UserGuide.adoc[tag=assigntask]
-
-include::../UserGuide.adoc[tag=changeassignee]
-
 include::../UserGuide.adoc[tag=changetaskstatus]
 
 #End of Extract (from User Guide)#
@@ -84,11 +80,9 @@ include::../UserGuide.adoc[tag=removegroup]
 
 #Start of Extract (from Developer Guide)#
 
-include::../DeveloperGuide.adoc[tag=tasks1]
+include::../DeveloperGuide.adoc[tag=addtask]
 
-include::../DeveloperGuide.adoc[tag=tasks2]
-
-include::../DeveloperGuide.adoc[tag=task-design]
+include::../DeveloperGuide.adoc[tag=taskstatus]
 
 #End of Extract (from Developer Guide)#
 
@@ -124,11 +118,33 @@ include::../DeveloperGuide.adoc[tag=dataencryption1]
 
 === 1. Auto-Complete Command Mechanism
 
+#Start of Extract (from Developer Guide)#
+
 include::../DeveloperGuide.adoc[tag=autocomplete]
 
-=== 2. Delete Tasks
+#End of Extract (from Developer Guide)#
+
+=== 2. Assign Tasks
 
 ==== 2.1 Contribution to User Guide
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=assigntask]
+
+#End of Extract (from User Guide)#
+
+=== 2.2 Contribution to Developer Guide
+
+#Start of Extract (from User Guide)#
+
+include::../DeveloperGuide.adoc[tag=assigntask]
+
+#End of Extract (from User Guide)#
+
+=== 3. Delete Tasks
+
+==== 3.1 Contribution to User Guide
 
 #Start of Extract (from User Guide)#
 
@@ -136,7 +152,7 @@ include::../UserGuide.adoc[tag=deletetask]
 
 #End of Extract (from User Guide)#
 
-==== 2.2 Contribution to Developer Guide
+==== 3.2 Contribution to Developer Guide
 
 #Start of Extract (from Developer Guide)#
 
@@ -144,9 +160,27 @@ include::../DeveloperGuide.adoc[tag=tasks-delete]
 
 #End of Extract (from Developer Guide)#
 
-=== 3. Viewing Tasks
+=== 4. Changing task assignee
 
-==== 3.1 Contribution to User Guide
+==== 4.1 Contribution to User Guide
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=changeassignee]
+
+#End of Extract (from User Guide)#
+
+==== 4.2 Contribution to Develop Guide
+
+#Start of Extract (from User Guide)#
+
+include::../DeveloperGuide.adoc[tag=assigntask]
+
+#End of Extract (from User Guide)#
+
+=== 5. Viewing Tasks
+
+==== 5.1 Contribution to User Guide
 
 #Start of Extract (from User Guide)#
 
@@ -156,7 +190,7 @@ include::../UserGuide.adoc[tag=viewmytasks]
 
 #End of Extract (from User Guide)#
 
-==== 3.2 Contribution to Developer Guide
+==== 5.2 Contribution to Developer Guide
 
 #Start of Extract (from Developer Guide)#
 
