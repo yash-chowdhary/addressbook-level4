@@ -786,6 +786,9 @@ Aliases: `s`, `show`
 * The index *must be a positive integer* `1, 2, 3, ...`
 ****
 
+[TIP]
+In order to get the UI to look as intended, check out <<Tips>>.
+
 Examples:
 
 * `list` +
