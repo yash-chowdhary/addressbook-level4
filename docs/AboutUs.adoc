@@ -21,17 +21,10 @@ Responsibilities: In charge of Model, Deliverables and deadlines
 
 === Amrut Prabhu
 image::amrut-prabhu.png[width="150", align="left"]
-{empty}[https://github.com/amrut-prabhu[github]] [https://github.com/CS2103JAN2018-W15-B4/main/tree/master/docs/team/amrut-prabhu.adoc[portfolio]]
+{empty}[https://github.com/amrut-prabhu[github]] [https://cs2103jan2018-w15-b4.github.io/main/team/amrut-prabhu.html[portfolio]]
 
-Role: DevOps +
-Responsibilities:
-
-* Implementation of importing and exporting data of members
-* Implementation of profile photo
-* Look and feel of the UI
-* Developer guide documentation
-* Code clean up and consistency
-* Project management
+Role: Developer +
+Responsibilities: In charge of UI Theme, Code Consistency and Project Management
 
 '''
 

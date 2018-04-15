@@ -1,6 +1,7 @@
 //@@author amrut-prabhu
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -37,13 +38,16 @@ public class ChangeProfilePhotoCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         //non absolute file path
-        assertParseFailure(parser, "./dummyImage.png", ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+        assertParseFailure(parser, "./dummyImage.png", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS + ChangeProfilePhotoCommand.MESSAGE_USAGE));
 
         //invalid file path
-        assertParseFailure(parser, currentDirectory.getAbsolutePath(), ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+        assertParseFailure(parser, currentDirectory.getAbsolutePath(), String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS + ChangeProfilePhotoCommand.MESSAGE_USAGE));
 
         //invalid file type
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/dummyImage.gif",
-                ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS
+                        + ChangeProfilePhotoCommand.MESSAGE_USAGE));
     }
 }
