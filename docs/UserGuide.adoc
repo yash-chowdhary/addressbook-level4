@@ -307,12 +307,12 @@ Changes the assignee of the 3rd task to `A6656789H` in the task listing.
 
 === Changing your profile photo : `changepic` (Since v1.2)
 
-Changes the photo displayed on your profile to the specified photo. +
+Changes the photo displayed on your profile to the photo specified by the path. +
 Format: `changepic PHOTO_PATH` +
 Aliases: `pic`, `profilepic`
 
 ****
-* PHOTO_PATH must be an absolute path to the photo.
+* PHOTO_PATH must be an absolute path to the photo file.
 * This command is only guaranteed to work for JPG (.jpg), and PNG (.png) files.
 * Since `changepic` is not an undoable command, you need to use the <<removepic,`removepic`>> command to reset your profile photo back to the default image.
 ****
@@ -329,9 +329,9 @@ To get the absolute path to the photo, see <<absolute-path, Absolute path of a f
 Examples:
 
 * `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
-Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
+Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's `Desktop`.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
-Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+Changes your profile picture to the "CathyRay.png" image in your `Downloads` folder.
 // end::changepic[]
 
 // tag::changetaskstatus[]
@@ -576,13 +576,13 @@ Aliases: `q`, `quit`
 // tag::export[]
 === Exporting Club Connect members: `export` (Since v1.3)
 
-Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
+Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file. +
 Format: 'export CSV_FILE_PATH` +
 Alias: `exp`
 
 ****
 * Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members in Club Connect to a CSV file.
-* CSV_FILE_PATH must be an absolute path to the CSV file.
+* CSV_FILE_PATH must be the absolute path to a CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
 * If the CSV file already exists, then the data in the file is overwritten.
@@ -592,14 +592,14 @@ Alias: `exp`
 You can import the generated CSV file from Microsoft Excel to get an even better view of the data.
 
 [TIP]
-TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
+To get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
 * `export C:/Users/John Doe/Desktop/members.csv` +
-Exports all members in Club Connect to the "members.csv" file on `John Doe` 's Desktop.
+Exports all members in Club Connect to the "members.csv" file on `John Doe` 's `Desktop`.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
-Exports all members in Club Connect to the "clubbook.csv" file on `Jane Doe` 's Desktop.
+Exports all members in Club Connect to the "clubbook.csv" file on `Jane Doe` 's `Desktop`.
 // end::export[]
 
 // tag::find[]
@@ -771,7 +771,7 @@ Aliases: `rmpic`, `defaultpic`, `delpic`
 This command cannot be undone. You will have to set your profile photo by using the <<changepic,`changepic`>> command again.
 
 [NOTE]
-If you have not set a profile photo, your profile photo will remain as the default photo.
+If you have not set a profile photo, your profile photo will still be the default photo.
 // end::removepic[]
 
 // tag::select[]
@@ -976,7 +976,7 @@ Here are some tips and tricks:
 . Install the Club Connect app on the other computer.
 . Overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
 
-* *Alternative command names*
+* *Alternative command names* +
 If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
 +
 Example: The `changepic` command uses `pic` as an alias.
