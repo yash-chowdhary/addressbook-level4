@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author yash-chowdhary
 import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -56,7 +56,7 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
 import seedu.club.model.task.exceptions.TasksAlreadyListedException;
 import seedu.club.testutil.TaskBuilder;
 
-//@@author yash-chowdhary
+
 public class AddTaskCommandTest {
 
     @Rule

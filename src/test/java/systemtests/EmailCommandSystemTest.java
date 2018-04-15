@@ -1,5 +1,5 @@
 package systemtests;
-//@@author yash-chowdhary
+
 import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_CLIENT;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
