@@ -110,7 +110,7 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Groups* should only contain letters and digits. They must not be empty.
 
-* *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
+* *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ("-").
 ====
 // end::valid-entries[]
 
@@ -278,14 +278,14 @@ Assigns a task to `A1122334K` with description `Buy Food` due on `03/06/2018` at
 // tag::changeassignee[]
 === Changing the assignee of a task : `changeassignee` (Since v1.5rc)
 
-Changes the status of a task in Club Connect. +
+Changes the assignee of a task in Club Connect. +
 Format: `changeassignee INDEX m/MATRIC_NUMBER` +
 Alias: `assignee`
 
 
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
-* You cannot change the `ASSIGNEE` to a member who has already been assigned a task with identical attributes by another `Exco` member.
+* You cannot change the `Assignee` to a member who has already been assigned a task with identical attributes by another `Exco` member.
 * Passing the current `Assignee` of the task in the input throws an error as there is no change.
 * No duplicate tasks are allowed.
 ****
@@ -543,7 +543,8 @@ Edits the group of the 3rd member to be `finance`.
 === Emailing club members: `email` (Since v1.2)
 
 Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
-Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
+Format A: `email g/GROUP c/CLIENT [s/SUBJECT] [b/BODY]` +
+Format B: `email t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 Alias: `mail`
 
 [NOTE]
@@ -743,9 +744,9 @@ Aliases: `rmgroup`, `delgroup`
 ****
 * Deletes the specified group from Club Connect.
 * Once the group is deleted, all members who were part of the group will be assigned to the default group `member`.
-* The group must not be a mandatory group (`member`) as that is the default group.
-* The group must exist in Club Connect.
-* The group must be in valid format (i.e. no white-spaces and non-empty).
+* The group must not be a mandatory group (`Member`) as that is the default group.
+* The group `Exco` cannot be deleted.
+* The group must exist in Club Connect and be in valid format (i.e. no white-spaces and non-empty).
 ****
 [IMPORTANT]
 This command is for `Exco` members only.
@@ -858,7 +859,7 @@ This command is for `Exco` members only.
 // tag::viewmytasks[]
 === Viewing tasks assigned to or assigned by you : `viewmytasks` (Since v1.4)
 
-Display all tasks created/assigned by the currently member in Club Connect. +
+Display all tasks created/assigned by the currently logged-in member in Club Connect. +
 
 [NOTE]
 The main purpose of this command is to enable `Exco` members to toggle between all tasks and those related to them. +
