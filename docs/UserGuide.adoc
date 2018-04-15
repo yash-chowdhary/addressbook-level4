@@ -936,8 +936,8 @@ e.g. `find James Jacob`
 e.g. `import C:/Users/Admin/Desktop/members.csv`
 * *List* : `list`
 * *Login* : `login u/USERNAME pw/PASSWORD` +
-* *Logout* : `logout`
 e.g. `login u/A0123456H pw/password`
+* *Logout* : `logout`
 * *Redo* : `redo`
 * *Remove Profile Picture* : `removepic` +
 * *Select* : `select INDEX` +
