@@ -332,20 +332,6 @@ public class CsvUtil {
     }
 
     /**
-     * Saves the data to the file in csv format.
-     *
-     * @param file A valid existing csv file.
-     * @throws IOException Thrown if there is an error writing to the file.
-     */
-    public static void saveDataToFile(File file, String data) throws IOException {
-        requireNonNull(file);
-        requireNonNull(data);
-
-        logger.fine("Writing headers and info of members to the file");
-        FileUtil.writeToFile(file, data);
-    }
-
-    /**
      * Loads a {@code UniqueMemberList} from the data in the csv file.
      * Assumes file exists.
      * Ignores DataConversionException and DuplicateMemberException.
@@ -360,7 +346,7 @@ public class CsvUtil {
         String data = FileUtil.readFromFile(file);
         String[] membersData = data.split("\n");
 
-        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
+        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains column headers
             try {
                 Member member = getMember(membersData[i]);
                 importedMembers.add(member);
