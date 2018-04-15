@@ -10,7 +10,7 @@ import seedu.club.commons.exceptions.PhotoWriteException;
 public interface PhotoStorage {
 
     /**
-     * Returns UserPrefs data from storage.
+     * Makes a copy of the image specified by {@code originalPhotoPath} with the {@code newPhotoName}.
      *
      * @param originalPhotoPath The absolute file path of the {@link seedu.club.model.member.ProfilePhoto}.
      * @param newPhotoName The file name of the copy of the photo specified by {@code originalPhotoPath}.

@@ -70,6 +70,11 @@ public class CsvClubBookStorage extends ComponentManager {
         return CsvFileStorage.readClubBook(importFile);
     }
 
+    /**
+     * Returns data from the file as a {@link UniqueMemberList}.
+     *
+     * @throws IOException Thrown if there is an error writing to the file.
+     */
     public void saveData(String data) throws IOException {
         saveData(data, file);
     }
@@ -85,6 +90,8 @@ public class CsvClubBookStorage extends ComponentManager {
 
         String columnHeaders = CsvUtil.getHeaders();
         String dataToExport = columnHeaders + data;
+
+        logger.fine("Writing headers and info of members to the file");
         CsvFileStorage.saveDataToFile(file, dataToExport);
     }
 }

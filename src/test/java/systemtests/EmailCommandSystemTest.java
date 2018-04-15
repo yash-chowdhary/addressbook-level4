@@ -1,5 +1,5 @@
 package systemtests;
-
+//@@author yash-chowdhary
 import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_CLIENT;
 import static seedu.club.logic.commands.CommandTestUtil.INVALID_GROUP;
@@ -76,6 +76,7 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         assertSelectedCardUnchanged();
     }
 
+    //@@author
     /**
      *Executes {@code command} and asserts that the:<br>
      * 1. Command box displays {@code command}.<br>
@@ -97,5 +98,6 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         assertStatusBarUnchanged();
     }
 
+    //@@author yash-chowdhary
 
 }

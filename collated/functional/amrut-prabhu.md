@@ -560,6 +560,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.commons.exceptions.PhotoReadException;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -601,8 +602,9 @@ public class ChangeProfilePhotoCommand extends Command {
         requireToLogIn();
         try {
             model.addProfilePhoto(profilePhoto.getPhotoPath());
-            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null, false,
-                    null, false));
+            EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(),
+                    model.getLoggedInMember(), false, null, false));
+            EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
             return new CommandResult(String.format(MESSAGE_CHANGE_PROFILE_PHOTO_SUCCESS, profilePhoto.getPhotoPath()));
         } catch (PhotoReadException pre) {
             throw new CommandException(String.format(MESSAGE_INVALID_PHOTO_PATH, profilePhoto.getPhotoPath()));
@@ -635,7 +637,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import seedu.club.commons.core.EventsCenter;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
@@ -681,24 +682,6 @@ public class DeleteTagCommand extends UndoableCommand {
         } catch (TagNotFoundException tnfe) {
             throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
         }
-    }
-
-    @Override
-    protected void preprocessUndoableCommand() throws CommandException {
-        requireToSignUp();
-        requireToLogIn();
-        List<Tag> lastShownList = model.getFilteredTagList();
-
-        if (!getMasterTagList().contains(tagToDelete)) {
-            throw new CommandException(MESSAGE_NON_EXISTENT_TAG);
-        }
-
-        int targetIndex = lastShownList.indexOf(tagToDelete);
-        tagToDelete = lastShownList.get(targetIndex);
-    }
-
-    private List<Tag> getMasterTagList() {
-        return new ArrayList<>(model.getClubBook().getTagList());
     }
 
     @Override
@@ -848,6 +831,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -872,6 +856,7 @@ public class RemoveProfilePhotoCommand extends Command {
         model.removeProfilePhoto();
         EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null,
                 false, null, false));
+        EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
         return new CommandResult(MESSAGE_REMOVE_PROFILE_PHOTO_SUCCESS);
     }
 
@@ -880,6 +865,8 @@ public class RemoveProfilePhotoCommand extends Command {
 ###### \java\seedu\club\logic\parser\ChangeProfilePhotoCommandParser.java
 ``` java
 package seedu.club.logic.parser;
+
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import seedu.club.commons.exceptions.IllegalValueException;
 import seedu.club.logic.commands.ChangeProfilePhotoCommand;
@@ -902,7 +889,8 @@ public class ChangeProfilePhotoCommandParser implements Parser<ChangeProfilePhot
             ProfilePhoto profilePhoto = ParserUtil.parseProfilePhoto(args);
             return new ChangeProfilePhotoCommand(profilePhoto);
         } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage(), ive);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS + ChangeProfilePhotoCommand.MESSAGE_USAGE), ive);
         }
     }
 
@@ -965,6 +953,8 @@ public class DeleteTagCommandParser implements Parser<DeleteTagCommand> {
 ``` java
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -989,7 +979,8 @@ public class ExportCommandParser implements Parser<ExportCommand> {
             File exportFile = ParserUtil.parseExportPath(args);
             return new ExportCommand(exportFile);
         } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage());
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                    + ExportCommand.MESSAGE_USAGE));
         } catch (IOException ioe) {
             throw new ParseException(String.format(MESSAGE_FILE_CREATION_ERROR, args));
         }
@@ -1000,6 +991,8 @@ public class ExportCommandParser implements Parser<ExportCommand> {
 ###### \java\seedu\club\logic\parser\ImportCommandParser.java
 ``` java
 package seedu.club.logic.parser;
+
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.io.File;
 
@@ -1022,7 +1015,8 @@ public class ImportCommandParser implements Parser<ImportCommand> {
             File importFile = ParserUtil.parseImportPath(args);
             return new ImportCommand(importFile);
         } catch (IllegalValueException ive) {
-            throw new ParseException(ive.getMessage());
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                    + ImportCommand.MESSAGE_USAGE));
         }
     }
 
@@ -1263,7 +1257,7 @@ public class ProfilePhoto {
     public static final String EMPTY_STRING = "";
     public static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
-            "The photo path should be an absolute path to a JPG or PNG image file.";
+            "The photo path should be an absolute path to a JPG or PNG image file.\n";
 
     private static final String[] validFileExtensions = {".jpg", ".png"};
     private static final int JPG_INDEX = 0;
@@ -1429,7 +1423,6 @@ public class ProfilePhoto {
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
         clubBook.changeLoggedInMemberProfilePhoto(newProfilePhotoPath);
-        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to: "
                 + getLoggedInMember().getProfilePhoto().getPhotoPath());
@@ -1567,14 +1560,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import seedu.club.commons.core.ComponentManager;
 import seedu.club.commons.core.LogsCenter;
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.model.member.UniqueMemberList;
 
 /**
  * A class to manage storage of ClubBook data as a csv file on the hard disk.
  */
-public class CsvClubBookStorage {
+public class CsvClubBookStorage extends ComponentManager {
 
     private static final Logger logger = LogsCenter.getLogger(CsvClubBookStorage.class);
 
@@ -1602,7 +1597,12 @@ public class CsvClubBookStorage {
      * @throws IOException if there was any problem when reading from the storage.
      */
     public UniqueMemberList readClubBook() throws IOException {
-        return readClubBook(file);
+        try {
+            return readClubBook(file);
+        } catch (IOException ioe) {
+            raise(new DataReadingExceptionEvent(ioe));
+            throw ioe;
+        }
     }
 
     /**
@@ -1793,7 +1793,7 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     public void copyOriginalPhotoFile(String originalPath, String newPhotoName)
             throws PhotoReadException, PhotoWriteException {
         logger.fine("Attempting to read photo from file: " + originalPath);
-        profilePhotoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
+        photoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
     }
 
     @Override
@@ -1828,11 +1828,23 @@ public class ProfilePhotoStorage implements  PhotoStorage {
         }
     }
 ```
-###### \java\seedu\club\ui\MemberCard.java
+###### \java\seedu\club\ui\LogInMemberBox.java
 ``` java
-    private static final Integer PHOTO_WIDTH = 100;
-    private static final Integer PHOTO_HEIGHT = 130;
-
+    /**
+     * Sets the profile photo of {@code member} to the displayed photo shape.
+     */
+    private void setProfilePhoto(ProfilePhoto currentPhoto) {
+        Image photo;
+        String photoPath = currentPhoto.getPhotoPath();
+        if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), photoWidth, photoHeight,
+                    false, true);
+        } else {
+            photo = new Image("file:" + photoPath, photoWidth, photoHeight, false, true);
+        }
+        profilePhoto.setImage(photo);
+    }
+}
 ```
 ###### \java\seedu\club\ui\MemberCard.java
 ``` java
@@ -1843,10 +1855,10 @@ public class ProfilePhotoStorage implements  PhotoStorage {
         Image photo;
         String photoPath = member.getProfilePhoto().getPhotoPath();
         if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
-            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), PHOTO_WIDTH, PHOTO_HEIGHT,
+            photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), photoWidth, photoHeight,
                     false, true);
         } else {
-            photo = new Image("file:" + photoPath, PHOTO_WIDTH, PHOTO_HEIGHT, false, true);
+            photo = new Image("file:" + photoPath, photoWidth, photoHeight, false, true);
         }
         profilePhoto.setImage(photo);
     }
