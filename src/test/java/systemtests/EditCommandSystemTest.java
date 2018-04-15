@@ -138,7 +138,7 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + NAME_DESC_BOB;
         memberToEdit = getModel().getFilteredMemberList().get(index.getZeroBased());
         editedMember = new MemberBuilder(memberToEdit).withName(VALID_NAME_BOB).build();
-        assertCommandSuccess(command, index, editedMember);
+        assertCommandSuccessShowFiltered(command, index, editedMember);
 
         /* Case: filtered member list, edit index within bounds of club book but out of bounds of member list
          * -> rejected
@@ -251,7 +251,6 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         try {
             expectedModel.updateMember(
                     expectedModel.getFilteredMemberList().get(toEdit.getZeroBased()), editedMember);
-            expectedModel.updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         } catch (DuplicateMatricNumberException | MemberNotFoundException | DuplicateTaskException e) {
             throw new IllegalArgumentException(
                     "editedMember is a duplicate in expectedModel, or it isn't found in the model.");
@@ -316,5 +315,74 @@ public class EditCommandSystemTest extends ClubBookSystemTest {
         assertSelectedCardUnchanged();
         assertCommandBoxShowsErrorStyle();
         assertStatusBarUnchanged();
+    }
+
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(String, Index, member, Index)} except that
+     * the browser url and selected card remain unchanged.
+     *
+     * @param toEdit the index of the current model's filtered list
+     * @see EditCommandSystemTest#assertCommandSuccess(String, Index, Member, Index)
+     */
+    private void assertCommandSuccessShowFiltered(String command, Index toEdit, Member editedMember) {
+        assertCommandSuccessShowFiltered(command, toEdit, editedMember, null);
+    }
+
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(String, Model, String, Index)} and in addition,<br>
+     * 1. Asserts that result display box displays the success message of executing {@code EditCommand}.<br>
+     * 2. Asserts that the model related components are updated to reflect the member at index {@code toEdit} being
+     * updated to values specified {@code editedMember}.<br>
+     *
+     * @param toEdit the index of the current model's filtered list.
+     * @see EditCommandSystemTest#assertCommandSuccess(String, Model, String, Index)
+     */
+    private void assertCommandSuccessShowFiltered(String command, Index toEdit, Member editedMember,
+                                      Index expectedSelectedCardIndex) {
+        Model expectedModel = getModel();
+        try {
+            expectedModel.updateMember(
+                    expectedModel.getFilteredMemberList().get(toEdit.getZeroBased()), editedMember);
+        } catch (DuplicateMatricNumberException | MemberNotFoundException | DuplicateTaskException e) {
+            throw new IllegalArgumentException(
+                    "editedMember is a duplicate in expectedModel, or it isn't found in the model.");
+        }
+
+        int numberOfTasksUpdated = 0;
+        assertCommandSuccessShowFiltered(command, expectedModel,
+                String.format(EditCommand.MESSAGE_EDIT_MEMBER_SUCCESS, editedMember, numberOfTasksUpdated),
+                expectedSelectedCardIndex);
+    }
+
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(String, Model, String, Index)} except that the
+     * browser url and selected card remain unchanged.
+     *
+     * @see EditCommandSystemTest#assertCommandSuccess(String, Model, String, Index)
+     */
+    private void assertCommandSuccessShowFiltered(String command, Model expectedModel, String expectedResultMessage) {
+        assertCommandSuccessShowFiltered(command, expectedModel, expectedResultMessage, null);
+    }
+
+    /**
+     * Executes {@code command} and in addition,<br>
+     * 1. Asserts that the command box displays an empty string.<br>
+     * 2. Asserts that the result display box displays {@code expectedResultMessage}.<br>
+     * 3. Asserts that the model related components equal to {@code expectedModel}.<br>
+     * 4. Asserts that the browser url and selected card update accordingly depending on the card at
+     * {@code expectedSelectedCardIndex}.<br>
+     * 5. Asserts that the status bar's sync status changes.<br>
+     * 6. Asserts that the command box has the default style class.<br>
+     * Verifications 1 to 3 are performed by
+     * {@code ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     *
+     * @see ClubBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandSuccessShowFiltered(String command, Model expectedModel, String expectedResultMessage,
+                                      Index expectedSelectedCardIndex) {
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertCommandBoxShowsDefaultStyle();
+        assertStatusBarUnchangedExceptSyncStatus();
     }
 }

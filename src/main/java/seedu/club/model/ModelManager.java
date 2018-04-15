@@ -214,7 +214,6 @@ public class ModelManager extends ComponentManager implements Model {
         String newProfilePhotoPath = SAVE_PHOTO_DIRECTORY + newFileName + PHOTO_FILE_EXTENSION;
 
         clubBook.changeLoggedInMemberProfilePhoto(newProfilePhotoPath);
-        updateFilteredMemberList(PREDICATE_SHOW_ALL_MEMBERS);
         indicateClubBookChanged();
         logger.fine("Member's profile photo has been set to: "
                 + getLoggedInMember().getProfilePhoto().getPhotoPath());
