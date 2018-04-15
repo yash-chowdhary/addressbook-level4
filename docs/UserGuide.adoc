@@ -986,12 +986,14 @@ So, both commands shown below can be used change your profile picture to the "jo
 `pic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
 [[absolute-path]]
-* *Absolute path of a file*
+* *Absolute path of a file* +
 To get the absolute path of a file on Windows, follow these steps:
 
 . Right-click on the file and select `Properties`. This will bring up a window containing the properties of the file.
 . Locate the path in the `General` section, next to the keywprd `Location`.
 . Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
+
++
 
 To get the absolute path of a file on MacOS, follow these steps:
 
