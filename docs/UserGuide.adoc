@@ -110,8 +110,10 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Groups* should only contain letters and digits. They must not be empty.
 
-* *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
+* *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ("-").
 ====
+// end::valid-entries[]
+
 // tag::SignUp[]
 === Signing up a member: `signup` (since v1.4)
 Signs up a member to Club Connect. +
@@ -173,7 +175,6 @@ Logouts out the user from Club Connect. +
 Format: `logout` +
 Alias: `signout`
 // end::LogOut[]
-// end::valid-entries[]
 
 // tag::add[]
 === Adding a member: `add`
@@ -248,7 +249,7 @@ Adds a task with description `Buy Food` due on `03/06/2018` at `15:00`.
 // end::addtask[]
 
 // tag::assigntask[]
-=== Adding a task: `assigntask` (Since v1.4)
+=== Assigning a task: `assigntask` (Since v1.4)
 
 Adds a task to Club Connect and assigns it to a member. +
 Format: `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME m/MATRIC_NUMBER` +
@@ -277,14 +278,14 @@ Assigns a task to `A1122334K` with description `Buy Food` due on `03/06/2018` at
 // tag::changeassignee[]
 === Changing the assignee of a task : `changeassignee` (Since v1.5rc)
 
-Changes the status of a task in Club Connect. +
+Changes the assignee of a task in Club Connect. +
 Format: `changeassignee INDEX m/MATRIC_NUMBER` +
 Alias: `assignee`
 
 
 ****
 * `INDEX` *must be a positive integer* 1, 2, 3, ...
-* You cannot change the `ASSIGNEE` to a member who has already been assigned a task with identical attributes by another `Exco` member.
+* You cannot change the `Assignee` to a member who has already been assigned a task with identical attributes by another `Exco` member.
 * Passing the current `Assignee` of the task in the input throws an error as there is no change.
 * No duplicate tasks are allowed.
 ****
@@ -306,12 +307,12 @@ Changes the assignee of the 3rd task to `A6656789H` in the task listing.
 
 === Changing your profile photo : `changepic` (Since v1.2)
 
-Changes the photo displayed on your profile to the specified photo. +
+Changes the photo displayed on your profile to the photo specified by the path. +
 Format: `changepic PHOTO_PATH` +
 Aliases: `pic`, `profilepic`
 
 ****
-* PHOTO_PATH must be an absolute path to the photo.
+* PHOTO_PATH must be an absolute path to the photo file.
 * This command is only guaranteed to work for JPG (.jpg), and PNG (.png) files.
 * Since `changepic` is not an undoable command, you need to use the <<removepic,`removepic`>> command to reset your profile photo back to the default image.
 ****
@@ -328,9 +329,9 @@ To get the absolute path to the photo, see <<absolute-path, Absolute path of a f
 Examples:
 
 * `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
-Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's Desktop.
+Changes your profile picture to the "john_doe.jpg" image on `John Doe` 's `Desktop`.
 * `changepic C:/Users/Admin/Downloads/CathyRay.png` +
-Changes your profile picture to the "CathyRay.png" image in your Downloads folder.
+Changes your profile picture to the "CathyRay.png" image in your `Downloads` folder.
 // end::changepic[]
 
 // tag::changetaskstatus[]
@@ -542,7 +543,8 @@ Edits the group of the 3rd member to be `finance`.
 === Emailing club members: `email` (Since v1.2)
 
 Opens up the chosen mail client's 'Compose Message' page in the system's default web browser with the relevant fields filled-in. The recipients will be the members that belong to the chosen `Group` or `Tag`.  +
-Format: `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
+Format A: `email g/GROUP c/CLIENT [s/SUBJECT] [b/BODY]` +
+Format B: `email t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
 Alias: `mail`
 
 [NOTE]
@@ -573,15 +575,15 @@ Format: `exit` +
 Aliases: `q`, `quit`
 
 // tag::export[]
-=== Exporting Club Connect data: `export` (Since v1.3)
+=== Exporting Club Connect members: `export` (Since v1.3)
 
-Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file.
+Exports the data of all members in Club Connect to a <<DeveloperGuide#csv,CSV>> file. +
 Format: 'export CSV_FILE_PATH` +
 Alias: `exp`
 
 ****
 * Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members in Club Connect to a CSV file.
-* CSV_FILE_PATH must be an absolute path to the CSV file.
+* CSV_FILE_PATH must be the absolute path to a CSV file.
 * In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
 * If the CSV file already exists, then the data in the file is overwritten.
@@ -591,14 +593,14 @@ Alias: `exp`
 You can import the generated CSV file from Microsoft Excel to get an even better view of the data.
 
 [TIP]
-TO get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
+To get the absolute path to the CSV file, see <<absolute-path, Absolute path of a file>>.
 
 Examples:
 
 * `export C:/Users/John Doe/Desktop/members.csv` +
-Exports all members in Club Connect to the "members.csv" file on `John Doe` 's Desktop.
+Exports all members in Club Connect to the "members.csv" file on `John Doe` 's `Desktop`.
 * `export C:/Users/Jane Doe/Desktop/clubbook.csv` +
-Exports all members in Club Connect to the "clubbook.csv" file on `Jane Doe` 's Desktop.
+Exports all members in Club Connect to the "clubbook.csv" file on `Jane Doe` 's `Desktop`.
 // end::export[]
 
 // tag::find[]
@@ -742,9 +744,9 @@ Aliases: `rmgroup`, `delgroup`
 ****
 * Deletes the specified group from Club Connect.
 * Once the group is deleted, all members who were part of the group will be assigned to the default group `member`.
-* The group must not be a mandatory group (`member`) as that is the default group.
-* The group must exist in Club Connect.
-* The group must be in valid format (i.e. no white-spaces and non-empty).
+* The group must not be a mandatory group (`Member`) as that is the default group.
+* The group `Exco` cannot be deleted.
+* The group must exist in Club Connect and be in valid format (i.e. no white-spaces and non-empty).
 ****
 [IMPORTANT]
 This command is for `Exco` members only.
@@ -770,7 +772,7 @@ Aliases: `rmpic`, `defaultpic`, `delpic`
 This command cannot be undone. You will have to set your profile photo by using the <<changepic,`changepic`>> command again.
 
 [NOTE]
-If you have not set a profile photo, your profile photo will remain as the default photo.
+If you have not set a profile photo, your profile photo will still be the default photo.
 // end::removepic[]
 
 // tag::select[]
@@ -857,7 +859,7 @@ This command is for `Exco` members only.
 // tag::viewmytasks[]
 === Viewing tasks assigned to or assigned by you : `viewmytasks` (Since v1.4)
 
-Display all tasks created/assigned by the currently member in Club Connect. +
+Display all tasks created/assigned by the currently logged-in member in Club Connect. +
 
 [NOTE]
 The main purpose of this command is to enable `Exco` members to toggle between all tasks and those related to them. +
@@ -975,7 +977,7 @@ Here are some tips and tricks:
 . Install the Club Connect app on the other computer.
 . Overwrite the empty data file it creates (`clubbook.xml`) with the data file from your previous `Club Connect` folder.
 
-* *Alternative command names*
+* *Alternative command names* +
 If you do not like the default command name or feel that it is too long, you can use one of its aliases to execute the command instead.
 +
 Example: The `changepic` command uses `pic` as an alias.
@@ -985,12 +987,14 @@ So, both commands shown below can be used change your profile picture to the "jo
 `pic C:/Users/John Doe/Desktop/john_doe.jpg` +
 
 [[absolute-path]]
-* *Absolute path of a file*
+* *Absolute path of a file* +
 To get the absolute path of a file on Windows, follow these steps:
 
 . Right-click on the file and select `Properties`. This will bring up a window containing the properties of the file.
 . Locate the path in the `General` section, next to the keywprd `Location`.
 . Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
+
++
 
 To get the absolute path of a file on MacOS, follow these steps:
 
@@ -1008,12 +1012,12 @@ image::CSV_format.png[height="350"]
 +
 The columns in the import file should be in the same order as shown in the figure above.
 All the tags of a member should be in a single cell, separated by commas (",").
-Also, to successfully import the data of a member, you have to make sure that their details conform to the <<constraints>>.
+Also, to successfully import the data of a member, you have to make sure that their details conform to the <<constraints, constraints>>.
 Figure 5 shows some examples of invalid entries with the corresponding reasons in red.
 +
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
-image::invalid_CSV_format.png[height="150"]
+image::invalid_CSV_format.png[height="110"]
 
 * *Member Profile* +
 In order for the member profile to look as intended when a member is selected using the `select` command, ensure that:

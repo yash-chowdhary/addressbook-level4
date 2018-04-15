@@ -130,7 +130,7 @@ This section contains an extract from the Developer Guide that is related to man
 
 #Start of Extract (from Developer Guide)#
 
-include::../DeveloperGuide.adoc[tag=export]
+include::../DeveloperGuide.adoc[tag=import]
 
 #End of Extract (from Developer Guide)#
 
@@ -178,7 +178,7 @@ include::../UserGuide.adoc[tag=v2.0]
 
 #Start of Extract (from Developer Guide)#
 
-include::../DeveloperGuide.adoc[tag=import]
+include::../DeveloperGuide.adoc[tag=export]
 
 include::../DeveloperGuide.adoc[tag=glossary]
 
