@@ -234,6 +234,7 @@ Aliases: `addp`, `poll`
 ****
 * A poll must have 1 question, and at least 1 answer.
 * Questions and answers must be non-empty.
+* Answers must be distinct, else the duplicates will be removed.
 ****
 Examples:
 
