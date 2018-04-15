@@ -76,6 +76,7 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         assertSelectedCardUnchanged();
     }
 
+    //@@author
     /**
      *Executes {@code command} and asserts that the:<br>
      * 1. Command box displays {@code command}.<br>
@@ -97,5 +98,6 @@ public class EmailCommandSystemTest extends ClubBookSystemTest {
         assertStatusBarUnchanged();
     }
 
+    //@@author yash-chowdhary
 
 }

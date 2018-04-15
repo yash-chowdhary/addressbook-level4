@@ -121,7 +121,7 @@ public class AddPollCommand extends UndoableCommand {
             + PREFIX_ANSWER + "April 14 "
             + PREFIX_ANSWER + "April 21 ";
 
-    public static final String MESSAGE_SUCCESS = "New poll added: %1$s";
+    public static final String MESSAGE_SUCCESS = "New poll added:\n%1$s";
     public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in Club Connect.";
 
     private final Poll toAdd;
@@ -357,7 +357,7 @@ public class VoteCommand extends UndoableCommand {
             + "Parameters: POLL_INDEX (must be a positive integer) ANSWER_INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 3 2";
 
-    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.";
+    public static final String MESSAGE_VOTE_SUCCESS = "Your vote has been recorded.\n%s";
     public static final String MESSAGE_VOTE_FAIL_ALREADY_VOTED = "You have already voted in this poll.";
 
     private final Index pollIndex;
@@ -380,8 +380,9 @@ public class VoteCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        String voteDetails;
         try {
-            model.voteInPoll(pollToVoteIn, answerIndex);
+            voteDetails = model.voteInPoll(pollToVoteIn, answerIndex);
         } catch (UserAlreadyVotedException userAlreadyVotedException) {
             throw new CommandException(MESSAGE_VOTE_FAIL_ALREADY_VOTED);
         } catch (PollNotFoundException questionNotFoundException) {
@@ -389,7 +390,7 @@ public class VoteCommand extends UndoableCommand {
         } catch (AnswerNotFoundException answerNotFoundException) {
             throw new AssertionError("The target answer cannot be missing");
         }
-        return new CommandResult(String.format(MESSAGE_VOTE_SUCCESS));
+        return new CommandResult(String.format(MESSAGE_VOTE_SUCCESS, voteDetails));
     }
 
     @Override
@@ -558,7 +559,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         for (Prefix prefix : FINDABLE_PREFIXES) {
             int prefixLength = prefix.toString().length();
             if (trimmedArgs.length() >= prefixLength && trimmedArgs.substring(0, prefixLength)
-                    .equalsIgnoreCase(prefix.toString())) {
+                    .equals(prefix.toString())) {
                 String[] findArgs = trimmedArgs.substring(prefixLength, trimmedArgs.length())
                         .trim().split("\\s+");
                 return new FindCommand(new FieldContainsKeywordsPredicate(
@@ -655,9 +656,9 @@ public class VoteCommandParser implements Parser<VoteCommand> {
         polls.add(poll);
     }
 
-    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+    public String voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
-        polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
+        return polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
     }
 ```
 ###### \java\seedu\club\model\member\FieldContainsKeywordsPredicate.java
@@ -747,26 +748,83 @@ public class FieldContainsKeywordsPredicate implements Predicate<Member> {
     }
 }
 ```
+###### \java\seedu\club\model\member\MatricNumber.java
+``` java
+import static java.util.Objects.requireNonNull;
+import static seedu.club.commons.util.AppUtil.checkArgument;
+
+/**
+ * Represents a member's matric number in the club book.
+ * Guarantees: immutable; is valid as declared in {@link #isValidMatricNumber(String)}
+ */
+public class MatricNumber {
+
+    public static final String MESSAGE_MATRIC_NUMBER_CONSTRAINTS =
+            "Member matric number must be non-empty, begin with a letter, have 7 digits in the middle, "
+                    + "and end with a letter";
+
+    public static final String MATRIC_NUMBER_VALIDATION_REGEX = "^[aA]\\d{7}[a-zA-Z]$";
+
+    public final String value;
+
+    /**
+     * Constructs a {@code MatricNumber}.
+     *
+     * @param matricNumber A valid matric number.
+     */
+    public MatricNumber(String matricNumber) {
+        requireNonNull(matricNumber);
+        checkArgument(isValidMatricNumber(matricNumber), MESSAGE_MATRIC_NUMBER_CONSTRAINTS);
+        this.value = matricNumber.toUpperCase();
+    }
+
+    /**
+     * Returns true if a given string is a valid member email.
+     */
+    public static boolean isValidMatricNumber(String test) {
+        return test.matches(MATRIC_NUMBER_VALIDATION_REGEX);
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof MatricNumber // instanceof handles nulls
+                && this.value.equals(((MatricNumber) other).value)); // state check
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+}
+```
 ###### \java\seedu\club\model\ModelManager.java
 ``` java
     @Override
     public synchronized void addPoll(Poll poll) throws DuplicatePollException {
+        requireNonNull(poll);
         clubBook.addPoll(poll);
         updateFilteredPollList(new PollIsRelevantToMemberPredicate(getLoggedInMember()));
         indicateClubBookChanged();
     }
 
     @Override
-    public void voteInPoll(Poll poll, Index answerIndex)
+    public String voteInPoll(Poll poll, Index answerIndex)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         requireAllNonNull(poll, answerIndex);
-
-        clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
+        String voteDetails = clubBook.voteInPoll(poll, answerIndex, getLoggedInMember().getMatricNumber());
         indicateClubBookChanged();
+        return voteDetails;
     }
 
     @Override
     public synchronized void deletePoll(Poll target) throws PollNotFoundException {
+        requireNonNull(target);
         clubBook.removePoll(target);
         indicateClubBookChanged();
     }
@@ -786,7 +844,7 @@ public class Answer {
     public static final String MESSAGE_ANSWER_NUMBER_ANSWERED_CONSTRAINTS =
             "Number answered for an answer should be non-negative";
     public static final String ANSWER_VALIDATION_REGEX = ".*\\S.*";
-    public static final String PREFIX_ANSWER = "Ans: ";
+    public static final String ANSWER_LABEL = "Ans: ";
     public static final int NUMBER_ZERO_VOTE_COUNT = 0;
 
     private String value;
@@ -838,7 +896,7 @@ public class Answer {
 
     @Override
     public String toString() {
-        return PREFIX_ANSWER + value;
+        return ANSWER_LABEL + value;
     }
 }
 ```
@@ -933,6 +991,7 @@ public class Poll {
     }
 
     private void setAnswers(List<Answer> answers) {
+        assert answers != null && !answers.isEmpty();
         List<Answer> clonedAnswers = new ArrayList<>();
         for (Answer answer : answers) {
             clonedAnswers.add(new Answer(answer.getValue(), answer.getVoteCount()));
@@ -966,17 +1025,21 @@ public class Poll {
      * @throws AnswerNotFoundException   if answerIndex is not answerIndex of any answers of this poll
      * @throws UserAlreadyVotedException if pollee has already voted in the poll
      */
-    public void vote(Index answerIndex, MatricNumber polleeMatricNumber) throws
+    public String vote(Index answerIndex, MatricNumber polleeMatricNumber) throws
             AnswerNotFoundException, UserAlreadyVotedException {
+        Answer answer;
         if (polleesMatricNumbers.contains(polleeMatricNumber)) {
             throw new UserAlreadyVotedException();
         } else {
             try {
-                answers.get(answerIndex.getZeroBased()).voteThisAnswer();
+                answer = answers.get(answerIndex.getZeroBased());
+                answer.voteThisAnswer();
+
             } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                 throw new AnswerNotFoundException();
             }
             polleesMatricNumbers.add(polleeMatricNumber);
+            return this.question + "\n" + answer;
         }
     }
 
@@ -990,8 +1053,8 @@ public class Poll {
      */
     @Override
     public String toString() {
-        return "[ " + question + " ]"
-                + answers.stream().map(Answer::toString).collect(Collectors.joining(","));
+        return question + "\n"
+                + answers.stream().map(Answer::toString).collect(Collectors.joining("\n"));
     }
 }
 ```
@@ -1051,6 +1114,7 @@ public class Question {
 
     public static final String MESSAGE_QUESTION_CONSTRAINTS = "You need a question for the poll.";
     public static final String QUESTION_VALIDATION_REGEX = ".*\\S.*";
+    public static final String QUESTION_LABEL = "Question: ";
 
     private String value;
 
@@ -1082,35 +1146,38 @@ public class Question {
 
     @Override
     public String toString() {
-        return value;
+        return QUESTION_LABEL + value;
     }
 }
 ```
 ###### \java\seedu\club\model\poll\UniquePollList.java
 ``` java
     /**
-     * Replaces the specified poll with a deep copy except that the copy has the specified answer
-     * increased it's vote count by 1.
+     * Replaces the specified {@code poll} with a deep copy except that the copy has the {@code answer}
+     * specified by {@code answerIndex} increased it's vote count by 1 and the {@code polleeMatricNumber} will be added
+     * to the {@code polleesMatricNumber} of the {@code poll}
      *
      * @param poll to be copied
-     * @param answerIndex of poll to be voted for
+     * @param answerIndex of the answer of the poll to be voted for
      * @param polleeMatricNumber of pollee who wants to vote for the answer of the poll
      *
      * @throws PollNotFoundException if poll is not in this list
      * @throws AnswerNotFoundException if answerIndex is not answerIndex of any answers of poll
      * @throws UserAlreadyVotedException if pollee has already voted in the poll
      */
-    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+    public String voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         int pollIndex = internalList.indexOf(poll);
+        String voteDetails;
         if (pollIndex == -1) {
             throw new PollNotFoundException();
         } else {
             Poll pollDeepCopy = new Poll(new Question(poll.getQuestion().getValue()),
                     poll.getAnswers(), poll.getPolleesMatricNumbers());
-            pollDeepCopy.vote(answerIndex, polleeMatricNumber);
+            voteDetails = pollDeepCopy.vote(answerIndex, polleeMatricNumber);
             internalList.set(pollIndex, pollDeepCopy);
         }
+        return voteDetails;
     }
 ```
 ###### \java\seedu\club\storage\XmlAdaptedAnswer.java
@@ -1655,7 +1722,7 @@ public class PollCard extends UiPart<Region> {
         super(FXML);
         this.poll = poll;
         id.setText(displayedIndex + ". ");
-        question.setText(poll.getQuestion().toString());
+        question.setText(poll.getQuestion().getValue());
 
         answerListPanel = new AnswerListPanel(poll.getAnswers(), poll, true);
         answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
@@ -1670,7 +1737,7 @@ public class PollCard extends UiPart<Region> {
         super(fxml);
         this.poll = poll;
         id.setText(displayedIndex + ". ");
-        question.setText(poll.getQuestion().toString());
+        question.setText(poll.getQuestion().getValue());
 
         answerListPanel = new AnswerListPanel(poll.getAnswers(), poll, false);
         answerListPanelPlaceholder.getChildren().add(answerListPanel.getRoot());
@@ -1840,53 +1907,58 @@ public class RestrictedPollCard extends PollCard {
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-
-<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<HBox xmlns:fx="http://javafx.com/fxml/1" id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308"
+      xmlns="http://javafx.com/javafx/8.0.121">
 
     <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150"/>
         </columnConstraints>
-        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" minHeight="33.0" prefHeight="106.0" prefWidth="213.0" GridPane.columnIndex="0">
+        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308"
+              prefWidth="213.0" GridPane.columnIndex="0">
             <padding>
-                <Insets bottom="5" left="15" right="5" top="2" />
+                <Insets bottom="5" left="15" right="5" top="2"/>
             </padding>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" prefHeight="65.0" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
-                <Label fx:id="choice" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true">
+            <HBox maxHeight="1.7976931348623157E308" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
+                <Label fx:id="choice" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308"
+                       styleClass="cell_big_label" wrapText="true">
                     <minWidth>
-                        <Region fx:constant="USE_PREF_SIZE" />
+                        <Region fx:constant="USE_PREF_SIZE"/>
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" styleClass="cell_big_label" maxHeight="1.7976931348623157E308" wrapText="true" />
+                <Label fx:id="answerValue" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308"
+                       styleClass="cell_big_label" wrapText="true"/>
             </HBox>
-         <VBox maxHeight="1.7976931348623157E308">
-            <children>
+            <VBox maxHeight="1.7976931348623157E308">
+                <children>
                     <Label fx:id="voteCount" maxHeight="1.7976931348623157E308" styleClass="cell_small_label">
                         <minWidth>
-                            <Region fx:constant="USE_PREF_SIZE" />
+                            <Region fx:constant="USE_PREF_SIZE"/>
                         </minWidth>
                     </Label>
-               <HBox>
-                  <children>
-                          <ProgressBar fx:id="votePercentageBar" maxWidth="160.0" prefHeight="18.0" prefWidth="160.0" progress="0.0">
-                        <HBox.margin>
-                           <Insets />
-                        </HBox.margin></ProgressBar>
-                     <Label fx:id="votePercentage" alignment="TOP_LEFT" styleClass="cell_small_label">
-                        <minWidth>
-                           <Region fx:constant="USE_PREF_SIZE" />
-                        </minWidth>
-                        <HBox.margin>
-                           <Insets />
-                        </HBox.margin>
-                     </Label>
-                  </children>
-               </HBox>
-            </children>
-         </VBox>
+                    <HBox>
+                        <children>
+                            <ProgressBar fx:id="votePercentageBar" maxWidth="160.0" prefHeight="18.0" prefWidth="160.0"
+                                         progress="0.0">
+                                <HBox.margin>
+                                    <Insets/>
+                                </HBox.margin>
+                            </ProgressBar>
+                            <Label fx:id="votePercentage" alignment="TOP_LEFT" styleClass="cell_small_label">
+                                <minWidth>
+                                    <Region fx:constant="USE_PREF_SIZE"/>
+                                </minWidth>
+                                <HBox.margin>
+                                    <Insets left="20.0"/>
+                                </HBox.margin>
+                            </Label>
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>
         </VBox>
         <rowConstraints>
-            <RowConstraints />
+            <RowConstraints/>
         </rowConstraints>
     </GridPane>
 </HBox>
@@ -1903,7 +1975,7 @@ public class RestrictedPollCard extends PollCard {
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="cardPane" fx:id="cardPane" maxHeight="1.7976931348623157E308" minWidth="0.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane maxHeight="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
@@ -1913,12 +1985,12 @@ public class RestrictedPollCard extends PollCard {
                 <Insets bottom="5" left="15" right="5" top="5" />
             </padding>
             <HBox maxHeight="1.7976931348623157E308" prefWidth="135.0" spacing="5" VBox.vgrow="ALWAYS">
-                <Label fx:id="choice" maxHeight="1.7976931348623157E308" styleClass="cell_big_label">
+                <Label fx:id="choice" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" styleClass="cell_big_label">
                     <minWidth>
                         <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="answerValue" maxHeight="1.7976931348623157E308" wrapText="true" styleClass="cell_big_label"/>
+                <Label fx:id="answerValue" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" styleClass="cell_big_label" wrapText="true" />
             </HBox>
         </VBox>
         <rowConstraints>

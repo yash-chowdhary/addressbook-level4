@@ -45,10 +45,8 @@ import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MemberNotFoundException;
 import seedu.club.model.member.exceptions.PasswordIncorrectException;
 import seedu.club.model.poll.Poll;
-import seedu.club.model.poll.exceptions.AnswerNotFoundException;
 import seedu.club.model.poll.exceptions.DuplicatePollException;
 import seedu.club.model.poll.exceptions.PollNotFoundException;
-import seedu.club.model.poll.exceptions.UserAlreadyVotedException;
 import seedu.club.model.tag.Tag;
 import seedu.club.model.tag.exceptions.TagNotFoundException;
 import seedu.club.model.task.Task;
@@ -68,6 +66,18 @@ public class ChangeProfilePhotoCommandTest {
 
     private String testPhotoPath = "./src/test/resources/photos/testPhoto.png";
     private File testPhotoFile = new File(testPhotoPath);
+
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    private static Set<Tag> getTagSet(String... strings) {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
+        }
+
+        return tags;
+    }
 
     @Test
     public void constructor_nullProfilePhoto_throwsNullPointerException() {
@@ -133,26 +143,15 @@ public class ChangeProfilePhotoCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
-    /**
-     * Returns a tag set containing the list of strings given.
-     */
-    private static Set<Tag> getTagSet(String... strings) {
-        HashSet<Tag> tags = new HashSet<>();
-        for (String s : strings) {
-            tags.add(new Tag(s));
-        }
-
-        return tags;
-    }
 
     /**
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) throws
-                PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
-            fail("This method should not be called.");
+        public String voteInPoll(Poll poll, Index answerIndex) {
+            fail("This method should not be called");
+            return null;
         }
 
         @Override
@@ -195,7 +194,7 @@ public class ChangeProfilePhotoCommandTest {
         }
 
         @Override
-        public void addMember(Member member) throws DuplicateMatricNumberException  {
+        public void addMember(Member member) throws DuplicateMatricNumberException {
             fail("This method should not be called");
         }
 
@@ -376,6 +375,7 @@ public class ChangeProfilePhotoCommandTest {
         public void addProfilePhoto(String originalPhotoPath) throws PhotoReadException {
             throw new PhotoReadException();
         }
+
 ```
 ###### \java\seedu\club\logic\commands\ChangeProfilePhotoCommandTest.java
 ``` java
@@ -548,9 +548,10 @@ public class ExportCommandTest {
     private class ModelStub implements Model {
 
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) throws
+        public String voteInPoll(Poll poll, Index answerIndex) throws
                 PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
             fail("This method should not be called.");
+            return null;
         }
 
         @Override
@@ -953,11 +954,11 @@ public class ImportCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
-
         @Override
-        public void voteInPoll(Poll poll, Index answerIndex) throws
+        public String voteInPoll(Poll poll, Index answerIndex) throws
                 PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
             fail("This method should not be called.");
+            return null;
         }
 
         @Override
@@ -1223,6 +1224,7 @@ public class ImportCommandTest {
 ``` java
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -1259,14 +1261,17 @@ public class ChangeProfilePhotoCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         //non absolute file path
-        assertParseFailure(parser, "./dummyImage.png", ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+        assertParseFailure(parser, "./dummyImage.png", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS + ChangeProfilePhotoCommand.MESSAGE_USAGE));
 
         //invalid file path
-        assertParseFailure(parser, currentDirectory.getAbsolutePath(), ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+        assertParseFailure(parser, currentDirectory.getAbsolutePath(), String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS + ChangeProfilePhotoCommand.MESSAGE_USAGE));
 
         //invalid file type
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/dummyImage.gif",
-                ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ProfilePhoto.MESSAGE_PHOTO_PATH_CONSTRAINTS
+                        + ChangeProfilePhotoCommand.MESSAGE_USAGE));
     }
 }
 ```
@@ -1274,6 +1279,7 @@ public class ChangeProfilePhotoCommandParserTest {
 ``` java
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -1306,15 +1312,18 @@ public class ExportCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         //non absolute file path
-        assertParseFailure(parser, "data/exportTestFile.csv", ParserUtil.MESSAGE_INVALID_CSV_PATH);
+        assertParseFailure(parser, "data/exportTestFile.csv", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INVALID_CSV_PATH + ExportCommand.MESSAGE_USAGE));
 
         //invalid file path
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/",
-                ParserUtil.MESSAGE_INVALID_CSV_PATH);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                        + ExportCommand.MESSAGE_USAGE));
 
         //invalid file type
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/importTestFile.txt",
-                ParserUtil.MESSAGE_INVALID_CSV_PATH);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                        + ExportCommand.MESSAGE_USAGE));
     }
 }
 ```
@@ -1322,6 +1331,7 @@ public class ExportCommandParserTest {
 ``` java
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -1353,15 +1363,18 @@ public class ImportCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         //non absolute file path
-        assertParseFailure(parser, "data/dummy.csv", ParserUtil.MESSAGE_INVALID_CSV_PATH);
+        assertParseFailure(parser, "data/dummy.csv", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INVALID_CSV_PATH + ImportCommand.MESSAGE_USAGE));
 
         //invalid file path
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/",
-                ParserUtil.MESSAGE_INVALID_CSV_PATH);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                        + ImportCommand.MESSAGE_USAGE));
 
         //invalid file type
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/importTestFile.txt",
-                ParserUtil.MESSAGE_INVALID_CSV_PATH);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                        + ImportCommand.MESSAGE_USAGE));
     }
 }
 ```
@@ -1481,16 +1494,20 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.ui.testutil.EventsCollectorRule;
 
 public class CsvClubBookStorageTest {
 
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/CsvClubBookStorageTest/");
     private static final String FILE_NAME = "TempClubBook.csv";
 
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -1523,6 +1540,17 @@ public class CsvClubBookStorageTest {
     public void read_missingFile_emptyResult() throws Exception {
         thrown.expect(FileNotFoundException.class);
         readClubBook("NonExistentFile.csv");
+    }
+
+    @Test
+    public void read_missingFile_eventRaised() throws Exception {
+        File exportFile = new File("NonExistentFile.csv");
+        CsvClubBookStorage csvClubBookStorage = new CsvClubBookStorage();
+        csvClubBookStorage.setClubBookFile(exportFile);
+
+        thrown.expect(FileNotFoundException.class);
+        csvClubBookStorage.readClubBook(); //file path not specified
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataReadingExceptionEvent);
     }
 
     @Test

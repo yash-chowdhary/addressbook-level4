@@ -1,11 +1,11 @@
 package seedu.club.commons.events.ui;
-
+//@@author yash-chowdhary
 import seedu.club.commons.events.BaseEvent;
 import seedu.club.model.email.Body;
 import seedu.club.model.email.Client;
 import seedu.club.model.email.Subject;
 
-//@@author yash-chowdhary
+
 /**
  * Event to send an email.
  */

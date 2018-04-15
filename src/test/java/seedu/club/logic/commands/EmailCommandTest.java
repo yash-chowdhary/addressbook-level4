@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author yash-chowdhary
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
@@ -29,7 +29,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 
-//@@author yash-chowdhary
+
 /**
  * Contains unit tests for {@code EmailCommand}.
  */
@@ -48,6 +48,7 @@ public class EmailCommandTest {
     private ObservableList<Member> observableList;
     private Member member;
 
+    //@@author
     @Before
     public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
@@ -62,6 +63,7 @@ public class EmailCommandTest {
         command.execute();
     }
 
+    //@@author yash-chowdhary
     @Test
     public void execute_validCommandToEmailGroupGmail_success() throws Exception {
         groupToEmail = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
@@ -77,6 +79,7 @@ public class EmailCommandTest {
         assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
     }
 
+    //@@author
     @Test
     public void execute_validCommandToEmailGroupOutlook_success() throws Exception {
         groupToEmail = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
@@ -92,6 +95,7 @@ public class EmailCommandTest {
         assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
     }
 
+    //@@author yash-chowdhary
     @Test
     public void execute_validCommandToEmailTagGmail_success() throws Exception {
         groupToEmail = null;
@@ -107,6 +111,7 @@ public class EmailCommandTest {
         assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
     }
 
+    //@@author
     @Test
     public void execute_validCommandToEmailTagOutlook_success() throws Exception {
         groupToEmail = null;
@@ -122,6 +127,7 @@ public class EmailCommandTest {
         assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
     }
 
+    //@@author yash-chowdhary
     @Test
     public void execute_nonExistentGroup_throwCommandException() {
         Group nonExistentGroup = new Group(NON_EXISTENT_GROUP);
@@ -146,6 +152,7 @@ public class EmailCommandTest {
         assertCommandFailure(emailCommand, model, expectedMessage);
     }
 
+    //@@author
     @Test
     public void execute_optionalSubject_success() throws Exception {
         groupToEmail = model.getFilteredMemberList().get(INDEX_FIRST_MEMBER.getZeroBased()).getGroup();
@@ -176,6 +183,7 @@ public class EmailCommandTest {
         assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
     }
 
+    //@@author yash-chowdhary
     @Test
     public void execute_optionalSubjectAndBody_success() throws Exception {
         groupToEmail = null;

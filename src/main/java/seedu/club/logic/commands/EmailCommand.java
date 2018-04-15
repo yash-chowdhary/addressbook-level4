@@ -1,6 +1,5 @@
 package seedu.club.logic.commands;
 //@@author yash-chowdhary
-
 import static seedu.club.commons.core.Messages.MESSAGE_NON_EXISTENT_GROUP;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_BODY;
 import static seedu.club.logic.parser.CliSyntax.PREFIX_CLIENT;

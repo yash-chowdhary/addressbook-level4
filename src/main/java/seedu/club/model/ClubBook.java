@@ -53,6 +53,7 @@ import seedu.club.model.task.exceptions.TaskNotFoundException;
  */
 public class ClubBook implements ReadOnlyClubBook {
 
+    private static final int ZERO = 0;
     private final UniqueMemberList members;
     private final UniqueTagList tags;
     private final UniquePollList polls;
@@ -576,14 +577,24 @@ public class ClubBook implements ReadOnlyClubBook {
      * @return number of tasks updated.
      * @throws DuplicateTaskException if there is already a task with similar attributes (regardless of status).
      */
-    public int updateTask(Member target, Member editedMember) throws DuplicateTaskException {
+    public int updateTaskHelper(Member target, Member editedMember) throws DuplicateTaskException {
         ObservableList<Task> taskObservableList = tasks.asObservableList();
         if (target.getMatricNumber().equals(editedMember.getMatricNumber())) {
-            return 0;
+            return ZERO;
         }
+        int numberOfTasksUpdated = ZERO;
+        numberOfTasksUpdated = updateTasks(target, editedMember, taskObservableList, numberOfTasksUpdated);
+        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
+        return numberOfTasksUpdated;
 
-        int numberOfTasksUpdated = 0;
+    }
 
+    /**
+     * Updates tasks by looping through the task list.
+     * @throws DuplicateTaskException if the update causes a duplicate task.
+     */
+    private int updateTasks(Member target, Member editedMember, ObservableList<Task> taskObservableList,
+                            int numberOfTasksUpdated) throws DuplicateTaskException {
         for (Task task : taskObservableList) {
             Task editedTask = null;
             String editedMemberMatricNumberString = editedMember.getMatricNumber().toString();
@@ -592,31 +603,66 @@ public class ClubBook implements ReadOnlyClubBook {
             if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)
                     && task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
-                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
-                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
-
-                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
-                        newAssignor, newAssignee, task.getStatus());
-                tasks.setTaskIgnoreStatus(task, editedTask);
-                numberOfTasksUpdated++;
+                numberOfTasksUpdated = updateWhenSameAssignorAndAssignee(numberOfTasksUpdated, task,
+                        editedMemberMatricNumberString);
             } else if (task.getAssignor().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
 
-                Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
-                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
-                        newAssignor, task.getAssignee(), task.getStatus());
-                tasks.setTaskIgnoreStatus(task, editedTask);
-                numberOfTasksUpdated++;
+                numberOfTasksUpdated = updateWhenSameAssignor(numberOfTasksUpdated, task,
+                        editedMemberMatricNumberString);
             } else if (task.getAssignee().getValue().equalsIgnoreCase(targetMemberMatricNumberString)) {
-                Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
-                editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
-                        task.getAssignor(), newAssignee, task.getStatus());
-                tasks.setTaskIgnoreStatus(task, editedTask);
-                numberOfTasksUpdated++;
+
+                numberOfTasksUpdated = updateWhenSameAssignee(numberOfTasksUpdated, task,
+                        editedMemberMatricNumberString);
             }
         }
-        logger.info("Updated " + numberOfTasksUpdated + "tasks in task list.");
         return numberOfTasksUpdated;
+    }
 
+    /**
+     * Updates task which has Assignee same as targetMember's Matric Number
+     * @throws DuplicateTaskException if the update results in a duplicate task.
+     */
+    private int updateWhenSameAssignee(int numberOfTasksUpdated, Task task,
+                                       String editedMemberMatricNumberString) throws DuplicateTaskException {
+        Task editedTask;
+        Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+        editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                task.getAssignor(), newAssignee, task.getStatus());
+        tasks.setTaskIgnoreStatus(task, editedTask);
+        numberOfTasksUpdated++;
+        return numberOfTasksUpdated;
+    }
+
+    /**
+     * Updates task which has Assignor same as targetMember's Matric Number
+     * @throws DuplicateTaskException if the update results in a duplicate task.
+     */
+    private int updateWhenSameAssignor(int numberOfTasksUpdated, Task task,
+                                       String editedMemberMatricNumberString) throws DuplicateTaskException {
+        Task editedTask;
+        Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+        editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                newAssignor, task.getAssignee(), task.getStatus());
+        tasks.setTaskIgnoreStatus(task, editedTask);
+        numberOfTasksUpdated++;
+        return numberOfTasksUpdated;
+    }
+
+    /**
+     * Updates task which has Assignor and Assignee same as targetMember's Matric Number
+     * @throws DuplicateTaskException if the update results in a duplicate task.
+     */
+    private int updateWhenSameAssignorAndAssignee(int numberOfTasksUpdated, Task task,
+                                                  String editedMemberMatricNumberString) throws DuplicateTaskException {
+        Task editedTask;
+        Assignee newAssignee = new Assignee(editedMemberMatricNumberString);
+        Assignor newAssignor = new Assignor(editedMemberMatricNumberString);
+
+        editedTask = new Task(task.getDescription(), task.getTime(), task.getDate(),
+                newAssignor, newAssignee, task.getStatus());
+        tasks.setTaskIgnoreStatus(task, editedTask);
+        numberOfTasksUpdated++;
+        return numberOfTasksUpdated;
     }
 
     /**
@@ -624,7 +670,7 @@ public class ClubBook implements ReadOnlyClubBook {
      */
     public int removeTasksOfMember(Member member) {
 
-        int numberOfTasksRemoved = 0;
+        int numberOfTasksRemoved = ZERO;
         Iterator<Task> it = tasks.iterator();
         while (it.hasNext()) {
             Task task = it.next();

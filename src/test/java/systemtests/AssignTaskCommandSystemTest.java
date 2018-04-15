@@ -183,6 +183,7 @@ public class AssignTaskCommandSystemTest extends ClubBookSystemTest {
 
     }
 
+    //@@author
     /**
      * Executes the {@code AssignTaskCommand} that adds {@code toAdd} to the model and asserts that:<br>
      * 1. Command box displays an empty string.<br>
