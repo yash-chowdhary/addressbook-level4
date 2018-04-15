@@ -42,13 +42,13 @@ public class TypicalMembers {
             .withEmail("johnd@example.com")
             .withPhone("98765432")
             .withMatricNumber("A8389539B")
-            .withGroup("pr")
+            .withGroup("Exco")
             .withTags("owesMoney", "head").build();
     public static final Member CARL = new MemberBuilder().withName("Carl Kurz")
             .withPhone("95352563")
             .withEmail("heinz@example.com")
             .withMatricNumber("A6076201A")
-            .withGroup("marketing").build();
+            .withGroup("Exco").build();
     public static final Member DANIEL = new MemberBuilder().withName("Daniel Meier")
             .withPhone("87652533")
             .withEmail("cornelia@example.com")
@@ -58,7 +58,7 @@ public class TypicalMembers {
             .withPhone("9482224")
             .withEmail("werner@example.com")
             .withMatricNumber("A1932279G")
-            .withGroup("marketing").build();
+            .withGroup("publicity").build();
     public static final Member FIONA = new MemberBuilder().withName("Fiona Kunz")
             .withPhone("9482427")
             .withEmail("lydia@example.com")

@@ -32,13 +32,19 @@
             <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
           </Menu>
         </MenuBar>
+        <SplitPane dividerPositions="0.95">
+            <StackPane VBox.vgrow="NEVER" fx:id="commandBoxPlaceholder" styleClass="pane-with-border">
+              <padding>
+                <Insets top="5" right="5" bottom="5" left="10" />
+              </padding>
+            </StackPane>
 
-        <StackPane VBox.vgrow="NEVER" fx:id="commandBoxPlaceholder" styleClass="pane-with-border">
-          <padding>
-            <Insets top="5" right="10" bottom="5" left="10" />
-          </padding>
-        </StackPane>
-
+            <StackPane VBox.vgrow="NEVER" fx:id="loginmemberPlaceholder" styleClass="pane-with-border">
+                <padding>
+                    <Insets top="5" right="10" bottom="5" />
+                </padding>
+            </StackPane>
+        </SplitPane>
         <StackPane VBox.vgrow="NEVER" fx:id="resultDisplayPlaceholder" styleClass="pane-with-border"
                    minHeight="100" prefHeight="147" maxHeight="180">
           <padding>
@@ -54,11 +60,12 @@
             <StackPane fx:id="memberListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
 
-          <StackPane fx:id="browserPlaceholder" minWidth="300" prefWidth="300" SplitPane.resizableWithParent="true">
+          <VBox minWidth="280" prefWidth="280" SplitPane.resizableWithParent="true">
             <padding>
               <Insets top="10" right="0" bottom="10" left="10" />
             </padding>
-          </StackPane>
+            <StackPane fx:id="browserPlaceholder" VBox.vgrow="ALWAYS"/>
+          </VBox>
 
           <VBox fx:id="pollList" minWidth="280" prefWidth="280" SplitPane.resizableWithParent="true">
             <padding>

@@ -159,10 +159,16 @@
     -fx-font-family: "Segoe UI";
     -fx-font-size: 20px;
     -fx-text-fill: #000000;
+    -fx-alignment: center;
 }
 
 .anchor-pane {
      -fx-background-color: derive(skyblue, 75%);
+}
+
+.loginpane {
+    -fx-background-color: #fff4b7;
+    -fx-border-style: solid;
 }
 
 .pane-with-border {
@@ -211,7 +217,7 @@
 }
 
 .grid-pane .anchor-pane {
-    -fx-background-color: derive(#cccccc, 30%);
+    -fx-background-color: derive(#cccccc, 20%);
 }
 
 .context-menu {
@@ -224,7 +230,7 @@
 
 .menu-bar {
     -fx-background-color: derive(white, 20%);
-    -fx-border-color: black;
+    -fx-border-color: black transparent black transparent;
 }
 
 .menu-bar .label {
@@ -317,7 +323,7 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #91e0e0;
+    -fx-background-color: #fff4b7;
     -fx-background-insets: 3;
 }
 

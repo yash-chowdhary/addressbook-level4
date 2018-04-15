@@ -24,6 +24,7 @@ import seedu.club.model.member.MatricNumber;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
@@ -225,7 +226,7 @@ public class ClubBook implements ReadOnlyClubBook {
      *
      * @throws MemberNotFoundException if the {@code key} is not in this {@code ClubBook}.
      */
-    public boolean removeMember(Member key) throws MemberNotFoundException {
+    public boolean removeMember(Member key) throws MemberNotFoundException, DeleteCurrentUserException {
         deleteTagsUniqueToMember(key);
         if (members.remove(key)) {
             return true;
@@ -243,9 +244,9 @@ public class ClubBook implements ReadOnlyClubBook {
         polls.add(poll);
     }
 
-    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+    public String voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
-        polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
+        return polls.voteInPoll(poll, answerIndex, polleeMatricNumber);
     }
     //@@author
 

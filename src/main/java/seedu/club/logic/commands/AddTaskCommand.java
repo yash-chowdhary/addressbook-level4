@@ -33,7 +33,7 @@ public class AddTaskCommand extends UndoableCommand {
             + PREFIX_TIME + "TIME\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_DESCRIPTION + "Book YIH Function Room 4 "
-            + PREFIX_DATE + "02/04/2018 "
+            + PREFIX_DATE + "02/06/2018 "
             + PREFIX_TIME + "17:00";
 
     public static final String MESSAGE_SUCCESS = "New task created.";

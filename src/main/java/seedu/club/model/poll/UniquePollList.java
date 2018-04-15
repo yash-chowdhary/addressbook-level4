@@ -54,28 +54,31 @@ public class UniquePollList implements Iterable<Poll> {
 
     //@@author MuhdNurKamal
     /**
-     * Replaces the specified poll with a deep copy except that the copy has the specified answer
-     * increased it's vote count by 1.
+     * Replaces the specified {@code poll} with a deep copy except that the copy has the {@code answer}
+     * specified by {@code answerIndex} increased it's vote count by 1 and the {@code polleeMatricNumber} will be added
+     * to the {@code polleesMatricNumber} of the {@code poll}
      *
      * @param poll to be copied
-     * @param answerIndex of poll to be voted for
+     * @param answerIndex of the answer of the poll to be voted for
      * @param polleeMatricNumber of pollee who wants to vote for the answer of the poll
      *
      * @throws PollNotFoundException if poll is not in this list
      * @throws AnswerNotFoundException if answerIndex is not answerIndex of any answers of poll
      * @throws UserAlreadyVotedException if pollee has already voted in the poll
      */
-    public void voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
+    public String voteInPoll(Poll poll, Index answerIndex, MatricNumber polleeMatricNumber)
             throws PollNotFoundException, AnswerNotFoundException, UserAlreadyVotedException {
         int pollIndex = internalList.indexOf(poll);
+        String voteDetails;
         if (pollIndex == -1) {
             throw new PollNotFoundException();
         } else {
             Poll pollDeepCopy = new Poll(new Question(poll.getQuestion().getValue()),
                     poll.getAnswers(), poll.getPolleesMatricNumbers());
-            pollDeepCopy.vote(answerIndex, polleeMatricNumber);
+            voteDetails = pollDeepCopy.vote(answerIndex, polleeMatricNumber);
             internalList.set(pollIndex, pollDeepCopy);
         }
+        return voteDetails;
     }
     //@@author
 

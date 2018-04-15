@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- @@author th14thmusician -->
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<StackPane styleClass="loginpane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox>
+        <ImageView fx:id="profilePhoto" fitHeight="45.0" fitWidth="34.0" style="-fx-background-color:white">
+            <HBox.margin>
+                <Insets bottom="1" left="1" right="4" top="1" />
+            </HBox.margin>
+        </ImageView>
+        <Label fx:id="currentlyloginMember" maxHeight="25.0" text="Log in to use Club Connect" translateY="10" />
+    </HBox>
+</StackPane>

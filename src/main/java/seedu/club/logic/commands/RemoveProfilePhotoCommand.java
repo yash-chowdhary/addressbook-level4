@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.logic.commands.exceptions.CommandException;
 
@@ -27,7 +28,9 @@ public class RemoveProfilePhotoCommand extends Command {
         requireToSignUp();
         requireToLogIn();
         model.removeProfilePhoto();
-        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), false));
+        EventsCenter.getInstance().post(new UpdateSelectionPanelEvent(model.getLoggedInMember(), null,
+                false, null, false));
+        EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
         return new CommandResult(MESSAGE_REMOVE_PROFILE_PHOTO_SUCCESS);
     }
 

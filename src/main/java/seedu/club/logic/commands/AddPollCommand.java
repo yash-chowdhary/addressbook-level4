@@ -33,7 +33,7 @@ public class AddPollCommand extends UndoableCommand {
             + PREFIX_ANSWER + "April 14 "
             + PREFIX_ANSWER + "April 21 ";
 
-    public static final String MESSAGE_SUCCESS = "New poll added: %1$s";
+    public static final String MESSAGE_SUCCESS = "New poll added:\n%1$s";
     public static final String MESSAGE_DUPLICATE_POLL = "This poll already exists in Club Connect.";
 
     private final Poll toAdd;

@@ -13,8 +13,8 @@ import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.club.logic.commands.CommandTestUtil.prepareRedoCommand;
 import static seedu.club.logic.commands.CommandTestUtil.prepareUndoCommand;
-import static seedu.club.testutil.TypicalIndexes.INDEX_SECOND_MEMBER;
-import static seedu.club.testutil.TypicalMembers.BENSON;
+import static seedu.club.testutil.TypicalIndexes.INDEX_FOURTH_MEMBER;
+import static seedu.club.testutil.TypicalMembers.DANIEL;
 import static seedu.club.testutil.TypicalMembers.getTypicalClubBook;
 
 import org.junit.Before;
@@ -57,8 +57,8 @@ public class DeleteGroupCommandTest {
 
     @Test
     public void execute_validGroup_success() throws Exception {
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
-        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FOURTH_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(DANIEL.getGroup());
 
         String expectedMessage = String.format(DeleteGroupCommand.MESSAGE_SUCCESS, groupToDelete);
         expectedModel.deleteGroup(groupToDelete);
@@ -90,8 +90,8 @@ public class DeleteGroupCommandTest {
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
 
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
-        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FOURTH_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(DANIEL.getGroup());
         // remove -> group removed
         deleteGroupCommand.execute();
         undoRedoStack.push(deleteGroupCommand);
@@ -145,8 +145,8 @@ public class DeleteGroupCommandTest {
         UndoRedoStack undoRedoStack = new UndoRedoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoRedoStack);
         RedoCommand redoCommand = prepareRedoCommand(model, undoRedoStack);
-        DeleteGroupCommand deleteGroupCommand = prepareCommand(BENSON.getGroup());
-        Group groupToDelete = model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup();
+        DeleteGroupCommand deleteGroupCommand = prepareCommand(DANIEL.getGroup());
+        Group groupToDelete = model.getFilteredMemberList().get(INDEX_FOURTH_MEMBER.getZeroBased()).getGroup();
         // remove -> removes group
         deleteGroupCommand.execute();
         undoRedoStack.push(deleteGroupCommand);
@@ -155,7 +155,7 @@ public class DeleteGroupCommandTest {
         assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
 
         expectedModel.deleteGroup(groupToDelete);
-        assertEquals(groupToDelete, model.getFilteredMemberList().get(INDEX_SECOND_MEMBER.getZeroBased()).getGroup());
+        assertEquals(groupToDelete, model.getFilteredMemberList().get(INDEX_FOURTH_MEMBER.getZeroBased()).getGroup());
         // redo -> removes the same group
         assertCommandSuccess(redoCommand, model, RedoCommand.MESSAGE_SUCCESS, expectedModel);
     }

@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.club.commons.util.CollectionUtil;
 import seedu.club.model.member.exceptions.DataToChangeIsNotCurrentlyLoggedInMemberException;
+import seedu.club.model.member.exceptions.DeleteCurrentUserException;
 import seedu.club.model.member.exceptions.DuplicateMatricNumberException;
 import seedu.club.model.member.exceptions.MatricNumberNotFoundException;
 import seedu.club.model.member.exceptions.MemberListNotEmptyException;
@@ -109,8 +110,11 @@ public class UniqueMemberList implements Iterable<Member> {
      *
      * @throws MemberNotFoundException if no such member could be found in the list.
      */
-    public boolean remove(Member toRemove) throws MemberNotFoundException {
+    public boolean remove(Member toRemove) throws MemberNotFoundException, DeleteCurrentUserException {
         requireNonNull(toRemove);
+        if (toRemove.equals(getCurrentlyLogInMember())) {
+            throw new DeleteCurrentUserException();
+        }
         final boolean memberFoundAndDeleted = internalList.remove(toRemove);
         if (!memberFoundAndDeleted) {
             throw new MemberNotFoundException();
@@ -163,6 +167,7 @@ public class UniqueMemberList implements Iterable<Member> {
      * @return
      */
     public void logsInMember(String username, String password) {
+        username = username.toUpperCase();
         Member checkMember = usernameCredentialsHashMap.get(username);
         if (checkMember != null && usernamePasswordHashMap.get(username).equals(password)) {
             currentlyLogInMember = checkMember;

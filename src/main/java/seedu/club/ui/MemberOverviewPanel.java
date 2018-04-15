@@ -6,6 +6,9 @@ import static seedu.club.model.member.ProfilePhoto.EMPTY_STRING;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 import org.fxmisc.easybind.EasyBind;
@@ -33,6 +36,7 @@ import seedu.club.commons.events.ui.SendEmailRequestEvent;
 import seedu.club.commons.events.ui.UpdateSelectionPanelEvent;
 import seedu.club.model.email.Client;
 import seedu.club.model.member.Member;
+import seedu.club.model.tag.Tag;
 import seedu.club.model.task.Task;
 import seedu.club.model.task.TaskIsRelatedToMemberPredicate;
 
@@ -63,6 +67,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private ObservableList<Task> taskList;
     private Member currentlySelectedMember;
+    private Stack<Member> undoStack = new Stack<>();
 
     @FXML
     private Label name;
@@ -102,6 +107,11 @@ public class MemberOverviewPanel extends UiPart<Region> {
      * @param show
      */
     public void loadDetails (Boolean show) {
+        if (show) {
+            gridPane.setStyle("-fx-background-color: #cccccc");
+        } else {
+            gridPane.setStyle("-fx-background-color: #d6d6d6");
+        }
         int size = gridPane.getChildren().size();
         for (int i = 0; i < size; i++) {
             gridPane.getChildren().get(i).setVisible(show);
@@ -133,6 +143,7 @@ public class MemberOverviewPanel extends UiPart<Region> {
 
     @Subscribe
     public void handleMemberPanelSelectionChangeEvent(MemberPanelSelectionChangedEvent event) {
+        currentlySelectedMember = event.getNewSelection().member;
         loadMemberPage(event.getNewSelection().member);
         setConnections(taskList, event.getNewSelection().member);
     }
@@ -148,20 +159,37 @@ public class MemberOverviewPanel extends UiPart<Region> {
 
     @Subscribe
     public void handleUpdateSelectionPanelEvent (UpdateSelectionPanelEvent event) {
-        System.out.println(currentlySelectedMember);
-        if (event.isToDelete()) {
-            if (currentlySelectedMember.equals(event.getUpdatedMember())) {
+        if (event.isToUndo()) {
+            loadMemberPage(undoStack.pop());
+        }
+        if (event.getTagToDelete() != null) {
+            if (currentlySelectedMember.hasTag(event.getTagToDelete())) {
+                undoStack.push(currentlySelectedMember);
+                Set<Tag> memberTags = new HashSet<>(currentlySelectedMember.getTags());
+                memberTags.remove(event.getTagToDelete());
+                currentlySelectedMember = new Member(currentlySelectedMember.getName(),
+                        currentlySelectedMember.getPhone(),
+                        currentlySelectedMember.getEmail(),
+                        currentlySelectedMember.getMatricNumber(),
+                        currentlySelectedMember.getGroup(),
+                        memberTags,
+                        currentlySelectedMember.getCredentials(),
+                        currentlySelectedMember.getProfilePhoto());
+                loadMemberPage(currentlySelectedMember);
+            }
+        } else if (event.isToDelete()) {
+            if (currentlySelectedMember.equals(event.getToEditMember())) {
+                undoStack.push(currentlySelectedMember);
                 loadDetails(false);
             }
-        } else {
-            if (currentlySelectedMember != null) {
-                loadMemberPage(event.getUpdatedMember());
-            }
+        } else if (currentlySelectedMember.equals(event.getToEditMember())) {
+            undoStack.push(currentlySelectedMember);
+            currentlySelectedMember = event.getEditedMember();
+            loadMemberPage(event.getEditedMember());
         }
     }
-    //@@author
 
-    //@@author yash-chowdhary
+    //@@author
     /**
      * Loads the client page based on {@code client}
      */
@@ -210,7 +238,6 @@ public class MemberOverviewPanel extends UiPart<Region> {
             }
         }
     }
-    //@@author
 
     //@@author th14thmusician
     /**

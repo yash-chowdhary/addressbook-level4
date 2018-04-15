@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.VALID_QUESTION_LIFE;
+import static seedu.club.model.poll.Question.QUESTION_LABEL;
 
 import org.junit.Test;
 
@@ -43,10 +44,10 @@ public class QuestionTest {
         Question testQuestionOne = new Question("WHAT IS LOVE");
         Question testQuestionTwo = new Question("WHAT IS LIFE");
 
-        assertTrue(testQuestionOne.toString().equals("WHAT IS LOVE"));
-        assertFalse(testQuestionOne.toString().equals("WHAT IS LIFE"));
-        assertTrue(testQuestionTwo.toString().equals("WHAT IS LIFE"));
-        assertFalse(testQuestionTwo.toString().equals("WHAT IS LOVE"));
+        assertTrue(testQuestionOne.toString().equals(QUESTION_LABEL + "WHAT IS LOVE"));
+        assertFalse(testQuestionOne.toString().equals(QUESTION_LABEL + "WHAT IS LIFE"));
+        assertTrue(testQuestionTwo.toString().equals(QUESTION_LABEL + "WHAT IS LIFE"));
+        assertFalse(testQuestionTwo.toString().equals(QUESTION_LABEL + "WHAT IS LOVE"));
     }
 
     @Test

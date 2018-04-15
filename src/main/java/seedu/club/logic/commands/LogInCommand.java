@@ -7,6 +7,8 @@ import static seedu.club.logic.parser.CliSyntax.PREFIX_USERNAME;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.club.commons.core.EventsCenter;
+import seedu.club.commons.events.ui.UpdateCurrentlyLogInMemberEvent;
 import seedu.club.logic.CommandHistory;
 import seedu.club.logic.UndoRedoStack;
 import seedu.club.logic.commands.exceptions.CommandException;
@@ -27,7 +29,8 @@ public class LogInCommand extends Command {
     public static final String COMMAND_FORMAT = "login u/ pw/ ";
 
     public static final String MESSAGE_SUCCESS = "Hi %1$s. Welcome to Club Connect!";
-    public static final String MESSAGE_FAILURE = "Login unsuccessful. Please try again.";
+    public static final String MESSAGE_FAILURE = "Login unsuccessful."
+            + " Incorrect Username or Password entered. Please try again.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Allows you to log in to Club Connect.\n"
             + "Parameters: "
             + PREFIX_USERNAME + "USERNAME "
@@ -50,6 +53,7 @@ public class LogInCommand extends Command {
         requireToLogOut();
         model.logsInMember(username.value, password.value);
         if (model.getLoggedInMember() != null) {
+            EventsCenter.getInstance().post(new UpdateCurrentlyLogInMemberEvent(model.getLoggedInMember()));
             return new CommandResult(String.format(MESSAGE_SUCCESS, model.getLoggedInMember().getName().toString()));
         }
         return new CommandResult(MESSAGE_FAILURE);

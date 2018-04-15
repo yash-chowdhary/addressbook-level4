@@ -1,5 +1,6 @@
 package seedu.club.logic.commands;
 //@@author MuhdNurKamal
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.commons.core.Messages.MESSAGE_INVALID_ANSWER_DISPLAYED_INDEX;
@@ -43,6 +44,7 @@ public class VoteCommandTest {
         model.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
     }
+
     @Test
     public void constructor_nullPollIndex_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
@@ -60,6 +62,7 @@ public class VoteCommandTest {
         thrown.expect(NullPointerException.class);
         new VoteCommand(null, null);
     }
+
     @Test
     public void execute_validIndices_voteSuccess() throws Exception {
         Poll pollToVote = model.getFilteredPollList().get(INDEX_FIRST_POLL.getZeroBased());
@@ -70,7 +73,9 @@ public class VoteCommandTest {
         expectedModel = new ModelManager(getTypicalClubBookWithPolls(), new UserPrefs());
         expectedModel.logsInMember(ALICE.getCredentials().getUsername().value,
                 ALICE.getCredentials().getPassword().value);
-        String expectedMessage = MESSAGE_VOTE_SUCCESS;
+        String expectedMessage = String.format(MESSAGE_VOTE_SUCCESS, pollToVote.getQuestion() + "\n"
+                + pollToVote.getAnswers()
+                .get(INDEX_FIRST_ANSWER.getZeroBased()));
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
                 pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());
@@ -105,7 +110,7 @@ public class VoteCommandTest {
 
         Poll pollToVote = model.getClubBook().getPollList().get(INDEX_FIRST_POLL.getZeroBased());
         Poll votedPoll = new Poll(pollToVote.getQuestion(), pollToVote.getAnswers(),
-            pollToVote.getPolleesMatricNumbers());
+                pollToVote.getPolleesMatricNumbers());
         votedPoll.vote(INDEX_FIRST_ANSWER, ALICE.getMatricNumber());
         VoteCommand voteCommand = prepareCommand(INDEX_FIRST_POLL, INDEX_FIRST_ANSWER);
 
