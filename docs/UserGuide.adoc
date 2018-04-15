@@ -625,13 +625,15 @@ Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and 
 // tag::import[]
 === Importing members into Club Connect: `import` (Since v1.4)
 
-Imports the details of all members in the specified CSV file into Club Connect.
+Imports the details of all valid members in the specified CSV file into Club Connect.
 Format: 'import CSV_FILE_PATH` +
 Alias: `imp`
 
 ****
 * CSV_FILE_PATH must be an absolute path to the CSV file.
 * The CSV file should organise its data in the format required by this application (see <<csv-data-format, CSV file format>>).
+* Members who do have <<constraints,valid values>> or are duplicates of members already in Club Connect
+  (i.e. they have the same matriculation number) are not imported from the file.
 * In order for this command to work correctly, ensure that none of the data values contain double quoutes (").
 ****
 
@@ -965,10 +967,10 @@ To get the absolute path of a file on MacOS, follow these steps:
 . Add the complete name of the file (e.g. "/file_name.jpg") to the end of this location to get the absolute path to the file.
 
 [[csv-data-format]]
+// tag::csv-data-format[]
 * *CSV format for `import`* +
 In order to successfully import data of members from the specified file, it has to follow the format shown in Figure 4.
 +
-[[csv-format]]
 .Required format of data in the file
 image::CSV_format.png[height="350"]
 +
@@ -980,6 +982,8 @@ Figure 5 shows some examples of invalid entries with the corresponding reasons i
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
 image::invalid_CSV_format.png[height="300"]
+// end::csv-data-format[]
+
 // end::tips[]
 
 == Coming in v2.0
