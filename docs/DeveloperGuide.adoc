@@ -576,7 +576,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ** Cons: Older version browser will disallow auto-filling of email fields.
 // end::email[]
 
-// tag::tasks1[]
+// tag::addtask[]
 === Task-Management
 Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `Exco` members.
 
@@ -611,6 +611,18 @@ Figure 34 depicts the high-level sequence of events that take place.
 image::SDforAddTask.png[width="400" align="center"]
 _Figure 34. Sequence Diagram for adding a task._
 
+==== Design Considerations
+===== Aspect: Displaying Assignor and Assignee
+* **Alternative 1 (current choice)**: Displays currently logged-in member as Assignor and Assignee.
+** Pros: It is required for `assigntask`.
+** Cons: Displaying the same matriculation number twice is redundant.
+* **Alternative 2:** Don't display Assignor and Assignee as it is a personal to-do list.
+** Pros: Takes care of redundancies in Alternative 1 above.
+** Cons: The implementation of `assigntask` becomes more complex.
+
+// end::addtask[]
+
+// tag::assigntask[]
 ===== Assigning Tasks
 ---
 
@@ -634,7 +646,16 @@ Figure 37 depicts the high-level sequence of events that take place.
 image::SDforAssignTask.png[width="400" align="center"]
 _Figure 37. Sequence Diagram for assigning a task._
 
-// end::tasks1[]
+
+==== Design Considerations
+===== Aspect: Displaying similar tasks for different Assignees
+* **Alternative 1 (current choice)**: Make a copy of the task for every new `Assignee` if all other parameters are same.
+** Pros: Easy to implement
+** Cons: Clutters the `TaskListPanel` because of redundancies.
+* **Alternative 2:** Maintain a list of `Assignee` s in a task .
+** Pros: Reduces clutter in the `TaskListPanel` and is easy on the eye.
+** Cons: Relatively difficult to implement.
+// end::assigntask[]
 
 // tag::tasks-delete[]
 ===== Deleting Tasks
@@ -656,11 +677,22 @@ _Figure 39. Sequence Diagram for `DeleteTaskCommand` parsing._
 The high-level sequence of events is shown below in Figure 40.
 
 image::SDforDeleteTask.png[width="400" align="center"]
+
 _Figure 40. Sequence Diagram for deleting a task._
+
+==== Design Considerations
+===== Aspect: Who can delete tasks?
+* **Alternative 1 (current choice)**: Only Assignors can delete tasks.
+** Pros: It improves accountability of the club.
+** Cons: All the workload falls on the Assignor.
+* **Alternative 2:** Assignor or Assignee can delete task.
+** Pros: The workload is evenly distributed.
+** Cons: Reduces transparency of club and accountability of club members.
+
 // end::tasks-delete[]
 
 
-// tag::tasks2[]
+// tag::taskassignee[]
 ===== Changing Task Assignee
 ---
 
@@ -682,6 +714,18 @@ Figure 43 below shows the high-level sequence diagram of the command execution.
 image::SDforChangeAssignee.png[width="400" align="center"]
 _Figure 43. Sequence Diagram of changing the `Assignee` of a task._
 
+==== Design Considerations
+===== Aspect: Who can change assignees?
+* **Alternative 1 (current choice)**: Only Exco members can change assignees of tasks.
+** Pros: It improves accountability of the club.
+** Cons: All the workload falls on the Exco members.
+* **Alternative 2:** Assignor or Assignee can change the assignee task.
+** Pros: People who are directly related to the task take up resonsibility. This boosts accountability of members.
+** Cons: Similar to deleting a task, it reduces transparency of club and accountability of club members.
+// end::taskassignee[]
+
+
+// tag::taskstatus[]
 ===== Changing Task Status
 ---
 
@@ -701,8 +745,18 @@ _Figure 45. Sequence Diagram for `ChangeTaskStatusCommand` parsing._
 Figure 46 below describes the high-level sequence of events that take place.
 
 image::SDforChangeTaskStatus.png[width="400" align="center"]
+
 _Figure 46. Sequence Diagram for changing the status of a task._
-// end::tasks2[]
+
+==== Design Considerations
+===== Aspect: Who can change task status?
+* **Alternative 1 (current choice)**: Assignor or Assignee can change the task status.
+** Pros: They are directly associated with the task.
+** Cons: Exco should also have a say.
+* **Alternative 2:** Exco, Assignee or Assignor can change status.
+** Pros: Exco's powers kept in check.
+** Cons: Exco may misinterpret status of the task.
+// end::taskstatus[]
 
 // tag::taskviewing[]
 ===== Viewing All Tasks
@@ -733,17 +787,6 @@ The sequence diagram of the `viewmytasks` command is shown below in Figure 48.
 image::SDforViewMyTasks.png[width="400" align="center"]
 _Figure 48. Sequence Diagram for viewing tasks of the currently logged-in member._
 // end::taskviewing[]
-
-// tag::task-design[]
-==== Design Considerations
-===== Aspect: Displaying similar tasks for different Assignees
-* **Alternative 1 (current choice)**: Make a copy of the task for every new `Assignee` if all other parameters are same.
-** Pros: Easy to implement
-** Cons: Clutters the `TaskListPanel` because of redundancies.
-* **Alternative 2:** Maintain a list of `Assignee` s in a task .
-** Pros: Reduces clutter in the `TaskListPanel` and is easy on the eye.
-** Cons: Relatively difficult to implement.
-// end::task-design[]
 
 
 // tag::polls[]
