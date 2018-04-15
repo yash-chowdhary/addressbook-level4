@@ -1696,17 +1696,14 @@ Figure 81 below shows the `StatusBarFooter` before the modification.
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-
-_Figure 81. StatusBarFooter before modification_ +
-
+_Figure 81. StatusBarFooter before modification_+
 Figure 82 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-
 _Figure 82. StatusBarFooter after modification_
-+
+
 ****
 * Hints
 ** link:{repoURL}/src/main/resources/view/StatusBarFooter.fxml[`StatusBarFooter.fxml`] will need a new `StatusBar`. Be sure to set the `GridPane.columnIndex` properly for each `StatusBar` to avoid misalignment!
