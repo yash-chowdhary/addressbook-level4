@@ -29,7 +29,7 @@ import seedu.club.model.group.Group;
 import seedu.club.model.member.Member;
 import seedu.club.model.tag.Tag;
 
-//@@author yash-chowdhary
+
 /**
  * Contains unit tests for {@code EmailCommand}.
  */

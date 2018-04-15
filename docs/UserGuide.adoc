@@ -906,50 +906,63 @@ To further increase your efficiency while using Club Connect, check out <<Tips>>
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER g/GROUP [t/TAG]...` +
 e.g. `add n/James Jerome p/22224444 e/jamesjerome@example.com m/A1234567H g/publicity`
+* *Add Poll* `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
+e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
 * *Add Task* : `addtask desc/DESCRIPTION d/DUE_DATE ti/TIME` +
 e.g. `addtask desc/Buy Confetti d/03.04.2018 ti/19:00`
-* *Assign Task* : `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME n/NAME` +
-e.g. `assigntask desc/Buy Confetti d/03.04.2018 ti/19:00 n/Bernice Yu`
+* *Assign Task* : `assigntask desc/DESCRIPTION d/DUE_DATE ti/TIME m/MATRIC_NUMBER` +
+e.g. `assigntask desc/Buy Confetti d/03.04.2018 ti/19:00 m/A0123457H`
+* *Change Password* : `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
+e.g. `changepass u/A0123456H pw/password npw/newpassword `
+* *Change Task Assignee* : `changeassignee INDEX m/MATRIC_NUMBER` +
+e.g. `changeassignee 1 m/A1234567H`
+* *Change Display Picture* : `changepic PHOTO_PATH` +
+e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
+* *Change Task Status* : `changetaskstatus INDEX st/STATUS` +
+e.g. `changetaskstatus 1 st/Completed`
 * *Clear* : `clear`
+* *Compress Member Details* : `compress`
+* *Decompress Member Details* : `decompress`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
-e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Delete Group* : `deletegroup g/GROUP` +
 e.g. `deletegroup g/Publicity`
+* *Delete Poll* `deletepoll INDEX` +
+e.g. `deletepoll 2`
 * *Delete Tag* : `deletetag t/TAG` +
 e.g. `deletetag t/EventHelper`
 * *Delete Task* : `deletetask INDEX` +
 e.g. `deletetask 2`
-* *Import members into Club Connect* : `import` +
-e.g. `import C:/Users/Admin/Desktop/members.csv`
+* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [m/MATRIC_NUMBER] [g/GROUP] [t/TAG]...` +
+e.g. `edit 2 n/James Lee e/jameslee@example.com`
+* *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
+e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
+* *Exit* : `exit`
 * *Export Club Connect data* : `export` +
 e.g. `export C:/Users/John Doe/Downloads/ClubConnectMembers.csv`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jacob`
-* *Email* : `email g/GROUP OR t/TAG c/CLIENT [s/SUBJECT] [b/BODY]` +
-e.g. `email g/marketing c/outlook s/Test Subject b/Test Body`
-* *List* : `list`
-* *View All Tasks* : `viewalltasks`
-* *View My Tasks* : `viewmytasks`
 * *Help* : `help`
+* *Hide results of polls* : `hideresults`
+* *History* : `history`
+* *Import members into Club Connect* : `import` +
+e.g. `import C:/Users/Admin/Desktop/members.csv`
+* *List* : `list`
+* *Login* : `login u/USERNAME pw/PASSWORD` +
+e.g. `login u/A0123456H pw/password`
+* *Logout* : `logout`
+* *Redo* : `redo`
+* *Remove Profile Picture* : `removepic` +
 * *Select* : `select INDEX` +
 e.g.`select 2`
-* *Add Poll* `addpoll q/QUESTION ans/ANSWER [ans/ANSWER]...` +
-e.g. `addpoll q/Where should the annual meeting be held? ans/I-Cube ans/LT7`
-* *Delete Poll* `deletepoll INDEX` +
-e.g. `deletepoll 2`
+* *Sign Up* : `signup n/NAME p/PHONE_NUMBER e/EMAIL m/MATRIC_NUMBER [t/TAG]...` +
+e.g.`signup n/John Doe p/89876765 e/johnd@gmail.com m/A0987654L t/President`
+* *Undo* : `undo`
+* *View All Tasks* : `viewalltasks`
+* *View My Tasks* : `viewmytasks`
+* *View results of polls* : `viewresults`
 * *Vote in a Poll* `vote POLL_INDEX ANSWER_INDEX` +
 e.g. `vote 10 2`
-* *View results of polls* : `viewresults`
-* *Hide results of polls* : `hideresults`
-* *Change Display Picture* : `changepic PHOTO_PATH` +
-e.g. `changepic C:/Users/John Doe/Desktop/john_doe.jpg` +
-* *Compress Member Details* : `compress`
-* *Decompress Member Details* : `decompress`
-* *History* : `history`
-* *Undo* : `undo`
-* *Redo* : `redo`
 
 // tag::tips[]
 == Tips

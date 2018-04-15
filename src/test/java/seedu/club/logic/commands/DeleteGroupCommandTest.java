@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author yash-chowdhary
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +30,7 @@ import seedu.club.model.UserPrefs;
 import seedu.club.model.group.Group;
 import seedu.club.model.member.Member;
 
-//@@author yash-chowdhary
+
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
  * {@code DeleteGroupCommand}.
@@ -41,6 +41,7 @@ public class DeleteGroupCommandTest {
     private ObservableList<Member> observableList;
     private Member member;
 
+    //@@author
     @Before
     public void setUp() throws CommandException {
         model = new ModelManager(getTypicalClubBook(), new UserPrefs());
@@ -55,6 +56,7 @@ public class DeleteGroupCommandTest {
         command.execute();
     }
 
+    //@@author yash-chowdhary
     @Test
     public void execute_validGroup_success() throws Exception {
         Group groupToDelete = model.getFilteredMemberList().get(INDEX_FOURTH_MEMBER.getZeroBased()).getGroup();
