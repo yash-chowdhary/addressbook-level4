@@ -91,9 +91,4 @@ include::../DeveloperGuide.adoc[tag=AccountManagementTag]
 
 
 
-== Contributions to the Developer Guide
-
-
-
-
 
