@@ -2,11 +2,6 @@
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
-== About
-
-This project portfolio serves as a document to showcase my aptitude as a developer to potential employers.
-More projects will be added as I develop more applications.
-
 == PROJECT: Club Connect
 
 ---
@@ -17,6 +12,12 @@ More projects will be added as I develop more applications.
 It aims to make the tedious process of club management easier and more effective.
 
 The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+
+== About
+
+This project portfolio serves as a document to showcase my aptitude as a developer to potential employers.
+The features I added to Club Connect shows my strong understanding in programming concepts. The documentation I added
+shows my ability to write clearly.
 
 == Summary of contributions
 
