@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+// @@author yash-chowdhary
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -149,6 +149,7 @@ public class AssignTaskCommandTest {
         return tags;
     }
 
+    //@@author
     /**
      * A default model stub that have all of the methods failing.
      */
@@ -379,7 +380,7 @@ public class AssignTaskCommandTest {
         }
     }
 
-
+    //@@author yash-chowdhary
     /**
      * A Model stub that always throw a DuplicateTaskException when trying to add a task.
      */
