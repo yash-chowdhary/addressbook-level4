@@ -20,6 +20,8 @@ The user interacts with it using a CLI, and it has a GUI created with JavaFX. It
 ** Justification: This feature improves the product significantly because the `Exco` members can accurately determine the views of other members so that they can take the best path of action for the club.
 
 * *Minor enhancement*: Improved navigability of member list by adding compress/decompress mechanism and making `Find` command able to search by field or by all fields instead of just name.
+** Justification: This feature improves the product significantly since it saves time when looking for information
+of other members. More time can be spent on doing more important actions such as adding polls and assigning tasks.
 
 * *Code contributed*: https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/MuhdNurKamal.md[Functional code]
 https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/MuhdNurKamal.md[Test code]
