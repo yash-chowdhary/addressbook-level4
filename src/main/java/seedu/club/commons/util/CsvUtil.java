@@ -346,7 +346,7 @@ public class CsvUtil {
         String data = FileUtil.readFromFile(file);
         String[] membersData = data.split("\n");
 
-        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains Headers
+        for (int i = 1; i < membersData.length; i++) { //membersData[0] contains column headers
             try {
                 Member member = getMember(membersData[i]);
                 importedMembers.add(member);

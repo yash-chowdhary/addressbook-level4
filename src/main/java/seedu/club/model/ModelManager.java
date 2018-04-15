@@ -501,8 +501,8 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author amrut-prabhu
     @Override
     public int importMembers(File importFile) throws IOException {
-        CsvClubBookStorage storage = new CsvClubBookStorage(importFile);
-        UniqueMemberList importedMembers = storage.readClubBook();
+        CsvClubBookStorage csvStorage = new CsvClubBookStorage(importFile);
+        UniqueMemberList importedMembers = csvStorage.readClubBook();
         int numberMembers = 0;
 
         for (Member member: importedMembers) {

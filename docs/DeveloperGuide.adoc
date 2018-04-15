@@ -878,8 +878,70 @@ _Figure 51. Sequence Diagram for delete a group from `Club Connect`._
 === Importing Members
 ==== Current Implementation
 
+The `import` mechanism of Club Connect is facilitated by the `ImportCommand` class and is event-driven.
+It allows members to add the list of members from a <<csv,CSV>> file to Club Connect at one go.
+To facilitate this, it makes use of the `CsvUtil` class, which converts `Member` objects to CSV format.
 
+The `ImportCommand` extends from the `UndoableCommand` class, and only consists of a `File` attribute.
+This is illustrated in the UML diagram shown in Figure 52.
 
+image::ImportCommandUML.png[width="150"]
+_Figure 52. ImportCommand UML Diagram_
+
+The `import` command involves the use of multiple components of the Club Connect application.
+Figure 53 (below) shows the high-level _Sequence Diagram_ for the `import` command.
+
+image::SDforImport.png[width="900"]
+_Figure 53. High Level Sequence Diagram for the `import C:/Users/Admin/club.csv` command_
+
+`Logic` is responsible for parsing the `import` command.
+It returns an `ImportCommand` object after parsing the CSV file path.
+
+The `ImportCommand#execute()` method invokes the `importMembers()` method from `model`.
+
+The `Model` component invokes the `readClubBook()` method of the `CsvClubBookStorage` object to get the list of `Member`
+objects that are to be added to Club Connect. The members from the list are then sequentially added to the club book.
+If a `DuplicateMatricNumberException` is encountered while adding a member, then that member is not added to the club book
+and execution continues. This way, even if there are a few members with invalid data values, the import command will
+still work for those members with valid data. This implementation is shown in the code snipped below:
+
+[source, java]
+----
+public int importMembers(File importFile) throws IOException {
+    CsvClubBookStorage csvStorage = new CsvClubBookStorage(importFile);
+    UniqueMemberList importedMembers = csvStorage.readClubBook();
+    int numberMembers = 0;
+    for (Member member: importedMembers) {
+        try {
+            clubBook.addMember(member);
+            numberMembers++;
+        } catch (DuplicateMatricNumberException dmne) {
+            //...logging...
+        }
+    }
+    indicateClubBookChanged();
+    return numberMembers;
+}
+----
+
+The conversion of data from the CSV file to `Member` objects is facilitated by the `CsvUtil` class. Part of the implementation is shown here:
+[source, java]
+----
+public static UniqueMemberList getDataFromFile(File file) throws IOException {
+    UniqueMemberList importedMembers = new UniqueMemberList();
+    String data = FileUtil.readFromFile(file);
+    String[] membersData = data.split("\n");
+    for (int i = 1; i < membersData.length; i++) { //membersData[0] contains column headers
+        try {
+            Member member = getMember(membersData[i]);
+            importedMembers.add(member);
+        } catch (Exception e) {
+            //...logging...
+        }
+    }
+    return importedMembers;
+}
+----
 
 ==== Design Considerations
 
@@ -911,19 +973,20 @@ https://github.com/FasterXML/jackson-dataformats-text/tree/master/csv[Jackson])
 
 The `export` mechanism of Club Connect is facilitated by the `ExportCommand` class and is event-driven.
 It allows members to export the list of members in Club Connect as a CSV file.
-To facilitate this, it makes use of the `CsvUtil` class, which converts `Member` objects to CSV format.
+It makes use of the `CsvUtil` class to convert `Member` objects to CSV format.
 
 The `ExportCommand` extends from the `Command` class, as it is not an undoable command and only consists of a `File` attribute.
+Figure 52 depicts the UML diagram for the `ExportCommand` class.
 
 image::ExportCommandUML.png[width="350"]
 _Figure 52. ExportCommand UML Diagram_
 
-The `export` command involves the use of multiple components of Club Connect.
-Figure 53 (below) shows the interactions between these components.
+The `export` command uses multiple components of the Club Connect application.
+The _Sequence Diagram_ below (Figure 53) shows the interactions between some of these components.
 As you can see, the `ExportCommand` is driven by the `NewExportDataAvailableEvent`.
 
 image::SDforExport.png[width="800"]
-_Figure 53. High Level Sequence Diagram for the `export C:/Users/Admin/members.csv` Command_
+_Figure 53. High Level Sequence Diagram for the `export C:/Users/Admin/members.csv` command_
 
 This event is handled by the `Storage` component as shown in Figure 54.
 
@@ -997,14 +1060,14 @@ Figure 53 (below) shows the interactions between these components.
 As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
 
 image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 53. High Level Sequence Diagram for the `changepic C:/Users/Admin/Desktop/photo.png` Command_
+_Figure 53. High Level Sequence Diagram for the `changepic C:/Users/Admin/Desktop/photo.png` command_
 
 ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
 It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
 Figure 54 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
-_Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/photo.png` Command
+_Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/photo.png` command
 
 The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
 Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
