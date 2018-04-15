@@ -16,14 +16,20 @@ By: `Team W15-B4`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-Club Connect is a computer application targeted at club members who are students at the National University of Singapore (NUS).
+Club Connect is a computer application targeted at student club members at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier are more effective.
 It provides features that are essential for a club to function smoothly such as user authentication, assigning tasks, email blasts, conducting polls, and importing and exporting member details.
-This guide provides the necessary information for developers who are interested in contributing to the application - from the steps required to set-up, to detailed descriptions of the current features that the application sports.
+
+This guide provides the necessary information for developers who are interested in contributing to the application. If you are a novice developer, it is recommended that you read through this guide sequentially. The guide will thoroughly explain all aspects of this project- from the steps required to set up the project on your computer, to the implementation details of some features of this application.
+
+To familiarise yourself with the source code it is recommended that you try out the tasks in  <<GetStartedProgramming,Appendix A, Suggested Programming Tasks to Get Started>>. If you are an experienced developer, you may wish to jump to  <<Design-Architecture,Section 3.1, “Architecture”>> to begin understanding the software architecture.
 
 == Setting up
 
+The steps that you need to follow to set up the Club Connect project on your computer are listed below.
+
 === Prerequisites
+Install the following on your computer before you begin the project setup:
 
 . *JDK `1.8.0_60`* or later
 +
@@ -41,6 +47,8 @@ Do not disable them. If you have disabled them, go to `File` > `Settings` > `Plu
 
 === Setting up the project in your computer
 
+Follow these steps to set up the project on your computer:
+
 . Fork this repo, and clone the fork to your computer
 . Open IntelliJ (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project dialog first)
 . Set up the correct JDK version for Gradle
@@ -56,10 +64,14 @@ This will generate all resources required by the application and tests.
 
 === Verifying the setup
 
+Perform the following steps to verify that the project has been set up properly:
+
 . Run the `seedu.club.MainApp` and try a few commands
 . <<Testing,Run the tests>> to ensure they all pass.
 
 === Configurations to do before writing code
+
+Go through these steps before you begin contributing to the project.
 
 ==== Configuring the coding style
 
@@ -98,12 +110,15 @@ Having both Travis and AppVeyor ensures your App works on both Unix-based platfo
 
 ==== Getting started with coding
 
-When you are ready to start coding,
+When you are ready to start coding:
 
 1. Get some sense of the overall design by reading <<Design-Architecture>>.
 2. Take a look at <<GetStartedProgramming>>.
 
 == Design
+
+This section describes the architecture and 6 components that are part of the Club Connect project.
+
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder.
 To update a diagram, modify the diagram in the .pptx file, select the objects of the diagram, and choose `Save as picture`.

@@ -8,7 +8,7 @@
 
 *Club Connect* is a computer application targeted at student club members at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier and more effective.
-It provides all members of the club with they ability to browse through profiles of other members, participate in polls,
+It provides all members of the club with the ability to browse through profiles of other members, participate in polls,
 and manage club-related tasks.
 
 Since Club Connect is targeted at those who prefer using the keyboard over a mouse, it uses a Command Line Interface (CLI) for input.
@@ -35,7 +35,7 @@ Some extracts of my documentation in the Club Connect User Guide and Developer G
                   (signing up all members to NUSync, for example), the `export` command comes in handy.
                   It generates a file containing all the relevant information in a user friendly form.
                   This information can then be easily managed and modified outside the application.
-** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software, from `Commons` to `Storage`.
+** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software.
                 Though the implementation of these features is intuitive and makes use of existing code wherever possible,
                 it was challenging as it required the creation of a CsvUtil class (to handle parsing) from scratch.
                 It is also made robust in order to prevent frustration in users.
@@ -46,8 +46,8 @@ Some extracts of my documentation in the Club Connect User Guide and Developer G
                 Similarly, they can choose to remove their profile photo as well.
 ** Justification: Since most student clubs have a large number of members, members may find it difficult to identify others by name alone.
                   Having the ability to add a profile photo for yourself makes it much easier for others to identify you when they need to contact you.
-** Highlights: This enhancement is an end-to-end feature and makes use of all components of the software, from `Commons` to `Ui`.
-                It was challenging as the feature had to handle the image files efficiently, and had to allow the application to remain portable.
+** Highlights: This enhancement is an end-to-end feature and makes use of almost all components of the software, from `Storage` to `Ui`.
+                It was challenging as the feature had to handle the reading and writing of image files efficiently, and had to allow the application to remain portable.
 ** Relevant pull requests: https://github.com/CS2103JAN2018-W15-B4/main/pull/106[#106]
 
 * *Code contributed*: [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/amrut-prabhu.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/amrut-prabhu.md[Test code]]
@@ -93,7 +93,7 @@ https://github.com/CS2103JAN2018-W15-B4/main/pull/167[#167])
 
 === 4.1. Major Enhancement: Member Data Management
 
-This section contains extracts from the User Guide that are related to management of the data of members.
+This section contains extracts from the User Guide that are related to management of members' data.
 
 #Start of Extract (from User Guide)#
 
@@ -118,7 +118,7 @@ include::../UserGuide.adoc[tag=removepic]
 == 5. Contributions to the Developer Guide
 
 |===
-|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|_Given below are sections that I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
 === 5.1. Major Enhancement: Member Data Management
@@ -144,7 +144,7 @@ include::../DeveloperGuide.adoc[tag=profilephoto]
 == Appendix A: Other Sections in the User Guide
 
 |===
-|_Given below are other sections I contributed to the User Guide._
+|_Given below are other sections that I contributed to the User Guide._
 |===
 
 === A.1. Delete tag feature
@@ -170,7 +170,7 @@ include::../UserGuide.adoc[tag=v2.0]
 == Appendix B: Other Sections in the Developer Guide
 
 |===
-|_Given below are other sections I contributed to the Developer Guide._
+|_Given below are other sections that I contributed to the Developer Guide._
 |===
 
 #Start of Extract (from Developer Guide)#
