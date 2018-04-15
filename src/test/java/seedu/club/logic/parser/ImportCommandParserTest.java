@@ -1,6 +1,7 @@
 //@@author amrut-prabhu
 package seedu.club.logic.parser;
 
+import static seedu.club.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.club.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -32,14 +33,17 @@ public class ImportCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         //non absolute file path
-        assertParseFailure(parser, "data/dummy.csv", ParserUtil.MESSAGE_INVALID_CSV_PATH);
+        assertParseFailure(parser, "data/dummy.csv", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INVALID_CSV_PATH + ImportCommand.MESSAGE_USAGE));
 
         //invalid file path
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/",
-                ParserUtil.MESSAGE_INVALID_CSV_PATH);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                        + ImportCommand.MESSAGE_USAGE));
 
         //invalid file type
         assertParseFailure(parser, currentDirectory.getAbsolutePath() + "/data/importTestFile.txt",
-                ParserUtil.MESSAGE_INVALID_CSV_PATH);
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INVALID_CSV_PATH
+                        + ImportCommand.MESSAGE_USAGE));
     }
 }

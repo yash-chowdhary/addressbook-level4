@@ -11,7 +11,7 @@ public class ProfilePhoto {
     public static final String EMPTY_STRING = "";
     public static final String DEFAULT_PHOTO_PATH = "/images/defaultProfilePhoto.png";
     public static final String MESSAGE_PHOTO_PATH_CONSTRAINTS =
-            "The photo path should be an absolute path to a JPG or PNG image file.";
+            "The photo path should be an absolute path to a JPG or PNG image file.\n";
 
     private static final String[] validFileExtensions = {".jpg", ".png"};
     private static final int JPG_INDEX = 0;

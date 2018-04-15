@@ -18,16 +18,20 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
+import seedu.club.commons.events.storage.DataReadingExceptionEvent;
 import seedu.club.commons.util.CsvUtil;
 import seedu.club.commons.util.FileUtil;
 import seedu.club.model.member.Member;
 import seedu.club.model.member.UniqueMemberList;
+import seedu.club.ui.testutil.EventsCollectorRule;
 
 public class CsvClubBookStorageTest {
 
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/CsvClubBookStorageTest/");
     private static final String FILE_NAME = "TempClubBook.csv";
 
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -60,6 +64,17 @@ public class CsvClubBookStorageTest {
     public void read_missingFile_emptyResult() throws Exception {
         thrown.expect(FileNotFoundException.class);
         readClubBook("NonExistentFile.csv");
+    }
+
+    @Test
+    public void read_missingFile_eventRaised() throws Exception {
+        File exportFile = new File("NonExistentFile.csv");
+        CsvClubBookStorage csvClubBookStorage = new CsvClubBookStorage();
+        csvClubBookStorage.setClubBookFile(exportFile);
+
+        thrown.expect(FileNotFoundException.class);
+        csvClubBookStorage.readClubBook(); //file path not specified
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataReadingExceptionEvent);
     }
 
     @Test
