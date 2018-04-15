@@ -341,7 +341,7 @@ public class ClubBook implements ReadOnlyClubBook {
 
         Group defaultGroup = new Group(Group.DEFAULT_GROUP);
         Member newMember = new Member(member.getName(), member.getPhone(), member.getEmail(), member.getMatricNumber(),
-                defaultGroup, member.getTags());
+                defaultGroup, member.getTags(), member.getCredentials(), member.getProfilePhoto());
 
         try {
             updateMember(member, newMember);

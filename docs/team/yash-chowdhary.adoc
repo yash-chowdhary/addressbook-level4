@@ -4,148 +4,163 @@
 
 == PROJECT: Club Connect
 
-== Overview
+== 1. Overview
 
 *Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier and more effective.
 
 *Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI). All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
 
+
+== 2. Purpose of Portfolio Page
+This portfolio page describes the contribution I have made to Club Connect’s development – in terms of code, tests, and documentation. It comprises of extracts from the User Guide and Developer Guide, highlighting major and minor features that I worked on during the course of the semester. It also describes some of the other contributions I made – testing, PR reviews, and product management.
+
+== 3. Summary of Contributions
+
+*Major enhancement*: Task-Management +
+*What it does*: allows users to add, assign, delete and modify tasks. +
+*Justification* : Members of a club have certain responsibilities and must carry out tasks to fulfil their responsibilities. Furthermore, `EXCO` members can delegate tasks to other members which they must perform within a stipulated time period.
+                  Maintaining a record of tasks is crucial as it help maintain transparency and accountability of the club.
+
+*Minor enhancements*: +
+
+* Added a `Group` attribute to `Member` as well as a command to remove a `Group` from the application. +
+* Added an auto-complete feature which can be used by pressing the ```TAB``` key. +
+* Added email functionality. +
+
 *Code Contributed* : [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/functional/yash-chowdhary.md[Functional code]] [https://github.com/CS2103JAN2018-W15-B4/main/blob/master/collated/test/yash-chowdhary.md[Test code]]
 
-=== Enhancement Added: Remove Group Command
+*Other contributions*:
 
-==== External Behavior
+* Project Management
+** Managed all releases on GitHub and Milestones.
+** Assumed responsibility of the Team Leader where I took important decisions regarding the product development.
+* Documentation
+** Added and improved sections of the User Guide and Developer Guide.
+* Features and enhancements
+** Added aliases to existing and new commands - Pull request https://github.com/CS2103JAN2018-W15-B4/main/pull/159[#159].
+** Added `Group` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/66[Pull Request #66].
+** Added `deletetask`, `viewalltasks`, and `viewmytasks` functionality - pull requests https://github.com/CS2103JAN2018-W15-B4/main/pull/125[#125], https://github.com/CS2103JAN2018-W15-B4/main/pull/142[#142], and https://github.com/CS2103JAN2018-W15-B4/main/pull/147[#147].
+* Community
+** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/53[#53], https://github.com/CS2103JAN2018-W15-B4/main/pull/67[#67], and https://github.com/CS2103JAN2018-W15-B4/main/pull/155[#155].
+** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-W14-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue+yash+[Peer Testing].
 
----
+
+== 4. Contributions to the User Guide
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+=== 4.1 Major Enhancement: Task-Management
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=addtask]
+
+include::../UserGuide.adoc[tag=assigntask]
+
+include::../UserGuide.adoc[tag=changeassignee]
+
+include::../UserGuide.adoc[tag=changetaskstatus]
+
+#End of Extract (from User Guide)#
+
+=== 4.2 Minor Enhancement: Delete Group
+
 #Start of Extract (from User Guide)#
 
 include::../UserGuide.adoc[tag=removegroup]
 
 #End of Extract (from User Guide)#
 
----
+== 5. Contributions to the Developer Guide
 
-==== Justification
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
 
----
-If a sub-committee of a club is no longer required, the `Exco` members can delete the group from the app.
-This changes the group of all the members (previously part of the deleted group) to the default group - `Member`.
+=== 5.1 Major Enhancement: Task-Management
 
-==== Implementation
+#Start of Extract (from Developer Guide)#
 
----
+include::../DeveloperGuide.adoc[tag=tasks1]
+
+include::../DeveloperGuide.adoc[tag=tasks2]
+
+include::../DeveloperGuide.adoc[tag=tasks-design]
+
+#End of Extract (from Developer Guide)#
+
+=== 5.2 Minor Enhancement: Delete Group Mechanism
+
 #Start of Extract (from Developer Guide)#
 
 include::../DeveloperGuide.adoc[tag=removegroup]
 
 #End of Extract (from Developer Guide)#
 
----
-=== Enhancement Added: Task-Management
+
+== Appendix A : Proposed Enhancement
+
+=== Data Encryption
 
 ==== External Behaviour
+Implementing this feature will have no effect on the functionality that Club Connect provides to its users. The major change that this feature will bring is securing user data.
+Users can rest assured that none of their data can be leaked to malicious foreign parties.
 
-===== Add Tasks
+==== Justification
+Data privacy is a controversial topic in today's world. When personal data falls into the wrong hands, it can be misused in ways we can’t possibly imagine. Every corporation, organization and service must provide data privacy not only because it's the law, but also to maintain consumer satisfaction.
 
----
-
-#Start of Extract (from UserGuide)#
-
-include::../UserGuide.adoc[tag=addtask]
-
-===== Assign Tasks
-
----
-
-include::../UserGuide.adoc[tag=assigntask]
-
-===== Delete Tasks
-
----
-
-include::../UserGuide.adoc[tag=deletetask]
-
-===== Change Assignee of a Task
-
----
-
-include::../UserGuide.adoc[tag=changeassignee]
-
-===== Change Task Status
-
----
-
-include::../UserGuide.adoc[tag=changetaskstatus]
-
-===== View All Tasks
-
----
-
-include::../UserGuide.adoc[tag=viewalltasks]
-
-
-===== View My Tasks
-
----
-
-include::../UserGuide.adoc[tag=viewmytasks]
-
-#End of Extract (from User Guide)#
-
----
-=== Justification
-
-Members of a club have certain responsibilities and must carry out tasks to fulfil their responsibilities. Furthermore, `EXCO` members can delegate tasks to other members which they must perform within a stipulated time period.
-Maintaining a record of tasks is crucial as it help maintain transparency and accountability of the club.
-
----
-=== Implementation
-
----
-#Start of Extract (from Developer Guide)#
-
-include::../DeveloperGuide.adoc[tag=tasks]
-
-#End of Extract (from Developer Guide)#
-
----
-=== Proposed Enhancement: Data Encryption
-
-===== External Behaviour
-
-Implementing this feature will have no effect on the functionality that `Club Connect` provides to its users. The major change that this feature will bring is securing user data. +
-Users can rest assured that none of their data is leaked to malicious foreign parties.
-
-===== Justification
-
-Data privacy is a hot topic in today's world. When personal data falls into the wrong hands, it can be misused in ways we couldn't possibly imagine. Every corporation, organization and service must provide data privacy not only because it's the law, but also to maintain consumer satisfaction.
-
-===== Implementation
+==== Implementation
 
 #Start of Extract (from Developer Guide)#
 
 include::../DeveloperGuide.adoc[tag=dataencryption1]
 
-include::../DeveloperGuide.adoc[tag=dataencryption2]
+#End of Extract (from Developer Guide)#
+
+== Appendix B: Other Enhancements and Features
+
+=== 1. Auto-Complete Command Mechanism
+
+include::../DeveloperGuide.adoc[tag=autocomplete]
+
+=== 2. Delete Tasks
+
+==== 2.1 Contribution to User Guide
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=deletetask]
+
+#End of Extract (from User Guide)#
+
+==== 2.2 Contribution to Developer Guide
+
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=tasks-delete]
 
 #End of Extract (from Developer Guide)#
 
----
+=== 3. Viewing Tasks
 
-=== Other contributions
+==== 3.1 Contribution to User Guide
 
-*** Managed all releases on GitHub and Milestones.
-*** Assumed responsibility of the Team Leader where I took important decisions regarding the product development.
-*** Maintained User Guide.
-*** Added `Group` attribute to `Member` : https://github.com/CS2103JAN2018-W15-B4/main/pull/66[Pull Request #66].
-*** PRs reviewed (with non-trivial review comments): https://github.com/CS2103JAN2018-W15-B4/main/pull/53[#53], https://github.com/CS2103JAN2018-W15-B4/main/pull/67[#67], and https://github.com/CS2103JAN2018-W15-B4/main/pull/155[#155].
-*** Reported bugs and suggestions for other teams during https://github.com/CS2103JAN2018-W14-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue+yash+[Peer Testing].
+#Start of Extract (from User Guide)#
 
-== Project: NUS Sports Update
+include::../UserGuide.adoc[tag=viewalltasks]
 
-=== Overview
-The main source of motivation behind this project is the lack of real time organized information regarding sports events on campus – fixtures, timings, and (most importantly) results. The app also seeks to eliminate the use of Google forms and other unofficial means of signing up. Live-scores and fixtures help engage more students in the sports events around campus and improve the reach of these events.
+include::../UserGuide.adoc[tag=viewmytasks]
 
+#End of Extract (from User Guide)#
 
-link:https://github.com/O-impossible/NUS_Sports_Update[`Link to GitHub Repository`]
+==== 3.2 Contribution to Developer Guide
+
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=taskviewing]
+
+#End of Extract (from Developer Guide)#
+

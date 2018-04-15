@@ -404,38 +404,7 @@ _Figure 18. Activity Diagram for Undo-Redo_
 Furthermore, the "Single Responsibility" and "Separation of Concerns" principles are violated as `HistoryManager` now needs to do two * different things.
 // end::undoredo[]
 
-// tag::dataencryption1[]
-=== [Proposed] Data Encryption
-==== Rationale
-Data encryption is key to any App that deals with personal data of individuals.
 
-We plan to use Symmetric Key Encryption to ensure the confidentiality of data.
-
-// end::dataencryption1[]
-
-==== How Symmetric Key Encryption works
-Symmetric key encryption is an encryption philosophy where the two communicating parties share a pre-established secret key *k*.
-It consists of 2 algorithms `E` (Encrypting or Encoding) and `D` (Decryption or Decoding) which take in the same key *k* to perform their respective operations.
-
-The 2 algorithms `E` and `D` are efficient algorithms, such that:
-
-* *D*(*E*(*k*,m)) = m, where 'm' is the message that needs to be kept confidential.
-* For *k* chosen uniformly at random, *E*(*k*,m) gives no additional information about 'm' to an adversary.
-
-// tag::dataencryption2[]
-==== Proposed Implementation
-We plan to make use of classes that are defined in Javax's Crypto package.
-
-The classes that would feature in the implementation are:
-
-* KeyGenerator -> constructs a secret (symmetric) key.
-* Cipher ->  provides the functionality of a cryptographic cipher for encryption and decryption.
-
-The construction of a symmetric key is done by passing the algorithm the encryption will use.
-We plan to use the Advanced Encryption Scheme (AES) algorithm. For that reason, we will use a 128-bit AES symmetric key.
-
-Once the key is generated, all data will be encrypted with AES. Anyone who wishes to view the decrypted form of the data must possess the secret key.
-// end::dataencryption2[]
 
 // tag::email[]
 === Email Mechanism
@@ -507,7 +476,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ** Cons: Older version browser will disallow auto-filling of email fields.
 // end::email[]
 
-// tag::tasks[]
+// tag::tasks1[]
 === Task-Management
 Tasks are pieces of work to be done or undertaken. Members can create tasks for themselves, and can also be assigned to a task by `Exco` members.
 
@@ -521,14 +490,6 @@ Figure 22 below shows the UML diagram of the `Task` class.
 image::TaskUML.png[width="300" align="center"]
 _Figure 22. Task UML Diagram_
 
-Tasks consists of the following:
-
-* Description: Represents the description of a task.
-* Date: Represents the due date of a task.
-* Time: Represents the time before which a task must be completed.
-* Assignor: Represents the member who has assigned the task.
-* Assignee: Represents the member who has been assigned the task.
-* Status: Represents the status of a task - one of `Yet To Begin`, `In Progress`, and `Completed`.
 
 ===== Adding Tasks
 ---
@@ -573,7 +534,9 @@ Figure 28 depicts the high-level sequence of events that take place.
 image::SDforAssignTask.png[width="400" align="center"]
 _Figure 28. Sequence Diagram for assigning a task._
 
+// end::tasks1[]
 
+// tag::tasks-delete[]
 ===== Deleting Tasks
 ---
 The 'DeleteTaskCommand` is used to delete a task. A task can only be deleted if the member who is currently logged in is either the `Assignor` or the `Assignee`. +
@@ -594,8 +557,10 @@ The high-level sequence of events is shown below in Figure 31.
 
 image::SDforDeleteTask.png[width="400" align="center"]
 _Figure 31. Sequence Diagram for deleting a task._
+// end::tasks-delete[]
 
 
+// tag::tasks2[]
 ===== Changing Task Assignee
 ---
 
@@ -637,7 +602,9 @@ Figure 37 below describes the high-level sequence of events that take place.
 
 image::SDforChangeTaskStatus.png[width="400" align="center"]
 _Figure 37. Sequence Diagram for changing the status of a task._
+// end::tasks2[]
 
+// tag::taskviewing[]
 ===== Viewing All Tasks
 ---
 
@@ -665,8 +632,9 @@ The sequence diagram of the `viewmytasks` command is shown below in Figure 39.
 
 image::SDforViewMyTasks.png[width="400" align="center"]
 _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member._
+// end::taskviewing[]
 
-
+// tag::task-design[]
 ==== Design Considerations
 ===== Aspect: Displaying similar tasks for different Assignees
 * **Alternative 1 (current choice)**: Make a copy of the task for every new `Assignee` if all other parameters are same.
@@ -675,8 +643,8 @@ _Figure 39. Sequence Diagram for viewing tasks of the currently logged-in member
 * **Alternative 2:** Maintain a list of `Assignee` s in a task .
 ** Pros: Reduces clutter in the `TaskListPanel` and is easy on the eye.
 ** Cons: Relatively difficult to implement.
+// end::task-design[]
 
-// end::tasks[]
 
 // tag::polls[]
 === Polls-feature
@@ -1097,6 +1065,107 @@ just for compress/decompress but for other events as well.
 ** Cons: Increases coupling
 // end::compressdecompress[]
 
+
+// tag::autocomplete[]
+=== Auto-Complete Command Mechanism
+
+==== Current Implementation
+
+The auto-complete mechanism is an enhancement added to reduce the frequency pf typos and thus by extension, invalid commands.
+
+It makes use of the key press event `KeyEvent`. Pressing ```TAB``` cycles through all possible commands based on user input.
+
+The `ArrayList<String> commandList` in `CommandList.java` stores all the command formats.
+
+Here is the implementation for handling the key-press event:
+
+[source, java]
+private void handleKeyPress(KeyEvent keyEvent) {
+    switch (keyEvent.getCode()) {
+    .
+    .
+    case TAB:
+        keyEvent.consume();
+        completeCommandIndex++;
+        autoComplete(commandTextField.getText());
+        break;
+    .
+    .
+    }
+}
+
+Shown below is the implementation of the `autoComplete` method.
+
+[source, java]
+private void autoComplete(String input) {
+    if (!input.equals("")) {
+        if (oldInput == null) {
+            oldInput = input;
+        } else if (!input.startsWith(oldInput)) {
+            oldInput = input;
+            completeCommandIndex = 0;
+        }
+        List<String> completedCommands = LogicManager.COMMAND_LIST.stream().filter(s -> s.startsWith(oldInput))
+                .collect(Collectors.toList());
+        if (!completedCommands.isEmpty()) {
+            replaceText(completedCommands.get(completeCommandIndex % completedCommands.size()));
+        } else {
+            replaceText("");
+        }
+    }
+}
+
+==== Design Considerations
+===== Implementation of cycling through commands
+* **Alternative 1 (current choice)**: Use string manipulation to store old input and only change it if the new input doesn't start with the old input.
+** Pros: It's easy to implement.
+** Cons: It's not so good in terms of code quality.
+* **Alternative 2:** If there are 'N' commands that start with `XXX`, create 'N' strings with each concatenated one after the other in increasing length i.e. XXX~1~, XXX~1~XXX~2~, ... ,XXX~1~XXX~2~XXX~3~...XXX~N~. Keep truncating the commands not needed from the front.
+** Pros: Possibly cleaner code.
+** Cons: It's relatively hard to implement.
+
+// end::autocomplete[]
+
+// tag::dataencryption1[]
+=== [Proposed] Data Encryption
+==== Rationale
+Data encryption is key to any App that deals with personal data of individuals.
+
+We plan to use Symmetric Key Encryption to ensure the confidentiality of data.
+
+==== How Symmetric Key Encryption works
+Symmetric key encryption is an encryption philosophy where the two communicating parties share a pre-established secret key *k*.
+It consists of 2 algorithms `E` (Encrypting or Encoding) and `D` (Decryption or Decoding) which take in the same key *k* to perform their respective operations.
+
+The 2 algorithms `E` and `D` are efficient algorithms, such that:
+
+* *D*(*E*(*k*,m)) = m, where 'm' is the message that needs to be kept confidential.
+* For *k* chosen uniformly at random, *E*(*k*,m) gives no additional information about 'm' to an adversary.
+
+==== Proposed Implementation
+We plan to make use of classes that are defined in Javax's Crypto package.
+
+The classes that would feature in the implementation are:
+
+* KeyGenerator -> constructs a secret (symmetric) key.
+* Cipher ->  provides the functionality of a cryptographic cipher for encryption and decryption.
+
+The construction of a symmetric key is done by passing the algorithm the encryption will use. The Advanced Encryption Scheme (AES) algorithm is a secure encryption algorithm that has proven been proven secure. A 128-bit AES symmetric key will be used to encrypt all data files.
+
+Once the key is generated, all data will be encrypted with AES. Anyone who wishes to view the decrypted form of the data must possess the secret key.
+
+Figure 61 below describes the encryption procedure used in AES – specifically, the Cipher Block Chaining (CBC) mode.
+
+image::encryption.png[width="500" align="center"]
+_Figure 61. AES – CBC mode encryption._
+
+Figure 62 below shows the decryption process.
+
+image::decryption.png[width="500" align="center"]
+_Figure 62. AES – CBC mode decrption._
+
+// end::dataencryption1[]
+
 === Logging
 
 We are using `java.util.logging` package for logging.
@@ -1144,10 +1213,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
 
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 61 below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings in Figure 63 below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 61. Screenshot of saving documentation as PDF in Chrome_
+_Figure 63. Screenshot of saving documentation as PDF in Chrome_
 
 [[Testing]]
 == Testing
@@ -1310,21 +1379,21 @@ Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
 
 . Use different colors for different tags inside member cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow as shown in Figure 62.
 +
-Figure 62 below shows the member details before the modification.
+Figure 64 below shows the member details before the modification.
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
 
-_Figure 62. Member details before modification_
+_Figure 64. Member details before modification_
 +
-Figure 63 below shows the member details after the modification.
+Figure 65 below shows the member details after the modification.
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
 
-_Figure 63. Member details after modification_
+_Figure 65. Member details after modification_
 +
 ****
 * Hints
@@ -1340,18 +1409,18 @@ _Figure 63. Member details after modification_
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
 
-Figure 64 below shows the `ResultDisplay` before the modification. +
+Figure 66 below shows the `ResultDisplay` before the modification. +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 64. ResultDisplay before modification_
+_Figure 66. ResultDisplay before modification_
 +
 **After**
 +
-Figure 65 below shows the `ResultDisplay` after the modification.
+Figure 67 below shows the `ResultDisplay` after the modification.
 +
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 65. ResultDisplay after modification_
+_Figure 67. ResultDisplay after modification_
 +
 ****
 * Hints
@@ -1370,21 +1439,21 @@ _Figure 65. ResultDisplay after modification_
 . Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
 +
 
-Figure 66 below shows the `StatusBarFooter` before the modification.
+Figure 68 below shows the `StatusBarFooter` before the modification.
 +
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
 
-_Figure 66. StatusBarFooter before modification_
+_Figure 68. StatusBarFooter before modification_
 +
-Figure 67 below shows the `StatusBarFooter` after the modification.
+Figure 69 below shows the `StatusBarFooter` after the modification.
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
 
-_Figure 67. StatusBarFooter after modification_
+_Figure 69. StatusBarFooter after modification_
 +
 ****
 * Hints
