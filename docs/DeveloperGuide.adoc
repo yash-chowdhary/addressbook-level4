@@ -2069,7 +2069,8 @@ These instructions only provide a starting point for testers to work on; testers
 
 . Deleting a member while all members are listed
 
-.. Prerequisites: List all members using the `list` command. Multiple members in the list.
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+   List all members using the `list` command. Multiple members in the list.
 .. Test case: `delete 1` +
    Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 .. Test case: `delete 0` +
@@ -2280,3 +2281,117 @@ Expected: Similar to previous.
 .. Prerequisites: Login and there are more than 5 members in the application
 .. Test case: `find lala` +
    Expected: Member list filtered to members with fields containing lala. Number of members found shown in status message. Timestamp in the status bar is updated.
+
+=== Importing members
+. Importing members as an `Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+.. Test case: `import C:/Users/John/Desktop/correctly_formatted_data.csv` +
+   Expected: All members who have valid entries and do not have the same matriculation member of any member in Club Connect
+   are added to `Club Members`. The number of members imported is shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `import C:/Users/John/Desktop/data_in_incorrect_format.csv` +
+   Expected: No members are added to Club Connect. Error details are shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `import C:/Users/John/Desktop/does_not_exist.csv` +
+   Expected: No members are added to Club Connect. Error window pops up. Error details are shown in the status message. Status bar remains the same.
+.. Incorrect import commands to try: `import`, `import C:/Users/John/members.txt`
+   Expected: No members are added to Club Connect. Error details are shown in the status message. Status bar remains the same.
+
+. Importing members as a non-`Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect and you must not be an `Exco` member.
+.. Test case: `import C:/Users/John/Desktop/correctly_formatted_data.csv` +
+   Expected: No members are added to Club Connect. Command requires Exco-member shown in status message. Status bar remains the same.
+.. Test case: `import C:/Users/John/Desktop/data_in_incorrect_format.csv` +
+   Expected: Similar to previous.
+.. Incorrect import commands to try: `import`, `import C:/Users/John/members.txt`
+   Expected: No members are added to Club Connect. Error details are shown in the status message. Status bar remains the same.
+
+=== Exporting members
+. Exporting members as a member
+
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `export C:/Users/John/Desktop/does_not_exist.csv` +
+   Expected: Writes data of all members in Club Connect to `C:/Users/John/Desktop/does_not_exist.csv`.
+   Success message is shown in the status message. Status bar remains the same.
+.. Test case: `export C:/Users/John/Desktop/already_exists.csv` +
+   Expected: Overwrites `C:/Users/John/Desktop/already_exists.csv` with data of all members in Club Connect.
+             Success message is shown in the status message.Status bar remains the same.
+.. Incorrect export commands to try: `export`, `export C:/Users/John/members.txt`
+   Expected: No members are exported to a file. Error details are shown in the status message. Status bar remains the same.
+
+=== Changing profile photo
+. Changing your profile photo when you have selected yourself
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `changepic C:/Users/John/Desktop/valid_photo.jpg` +
+   Expected: Your profile photo changes to the image at `C:/Users/John/Desktop/valid_photo.jpg`.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel changes to this new photo.
+   Timestamp in the status bar is updated.
+.. Test case: `changepic C:/Users/John/Desktop/does_not_exist.jpg` +
+   Expected: Your profile photo is unchanged. Error window pops up. Invalid photo path is shown in status message.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel remains the same.
+   Status bar remains the same.
+.. Test case: `changepic C:/Users/John/Desktop/` +
+   Expected: Your profile photo is unchanged. Error details are shown in status message.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel remains the same.
+   Status bar remains the same.
+.. Other incorrect change photo commands to try: `changepic`, `changepic C:/Users/John/image.bmp`
+   Expected: Similar to previous.
+
+. Changing your profile photo when you have not selected yourself
+.. Prerequisites: You must be logged in to Club Connect.
+.. Test case: `changepic C:/Users/John/Desktop/valid_photo.jpg` +
+   Expected: Your profile photo changes to the image at `C:/Users/John/Desktop/valid_photo.jpg`.
+   Your image in the `Logged in` panel and the `Club Members` panel changes. Timestamp in the status bar is updated.
+.. Test case: `changepic C:/Users/John/Desktop/does_not_exist.jpg` +
+   Expected: Your profile photo is unchanged. Error window pops up. Invalid photo path is shown in status message.
+   Your image in the `Logged in` panel and the `Club Members` panel remains the same.
+   Status bar remains the same.
+.. Test case: `changepic C:/Users/John/Desktop/` +
+   Expected: Your profile photo is unchanged. Error details are shown in status message.
+   Your image in the `Logged in` panel and the `Club Members` panel panel remains the same.
+   Status bar remains the same.
+.. Other incorrect change photo commands to try: `changepic`, `changepic C:/Users/John/image.bmp`
+   Expected: Similar to previous.
+
+=== Removing profile photo
+. Removing your profile photo when it is not the default photo and you have selected yourself
+.. Prerequisites: You must be logged in to Club Connect. You must have changed your profile photo.
+.. Test case: `removepic` +
+   Expected: Your profile photo changes to Club Connect's default profile photo.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel changes.
+   Timestamp in the status bar is updated.
+
+. Removing your profile photo when it is not the default photo and you have not selected yourself
+.. Prerequisites: You must be logged in to Club Connect. You must have changed your profile photo.
+.. Test case: `removepic` +
+   Expected: Your profile photo changes to Club Connect's default profile photo.
+   Your image in the `Logged in` panel and the `Club Members` panel changes. Timestamp in the status bar is updated.
+
+. Removing your profile photo when it is the default photo
+.. Prerequisites: You must be logged in to Club Connect. You must have not changed your profile photo.
+.. Test case: `removepic` +
+   Expected: Your profile photo remains as Club Connect's default profile photo.
+   Your image in the `Logged in` panel, the `Club Members` panel, and the `Member Profile` panel remains the same.
+   Timestamp in the status bar is updated.
+
+=== Deleting a tag
+. Deleting a tag as an `Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect as an `Exco` member.
+.. Test case: `deletetag t/Head` +
+   Expected: The tag from all members previously tagged with `Head` will be removed. The name of the deleted taglogin u/A0123456H pw/password
+ shown in the status message. Timestamp in the status bar is updated.
+.. Test case: `deletetag t/This-does-not-exist` +
+   Expected: No tag is deleted as the tag does not exist. Error details are shown in the status message. Status bar remains the same.
+.. Incorrect delete tag commands to try: `deletetag`, `deletegroup t/invalid format tag`
+   Expected: No tag is deleted as the tag name format is invalid. Error details are shown in the status message. Status bar remains the same.
+
+. Deleting a tag as a non-`Exco` member
+
+.. Prerequisites: You must be logged in to Club Connect and you must not be an `Exco` member.
+.. Test case: `deletetag t/Head` +
+   Expected: No tags are deleted from members. Command requires Exco-member shown in status message. Status bar remains the same.
+.. Test case: `deletetag t/This-does-not-exist` +
+   Expected: Similar to previous.
+.. Incorrect delete tag commands to try: `deletetag`, `deletegroup t/invalid format tag`
+   Expected: No tag is deleted as the tag name format is invalid. Error details are shown in the status message. Status bar remains the same.

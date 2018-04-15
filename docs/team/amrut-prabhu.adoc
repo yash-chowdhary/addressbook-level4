@@ -100,8 +100,6 @@ include::../UserGuide.adoc[tag=import]
 
 include::../UserGuide.adoc[tag=export]
 
-include::../UserGuide.adoc[tag=csv-data-format]
-
 #End of Extract (from User Guide)#
 
 === 4.2. Minor Enhancement : Profile Photo
@@ -124,8 +122,40 @@ include::../UserGuide.adoc[tag=deletetag]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
+#Start of Extract (from Developer Guide)#
+
 include::../DeveloperGuide.adoc[tag=import]
 
 include::../DeveloperGuide.adoc[tag=export]
 
 include::../DeveloperGuide.adoc[tag=profilephoto]
+
+#End of Extract (from Developer Guide)#
+
+== Appendix A : Other Sections in the User Guide
+
+|===
+|_Given below are other sections I contributed to the User Guide._
+|===
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=valid-entries]
+
+include::../UserGuide.adoc[tag=tips]
+
+include::../UserGuide.adoc[tag=v2.0]
+
+#End of Extract (from User Guide)#
+
+== Appendix B : Other Sections in the Developer Guide
+
+|===
+|_Given below are other sections I contributed to the Developer Guide._
+|===
+
+#Start of Extract (from Developer Guide)#
+
+include::../DeveloperGuide.adoc[tag=glossary]
+
+#End of Extract (from Developer Guide)#

@@ -91,6 +91,7 @@ This is how you should interpret the commands in this user guide.
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 ====
 
+// tag::valid-entries[]
 Here are some things to take note of before you begin using Club Connect.
 [[constraints]]
 ====
@@ -110,6 +111,7 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
 ====
+// tag::valid-entries[]
 
 // tag::add[]
 === Adding a member: `add`
@@ -346,7 +348,6 @@ Execute the clear command, and cancelling it.
 Compresses the details of members in the member list +
 Format: `compress` +
 Alias: `comp`
-
 
 ****
 * No changes if member details are already compressed
@@ -732,12 +733,15 @@ Deletes the `pr` group from Club Connect.
 [[removepic]]
 === Removing your profile photo : `removepic` (Since v1.5)
 
-Removes your profile photo and sets it back to the default photo. +
+Removes your profile photo and sets it back to Club Connect's default profile photo. +
 Format: `removepic` +
 Aliases: `rmpic`, `defaultpic`, `delpic`
 
 [NOTE]
 This command cannot be undone. You will have to set your profile photo by using the <<changepic,`changepic`>> command again.
+
+[NOTE]
+If you have not set a profile photo, your profile photo will  remain as the default photo.
 // end::removepic[]
 
 === Selecting a member : `select` (since v1.5rc)
@@ -986,6 +990,7 @@ image::invalid_CSV_format.png[height="300"]
 
 // end::tips[]
 
+// tag::v2.0[]
 == Coming in v2.0
 
 * *Encrypt data files* : `encrypt` +
@@ -1001,4 +1006,4 @@ Tired of sending the same message to multiple members? The *Group Chat* feature 
 * *Submit anonymous feedback* : `feedback` +
 Not satisfied with certain aspects of the club? Afraid to speak up? +
 Fret not, Club Connect provides you with a platform to voice your opinions. And yes, we guarantee your anonymity.
-
+// end::v2.0[]

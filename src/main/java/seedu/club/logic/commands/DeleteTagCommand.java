@@ -57,6 +57,7 @@ public class DeleteTagCommand extends UndoableCommand {
     protected void preprocessUndoableCommand() throws CommandException {
         requireToSignUp();
         requireToLogIn();
+        requireExcoLogIn();
         List<Tag> lastShownList = model.getFilteredTagList();
 
         if (!getMasterTagList().contains(tagToDelete)) {
