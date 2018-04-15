@@ -1203,7 +1203,6 @@ The photo specified by the path is set to the `ImageView` object by the followin
 
 [source, java]
 ----
-@FXML
 private ImageView profilePhoto;
 private void setProfilePhoto(Member member) {
     Image photo;
@@ -1217,9 +1216,9 @@ private void setProfilePhoto(Member member) {
 }
 ----
 
-The actual displaying of the profile photo is done by using this xml code:
+The actual displaying of the profile photo is done by using this fxml code:
 
-[source, xml]
+[source, fxml]
 ----
 <HBox alignment="CENTER_LEFT">
     <ImageView fx:id="profilePhoto" fitWidth="100" fitHeight="130">
