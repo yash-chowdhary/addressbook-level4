@@ -1,5 +1,5 @@
 package seedu.club.logic.commands;
-
+//@@author yash-chowdhary
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.club.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -46,7 +46,7 @@ public class DeleteTaskCommandTest {
     }
 
     @Test
-    public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
+    public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         model.logsInMember(ALICE.getCredentials().getUsername().value, ALICE.getCredentials().getPassword().value);
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredTaskList().size() + 1);
         DeleteTaskCommand deleteTaskCommand = prepareCommand(outOfBoundIndex);
