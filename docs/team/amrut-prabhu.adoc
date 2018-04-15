@@ -6,11 +6,11 @@
 
 == 1. Overview
 
-*Club Connect* is an application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
+*Club Connect* is a computer application targeted at <<DeveloperGuide#club,club>> <<DeveloperGuide#member,members>> who are students at the National University of Singapore (NUS).
 It aims to make the tedious process of club management easier and more effective.
 
-*Club Connect* is an application that a user who loves to type would fancy - in other words, it uses a Command Line Interface (CLI).
-All output is displayed on a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
+*Club Connect* is an application that would be preferred by those who prefer using the keyboard over a mouse, i.e., it uses a Command Line Interface (CLI).
+All output is displayed in a Graphical User Interface (GUI) - which is just computer jargon for a display that includes panes, menus and message boxes.
 
 == 2. About this portfolio
 
@@ -112,8 +112,6 @@ include::../UserGuide.adoc[tag=changepic]
 
 include::../UserGuide.adoc[tag=removepic]
 
-include::../UserGuide.adoc[tag=deletetag]
-
 #End of Extract (from User Guide)#
 
 == 5. Contributions to the Developer Guide
@@ -138,6 +136,16 @@ include::../DeveloperGuide.adoc[tag=profilephoto]
 |_Given below are other sections I contributed to the User Guide._
 |===
 
+=== A.1. Delete tag feature
+
+#Start of Extract (from User Guide)#
+
+include::../UserGuide.adoc[tag=deletetag]
+
+#End of Extract (from User Guide)#
+
+=== A.2. General additions
+
 #Start of Extract (from User Guide)#
 
 include::../UserGuide.adoc[tag=valid-entries]
@@ -157,5 +165,7 @@ include::../UserGuide.adoc[tag=v2.0]
 #Start of Extract (from Developer Guide)#
 
 include::../DeveloperGuide.adoc[tag=glossary]
+
+include::../DeveloperGuide.adoc[tag=ap-manual-testing]
 
 #End of Extract (from Developer Guide)#

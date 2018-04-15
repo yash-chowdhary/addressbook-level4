@@ -111,7 +111,7 @@ So, they must begin with a letter, followed by 7 digits and should end with a le
 
 * *Tags* should also only contain letters, digits and hyphens. They cannot be empty, and cannot begin with a hyphen ('-').
 ====
-// tag::valid-entries[]
+// end::valid-entries[]
 
 // tag::add[]
 === Adding a member: `add`
@@ -258,8 +258,8 @@ Changes the password of the member with username `A0123456H` to `pword`.
 * `changepass u/A1234567H pw/password npw/brandnewpassword` +
 Changes the password of the member with username `A1234567H` to `brandnewpassword`.
 
-// tag::changepic[]
 [[changepic]]
+// tag::changepic[]
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo. +
@@ -427,8 +427,8 @@ Aliases: `rmtag`, `deltag`
 This command is for `Exco` members only.
 
 ****
-* Deletes the specified tag from Club Connect.
 * Deletes the specified tag for all members who are tagged with it.
+* Deletes the specified tag from Club Connect.
 ****
 
 Examples:
@@ -741,7 +741,7 @@ Aliases: `rmpic`, `defaultpic`, `delpic`
 This command cannot be undone. You will have to set your profile photo by using the <<changepic,`changepic`>> command again.
 
 [NOTE]
-If you have not set a profile photo, your profile photo will  remain as the default photo.
+If you have not set a profile photo, your profile photo will remain as the default photo.
 // end::removepic[]
 
 === Selecting a member : `select` (since v1.5rc)

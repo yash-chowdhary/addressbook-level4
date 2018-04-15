@@ -2282,6 +2282,7 @@ Expected: Similar to previous.
 .. Test case: `find lala` +
    Expected: Member list filtered to members with fields containing lala. Number of members found shown in status message. Timestamp in the status bar is updated.
 
+// tag::ap-manual-testing[]
 === Importing members
 . Importing members as an `Exco` member
 
@@ -2395,3 +2396,4 @@ Expected: Similar to previous.
    Expected: Similar to previous.
 .. Incorrect delete tag commands to try: `deletetag`, `deletegroup t/invalid format tag`
    Expected: No tag is deleted as the tag name format is invalid. Error details are shown in the status message. Status bar remains the same.
+// end::ap-manual-testing[]
