@@ -178,6 +178,4 @@ include::../UserGuide.adoc[tag=v2.0]
 
 include::../DeveloperGuide.adoc[tag=glossary]
 
-include::../DeveloperGuide.adoc[tag=ap-manual-testing]
-
 #End of Extract (from Developer Guide)#

@@ -1793,7 +1793,7 @@ public class ProfilePhotoStorage implements  PhotoStorage {
     public void copyOriginalPhotoFile(String originalPath, String newPhotoName)
             throws PhotoReadException, PhotoWriteException {
         logger.fine("Attempting to read photo from file: " + originalPath);
-        profilePhotoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
+        photoStorage.copyOriginalPhotoFile(originalPath, newPhotoName);
     }
 
     @Override

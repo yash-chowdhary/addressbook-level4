@@ -1635,10 +1635,10 @@ public class ProfilePhotoStorageTest {
     @Test
     public void copyProfilePhoto_invalidPath_exceptionThrown() throws Exception {
         thrown.expect(PhotoReadException.class);
-        ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
+        ProfilePhotoStorage photoStorage = new ProfilePhotoStorage();
 
         String invalidPhotoPath = testFolder.getRoot().getPath() + "invalidFile.xyz";
-        profilePhotoStorage.copyOriginalPhotoFile(invalidPhotoPath, "dummyName");
+        photoStorage.copyOriginalPhotoFile(invalidPhotoPath, "dummyName");
     }
 
     /**
@@ -1649,9 +1649,9 @@ public class ProfilePhotoStorageTest {
         String photoPath = null;
         String copyName = "testCopy";
 
-        ProfilePhotoStorage profilePhotoStorage = new ProfilePhotoStorage();
+        ProfilePhotoStorage photoStorage = new ProfilePhotoStorage();
         photoPath = testFolder.newFile("testPhoto.png").getAbsolutePath();
-        profilePhotoStorage.copyOriginalPhotoFile(photoPath, copyName);
+        photoStorage.copyOriginalPhotoFile(photoPath, copyName);
         assertTrue(new File(SAVE_PHOTO_DIRECTORY + copyName + PHOTO_FILE_EXTENSION).exists());
     }
 
@@ -1661,9 +1661,9 @@ public class ProfilePhotoStorageTest {
     @Test
     public void copyProfilePhoto_validPath_exceptionThrown() throws Exception {
         thrown.expect(PhotoWriteException.class);
-        ProfilePhotoStorageExceptionThrowingStub profilePhotoStorage = new ProfilePhotoStorageExceptionThrowingStub();
+        ProfilePhotoStorageExceptionThrowingStub photoStorage = new ProfilePhotoStorageExceptionThrowingStub();
         String photoPath = testFolder.newFile("testPhoto.png").getAbsolutePath();
-        profilePhotoStorage.copyOriginalPhotoFile(photoPath, "testCopy");
+        photoStorage.copyOriginalPhotoFile(photoPath, "testCopy");
     }
 
     /**

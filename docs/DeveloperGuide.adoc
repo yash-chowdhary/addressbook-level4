@@ -878,6 +878,9 @@ _Figure 51. Sequence Diagram for delete a group from `Club Connect`._
 === Importing Members
 ==== Current Implementation
 
+
+
+
 ==== Design Considerations
 
 ===== Aspect: Implementation of `ImportCommand`
@@ -906,45 +909,25 @@ https://github.com/FasterXML/jackson-dataformats-text/tree/master/csv[Jackson])
 === Exporting Members
 ==== Current Implementation
 
-==== Design Considerations
+The `export` mechanism of Club Connect is facilitated by the `ExportCommand` class and is event-driven.
+It allows members to export the list of members in Club Connect as a CSV file.
+To facilitate this, it makes use of the `CsvUtil` class, which converts `Member` objects to CSV format.
 
-===== Aspect: Output file format
+The `ExportCommand` extends from the `Command` class, as it is not an undoable command and only consists of a `File` attribute.
 
-* **Alternative 1 (current choice)**: Export to a CSV file
-** Pros: More user-friendly in terms of understandability, generated file is compatible with the `import` command
-** Cons: Harder to implement as support for converting data of `Member` to CSV format needs to be added
+image::ExportCommandUML.png[width="350"]
+_Figure 52. ExportCommand UML Diagram_
 
-* **Alternative 2**: Export to a XML file
-** Pros: Easier to implement and as the code already supports the writing of data in XML format
-** Cons: Raw file provides a less intuitive view of data, generated file is not compatible with the `import` command
-// end::export[]
+The `export` command involves the use of multiple components of Club Connect.
+Figure 53 (below) shows the interactions between these components.
+As you can see, the `ExportCommand` is driven by the `NewExportDataAvailableEvent`.
 
-// tag::profilephoto[]
-=== Changing Profile Photo Mechanism
-==== Current Implementation
+image::SDforExport.png[width="800"]
+_Figure 53. High Level Sequence Diagram for the `export C:/Users/Admin/members.csv` Command_
 
-The `changepic` mechanism of Club Connect is facilitated by the `ChangeProfilePhotoCommand` class and is event-driven.
-It allows members to modify their profile photos displayed in the application.
-To facilitate this, it makes use of the `ProfilePhoto` class. `ProfilePhoto`
-
-Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
-
-Refer to Figure 52 for the UML diagram.
-The `ProfilePhoto` class consists of a `String` attribute to store the file path of the profile photo.
-
-image::ChangeProfilePhotoCommandUML.png[width="350"]
-_Figure 52. ChangeProfilePhotoCommand UML Diagram_
-
-The `displaypic` command involves the use of multiple components of Club Connect.
-Below, Figure 53 shows the interactions betweeen these components.
-As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
-
-image::SDforChangeProfilePhoto.png[width="800"]
-_Figure 53. High Level Sequence Diagram for `changepic PATH` Command_
-
-ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
-It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
-Figure 54 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+This event is handled by the `Storage` component.
+It makes use of the `CsvClubBookStorage` and `CsvUtil` classes to write data to the file specified by the export path.
+This is illustrated in Figure.
 
 image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
 _Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/ photo.png` Command
@@ -967,9 +950,75 @@ public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName)
         logger.info("Profile Photo is being read from " + originalPhotoPath);
 
         URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
+    . exception handling ...
+    }
+}
+----
+
+The logged in member's details are then updated to include this new profile photo.
+
+
+==== Design Considerations
+
+===== Aspect: Output file format
+
+* **Alternative 1 (current choice)**: Export to a CSV file
+** Pros: More user-friendly in terms of understandability, generated file is compatible with the `import` command
+** Cons: Harder to implement as support for converting data of `Member` to CSV format needs to be added
+
+* **Alternative 2**: Export to a XML file
+** Pros: Easier to implement and as the code already supports the writing of data in XML format
+** Cons: Raw file provides a less intuitive view of data, generated file is not compatible with the `import` command
+// end::export[]
+
+// tag::profilephoto[]
+=== Changing Profile Photo Mechanism
+==== Current Implementation
+
+The `changepic` mechanism of Club Connect is facilitated by the `ChangeProfilePhotoCommand` class and is event-driven.
+It allows members to modify their profile photos displayed in the application.
+To facilitate this, it makes use of the `ProfilePhoto` class.
+
+Currently, the `ChangeProfilePhotoCommand` extends from the `Command` class, and not from `UndoableCommand`.
+
+Refer to Figure 52 for the UML diagram.
+The `ProfilePhoto` class consists of a `String` attribute to store the file path of the profile photo.
+
+image::ChangeProfilePhotoCommandUML.png[width="350"]
+_Figure 52. ChangeProfilePhotoCommand UML Diagram_
+
+The `displaypic` command involves the use of multiple components of Club Connect.
+Figure 53 (below) shows the interactions between these components.
+As you can see, the `ChangeProfilePhotoCommand` is driven by the `ProfilePhotoChangedEvent`.
+
+image::SDforChangeProfilePhoto.png[width="800"]
+_Figure 53. High Level Sequence Diagram for the `changepic C:/Users/Admin/Desktop/photo.png` Command_
+
+ChangeProfilePhotoCommandParser is responsible for parsing the `changepic` command.
+It returns a `ChangeProfilePhotoCommand` object after parsing the photo file path.
+Figure 54 depicts the Sequence Diagram for interactions within the `Logic` component for the `execute("changepic C:/Users/Admin/Desktop/ photo.png")` API call.
+
+image::ChangeProfilePhotoCommandSdForLogic.png[width="650"]
+_Figure 54. Interactions Inside the Logic Component for the `changepic C:/Users/Admin/Desktop/photo.png` Command
+
+The `ChangeProfilePhotoCommand#execute()` method invokes the `addProfilePhoto()` method from `model`.
+Complying with the rules of <<abstraction,abstraction>>, the `Logic` component calls on `Model` to handle the internal details for updation.
+
+The actual reading of the profile photo from the path provided is done by the `Storage` component.
+It copies the photo as a <<bmp,bitmap image file>> (.bmp) to the Club Connect application's resources.
+
+The code used for reading and copying the file is as follows:
+
+[source, java]
+----
+@Override
+public void copyOriginalPhotoFile(String originalPhotoPath, String newPhotoName) throws PhotoException {
+    BufferedImage originalPhoto = null;
+    try {
+        logger.info("Profile Photo is being read from " + originalPhotoPath);
+        URL photoUrl = new URL(URL_PREFIX + originalPhotoPath);
         newPath = SAVE_PHOTO_DIRECTORY + newPhotoName + PHOTO_FILE_EXTENSION;
         InputStream photoStream = photoUrl.openStream();
-
         createPhotoFileCopy(photoStream, newPath);
     } catch (IOException ioe) {
         // ... exception handling ...
@@ -988,6 +1037,37 @@ public void createPhotoFileCopy(InputStream photoStream, String newPath) throws 
 ----
 
 The logged in member's details are then updated to include this new profile photo.
+
+The photo specified by the path is set to the `ImageView` object by the following code in the `Ui` component:
+
+[source, java]
+----
+@FXML
+private ImageView profilePhoto;
+private void setProfilePhoto(Member member) {
+    Image photo;
+    String photoPath = member.getProfilePhoto().getPhotoPath();
+    if (photoPath.equals(EMPTY_STRING) || photoPath.equals(DEFAULT_PHOTO_PATH)) {
+        photo = new Image(MainApp.class.getResourceAsStream(DEFAULT_PHOTO_PATH), photoWidth, photoHeight, false, true);
+    } else {
+        photo = new Image("file:" + photoPath, photoWidth, photoHeight, false, true);
+    }
+    profilePhoto.setImage(photo);
+}
+----
+
+The actual displaying of the profile photo is done by using this xml code:
+
+[source, xml]
+----
+<HBox alignment="CENTER_LEFT">
+    <ImageView fx:id="profilePhoto" fitWidth="100" fitHeight="130">
+        <HBox.margin>
+            <Insets left="7.5" bottom="7.5" right="5.0" top="7.5" />
+        </HBox.margin>
+    </ImageView>
+</HBox>
+----
 
 ==== Design Considerations
 

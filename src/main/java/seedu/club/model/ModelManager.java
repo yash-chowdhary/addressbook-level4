@@ -538,9 +538,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         List<Member> members = new ArrayList<>(clubBook.getMemberList());
         StringBuilder csvMemberList = new StringBuilder();
-        /*for (Member member: members) {
-            csvMemberList.append(getMemberDataToExport(member));
-        }*/
         members.forEach(member -> csvMemberList.append(getMemberDataToExport(member)));
         indicateNewExport(exportFile, csvMemberList.toString());
     }
