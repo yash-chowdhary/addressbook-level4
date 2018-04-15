@@ -143,7 +143,7 @@ public class ModelManager extends ComponentManager implements Model {
             throws DuplicateMatricNumberException, MemberNotFoundException, DuplicateTaskException {
         requireAllNonNull(target, editedMember);
         clubBook.updateMember(target, editedMember);
-        int numberOfTasksUpdated = clubBook.updateTask(target, editedMember);
+        int numberOfTasksUpdated = clubBook.updateTaskHelper(target, editedMember);
         indicateClubBookChanged();
         if (target.equals(getLoggedInMember())) {
             clubBook.setLoggedInMember(editedMember);
