@@ -658,7 +658,7 @@ Alias: `exp`
 ****
 * Exports Name, Phone Number, Email, Matriculation Number, Group, and Tags of all members in Club Connect to a CSV file.
 * CSV_FILE_PATH must be the absolute path to a CSV file.
-* In order for this command to work correctly, ensure that none of the members have double quoutes (") in any of their data.
+* In order for this command to work correctly, ensure that none of the members have double quotes (") in any of their data.
 * A new CSV file with the specified name is created if it does not already exist.
 * If the CSV file already exists, then the data in the file is overwritten.
 ****
