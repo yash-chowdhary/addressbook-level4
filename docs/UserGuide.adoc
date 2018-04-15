@@ -301,30 +301,9 @@ Changes the assignee of the 1st task to `A0123456H` in the task listing.
 Changes the assignee of the 3rd task to `A6656789H` in the task listing.
 // end::changeassignee[]
 
-=======
-=== Changing password : `changepass` (Since v1.4)
-
-Changes your password, if you are logged in.
-
-Format: `changepass u/USERNAME pw/OLD_PASSWORD npw/NEW_PASSWORD` +
-Alias: `changepw`
-
-****
-* Members are only able to change their own password.
-* Exco members can change the password of any member. The member is indicated by their username.
-****
-
-Examples:
-
-* `changepass u/A0123456H pw/password npw/pword` +
-Changes the password of the member with username `A0123456H` to `pword`.
-* `changepass u/A1234567H pw/password npw/brandnewpassword` +
-Changes the password of the member with username `A1234567H` to `brandnewpassword`.
-
 [[changepic]]
-
-
 // tag::changepic[]
+
 === Changing your profile photo : `changepic` (Since v1.2)
 
 Changes the photo displayed on your profile to the specified photo. +
@@ -1019,6 +998,12 @@ Figure 5 shows some examples of invalid entries with the corresponding reasons i
 [[invalid-csv-format]]
 .Invalid format of data in the file (reasons are shown in red)
 image::invalid_CSV_format.png[height="300"]
+
+* *Select UI* +
+In order to get the intended UI, ensure the following conditions are met.
+
+** Names of selected member cannot be more than 36 characters.
+** Tags of selected member cannot be more than 7.
 // end::csv-data-format[]
 
 // end::tips[]
